@@ -14,20 +14,6 @@ Explain why the hack was added.
 
 👀 See comment on top of file for template.
 
-## "cheerio" resolution
-
-#### When can we remove this:
-
-Remove after `enzyme` is removed as a dependency.
-
-#### Explanation/Context:
-
-This is an existing resolution at the creation of HACKS.md. For what I gathered, it is required by enzyme. It requires ~1.0.0, but we need 0.22.0.
-
-We use it in `renderToString` which takes something like `<Image />` and gives us `<image />`. Using 0.22.0 that works, but when enzyme uses ~1.0.0 it gives `<img />`, which breaks tests.
-
-Using enzyme we created `renderUntil`. To replace that, we probably need @testing-library/react or something to replace it. Then we can remove enzyme and cheerio resolution as well.
-
 ## EchoNew.json
 
 #### When can we remove this:
@@ -64,23 +50,15 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
-# Mapbox patches:
-
-We have a few mapbox related hacks + patches. Grouping here for convenience.
-
-## hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
+## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
 
 #### When can we remove this:
 
-When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
+When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/33756
 
 #### Explanation/Context:
 
-Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
-
-To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/main/CHANGELOG.md for versions bundle with an npm version.
-
-Update tried again with mapbox 8.4.0 and getting 5.9 and still need the hard coded requirement, try again next time we update mapbox.
+Jest 28 changed the way it handles transformed file input.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
@@ -134,18 +112,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 #### Explanation/Context:
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
-
-## react-native-config patch-package
-
-#### When can we remove this:
-
-Now.
-
-#### Explanation/Context:
-
-react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
-
-We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
 
 ## @react-navigation/core patch-package
 
@@ -307,17 +273,6 @@ When https://github.com/react-native-async-storage/async-storage/issues/746 is s
 The types in this package are not correct, and there is a type error that comes up when we try to use it.
 It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
 
-## @wojtekmaj/enzyme-adapter-react-17 patch
-
-#### When can we remove this:
-
-When we remove enzyme from eigen.
-
-#### Explanation/Context:
-
-Enzyme is missing types and this package is importing enzyme, so typescript is sad.
-We ignore enzyme types in our tests in eigen too. Once we remove enzyme, we can get rid of this and everything connected to enzyme.
-
 ## rn-async-storage-flipper patch
 
 #### When can we remove this:
@@ -341,6 +296,36 @@ We either need to find a library that gives us masonry layout using a Virtualize
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
 
+## react-native patch-package (find-node/asdf part)
+
+#### When we can remove this:
+
+When we upgrade to RN 0.69+.
+
+At that point, we need to add the following to our new `ios/.xcode.env` file:
+
+```
+
+# Support Homebrew on M1
+HOMEBREW_M1_BIN=/opt/homebrew/bin
+if [[ -d $HOMEBREW_M1_BIN && ! $PATH =~ $HOMEBREW_M1_BIN ]]; then
+  export PATH="$HOMEBREW_M1_BIN:$PATH"
+fi
+
+# Set up asdf
+if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+  # shellcheck source=/dev/null
+  . "$HOME/.asdf/asdf.sh"
+elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
+  # shellcheck source=/dev/null
+  . "$(brew --prefix asdf)/libexec/asdf.sh"
+fi
+```
+
+#### Explanation/Context
+
+RN 0.68- was using `find-node.sh` to find node on our systems, so it would look for asdf, nvm, nodenv, and others. After 0.69, this file is removed and now we have the `.xcode.env` file to do this ourselves. Since we use asdf, we need to add the asdf bit above. If we want to support other version managers, we can add those too. Grab whatever we need from here https://github.com/facebook/react-native/blob/0.68-stable/scripts/find-node.sh.
+
 ## react-native-scrollable-tab-view pointing to a commit hash
 
 #### When we can remove this:
@@ -360,3 +345,54 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 #### Explanation/Context
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
+
+## Podfile postinstall code_signing_required = NO
+
+#### When can we remove this:
+
+Maybe we don't? We can try to remove it at any point, and see if it works. Try with newer cocoapods versions.
+
+#### Explanation/Context:
+
+This is needed because xcode 14 says that React-Core-AccessibilityResources and some other pods require a development team.
+We don't really need a dev team for these. Probably some future version of cocoapods will fix this.
+
+## react-native-reanimated patch-package
+
+#### When can we remove this:
+
+Once we can remove it and have `yarn type-check` pass. They have some broken types and they are messing with our typechecking, so we will ignore until they are fixed, maybe in a future version.
+
+#### Explanation/Context:
+
+Types failing because of broken types in the package.
+
+## react-native-reanimated patch-package (`displayName` part)
+
+#### When can we remove this:
+
+Whenever eigen stops crashing without it. Just try to view any screen with a `Button` from palette. If it crashes, keep this. If it doesn't, remove this.
+
+#### Explanation/Context:
+
+Something is up with `displayName` and eigen doesn't like it. We use `Animated.createAnimatedComponent` in `Button` for the text, and that's what's causing the crash.
+
+## @jest/fake-timers
+
+#### When can we remove this:
+
+Once we can figure out how to mock `global.setImmediate` with `global.setTimeout`, preferrably in jest setup file
+
+#### Explanation/Context:
+
+After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
+
+## Providers.tsx LegacyTheme
+
+#### When can we remove this:
+
+Once we have removed the `palette` directory from eigen.
+
+#### Explanation/Context:
+
+Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb

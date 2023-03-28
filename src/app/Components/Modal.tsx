@@ -1,5 +1,6 @@
+import { Text, TextProps } from "@artsy/palette-mobile"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
-import { Button, Sans, SansProps } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -9,8 +10,13 @@ interface ModalProps extends ViewProps {
   headerText: string
   detailText: string
   visible?: boolean
-  textAlign?: SansProps["textAlign"]
+  textAlign?: TextProps["textAlign"]
   closeModal?: () => void
+  accessibilityLabel?: string
+}
+
+interface ModalState {
+  modalVisible: boolean
 }
 
 const ModalBackgroundView = styled.View`
@@ -31,18 +37,16 @@ const ModalInnerView = styled.View`
 
 const DEFAULT_MARKDOWN_RULES = defaultRules({})
 
-export class Modal extends React.Component<ModalProps, any> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+export class Modal extends React.Component<ModalProps, ModalState> {
+  constructor(props: ModalProps) {
     super(props)
 
     this.state = { modalVisible: props.visible || false }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: ModalProps) {
     if (this.props.visible !== prevProps.visible) {
-      this.setState({ modalVisible: this.props.visible })
+      this.setState({ modalVisible: this.props.visible ?? false })
     }
   }
 
@@ -54,16 +58,16 @@ export class Modal extends React.Component<ModalProps, any> {
   }
 
   render() {
-    const { headerText, detailText } = this.props
+    const { headerText, detailText, accessibilityLabel } = this.props
     const markdownRules = {
       ...DEFAULT_MARKDOWN_RULES,
       paragraph: {
         ...DEFAULT_MARKDOWN_RULES.paragraph,
         react: (node, output, state) => {
           return (
-            <Sans size="3" color="black60" key={state.key} textAlign={this.props.textAlign}>
+            <Text variant="sm" color="black60" key={state.key} textAlign={this.props.textAlign}>
               {output(node.content, state)}
-            </Sans>
+            </Text>
           )
         },
       },
@@ -71,17 +75,22 @@ export class Modal extends React.Component<ModalProps, any> {
 
     return (
       <View style={{ marginTop: 22 }}>
-        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
+        <RNModal
+          accessibilityLabel={accessibilityLabel}
+          animationType="fade"
+          transparent
+          visible={this.state.modalVisible}
+        >
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback>
                 <ModalInnerView>
                   <View style={{ paddingBottom: 10 }}>
-                    <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
+                    <Text variant="sm" weight="medium" textAlign={this.props.textAlign}>
                       {headerText}
-                    </Sans>
+                    </Text>
                   </View>
-                  <Markdown rules={markdownRules} pb={15}>
+                  <Markdown rules={markdownRules} pb="15px">
                     {detailText}
                   </Markdown>
                   <Button

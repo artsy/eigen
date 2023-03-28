@@ -1,15 +1,16 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { navigate, popToRoot } from "app/navigation/navigate"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { Button, Flex, Text } from "palette"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 const BackgroundImage = styled(ImageBackground)``
 
-export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
+export const ActivateMoreMarketInsightsBanner = () => {
   const { trackEvent } = useTracking()
   const screenDimensions = useScreenDimensions()
   const isIPad = screenDimensions.width > 700
@@ -23,7 +24,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
         backgroundColor="black5"
       >
         <Flex mx={2}>
-          <Text variant={isIPad ? "lg" : "md"} color="black100" mt={2}>
+          <Text variant={isIPad ? "lg-display" : "sm-display"} color="black100" mt={2}>
             Unlock More Insights
           </Text>
           <Text mt={1} mb={2} variant={isIPad ? "md" : "xs"} color="black60">
@@ -52,7 +53,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
 
       <BackgroundImage
         style={{ minWidth: screenDimensions.width / 2 }}
-        source={require("images/MCInsights_banner_backgound_image.webp")}
+        source={require("images/MCInsights_banner_backgound_image.jpg")}
       />
     </Flex>
   )

@@ -1,56 +1,37 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CreateArtworkAlertButtonsSectionTestsQuery } from "__generated__/CreateArtworkAlertButtonsSectionTestsQuery.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
-jest.unmock("react-relay")
-
 describe("CreateArtworkAlertButtonsSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  const TestRenderer = ({ auctionState }: { auctionState?: AuctionTimerState }) => {
-    return (
-      <QueryRenderer<CreateArtworkAlertButtonsSectionTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query CreateArtworkAlertButtonsSectionTestsQuery @relay_test_operation {
-            artwork(id: "artwork-id") {
-              ...CreateArtworkAlertButtonsSection_artwork
-            }
+  const setup = (auctionState?: AuctionTimerState) => {
+    return setupTestWrapper<CreateArtworkAlertButtonsSectionTestsQuery>({
+      Component: (props) => {
+        if (props?.artwork) {
+          return (
+            <CreateArtworkAlertButtonsSection artwork={props.artwork} auctionState={auctionState} />
+          )
+        }
+        return null
+      },
+      query: graphql`
+        query CreateArtworkAlertButtonsSectionTestsQuery @relay_test_operation {
+          artwork(id: "artwork-id") {
+            ...CreateArtworkAlertButtonsSection_artwork
           }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return (
-              <CreateArtworkAlertButtonsSection
-                artwork={props.artwork}
-                auctionState={auctionState}
-              />
-            )
-          }
-          return null
-        }}
-      />
-    )
+        }
+      `,
+    })
   }
 
   it("should correctly 'Create Alert' modal", () => {
-    const { queryByText, getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText, getByText } = setup().renderWithRelay({
       Artwork: () => Artwork,
     })
 
@@ -62,9 +43,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should not render create alert button and description text if artwork doesn't have any associated artists", () => {
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = setup().renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         artists: [],
@@ -76,9 +55,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should not render `Rarity` pill if needed data is missing", () => {
-    const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, queryByText } = setup().renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         attributionClass: null,
@@ -91,9 +68,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should not render `Medium` pill if needed data is missing", () => {
-    const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, queryByText } = setup().renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         mediumType: null,
@@ -106,9 +81,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should not render `Contact Gallery` button", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getAllByText } = setup().renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         isInquireable: true,
@@ -119,11 +92,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should render `Bidding closed` title", () => {
-    const { getByText } = renderWithWrappersTL(
-      <TestRenderer auctionState={AuctionTimerState.CLOSED} />
-    )
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = setup(AuctionTimerState.CLOSED).renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         isInAuction: true,
@@ -137,11 +106,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should render `Sold` title", () => {
-    const { getByText } = renderWithWrappersTL(
-      <TestRenderer auctionState={AuctionTimerState.CLOSED} />
-    )
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = setup(AuctionTimerState.CLOSED).renderWithRelay({
       Artwork: () => ({
         ...Artwork,
         isSold: true,

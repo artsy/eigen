@@ -1,13 +1,20 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
+import { quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
-import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
+import { Dialog } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
+import {
+  SavedSearchAlertFormValues,
+  SavedSearchAlertMutationResult,
+  SavedSearchPill,
+} from "./SavedSearchAlertModel"
+import { SavedSearchStore } from "./SavedSearchStore"
 import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
@@ -18,12 +25,6 @@ import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
-import {
-  SavedSearchAlertFormValues,
-  SavedSearchAlertMutationResult,
-  SavedSearchPill,
-} from "./SavedSearchAlertModel"
-import { SavedSearchStore } from "./SavedSearchStore"
 import { useSavedSearchPills } from "./useSavedSearchPills"
 
 export interface SavedSearchAlertFormProps {
@@ -109,7 +110,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             },
             onViewDuplicatePress: () => {
               goBack()
-              navigate(`/my-profile/saved-search-alerts/${duplicateSavedSearchId}`)
+
+              requestAnimationFrame(() => {
+                navigate(`/my-profile/saved-search-alerts/${duplicateSavedSearchId}`)
+              })
             },
           })
           return

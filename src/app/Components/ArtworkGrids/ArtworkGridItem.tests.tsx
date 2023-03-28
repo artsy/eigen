@@ -1,14 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Touchable } from "palette"
-import "react-native"
-import { act } from "react-test-renderer"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import Artwork from "./ArtworkGridItem"
-import { LotCloseInfo } from "./LotCloseInfo"
 
 const ArtworkWithProviders = (props: any) => {
   return (
@@ -26,27 +22,27 @@ describe("tracking", () => {
 
   it("sends an event when trackTap is passed", () => {
     const trackTap = jest.fn()
-    const rendered = renderWithWrappers(
-      <Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />
+    const { getByTestId } = renderWithHookWrappersTL(
+      <Artwork trackTap={trackTap} artwork={artworkProps({}) as any} itemIndex={1} />
     )
 
-    const touchableArtwork = rendered.root.findByType(Touchable)
-    act(() => touchableArtwork.props.onPress())
+    const touchableArtwork = getByTestId("artworkGridItem-Some Kind of Dinosaur")
+    fireEvent(touchableArtwork, "onPress")
     expect(trackTap).toBeCalledWith("cool-artwork", 1)
   })
 
   it("sends a tracking event when contextScreenOwnerType is included", () => {
-    const rendered = renderWithWrappers(
+    const { getByTestId } = renderWithHookWrappersTL(
       <ArtworkWithProviders
-        artwork={artworkProps()}
+        artwork={artworkProps({})}
         contextScreenOwnerType={OwnerType.artist}
         contextScreenOwnerId="abc124"
         contextScreenOwnerSlug="andy-warhol"
         itemIndex={0}
       />
     )
-    const touchableArtwork = rendered.root.findByType(Touchable)
-    act(() => touchableArtwork.props.onPress())
+    const touchableArtwork = getByTestId("artworkGridItem-Some Kind of Dinosaur")
+    fireEvent(touchableArtwork, "onPress")
     expect(mockTrackEvent).toBeCalledWith({
       action: "tappedMainArtworkGrid",
       context_module: "artworkGrid",
@@ -71,9 +67,9 @@ describe("recent searches", () => {
   })
 
   it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-    const { container } = renderWithWrappersTL(
+    renderWithHookWrappersTL(
       <ArtworkWithProviders
-        artwork={artworkProps()}
+        artwork={artworkProps({})}
         contextScreenOwnerType={OwnerType.artist}
         contextScreenOwnerId="abc124"
         contextScreenOwnerSlug="andy-warhol"
@@ -82,7 +78,7 @@ describe("recent searches", () => {
       />
     )
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
     expect(getRecentSearches()).toEqual([
       {
@@ -100,9 +96,9 @@ describe("recent searches", () => {
   })
 
   it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-    const { container } = renderWithWrappersTL(
+    renderWithHookWrappersTL(
       <ArtworkWithProviders
-        artwork={artworkProps()}
+        artwork={artworkProps({})}
         contextScreenOwnerType={OwnerType.artist}
         contextScreenOwnerId="abc124"
         contextScreenOwnerSlug="andy-warhol"
@@ -110,7 +106,7 @@ describe("recent searches", () => {
       />
     )
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
     expect(getRecentSearches()).toEqual([])
   })
@@ -124,13 +120,13 @@ describe("in an open sale", () => {
         isClosed: false,
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
   })
 
   it("safely handles a missing sale_artwork", () => {
-    const props = artworkProps(null) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
+    const props = artworkProps({ saleArtwork: null }) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps({})
     props.saleArtwork = null
-    renderWithWrappers(<Artwork artwork={props as any} />)
+    renderWithHookWrappersTL(<Artwork artwork={props as any} />)
   })
 })
 
@@ -141,7 +137,7 @@ describe("in a closed sale", () => {
         isClosed: true,
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
   })
 
   it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
@@ -152,7 +148,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
   })
 
   it("does not show the partner name if hidePartner is set to true", () => {
@@ -163,11 +159,11 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
-      <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner />
+    const { getByText } = renderWithHookWrappersTL(
+      <Artwork artwork={artworkProps({ saleArtwork }) as any} hidePartner />
     )
 
-    expect(extractText(tree.root)).not.toContain("partner")
+    expect(() => getByText("partner")).toThrow()
   })
 
   it("shows the partner name if hidePartner is set to false", () => {
@@ -178,32 +174,34 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
-      <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner={false} />
+    const { getByText } = renderWithHookWrappersTL(
+      <Artwork artwork={artworkProps({ saleArtwork }) as any} hidePartner={false} />
     )
 
-    expect(extractText(tree.root)).toContain("partner")
+    expect(getByText("partner")).toBeTruthy()
   })
 })
 
 describe("cascading end times", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: true })
-  })
-
   it("shows the LotCloseInfo component when the sale has cascading end times", () => {
     const saleArtwork = {
       lotLabel: "Lot 1",
+      lotID: "123",
       sale: {
         isClosed: false,
         cascadingEndTimeIntervalMinutes: 1,
+        startAt: "2020-11-23T12:41:37.960Z",
+        endAt: "2050-11-23T12:41:37.960Z",
+        extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
       },
+      endAt: "2050-11-23T12:41:37.960Z",
+      startAt: "2050-11-23T12:41:37.960Z",
     }
-    const tree = renderWithWrappers(
-      <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
+    const { getByTestId } = renderWithHookWrappersTL(
+      <Artwork showLotLabel artwork={artworkProps({ saleArtwork }) as any} />
     )
 
-    expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(1)
+    expect(getByTestId("lot-close-info")).toBeTruthy()
   })
 
   it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
@@ -213,43 +211,56 @@ describe("cascading end times", () => {
         isClosed: true,
       },
     }
-    const tree = renderWithWrappers(
-      <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
+    const { getByTestId } = renderWithHookWrappersTL(
+      <Artwork showLotLabel artwork={artworkProps({ saleArtwork }) as any} />
     )
-
-    expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(0)
-  })
-
-  describe("when the enable cascade end times flag is turned off", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: false })
-    })
-    it("does not show the LotCloseInfo even if other conditions are met", () => {
-      const saleArtwork = {
-        lotLabel: "Lot 1",
-        sale: {
-          isClosed: false,
-          cascadingEndTimeIntervalMinutes: 1,
-        },
-      }
-      const tree = renderWithWrappers(
-        <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
-      )
-
-      expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(0)
-    })
+    expect(() => getByTestId("lot-close-info")).toThrow()
   })
 })
 
-const artworkProps = (
-  saleArtwork:
+describe("save artworks", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkGridSaveIcon: true })
+  })
+
+  it("favourites works", () => {
+    const { getByTestId } = renderWithHookWrappersTL(
+      <Artwork showLotLabel artwork={artworkProps({}) as any} />
+    )
+
+    expect(getByTestId("empty-heart-icon")).toBeTruthy()
+
+    const saveButton = getByTestId("save-artwork-icon")
+
+    fireEvent(saveButton, "onPress")
+
+    waitFor(() => {
+      expect(getByTestId("filled-heart-icon")).toBeTruthy()
+    })
+  })
+
+  it("is not visible when hideSaveIcon prop is specified", () => {
+    const { getByTestId } = renderWithHookWrappersTL(
+      <Artwork hideSaveIcon artwork={artworkProps({}) as any} />
+    )
+
+    expect(() => getByTestId("empty-heart-icon")).toThrow()
+  })
+})
+
+const artworkProps = ({
+  isSaved = false,
+  saleArtwork = null,
+}: {
+  isSaved?: boolean
+  saleArtwork?:
     | {
         currentBid?: { display: string }
         sale?: { isClosed: boolean; cascadingEndTimeIntervalMinutes?: number }
       }
     | null
-    | undefined = null
-) => {
+    | undefined
+}) => {
   return {
     title: "Some Kind of Dinosaur",
     date: "2015",
@@ -260,7 +271,9 @@ const artworkProps = (
       displayTimelyAt: "ends in 6d",
       endAt: "2020-08-26T02:50:09+00:00",
       cascadingEndTimeIntervalMinutes: saleArtwork?.sale?.cascadingEndTimeIntervalMinutes || null,
+      ...saleArtwork?.sale,
     },
+    isSaved,
     saleArtwork,
     image: {
       url: "artsy.net/image-url",

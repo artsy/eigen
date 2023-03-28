@@ -1,16 +1,13 @@
+import { Text } from "@artsy/palette-mobile"
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
-
-jest.unmock("react-relay")
 
 describe("CollapsibleArtworkDetails", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -45,7 +42,7 @@ describe("CollapsibleArtworkDetails", () => {
   }
 
   it("renders the data if available", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     // Show artwork details content
@@ -54,7 +51,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("renders artist names", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         artistNames: "Vladimir Petrov, Kristina Kost",
@@ -64,14 +61,14 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("expands component on press", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(TouchableOpacity).props.onPress()
     expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(11)
   })
 
   it("doesn't render what it doesn't have", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         signatureInfo: {

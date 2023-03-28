@@ -1,8 +1,7 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { OrderDetailsHeader_info$data } from "__generated__/OrderDetailsHeader_info.graphql"
-import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
+import { getOrderStatus } from "app/utils/getOrderStatus"
 import { DateTime } from "luxon"
-import { Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -14,9 +13,8 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
     return null
   }
 
-  const [lineItem] = extractNodes(info?.lineItems)
-  const { createdAt, requestedFulfillment, code, state } = info
-  const orderStatus = getOrderStatus(state as OrderState, lineItem)
+  const { createdAt, requestedFulfillment, code, displayState } = info
+  const orderStatus = getOrderStatus(displayState)
   const isPickupOrder = requestedFulfillment?.__typename === "CommercePickup"
 
   return (
@@ -64,7 +62,7 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
     fragment OrderDetailsHeader_info on CommerceOrder {
       createdAt
       code
-      state
+      displayState
       requestedFulfillment {
         ... on CommerceShip {
           __typename
@@ -74,15 +72,6 @@ export const OrderDetailsHeaderFragmentContainer = createFragmentContainer(Order
         }
         ... on CommerceShipArta {
           __typename
-        }
-      }
-      lineItems(first: 1) {
-        edges {
-          node {
-            shipment {
-              status
-            }
-          }
         }
       }
     }

@@ -1,11 +1,12 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
-import { navigate } from "app/navigation/navigate"
+import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { ArtistShowFragmentContainer } from "../ArtistShows/ArtistShow"
 
 interface Props {
   artist: ArtistAboutShows_artist$data
@@ -28,7 +29,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
   if (userHasShows) {
     return (
       <Flex>
-        <Text variant="md" mb={1}>
+        <Text variant="sm-display" mb={1}>
           Shows featuring {artist.name}
         </Text>
         <FlatList
@@ -49,7 +50,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
               }}
             />
           )}
-          ItemSeparatorComponent={() => <Spacer width={10} />}
+          ItemSeparatorComponent={() => <Spacer x={1} />}
           keyExtractor={(show) => show.id}
           showsHorizontalScrollIndicator={false}
           horizontal

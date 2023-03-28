@@ -1,42 +1,55 @@
-import { Flex, Sans, useColor } from "palette"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
+
 interface ZeroStateProps {
   title?: string
+  bigTitle?: string
   subtitle?: string
   separators?: boolean
+  image?: JSX.Element
   callToAction?: JSX.Element
 }
 
 export const ZeroState = (props: ZeroStateProps) => {
   const color = useColor()
+  const { title, bigTitle, subtitle, image, callToAction } = props
+
   return (
-    <Flex px="1" alignItems="center">
-      <Flex minHeight={30}>
-        {!!props.title && (
-          <>
-            <Sans size="3" lineHeight="20" maxWidth="80%" color={color("black100")}>
-              {props.title}
-            </Sans>
-          </>
+    <Flex px={1} alignItems="center" pt={2}>
+      <Flex>
+        {!!title && (
+          <Text
+            variant="sm"
+            lineHeight="20px"
+            style={{ maxWidth: "80%" }}
+            color={color("black100")}
+          >
+            {title}
+          </Text>
+        )}
+
+        {!!bigTitle && (
+          <Text variant="sm-display" style={{ textAlign: "center" }} color={color("black100")}>
+            {bigTitle}
+          </Text>
         )}
       </Flex>
 
-      <Flex minHeight={80}>
-        {!!props.subtitle && (
-          <>
-            <Sans
-              size="3"
-              maxWidth={props.title ? "100%" : "80%"}
-              lineHeight="20"
-              textAlign="center"
-              color={props.title ? color("black60") : color("black100")}
-            >
-              {props.subtitle}
-            </Sans>
-          </>
+      <Flex>
+        {!!subtitle && (
+          <Text
+            variant={bigTitle ? "xs" : "sm"}
+            style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
+            textAlign="center"
+            color={title || bigTitle ? color("black60") : color("black100")}
+          >
+            {subtitle}
+          </Text>
         )}
       </Flex>
 
-      <Flex minHeight={80}>{!!props.callToAction && <>{props.callToAction}</>}</Flex>
+      {!!image && image}
+
+      <Flex minHeight={90}>{!!callToAction && <>{callToAction}</>}</Flex>
     </Flex>
   )
 }

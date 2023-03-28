@@ -1,11 +1,8 @@
-import { useTheme } from "palette/Theme"
+import { Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { Button } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
-import { ScrollView } from "react-native-gesture-handler"
+import { Animated, Modal, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Button } from "../Button"
-import { Flex } from "../Flex"
-import { Text } from "../Text"
 
 interface DialogAction {
   text: string
@@ -103,7 +100,7 @@ export const Dialog = (props: DialogProps) => {
             shadowRadius: 10,
           }}
         >
-          <Text testID="dialog-title" variant="md" mb={0.5} mt={2} mx={2}>
+          <Text testID="dialog-title" variant="sm-display" mb={0.5} mt={2} mx={2}>
             {title}
           </Text>
           {!!detail && (

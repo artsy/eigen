@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { View } from "react-native"
 import { combineProviders } from "./combineProviders"
 
@@ -13,7 +13,7 @@ describe("combineProviders", () => {
     const Providers = ({ children }: { children?: React.ReactNode }) =>
       combineProviders([ProviderA, ProviderB, ProviderC], children)
 
-    const { toJSON } = renderWithWrappersTL(
+    const { toJSON } = renderWithWrappers(
       <Providers>
         <Child />
       </Providers>

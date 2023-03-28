@@ -1,15 +1,13 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
-import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { extractText } from "app/tests/extractText"
-import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { goBack } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { extractText } from "app/utils/tests/extractText"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
-
-jest.unmock("react-relay")
 
 describe("EditSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -27,7 +25,7 @@ describe("EditSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getAllByTestId, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getAllByTestId, getByTestId } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
@@ -42,7 +40,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should navigate go back if the update mutation is successful", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
@@ -69,7 +67,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should pass updated criteria to update mutation when pills are removed", async () => {
-    const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getAllByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
@@ -115,7 +113,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should display artist name as placeholder for input name", async () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => ({
@@ -141,7 +139,7 @@ describe("EditSavedSearchAlert", () => {
 
   describe("Notificaton toggles", () => {
     it("email and push toggles are enabled", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => searchCriteria,
@@ -159,11 +157,11 @@ describe("EditSavedSearchAlert", () => {
         }),
       })
 
-      expect(getAllByA11yState({ selected: true })).toHaveLength(2)
+      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(2)
     })
 
     it("email and push toggles are disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -180,11 +178,16 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(2)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
-    it("push toggle is enabled, email toggle is disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    it("email toggle is enabled, push toggle is disabled", async () => {
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -200,11 +203,16 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
-    it("email toggle is enabled, push toggle is disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    it("push toggle is enabled, email toggle is disabled", async () => {
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -228,7 +236,12 @@ describe("EditSavedSearchAlert", () => {
         }),
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
     })
   })
 })

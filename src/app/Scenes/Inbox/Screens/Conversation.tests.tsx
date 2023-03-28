@@ -1,8 +1,8 @@
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
-import { navigationEvents } from "app/navigation/navigate"
 import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigationEvents } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -12,7 +12,6 @@ import { Conversation, ConversationFragmentContainer } from "./Conversation"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 jest.unmock("react-tracking")
-jest.unmock("react-relay")
 const mockNavigator = { push: jest.fn() }
 
 jest.mock("@react-native-community/netinfo", () => {
@@ -57,7 +56,7 @@ const TestRenderer = () => (
 )
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

@@ -1,10 +1,19 @@
+import {
+  aggregationForFilter,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Checkbox } from "palette"
-import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "../ArtworkFilterStore"
+import { useMemo } from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
-export interface ArtworkFilterOptionCheckboxItemProps
-  extends Omit<ArtworkFilterOptionItemProps, "onPress" | "count"> {}
+export type ArtworkFilterOptionCheckboxItemProps = Omit<
+  ArtworkFilterOptionItemProps,
+  "onPress" | "count"
+>
 
 export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckboxItemProps> = ({
   item,
@@ -12,32 +21,45 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
-  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const selectedOptions = useSelectedOptionsDisplay()
 
-  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
+  const selectedOption = selectedOptions.find(
+    (option) => option.paramName === item.filterType
+  )?.paramValue
 
-  const storeFilterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-
-  const checked = !!getUnitedSelectedAndAppliedFilters({
-    filterType: storeFilterType,
-    selectedFilters,
-    previouslyAppliedFilters,
-  }).find((f) => f.paramName === item.filterType)?.paramValue
-
-  const setValueOnFilters = (value: boolean) => {
+  const setValueOnFilters = (value: boolean | string) => {
     selectFiltersAction({
-      paramName: FilterParamName.showOnlySubmittedArtworks,
+      paramName: item.filterType as FilterParamName,
       paramValue: value,
       displayText: item.displayText,
     })
   }
 
   const onPress = () => {
-    const nextValue = !checked
+    if (item.filterType === "state") {
+      setValueOnFilters(selectedOption === "ALL" ? "PAST" : "ALL")
+      return
+    }
+
+    const nextValue = !selectedOption
     setValueOnFilters(nextValue)
+  }
+
+  const isChecked = useMemo(() => {
+    if (item.filterType === "state") {
+      return selectedOption === "PAST"
+    }
+    return !!selectedOption
+  }, [selectedOption])
+
+  const aggregation = aggregationForFilter(FilterParamName.state, aggregations)
+
+  const hasAggregation = aggregation !== undefined
+
+  if (hasAggregation && !aggregation.counts[0].value && item.filterType === "state") {
+    return null
   }
 
   return (
@@ -46,7 +68,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
       onPress={onPress}
       RightAccessoryItem={
         <Checkbox
-          checked={checked}
+          checked={isChecked}
           onPress={onPress}
           testID="ArtworkFilterOptionCheckboxItemCheckbox"
         />

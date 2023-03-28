@@ -1,11 +1,9 @@
 import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
-
-jest.unmock("react-relay")
+import { DEFAULT_RECS_MODEL_VERSION, NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 describe("NewWorksForYou", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -13,16 +11,29 @@ describe("NewWorksForYou", () => {
   const TestRenderer = () => (
     <QueryRenderer<NewWorksForYouTestsQuery>
       query={graphql`
-        query NewWorksForYouTestsQuery {
-          me {
-            ...NewWorksForYou_me
+        query NewWorksForYouTestsQuery(
+          $version: String
+          $includeBackfill: Boolean!
+          $maxWorksPerArtist: Int
+        ) {
+          viewer {
+            ...NewWorksForYou_viewer
+              @arguments(
+                includeBackfill: $includeBackfill
+                version: $version
+                maxWorksPerArtist: $maxWorksPerArtist
+              )
           }
         }
       `}
       render={({ props }) => {
-        return props?.me && <NewWorksForYouFragmentContainer me={props.me} />
+        return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
-      variables={{}}
+      variables={{
+        version: DEFAULT_RECS_MODEL_VERSION,
+        includeBackfill: true,
+        maxWorksPerArtist: 3,
+      }}
       environment={mockEnvironment}
     />
   )
@@ -32,7 +43,7 @@ describe("NewWorksForYou", () => {
   })
 
   it("renders NewWorksForYou", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -45,7 +56,7 @@ describe("NewWorksForYou", () => {
 })
 
 const mockResponse = {
-  me: {
+  viewer: {
     artworks: {
       edges: [
         {

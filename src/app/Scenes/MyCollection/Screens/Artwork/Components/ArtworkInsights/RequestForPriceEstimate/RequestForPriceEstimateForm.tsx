@@ -1,5 +1,7 @@
+import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Input, PhoneInput, Spacer, Text } from "palette"
+import { Button, Input, PhoneInput } from "palette"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -13,14 +15,11 @@ export const RequestForPriceEstimateForm = () => {
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-          <Box my={3}>
-            <Text variant="xl">Contact Information</Text>
-            <Spacer p={1} />
-            <Text variant="md" color="black60">
-              We will only use this to contact you about this price estimate
+        <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
+          <Box my={4}>
+            <Text variant="lg-display" mb={2}>
+              Let us know how to reach you
             </Text>
-            <Spacer p={1} />
             <Input
               testID="request-price-estimate-name-input"
               title="Name"
@@ -41,7 +40,7 @@ export const RequestForPriceEstimateForm = () => {
               value={values.requesterName}
               error={errors.requesterName}
             />
-            <Spacer p={1} />
+            <Spacer y={2} />
             <Input
               testID="request-price-estimate-email-input"
               title="Email"
@@ -65,7 +64,7 @@ export const RequestForPriceEstimateForm = () => {
               textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
               error={errors.requesterEmail}
             />
-            <Spacer p={1} />
+            <Spacer y={2} />
             <PhoneInput
               testID="request-price-estimate-phone-input"
               style={{ flex: 1 }}
@@ -78,7 +77,13 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer p={2} />
+            <Spacer y={6} />
+            <Text variant="xs" color="black60" mb={2}>
+              By continuing, you agree to{" "}
+              <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>
+                Artsy’s Privacy Policy.
+              </LinkText>{" "}
+            </Text>
             <Button
               block
               onPress={handleSubmit}

@@ -1,12 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
+import { updateConsignSubmission } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
-import { updateConsignSubmission } from "../../mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
@@ -15,21 +16,24 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
-jest.unmock("react-relay")
-
 describe("ContactInformationForm", () => {
+  afterEach(() => {
+    GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+  })
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
-  const TestRenderer = () => <ContactInformationQueryRenderer handlePress={handlePressTest} />
+  const TestRenderer = ({ isLastStep = true }: { isLastStep?: boolean }) => (
+    <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep={isLastStep} />
+  )
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(
-      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
+    renderWithWrappers(
+      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} isLastStep />
     )
   })
 
   it("renders Form instructions", () => {
-    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithWrappers(<TestRenderer />)
 
     expect(
       findByText("We will only use these details to contact you regarding your submission.")
@@ -37,8 +41,17 @@ describe("ContactInformationForm", () => {
   })
 
   it("Happy path: User can submit information", async () => {
-    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-    updateConsignSubmissionMock.mockResolvedValue("adsfasd")
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionId(mockFormDataForSubmission.id)
+
+    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappers(
+      <SubmitSWAArtworkFlow
+        navigation={jest.fn() as any}
+        stepsInOrder={[STEPS.ContactInformation]}
+      />
+    )
+
+    await flushPromiseQueue()
+
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -71,15 +84,13 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     expect(updateConsignSubmissionMock).toHaveBeenCalled()
-    expect(updateConsignSubmissionMock).toHaveBeenCalledWith({ ...mockFormDataForSubmission })
-
-    await flushPromiseQueue()
-
-    expect(handlePressTest).toHaveBeenCalled()
+    expect(updateConsignSubmissionMock).toHaveBeenCalledWith(
+      expect.objectContaining(mockFormDataForSubmission)
+    )
   })
 
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
-    const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -111,7 +122,7 @@ describe("ContactInformationForm", () => {
 
   describe("validation", () => {
     it("displays error message for name", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -136,7 +147,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("displays error message for email address", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -159,53 +170,37 @@ describe("ContactInformationForm", () => {
 
       expect(getByText("Please enter a valid email address.")).toBeTruthy()
     })
-
-    it("displays error message for phone number", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
-
-      await flushPromiseQueue()
-
-      const inputs = {
-        emailInput: getByPlaceholderText("Your email address"),
-        phoneInput: getByPlaceholderText("(000) 000-0000"),
-      }
-
-      fireEvent.changeText(inputs.phoneInput, "12")
-      fireEvent.changeText(inputs.emailInput, "aa")
-
-      await flushPromiseQueue()
-
-      expect(getByText("Please enter a valid phone number.")).toBeTruthy()
-    })
   })
 
   describe("analytics", () => {
     let trackEvent: (data: Partial<{}>) => void
     beforeEach(() => {
       trackEvent = useTracking().trackEvent
-      GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
       GlobalStore.actions.auth.setState({
-        userID: "1",
+        userID: "my-id",
       })
     })
 
     afterEach(() => {
-      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
       GlobalStore.actions.auth.setState({
         userID: null,
       })
     })
 
-    it("tracks consignmentSubmitted event on save", async () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
-      updateConsignSubmissionMock.mockResolvedValue("54321")
+    it("tracks uploadPhotosCompleted event on save", async () => {
+      const { getByTestId } = renderWithWrappers(
+        <SubmitSWAArtworkFlow
+          navigation={jest.fn() as any}
+          stepsInOrder={[
+            STEPS.ContactInformation,
+            // Add a random step so that STEPS.ContactInformation is not the last step
+            STEPS.ArtworkDetails,
+          ]}
+        />
+      )
+
+      await flushPromiseQueue()
+
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -216,18 +211,29 @@ describe("ContactInformationForm", () => {
 
       await flushPromiseQueue()
 
-      fireEvent.press(getByText("Submit Artwork"))
+      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
+      fireEvent.press(contactInfoCTA)
+
+      await flushPromiseQueue()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          consignmentSubmission: () => ({
+            internalID: "54321",
+          }),
+        })
+      })
 
       await flushPromiseQueue()
 
       expect(trackEvent).toHaveBeenCalled()
       expect(trackEvent).toHaveBeenCalledWith({
-        action: ActionType.consignmentSubmitted,
+        action: ActionType.contactInformationCompleted,
         context_owner_type: OwnerType.consignmentFlow,
         context_module: ContextModule.contactInformation,
-        submission_id: "54321",
-        user_email: "a@a.aaa",
-        user_id: "1",
+        submission_id: '<mock-value-for-field-"internalID">',
+        user_email: mockQueryData.email,
+        user_id: "my-id",
       })
     })
   })
@@ -246,8 +252,7 @@ export const mockQueryDataInfoMissing: any = {
 }
 
 export const mockFormDataForSubmission: any = {
-  id: "",
-  state: "SUBMITTED",
+  id: "54321",
   userEmail: "a@a.aaa",
   userName: "Angela",
   userPhone: "+1 (202) 555-0174",

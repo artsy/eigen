@@ -1,5 +1,5 @@
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
@@ -18,7 +18,7 @@ const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
 
 describe("PopoverMessage", () => {
   it("renders when `show` is called", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -36,7 +36,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders 1 popover message when `show` is called twice", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -55,7 +55,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders with title and message", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -75,7 +75,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders at the top", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -94,7 +94,7 @@ describe("PopoverMessage", () => {
   })
 
   it("renders at the bottom", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -114,8 +114,10 @@ describe("PopoverMessage", () => {
   })
 
   it("does not hide after timeout if autoHide is set to false", async () => {
-    jest.useFakeTimers()
-    const tree = renderWithWrappers(
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -136,8 +138,10 @@ describe("PopoverMessage", () => {
   })
 
   it("should hide after `hideTimeout` time", async () => {
-    jest.useFakeTimers()
-    const tree = renderWithWrappers(
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -162,7 +166,7 @@ describe("PopoverMessage", () => {
   })
 
   it("hides when `undo` button is pressed", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -184,7 +188,7 @@ describe("PopoverMessage", () => {
 
   it("should call `onUndoPress` handler when `close` button is pressed", async () => {
     const onUndoMock = jest.fn()
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -202,7 +206,7 @@ describe("PopoverMessage", () => {
   })
 
   it("should hide `undo` button when `onUndoPress` is not passed", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",
@@ -219,7 +223,7 @@ describe("PopoverMessage", () => {
 
   it("should call `onPress` handler when popover message is pressed", async () => {
     const onPress = jest.fn()
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
           title: "Some title",

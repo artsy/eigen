@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "palette"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DataList = <ItemT,>({
@@ -16,7 +16,7 @@ export const DataList = <ItemT,>({
     data={data}
     keyExtractor={keyExtractor ?? ((item) => `${item}`)}
     renderItem={renderItem}
-    ItemSeparatorComponent={() => <Spacer mb="4" />}
+    ItemSeparatorComponent={() => <Spacer y={4} />}
     contentContainerStyle={[
       {
         flexGrow: 1,
@@ -45,7 +45,7 @@ export const List = ({
     data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
-    ItemSeparatorComponent={() => <Spacer x="4" y="4" />}
+    ItemSeparatorComponent={() => <Spacer x={4} y={4} />}
     contentContainerStyle={[
       {
         flexGrow: 1,

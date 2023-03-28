@@ -1,15 +1,21 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
-import { useArtworkFiltersAggregation } from "../useArtworkFilters"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter/ArtworkFilterNavigator"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
 const PARAM_NAME = FilterParamName.artistNationalities
 
-interface ArtistNationalitiesOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistNationalitiesOptionsScreen"> {}
+type ArtistNationalitiesOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "ArtistNationalitiesOptionsScreen"
+>
 
 export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptionsScreenProps> = ({
   navigation,

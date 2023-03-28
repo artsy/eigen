@@ -1,36 +1,48 @@
+import { Spacer, Flex, Box, useSpace, useColor, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
+import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
+import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
+import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
+import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Rarity"
+import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
-import { Select } from "palette/elements/Select"
-import React, { useEffect } from "react"
-import { Alert, ScrollView, TouchableOpacity } from "react-native"
+import { Button, Input, Join, Message, MoneyInput, Separator } from "palette"
+import React, { useEffect, useState } from "react"
+import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import { ScreenMargin } from "../../../Components/ScreenMargin"
-import { ArrowDetails } from "../Components/ArrowDetails"
-import { ArtistSearchResult } from "../Components/ArtistSearchResult"
-import { Dimensions } from "../Components/Dimensions"
-import { MediumPicker } from "../Components/MediumPicker"
-import { Rarity } from "../Components/Rarity"
-import { useArtworkForm } from "../Form/useArtworkForm"
-import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
 export const MyCollectionArtworkFormMain: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
 > = ({ route, navigation }) => {
+  const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
+
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+  const [showAbandonModal, setShowAbandonModal] = useState(false)
   const { formik } = useArtworkForm()
+  const color = useColor()
+  const space = useSpace()
+
   const { showActionSheetWithOptions } = useActionSheet()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
+  const initialCurrency = formikValues.pricePaidCurrency?.length
+    ? formikValues.pricePaidCurrency
+    : preferredCurrency
 
   useEffect(() => {
     const isDirty = isFormDirty()
@@ -46,49 +58,101 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetForm()
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         )
       } else {
+        GlobalStore.actions.myCollection.artwork.resetForm()
         navigation.dispatch(e.data.action)
       }
     })
     return backListener
-  }, [navigation, artworkState.sessionState.dirtyFormCheckValues])
+  }, [
+    navigation,
+    artworkState.sessionState.formValues,
+    artworkState.sessionState.dirtyFormCheckValues,
+  ])
+
+  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
   const isFormDirty = () => {
-    // if you fill an empty field then delete it again, it changes from null to ""
-    const isEqual = (aVal: any, bVal: any) =>
-      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : aVal === bVal
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
-    return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
-      (accum: boolean, key: string) =>
-        accum ||
-        !isEqual(
-          (formValues as { [key: string]: any })[key],
-          (dirtyFormCheckValues as { [key: string]: any })[key]
-        ),
-      false
-    )
+
+    // Check if any fields are filled out when adding a new artwork
+    if (modalType === "add") {
+      return Object.getOwnPropertyNames(formValues).find(
+        (key) =>
+          !["pricePaidCurrency", "metric", "photos"].includes(key) &&
+          !key.startsWith("artist") &&
+          (formValues as { [key: string]: any })[key]
+      )
+
+      // Check if any fields are different from the original values when editing an artwork
+    } else {
+      // if you fill an empty field then delete it again, it changes from null to ""
+      const isEqual = (aVal: any, bVal: any) =>
+        (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : aVal === bVal
+
+      return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
+        (accum: boolean, key: string) =>
+          accum ||
+          !isEqual(
+            (formValues as { [key: string]: any })[key],
+            (dirtyFormCheckValues as { [key: string]: any })[key]
+          ),
+        false
+      )
+    }
+  }
+
+  const handleCategory = (category: string) => {
+    formik.handleChange("category")(category)
   }
 
   return (
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={route.params.onHeaderBackButtonPress}
+          onLeftButtonPress={
+            isFormDirty() && modalType === "edit"
+              ? () => setShowAbandonModal(true)
+              : route.params.onHeaderBackButtonPress
+          }
           rightButtonText={isFormDirty() ? "Clear" : undefined}
           onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
           hideBottomDivider
         >
           {addOrEditLabel} Details
         </FancyModalHeader>
+
+        <AbandonFlowModal
+          isVisible={showAbandonModal && modalType === "edit"}
+          title="Leave without saving?"
+          subtitle="Changes you have made so far will not be saved."
+          leaveButtonTitle="Leave Without Saving"
+          continueButtonTitle="Continue Editing"
+          onDismiss={() => setShowAbandonModal(false)}
+        />
+
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
+          {!!route.params.isSubmission && (
+            <Message
+              containerStyle={{ mx: `${space(2)}px` }}
+              title="Changes will only appear in My Collection. They will not be applied to your sale submission."
+              IconComponent={() => (
+                <Image
+                  source={require("images/info.png")}
+                  style={{ tintColor: color("black100") }}
+                />
+              )}
+            />
+          )}
+
           <Flex p={2}>
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (
@@ -113,6 +177,11 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+              <CategoryPicker<string>
+                value={formikValues.category}
+                options={artworkMediumCategories}
+                handleChange={handleCategory}
+              />
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -123,40 +192,44 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <MediumPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"
-                onChangeText={formik.handleChange("category")}
-                onBlur={formik.handleBlur("category")}
+                onChangeText={formik.handleChange("medium")}
+                onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
-                value={formikValues.category}
+                value={formikValues.medium}
               />
               <Rarity />
               <Dimensions />
-              <Input
-                title="Price Paid"
-                placeholder="Price paid"
-                keyboardType="decimal-pad"
+              <MoneyInput
                 accessibilityLabel="Price paid"
-                onChangeText={formik.handleChange("pricePaidDollars")}
-                onBlur={formik.handleBlur("pricePaidDollars")}
-                testID="PricePaidInput"
-                value={formikValues.pricePaidDollars}
-              />
-              <Select
-                title="Currency"
-                placeholder="Currency"
-                options={pricePaidCurrencySelectOptions}
-                value={formikValues.pricePaidCurrency}
-                enableSearch={false}
-                showTitleLabel={false}
-                onSelectValue={(value) => {
-                  formik.handleChange("pricePaidCurrency")(value)
-                  GlobalStore.actions.userPrefs.setCurrency(value as Currency)
+                currencyTextVariant="xs"
+                format={enableMoneyFormatting}
+                initialValues={{
+                  currency: initialCurrency as Currency,
+                  amount: formikValues.pricePaidDollars,
                 }}
-                testID="CurrencyPicker"
+                keyboardType="decimal-pad"
+                onChange={(values) => {
+                  formik.handleChange("pricePaidDollars")(values.amount ?? "")
+                  formik.handleChange("pricePaidCurrency")(values.currency ?? "")
+                  GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
+                }}
+                placeholder="Price paid"
+                shouldDisplayLocalError={false}
+                title="Price Paid"
+              />
+              <Input
+                multiline
+                title="Provenance"
+                maxLength={500}
+                placeholder="Describe how you acquired the artwork"
+                value={formikValues.provenance}
+                accessibilityLabel="Describe how you acquired the artwork"
+                onChangeText={formik.handleChange("provenance")}
+                testID="ProvenanceInput"
               />
               <Input
                 title="Location"
@@ -167,19 +240,22 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
-              <Input
-                multiline
-                title="Provenance"
-                placeholder="Describe how you acquired the artwork"
-                value={formikValues.provenance}
-                accessibilityLabel="Describe how you acquired the artwork"
-                onChangeText={formik.handleChange("provenance")}
-                testID="ProvenanceInput"
-              />
+              {!!enableNotesField && (
+                <Input
+                  multiline
+                  maxLength={500}
+                  title="Notes"
+                  onChangeText={formik.handleChange("confidentialNotes")}
+                  onBlur={formik.handleBlur("confidentialNotes")}
+                  testID="NotesInput"
+                  accessibilityLabel="Notes"
+                  value={formikValues.confidentialNotes}
+                />
+              )}
             </Join>
           </Flex>
 
-          <Spacer mt={1} />
+          <Spacer y={1} />
 
           <PhotosButton
             testID="PhotosButton"
@@ -189,19 +265,23 @@ export const MyCollectionArtworkFormMain: React.FC<
                   artworkActions.addPhotos(photos)
                 })
               } else {
-                navigation.navigate("AddPhotos")
+                requestAnimationFrame(() => {
+                  navigation.navigate("AddPhotos")
+                })
               }
             }}
           />
 
-          <Spacer mt={2} mb={1} />
+          <Spacer y={2} />
 
           <ScreenMargin>
             {modalType === "edit" && (
-              <Button
-                my={1}
-                variant="outline"
-                block
+              <Text
+                my={4}
+                variant="sm"
+                underline
+                color={color("red100")}
+                textAlign="center"
                 onPress={() => {
                   showActionSheetWithOptions(
                     {
@@ -221,7 +301,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DeleteButton"
               >
                 Delete artwork
-              </Button>
+              </Text>
             )}
           </ScreenMargin>
 
@@ -229,7 +309,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
             <ScreenMargin>
               <Box my={2}>
-                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
               </Box>
             </ScreenMargin>
           )}
@@ -250,15 +330,6 @@ export const MyCollectionArtworkFormMain: React.FC<
   )
 }
 
-const pricePaidCurrencySelectOptions: Array<{
-  label: string
-  value: Currency
-}> = [
-  { label: "$ USD", value: "USD" },
-  { label: "€ EUR", value: "EUR" },
-  { label: "£ GBP", value: "GBP" },
-]
-
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const photos = artworkState.sessionState.formValues.photos
@@ -267,7 +338,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
     <>
       <Separator />
       <TouchableOpacity onPress={onPress} testID={testID}>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <ScreenMargin>
           <ArrowDetails>
             <Flex flexDirection="row">
@@ -288,7 +359,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
             )}
           </ArrowDetails>
         </ScreenMargin>
-        <Spacer mb={2} />
+        <Spacer y={2} />
       </TouchableOpacity>
       <Separator />
     </>

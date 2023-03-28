@@ -1,9 +1,9 @@
+export const CENTS_IN_DOLLAR = 100
+
 export function formatCentsToDollars(value: number) {
   if (value < 0) {
     value = 0
   }
-
-  const CENTS_IN_DOLLAR = 100
 
   return new Intl.NumberFormat("en-US", {
     style: "currency",

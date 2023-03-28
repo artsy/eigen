@@ -3,7 +3,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
 import { getEssentialProps } from "./helper"
 
@@ -35,7 +35,7 @@ describe("AuctionHouse options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+    const { getByText, getAllByA11yState } = renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
     fireEvent.press(getByText("Sotheby's"))
@@ -47,15 +47,19 @@ describe("AuctionHouse options screen", () => {
   })
 
   it("allows multiple auction houses to be selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+    const { getByText, getAllByA11yState } = renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
     fireEvent.press(getByText("Sotheby's"))
     fireEvent.press(getByText("Christie's"))
+    fireEvent.press(getByText("Bonhams"))
+    fireEvent.press(getByText("Artsy Auction"))
 
     const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(2)
+    expect(selectedOptions).toHaveLength(4)
     expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
     expect(selectedOptions[1]).toHaveTextContent("Christie's")
+    expect(selectedOptions[2]).toHaveTextContent("Bonhams")
+    expect(selectedOptions[3]).toHaveTextContent("Artsy Auction")
   })
 })

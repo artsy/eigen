@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
-import { NavStack } from "app/navigation/NavStack"
-import { BottomTabs } from "./BottomTabs"
+import { NavStack } from "app/system/navigation/NavStack"
 import { BottomTabType } from "./BottomTabType"
+import { BottomTabs } from "./BottomTabs"
 
 const Tab = createBottomTabNavigator()
 
@@ -17,7 +17,11 @@ const TabContent = ({
 
 export const BottomTabsNavigator = () => {
   return (
-    <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
+    <Tab.Navigator
+      tabBar={(props) => <BottomTabs {...props} />}
+      backBehavior="firstRoute"
+      screenOptions={{ headerShown: false }}
+    >
       <Tab.Screen
         name="home"
         component={TabContent}

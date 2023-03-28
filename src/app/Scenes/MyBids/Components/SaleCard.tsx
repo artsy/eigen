@@ -1,14 +1,20 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import {
+  ArrowRightIcon,
+  ClockFill,
+  ExclamationMarkCircleFill,
+  Flex,
+  Text,
+} from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
-import { ArrowRightIcon, Flex, Separator, Text, Touchable } from "palette"
-import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { navigate } from "app/system/navigation/navigate"
+import { Separator, Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CompleteRegistrationCTAWrapper } from "../Components/CompleteRegistrationCTAWrapper"
 
 export const COVER_IMAGE_HEIGHT = 100
 
@@ -53,7 +59,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
   const shouldPromptIdVerification =
     !registrationStatus?.qualifiedForBidding &&
     sale.requireIdentityVerification &&
-    !me.identityVerified &&
+    !me.isIdentityVerified &&
     !!pendingIdentityVerification
   let RegistrationCTA: React.FC
 
@@ -109,7 +115,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
               {sale?.partner?.name}
             </Text>
           )}
-          <Text variant="md">{sale?.name}</Text>
+          <Text variant="sm-display">{sale?.name}</Text>
 
           <SaleInfo sale={sale} />
           <RegistrationCTA />
@@ -150,7 +156,7 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
   `,
   me: graphql`
     fragment SaleCard_me on Me {
-      identityVerified
+      isIdentityVerified
       pendingIdentityVerification {
         internalID
       }

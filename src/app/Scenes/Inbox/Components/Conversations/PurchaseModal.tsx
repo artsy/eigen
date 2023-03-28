@@ -1,13 +1,14 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
+import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import { dismissModal } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { BorderBox, Button, Flex, Text } from "palette"
+import { Button, BorderBox } from "palette"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -41,8 +42,8 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({ ...props }) => {
         Purchase
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Flex p={1.5}>
-          <Text variant="lg">Select edition set</Text>
+        <Flex p={2}>
+          <Text variant="lg-display">Select edition set</Text>
           <BorderBox p={0} my={2}>
             <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
           </BorderBox>

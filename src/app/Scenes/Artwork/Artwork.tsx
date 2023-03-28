@@ -1,49 +1,56 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
-import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
-import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
+import { Box, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
+import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
+import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
+import { GlobalStore } from "app/store/GlobalStore"
+import { navigationEvents } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
+import {
+  AuctionWebsocketChannelInfo,
+  AuctionWebsocketContextProvider,
+} from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { isEmpty } from "lodash"
-import { Box, LinkText, Separator, Text } from "palette"
+import { Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { ResponsiveValue } from "styled-system"
-import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
+import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
-import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
-import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
+import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
+import { ArtworkConsignments } from "./Components/ArtworkConsignments"
+import { ArtworkDetails } from "./Components/ArtworkDetails"
+import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
+import { ArtworkScreenHeaderFragmentContainer } from "./Components/ArtworkScreenHeader"
+import { ArtworkStickyBottomContent } from "./Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
-import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { CreateArtworkAlertSectionFragmentContainer as CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
-import { Questions } from "./Components/Questions"
+import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -60,70 +67,24 @@ export const Artwork: React.FC<ArtworkProps> = ({
   isVisible,
   me,
   relay,
-  tracking,
 }) => {
+  const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
-  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
-
-  const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
-  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
-  const {
-    category,
-    canRequestLotConditionsReport,
-    conditionDescription,
-    signature,
-    signatureInfo,
-    certificateOfAuthenticity,
-    framed,
-    series,
-    publisher,
-    manufacturer,
-    imageRights,
-    partner,
-    sale,
-    contextGrids,
-    artistSeriesConnection,
-    artist,
-    context,
-  } = artworkBelowTheFold || {}
-
-  const getInitialAuctionTimerState = () => {
-    if (isInAuction) {
-      return currentTimerState({
-        isPreview: isPreview || undefined,
-        isClosed: isClosed || undefined,
-        liveStartsAt: liveStartAt || undefined,
-      })
-    }
-  }
-
-  const [auctionTimerState, setAuctionTimerState] = useState<string | undefined>(
-    getInitialAuctionTimerState()
+  const isDeepZoomModalVisible = GlobalStore.useAppState(
+    (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
   )
-  const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
-  const shouldRenderDetails = () => {
-    return !!(
-      category ||
-      canRequestLotConditionsReport ||
-      conditionDescription ||
-      signature ||
-      signatureInfo ||
-      certificateOfAuthenticity ||
-      framed ||
-      series ||
-      publisher ||
-      manufacturer ||
-      imageRights
-    )
-  }
+  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
+  const auctionTimerState = ArtworkStore.useStoreState((state) => state.auctionState)
 
   const shouldRenderPartner = () => {
-    if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
+    const { sale, partner } = artworkBelowTheFold ?? {}
+
+    if (sale?.isBenefit || sale?.isGalleryAuction) {
       return false
-    } else if (partner && partner.type && partner.type !== "Auction House") {
+    } else if (partner?.type && partner.type !== "Auction House") {
       return true
     } else {
       return false
@@ -148,6 +109,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const shouldRenderArtistSeriesMoreSeries = () => {
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+  }
+
+  const shouldRenderConsignmentsSection = () => {
+    const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
+    const { isForSale, sale } = artworkBelowTheFold ?? {}
+    const artists = artworkBelowTheFold?.artists ?? []
+    const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
+    const isBiddableInAuction =
+      isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
+
+    return consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction
   }
 
   useEffect(() => {
@@ -208,6 +180,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const handleModalDismissed = () => {
+    // If the deep zoom modal is visible, we don't want to refetch the artwork
+    // This results in app crash, while testing. This wouldn't occur on Prod
+    if (isDeepZoomModalVisible) {
+      return
+    }
     setFetchingData(true)
     refetch(() => setFetchingData(false))
     return true
@@ -233,71 +210,44 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const sectionsData = (): ArtworkPageSection[] => {
     const sections: ArtworkPageSection[] = []
 
-    if (artworkAboveTheFold && me) {
+    if (artworkAboveTheFold) {
       sections.push({
         key: "header",
-        element: <ArtworkHeader artwork={artworkAboveTheFold} />,
-        excludePadding: true,
-      })
-
-      sections.push({
-        key: "commercialInformation",
         element: (
-          <CommercialInformation
+          <ArtworkHeader
             artwork={artworkAboveTheFold}
-            me={me}
-            tracking={tracking}
             refetchArtwork={() =>
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }
-            setAuctionTimerState={setAuctionTimerState}
           />
         ),
+        excludePadding: true,
+        excludeSeparator: true,
+      })
+
+      if ((artworkAboveTheFold.editionSets ?? []).length > 1) {
+        sections.push({
+          key: "selectEditionSet",
+          element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+        })
+      }
+
+      sections.push({
+        key: "artworkDetails",
+        element: <ArtworkDetails artwork={artworkAboveTheFold} />,
       })
     }
 
-    if (enableCreateArtworkAlert && !!partnerAbove?.name) {
-      const { isLinkable, name, href } = partnerAbove
+    if (isInAuction && artworkAboveTheFold?.sale && artworkAboveTheFold?.saleArtwork) {
       sections.push({
-        key: "partnerSection",
-        element:
-          !!isLinkable && !!href ? (
-            <LinkText
-              accessibilityRole="link"
-              accessibilityLabel={name}
-              accessibilityHint={`Visit ${name} page`}
-              onPress={() => navigateToPartner(href)}
-            >
-              {name}
-            </LinkText>
-          ) : (
-            <Text testID="non linkable partner">{name}</Text>
-          ),
-        verticalMargin: 2,
-      })
-    }
-
-    if (
-      enableCreateArtworkAlert &&
-      !isEmpty(artworkAboveTheFold?.artists) &&
-      !artworkAboveTheFold?.isSold &&
-      !isInClosedAuction
-    ) {
-      sections.push({
-        key: "createAlertSection",
-        element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
-        verticalMargin: 2,
-      })
-    }
-
-    if (
-      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
-      enableCreateArtworkAlert
-    ) {
-      sections.push({
-        key: "faqSection",
-        element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,
-        verticalMargin: 2,
+        key: "lotDetailsSection",
+        element: (
+          <ArtworkLotDetails
+            artwork={artworkAboveTheFold!}
+            auctionState={auctionTimerState as AuctionTimerState}
+          />
+        ),
       })
     }
 
@@ -306,32 +256,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
         key: "belowTheFoldPlaceholder",
         element: <BelowTheFoldPlaceholder />,
       })
+
       return sections
-    }
-
-    if (
-      enableConversationalBuyNow &&
-      (artworkAboveTheFold?.isAcquireable ||
-        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-    ) {
-      sections.push({
-        key: "contactGallery",
-        element: <Questions artwork={artworkBelowTheFold} />,
-      })
-    }
-
-    if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
-      sections.push({
-        key: "aboutWork",
-        element: <AboutWork artwork={artworkBelowTheFold} />,
-      })
-    }
-
-    if (shouldRenderDetails()) {
-      sections.push({
-        key: "artworkDetails",
-        element: <ArtworkDetails artwork={artworkBelowTheFold} />,
-      })
     }
 
     if (
@@ -345,6 +271,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
+      sections.push({
+        key: "aboutWork",
+        element: <AboutWork artwork={artworkBelowTheFold} />,
+      })
+    }
+
     if (artist && artist.biographyBlurb) {
       sections.push({
         key: "aboutArtist",
@@ -352,10 +285,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderPartner()) {
+    if (shouldRenderConsignmentsSection()) {
       sections.push({
-        key: "partnerCard",
-        element: <PartnerCard artwork={artworkBelowTheFold} />,
+        key: "consignments",
+        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -363,6 +296,32 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "contextCard",
         element: <ContextCard artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (shouldRenderPartner()) {
+      sections.push({
+        key: "partnerCard",
+        element: (
+          <PartnerCard
+            shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
+            artwork={artworkBelowTheFold}
+          />
+        ),
+      })
+    }
+
+    if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+      })
+    }
+
+    if (!!artworkBelowTheFold?.isEligibleForArtsyGuarantee) {
+      sections.push({
+        key: "artsyGuarantee",
+        element: <ArtsyGuarantee />,
       })
     }
 
@@ -383,6 +342,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             contextScreenOwnerType={OwnerType.artwork}
             artist={artist}
             artistSeriesHeader="Series from this artist"
+            headerVariant="md"
           />
         ),
       })
@@ -391,6 +351,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
+        // @ts-expect-error
         element: <OtherWorks artwork={artworkBelowTheFold} />,
       })
     }
@@ -405,56 +366,48 @@ export const Artwork: React.FC<ArtworkProps> = ({
     />
   )
 
-  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+  if (fetchingData) {
+    return (
+      <ProvidePlaceholderContext>
+        <AboveTheFoldPlaceholder />
+      </ProvidePlaceholderContext>
+    )
+  }
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtworkPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-        context_screen_owner_slug: slug,
-        context_screen_owner_id: internalID,
-        // @ts-ignore
-        availability: artworkAboveTheFold?.availability,
-        acquireable: artworkAboveTheFold?.isAcquireable,
-        inquireable: artworkAboveTheFold?.isInquireable,
-        offerable: artworkAboveTheFold?.isOfferable,
-        biddable: artworkAboveTheFold?.isBiddable,
-      }}
-    >
-      <AuctionWebsocketContextProvider
-        channelInfo={{
-          channel: "SalesChannel",
-          sale_id: artworkBelowTheFold?.sale?.internalID,
+    <>
+      <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
+
+      <FlatList<ArtworkPageSection>
+        keyboardShouldPersistTaps="handled"
+        data={sectionsData()}
+        ItemSeparatorComponent={(props) => {
+          const { leadingItem: item } = props
+
+          if (item.excludeSeparator) {
+            return <Box mt={4} />
+          }
+
+          return (
+            <Box mx={2} my={4}>
+              <Separator />
+            </Box>
+          )
         }}
-        enabled={websocketEnabled}
-      >
-        {fetchingData ? (
-          <ProvidePlaceholderContext>
-            <AboveTheFoldPlaceholder />
-          </ProvidePlaceholderContext>
-        ) : (
-          <FlatList<ArtworkPageSection>
-            keyboardShouldPersistTaps="handled"
-            data={sectionsData()}
-            ItemSeparatorComponent={() => (
-              <Box mx={2}>
-                <Separator />
-              </Box>
-            )}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            contentContainerStyle={{ paddingBottom: 40 }}
-            renderItem={({ item }) => (
-              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-                {item.element}
-              </Box>
-            )}
-          />
-        )}
-        <QAInfo />
-        <OfferSubmittedModal />
-      </AuctionWebsocketContextProvider>
-    </ProvideScreenTracking>
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        contentContainerStyle={{ paddingBottom: space(4) }}
+        renderItem={({ item }) => {
+          return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
+        }}
+      />
+
+      {!!(artworkAboveTheFold && me) && (
+        <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
+      )}
+
+      <QAInfo />
+      <OfferSubmittedModal />
+    </>
   )
 }
 
@@ -462,41 +415,90 @@ interface ArtworkPageSection {
   key: string
   element: JSX.Element
   excludePadding?: boolean
+  excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section
-  verticalMargin?: ResponsiveValue<number>
+  verticalMargin?: SpacingUnit
+}
+
+const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
+  const { artworkAboveTheFold, artworkBelowTheFold } = props
+  const { isInAuction } = artworkAboveTheFold || {}
+  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
+  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+
+  const getInitialAuctionTimerState = () => {
+    if (isInAuction) {
+      return currentTimerState({
+        isPreview: isPreview || undefined,
+        isClosed: isClosed || undefined,
+        liveStartsAt: liveStartAt || undefined,
+      })
+    }
+  }
+
+  const trackingInfo: Schema.PageView = {
+    context_screen: Schema.PageNames.ArtworkPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    context_screen_owner_slug: artworkAboveTheFold?.slug,
+    context_screen_owner_id: artworkAboveTheFold?.internalID,
+    // @ts-ignore
+    availability: artworkAboveTheFold?.availability,
+    acquireable: artworkAboveTheFold?.isAcquireable,
+    inquireable: artworkAboveTheFold?.isInquireable,
+    offerable: artworkAboveTheFold?.isOfferable,
+    biddable: artworkAboveTheFold?.isBiddable,
+  }
+
+  const socketChannelInfo: AuctionWebsocketChannelInfo = {
+    channel: "SalesChannel",
+    sale_id: artworkAboveTheFold?.sale?.internalID,
+  }
+
+  return (
+    <ProvideScreenTracking info={trackingInfo}>
+      <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
+        <ArtworkStoreProvider
+          initialData={{
+            auctionState: getInitialAuctionTimerState(),
+          }}
+        >
+          <Artwork {...props} />
+        </ArtworkStoreProvider>
+      </AuctionWebsocketContextProvider>
+    </ProvideScreenTracking>
+  )
 }
 
 export const ArtworkContainer = createRefetchContainer(
-  Artwork,
+  ArtworkProvidersContainer,
   {
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
+        ...ArtworkScreenHeader_artwork
         ...ArtworkHeader_artwork
-        ...CommercialInformation_artwork
-        ...FaqAndSpecialistSection_artwork
-        ...CreateArtworkAlertSection_artwork
+        ...ArtworkLotDetails_artwork
+        ...ArtworkStickyBottomContent_artwork
+        ...ArtworkDetails_artwork
+        ...ArtworkEditionSetInformation_artwork
         slug
         internalID
-        id
         isAcquireable
         isOfferable
         isBiddable
         isInquireable
-        isSold
         isInAuction
         availability
-        artists {
-          name
-        }
         sale {
+          internalID
           isClosed
           isPreview
           liveStartAt
         }
-        partner {
-          name
-          href
-          isLinkable
+        saleArtwork {
+          internalID
+        }
+        editionSets {
+          internalID
         }
       }
     `,
@@ -507,9 +509,10 @@ export const ArtworkContainer = createRefetchContainer(
         provenance
         exhibitionHistory
         literature
+        isForSale
         partner {
           type
-          id
+          isInquireable
         }
         artist {
           biographyBlurb {
@@ -521,31 +524,10 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
-          internalID
-          id
           isBenefit
           isGalleryAuction
           extendedBiddingIntervalMinutes
         }
-        category
-        canRequestLotConditionsReport
-        conditionDescription {
-          details
-        }
-        signature
-        signatureInfo {
-          details
-        }
-        certificateOfAuthenticity {
-          details
-        }
-        framed {
-          details
-        }
-        series
-        publisher
-        manufacturer
-        imageRights
         context {
           __typename
           ... on Sale {
@@ -574,20 +556,24 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        artists {
+          isConsignable
+        }
+        isEligibleForArtsyGuarantee
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
         ...AboutArtist_artwork
-        ...ArtworkDetails_artwork
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
-        ...Questions_artwork
+        ...ShippingAndTaxes_artwork
+        ...ArtworkConsignments_artwork
       }
     `,
     me: graphql`
       fragment Artwork_me on Me {
-        ...CommercialInformation_me
+        ...ArtworkStickyBottomContent_me
       }
     `,
   },
@@ -615,47 +601,49 @@ export const ArtworkScreenQuery = graphql`
 export const ArtworkQueryRenderer: React.FC<{
   artworkID: string
   isVisible: boolean
-  environment?: RelayModernEnvironment
+  environment?: RelayModernEnvironment | RelayMockEnvironment
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
-    <RetryErrorBoundaryLegacy
-      render={() => {
-        return (
-          <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
-            above={{
-              query: ArtworkScreenQuery,
-              variables: { artworkID },
-            }}
-            below={{
-              query: graphql`
-                query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                  artwork(id: $artworkID) {
-                    ...Artwork_artworkBelowTheFold
+    <>
+      <RetryErrorBoundaryLegacy
+        render={() => {
+          return (
+            <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+              environment={environment || getRelayEnvironment()}
+              above={{
+                query: ArtworkScreenQuery,
+                variables: { artworkID },
+              }}
+              below={{
+                query: graphql`
+                  query ArtworkBelowTheFoldQuery($artworkID: String!) {
+                    artwork(id: $artworkID) {
+                      ...Artwork_artworkBelowTheFold
+                    }
                   }
-                }
-              `,
-              variables: { artworkID },
-            }}
-            render={{
-              renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
-              renderComponent: ({ above, below }) => {
-                return (
-                  <ArtworkContainer
-                    artworkAboveTheFold={above.artwork}
-                    artworkBelowTheFold={below?.artwork ?? null}
-                    me={above.me}
-                    {...others}
-                  />
-                )
-              },
-            }}
-            fetchPolicy="store-and-network"
-            cacheConfig={{ force: true }}
-          />
-        )
-      }}
-    />
+                `,
+                variables: { artworkID },
+              }}
+              render={{
+                renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
+                renderComponent: ({ above, below }) => {
+                  return (
+                    <ArtworkContainer
+                      artworkAboveTheFold={above.artwork}
+                      artworkBelowTheFold={below?.artwork ?? null}
+                      me={above.me}
+                      {...others}
+                    />
+                  )
+                },
+              }}
+              fetchPolicy="store-and-network"
+              cacheConfig={{ force: true }}
+            />
+          )
+        }}
+      />
+    </>
   )
 }

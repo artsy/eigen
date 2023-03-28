@@ -1,13 +1,11 @@
 import { PartnerLocationsTestsQuery } from "__generated__/PartnerLocationsTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
-
-jest.unmock("react-relay")
+import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 
 describe("PartnerLocations", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -44,7 +42,7 @@ describe("PartnerLocations", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       Partner: () => PartnerLocationsFixture,

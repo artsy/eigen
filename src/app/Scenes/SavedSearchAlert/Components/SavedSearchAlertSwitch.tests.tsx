@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "./SavedSearchAlertSwitch"
 
 describe("SavedSearchAlertSwitch", () => {
@@ -16,19 +16,19 @@ describe("SavedSearchAlertSwitch", () => {
   })
 
   it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("Label")).toBeTruthy()
   })
 
   it("should render active state", () => {
-    const { getByA11yState } = renderWithWrappersTL(<TestRenderer active />)
+    const { getByA11yState } = renderWithWrappers(<TestRenderer active />)
 
     expect(getByA11yState({ selected: true })).toBeTruthy()
   })
 
   it('should call "onChange" handler when the toggle is pressed', () => {
-    const { getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     fireEvent(getByLabelText("Label Toggler"), "valueChange", true)
 

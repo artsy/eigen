@@ -1,10 +1,10 @@
+import { unsafe_getDevToggle } from "app/store/GlobalStore"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
 import { lt as lessThan } from "semver"
-import { unsafe_getDevToggle } from "../GlobalStore"
-import { GlobalStoreModel } from "../GlobalStoreModel"
 
 export interface Echo {
   id: number // 1
@@ -62,7 +62,7 @@ export const getEchoModel = (): EchoModel => ({
     }
   ),
   stripePublishableKey: computed(
-    [(_, store) => store.artsyPrefs.environment.env, (state) => state],
+    [(_, store) => store.devicePrefs.environment.env, (state) => state],
     (env, state) => {
       const key =
         env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"

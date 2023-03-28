@@ -1,13 +1,9 @@
+import { Text } from "@artsy/palette-mobile"
+import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
-
-import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
-import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { Sans } from "palette"
 
 interface Props {
   sale: SaleListItem_sale$data
@@ -17,8 +13,6 @@ interface Props {
 }
 
 export const SaleListItem: React.FC<Props> = (props) => {
-  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
-
   const handleTap = () => {
     const {
       sale: { liveURLIfOpen, href },
@@ -29,9 +23,7 @@ export const SaleListItem: React.FC<Props> = (props) => {
 
   const { sale, containerWidth, index, columnCount } = props
   const image = sale.coverImage
-  const timestamp = isCascadingEnabled
-    ? sale.formattedStartDateTime
-    : formatDisplayTimelyAt(sale.displayTimelyAt)
+  const timestamp = sale.formattedStartDateTime
   const isFirstItemInRow = index === 0 || index % columnCount === 0
   const marginLeft = isFirstItemInRow ? 0 : 20
 
@@ -54,12 +46,12 @@ export const SaleListItem: React.FC<Props> = (props) => {
           }}
           imageURL={image && image.url}
         />
-        <Sans size="3t" numberOfLines={2} weight="medium">
+        <Text variant="sm" numberOfLines={2} weight="medium">
           {sale.name}
-        </Sans>
-        <Sans size="3" color="black60">
+        </Text>
+        <Text variant="sm" color="black60">
           {timestamp}
-        </Sans>
+        </Text>
       </View>
     </TouchableOpacity>
   )
@@ -71,8 +63,6 @@ export default createFragmentContainer(SaleListItem, {
       name
       href
       liveURLIfOpen
-      liveStartAt
-      displayTimelyAt
       formattedStartDateTime
       coverImage {
         url(version: "large")

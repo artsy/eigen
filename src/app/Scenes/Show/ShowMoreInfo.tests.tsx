@@ -1,14 +1,12 @@
 import { ShowMoreInfoTestsQuery } from "__generated__/ShowMoreInfoTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowHoursFragmentContainer } from "./Components/ShowHours"
 import { ShowLocationFragmentContainer } from "./Components/ShowLocation"
 import { ShowMoreInfo, ShowMoreInfoFragmentContainer } from "./Screens/ShowMoreInfo"
-
-jest.unmock("react-relay")
 
 describe("ShowMoreInfo", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -39,7 +37,7 @@ describe("ShowMoreInfo", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

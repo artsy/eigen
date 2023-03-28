@@ -1,21 +1,18 @@
-import { RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-
+import { Spacer, ClassTheme } from "@artsy/palette-mobile"
+import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
+import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
+import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-
-import { PAGE_SIZE } from "app/Components/constants"
-
-import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
-import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
-import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PAGE_SIZE } from "app/Components/constants"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ClassTheme, Spacer } from "palette"
 import React from "react"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   me: FavoriteArtists_me$data
@@ -78,7 +75,7 @@ class Artists extends React.Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -101,13 +98,13 @@ class Artists extends React.Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReachedThreshold={0.2}
             refreshControl={
-              <RefreshControl
+              <StickTabPageRefreshControl
                 refreshing={this.state.refreshingFromPull}
                 onRefresh={this.handleRefresh}
               />
             }
             style={{ paddingHorizontal: 0 }}
-            ItemSeparatorComponent={() => <Spacer mb="10px" />}
+            ItemSeparatorComponent={() => <Spacer y={1} />}
             ListFooterComponent={
               this.state.fetchingMoreData ? (
                 <Spinner style={{ marginTop: 20, marginBottom: 20 }} />

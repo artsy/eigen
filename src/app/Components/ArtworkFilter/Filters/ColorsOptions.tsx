@@ -1,3 +1,4 @@
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -9,7 +10,6 @@ import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { useLayout } from "app/utils/useLayout"
 import { compact, sortBy } from "lodash"
-import { Flex, useSpace } from "palette"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -40,8 +40,10 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
 
 const SWATCHES_PER_ROW = 4
 
-interface ColorsOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
+type ColorsOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "ColorsOptionsScreen"
+>
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()

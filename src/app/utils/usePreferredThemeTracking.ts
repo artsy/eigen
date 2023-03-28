@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useColorScheme } from "react-native"
-import { AnalyticsConstants } from "./track/constants"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
+import { AnalyticsConstants } from "./track/constants"
 
 // the purpose of this hook is to track the preferred theme of a user
 export const usePreferredThemeTracking = () => {

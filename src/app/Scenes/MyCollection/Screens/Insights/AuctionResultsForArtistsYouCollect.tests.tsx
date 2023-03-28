@@ -1,12 +1,9 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
-
-jest.unmock("react-relay")
 
 describe("AuctionResultsForArtistsYouCollect", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -19,7 +16,6 @@ describe("AuctionResultsForArtistsYouCollect", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
   })
 
   it("renders auction results", async () => {

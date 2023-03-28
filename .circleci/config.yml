@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
-  queue: eddiewebb/queue@1.7.0
+  node: circleci/node@5.1.0
+  queue: eddiewebb/queue@1.12.0
   horizon: artsy/release@0.0.1
 
 commands:
@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 14 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.17.1' >> $BASH_ENV
-            echo 'nvm alias default v14.17.1' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "16.18.0"
   generate-checksums:
     steps:
       - run:
@@ -39,14 +29,14 @@ commands:
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
@@ -56,12 +46,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -79,43 +69,23 @@ commands:
       - run:
           name: Compile query map
           command: yarn relay
-  test-js:
-    steps:
-      - restore_cache:
-          keys:
-            - v6-jest-{{ .Branch }}
-      - run:
-          name: Run TypeScript check
-          command: yarn type-check
-      - run:
-          name: Run TSLint check
-          command: yarn lint
-      - run:
-          name: Run jest tests
-          command: yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - save_cache:
-          key: v6-jest-{{ .Branch }}
-          paths:
-            - .jest
   bundle-js:
     steps:
       - restore_cache:
           keys:
-            - v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v6-metro-{{ checksum ".manifests/js_transform" }}
+            - v7-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
       - save_cache:
-          key: v6-metro-{{ checksum ".manifests/js_transform" }}
+          key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
-            - .metro
+            - .cache/metro
       - save_cache:
-          key: v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - dist/jsbundle.js
             - dist/jsbundle.js.map
@@ -124,7 +94,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v5-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -132,19 +102,19 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          key: v5-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v9-pods-{{ checksum ".manifests/cocoapods" }}
+            - v12-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v9-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v12-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -154,7 +124,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -162,7 +132,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -212,11 +182,11 @@ commands:
             - android/build
             - android/app/build
             - node_modules/react-native-config
-
 jobs:
   detect-secrets:
     docker:
-      - image: artsy/detect-secrets:1.2.0
+      - image: artsy/detect-secrets:ci # pragma: allowlist secret
+    resource_class: small
     working_directory: /usr/src/app
     steps:
       - checkout
@@ -227,19 +197,52 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
       - install-node
       - run:
           name: Deploy beta
-          command: ./scripts/deploy-both
+          command: ./scripts/deploy-beta-both
+
+  test-js:
+    parallelism: 8
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+          name: Run Jest tests
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+      - store_artifacts:
+          path: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+
+  type-check:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
 
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - generate-checksums
@@ -250,28 +253,24 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
-  check-pr:
+  check-code:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
-      - generate-checksums
-      - install-node-modules
-      - run-relay-compiler
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Danger
           command: yarn danger ci --verbose
-      - run:
-          name: Prevent Strictness Regressions
-          command: node scripts/strictness-migration.js check-pr
 
   check-flags:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -287,7 +286,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -297,39 +296,10 @@ jobs:
           name: Check flags
           command: ./scripts/check-if-app-has-been-approved-for-release.sh
 
-  check-metaphysics-freshness:
-    executor:
-      name: node/default
-      tag: "14.17.1"
-    steps:
-      - checkout
-      - run:
-          name: apt-get update
-          command: sudo apt-get update --fix-missing
-      - run:
-          name: Install Headless Chrome dependencies for puppeteer
-          # from https://github.com/threetreeslight/puppeteer-orb/blob/master/orb.yml
-          command: |
-            sudo apt-get install --fix-missing -yq \
-            gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
-            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
-            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
-            libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
-            fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-      - generate-checksums
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          name: Generate queries json
-          command: yarn relay
-      - run:
-          name: Check Metaphysics freshness
-          command: yarn ts-node ./metaphysics-queries-freshness-tests/test-freshness.ts
-
   build-test-js:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     resource_class: large
     steps:
       - checkout
@@ -348,15 +318,12 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - test-js
       - bundle-js
       - run:
           name: Generate app_build manifest
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
-      - store_test_results:
-          path: ./reports/junit/
       - persist_to_workspace:
           root: .
           paths:
@@ -368,14 +335,14 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
           keys:
-            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v8-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -412,7 +379,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v7-test-success-{{ checksum ".manifests/native_code" }}
+          key: v8-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -423,10 +390,6 @@ jobs:
       - store_artifacts:
           path: xcode_test_raw.log
           prefix: tests
-
-      - run:
-          name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
           branch: beta-ios
@@ -462,43 +425,10 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
-  promote-beta-to-app-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 13.4.1
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: app_store_submission
-      - run:
-          name: Promote if app_store_submission
-          command: ./scripts/promote-if-appstore-submission-branch
-
-  promote-beta-to-play-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    docker:
-      - image: circleci/android:api-29-node
-
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: play_store_submission
-      - run:
-          name: Setup
-          command: ./scripts/setup-distribute
-      - run:
-          name: Promote if play_store_submission
-          command: ./scripts/promote-if-playstore-submission-branch
-
   update-changelog:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
 
     steps:
       - checkout
@@ -513,7 +443,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
     steps:
       - checkout
       - install-gems
@@ -562,6 +492,7 @@ workflows:
             branches:
               only:
                 - main
+
   release-ios-app-workflow:
     jobs:
       - release-ios-app:
@@ -569,18 +500,6 @@ workflows:
             branches:
               only:
                 - release-ios-app
-  promote:
-    jobs:
-      - promote-beta-to-app-store:
-          filters:
-            branches:
-              only:
-                - app_store_submission
-      - promote-beta-to-play-store:
-          filters:
-            branches:
-              only:
-                - play_store_submission
 
   test-build-deploy:
     jobs:
@@ -591,7 +510,24 @@ workflows:
                 - main
                 - release
                 - staging
-      - check-pr:
+
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
+      - type-check:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
+      - check-code:
           filters:
             branches:
               ignore:
@@ -601,6 +537,7 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
+
       - build-test-js:
           filters:
             branches:
@@ -616,6 +553,7 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+
       - build-test-app-ios:
           filters:
             branches:
@@ -625,8 +563,11 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
+            - test-js
+            - type-check
             - build-test-js
             - horizon/block
+
       - build-test-app-android:
           filters:
             branches:
@@ -636,8 +577,11 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
+            - test-js
+            - type-check
             - build-test-js
             - horizon/block
+
       - update-metaphysics:
           filters:
             branches:

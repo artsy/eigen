@@ -3,7 +3,7 @@ apply plugin: "com.google.gms.google-services"
 
 project.ext.envConfigFiles = [
     debug: ".env.shared",
-    release: System.getenv('CI') == "true" ? ".env.ci" : ".env.shared",
+    release: ".env.shared",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
@@ -121,7 +121,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
 /**
  * Whether to enable the Hermes VM.
  *
- * This should be set on project.ext.react and mirrored here.  If it is not set
+ * This should be set on project.ext.react and that value will be read here. If it is not set
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
@@ -132,7 +132,6 @@ def enableHermes = project.ext.react.get("enableHermes", false)
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
-def password = System.getenv('ANDROID_KEYSTORE_PASSWORD')
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -171,9 +170,9 @@ android {
         }
         release {
             storeFile file('release.keystore')
-            storePassword password
+            storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
             keyAlias 'release'
-            keyPassword password
+            keyPassword System.getenv('ANDROID_KEY_PASSWORD')
         }
     }
     buildTypes {

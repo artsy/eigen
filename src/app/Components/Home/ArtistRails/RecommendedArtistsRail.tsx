@@ -1,15 +1,17 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
+import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Spinner } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import { Spinner } from "palette"
+import React, { memo, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
 import {
   commitMutation,
@@ -18,7 +20,6 @@ import {
   RelayPaginationProp,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CardRailFlatList } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
 const MAX_ARTISTS = 20
@@ -29,7 +30,6 @@ interface RecommendedArtistsRailProps extends ViewProps {
   subtitle?: string
   relay: RelayPaginationProp
   me: RecommendedArtistsRail_me$data
-  mb?: number
 }
 
 export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & RailScrollProps> = ({
@@ -38,7 +38,6 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   relay,
   me,
   scrollRef,
-  mb,
 }) => {
   const { trackEvent } = useTracking()
 
@@ -81,8 +80,8 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   }
 
   return (
-    <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+    <Flex>
+      <Flex pl={2} pr={2}>
         <SectionTitle title={title} subtitle={subtitle} />
       </Flex>
       <CardRailFlatList<ArtistCard_artist$data>
@@ -91,6 +90,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
         prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}
+        initialNumToRender={3}
         onEndReached={loadMoreArtists}
         renderItem={({ item: artist, index }) => {
           return (
@@ -105,14 +105,14 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
             />
           )
         }}
-        ItemSeparatorComponent={() => <Spacer width={15} />}
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
         ListFooterComponent={
           loadingMoreData ? (
-            <Flex justifyContent="center" ml={3} mr={5} height="200">
+            <Flex justifyContent="center" ml={4} mr={6} height="200">
               <Spinner />
             </Flex>
           ) : (
-            <Spacer mr={2} />
+            <Spacer x={2} />
           )
         }
       />
@@ -120,50 +120,52 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   )
 }
 
-export const RecommendedArtistsRailFragmentContainer = createPaginationContainer(
-  RecommendedArtistsRail,
-  {
-    me: graphql`
-      fragment RecommendedArtistsRail_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
-        artistRecommendations(first: $count, after: $cursor)
-          @connection(key: "RecommendedArtistsRail_artistRecommendations") {
-          edges {
-            node {
-              name
-              id
-              ...ArtistCard_artist @relay(mask: false)
+export const RecommendedArtistsRailFragmentContainer = memo(
+  createPaginationContainer(
+    RecommendedArtistsRail,
+    {
+      me: graphql`
+        fragment RecommendedArtistsRail_me on Me
+        @argumentDefinitions(count: { type: "Int", defaultValue: 3 }, cursor: { type: "String" }) {
+          artistRecommendations(first: $count, after: $cursor)
+            @connection(key: "RecommendedArtistsRail_artistRecommendations") {
+            edges {
+              node {
+                name
+                id
+                ...ArtistCard_artist @relay(mask: false)
+              }
             }
           }
         }
-      }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props?.me?.artistRecommendations
+      `,
     },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
-    },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        cursor,
-        count,
-      }
-    },
-    query: graphql`
-      query RecommendedArtistsRailQuery($cursor: String, $count: Int!) {
-        me {
-          ...RecommendedArtistsRail_me @arguments(cursor: $cursor, count: $count)
+    {
+      getConnectionFromProps(props) {
+        return props?.me?.artistRecommendations
+      },
+      getFragmentVariables(prevVars, totalCount) {
+        return {
+          ...prevVars,
+          count: totalCount,
         }
-      }
-    `,
-  }
+      },
+      getVariables(_props, { count, cursor }, fragmentVariables) {
+        return {
+          ...fragmentVariables,
+          cursor,
+          count,
+        }
+      },
+      query: graphql`
+        query RecommendedArtistsRailQuery($cursor: String, $count: Int!) {
+          me {
+            ...RecommendedArtistsRail_me @arguments(cursor: $cursor, count: $count)
+          }
+        }
+      `,
+    }
+  )
 )
 
 export const tracks = {

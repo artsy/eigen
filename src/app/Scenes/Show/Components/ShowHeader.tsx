@@ -1,7 +1,7 @@
+import { Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { Box, BoxProps, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -30,7 +30,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Text variant="lg" mb={1}>
+      <Text variant="lg-display" mb={1}>
         {show.name}
       </Text>
 

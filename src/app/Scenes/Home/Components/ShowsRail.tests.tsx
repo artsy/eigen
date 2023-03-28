@@ -1,12 +1,10 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowsRailFragmentContainer } from "./ShowsRail"
-
-jest.unmock("react-relay")
 
 const showEdge = {
   cursor: "YXJyYXljb25uZWN0aW9uOjA=",
@@ -70,7 +68,7 @@ describe("ShowsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -86,7 +84,7 @@ describe("ShowsRailFragmentContainer", () => {
       me.showsByFollowedArtists.edges = []
     })
 
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({

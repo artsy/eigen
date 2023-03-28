@@ -1,10 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedCollectionGroup } from "@artsy/cohesion"
+import { Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { FairCollections_fair$data } from "__generated__/FairCollections_fair.graphql"
+import { SmallCard } from "app/Components/Cards"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { Box, BoxProps, SmallCard, Text, TouchableWithScale } from "palette"
+import { TouchableWithScale } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -38,7 +40,7 @@ export const FairCollections: React.FC<FairCollectionsProps> = ({ fair, ...rest 
 
   return (
     <Box {...rest}>
-      <Text mx={2} mb={2} variant="md">
+      <Text mx={2} mb={2} variant="sm-display">
         Curated Highlights
       </Text>
 

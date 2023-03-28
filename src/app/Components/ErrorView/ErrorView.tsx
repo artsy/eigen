@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 
 interface Props {
   message?: string

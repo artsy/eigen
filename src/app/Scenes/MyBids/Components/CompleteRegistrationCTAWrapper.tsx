@@ -1,7 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
-import { navigate } from "app/navigation/navigate"
-import { ArrowRightIcon, Flex, Text, Touchable } from "palette"
-import { ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { ArrowRightIcon, ExclamationMarkCircleFill, Flex, Text } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
+import { Touchable } from "palette"
 import { useTracking } from "react-tracking"
 
 interface CompleteRegistrationCTAWrapperProps {
@@ -38,15 +38,13 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
         bg="black5"
         mt={1}
       >
-        {
-          <>
-            <ExclamationMarkCircleFill fill="black100" />
-            <Text mx={0.5} variant="sm">
-              Complete registration
-            </Text>
-            <ArrowRightIcon />
-          </>
-        }
+        <>
+          <ExclamationMarkCircleFill fill="black100" />
+          <Text mx={0.5} variant="sm">
+            Complete registration
+          </Text>
+          <ArrowRightIcon />
+        </>
       </Flex>
     </Touchable>
   )

@@ -1,10 +1,11 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
+import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
-import { Box, Button, Flex, Text } from "palette"
+import { Button } from "palette"
 import { Image, Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -14,20 +15,22 @@ interface OrderHistoryRowProps {
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
-  const { artwork } = lineItem || {}
+  const { artwork, artworkVersion } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
+  const orderStatus = getOrderStatus(order.displayState)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
+
+  const artworkImageUrl = artworkVersion?.image?.resized?.url
 
   return (
     <Flex width="100%" testID="order-container">
       <Flex mb={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" testID="image-container" mr={2}>
-            {!!artwork?.image ? (
+            {!!artworkImageUrl ? (
               <Image
-                source={{ uri: artwork?.image?.resized?.url }}
+                source={{ uri: artworkImageUrl }}
                 style={{ height: 50, width: 50 }}
                 testID="image"
               />
@@ -102,11 +105,12 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
     </Flex>
   )
 }
+
 export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow, {
   order: graphql`
     fragment OrderHistoryRow_order on CommerceOrder {
       internalID
-      state
+      displayState
       mode
       buyerTotal(precision: 2)
       createdAt
@@ -115,16 +119,17 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
         edges {
           node {
             shipment {
-              status
               trackingUrl
               trackingNumber
             }
-            artwork {
+            artworkVersion {
               image {
                 resized(width: 55) {
                   url
                 }
               }
+            }
+            artwork {
               partner {
                 name
               }

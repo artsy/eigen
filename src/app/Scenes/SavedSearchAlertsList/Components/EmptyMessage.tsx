@@ -1,5 +1,6 @@
-import { navigate } from "app/navigation/navigate"
-import { Box, Button, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
+import { Spacer, quoteLeft, quoteRight, Flex, Box, Text } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { ScrollView } from "react-native"
 
 export const EmptyMessage: React.FC = () => {
@@ -7,14 +8,14 @@ export const EmptyMessage: React.FC = () => {
     <ScrollView contentContainerStyle={{ flex: 1 }}>
       <Flex px={2} py={4} justifyContent="center" alignItems="center" height="100%">
         <Box maxWidth="80%" alignItems="center">
-          <Text variant="md" textAlign="center">
+          <Text variant="sm-display" textAlign="center">
             Create an alert to get notified about new works.
           </Text>
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text textAlign="center" variant="xs" color="black60">
             {`Search for an artist, use the filters to define the artwork you want, and select ${quoteLeft}Create Alert.${quoteRight}`}
           </Text>
-          <Spacer mb={2} />
+          <Spacer y={2} />
           <Button onPress={() => navigate("/")}>Explore Artists</Button>
         </Box>
       </Flex>

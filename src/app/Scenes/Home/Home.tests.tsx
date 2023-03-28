@@ -1,8 +1,8 @@
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
-import { GraphQLResponse } from "relay-runtime"
+import { GraphQLSingularResponse } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { HomeQueryRenderer } from "./Home"
 
@@ -19,9 +19,7 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-jest.unmock("react-relay")
-
-const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(HomeQueryRenderer, () => {
   const getWrapper = async () => {
@@ -67,7 +65,10 @@ describe(HomeQueryRenderer, () => {
   })
 })
 
-const mockMostRecentOperation = (name: string, result: GraphQLResponse = { errors: [] }) => {
+const mockMostRecentOperation = (
+  name: string,
+  result: GraphQLSingularResponse = { errors: [] }
+) => {
   expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
 
   act(() => {

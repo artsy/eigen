@@ -1,6 +1,5 @@
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { Input } from "palette"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { TouchableOpacity } from "react-native"
 import { act, ReactTestInstance } from "react-test-renderer"
 
@@ -31,12 +30,4 @@ export const press = (
   } else {
     return Promise.resolve()
   }
-}
-
-/** Find a single input within the test instance and type into it.
- * @deprecated Use `fireEvent.changeText` instead
- */
-export const typeInInput = async (ti: ReactTestInstance, text: string) => {
-  ti.findByType(Input).props.onChangeText(text)
-  await flushPromiseQueue()
 }

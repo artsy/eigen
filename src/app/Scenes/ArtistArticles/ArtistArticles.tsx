@@ -1,14 +1,13 @@
-import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
+import { ArticlesList, ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import _ from "lodash"
 import React, { useState } from "react"
 import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { ArticlesList, ArticlesPlaceholder } from "../Articles/ArticlesList"
 
 const PAGE_SIZE = 10
 
@@ -100,7 +99,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
 }> = ({ artistID, environment }) => {
   return (
     <QueryRenderer<ArtistArticlesResultQuery>
-      environment={environment || defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       query={graphql`
         query ArtistArticlesResultQuery($artistID: String!) {
           artist(id: $artistID) {

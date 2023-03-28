@@ -4,12 +4,13 @@ import {
   tappedRegisterToBid,
   TappedRegisterToBidArgs,
 } from "@artsy/cohesion"
+import { Spacer, CheckIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { RegisterToBidButton_me$data } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale$data } from "__generated__/RegisterToBidButton_sale.graphql"
-import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { navigate } from "../../../navigation/navigate"
 
 interface RegisterToBidButtonProps {
   sale: RegisterToBidButton_sale$data
@@ -47,7 +48,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
         >
           Register to bid
         </Button>
-        <Spacer mt={15} />
+        <Spacer y="15px" />
 
         {sale.requireIdentityVerification ? (
           <Box>
@@ -78,7 +79,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
       return null
     } else {
       return (
-        <Flex flexDirection="row">
+        <Flex flexDirection="row" alignItems="center">
           <CheckIcon fill="green100" mr={8} />
           <Text color="green100" fontWeight="500">
             You're approved to bid

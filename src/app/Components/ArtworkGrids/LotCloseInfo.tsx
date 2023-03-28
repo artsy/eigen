@@ -1,8 +1,8 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time, useTimer } from "app/utils/useTimer"
-import { Text } from "palette"
-import { CountdownTimerProps } from "../Countdown/CountdownTimer"
 
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>
@@ -59,7 +59,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   } else if (saleHasStarted) {
     // Sale has started and lots are <24 hours from closing or are actively closing
     if (duration.asDays() < 1 || lotsAreClosing) {
-      lotCloseCopy = `Closes, ${timerCopy.copy}`
+      lotCloseCopy = `Closes in ${timerCopy.copy}`
       if (duration.hours() < 1 && duration.minutes() < sale.cascadingEndTimeIntervalMinutes!) {
         labelColor = "red100"
       } else {
@@ -73,7 +73,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   }
 
   return (
-    <Text variant="xs" color={labelColor}>
+    <Text variant="xs" color={labelColor} testID="lot-close-info">
       {lotCloseCopy}
     </Text>
   )

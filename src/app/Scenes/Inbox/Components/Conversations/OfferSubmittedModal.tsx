@@ -1,9 +1,10 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
-import { Box, Button, Text } from "palette"
+import { Button } from "palette"
 import React, { useState } from "react"
 
 export const OfferSubmittedModal: React.FC = (props) => {
@@ -19,8 +20,12 @@ export const OfferSubmittedModal: React.FC = (props) => {
     }
   )
 
-  const onClose = () => {
+  const onGoToInbox = () => {
     navigate("inbox")
+    setVisible(false)
+  }
+
+  const onClose = () => {
     setVisible(false)
   }
 
@@ -31,18 +36,15 @@ export const OfferSubmittedModal: React.FC = (props) => {
           Make Offer
         </FancyModalHeader>
         <Box flex={1} py={4} px={2}>
-          <Text variant="lg">Your offer has been submitted</Text>
+          <Text variant="lg-display">Thank you, your offer has been submitted</Text>
           <Text variant="sm" color="black60">
-            Offer number {offerData.code}
+            Offer #{offerData.code}
           </Text>
-
           <Box mt={2} backgroundColor="black10" p={2}>
             <Text>{offerData.message}</Text>
           </Box>
-
           <Text mt={2}>Negotiation with the gallery will continue in the Inbox.</Text>
-
-          <Button variant="fillDark" block my={2} onPress={onClose}>
+          <Button variant="fillDark" block my={2} onPress={onGoToInbox}>
             Go to inbox
           </Button>
         </Box>

@@ -1,6 +1,6 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { Lot_saleArtwork$data } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -28,7 +28,7 @@ class Lot extends React.Component<Props> {
           />
           {!!ArtworkBadge && (
             <Box position="absolute" top={-2} left={-5}>
-              {<ArtworkBadge />}
+              <ArtworkBadge />
             </Box>
           )}
         </Flex>

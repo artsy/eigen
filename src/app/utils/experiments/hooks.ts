@@ -1,7 +1,7 @@
 import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
 import { useContext, useEffect, useState } from "react"
-import { getUnleashClient } from "./unleashClient"
 import { UnleashContext } from "./UnleashProvider"
+import { getUnleashClient } from "./unleashClient"
 
 export function useExperimentFlag(name: string) {
   const client = getUnleashClient()
@@ -39,9 +39,9 @@ export function useExperimentVariant(name: string): {
 
 export function useUnleashEnvironment(): { unleashEnv: "staging" | "production" } {
   const isStaging = useIsStaging()
-
+  const useProductionUnleash = useDevToggle("DTUseProductionUnleash")
   const unleashEnv = __DEV__
-    ? useDevToggle("DTUseProductionUnleash")
+    ? useProductionUnleash
       ? "production"
       : "staging"
     : isStaging

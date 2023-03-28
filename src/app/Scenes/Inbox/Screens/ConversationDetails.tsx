@@ -1,20 +1,19 @@
-import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
+import { Flex } from "@artsy/palette-mobile"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
+import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ItemInfoFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ItemInfo"
+import { OrderInformationFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/OrderInformation"
+import { PaymentMethodFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/PaymentMethod"
 import { AttachmentListFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
+import { SellerReplyEstimateFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/SellerReplyEstimate"
+import { ShippingFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Shipping"
+import { Support } from "app/Scenes/Inbox/Components/Conversations/Support"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { track as _track } from "app/utils/track"
-import { Flex } from "palette"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { OrderInformationFragmentContainer } from "../Components/Conversations/OrderInformation"
-import { PaymentMethodFragmentContainer } from "../Components/Conversations/PaymentMethod"
-import { SellerReplyEstimateFragmentContainer } from "../Components/Conversations/SellerReplyEstimate"
-import { ShippingFragmentContainer } from "../Components/Conversations/Shipping"
-import { Support } from "../Components/Conversations/Support"
 
 interface Props {
   me: ConversationDetails_me$data
@@ -70,7 +69,10 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
             ...OrderInformation_artwork
           }
         }
-        orderConnection(first: 30, states: [APPROVED, PENDING, SUBMITTED, FULFILLED]) {
+        orderConnection(
+          first: 30
+          states: [APPROVED, PENDING, SUBMITTED, FULFILLED, PROCESSING_APPROVAL]
+        ) {
           edges {
             node {
               ...SellerReplyEstimate_order

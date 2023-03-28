@@ -1,22 +1,23 @@
+import { Spacer, TriangleDown, Flex, useColor, Text } from "@artsy/palette-mobile"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Flex, Input, InputProps, Sans, Spacer, Touchable, TriangleDown, useColor } from "palette"
-import React from "react"
-import { useEffect, useRef, useState } from "react"
-import { Platform } from "react-native"
-import { Select, SelectOption } from "../../Select"
+import { InputProps, InputRef, Touchable } from "palette"
+import {
+  INTERNALSelectAndInputCombinationBase,
+  ValuePayload,
+} from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
+import { SelectOption } from "palette/elements/Select"
+import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"
 
-/** Underline bar height for text input on android when focused */
-const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
-
-export const PhoneInput = React.forwardRef<
-  Input,
+export const PhoneInput = forwardRef<
+  InputRef,
   {
     setValidation: (value: boolean) => void
     onChange?: (value: string) => void
+    onModalFinishedClosing?: () => void
     maxModalHeight?: number
     shouldDisplayLocalError?: boolean
   } & Omit<InputProps, "onChange">
@@ -27,14 +28,14 @@ export const PhoneInput = React.forwardRef<
       setValidation,
       onChange,
       onChangeText,
+      onModalFinishedClosing,
       maxModalHeight,
       shouldDisplayLocalError = true,
       ...rest
     },
-    outerRef
+    ref
   ) => {
     const color = useColor()
-    const innerRef = useRef<Input | null>()
     const initialValues = cleanUserPhoneNumber(value ?? "")
     const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
     const [phoneNumber, setPhoneNumber] = useState(
@@ -48,22 +49,6 @@ export const PhoneInput = React.forwardRef<
     const dialCode = countryIndex[countryCode].dialCode
     const countryISO2Code = countryIndex[countryCode].iso2
     const phoneUtil = glibphone.PhoneNumberUtil.getInstance()
-
-    useEffect(() => {
-      if (isFirstRun.current) {
-        return
-      }
-
-      const cleanPhoneNumber = cleanUserPhoneNumber(value ?? "")
-      const formattedPhoneNumber = formatPhoneNumber({
-        current: cleanPhoneNumber.phoneNumber,
-        previous: initialValues.phoneNumber,
-        countryCode: cleanPhoneNumber.countryCode,
-      })
-
-      setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
-      setCountryCode(cleanPhoneNumber.countryCode)
-    }, [value])
 
     const isValidNumber = (number: string, code: string) => {
       try {
@@ -87,111 +72,105 @@ export const PhoneInput = React.forwardRef<
     const isFirstRun = useRef(true)
     useEffect(() => {
       if (isFirstRun.current) {
-        if (phoneNumber.length > 0) {
-          handleValidation()
-        }
         isFirstRun.current = false
         return
       }
-
-      handleValidation()
-
       const newValue = phoneNumber ? `+${dialCode} ${phoneNumber}` : ""
-
       onChangeText?.(newValue)
       onChange?.(newValue)
     }, [phoneNumber, dialCode])
 
+    const onValueChange = (selectAndInputValue: ValuePayload) => {
+      const {
+        select: { value: code },
+        input: { value: phone },
+      } = selectAndInputValue
+      const newDialCode = countryIndex[code].dialCode ?? dialCode
+      const fullPhoneNumber = newDialCode ? `+${newDialCode} ${phone}` : phone
+
+      const cleanPhoneNumber = cleanUserPhoneNumber(fullPhoneNumber ?? "")
+
+      const formattedPhoneNumber = formatPhoneNumber({
+        current: cleanPhoneNumber.phoneNumber,
+        previous: initialValues.phoneNumber,
+        countryCode: cleanPhoneNumber.countryCode,
+      })
+
+      setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
+    }
+
     return (
       <Flex style={{ height: 50 }}>
-        <Input
-          style={{ flex: 1 }}
+        <INTERNALSelectAndInputCombinationBase
+          // Props for Input
           {...rest}
-          ref={(ref) => {
-            if (typeof outerRef === "function") {
-              outerRef(ref)
-            } else if (outerRef && "current" in outerRef) {
-              outerRef.current = ref
-            } else if (outerRef != null) {
-              console.error("bad ref given to PhoneInput")
-            }
-            innerRef.current = ref
-          }}
+          ref={ref}
           value={phoneNumber}
-          inputTextStyle={Platform.select({
-            android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
-            default: {},
-          })}
           placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
           placeholderTextColor={color("black30")}
-          onChangeText={(newPhoneNumber) =>
-            setPhoneNumber(
-              formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode })
-            )
-          }
           keyboardType="phone-pad"
-          renderLeftHandSection={() => (
-            <Select<string>
-              options={countryOptions}
-              enableSearch
-              value={countryCode}
-              maxModalHeight={maxModalHeight}
-              onModalFinishedClosing={() => {
-                innerRef.current?.focus()
-              }}
-              onSelectValue={(newCountryCode) => {
-                setCountryCode(newCountryCode)
-                setPhoneNumber(
-                  formatPhoneNumber({
-                    current: phoneNumber,
-                    previous: phoneNumber,
-                    countryCode: newCountryCode,
-                  })
-                )
-              }}
-              title="Country code"
-              renderButton={({ selectedValue, onPress }) => {
-                return (
-                  <Touchable onPress={onPress}>
-                    <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
-                      <Flex
-                        flexDirection="row"
-                        px="1"
-                        alignItems="center"
-                        backgroundColor="black10"
-                      >
-                        {/* selectedValue should always be present */}
-                        <Sans size="4">{countryIndex[selectedValue ?? countryCode].flag}</Sans>
-                        <Spacer mr={0.5} />
-                        <TriangleDown width="8" />
-                      </Flex>
-                      <Flex justifyContent="center" pl="1">
-                        <Sans color="black60" size="3">
-                          +{dialCode}
-                        </Sans>
-                      </Flex>
-                    </Flex>
-                  </Touchable>
-                )
-              }}
-              // tslint:disable-next-line:no-shadowed-variable
-              renderItemLabel={({ label, value }) => {
-                return (
-                  <Flex flexDirection="row" alignItems="center" flexShrink={1}>
-                    <Sans size="4">{countryIndex[value].flag}</Sans>
-                    <Spacer mr="1" />
-                    <Sans size="4" style={{ width: 45 }}>
-                      +{countryIndex[value].dialCode}
-                    </Sans>
-                    <Spacer mr="1" />
-                    <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
-                      {label}
-                    </Sans>
+          onValueChange={onValueChange}
+          validate={handleValidation}
+          //
+          //
+          // Props For Select
+          optionsForSelect={countryOptions}
+          enableSearchForSelect
+          valueForSelect={countryCode}
+          maxModalHeightForSelect={maxModalHeight}
+          onModalFinishedClosingForSelect={onModalFinishedClosing}
+          onSelectValueForSelect={(newCountryCode) => {
+            setCountryCode(newCountryCode)
+            setPhoneNumber(
+              formatPhoneNumber({
+                current: phoneNumber,
+                previous: phoneNumber,
+                countryCode: newCountryCode,
+              })
+            )
+          }}
+          titleForSelect="Country code"
+          renderButtonForSelect={({ selectedValue, onPress }) => {
+            return (
+              <Touchable onPress={onPress}>
+                <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
+                  <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="black10">
+                    {/* selectedValue should always be present */}
+                    <Text variant="sm-display">
+                      {countryIndex[selectedValue ?? countryCode].flag}
+                    </Text>
+                    <Spacer x={0.5} />
+                    <TriangleDown width="8" />
                   </Flex>
-                )
-              }}
-            />
-          )}
+                  <Flex justifyContent="center" pl={1}>
+                    <Text variant="sm" color="black60">
+                      +{dialCode}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Touchable>
+            )
+          }}
+          renderItemLabelForSelect={({ label, value }) => {
+            return (
+              <Flex flexDirection="row" alignItems="center" flexShrink={1}>
+                <Text variant="sm-display">{countryIndex[value].flag}</Text>
+                <Spacer x={1} />
+                <Text variant="sm-display" style={{ width: 45 }}>
+                  +{countryIndex[value].dialCode}
+                </Text>
+                <Spacer x={1} />
+                <Text
+                  variant="sm-display"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{ flexShrink: 1 }}
+                >
+                  {label}
+                </Text>
+              </Flex>
+            )
+          }}
           error={
             shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
           }

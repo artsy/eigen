@@ -1,12 +1,10 @@
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { MediumCard } from "app/Components/Cards"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { MediumCard } from "palette"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "./ViewingRoomsListFeatured"
-
-jest.unmock("react-relay")
 
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -32,7 +30,7 @@ describe(FeaturedRail, () => {
   })
 
   it("shows some cards", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({

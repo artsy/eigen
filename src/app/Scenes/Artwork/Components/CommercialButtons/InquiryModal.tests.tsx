@@ -5,23 +5,22 @@ jest.mock("app/utils/googleMaps", () => ({
 
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
-
-jest.unmock("react-relay")
+import { press } from "./helpers"
 
 let env: ReturnType<typeof createMockEnvironment>
 
@@ -118,7 +117,7 @@ const mockResolver = {
 }
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
@@ -181,7 +180,7 @@ describe("<InquiryModal />", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
-      env.mock.rejectMostRecentOperation(new Error())
+      rejectMostRecentRelayOperation(env, new Error())
       await flushPromiseQueue()
       expect(extractText(wrapper.root)).toContain("Sorry, we were unable to send this message")
     })

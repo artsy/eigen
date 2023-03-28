@@ -1,4 +1,4 @@
-import { DecreaseIcon, Flex, IncreaseIcon, Text, TextProps } from "palette"
+import { Text, TextProps } from "@artsy/palette-mobile"
 
 interface AuctionResultsMidEstimateProps {
   value: string
@@ -6,30 +6,19 @@ interface AuctionResultsMidEstimateProps {
   textVariant?: TextProps["variant"]
 }
 
-type ArrowDirections = "up" | "down"
-
 export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({
   value,
   textVariant = "xs",
   shortDescription,
 }) => {
-  const arrowDirection: ArrowDirections = value[0] !== "-" ? "up" : "down"
-
   const color = ratioColor(value)
 
   return (
-    <Flex flexDirection="row" alignItems="center">
-      {/* Up arrow is heavier toward bottom so appears off center without padding */}
-      {arrowDirection === "up" ? (
-        <IncreaseIcon height={10} fill={color} />
-      ) : (
-        <DecreaseIcon height={10} fill={color} />
-      )}
-      <Text variant={textVariant} color={color}>
-        {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
-        {!!shortDescription && ` ${shortDescription}`}
-      </Text>
-    </Flex>
+    <Text variant={textVariant} color={color} fontWeight="500">
+      ({value[0] === "-" ? "-" : "+"}
+      {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
+      {!!shortDescription && ` ${shortDescription}`})
+    </Text>
   )
 }
 

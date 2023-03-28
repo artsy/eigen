@@ -1,6 +1,10 @@
 {
   // See http://go.microsoft.com/fwlink/?LinkId=827846
   // for the documentation about the extensions.json format
-  "recommendations": ["Orta.vscode-ios-common-files", "Orta.vscode-danger", "artsy.artsy-studio-extension-pack", "meta.relay"],
+  "recommendations": [
+    "Orta.vscode-ios-common-files",
+    "artsy.artsy-studio-extension-pack",
+    "meta.relay"
+  ],
   "unwantedRecommendations": ["prisma.vscode-graphql"]
 }

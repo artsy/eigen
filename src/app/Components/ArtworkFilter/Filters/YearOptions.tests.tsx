@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -5,16 +6,11 @@ import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
+import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen } from "./YearOptions"
 import { getEssentialProps } from "./helper"
-import {
-  ALLOW_EMPTY_CREATED_DATES_FILTER,
-  OptionItem,
-  YearOptionsScreen,
-  YearText,
-} from "./YearOptions"
 
 describe("Year Options Screen", () => {
   let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
@@ -70,16 +66,16 @@ describe("Year Options Screen", () => {
   )
 
   it("renders propertly", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
 
-    expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
+    expect(extractText(tree.root.findAllByType(Text)[1])).toEqual("2010 – 2021")
     expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(
       ALLOW_EMPTY_CREATED_DATES_FILTER.displayText
     )
   })
 
   it("selects the right year range and option", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
 
     ;(storeInstance as any).getActions().__injectState?.(initialState)
 

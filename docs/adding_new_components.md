@@ -7,7 +7,7 @@ Adding a new component involves a few pieces of work! But don't worry, it's not 
 Create a new file in the `src/app/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 
 interface OurProps {
   whatever: string
@@ -15,7 +15,7 @@ interface OurProps {
 
 export const MyNewComponent: React.FC<OurProps> = (props) => {
   const someFunStuff = useACoolHook()
-  return <Text variant="lg">Hello world!</Text>
+  return <Text variant="lg-display">Hello world!</Text>
 }
 ```
 
@@ -41,7 +41,6 @@ Then add a route in `routes.tsx`
 
 ```diff
   new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
-  new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 + new RouteMatcher("/my-new-component", "MyNewComponent"),
   new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
   new RouteMatcher("/city-fair/:citySlug", "CityFairList"),

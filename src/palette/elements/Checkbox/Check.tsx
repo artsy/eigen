@@ -1,7 +1,6 @@
+import { CheckIcon, Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import styled, { css } from "styled-components/native"
-import { CheckIcon } from "../../svgs/CheckIcon"
-import { Box } from "../Box"
 
 export const CHECK_SIZE = 22
 

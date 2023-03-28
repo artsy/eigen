@@ -1,4 +1,5 @@
 import { AuctionPriceTestsQuery } from "__generated__/AuctionPriceTestsQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -13,14 +14,11 @@ import {
   OpenAuctionReserveNotMetIncreasingOwnBid,
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionPriceFragmentContainer, AuctionPriceProps } from "./AuctionPrice"
-
-jest.unmock("react-relay")
 
 describe("AuctionPrice", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -53,7 +51,7 @@ describe("AuctionPrice", () => {
 
   describe("for closed auction", () => {
     it("displays Auction Closed", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSED} />
       )
 
@@ -67,7 +65,7 @@ describe("AuctionPrice", () => {
 
   describe("for live sale in progress", () => {
     it("does not display anything", () => {
-      const { toJSON } = renderWithWrappersTL(
+      const { toJSON } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
@@ -81,7 +79,7 @@ describe("AuctionPrice", () => {
 
   describe("for auction preview", () => {
     it("displays proper starting bid info", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -96,7 +94,7 @@ describe("AuctionPrice", () => {
 
   describe("for auction preview with no start bid set", () => {
     it("displays nothing if current bid info is unavailable", () => {
-      const { toJSON } = renderWithWrappersTL(
+      const { toJSON } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -110,7 +108,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with no reserve and no bids", () => {
     it("displays proper starting bid info", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -125,7 +123,7 @@ describe("AuctionPrice", () => {
 
   describe("open auction with no reserve with bids present", () => {
     it("displays proper current bid info including bid count", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -141,7 +139,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with reserve and no bids", () => {
     it("displays proper starting bid info and resserve message", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -157,7 +155,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with some bids and reserve not met", () => {
     it("displays current bid message inculding reserve warning", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -173,7 +171,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with some bids and satisfied reserve", () => {
     it("displays current bid message inculding reserve met", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -189,7 +187,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with my bid winning", () => {
     it("displays max bid and winning indicator", () => {
-      const { getByText, getByLabelText } = renderWithWrappersTL(
+      const { getByText, getByLabelText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -204,7 +202,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with my bid losing", () => {
     it("displays max bid and losing indicator", () => {
-      const { getByText, getByLabelText } = renderWithWrappersTL(
+      const { getByText, getByLabelText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -219,7 +217,7 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with me increasing my max bid while winning", () => {
     it("displays max bid and winning indicator", () => {
-      const { getByText, getByLabelText } = renderWithWrappersTL(
+      const { getByText, getByLabelText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 

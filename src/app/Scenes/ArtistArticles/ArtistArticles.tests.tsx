@@ -1,11 +1,9 @@
 import { ArtistArticlesTestsQuery } from "__generated__/ArtistArticlesTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistArticles, ArtistArticlesContainer } from "./ArtistArticles"
-
-jest.unmock("react-relay")
 
 describe("Artist Articles", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -36,7 +34,7 @@ describe("Artist Articles", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

@@ -1,9 +1,10 @@
+import { Box, Text, LinkText } from "@artsy/palette-mobile"
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
-import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
+import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
@@ -16,14 +17,14 @@ import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "app/Compo
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Checkbox, LinkText, Serif, Text, Theme } from "palette"
+import { Button, Checkbox } from "palette"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -74,8 +75,7 @@ const resultForNetworkError = {
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   private pollCount = 0
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: ConfirmBidProps) {
     super(props)
 
     const { bidders, has_qualified_credit_cards } = this.props.me
@@ -144,8 +144,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       await this.createBidderPosition()
     } catch (error) {
       if (!this.state.errorModalVisible) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        this.presentErrorModal(error, null)
+        this.presentErrorModal(error as Error, null)
       }
     }
   }
@@ -156,12 +155,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
    */
   async updatePhoneNumber() {
     return new Promise<void>((done, reject) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const { phoneNumber } = this.state.billingAddress
+      const { phoneNumber } = this.state.billingAddress!
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.presentErrorModal(errors, null)
             reject(errors)
           } else {
@@ -218,7 +215,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 data && get(data, "createCreditCard.creditCardOrError.mutationError")
               this.presentErrorModal(mutationError, mutationError.detail)
             } else {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               this.presentErrorModal(errors, null)
             }
           }
@@ -259,8 +255,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       onCompleted: (results, errors) => {
         return isEmpty(errors)
           ? this.verifyBidderPosition(results)
-          : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            this.presentErrorResult(errors)
+          : this.presentErrorResult(errors)
       },
       onError: this.presentErrorResult.bind(this),
       mutation: graphql`
@@ -304,10 +299,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          saleID: this.props.sale_artwork.sale.slug,
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artworkID: this.props.sale_artwork.artwork.slug,
+          saleID: this.props.sale_artwork.sale!.slug,
+          artworkID: this.props.sale_artwork.artwork!.slug,
           maxBidAmountCents: this.selectedBid().cents,
         },
       },
@@ -315,13 +308,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutation["response"]) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { result } = results.createBidderPosition
+    const { result } = results.createBidderPosition!
 
-    if (result.status === "SUCCESS") {
-      this.bidPlacedSuccessfully(result.position.internalID)
+    if (result!.status === "SUCCESS") {
+      this.bidPlacedSuccessfully(result!.position!.internalID)
     } else {
-      this.presentBidResult(result)
+      this.presentBidResult(result!)
     }
   }
 
@@ -336,20 +328,21 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { bidder_position } = data.me
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    const { bidder_position } = data?.me!
 
-    if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
+    if (bidder_position!.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-      setTimeout(() => {
-        bidderPositionQuery(bidder_position.position.internalID)
+      const wait = __TEST__ ? (cb: any) => cb() : setTimeout
+      wait(() => {
+        bidderPositionQuery(bidder_position!.position!.internalID)
           .then(this.checkBidderPosition.bind(this))
           .catch((error) => this.presentErrorResult(error))
       }, 1000)
 
       this.pollCount += 1
     } else {
-      this.presentBidResult(bidder_position)
+      this.presentBidResult(bidder_position as any)
     }
   }
 
@@ -358,14 +351,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    navigate("/conditions-of-sale", { modal: true })
+    navigate("/conditions-of-sale")
   }
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
       // FIXME: Should this be internalID?
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      { saleID: this.props.sale_artwork.sale.slug },
+      { saleID: this.props.sale_artwork.sale!.slug },
       null,
       (error) => {
         if (error) {
@@ -391,11 +383,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ billingAddress: values })
   }
 
-  presentErrorResult(error: Error | ReadonlyArray<PayloadError>) {
+  presentErrorResult(error: Error | ReadonlyArray<PayloadError> | null | undefined) {
     console.error(error)
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: BidResultScreen,
       title: "",
       passProps: {
@@ -410,21 +401,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      ARAuctionID: this.props.sale_artwork.sale.slug,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      ARAuctionArtworkID: this.props.sale_artwork.artwork.slug,
+      ARAuctionID: this.props.sale_artwork.sale!.slug,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork!.slug,
     })
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARAuctionArtworkRegistrationUpdated",
       {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        ARAuctionID: this.props.sale_artwork.sale.slug,
+        ARAuctionID: this.props.sale_artwork.sale!.slug,
       }
     )
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: BidResultScreen,
       title: "",
       passProps: {
@@ -439,7 +426,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
-  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>, mutationMessage: string) {
+  presentErrorModal(
+    errors: Error | ReadonlyArray<PayloadError> | null | undefined,
+    mutationMessage: string | null
+  ) {
     console.error("ConfirmBid.tsx", errors)
 
     const errorMessage =
@@ -460,16 +450,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const { sale_artwork } = this.props
     const { id, artwork, lot_label, sale } = sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artworkImage = artwork.image
+    const artworkImage = artwork!.image
 
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const websocketEnabled =
-      !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes
+    const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
       <AuctionWebsocketContextProvider
@@ -487,13 +473,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }}
       >
         <Flex m={0} flex={1} flexDirection="column">
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-              Confirm your bid
-            </FancyModalHeader>
-          </Theme>
+          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+            Confirm your bid
+          </FancyModalHeader>
           <ScrollView scrollEnabled>
-            <Flex alignItems="center" pt="20px">
+            <Flex alignItems="center" pt={2}>
               <Timer
                 liveStartsAt={sale?.live_start_at ?? undefined}
                 lotEndAt={sale_artwork.endAt}
@@ -507,43 +491,34 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   <Image
                     resizeMode="contain"
                     style={{ width: 50, height: 50 }}
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    source={{ uri: artworkImage.url }}
+                    source={{ uri: artworkImage.url! }}
                   />
                 )}
 
-                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode="tail">
-                  {
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    artwork.artist_names
-                  }
-                </Serif>
-                <Serif size="2" weight="semibold">
+                <Text
+                  variant="sm-display"
+                  mt={4}
+                  weight="medium"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {artwork!.artist_names}
+                </Text>
+                <Text variant="xs" weight="medium">
                   Lot {lot_label}
-                </Serif>
+                </Text>
 
-                <Serif
+                <Text
+                  variant="xs"
                   italic
-                  size="2"
                   color="black60"
                   textAlign="center"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    artwork.title
-                  }
-                  {!!artwork! /* STRICTNESS_MIGRATION */.date && (
-                    <Serif size="2">
-                      ,{" "}
-                      {
-                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                        artwork.date
-                      }
-                    </Serif>
-                  )}
-                </Serif>
+                  {artwork!.title}
+                  {!!artwork!.date && <Text variant="xs">, {artwork!.date}</Text>}
+                </Text>
               </Flex>
 
               <Divider />
@@ -587,7 +562,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
-                mx={3}
+                mx={4}
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
@@ -605,7 +580,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Checkbox>
             ) : (
               <Flex alignItems="center" px={4}>
-                <Serif size="2" mt={2} color="black60">
+                <Text variant="xs" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
@@ -613,12 +588,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     {partnerName(sale!)} Conditions of Sale
                   </LinkText>
                   .
-                </Serif>
+                </Text>
               </Flex>
             )}
 
             <Box m={4}>
               <Button
+                testID="bid-button"
                 loading={this.state.isLoading}
                 block
                 width={100}

@@ -1,13 +1,13 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import {
   ArtworksInSeriesRail_artwork$data,
   ArtworksInSeriesRail_artwork$key,
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -31,6 +31,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
     <Flex>
       <SectionTitle
         title="More from this series"
+        titleVariant="md"
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
           navigate(`/artist-series/${firstArtistSeries?.slug}`)

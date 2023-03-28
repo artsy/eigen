@@ -1,19 +1,17 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OpenInquiryModalButtonTestQuery } from "__generated__/OpenInquiryModalButtonTestQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import relay, { QueryRenderer } from "react-relay"
-import { graphql } from "react-relay"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import relay, { QueryRenderer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const trackEvent = useTracking().trackEvent
-
-jest.unmock("react-relay")
 
 const tappedMakeOfferEvent = {
   action: "tappedMakeOffer",
@@ -54,7 +52,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappersTL(<TestRenderer />)
+    const renderer = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return renderer
   }

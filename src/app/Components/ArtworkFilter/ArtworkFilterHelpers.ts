@@ -18,6 +18,7 @@ export enum FilterDisplayName {
   priceRange = "Price",
   sizes = "Size",
   sort = "Sort By",
+  state = "Hide upcoming auctions",
   timePeriod = "Time Period",
   viewAs = "View as",
   waysToBuy = "Ways to Buy",
@@ -45,15 +46,16 @@ export enum FilterParamName {
   organizations = "organizations",
   partnerIDs = "partnerIDs",
   priceRange = "priceRange",
-  sizes = "sizes",
   showOnlySubmittedArtworks = "showOnlySubmittedArtworks",
+  sizes = "sizes",
   sort = "sort",
+  state = "state",
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
-  waysToBuyBuy = "acquireable",
-  waysToBuyInquire = "inquireableOnly",
+  waysToBuyContactGallery = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
+  waysToBuyPurchase = "acquireable",
   width = "width",
 }
 
@@ -71,6 +73,8 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
   return {
     artwork: "-decayed_merch",
     saleArtwork: "position",
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: "sale_position",
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
@@ -94,18 +98,19 @@ export const ParamDefaultValues = {
   height: "*-*",
   includeArtworksByFollowedArtists: false,
   inquireableOnly: false,
+  keyword: "",
   latestCreatedYear: undefined,
   locationCities: [],
   majorPeriods: [],
   materialsTerms: [],
   medium: "*",
-  keyword: "",
   offerable: false,
   organizations: undefined,
   partnerIDs: [],
   priceRange: "*-*",
   showOnlySubmittedArtworks: false,
   sizes: [],
+  state: "All",
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
@@ -125,9 +130,9 @@ export const defaultCommonFilterOptions = {
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   height: ParamDefaultValues.height,
-  keyword: ParamDefaultValues.keyword,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
+  keyword: ParamDefaultValues.keyword,
   latestCreatedYear: ParamDefaultValues.latestCreatedYear,
   locationCities: ParamDefaultValues.locationCities,
   majorPeriods: ParamDefaultValues.majorPeriods,
@@ -137,9 +142,10 @@ export const defaultCommonFilterOptions = {
   organizations: ParamDefaultValues.organizations,
   partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
-  sizes: ParamDefaultValues.sizes,
   showOnlySubmittedArtworks: ParamDefaultValues.showOnlySubmittedArtworks,
+  sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
+  state: ParamDefaultValues.state,
   viewAs: ParamDefaultValues.viewAs,
   width: ParamDefaultValues.width,
 }
@@ -167,6 +173,7 @@ export type AggregationName =
   | "PARTNER"
   | "PRICE_RANGE"
   | "SIMPLE_PRICE_HISTOGRAM"
+  | "state"
 
 export interface Aggregation {
   count: number
@@ -187,6 +194,8 @@ export type FilterArray = ReadonlyArray<FilterData>
 export type FilterType =
   | "artwork"
   | "saleArtwork"
+  // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+  | "newSaleArtwork"
   | "showArtwork"
   | "auctionResult"
   | "geneArtwork"
@@ -220,6 +229,7 @@ export const filterKeyFromAggregation: Record<
   PARTNER: FilterParamName.partnerIDs,
   PRICE_RANGE: FilterParamName.priceRange,
   SIMPLE_PRICE_HISTOGRAM: "SIMPLE_PRICE_HISTOGRAM",
+  state: "state",
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -240,14 +250,21 @@ const DEFAULT_SALE_ARTWORKS_PARAMS = {
   estimateRange: "",
 } as FilterParams
 
+// TODO: Replace DEFAULT_NEW_SALE_ARTWORKS_PARAMS with DEFAULT_SALE_ARTWORKS_PARAMS when AREnableArtworksConnectionForAuction is released
+const DEFAULT_NEW_SALE_ARTWORKS_PARAMS = {
+  sort: "sale_position",
+  estimateRange: "",
+} as FilterParams
+
 const DEFAULT_SHOW_ARTWORKS_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "partner_show_position",
 }
 
 const DEFAULT_AUCTION_RESULT_PARAMS = {
-  sort: "DATE_DESC",
   allowEmptyCreatedDates: true,
+  sort: "DATE_DESC",
+  state: "ALL",
 } as FilterParams
 
 const DEFAULT_GENE_ARTWORK_PARAMS = {
@@ -268,16 +285,18 @@ const createdYearsFilterNames = [
 const sizesFilterNames = [FilterParamName.width, FilterParamName.height]
 
 const waysToBuyFilterNames = [
-  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyPurchase,
   FilterParamName.waysToBuyMakeOffer,
   FilterParamName.waysToBuyBid,
-  FilterParamName.waysToBuyInquire,
+  FilterParamName.waysToBuyContactGallery,
 ]
 
 const getDefaultParamsByType = (filterType: FilterType) => {
   return {
     artwork: DEFAULT_ARTWORKS_PARAMS,
     saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: DEFAULT_NEW_SALE_ARTWORKS_PARAMS,
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
@@ -326,20 +345,21 @@ export const filterArtworksParams = (
 // For most cases filter key can simply be FilterParamName, exception
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  additionalGeneIDs: "MEDIUM",
   artistIDs: "ARTIST",
   artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
   colors: "COLOR",
-  sizes: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
   locationCities: "LOCATION_CITY",
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
-  additionalGeneIDs: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
+  sizes: "DIMENSION_RANGE",
+  state: "state",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

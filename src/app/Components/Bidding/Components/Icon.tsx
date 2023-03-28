@@ -1,5 +1,3 @@
-import { Image } from "../Elements/Image"
+import { Image, ImageProps } from "app/Components/Bidding/Elements/Image"
 
-export const Icon20 = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Image width={20} height={20} {...props} />
-)
+export const Icon20 = (props: ImageProps) => <Image width={20} height={20} {...props} />

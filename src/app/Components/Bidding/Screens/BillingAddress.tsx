@@ -1,16 +1,17 @@
+import { Flex, Text } from "@artsy/palette-mobile"
+import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
+import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
+import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Button, Flex, Input, Sans } from "palette"
+import { Schema, screenTrack, track } from "app/utils/track"
+import { Button, Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ScreenDimensionsContext } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import { Schema, screenTrack, track } from "../../../utils/track"
-import { Address } from "../types"
-import { findCountryNameByCountryCode } from "../Utils/findCountryNameByCountryCode"
-import { validateAddressFieldsPresence } from "../Validators/validateAddressFieldsPresence"
 
 interface BillingAddressProps {
   onSubmit: (values: Address) => void
@@ -117,7 +118,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           <Input
             ref={fullNameRef}
             title="Full name"
@@ -223,9 +224,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
                     hasError={!!countryError}
                   />
                   {!!countryError && (
-                    <Sans size="2" mt="1" color="red100">
+                    <Text variant="xs" mt={1} color="red100">
                       {countryError}
-                    </Sans>
+                    </Text>
                   )}
                 </Flex>
               )

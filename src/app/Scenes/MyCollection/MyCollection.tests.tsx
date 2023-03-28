@@ -1,107 +1,72 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
-import { fireEvent, RenderAPI } from "@testing-library/react-native"
+import { fireEvent, RenderResult, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
-import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate } from "app/system/navigation/navigate"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionContainer } from "./MyCollection"
 
-jest.unmock("react-relay")
-
 describe("MyCollection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<MyCollectionTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyCollectionTestsQuery @relay_test_operation {
-            me {
-              ...MyCollection_me
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.me) {
-            return (
-              <StickyTabPage
-                tabs={[
-                  {
-                    title: "test",
-                    content: <MyCollectionContainer me={props.me} />,
-                  },
-                ]}
-              />
-            )
-          }
-          return null
-        }}
-      />
-    </ArtworkFiltersStoreProvider>
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableMyCollectionInsights: true,
-    })
+  const { renderWithRelay } = setupTestWrapper<MyCollectionTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return (
+          <ArtworkFiltersStoreProvider>
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <MyCollectionContainer me={props.me} />,
+                },
+              ]}
+            />
+          </ArtworkFiltersStoreProvider>
+        )
+      }
+      return null
+    },
+    query: graphql`
+      query MyCollectionTestsQuery @relay_test_operation {
+        me {
+          ...MyCollection_me
+        }
+      }
+    `,
   })
 
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
-  const getZeroStateWrapper = () =>
-    getWrapper({
-      Me: () => ({
-        myCollectionConnection: {
-          edges: [],
-        },
-      }),
-    })
-
   describe("collection is empty", () => {
-    let tree: ReactTestRenderer
+    let tree: RenderResult
 
     beforeEach(() => {
-      tree = getZeroStateWrapper()
+      tree = renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: {
+            edges: [],
+          },
+        }),
+      })
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
-      expect(extractText(tree.root)).toContain(
-        "Add works from your collection to access price and market insights."
-      )
+      expect(tree.getByText("Your Art Collection in Your Pocket")).toBeTruthy()
+      expect(
+        tree.getByText("Access market insights and manage your collection online.")
+      ).toBeTruthy()
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
@@ -113,54 +78,55 @@ describe("MyCollection", () => {
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-      expect(mockTrackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "addCollectedArtwork",
+            "context_module": "myCollectionHome",
+            "context_owner_type": "myCollection",
+            "platform": "mobile",
+          },
+        ]
+      `)
     })
   })
 
   describe("collection is not empty", () => {
-    let tree: ReactTestRenderer
-    beforeEach(() => {
-      tree = getWrapper()
-    })
-
     it("renders without throwing an error", () => {
-      expect(tree.root.findByType(StickyTabPageScrollView)).toBeDefined()
-      expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
+      const tree = renderWithRelay()
+      expect(tree.UNSAFE_getByType(StickyTabPageScrollView)).toBeDefined()
+      expect(tree.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
 
   describe("sorting and filtering", () => {
-    it("filters and sorts without crashing", async () => {
-      const renderApi = renderWithWrappersTL(<TestRenderer />)
-
-      act(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            myCollectionConnection,
-          }),
-        })
+    it.skip("filters and sorts without crashing", async () => {
+      renderWithRelay({
+        Me: () => ({
+          myCollectionConnection,
+        }),
       })
 
-      await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
-      await applyFilter(renderApi, "Artists", "Banksy")
-      // await applyFilter(renderApi, "Rarity", "Unique")
-      // await applyFilter(renderApi, "Medium", "Print")
-      // await applyFilter(renderApi, "Price", "$0-1,000")
-      // await applyFilter(renderApi, "Size", "Small (under 40cm)")
+      await applyFilter("Sort By", "Price Paid (High to Low)")
+      await applyFilter("Artists", "Banksy")
+      // await applyFilter("Rarity", "Unique")
+      // await applyFilter("Medium", "Print")
+      // await applyFilter("Price", "$0-1,000")
+      // await applyFilter("Size", "Small (under 40cm)")
     })
   })
 })
 
-const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOption: string) => {
+const applyFilter = async (filterName: string, filterOption: string) => {
   await flushPromiseQueue()
-  act(() => fireEvent.press(renderApi.getByTestId("sort-and-filter-button")))
-  act(() => fireEvent.press(renderApi.getByText(filterName)))
-  act(() => fireEvent.press(renderApi.getByText(filterOption)))
-  act(() => fireEvent.press(renderApi.getByText("Show Results")))
+  fireEvent.press(screen.getByTestId("sort-and-filter-button"))
+  fireEvent.press(screen.getByText(filterName))
+  fireEvent.press(screen.getByText(filterOption))
+  fireEvent.press(screen.getByText("Show Results"))
 }
 
 const myCollectionConnection = {

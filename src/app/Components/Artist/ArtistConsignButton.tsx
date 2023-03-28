@@ -1,14 +1,14 @@
-import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "palette"
+import { ArrowRightIcon, Flex, Box, Text } from "@artsy/palette-mobile"
+import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
+import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { Schema } from "app/utils/track"
+import { BorderBox } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-
-import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
-import { navigate } from "app/navigation/navigate"
-import { useSelectedTab } from "app/store/GlobalStore"
-import { Schema } from "app/utils/track"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist$data
@@ -65,13 +65,13 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
               p={showImage ? 0 : 1}
               pl={showImage ? 0 : 2}
             >
-              <Sans size="3t" weight="medium" style={{ flexWrap: "wrap" }}>
+              <Text variant="sm" weight="medium" style={{ flexWrap: "wrap" }}>
                 {headline}
-              </Sans>
+              </Text>
               <Box position="relative">
-                <Sans size="3t" color="black60">
+                <Text variant="sm" color="black60">
                   Consign with Artsy
-                </Sans>
+                </Text>
               </Box>
             </Flex>
           </Flex>
@@ -104,8 +104,8 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
 })
 
 const Image = styled.Image`
-  width: 76;
-  height: 70;
+  width: 76px;
+  height: 70px;
 `
 
 export const tests = {

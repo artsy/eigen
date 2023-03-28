@@ -1,10 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Message } from "./Message"
 
 describe("Message", () => {
   it("it renders", () => {
-    const MessageComponent = renderWithWrappersTL(
+    const MessageComponent = renderWithWrappers(
       <Message variant="default" title="title" text="text" />
     )
 
@@ -15,7 +15,7 @@ describe("Message", () => {
   })
 
   it("does not show close button when !showCloseButton", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Message variant="default" title="title" text="text" />
     )
     expect(() => getByTestId("Message-close-button")).toThrow(
@@ -24,7 +24,7 @@ describe("Message", () => {
   })
 
   it("shows close button when showCloseButton", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Message variant="default" title="title" text="text" showCloseButton />
     )
     expect(getByTestId("Message-close-button")).toBeDefined()
@@ -32,7 +32,7 @@ describe("Message", () => {
 
   it("fires onClose press event", () => {
     const onClose = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Message variant="default" onClose={onClose} title="title" text="text" showCloseButton />
     )
     fireEvent.press(getByTestId("Message-close-button"))

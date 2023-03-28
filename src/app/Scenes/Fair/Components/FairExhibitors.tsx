@@ -1,8 +1,8 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
-import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
+import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -43,7 +43,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
         }
 
         return (
-          <Box key={show.id} mb={3}>
+          <Box key={show.id} mb={4}>
             <FairExhibitorRailFragmentContainer key={show.id} show={show} />
           </Box>
         )

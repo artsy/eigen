@@ -1,9 +1,8 @@
+import { useColor, Text } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
-import { useIsStaging } from "app/store/GlobalStore"
+import { useDevToggle } from "app/store/GlobalStore"
 import _ from "lodash"
-import { Text, useColor } from "palette"
-import React, { useCallback, useRef, useState } from "react"
-import { useEffect } from "react"
+import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
@@ -77,11 +76,7 @@ const useComponentSize = () => {
   return { layoutHeight, layoutWidth, onLayout }
 }
 
-export const OpaqueImageView: React.FC<Props> = ({
-  aspectRatio,
-  placeholderBackgroundColor = "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
-  ...props
-}) => {
+export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
   const imageScaleValue = useRef(new Animated.Value(0)).current
@@ -98,7 +93,7 @@ export const OpaqueImageView: React.FC<Props> = ({
       )
     ) {
       console.error(
-        "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        "[OpaqueImageView2] Either an aspect ratio or specific dimensions or flex should be specified."
       )
       return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
     }
@@ -175,14 +170,16 @@ export const OpaqueImageView: React.FC<Props> = ({
     }
   }
 
-  const isStaging = useIsStaging()
+  const isDebugModeEnabled = useDevToggle("DTEnableNewImageLabel")
 
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
-  const debugBorderStyles = isStaging ? { borderTopWidth: 2, borderColor: color("devpurple") } : {}
+  const debugBorderStyles = isDebugModeEnabled
+    ? { borderTopWidth: 2, borderColor: color("devpurple") }
+    : {}
 
   return (
     <View onLayout={onLayout} style={[fastImageStyle, debugBorderStyles]}>
-      {!!isStaging && (
+      {!!isDebugModeEnabled && (
         <View style={{ position: "absolute", zIndex: 1000, top: "50%" }}>
           <Text weight="medium" italic variant="xl" color="devpurple">
             NewImg

@@ -1,14 +1,16 @@
+import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
+import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Button, Input } from "palette"
+import { Touchable } from "palette/elements/Touchable/Touchable"
 import React, { useEffect, useRef } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialPick } from "./OnboardingSocialPick"
 
@@ -16,8 +18,10 @@ export const OnboardingLogin: React.FC = () => {
   return <OnboardingSocialPick mode="login" />
 }
 
-export interface OnboardingLoginProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
+export type OnboardingLoginProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingLoginWithEmail"
+>
 
 export interface OnboardingLoginValuesSchema {
   email: string
@@ -71,7 +75,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   }, [])
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{
@@ -80,9 +84,9 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           }}
           keyboardShouldPersistTaps="always"
         >
-          <Spacer mt={60} />
-          <Text variant="lg">Log In</Text>
-          <Spacer mt={50} />
+          <Spacer y={6} />
+          <Text variant="lg-display">Log In</Text>
+          <Spacer y={6} />
           <Box>
             <Input
               ref={emailInputRef}
@@ -113,7 +117,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               textContentType="username"
               error={errors.email}
             />
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Input
               autoCapitalize="none"
               autoComplete="password"
@@ -146,7 +150,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               error={errors.password}
             />
           </Box>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <Touchable
             onPress={() => {
               navigation.navigate("ForgotPassword")
@@ -197,6 +201,11 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
       } else if (res === "on_demand_otp_missing") {
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
+      }
+
+      if (res === "auth_blocked") {
+        showBlockedAuthError("sign in")
+        return
       }
 
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {

@@ -1,13 +1,16 @@
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
+import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
 import _ from "lodash"
-import { Flex, MediumCard, Spacer, Text, Touchable } from "palette"
-import React, { Suspense } from "react"
+import { Touchable } from "palette"
+import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,50 +24,46 @@ import { tagForStatus } from "./ViewingRoomsListItem"
 interface ViewingRoomsHomeMainRailProps {
   featured: ViewingRoomsListFeatured_featured$key
   title: string
-  mb?: number
 }
 
-export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({
-  featured,
-  title,
-  mb,
-}) => {
-  const { trackEvent } = useTracking()
+export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = memo(
+  ({ featured, title }) => {
+    const { trackEvent } = useTracking()
 
-  const featuredData = useFragment(featuredFragment, featured)
-  const featuredLength = extractNodes(featuredData).length
+    const featuredData = useFragment(featuredFragment, featured)
+    const featuredLength = extractNodes(featuredData).length
 
-  return (
-    <Flex mb={mb}>
-      <Flex mx="2">
-        <SectionTitle
-          title={title}
-          onPress={() => {
-            trackEvent(tracks.tappedViewingRoomsHeader())
-            navigate("/viewing-rooms")
-          }}
-          RightButtonContent={() => <Text color="black60">View all</Text>}
-        />
-      </Flex>
-      {featuredLength > 0 ? (
-        <FeaturedRail
-          featured={featured}
-          trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-        />
-      ) : (
-        <Suspense fallback={<Placeholder />}>
-          <ViewingRoomsHomeRail
+    return (
+      <Flex>
+        <Flex mx={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedViewingRoomsHeader())
+              navigate("/viewing-rooms")
+            }}
+          />
+        </Flex>
+        {featuredLength > 0 ? (
+          <FeaturedRail
+            featured={featured}
             trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
           />
-        </Suspense>
-      )}
-    </Flex>
-  )
-}
+        ) : (
+          <Suspense fallback={<Placeholder />}>
+            <ViewingRoomsHomeRail
+              trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
+            />
+          </Suspense>
+        )}
+      </Flex>
+    )
+  }
+)
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex ml="2">
+    <Flex ml={2}>
       <Flex flexDirection="row">
         {_.times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
@@ -82,15 +81,17 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
   const regular = extractNodes(queryData.viewingRooms)
 
+  const isTablet = isPad()
   const { trackEvent } = useTracking()
 
   return (
     <Flex>
       <FlatList
         horizontal
-        ListHeaderComponent={() => <Spacer ml="2" />}
-        ListFooterComponent={() => <Spacer ml="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
+        initialNumToRender={isTablet ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
@@ -119,7 +120,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
             </Touchable>
           )
         }}
-        ItemSeparatorComponent={() => <Spacer ml="2" />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
       />
     </Flex>
   )

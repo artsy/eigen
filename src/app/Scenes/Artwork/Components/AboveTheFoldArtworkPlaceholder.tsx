@@ -1,44 +1,98 @@
-import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
-import { Flex, Separator, Spacer, useSpace } from "palette"
-import { View } from "react-native"
-import { useImagePlaceholderDimensions } from "../helpers"
+import { Spacer, Flex, useSpace } from "@artsy/palette-mobile"
+import { useImagePlaceholderDimensions } from "app/Scenes/Artwork/helpers"
+import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
+import { times } from "lodash"
+import { Join } from "palette"
+import { useMemo } from "react"
 
-export const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artworkID }) => {
+interface AboveTheFoldPlaceholderProps {
+  artworkID?: string
+}
+
+const ArtworkActionsPlaceholder = () => {
   const space = useSpace()
 
+  return (
+    <Flex flexDirection="row" justifyContent="center">
+      {times(3).map((index) => (
+        <PlaceholderBox
+          key={`auction-${index}`}
+          width={50}
+          height={18}
+          marginHorizontal={space(1)}
+        />
+      ))}
+    </Flex>
+  )
+}
+
+const ArtworkDetailPlaceholderText = () => {
+  const length = useMemo(() => {
+    const rng = new RandomNumberGenerator(Math.random())
+
+    return rng.next({
+      from: 0.2,
+      to: 1,
+    })
+  }, [])
+
+  return <PlaceholderText flex={length} height={20} />
+}
+
+const ArtworkDetailsPlaceholder = () => {
+  return (
+    <Join separator={<Spacer y={1} />}>
+      {times(10).map((index) => (
+        <Flex key={`detail-row-${index}`} flexDirection="row">
+          <PlaceholderText width={128} height={20} />
+          <Spacer x={2} />
+          <ArtworkDetailPlaceholderText />
+        </Flex>
+      ))}
+    </Join>
+  )
+}
+
+export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
-    <Flex py={2}>
+    <Flex flex={1}>
+      {/* Header */}
+      <Flex height={44} px={2} alignItems="center" flexDirection="row">
+        <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="space-between">
+          <PlaceholderBox width={20} height={20} />
+
+          <Flex flexDirection="row" alignItems="center">
+            <PlaceholderBox width={105} height={25} />
+          </Flex>
+        </Flex>
+      </Flex>
+
       {/* Artwork thumbnail */}
       <Flex mx="auto">
         <PlaceholderBox width={width} height={height} />
       </Flex>
 
-      <Flex px={2} flex={1}>
-        <Spacer mb={2} />
+      <Spacer y={1} />
+
+      {/* Content */}
+      <Flex px={2}>
         {/* save/share buttons */}
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <PlaceholderText width={50} marginHorizontal={space(1)} />
-          <PlaceholderText width={50} marginHorizontal={space(1)} />
-          <PlaceholderText width={50} marginHorizontal={space(1)} />
-        </View>
-        <Spacer mb={2} />
+        <ArtworkActionsPlaceholder />
+
+        <Spacer y={4} />
+
         {/* Artist name */}
-        <PlaceholderText width={100} />
-        <Spacer mb={2} />
+        <PlaceholderText width={100} height={30} />
+
         {/* Artwork tombstone details */}
-        <View style={{ width: 130 }}>
-          <PlaceholderRaggedText numLines={4} />
-        </View>
-        <Spacer mb={3} />
-        {/* more junk */}
-        <Separator />
-        <Spacer mb={3} />
-        <PlaceholderRaggedText numLines={3} />
-        <Spacer mb={2} />
-        {/* commerce button */}
-        <PlaceholderBox height={60} />
+        <PlaceholderText width={250} height={26} />
+
+        <Spacer y={4} />
+
+        {/* Artwork details */}
+        <ArtworkDetailsPlaceholder />
       </Flex>
     </Flex>
   )

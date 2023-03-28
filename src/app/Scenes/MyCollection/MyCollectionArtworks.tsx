@@ -1,34 +1,39 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, LockIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { Button } from "palette"
+import { useEffect, useState } from "react"
 import {
-  FlatList,
+  Alert,
   Image,
+  InteractionManager,
   LayoutAnimation,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native"
+
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
+import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
   me: MyCollection_me$data
   relay: RelayPaginationProp
-  innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
 }
@@ -36,12 +41,10 @@ interface MyCollectionArtworksProps {
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   me,
   relay,
-  innerFlatlistRef,
   showSearchBar,
   setShowSearchBar,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
-  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
@@ -54,12 +57,18 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
   const artworks = extractNodes(me?.myCollectionConnection)
 
+  const showMyCollectionDeleteAllArtworks = useDevToggle("DTMyCollectionDeleteAllArtworks")
+
   const filteredArtworks = localSortAndFilterArtworks(
     artworks as any,
     appliedFiltersState,
     filterOptions,
     keywordFilter
   )
+
+  useEffect(() => {
+    cleanLocalImages()
+  }, [])
 
   if (artworks.length === 0) {
     return <MyCollectionZeroState />
@@ -93,20 +102,61 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}
-            innerFlatListRef={innerFlatlistRef}
             onIsFocused={(isFocused) => {
               setMinHeight(isFocused ? screenHeight : undefined)
             }}
           />
         )}
       </Flex>
+      {!!showMyCollectionDeleteAllArtworks && artworks.length > 0 && (
+        <Button
+          onPress={() => {
+            Alert.alert(
+              "Delete all artworks",
+              "Are you sure you want to delete all artworks in your collection?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: async () => {
+                    await Promise.all(
+                      artworks.map(async (artwork) => {
+                        await myCollectionDeleteArtwork(artwork.internalID)
+                      })
+                    )
+                      .then(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("All artworks deleted")
+                          refreshMyCollection()
+                        })
+                      })
+                      .catch(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("Couldn't delete your artworks")
+                        })
+                      })
+                  },
+                  style: "destructive",
+                },
+              ]
+            )
+          }}
+          block
+          variant="outlineGray"
+          mb={1}
+        >
+          <Text color="red100">Delete all artworks</Text>
+        </Button>
+      )}
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
-            // tslint:disable-next-line: no-shadowed-variable
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,
@@ -116,7 +166,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         ) : (
           <MyCollectionArtworkList
@@ -124,7 +174,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             isLoading={relay.isLoading}
-            // tslint:disable-next-line: no-shadowed-variable
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,
@@ -134,33 +183,46 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         )
       ) : (
-        <Flex py="6" px="2">
+        <Flex py={6} px={2}>
           <FilteredArtworkGridZeroState hideClearButton />
         </Flex>
       )}
 
-      {filteredArtworks.length > 0 && <Spacer mb={2} />}
+      {filteredArtworks.length > 0 && <Spacer y={2} />}
     </Flex>
   )
 }
 
 const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+
+  const image = require("images/my-collection-empty-state.jpg")
 
   return (
     <ZeroState
-      title="Primed and ready for artworks."
-      subtitle="Add works from your collection to access price and market insights."
+      bigTitle="Your Art Collection in Your Pocket"
+      subtitle="Access market insights and manage your collection online."
+      image={
+        <Image
+          source={image}
+          resizeMode="contain"
+          style={{
+            alignSelf: "center",
+            marginVertical: space(2),
+          }}
+        />
+      }
       callToAction={
         <>
           <Button
             testID="add-artwork-button-zero-state"
             onPress={() => {
-              trackEvent(addCollectedArtwork())
+              trackEvent(tracks.addCollectedArtwork())
               navigate("my-collection/artworks/new", {
                 passProps: {
                   mode: "add",
@@ -171,11 +233,11 @@ const MyCollectionZeroState: React.FC = () => {
             }}
             block
           >
-            Upload Your Artwork
+            Upload Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
-            <Image source={require("images/lock.webp")} />
-            <Text color="black60" pl={1} variant="xs">
+            <LockIcon fill="black60" />
+            <Text color="black60" pl={0.5} variant="xs">
               My Collection is not shared with sellers.
             </Text>
           </Flex>
@@ -199,6 +261,9 @@ export const MyCollectionFilterPropsFragment = graphql`
     id
     artistNames
     medium
+    mediumType {
+      name
+    }
     attributionClass {
       name
     }
@@ -221,3 +286,12 @@ export const MyCollectionFilterPropsFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
+  }),
+}

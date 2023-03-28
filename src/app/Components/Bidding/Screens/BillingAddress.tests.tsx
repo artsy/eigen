@@ -1,16 +1,15 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { FakeNavigator } from "../Helpers/FakeNavigator"
+import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
+import { mockFullAddress } from "app/Components/Bidding/__mocks__/billingAddress"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { BillingAddress } from "./BillingAddress"
-
-import { mockFullAddress } from "../__mocks__/billingAddress"
 
 describe("BillingAddress component", () => {
   const onSubmitMock = jest.fn()
   const fakeNavigator = new FakeNavigator()
 
   it("renders without throwing an error", () => {
-    const billingAddressComponent = renderWithWrappers(
+    const billingAddressComponent = renderWithWrappersLEGACY(
       <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     )
 
@@ -18,7 +17,7 @@ describe("BillingAddress component", () => {
   })
 
   it("renders 7 inputs and correctly mutates typed values", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     )
 
@@ -48,7 +47,7 @@ describe("BillingAddress component", () => {
   })
 
   it("correctly populates relevant inputs with the passed address fields", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <BillingAddress
         onSubmit={onSubmitMock}
         billingAddress={mockFullAddress}
@@ -66,7 +65,7 @@ describe("BillingAddress component", () => {
   })
 
   it("fires the passed callback when address is submitted and no required field is missing", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <BillingAddress
         onSubmit={onSubmitMock}
         billingAddress={mockFullAddress}

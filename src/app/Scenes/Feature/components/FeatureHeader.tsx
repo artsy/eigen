@@ -1,9 +1,9 @@
+import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { Flex, FlexProps, Sans } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
@@ -21,27 +21,34 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
     <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
   )
   const title = (
-    <Sans size="8" style={{ fontSize: 42, lineHeight: 50 }} maxWidth="80%" textAlign="center">
+    <Text
+      variant="lg-display"
+      style={{ fontSize: 42, lineHeight: 50, maxWidth: "80%" }}
+      textAlign="center"
+    >
       {feature.name}
-    </Sans>
+    </Text>
   )
   const subtitle = !!feature.subheadline && (
-    <FeatureMarkdown content={feature.subheadline} sansProps={{ textAlign: "center", size: "4" }} />
+    <FeatureMarkdown
+      content={feature.subheadline}
+      textProps={{ textAlign: "center", variant: "md" }}
+    />
   )
   return isPad() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
-      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+      <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         {title}
         {subtitle}
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
       {image}
-      <Stack mx="2" alignItems="center">
+      <Stack mx={2} alignItems="center">
         {title}
         {subtitle}
       </Stack>
@@ -68,15 +75,15 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
   return isPad() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <PlaceholderBox height={imageHeight} flex={1} />
-      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+      <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         <PlaceholderText width={220} />
         <PlaceholderText width={330} />
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
       <PlaceholderBox height={imageHeight} />
-      <Stack mx="2" alignItems="center" justifyContent="center" minHeight={140}>
+      <Stack mx={2} alignItems="center" justifyContent="center" minHeight={140}>
         <PlaceholderText width={220} />
         <PlaceholderText width={330} />
       </Stack>

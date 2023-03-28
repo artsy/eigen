@@ -1,9 +1,10 @@
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
-import { navigate } from "app/navigation/navigate"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
+import { Fair, Show } from "app/Scenes/Map/types"
+import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
-import { Box, ClassTheme, Text } from "palette"
 import { Component } from "react"
 import {
   Dimensions,
@@ -14,7 +15,6 @@ import {
 } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Fair, Show } from "../types"
 
 const shadowDetails: any = {
   shadowRadius: 4,
@@ -25,7 +25,7 @@ const shadowDetails: any = {
 
 const Background = styled(Box)`
   background: ${themeGet("colors.white100")};
-  height: 82;
+  height: 82px;
   border-radius: 2px;
 `
 
@@ -42,8 +42,8 @@ interface ShowCardState {
 }
 
 const PageIndicator = styled(Box)`
-  height: ${themeGet("space.2")}px;
-  border-radius: ${themeGet("space.1")}px;
+  height: ${themeGet("space.2")};
+  border-radius: ${themeGet("space.1")};
   background: ${themeGet("colors.white100")};
   margin-left: 15px;
   margin-right: auto;
@@ -175,7 +175,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               snapToInterval={this.cardWidth + space(1)}
               contentContainerStyle={{
                 paddingLeft: space(0.5),
-                paddingRight: space(2) + space(0.3),
+                paddingRight: space(2) + space(0.5),
               }}
               scrollEventThrottle={299}
               directionalLockEnabled

@@ -1,15 +1,13 @@
 import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { navigate } from "app/navigation/navigate"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail } from "./ArtworksInSeriesRail"
-
-jest.unmock("react-relay")
 
 describe("ArtworksInSeriesRail", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -44,7 +42,7 @@ describe("ArtworksInSeriesRail", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -124,6 +122,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc123",
+                      isSaved: false,
                       slug: "alex-katz-departure-28",
                       internalID: "5a20271ccd530e50722ae2df",
                       href: "/artwork/alex-katz-departure-28",
@@ -153,6 +152,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc456",
+                      isSaved: false,
                       slug: "alex-katz-departure-56",
                       internalID: "594c3b40b202a34d4f9810fe",
                       href: "/artwork/alex-katz-departure-56",
@@ -182,6 +182,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc789",
+                      isSaved: false,
                       slug: "alex-katz-departure-2-ada",
                       internalID: "5daa29db5f3f9d000e059e00",
                       href: "/artwork/alex-katz-departure-2-ada",
@@ -211,6 +212,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "xyz123",
+                      isSaved: false,
                       slug: "alex-katz-park-avenue-departure",
                       internalID: "5e7123b39d099c0011959efd",
                       href: "/artwork/alex-katz-park-avenue-departure",
@@ -240,6 +242,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc012",
+                      isSaved: false,
                       slug: "alex-katz-departure-cut-out-2",
                       internalID: "5959da15c9dc2404d231179f",
                       href: "/artwork/alex-katz-departure-cut-out-2",

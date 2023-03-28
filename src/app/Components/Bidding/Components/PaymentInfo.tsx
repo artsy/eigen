@@ -1,40 +1,36 @@
+import { bullet } from "@artsy/palette-mobile"
+import { FlexProps } from "app/Components/Bidding/Elements/Flex"
+import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
+import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
+import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import React from "react"
 import { View } from "react-native"
-
-import { BillingAddress } from "../Screens/BillingAddress"
-import { CreditCardForm } from "../Screens/CreditCardForm"
 
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
-
-import { bullet } from "palette"
-import React from "react"
-import { FlexProps } from "../Elements/Flex"
-import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 interface PaymentInfoProps extends FlexProps {
   navigator?: NavigatorIOS
   onCreditCardAdded: (t: StripeToken, p: PaymentCardTextFieldParams) => void
   onBillingAddressAdded: (values: Address) => void
-  billingAddress?: Address
-  creditCardFormParams?: PaymentCardTextFieldParams
-  creditCardToken?: StripeToken
+  billingAddress?: Address | null
+  creditCardFormParams?: PaymentCardTextFieldParams | null
+  creditCardToken?: StripeToken | null
 }
 
 export class PaymentInfo extends React.Component<PaymentInfoProps> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: PaymentInfoProps) {
     super(props)
   }
 
   presentCreditCardForm() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: CreditCardForm,
       title: "",
       passProps: {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onSubmit: (token, params) => this.onCreditCardAdded(token, params),
+        onSubmit: (token: StripeToken, params: PaymentCardTextFieldParams) =>
+          this.onCreditCardAdded(token, params),
         params: this.props.creditCardFormParams,
         navigator: this.props.navigator,
       },
@@ -42,13 +38,11 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentBillingAddressForm() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    this.props.navigator.push({
+    this.props.navigator?.push({
       component: BillingAddress,
       title: "",
       passProps: {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onSubmit: (address) => this.onBillingAddressAdded(address),
+        onSubmit: (address: Address) => this.onBillingAddressAdded(address),
         billingAddress: this.props.billingAddress,
         navigator: this.props.navigator,
       },
@@ -72,8 +66,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
         <BidInfoRow
           label="Credit card"
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          value={token && this.formatCard(token)}
+          value={token ? this.formatCard(token) : ""}
           onPress={() => this.presentCreditCardForm()}
         />
 
@@ -81,8 +74,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
 
         <BidInfoRow
           label="Billing address"
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          value={billingAddress && this.formatAddress(billingAddress)}
+          value={billingAddress ? this.formatAddress(billingAddress) : ""}
           onPress={() => {
             this.presentBillingAddressForm()
           }}

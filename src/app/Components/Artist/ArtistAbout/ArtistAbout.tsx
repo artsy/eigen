@@ -1,16 +1,16 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
+import Articles from "app/Components/Artist/Articles/Articles"
+import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
+import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
+import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app/Components/Artist/ArtistConsignButton"
+import Biography from "app/Components/Artist/Biography"
+import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
+import { Stack } from "app/Components/Stack"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
-import RelatedArtists from "../../RelatedArtists/RelatedArtists"
-import { Stack } from "../../Stack"
-import { StickyTabPageScrollView } from "../../StickyTabPage/StickyTabPageScrollView"
-import Articles from "../Articles/Articles"
-import { ArtistCollectionsRailFragmentContainer } from "../ArtistArtworks/ArtistCollectionsRail"
-import { ArtistNotableWorksRailFragmentContainer } from "../ArtistArtworks/ArtistNotableWorksRail"
-import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "../ArtistConsignButton"
-import Biography from "../Biography"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 interface Props {
@@ -23,7 +23,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 
   return (
     <StickyTabPageScrollView>
-      <Stack spacing={3} my={2}>
+      <Stack spacing={4} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         <ArtistSeriesMoreSeriesFragmentContainer
           contextScreenOwnerId={artist.internalID}

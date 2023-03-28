@@ -56,8 +56,7 @@ export { Schema }
  *
  *      ```
  */
-export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entity>
-  extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
+export type Track<P = any, S = null, T extends Schema.Global = Schema.Entity> = _Track<T, P, S>
 
 /**
  * A typed tracking-info alias of the default react-tracking `track` function.
@@ -189,39 +188,40 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  * @example
  *
  *       ```ts
- *      import { shallow } from "enzyme"
- *      import Event from "app/NativeModules/Events"
+ *      import { fireEvent } from "@testing-library/react-native"
+ *      import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+ *      import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
  *       *
  *      // Unmock react-tracking so that it will wrap our code
  *      jest.unmock("react-tracking")
  *      import Overview from "../Overview"
  *
- *      // Create a stub for checking the events sent to the native code
- *      // and make it reset between tests
- *      jest.mock("app/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *      // make it reset between tests
  *      beforeEach(jest.resetAllMocks)
  *
  *      it("calls the draft created event", () => {
  *
- *        // Use enzyme to render the component tree
- *        // note that we need to `dive` into the first child component
- *        // so that we get to the real component not the reac-tracking HOC
- *        const overviewComponent = shallow(<Overview [...] />).dive()
- *        const overview = overviewComponent.instance()
+ *        // Use rntl to render the component tree
+ *        const { getByText } = renderWithWrappers(<Overview [...] />)
  *
  *        // Run the function which triggers the tracking call
- *        overview.submissionDraftCreated()
+ *        fireEvent.press(getByText("button"))
  *
  *        // Check that the native event for the analytics call is sent
- *        expect(postEvent).toBeCalledWith({
- *          action_name: "consignmentDraftCreated",
- *          action_type: "success",
- *          context_screen: "ConsignmentsOverview",
- *          context_screen_owner_type: "ConsignmentSubmission",
- *          owner_id: "123",
- *          owner_slug: "123",
- *          owner_type: "ConsignmentSubmission",
- *        })
+ *        expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+ *        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+ *          Array [
+ *           Object {
+ *            "action_name": "consignmentDraftCreated",
+ *            "action_type": "success",
+ *            "context_screen": "ConsignmentsOverview",
+ *            "context_screen_owner_type": "ConsignmentSubmission",
+ *            "owner_id": "123",
+ *            "owner_slug": "123",
+ *            "owner_type": "ConsignmentSubmission",
+ *           },
+ *          ]
+ *        `)
  *      })
  *      ```
  *

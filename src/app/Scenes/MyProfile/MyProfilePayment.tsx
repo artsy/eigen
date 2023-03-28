@@ -1,16 +1,16 @@
-import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
+import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Sans, Spacer } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
@@ -34,7 +34,7 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // When creating a new card we need to wait for a refresh of this screen before navigating back.
 // At the moment the only way for these screens to communicate is via global state, since we can't
 // transmit react contexts accross screens.
-// tslint:disable-next-line:variable-name
+
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
 const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPaginationProp }> = ({
@@ -150,17 +150,17 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
                 onPress={() => onRemove(item.internalID)}
                 hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
               >
-                <Sans size="4t" color="red100">
+                <Text variant="sm-display" color="red100">
                   Remove
-                </Sans>
+                </Text>
               </TouchableOpacity>
             )}
           </Flex>
         )}
         onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer mb={10} />}
+        ItemSeparatorComponent={() => <Spacer y={1} />}
         ListFooterComponent={
-          <Flex pt={creditCards.length === 0 ? 0 : "2"}>
+          <Flex pt={creditCards.length === 0 ? undefined : 2}>
             <MenuItem
               title="Add New Card"
               onPress={() => navigate("/my-profile/payment/new-card")}
@@ -175,7 +175,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
 export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Payment">
-    <Flex px={2} py={15}>
+    <Flex px={2} py="15px">
       {times(2).map((index: number) => (
         <Flex key={index} py={1}>
           <PlaceholderText width={100 + Math.random() * 100} />

@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ShowsRail_showsConnection$data } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer } from "palette"
+import { memo } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -11,13 +12,12 @@ import { useTracking } from "react-tracking"
 interface ShowsRailProps {
   title: string
   showsConnection: ShowsRail_showsConnection$data
-  mb?: number
 }
 
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
-export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb }) => {
+export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection }) => {
   const tracking = useTracking()
 
   const shows = extractNodes(showsConnection)
@@ -29,7 +29,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb
   }
 
   return (
-    <Flex mb={mb}>
+    <Flex>
       <Flex mx={2}>
         <SectionTitle title={title} />
       </Flex>
@@ -38,9 +38,9 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb
           horizontal
           initialNumToRender={2}
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <Spacer ml="2" />}
-          ListFooterComponent={() => <Spacer ml="2" />}
-          ItemSeparatorComponent={() => <Spacer ml="2" />}
+          ListHeaderComponent={() => <Spacer x={2} />}
+          ListFooterComponent={() => <Spacer x={2} />}
+          ItemSeparatorComponent={() => <Spacer x={2} />}
           data={shows.slice(0, NUMBER_OF_SHOWS)}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (
@@ -57,19 +57,21 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb
   )
 }
 
-export const ShowsRailFragmentContainer = createFragmentContainer(ShowsRail, {
-  showsConnection: graphql`
-    fragment ShowsRail_showsConnection on ShowConnection {
-      edges {
-        node {
-          internalID
-          slug
-          ...ShowCard_show
+export const ShowsRailFragmentContainer = memo(
+  createFragmentContainer(ShowsRail, {
+    showsConnection: graphql`
+      fragment ShowsRail_showsConnection on ShowConnection {
+        edges {
+          node {
+            internalID
+            slug
+            ...ShowCard_show
+          }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)
 
 export const tracks = {
   tappedThumbnail: (showID?: string, showSlug?: string, index?: number): TappedShowGroup => ({

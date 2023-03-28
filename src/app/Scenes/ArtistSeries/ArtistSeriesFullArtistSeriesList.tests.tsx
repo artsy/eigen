@@ -1,15 +1,13 @@
 import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { extractText } from "app/tests/extractText"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("Full Artist Series List", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -40,7 +38,7 @@ describe("Full Artist Series List", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -67,8 +65,8 @@ describe("Full Artist Series List", () => {
     const seriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(Touchable)
     seriesButton.props.onPress()
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedArtistSeriesGroup",
           "context_module": "artistSeriesRail",
           "context_screen_owner_id": undefined,

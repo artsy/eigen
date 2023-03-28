@@ -1,5 +1,5 @@
-import { Serif } from "palette"
+import { Text } from "@artsy/palette-mobile"
 
 export const Title = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Serif size="5t" weight="semibold" m={4} textAlign="center" {...props} />
+  <Text variant="sm-display" weight="medium" m={4} textAlign="center" {...props} />
 )

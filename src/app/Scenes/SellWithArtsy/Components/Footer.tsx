@@ -1,86 +1,117 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Box, Button, Flex, Sans, Spacer } from "palette"
-import styled from "styled-components/native"
-import { TextContainer } from "./TextContainer"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { isPad } from "app/utils/hardware"
+import { Button, Separator } from "palette"
 
-const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellFooter,
-  contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
-}
-
-interface FooterProps {
+export const Footer: React.FC<{
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
-}
+}> = ({ onConsignPress }) => {
+  const enableNewSwaLandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  if (enableNewSwaLandingPage) {
+    return <NewFooter onConsignPress={onConsignPress} />
+  }
+  const handleBecomeAPartnerPress = () => {
+    navigate("https://partners.artsy.net")
+  }
 
-export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
-  const handlePress = () => {
-    onConsignPress(consignArgs)
+  const handleHelpCenterPress = () => {
+    navigate("https://support.artsy.net/hc/en-us/categories/360003689533-Sell")
+  }
+
+  const handleFAQPress = () => {
+    navigate("https://artsy.net/sell/faq")
   }
 
   return (
-    <Box px={2} pb={6}>
-      <Sans size="8">Why sell with Artsy?</Sans>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">1</Sans>
-        </NumberBox>
-
-        <TextContainer>
-          <Sans size="4">Simple Steps</Sans>
-          <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
-            Submit your work once, pick the best offer, and ship the work when it sells.
-          </Sans>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">2</Sans>
-        </NumberBox>
-
-        <TextContainer>
-          <Sans size="4">Industry Expertise</Sans>
-          <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
-            Receive virtual valuation and expert guidance on the best sales strategies.
-          </Sans>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">3</Sans>
-        </NumberBox>
-
-        <TextContainer>
-          <Sans size="4">Global Reach</Sans>
-          <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
-            Your work will reach the world's collectors, galleries, and auction houses.
-          </Sans>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={3} />
-
-      <Button testID="footer-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Sans size="3">Submit a work</Sans>
-      </Button>
-    </Box>
+    <Flex mx={2} mb={4}>
+      <Separator />
+      <Text variant="sm" mb={1} mt={2}>
+        Gallerist or Art Dealer?
+      </Text>
+      <Text variant="xs" color="black60" mb={2}>
+        <Text
+          variant="xs"
+          onPress={handleBecomeAPartnerPress}
+          style={{ textDecorationLine: "underline" }}
+        >
+          Become a partner
+        </Text>{" "}
+        to access the world’s largest online art marketplace.
+      </Text>
+      <Separator />
+      <Text variant="sm" mb={1} mt={1} pt={0.5}>
+        Have a Question?
+      </Text>
+      <Text variant="xs" color="black60" mb={2}>
+        Visit our{" "}
+        <Text
+          variant="xs"
+          onPress={handleHelpCenterPress}
+          style={{ textDecorationLine: "underline" }}
+        >
+          Help Center
+        </Text>{" "}
+        or{" "}
+        <Text variant="xs" onPress={handleFAQPress} style={{ textDecorationLine: "underline" }}>
+          read our FAQs
+        </Text>
+        .
+      </Text>
+    </Flex>
   )
 }
 
-const NumberBox = styled(Box)`
-  flex-basis: 30px;
-  flex-shrink: 0;
-  flex-grow: 0;
-`
+const NewFooter: React.FC<{
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}> = ({ onConsignPress }) => {
+  const isTablet = isPad()
+  const buttonText = "Start Selling"
+  return (
+    <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
+      <Text variant="lg-display" textAlign="center">
+        Meet your new advisor.{"\n"}It’s Artsy.
+      </Text>
+      <Spacer y={2} />
+      <Button
+        testID="footer-consign-CTA"
+        block={!isTablet}
+        minWidth={isTablet ? "50%" : undefined}
+        onPress={() => {
+          onConsignPress(tracks.consignArgs(buttonText))
+        }}
+      >
+        {buttonText}
+      </Button>
+      <Spacer y={4} />
+      <Separator />
+      <Flex my={2}>
+        <Text variant="md">Gallerist or Art Dealer?</Text>
+        <Flex></Flex>
+        <Text variant="xs" color="black60">
+          <Text
+            variant="xs"
+            color="black60"
+            onPress={() => navigate("https://partners.artsy.net/")}
+            style={{ textDecorationLine: "underline" }}
+          >
+            {" "}
+            Become a partner
+          </Text>{" "}
+          to access the world’s largest online art marketplace.
+        </Text>
+      </Flex>
+      <Separator />
+      <Spacer y={4} />
+    </Flex>
+  )
+}
+
+const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellFooter,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
+}

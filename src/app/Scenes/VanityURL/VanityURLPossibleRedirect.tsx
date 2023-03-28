@@ -1,9 +1,10 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { Stack } from "app/Components/Stack"
-import { goBack, navigate } from "app/navigation/navigate"
-import { matchRoute } from "app/navigation/routes"
+import { matchRoute } from "app/routes"
 import { GlobalStore, useEnvironment } from "app/store/GlobalStore"
-import { Button, Flex, Spinner, Text } from "palette"
+import { goBack, navigate } from "app/system/navigation/navigate"
+import { Button, Spinner } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
@@ -71,7 +72,7 @@ const Loading: React.FC<{}> = ({}) => {
 const NotFound: React.FC<{ url: string }> = ({ url }) => {
   return (
     <Stack style={{ flex: 1 }} mx={2} alignItems="center" justifyContent="center">
-      <Text variant="lg">404</Text>
+      <Text variant="lg-display">404</Text>
       <Text variant="sm" textAlign="center">
         We can't find that page.
       </Text>

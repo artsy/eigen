@@ -1,47 +1,28 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
 
-jest.unmock("react-relay")
-
 describe("SavedSearches", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<SavedSearchesListTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return <SavedSearchesList me={props.me} />
+      }
+      return null
+    },
+    query: graphql`
+      query SavedSearchesListTestsQuery @relay_test_operation {
+        me {
+          ...SavedSearchesList_me
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<SavedSearchesListTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query SavedSearchesListTestsQuery @relay_test_operation {
-            me {
-              ...SavedSearchesList_me
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (props?.me) {
-            return <SavedSearchesList me={props.me} />
-          }
-
-          return null
-        }}
-        variables={{}}
-      />
-    )
-  }
-
   it("renders correctly", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       SearchCriteriaConnection: () => ({
         edges: [
           {
@@ -67,9 +48,7 @@ describe("SavedSearches", () => {
   })
 
   it("renders an empty message if there are no saved search alerts", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       SearchCriteriaConnection: () => ({
         edges: [],
       }),
@@ -79,9 +58,7 @@ describe("SavedSearches", () => {
   })
 
   it("renders the default name placeholder if there is no name for saved search alert", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       SearchCriteriaConnection: () => ({
         edges: [
           {
@@ -107,17 +84,13 @@ describe("SavedSearches", () => {
   })
 
   it("should display Sort By button", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment)
+    const { getByText } = renderWithRelay()
 
     expect(getByText("Sort By")).toBeTruthy()
   })
 
   it("should display sort options when Sort By button is pressed", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment)
+    const { getByText } = renderWithRelay()
 
     fireEvent.press(getByText("Sort By"))
 
@@ -126,15 +99,13 @@ describe("SavedSearches", () => {
   })
 
   it("should pass selected sort option to query variables", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment)
+    const { getByText, env } = renderWithRelay()
 
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Name (A-Z)"))
 
     await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+      const operation = env.mock.getMostRecentOperation()
       expect(operation.fragment.variables.sort).toBe("NAME_ASC")
     })
   })

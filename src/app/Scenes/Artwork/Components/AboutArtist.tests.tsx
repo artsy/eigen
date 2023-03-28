@@ -1,10 +1,20 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { createMockEnvironment } from "relay-test-utils"
 import { AboutArtist } from "./AboutArtist"
 
 describe("AboutArtist", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
   it("renders about artist correctly for one artist", () => {
-    const { queryByText } = renderWithWrappersTL(<AboutArtist artwork={ArtworkFixture as any} />)
+    const { queryByText } = renderWithHookWrappersTL(
+      <AboutArtist artwork={ArtworkFixture as any} />,
+      mockEnvironment
+    )
 
     expect(queryByText("About the artist")).toBeTruthy()
     expect(queryByText("Abbas Kiarostami")).toBeTruthy()
@@ -15,7 +25,7 @@ describe("AboutArtist", () => {
       ...ArtworkFixture,
       artists: ArtworkFixture.artists.concat(ArtworkFixture.artists),
     }
-    const { queryAllByText, queryByText } = renderWithWrappersTL(
+    const { queryAllByText, queryByText } = renderWithHookWrappersTL(
       <AboutArtist artwork={artworkMultipleArtists as any} />
     )
 

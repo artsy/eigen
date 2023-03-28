@@ -5,12 +5,13 @@ import {
   OwnerType,
   unfollowedArtist,
 } from "@artsy/cohesion"
-import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
+import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { EntityHeader, Sans, Spacer, Touchable } from "palette"
+import { EntityHeader, Touchable } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -79,9 +80,9 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
 
   return (
     <View ref={metaRef}>
-      <Sans size="8" testID="title">
+      <Text variant="lg-display" testID="title">
         {artistSeries.title}
-      </Sans>
+      </Text>
       {!!artist && (
         <TouchableOpacity
           key={artist.id!}
@@ -89,7 +90,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
             navigate(`/artist/${artist.slug}`)
           }}
         >
-          <Spacer my={0.5} />
+          <Spacer y={0.5} />
           <EntityHeader
             smallVariant
             name={artist.name!}
@@ -101,13 +102,13 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
                 haptic
                 noFeedback
               >
-                <Sans style={{ textDecorationLine: "underline" }} size="3">
+                <Text variant="sm" style={{ textDecorationLine: "underline" }}>
                   {artist.isFollowed ? "Following" : "Follow"}
-                </Sans>
+                </Text>
               </Touchable>
             }
           />
-          <Spacer my={0.5} />
+          <Spacer y={0.5} />
         </TouchableOpacity>
       )}
       <ReadMore

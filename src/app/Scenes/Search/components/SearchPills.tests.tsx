@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { PillType } from "../types"
+import { PillType } from "app/Scenes/Search/types"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SearchPills, SearchPillsProps } from "./SearchPills"
 
 const pills: PillType[] = [
@@ -43,7 +43,7 @@ describe("SearchPills", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("First")).toBeTruthy()
     expect(getByText("Second")).toBeTruthy()
@@ -52,7 +52,7 @@ describe("SearchPills", () => {
 
   it('should call "onPillPress" handler when the pill is pressed', () => {
     const onPillPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestRenderer onPillPress={onPillPressMock} />)
+    const { getByText } = renderWithWrappers(<TestRenderer onPillPress={onPillPressMock} />)
 
     fireEvent.press(getByText("Second"))
 
@@ -67,7 +67,7 @@ describe("SearchPills", () => {
 
   it("the selected pill must be displayed correctly", () => {
     const isSelected = (pill: PillType) => pill.key === "second"
-    const { getByA11yState } = renderWithWrappersTL(<TestRenderer isSelected={isSelected} />)
+    const { getByA11yState } = renderWithWrappers(<TestRenderer isSelected={isSelected} />)
 
     expect(getByA11yState({ selected: true })).toHaveTextContent("Second")
   })

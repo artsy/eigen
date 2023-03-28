@@ -1,5 +1,35 @@
 # Troubleshooting
 
+If things are not going right some of the things you can try are
+
+- Pulling from main branch
+- `yarn setup:artsy`
+- `yarn install:all`
+- `yarn relay`
+- `yarn pod-install-repo-update`
+- `open ios/Artsy.xcworkspace` -> Product -> Clean Build Folder (shift + command + K) **then** build the app again
+- `yarn doctor`
+
+Still nothing?
+
+- reinstall eigen
+
+  ![...Have you tried turning it off and on again?](https://y.yarn.co/1ab70c93-fce1-460d-8575-3bac5a666e96_text.gif)
+
+- No, seriously. Try turning the computer off and on again
+
+## asdf
+
+if your problems come from asdf package manager try
+
+- `asdf install node x.y.z`
+- `asdf local node x.y.z`
+
+- `asdf install`
+- `asdf reshim`
+
+- remove `.nvm` if it exists also on your home environment
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
@@ -92,7 +122,7 @@ const source = resolveAssetSource(this.props.source)
 console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
-See [Video.tsx](https://github.com/artsy/emission/tree/master/src/app/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
+See [Video.tsx](https://github.com/artsy/emission/blob/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
 
 ### Update native snapshots
 
@@ -104,3 +134,10 @@ threshold.
 In order to update existing screenshots, run `./scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using `cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
+
+### `TypeError: Cannot read property 'now' of undefined` when running tests
+
+Your test includes/renders components that are using react-native-reanimated, and probably your tests are affected by this.
+Maybe the button you are trying to press in your test is not there yet, or some other animation is messing with your expectations.
+
+Consult with @pvinis/pavlos, but maybe what you need to do is import `beforeTest` and `afterTest` from `"react-native-reanimated/src/reanimated2/jestUtils"` and use them in the `beforeEach` and `afterEach` of your test file.

@@ -1,7 +1,7 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkInfoSection_artwork$data } from "__generated__/ArtworkInfoSection_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Text } from "palette"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -32,7 +32,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
           testID="image"
         />
       ) : (
-        <Box width={60} height={60} marginX={22} backgroundColor="black10" />
+        <Box width={60} height={60} mx="22px" backgroundColor="black10" />
       )}
       <Box style={{ flex: 1, flexShrink: 1 }}>
         <Text pb={1} variant="sm" testID="artistNames">

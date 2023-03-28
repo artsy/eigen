@@ -1,19 +1,19 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
-import { PAGE_SIZE } from "app/Components/constants"
+import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Component } from "react"
-import { RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from "app/Components/constants"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { Spacer } from "palette"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Component } from "react"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   me: FavoriteShows_me$data
@@ -69,7 +69,7 @@ export class Shows extends Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -90,9 +90,9 @@ export class Shows extends Component<Props, State> {
         contentContainerStyle={{ paddingVertical: 15 }}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer y={0.5} />}
         refreshControl={
-          <RefreshControl
+          <StickTabPageRefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />
@@ -135,8 +135,7 @@ const FavoriteShowsContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.shows
+      return props?.me?.followsAndSaves?.shows
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

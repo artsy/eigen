@@ -1,6 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
+import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
@@ -9,7 +11,7 @@ import {
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import _ from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -42,7 +44,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         context_screen_owner_type: OwnerType.articles,
       })}
     >
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
         <Separator />
         <FlatList
           numColumns={numColumns}
@@ -65,15 +67,15 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
           ListFooterComponent={() => (
             <Flex
               alignItems="center"
               justifyContent="center"
-              p="3"
-              pb="5"
+              p={4}
+              pb={6}
               style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
             >
               <ActivityIndicator />
@@ -92,7 +94,7 @@ export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, in
   const numColumns = useNumColumns()
 
   if (numColumns === 1) {
-    return <Flex mx="2">{children}</Flex>
+    return <Flex mx={2}>{children}</Flex>
   }
 
   const ml = index % numColumns === 0 ? 2 : 1
@@ -106,8 +108,8 @@ export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, in
 }
 
 export const useNumColumns = () => {
-  const { width, orientation } = useScreenDimensions()
-  const isTablet = width > 700
+  const { orientation } = useScreenDimensions()
+  const isTablet = isPad()
 
   if (!isTablet) {
     return 1
@@ -121,7 +123,13 @@ export const ArticlesPlaceholder = () => {
 
   return (
     <ProvidePlaceholderContext>
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+      <Flex
+        testID="articles-screen-placeholder"
+        flexDirection="column"
+        justifyContent="space-between"
+        height="100%"
+        pb="8px"
+      >
         <Separator />
         <FlatList
           numColumns={numColumns}
@@ -141,11 +149,11 @@ export const ArticlesPlaceholder = () => {
                   marginTop={1}
                 />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-                <Spacer mb={2} />
+                <Spacer y={2} />
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
           onEndReachedThreshold={1}
         />
       </Flex>
@@ -165,7 +173,7 @@ export const tracks = {
 }
 
 export const ArticlesHeader = ({ title = "" }) => (
-  <Text mx="2" variant="lg" mb={1} mt={6}>
+  <Text mx={2} variant="lg-display" mb={1} mt={6}>
     {title}
   </Text>
 )

@@ -1,9 +1,9 @@
-import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
+import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Text } from "palette"
 import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -12,7 +12,8 @@ const PAGE_SIZE = 20
 export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
     AuctionResultsForArtistsYouCollectScreenQuery,
-    articlesQueryVariables
+    articlesQueryVariables,
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -69,7 +70,7 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
-      <Text variant="lg" mb={0.5}>
+      <Text variant="lg-display" mb={0.5}>
         Recently Sold at Auction
       </Text>
       <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>
@@ -81,7 +82,7 @@ const auctionResultsForArtistsYouCollectFragment = graphql`
   fragment AuctionResultsForArtistsYouCollect_me on Me
   @refetchable(queryName: "AuctionResultsForArtistsYouCollect_meRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-    myCollectionAuctionResults(first: $count, after: $after)
+    myCollectionAuctionResults(first: $count, after: $after, state: PAST)
       @connection(key: "AuctionResults_myCollectionAuctionResults") {
       totalCount
       edges {

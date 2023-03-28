@@ -14,13 +14,16 @@ Links:
 
 ## I want to write a test.
 
-- We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
+- We use `@testing-library/react-native` and our helper `renderWithWrappers`.
 - We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
 Example Links:
+
 - [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
 - [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
 - [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
+
+Read more about how we do testing on [docs/testing.md](docs/testing.md)
 
 ## I want to write a test with relay.
 
@@ -101,3 +104,15 @@ One good example is in [OnboardingLogin.tsx](src/app/Scenes/Onboarding/Onboardin
 Links:
 
 - [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx)
+
+## I want to do an animation.
+
+We use `react-native-reanimated` for that.
+Here are some examples.
+
+Links:
+
+- [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx)
+- [Search.tsx](src/app/Scenes/Search/Search.tsx)
+- [AnimatableHeaderLargeTitle.tsx](src/app/Components/AnimatableHeader/AnimatableHeaderLargeTitle.tsx)
+- [AnimatableHeader.tsx](src/app/Components/AnimatableHeader/AnimatableHeader.tsx)

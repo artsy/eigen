@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import * as navigate from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import * as navigate from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PartnerSubscriberBanner } from "./PartnerSubscriberBanner"
 
 const partner = { name: "Cool Gallery", hasFairPartnership: false }
@@ -11,7 +11,7 @@ describe("CustomPriceInput", () => {
   }
 
   it("correctly displays title when gallery has fair partnership", () => {
-    const { findByText } = renderWithWrappersTL(
+    const { findByText } = renderWithWrappers(
       <TestWrapper partner={{ ...partner, hasFairPartnership: true }} />
     )
     expect(
@@ -22,19 +22,19 @@ describe("CustomPriceInput", () => {
   })
 
   it("correctly displays title when gallery does not have fair partnership", () => {
-    const { findByText } = renderWithWrappersTL(<TestWrapper partner={partner} />)
+    const { findByText } = renderWithWrappers(<TestWrapper partner={partner} />)
     expect(
       findByText("Cool Gallery is not currently an Artsy partner and does not have a full profile.")
     ).toBeTruthy()
   })
 
   it(`displays "Are you a representative of Cool Gallery?"`, () => {
-    const { findByText } = renderWithWrappersTL(<TestWrapper partner={{ partner }} />)
+    const { findByText } = renderWithWrappers(<TestWrapper partner={{ partner }} />)
     expect(findByText("Are you a representative of Cool Gallery?")).toBeTruthy()
   })
 
   it(`renders link which navigates to "https://partners.artsy.net/gallery-partnerships"`, () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper partner={partner} />)
+    const { getByText } = renderWithWrappers(<TestWrapper partner={partner} />)
     const navigateSpy = jest.spyOn(navigate, "navigate")
     const link = getByText("Learn about Artsy gallery partnerships.")
     expect(link).toBeTruthy()

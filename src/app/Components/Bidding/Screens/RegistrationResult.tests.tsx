@@ -1,18 +1,16 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-
-import { Button, LinkText } from "palette"
-import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
-
-import { dismissModal, navigate } from "app/navigation/navigate"
+import { LinkText } from "@artsy/palette-mobile"
+import { Icon20 } from "app/Components/Bidding/Components/Icon"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Button } from "palette"
 
 import { Linking } from "react-native"
-
-import { extractText } from "app/tests/extractText"
-import { Icon20 } from "../Components/Icon"
+import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RegistrationResult
         status={RegistrationStatus.RegistrationStatusPending}
         needsIdentityVerification={false}
@@ -28,7 +26,7 @@ describe("Registration result component", () => {
   })
 
   it("renders registration pending with an explanation about IDV", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RegistrationResult
         status={RegistrationStatus.RegistrationStatusPending}
         needsIdentityVerification
@@ -45,7 +43,7 @@ describe("Registration result component", () => {
   })
 
   it("does not render the icon when the registration status is pending", () => {
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
     )
 
@@ -53,14 +51,14 @@ describe("Registration result component", () => {
   })
 
   it("renders registration complete properly", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )
     expect(extractText(tree.root)).toMatch("Registration complete")
   })
 
   it("renders registration error properly", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
     )
 
@@ -70,7 +68,7 @@ describe("Registration result component", () => {
   })
 
   it("renders an error screen when the status is a network error", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
     )
 
@@ -82,7 +80,7 @@ describe("Registration result component", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
     )
     await component.root.findByType(LinkText).props.onPress()
@@ -90,8 +88,10 @@ describe("Registration result component", () => {
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
-    jest.useFakeTimers()
-    const component = renderWithWrappers(
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
+    const component = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )
     component.root.findByType(Button).props.onPress()

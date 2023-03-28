@@ -1,7 +1,7 @@
+import { Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { Box } from "palette"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -24,7 +24,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             screenOptions={{
               ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
-              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
             }}
           >

@@ -1,11 +1,12 @@
-import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
+import { Flex } from "@artsy/palette-mobile"
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { Modal } from "app/Components/Modal"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
-import { Button, Flex } from "palette"
+import { Button } from "palette"
 import { Component } from "react"
 import { View } from "react-native"
 import {
@@ -44,6 +45,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<RequestConditionReportMutation["response"]>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
@@ -58,8 +60,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           }
         `,
         variables: {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          input: { saleArtworkID: artwork.saleArtwork.internalID },
+          input: { saleArtworkID: artwork.saleArtwork!.internalID },
         },
       })
     })
@@ -68,7 +69,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
   @track({
     action_type: Schema.ActionTypes.Fail,
   })
-  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>) {
+  presentErrorModal(errors: Error | ReadonlyArray<PayloadError> | null) {
     console.error("RequestConditionReport.tsx", errors)
     const errorMessage = "There was a problem processing your request. Please try again."
     this.setState({ showErrorModal: true, errorModalText: errorMessage })
@@ -92,7 +93,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           this.presentErrorModal(null)
         }
         this.setState({ requestingConditionReport: false })
@@ -115,7 +115,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
       errorModalText,
       showConditionReportRequestedModal,
     } = this.state
-
     const conditionReportText = `We have received your request.\nThe condition report will be sent to ${me?.email}.\nFor questions contact [specialist@artsy.net](mailto:specialist@artsy.net).`
 
     return (
@@ -123,14 +122,14 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         <Button
           mt={1}
           size="small"
-          variant="fillGray"
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >
-          Request condition report
+          Request a Report
         </Button>
         <Flex height={0}>
           <Modal
+            accessibilityLabel="Condition Report Requested Error Modal"
             textAlign="center"
             visible={showErrorModal}
             headerText="An error occurred"
@@ -138,6 +137,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
             closeModal={this.closeModals.bind(this)}
           />
           <Modal
+            accessibilityLabel="Condition Report Requested Modal"
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
@@ -170,8 +170,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
       `}
       render={({ props }) => {
         if (props) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
+          return <RequestConditionReportFragmentContainer artwork={props.artwork!} me={props.me!} />
         } else {
           return null
         }

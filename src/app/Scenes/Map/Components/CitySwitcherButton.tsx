@@ -1,11 +1,11 @@
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
-import ChevronIcon from "app/Icons/ChevronIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { City } from "app/Scenes/Map/types"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
-import { City } from "../types"
 
 // Because it will raise errors in VS Code
 const shadowProps = `
@@ -16,8 +16,8 @@ shadow-opacity: 0.3;
 
 const Background = styled(Flex)`
   background: white;
-  height: 40;
-  border-radius: 20;
+  height: 40px;
+  border-radius: 20px;
   ${shadowProps};
 `
 
@@ -25,12 +25,11 @@ interface Props {
   onPress?: () => void
   city: City
   isLoading: boolean
-  sponsoredContentUrl?: string
 }
 
 export class CitySwitcherButton extends Component<Props> {
   render() {
-    const { city, isLoading, sponsoredContentUrl } = this.props
+    const { city, isLoading } = this.props
     return isLoading || city ? (
       <ClassTheme>
         {({ color }) => (
@@ -41,9 +40,7 @@ export class CitySwitcherButton extends Component<Props> {
               }
               LegacyNativeModules.ARNotificationsManager.postNotificationName(
                 "ARLocalDiscoveryOpenCityPicker",
-                {
-                  ...(sponsoredContentUrl && { sponsoredContentUrl }),
-                }
+                {}
               )
             }}
           >
@@ -59,10 +56,10 @@ export class CitySwitcherButton extends Component<Props> {
             >
               {city ? (
                 <>
-                  <Sans size="3t" weight="medium" ml={3}>
+                  <Text variant="sm" weight="medium" ml={4}>
                     {city.name}
-                  </Sans>
-                  <Box ml={2} mr={3}>
+                  </Text>
+                  <Box ml={2} mr={4}>
                     <ChevronIcon
                       initialDirection="down"
                       // @ts-ignore

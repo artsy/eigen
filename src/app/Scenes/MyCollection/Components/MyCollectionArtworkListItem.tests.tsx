@@ -1,14 +1,14 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import * as LocalImageStore from "app/utils/LocalImageStore"
+import { LocalImage } from "app/utils/LocalImageStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
-
-jest.unmock("react-relay")
 
 describe("MyCollectionArtworkListItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -50,7 +50,7 @@ describe("MyCollectionArtworkListItem", () => {
   }
 
   it("renders the fields correctly", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -70,7 +70,7 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("navigates to artwork details on tap", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     resolveData({
       Artwork: () => ({
@@ -81,6 +81,9 @@ describe("MyCollectionArtworkListItem", () => {
         },
         images: null,
         medium: "artwork medium",
+        mediumType: {
+          name: "artwork category",
+        },
       }),
     })
 
@@ -91,12 +94,13 @@ describe("MyCollectionArtworkListItem", () => {
       passProps: {
         medium: "artwork medium",
         artistInternalID: "artist-id",
+        category: "artwork category",
       },
     })
   })
 
   it("tracks analytics event on tap", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -122,7 +126,7 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("renders the high demand icon if the artists is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -141,5 +145,25 @@ describe("MyCollectionArtworkListItem", () => {
     })
 
     expect(getByTestId("test-high-demand-icon")).toBeTruthy()
+  })
+
+  describe("Images", () => {
+    it("displays local image if available", () => {
+      const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
+      const localImage: LocalImage = {
+        path: "some-local-path",
+        width: 10,
+        height: 10,
+      }
+
+      localImageStoreMock.mockImplementation(async () => localImage)
+
+      act(async () => {
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
+        const image = getByTestId("Image-Local")
+        expect(image).toBeDefined()
+        expect(image.props.source).toEqual({ uri: "some-local-path" })
+      })
+    })
   })
 })

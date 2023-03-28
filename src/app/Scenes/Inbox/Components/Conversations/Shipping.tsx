@@ -1,6 +1,6 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Shipping_order$data } from "__generated__/Shipping_order.graphql"
-import { track as _track } from "app/utils/track"
-import { Flex, Separator, Text } from "palette"
+import { Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ShippingProps {
@@ -25,7 +25,7 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
     return (
       <>
         <Flex flexDirection="column" p={2} key="support-section">
-          <Text variant="md" mb={1} weight="medium">
+          <Text variant="sm-display" mb={1} weight="medium">
             Ship to
           </Text>
 
@@ -45,7 +45,7 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
   return (
     <>
       <Flex flexDirection="column" p={2} key="support-section">
-        <Text variant="md" mb={1} weight="medium">
+        <Text variant="sm-display" mb={1} weight="medium">
           {`Pick up (${order.lineItems.edges[0].node?.artwork?.shippingOrigin})`}
         </Text>
 

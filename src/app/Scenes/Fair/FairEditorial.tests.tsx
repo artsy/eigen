@@ -1,20 +1,19 @@
+import { Text } from "@artsy/palette-mobile"
 import { FairEditorialTestsQuery } from "__generated__/FairEditorialTestsQuery.graphql"
 import { FairEditorialFragmentContainer } from "app/Scenes/Fair/Components/FairEditorial"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text, Touchable } from "palette"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("FairEditorial", () => {
   const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairEditorialTestsQuery>
         environment={env}
         query={graphql`

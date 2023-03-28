@@ -1,42 +1,65 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { createEnvironment } from "app/relay/createEnvironment"
-import {
-  metaphysicsURLMiddleware,
-  persistedQueryMiddleware,
-} from "app/relay/middlewares/metaphysicsMiddleware"
-import { simpleLoggerMiddleware } from "app/relay/middlewares/simpleLoggerMiddleware"
+import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Action, action, Thunk, thunk } from "easy-peasy"
+import { bottomTabsRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { Action, action, computed, Computed, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
+export interface UnreadCounts {
+  conversations: number
+}
+
+interface UnseenCounts {
+  notifications: number
+}
+
 export interface BottomTabsModel {
   sessionState: {
-    unreadConversationCount: number
+    unreadCounts: UnreadCounts
+    unseenCounts: UnseenCounts
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
-  unreadConversationCountChanged: Action<BottomTabsModel, number>
+  syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
+  setUnreadConversationsCount: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
+  setUnseenNotificationsCount: Action<BottomTabsModel, number>
+  fetchNotificationsInfo: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
+  hasUnseenNotifications: Computed<this, boolean>
 }
 
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
-    unreadConversationCount: 0,
+    unreadCounts: {
+      conversations: 0,
+    },
+    unseenCounts: {
+      notifications: 0,
+    },
     tabProps: {},
     selectedTab: "home",
   },
-  unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadConversationCount = unreadConversationCount
+  syncApplicationIconBadgeNumber: thunkOn(
+    (actions) => [actions.setUnreadConversationsCount, actions.setUnseenNotificationsCount],
+    (_actions, _payload, { getState }) => {
+      const { sessionState } = getState()
+      const { conversations } = sessionState.unreadCounts
+      const { notifications } = sessionState.unseenCounts
+      const totalCount = notifications + conversations
+
+      GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
+    }
+  ),
+  setUnreadConversationsCount: action((state, payload) => {
+    state.sessionState.unreadCounts.conversations = payload
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        createEnvironment([
-          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-        ]),
+        bottomTabsRelayEnvironment,
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {
@@ -50,11 +73,10 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         }
       ).toPromise()
 
-      if (result?.me?.unreadConversationCount != null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(
-          result.me.unreadConversationCount
-        )
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+      const conversationsCount = result?.me?.unreadConversationCount
+
+      if (conversationsCount !== null) {
+        GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -67,7 +89,46 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
+  setUnseenNotificationsCount: action((state, payload) => {
+    state.sessionState.unseenCounts.notifications = payload
+  }),
+  fetchNotificationsInfo: thunk(async () => {
+    try {
+      const query = fetchQuery<BottomTabsModelFetchNotificationsInfoQuery>(
+        bottomTabsRelayEnvironment,
+        graphql`
+          query BottomTabsModelFetchNotificationsInfoQuery {
+            me @principalField {
+              unreadConversationCount
+              unseenNotificationsCount
+            }
+          }
+        `,
+        {},
+        {
+          fetchPolicy: "network-only",
+        }
+      )
+      const result = await query.toPromise()
+
+      const conversations = result?.me?.unreadConversationCount ?? 0
+      const unseenNotifications = result?.me?.unseenNotificationsCount ?? 0
+
+      GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversations)
+      GlobalStore.actions.bottomTabs.setUnseenNotificationsCount(unseenNotifications)
+    } catch (e) {
+      if (__DEV__) {
+        console.warn(
+          "[DEV] Couldn't fetch unread counts.\n\nIf it's happening reliably for you, there's a problem and you should look into it."
+        )
+        console.log(e)
+      } else {
+        captureException(e)
+      }
+    }
+  }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),
+  hasUnseenNotifications: computed((state) => state.sessionState.unseenCounts.notifications > 0),
 })

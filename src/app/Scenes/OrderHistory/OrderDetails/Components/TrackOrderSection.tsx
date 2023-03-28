@@ -1,9 +1,10 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
+import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import { DateTime } from "luxon"
-import { Button, Flex, Text } from "palette"
+import { Button } from "palette"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -21,7 +22,7 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
   const [fulfillment] = extractNodes(fulfillments)
   const { estimatedDelivery, createdAt } = fulfillment || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(section.state as OrderState, lineItem)
+  const orderStatus = getOrderStatus(section.displayState)
   const deliveredStatus = orderStatus === "delivered"
 
   return (
@@ -30,18 +31,21 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
         <Text testID="orderStatus" variant="sm" style={{ textTransform: "capitalize" }}>
           {orderStatus}
         </Text>
-        {!!shipment?.trackingNumber ? (
+        {!!shipment?.trackingNumber && (
           <Text testID="trackingNumber" variant="sm" color="black60">
             Tracking:&nbsp;
             <Text variant="sm" color="black60" weight="medium">
               {shipment?.trackingNumber}
             </Text>
           </Text>
-        ) : (
+        )}
+
+        {!!trackingUrl === false && (
           <Text testID="noTrackingNumber" variant="sm" color="black60">
             Tracking not available
           </Text>
         )}
+
         {(!!shipment?.deliveryStart || !!createdAt) && (
           <Text testID="shippedOn" variant="sm" color="black60">
             Shipped on&nbsp;
@@ -95,7 +99,7 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
 export const TrackOrderSectionFragmentContainer = createFragmentContainer(TrackOrderSection, {
   section: graphql`
     fragment TrackOrderSection_section on CommerceOrder {
-      state
+      displayState
       lineItems(first: 1) {
         edges {
           node {

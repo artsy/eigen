@@ -1,9 +1,10 @@
-import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
-import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
+import { goBack } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Button, Join, Separator, Spacer, Text } from "palette"
+import { Button, Join, Separator } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -18,12 +19,12 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
 
   return (
     <ScrollView>
-      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-        <Box my={3}>
-          <Join separator={<Spacer my={1.5} />}>
-            <Text variant="lg">Artwork classifications</Text>
+      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
+        <Box my={4}>
+          <Join separator={<Spacer y={2} />}>
+            <Text variant="lg-display">Artwork classifications</Text>
 
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {artworkAttributionClasses.map((attributionClass, index) => {
                 return (
                   <React.Fragment key={index}>

@@ -1,12 +1,13 @@
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-
-import { navigate } from "app/navigation/navigate"
 import DarkNavigationButton from "./DarkNavigationButton"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<DarkNavigationButton title="uI am a navigation button" href="/some/path" />)
+  renderWithWrappersLEGACY(
+    <DarkNavigationButton title="uI am a navigation button" href="/some/path" />
+  )
 })
 
 describe("routing", () => {

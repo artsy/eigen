@@ -1,6 +1,7 @@
+import { Flex } from "@artsy/palette-mobile"
 import { SaleActiveBids_me$data } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Flex, Separator } from "palette"
+import { Separator } from "palette"
 import React, { useEffect, useRef } from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -42,7 +43,7 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
   }
 
   return (
-    <Flex px={2} mt={3}>
+    <Flex px={2} mt={4}>
       <FlatList
         data={me.lotStandings}
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}

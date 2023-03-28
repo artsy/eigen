@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text, View } from "react-native"
 import { Wrap } from "./Wrap"
 
@@ -14,13 +14,13 @@ describe("Wrap", () => {
   )
 
   it("renders transparently when not wrapping", async () => {
-    const { queryByTestId } = renderWithWrappersTL(<TestComp force={false} />)
+    const { queryByTestId } = renderWithWrappers(<TestComp force={false} />)
     expect(queryByTestId("wrapper-view")).toBeFalsy()
     expect(queryByTestId("inner-text")).toBeTruthy()
   })
 
   it("renders transparently when wrapping", async () => {
-    const { queryByTestId } = renderWithWrappersTL(<TestComp force />)
+    const { queryByTestId } = renderWithWrappers(<TestComp force />)
 
     expect(queryByTestId("wrapper-view")).toBeTruthy()
     expect(queryByTestId("inner-text")).toBeTruthy()
@@ -29,7 +29,7 @@ describe("Wrap", () => {
   describe("edge cases", () => {
     it("doesn't allow zero Wrap.Content", async () => {
       expect(() =>
-        renderWithWrappersTL(
+        renderWithWrappers(
           <Wrap if={false}>
             <Text testID="inner-text">wow</Text>
           </Wrap>
@@ -39,7 +39,7 @@ describe("Wrap", () => {
 
     it("doesn't allow more than exactly one Wrap.Content", async () => {
       expect(() =>
-        renderWithWrappersTL(
+        renderWithWrappers(
           <Wrap if={false}>
             <View testID="wrapper-view">
               <Wrap.Content>
@@ -56,7 +56,7 @@ describe("Wrap", () => {
 
     it("doesn't allow more than exactly one Wrap.Content even if wrapped", async () => {
       expect(() =>
-        renderWithWrappersTL(
+        renderWithWrappers(
           <Wrap if={false}>
             <View testID="wrapper-view">
               <Wrap.Content>

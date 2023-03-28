@@ -1,27 +1,25 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { RenderAPI } from "@testing-library/react-native"
+import { Registration_me$data } from "__generated__/Registration_me.graphql"
+import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
+import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import {
   RegistrationResult,
   RegistrationStatus,
 } from "app/Components/Bidding/Screens/RegistrationResult"
+import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Button, Checkbox, LinkText, Sans, Text } from "palette"
+import { mockTimezone } from "app/utils/tests/mockTimezone"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Button, Checkbox } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-import { BidInfoRow } from "../Components/BidInfoRow"
-import { Address } from "../types"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
-
-import { Registration_me$data } from "__generated__/Registration_me.graphql"
-import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
-// This lets us import the actual react-relay module, and replace specific functions within it with mocks.
-jest.unmock("react-relay")
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -34,7 +32,9 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
-jest.useFakeTimers()
+jest.useFakeTimers({
+  legacyFakeTimers: true,
+})
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
@@ -43,7 +43,7 @@ beforeEach(() => {
 })
 
 it("renders properly for a user without a credit card", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
   )
 
@@ -56,7 +56,7 @@ describe("User does not have a valid phone number", () => {
   let rendered: RenderAPI
 
   beforeEach(() => {
-    rendered = renderWithWrappersTL(<Registration {...initialPropsForUserWithoutPhone} />)
+    rendered = renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
   })
 
   it("renders properly for a user without a phone number", () => {
@@ -65,7 +65,7 @@ describe("User does not have a valid phone number", () => {
 })
 
 it("renders properly for a user with a credit card and phone", () => {
-  const rendered = renderWithWrappersTL(
+  const rendered = renderWithWrappers(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
 
@@ -75,13 +75,13 @@ it("renders properly for a user with a credit card and phone", () => {
 })
 
 it("renders properly for a verified user with a credit card and phone", () => {
-  const rendered = renderWithWrappersTL(
+  const rendered = renderWithWrappers(
     <Registration
       {...initialProps}
       sale={{ ...sale, requireIdentityVerification: true }}
       me={{
         hasCreditCards: true,
-        identityVerified: true,
+        isIdentityVerified: true,
         phoneNumber: { isValid: true },
       }}
     />
@@ -95,7 +95,7 @@ it("renders properly for a verified user with a credit card and phone", () => {
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderWithWrappers(
+  const billingAddressRow = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
   ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
@@ -109,7 +109,7 @@ it("shows the billing address that the user typed in the billing address form", 
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-  const creditcardRow = renderWithWrappers(
+  const creditcardRow = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
   ).root.findAllByType(BidInfoRow)[0]
 
@@ -119,7 +119,7 @@ it("shows the credit card form when the user tap the edit text in the credit car
 })
 
 it("shows the option for entering payment information if the user does not have a credit card on file", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
   )
 
@@ -128,7 +128,7 @@ it("shows the option for entering payment information if the user does not have 
 })
 
 it("shows no option for entering payment information if the user has a credit card on file", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
 
@@ -146,8 +146,8 @@ describe("when the sale requires identity verification", () => {
   }
 
   it("displays information about IDV if the user is not verified", () => {
-    const component = renderWithWrappers(
-      <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: false } as any} />
+    const component = renderWithWrappersLEGACY(
+      <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: false } as any} />
     )
 
     expect(component.root.findAllByType(Text)[6].props.children).toEqual(
@@ -156,8 +156,8 @@ describe("when the sale requires identity verification", () => {
   })
 
   it("does not display information about IDV if the user is verified", () => {
-    const component = renderWithWrappers(
-      <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: true } as any} />
+    const component = renderWithWrappersLEGACY(
+      <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: true } as any} />
     )
 
     expect(component.root.findAllByType(Text).map(({ props }) => props.children)).not.toContain(
@@ -188,7 +188,7 @@ describe("when pressing register button", () => {
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
     component.root.findByType(Registration).instance.setState({
@@ -197,7 +197,7 @@ describe("when pressing register button", () => {
       creditCardToken: stripeToken,
     })
 
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
     expect(relay.commitMutation).toHaveBeenCalledWith(
       expect.any(Object),
       expect.objectContaining({
@@ -233,13 +233,13 @@ describe("when pressing register button", () => {
   })
 
   it("when there is a credit card on file, it commits mutation", () => {
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
     component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
 
     relay.commitMutation = jest.fn()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
   })
@@ -248,7 +248,7 @@ describe("when pressing register button", () => {
     const navigator = { push: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} navigator={navigator} />
     )
 
@@ -258,7 +258,7 @@ describe("when pressing register button", () => {
       billingAddress,
     })
 
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
@@ -295,16 +295,16 @@ describe("when pressing register button", () => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
@@ -324,7 +324,7 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
@@ -332,11 +332,11 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -356,17 +356,17 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -380,7 +380,7 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
@@ -388,9 +388,9 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
 
@@ -415,17 +415,17 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "Your card's security code is incorrect.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -452,7 +452,7 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
 
@@ -460,11 +460,11 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -489,17 +489,17 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -519,14 +519,14 @@ describe("when pressing register button", () => {
       .fn()
       .mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
@@ -545,14 +545,14 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
@@ -569,12 +569,12 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -603,10 +603,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(<Registration {...propsWithIDVSale} />)
+    const component = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
@@ -624,12 +624,12 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(
+    const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
@@ -660,10 +660,10 @@ describe("when pressing register button", () => {
       return null
     }) as any
 
-    const component = renderWithWrappers(<Registration {...propsWithIDVSale} />)
+    const component = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
@@ -752,7 +752,7 @@ const initialProps = {
 
 const me: Partial<Registration_me$data> = {
   hasCreditCards: false,
-  identityVerified: false,
+  isIdentityVerified: false,
   phoneNumber: {
     isValid: false,
     display: null,

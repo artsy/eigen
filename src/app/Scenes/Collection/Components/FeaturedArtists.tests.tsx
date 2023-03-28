@@ -1,14 +1,13 @@
 import { fireEvent } from "@testing-library/react-native"
 import { FeaturedArtistsTestsQuery } from "__generated__/FeaturedArtistsTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { postEventToProviders } from "app/utils/track/providers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "./FeaturedArtists"
 
-jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"] =
@@ -134,7 +133,7 @@ describe("FeaturedArtists", () => {
   }
 
   it("renders an EntityHeader for each featured artist", async () => {
-    const { queryByText } = await renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = await renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({ ...FeaturedArtistCollectionFixture }),
@@ -149,7 +148,7 @@ describe("FeaturedArtists", () => {
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const { queryByText } = await renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = await renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({
@@ -169,7 +168,7 @@ describe("FeaturedArtists", () => {
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
@@ -186,7 +185,7 @@ describe("FeaturedArtists", () => {
 
   describe("View all", () => {
     it("shows more artists when 'View more' is tapped", async () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
@@ -203,7 +202,7 @@ describe("FeaturedArtists", () => {
     })
 
     it("tracks an event when 'View more' is tapped", async () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({

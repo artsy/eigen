@@ -1,13 +1,11 @@
 import { SaleCardTestsQuery } from "__generated__/SaleCardTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CompleteRegistrationCTAWrapper } from "./Components/CompleteRegistrationCTAWrapper"
 import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "./Components/SaleCard"
-
-jest.unmock("react-relay")
 
 describe("SaleCard", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -41,7 +39,7 @@ describe("SaleCard", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -72,7 +70,7 @@ describe("SaleCard", () => {
         requireIdentityVerification: true,
       }),
       Me: () => ({
-        identityVerified: false,
+        isIdentityVerified: false,
         pendingIdentityVerification: { internalID: "idv-id" },
       }),
     })

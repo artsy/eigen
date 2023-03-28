@@ -1,8 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { CollectionHubsRails_collection$data } from "__generated__/CollectionHubsRails_collection.graphql"
 import { CollectionHubsRails_linkedCollections$data } from "__generated__/CollectionHubsRails_linkedCollections.graphql"
 import { CollectionArtistSeriesRailContainer as TrendingArtistSeriesRail } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { FeaturedCollectionsRailContainer as FeaturedCollectionsRail } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
-import { Box } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { OtherCollectionsRailContainer as OtherCollectionsRail } from "./OtherCollections/OtherCollectionsRail"
 

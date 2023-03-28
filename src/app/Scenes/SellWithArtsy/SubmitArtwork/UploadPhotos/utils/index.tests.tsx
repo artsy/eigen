@@ -1,14 +1,15 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import "react-native"
-
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
-
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SellWithArtsy } from "."
 
-jest.unmock("react-relay")
+jest.mock("../../../../../utils/useStatusBarStyle", () => {
+  return {
+    useLightStatusBarStyle: jest.fn(),
+    useSwitchStatusBarStyle: jest.fn(),
+  }
+})
 
 it("renders without throwing an error", () => {
   const props: any = { navigator: {}, route: {} }
 
-  renderWithWrappersTL(<SellWithArtsy {...props} />)
+  renderWithWrappers(<SellWithArtsy {...props} />)
 })

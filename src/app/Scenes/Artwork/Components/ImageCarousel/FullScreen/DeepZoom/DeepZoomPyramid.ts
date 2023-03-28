@@ -91,6 +91,5 @@ export class DeepZoomPyramid {
     }
   }
 
-  // tslint:disable-next-line:member-ordering
   update = debounce(this._update.bind(this), 16, { trailing: true })
 }

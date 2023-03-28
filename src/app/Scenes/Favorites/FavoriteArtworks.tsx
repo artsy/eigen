@@ -1,18 +1,20 @@
-import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
+import { Spacer, useSpace } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
+import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PAGE_SIZE } from "app/Components/constants"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, ClassTheme } from "palette"
-import { Component } from "react"
-import { RefreshControl } from "react-native"
+import { Button } from "palette"
+import { useEffect, useState } from "react"
+import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -22,39 +24,45 @@ interface Props {
   onDataFetching?: (loading: boolean) => void
 }
 
-interface State {
-  fetchingMoreData: boolean
-  refreshingFromPull: boolean
-}
+const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
+  const { width } = useScreenDimensions()
+  const [refreshingFromPull, setRefreshingFromPull] = useState<boolean>(false)
+  const [fetchingMoreData, setFetchingMoreData] = useState<boolean>(false)
+  const space = useSpace()
 
-export class SavedWorks extends Component<Props, State> {
-  state = {
-    fetchingMoreData: false,
-    refreshingFromPull: false,
+  useEffect(() => {
+    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+
+    return () => {
+      RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+    }
+  }, [])
+
+  const handleRefresh = () => {
+    setRefreshingFromPull(true)
+    relay.refetchConnection(PAGE_SIZE, (error) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("SavedWorks/index.tsx #handleRefresh", error.message)
+      }
+      setRefreshingFromPull(false)
+    })
   }
 
-  componentDidMount = () => {
-    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
-  }
-
-  componentWillUnmount = () => {
-    RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
-  }
-
-  loadMore = () => {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  const loadMore = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
     const updateState = (loading: boolean) => {
-      this.setState({ fetchingMoreData: loading })
-      if (this.props.onDataFetching) {
-        this.props.onDataFetching(loading)
+      setFetchingMoreData(loading)
+      if (onDataFetching) {
+        onDataFetching(loading)
       }
     }
 
     updateState(true)
-    this.props.relay.loadMore(PAGE_SIZE, (error) => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("SavedWorks/index.tsx", error.message)
@@ -63,79 +71,60 @@ export class SavedWorks extends Component<Props, State> {
     })
   }
 
-  handleRefresh = () => {
-    this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("SavedWorks/index.tsx #handleRefresh", error.message)
-      }
-      this.setState({ refreshingFromPull: false })
-    })
-  }
+  const artworks = extractNodes(me?.followsAndSaves?.artworks)
 
-  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
-  render() {
-    const artworks = extractNodes(this.props.me?.followsAndSaves?.artworks)
-
-    if (artworks.length === 0) {
-      return (
-        <StickyTabPageScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshingFromPull}
-              onRefresh={this.handleRefresh}
-            />
-          }
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-        >
-          <ZeroState
-            title="You haven’t saved any works yet"
-            subtitle="Tap the heart on an artwork to save for later."
-            callToAction={
-              <Button
-                size="large"
-                onPress={() => {
-                  navigate("/")
-                }}
-                block
-              >
-                Browse works for you
-              </Button>
-            }
-          />
-        </StickyTabPageScrollView>
-      )
-    }
-
+  if (artworks.length === 0) {
     return (
-      <ClassTheme>
-        {({ space }) => (
-          <StickyTabPageScrollView
-            contentContainerStyle={{ paddingVertical: space(2) }}
-            onEndReached={this.loadMore}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshingFromPull}
-                onRefresh={this.handleRefresh}
+      <StickyTabPageScrollView
+        refreshControl={
+          <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+        }
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
+      >
+        <ZeroState
+          bigTitle="Keep track of artworks you love"
+          subtitle="Tap the heart on an artwork to find it again easily here."
+          image={
+            <>
+              <Spacer y={1} />
+              <Image
+                source={require("images/SavesEmptyStateImage.jpg")}
+                resizeMode="contain"
+                style={{
+                  alignSelf: "center",
+                  marginVertical: space(2),
+                }}
               />
-            }
-          >
-            <GenericGrid
-              artworks={artworks}
-              isLoading={this.state.fetchingMoreData}
-              hidePartner
-              artistNamesTextStyle={{ weight: "regular" }}
-              saleInfoTextStyle={{
-                weight: "medium",
-                color: "black100",
-              }}
-            />
-          </StickyTabPageScrollView>
-        )}
-      </ClassTheme>
+            </>
+          }
+          callToAction={
+            <Button block onPress={() => navigate("/")}>
+              Browse Works
+            </Button>
+          }
+        />
+      </StickyTabPageScrollView>
     )
   }
+
+  return (
+    <StickyTabPageScrollView
+      contentContainerStyle={{ paddingVertical: space(2) }}
+      onEndReached={loadMore}
+      refreshControl={
+        <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+      }
+    >
+      <GenericGrid
+        artworks={artworks}
+        isLoading={fetchingMoreData}
+        hidePartner
+        artistNamesTextStyle={{ weight: "regular" }}
+        saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+        width={width - space(2)}
+      />
+    </StickyTabPageScrollView>
+  )
 }
 
 const FavoriteArtworksContainer = createPaginationContainer(
@@ -169,8 +158,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.artworks
+      return props?.me?.followsAndSaves?.artworks
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

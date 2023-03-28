@@ -1,5 +1,5 @@
 import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { graphql, QueryRenderer } from "react-relay"
 
 interface SearchCriteriaAlertBaseProps {
@@ -21,7 +21,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
         query SavedSearchAlertQuery($savedSearchAlertId: ID!) {
           me {
             savedSearch(id: $savedSearchAlertId) {
-              internalID
               acquireable
               additionalGeneIDs
               artistIDs
@@ -32,7 +31,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               sizes
               height
               inquireableOnly
-              internalID
               locationCities
               majorPeriods
               materialsTerms

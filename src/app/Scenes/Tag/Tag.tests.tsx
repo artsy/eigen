@@ -3,15 +3,13 @@ import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Tag/About"
 import { TagArtworks } from "app/Components/Tag/TagArtworks"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "./Tag"
-
-jest.unmock("react-relay")
 
 describe("Tag", () => {
   const tagID = "skull"
@@ -58,12 +56,12 @@ describe("Tag", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
   })
 
   it("returns all tabs", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
@@ -71,7 +69,7 @@ describe("Tag", () => {
   })
 
   it('don\'t render "about" tab without description', async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockMostRecentOperation({
       Tag() {
         return {
@@ -85,7 +83,7 @@ describe("Tag", () => {
   })
 
   it("renders filter modal", async () => {
-    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())

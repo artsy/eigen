@@ -1,8 +1,8 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "app/NativeModules/NotificationsManager"
-import { navigate, navigationEvents } from "app/navigation/navigate"
-import { InfoType } from "app/utils/track/providers"
+import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
+import { InfoType } from "app/utils/track/providers"
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { GlobalStore } from "./GlobalStore"
 
@@ -89,10 +89,11 @@ listenToNativeEvents((event: NativeEvent) => {
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
       return
-    case "REQUEST_NAVIGATION":
+    case "REQUEST_NAVIGATION": {
       const { route, props } = event.payload
       navigate(route, { passProps: props })
       return
+    }
     case "MODAL_DISMISSED":
       navigationEvents.emit("modalDismissed")
       return

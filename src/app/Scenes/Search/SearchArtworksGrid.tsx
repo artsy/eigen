@@ -1,17 +1,17 @@
+import { OwnerType } from "@artsy/cohesion"
+import { quoteLeft, quoteRight, Box, useTheme, Text } from "@artsy/palette-mobile"
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
-import { OwnerType } from "@artsy/cohesion"
-import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -36,7 +36,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     (state) => state.setFiltersCountAction
   )
 
-  const handleCloseFilterArtworksModal = (withFiltersApplying: boolean = false) => {
+  const handleCloseFilterArtworksModal = (withFiltersApplying = false) => {
     if (!withFiltersApplying) {
       trackEvent(tracks.closeFilterModal())
     }
@@ -98,11 +98,11 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       {artworksCount === 0 ? (
         <Box mb="80px" pt={6}>
           <Box px={2}>
-            <Text variant="md" textAlign="center">
+            <Text variant="sm-display" textAlign="center">
               Sorry, we couldn’t find any Artworks for {quoteLeft}
               {keyword}.{quoteRight}
             </Text>
-            <Text variant="md" color="black60" textAlign="center">
+            <Text variant="sm-display" color="black60" textAlign="center">
               Please try searching again with a different spelling.
             </Text>
           </Box>
@@ -125,7 +125,7 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
     viewer: graphql`
       fragment SearchArtworksGrid_viewer on Viewer
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
+        count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         keyword: { type: "String" }
         input: { type: "FilterArtworksInput" }

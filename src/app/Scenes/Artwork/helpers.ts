@@ -1,6 +1,6 @@
+import { useSpace } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
 import { findRelayRecord, findRelayRecordByDataID } from "app/utils/relayHelpers"
-import { useSpace } from "palette"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "shared/hooks"
 import { getMeasurements } from "./Components/ImageCarousel/geometry"
@@ -30,7 +30,7 @@ export const getImageDimensionsByImage = (
     height: (image.height as number) || 1000,
   }
 
-  const measurements = getMeasurements({ images: [imageSize], boundingBox })
+  const measurements = getMeasurements({ media: [imageSize], boundingBox })
 
   return {
     width: measurements[0].width,

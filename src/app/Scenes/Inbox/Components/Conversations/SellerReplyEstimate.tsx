@@ -1,6 +1,6 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SellerReplyEstimate_order$data } from "__generated__/SellerReplyEstimate_order.graphql"
-import { track as _track } from "app/utils/track"
-import { Flex, Separator, Text } from "palette"
+import { Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface SellerReplyEstimateProps {
@@ -54,7 +54,7 @@ export const SellerReplyEstimate: React.FC<SellerReplyEstimateProps> = ({ order 
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="md">{message}</Text>
+        <Text variant="sm-display">{message}</Text>
       </Flex>
       <Separator />
     </>

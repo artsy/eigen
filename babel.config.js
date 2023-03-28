@@ -4,44 +4,31 @@ module.exports = (api) => {
   api.cache.forever() // don't call this babel config all the time if it hasn't changed.
 
   return {
+    // plugins run first
+    plugins: [
+      "@babel/plugin-transform-flow-strip-types",
+      ["@babel/plugin-proposal-decorators", { version: "legacy" }],
+      ["@babel/plugin-proposal-private-methods", { loose: true }], // needed for latest jest, must come after decorators
+      ["@babel/plugin-proposal-class-properties", { loose: true }], // must come after decorators
+      "import-graphql", // to enable import syntax for .graphql and .gql files.
+      "relay",
+
+      ["module-resolver", { alias: moduleResolverAlias }],
+      "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
+    ],
+
+    // presets run after
     presets: [
       [
         "module:metro-react-native-babel-preset",
-        {
-          unstable_disableES6Transforms: true,
-          useTransformReactJSXExperimental: true, // this is so `import React from "react"` is not needed.
-        },
+        { useTransformReactJSXExperimental: true }, // this is so `import React from "react"` is not needed.
       ],
-    ],
-    plugins: [
-      ["module-resolver", { alias: moduleResolverAlias }],
-      /**
-       * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
-       * /before/ running any of the other spec transforms that we've added.
-       *
-       * You may think “but golly, doesn't the RN preset already include the plugin that strips Flow type annotations?”
-       * and you wouldn't be wrong; however, Babel runs plugins specified in one's config /before/ presets and thus too
-       * late.
-       *
-       * @see:
-       * - https://babeljs.io/docs/en/plugins#plugin-ordering
-       * - https://github.com/facebook/react-native/issues/20588#issuecomment-411798625
-       * - https://github.com/babel/babel/issues/8417#issuecomment-430007587
-       * - https://github.com/facebook/react-native/issues/20150#issuecomment-417858270
-       */
-      "@babel/plugin-transform-flow-strip-types",
-      "@babel/plugin-transform-runtime",
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          legacy: true, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
-        },
-      ],
-      ["@babel/plugin-proposal-class-properties", { loose: true }],
-      ["@babel/plugin-proposal-private-methods", { loose: true }],
-      ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }], // this is so `import React from "react"` is not needed.
-      "relay",
-      "import-graphql",
+      // TODO: Remove this once we determine if its actually needed. Added during reanimated upgrade.
+      // but then we determined that it was leading to errors with loading reanimated while remotely
+      // debugging JS in chrome.
+      // ["@babel/preset-env", { loose: true }],
+      "@babel/preset-typescript",
+      ["@babel/preset-react", { runtime: "automatic" }], // this is so `import React from "react"` is not needed.
     ],
   }
 }

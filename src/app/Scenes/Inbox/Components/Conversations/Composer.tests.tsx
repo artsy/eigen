@@ -1,21 +1,19 @@
+import { Flex } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Button, Flex } from "palette"
-import { TextInput } from "react-native"
-import { TouchableWithoutFeedback } from "react-native"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Button } from "palette"
+import { TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ComposerFragmentContainer } from "./Composer"
 import { CTAPopUp } from "./CTAPopUp"
+import { ComposerFragmentContainer } from "./Composer"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
 
 jest.unmock("react-tracking")
-jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
@@ -50,7 +48,7 @@ const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
 
 const defaultProps = { disabled: false }
 const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
-  const tree = renderWithWrappers(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

@@ -4,7 +4,7 @@ App Store builds have to go through the beta process first. [Check out the beta 
 
 ## Test the Beta
 
-Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
+Eigen's beta pre-submission checklist has [moved into Notion 🔐](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
 
 ## Preparing to Ship a Final Version
 
@@ -26,12 +26,18 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 > _When the app is approved for release, a slack message is sent to notify the #practice-mobile channel and an email from Apple Store Connect is sent to mobile [at] artsymail [dot] com_
 
 1. Run `./scripts/release-ios-app`
-2. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
-3. Make sure to let the team know over at [#dev](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
+2. Monitor [Sentry 🔐](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
+3. Make sure to let the team know over at [#dev 🔐](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
 
 ## Prepare for the Next Release
 
-1. Run `./scripts/next`. This prompts for the next version number. **Use the same version as the previous step**.
-2. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
-3. Run `./scripts/deploy-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
-4. PR your changes back into the `main` branch.
+1. Create a new version of the app in AppStoreConnect (if you don't do this, beta deployments will fail).
+   - Go to "My Apps", click Eigen ("Artsy: Buy & Sell Original Art"), click "+ version or platform", click "iOS", and enter version number.
+     > Wait to start with this flow, since you can only create a new version once the previous app version has been approved/rejected!
+
+![Add a new app version to ASC](./screenshots/adding-a-new-app-version-app-store.gif)
+
+2. Run `./scripts/next`. This prompts for the next version number. **Use the same version as the previous step**.
+3. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
+4. Run `./scripts/deploy-beta-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
+5. PR your changes back into the `main` branch.

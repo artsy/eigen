@@ -1,6 +1,6 @@
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button } from "palette"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -8,12 +8,9 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
-jest.unmock("react-relay")
-
 jest.spyOn(Alert, "alert")
 
 beforeEach(() => {
-  jest.useFakeTimers()
   env = createMockEnvironment()
   ;(Alert.alert as jest.Mock).mockClear()
 })
@@ -56,7 +53,7 @@ const TestRenderer = () => {
 }
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

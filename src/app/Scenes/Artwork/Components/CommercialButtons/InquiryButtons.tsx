@@ -1,23 +1,19 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
+import { ButtonProps } from "@artsy/palette-mobile"
 import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { InquiryTypes } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Button, ButtonProps } from "palette"
+import { InquiryTypes, InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { Button } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
   artwork: InquiryButtons_artwork$data
-}
-
-export interface InquiryButtonsState {
-  modalIsVisible: boolean
 }
 
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => {

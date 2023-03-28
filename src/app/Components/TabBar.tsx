@@ -1,9 +1,8 @@
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Animated, View } from "react-native"
-import styled from "styled-components/native"
-
-import { Box, ClassTheme, Sans } from "palette"
 import React from "react"
+import { Animated } from "react-native"
+import styled from "styled-components/native"
 
 /**
  * Nearly all props are given by the ScrollableTabView,
@@ -39,7 +38,7 @@ const Tabs = styled.View`
 const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   align-items: center;
   justify-content: center;
-  padding-top: 5;
+  padding-top: 5px;
   flex-grow: 1;
   ${(p) => p.spaceEvenly && `flex: 1;`};
   ${(p) =>
@@ -51,14 +50,6 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     margin-bottom: -1px;
   `};
 `
-
-interface TabProps {
-  tabLabel: string
-}
-
-export const Tab: React.FC<TabProps> = ({ children }) => (
-  <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
-)
 
 export default class TabBar extends React.Component<TabBarProps> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -74,15 +65,15 @@ export default class TabBar extends React.Component<TabBarProps> {
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
           <ClassTheme>
             {({ color }) => (
-              <Sans
+              <Text
+                variant="sm"
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 weight="medium"
-                size="3"
                 color={isTabActive ? "black" : color("black30")}
               >
                 {name}
-              </Sans>
+              </Text>
             )}
           </ClassTheme>
         </TabButton>

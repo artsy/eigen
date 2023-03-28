@@ -1,12 +1,9 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { CollectionArtistSeriesRail_collection$data } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
+import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { Schema } from "app/utils/track"
-import { Flex, Sans } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore
-import styled from "styled-components/native"
-
-import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 
 interface CollectionArtistSeriesRailProps {
   collectionGroup: CollectionArtistSeriesRail_collectionGroup$data
@@ -19,10 +16,10 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
   const collections = collectionGroup?.members ?? []
 
   return (
-    <Flex ml="-20px">
-      <Sans size="4" mb={2} ml={4}>
+    <Flex ml={-2}>
+      <Text variant="sm-display" mb={2} ml={4}>
         {collectionGroup.name}
-      </Sans>
+      </Text>
       <GenericArtistSeriesRail
         collections={collections}
         contextScreenOwnerType={Schema.OwnerEntityTypes.Collection}

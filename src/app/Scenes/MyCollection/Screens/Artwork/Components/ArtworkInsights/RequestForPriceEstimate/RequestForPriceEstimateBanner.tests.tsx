@@ -1,12 +1,11 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
-
-jest.unmock("react-relay")
 
 describe("RequestForPriceEstimateBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -30,11 +29,13 @@ describe("RequestForPriceEstimateBanner", () => {
       render={({ props }) => {
         if (props?.artwork && props?.marketPriceInsights && props?.me) {
           return (
-            <RequestForPriceEstimateBanner
-              me={props.me}
-              artwork={props.artwork}
-              marketPriceInsights={props.marketPriceInsights}
-            />
+            <GlobalStoreProvider>
+              <RequestForPriceEstimateBanner
+                me={props.me}
+                artwork={props.artwork}
+                marketPriceInsights={props.marketPriceInsights}
+              />
+            </GlobalStoreProvider>
           )
         }
         return null
@@ -44,10 +45,12 @@ describe("RequestForPriceEstimateBanner", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewRequestPriceEstimateLogic: true })
   })
 
   afterEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.reset()
   })
 
   const resolveData = (passedProps = {}) => {
@@ -57,22 +60,85 @@ describe("RequestForPriceEstimateBanner", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
+      Artwork: () => ({
+        internalID: "some-internal-id",
+        hasPriceEstimateRequest: false,
+        isPriceEstimateRequestable: true,
+      }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
       }),
     })
     expect(getByTestId("request-price-estimate-button")).toBeDefined()
-    expect(getByTestId("request-price-estimate-banner-text")).toBeDefined()
+    expect(getByTestId("request-price-estimate-banner-title")).toBeDefined()
+    expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
+  })
+
+  it("rendering nothing if the price estimate is not requestable", () => {
+    const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "some-internal-id",
+        hasPriceEstimateRequest: false,
+        isPriceEstimateRequestable: false,
+      }),
+    })
+
+    expect(queryByTestId("request-price-estimate-button")).toBeNull()
+    expect(queryByTestId("request-price-estimate-banner-title")).toBeNull()
+    expect(queryByTestId("request-price-estimate-banner-description")).toBeNull()
+  })
+
+  it("renders 'requested' state if in global store without throwing an error", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-id",
+        hasPriceEstimateRequest: null,
+      }),
+      MarketPriceInsights: () => ({
+        demandRank: 7.5,
+      }),
+    })
+    __globalStoreTestUtils__?.injectState({
+      requestedPriceEstimates: {
+        requestedPriceEstimates: {
+          "artwork-id": {
+            artworkId: "artwork-id",
+            requestedAt: 1666015648950,
+          },
+        },
+      },
+    })
+    expect(getByText("Price Estimate Request Sent")).toBeDefined()
+  })
+
+  it("renders 'requested' state if hasPriceEstimateRequest is true", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-id",
+        hasPriceEstimateRequest: true,
+      }),
+      MarketPriceInsights: () => ({
+        demandRank: 7.5,
+      }),
+    })
+    expect(getByText("Price Estimate Request Sent")).toBeDefined()
   })
 
   it("tracks analytics event when RequestForEstimate button is tapped", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
+        hasPriceEstimateRequest: false,
+        isPriceEstimateRequestable: true,
       }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
@@ -81,9 +147,7 @@ describe("RequestForPriceEstimateBanner", () => {
 
     const TheButton = getByTestId("request-price-estimate-button")
 
-    act(() => {
-      fireEvent.press(TheButton)
-    })
+    fireEvent.press(TheButton)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

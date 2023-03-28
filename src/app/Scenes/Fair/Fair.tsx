@@ -1,20 +1,22 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
+import { Spacer, ChevronIcon, Flex, Box } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
+import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
-
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { HeaderButton } from "app/Components/HeaderButton"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
+import { goBack } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Separator } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
+import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -25,6 +27,10 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const BACK_ICON_SIZE = 21
+const HEADER_SCROLL_THRESHOLD = 50
 
 interface FairQueryRendererProps {
   fairID: string
@@ -57,6 +63,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [shouldHideButtons, setShouldHideButtons] = useState(false)
 
   const sections = isActive
     ? [
@@ -164,7 +171,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     handleFilterArtworksModal()
   }
 
-  const hideBackButtonOnScroll = useHideBackButtonOnScroll()
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
+    runOnJS(setShouldHideButtons)(hideButtons)
+  })
 
   return (
     <ProvideScreenTracking
@@ -176,15 +186,15 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <FlatList
+        <AnimatedFlatList
           data={sections}
           ref={flatListRef}
           viewabilityConfig={viewConfigRef.current}
-          ItemSeparatorComponent={() => <Spacer mb={3} />}
-          ListFooterComponent={<Spacer mb={3} />}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
+          ListFooterComponent={<Spacer y={4} />}
           keyExtractor={(_item, index) => String(index)}
           stickyHeaderIndices={[stickyIndex]}
-          onScroll={hideBackButtonOnScroll}
+          onScroll={scrollHandler}
           scrollEventThrottle={100}
           // @ts-ignore
           CellRendererComponent={cellItemRenderer}
@@ -195,7 +205,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                 return (
                   <>
                     <FairHeaderFragmentContainer fair={fair} />
-                    <Separator mt={3} />
+                    <Separator mt={4} />
                   </>
                 )
               }
@@ -214,7 +224,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
               case "fairTabsAndFilter": {
                 const tabToShow = tabs ? tabs[activeTab] : null
                 return (
-                  <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
+                  <Box pt={`${safeAreaInsets.top}px`} backgroundColor="white">
                     <NavigationalTabs
                       onTabPress={(_, index) => {
                         trackTappedNavigationTab(index as number)
@@ -261,7 +271,17 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
+      <HeaderButton shouldHide={shouldHideButtons} onPress={() => goBack()} position="left">
+        <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
+      </HeaderButton>
+      <SearchImageHeaderButton
+        isImageSearchButtonVisible={shouldShowImageSearchButton && !shouldHideButtons}
+        owner={{
+          type: OwnerType.fair,
+          id: fair.internalID,
+          slug: fair.slug,
+        }}
+      />
     </ProvideScreenTracking>
   )
 }
@@ -327,9 +347,9 @@ export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) 
 export const FairPlaceholder: React.FC = () => (
   <Flex>
     <PlaceholderBox height={400} />
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
       <Flex>
-        <Spacer mb={2} />
+        <Spacer y={2} />
         {/* Fair name */}
         <PlaceholderText width={220} />
         {/* Fair info */}
@@ -337,9 +357,9 @@ export const FairPlaceholder: React.FC = () => (
         <PlaceholderText width={190} />
       </Flex>
     </Flex>
-    <Spacer mb={2} />
+    <Spacer y={2} />
     <Separator />
-    <Spacer mb={2} />
+    <Spacer y={2} />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

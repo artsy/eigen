@@ -1,13 +1,13 @@
+import { InfoCircleIcon, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { InfoCircleIcon, Text } from "palette"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { InfoButton } from "./InfoButton"
 
 describe("InfoButton", () => {
   it("renders a button", () => {
-    const wrapper = renderWithWrappers(
+    const wrapper = renderWithWrappersLEGACY(
       <InfoButton title="title" subTitle="subTitle" modalContent={<Text>Hello</Text>} />
     )
     expect(wrapper.root.findByType(TouchableOpacity)).toBeDefined()
@@ -19,7 +19,7 @@ describe("InfoButton", () => {
   })
 
   it("only shows the modal when the button is pressed", () => {
-    const wrapper = renderWithWrappers(
+    const wrapper = renderWithWrappersLEGACY(
       <InfoButton
         title="title"
         subTitle="subTitle"
@@ -33,7 +33,7 @@ describe("InfoButton", () => {
 
   it("calls onPress arg if it's passed in", () => {
     const handlePress = jest.fn()
-    const wrapper = renderWithWrappers(
+    const wrapper = renderWithWrappersLEGACY(
       <InfoButton
         title="title"
         subTitle="subTitle"

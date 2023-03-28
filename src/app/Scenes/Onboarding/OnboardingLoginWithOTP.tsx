@@ -1,9 +1,10 @@
+import { Spacer, Flex, Box, useColor, Text, LinkText } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, SimpleMessage, Spacer, Text, useColor } from "palette"
-import React, { useRef } from "react"
+import { Button, Input, SimpleMessage } from "palette"
+import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -53,9 +54,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   } = useFormikContext<OnboardingLoginWithOTPValuesSchema>()
 
   const otpInputRef = useRef<Input>(null)
+  const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{
@@ -64,37 +66,42 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           }}
           keyboardShouldPersistTaps="always"
         >
-          <Spacer mt={60} />
-          <Text variant="lg">Authentication Code</Text>
+          <Spacer y={6} />
+          <Text variant="lg-display">Authentication Code</Text>
           <Box>
-            <Spacer mt={50} />
+            <Spacer y={6} />
             <Input
               ref={otpInputRef}
               autoCapitalize="none"
               autoCorrect={false}
               autoFocus
-              keyboardType="numeric"
+              keyboardType={recoveryCodeMode ? "ascii-capable" : "number-pad"}
               onChangeText={(text) => {
                 // Hide error when the user starts to type again
                 if (errors.otp) {
-                  setErrors({
-                    otp: undefined,
-                  })
+                  setErrors({ otp: undefined })
                   validateForm()
                 }
                 handleChange("otp")(text)
               }}
               onBlur={() => validateForm()}
-              placeholder="Enter an authentication code"
+              placeholder={
+                recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
+              }
               placeholderTextColor={color("black30")}
-              title="Authentication Code"
+              title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
             />
+            <Spacer y={1} />
+            <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
+              {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
+            </LinkText>
+
             {otpMode === "on_demand" ? (
               <>
-                <Spacer mb={20} />
+                <Spacer y={2} />
                 <SimpleMessage testID="on_demand_message">
                   Your safety and security are important to us. Please check your email for a
                   one-time authentication code to complete your login.
@@ -102,7 +109,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               </>
             ) : null}
           </Box>
-          <Spacer mt={4} />
+          <Spacer y={4} />
         </ScrollView>
         <BackButton onPress={() => navigation.goBack()} />
         <Flex px={2} paddingBottom={2}>

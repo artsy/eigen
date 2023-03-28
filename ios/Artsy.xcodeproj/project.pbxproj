@@ -21,7 +21,6 @@
 		1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */; };
 		1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */; };
 		1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */; };
-		1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */; };
 		1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */; };
 		1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B6283CDD5900878EAE /* ARCity.m */; };
 		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
@@ -37,12 +36,20 @@
 		1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */; };
 		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
-		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
-		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
-		CB289A9D286DE04D006ECC91 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A99286DE04D006ECC91 /* Unica77LL-Regular.otf */; };
-		CB289A9E286DE04D006ECC91 /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9A286DE04D006ECC91 /* Unica77LL-Medium.otf */; };
-		CB289A9F286DE04D006ECC91 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9B286DE04D006ECC91 /* Unica77LL-Italic.otf */; };
-		CB289AA0286DE04D006ECC91 /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9C286DE04D006ECC91 /* Unica77LL-MediumItalic.otf */; };
+		1AE9F2642902DA87002A561B /* App.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25C2902DA87002A561B /* App.xcconfig */; };
+		1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */; };
+		1AE9F2662902DA87002A561B /* WidgetExt.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */; };
+		1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */; };
+		1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */; };
+		1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2612902DA87002A561B /* Shared.xcconfig */; };
+		1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */; };
+		1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */; };
+		4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */; };
+		72B930384C1E516C2D20C622 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CE551258CDFFF7B96A622E /* libPods-Artsy.a */; };
+		86C184E45BE1AB77984F038E /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F73EDC3B30A3B9A2CBD401A5 /* libPods-ArtsyTests.a */; };
+		9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */; };
+		B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */; };
+		B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
@@ -213,6 +220,17 @@
 		CB43299C27FE0D7F00B29DD6 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = CB43278D27E8FEE400B29DD6 /* stubbed_image.png */; };
 		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
+		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
+		CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */; };
+		CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB762B2C29119F0700881194 /* ARSentryReporter.m */; };
+		CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B2F2911A5E100881194 /* ARVIRModalClose.png */; };
+		CB762B382911A5E100881194 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B302911A5E100881194 /* ARVIRTick.png */; };
+		CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */; };
+		CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B322911A5E100881194 /* ARVIRTick@2x.png */; };
+		CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B332911A5E100881194 /* ARVIRTick@3x.png */; };
+		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
+		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
+		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
@@ -227,10 +245,8 @@
 		CBE3267527E275A300395A93 /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */; };
 		CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */; };
 		CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */; };
-		CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */; };
 		CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247127E275A100395A93 /* NSDate+Util.m */; };
 		CBE3267A27E275A300395A93 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247427E275A100395A93 /* UILabel+Styling.swift */; };
-		CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */; };
 		CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */; };
 		CBE3267D27E275A300395A93 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247727E275A100395A93 /* UIViewController+Popovers.m */; };
 		CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247927E275A100395A93 /* NSArray+Additions.m */; };
@@ -238,7 +254,6 @@
 		CBE3268027E275A300395A93 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */; };
 		CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */; };
 		CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248127E275A100395A93 /* NSDate+DateRange.m */; };
-		CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */; };
 		CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */; };
 		CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */; };
 		CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248627E275A100395A93 /* PanDirectionGestureRecognizer.swift */; };
@@ -250,7 +265,6 @@
 		CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
-		CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249D27E275A100395A93 /* ARModalViewController.m */; };
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
 		CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */; };
 		CBE3269827E275A300395A93 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A227E275A100395A93 /* ARAppDelegate.m */; };
@@ -340,14 +354,6 @@
 		CBE326EE27E275A300395A93 /* ARAugmentedFloorBasedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253B27E275A100395A93 /* ARAugmentedFloorBasedVIRViewController.m */; };
 		CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */; };
 		CBE326F027E275A300395A93 /* ARVIRHorizontalPlaneInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */; };
-		CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254127E275A100395A93 /* ARVIRModalClose.png */; };
-		CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254227E275A100395A93 /* ARVIRTick.png */; };
-		CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */; };
-		CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254427E275A100395A93 /* ARVIRTick@2x.png */; };
-		CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254527E275A100395A93 /* ARVIRTick@3x.png */; };
-		CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */; };
-		CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254727E275A100395A93 /* ARVIRShadow.png */; };
-		CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */; };
 		CBE326F927E275A300395A93 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */; };
 		CBE326FA27E275A300395A93 /* ARInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254C27E275A100395A93 /* ARInformationView.m */; };
 		CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254D27E275A100395A93 /* live_auctions_socket.json */; };
@@ -459,7 +465,6 @@
 		CBE3276D27E275A400395A93 /* MTLModel+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325EF27E275A200395A93 /* MTLModel+JSON.m */; };
 		CBE3276E27E275A400395A93 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F327E275A200395A93 /* StarscreamExtensions.swift */; };
 		CBE3276F27E275A400395A93 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F427E275A200395A93 /* LiveAuctionSocketCommunicator.swift */; };
-		CBE3277027E275A400395A93 /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F927E275A200395A93 /* ARAuthProviders.m */; };
 		CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FA27E275A200395A93 /* ArtsyAPI.m */; };
 		CBE3277227E275A400395A93 /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FC27E275A200395A93 /* ArtsyAPI+HEAD.m */; };
 		CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260027E275A200395A93 /* ArtsyAPI+Pages.m */; };
@@ -558,10 +563,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.debug.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
-		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
 		1A4B9793283CDD5900878EAE /* AREventsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREventsModule.m; sourceTree = "<group>"; };
@@ -588,10 +591,8 @@
 		1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMapContainerViewController.m; sourceTree = "<group>"; };
 		1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPHPhotoPickerModule.h; sourceTree = "<group>"; };
 		1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationsManager.h; sourceTree = "<group>"; };
-		1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTakeCameraPhotoModule.h; sourceTree = "<group>"; };
 		1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPHPhotoPickerModule.m; sourceTree = "<group>"; };
 		1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationsManager.m; sourceTree = "<group>"; };
-		1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTakeCameraPhotoModule.m; sourceTree = "<group>"; };
 		1A4B97B3283CDD5900878EAE /* ARCity+GeospatialAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARCity+GeospatialAdditions.h"; sourceTree = "<group>"; };
 		1A4B97B4283CDD5900878EAE /* ARCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCity.h; sourceTree = "<group>"; };
 		1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARCity+GeospatialAdditions.m"; sourceTree = "<group>"; };
@@ -621,19 +622,19 @@
 		1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonSubclasses.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
-		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
-		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
-		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
-		8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
-		BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		CB289A99286DE04D006ECC91 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Regular.otf"; sourceTree = "<group>"; };
-		CB289A9A286DE04D006ECC91 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Medium.otf"; sourceTree = "<group>"; };
-		CB289A9B286DE04D006ECC91 /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Italic.otf"; sourceTree = "<group>"; };
-		CB289A9C286DE04D006ECC91 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
+		1AE9F25C2902DA87002A561B /* App.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+		1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Debug.xcconfig"; sourceTree = "<group>"; };
+		1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WidgetExt.xcconfig; sourceTree = "<group>"; };
+		1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = BrazeExt.xcconfig; sourceTree = "<group>"; };
+		1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Debug.xcconfig"; sourceTree = "<group>"; };
+		1AE9F2612902DA87002A561B /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
+		1AE9F2622902DA87002A561B /* App-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Store.xcconfig"; sourceTree = "<group>"; };
+		1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
+		34CE551258CDFFF7B96A622E /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
+		5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Italic.otf"; path = "Artsy/fonts/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
+		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
+		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -956,6 +957,18 @@
 		CB43299527FDFE5C00B29DD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
+		CB762B2B29119F0700881194 /* ARSentryReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSentryReporter.h; sourceTree = "<group>"; };
+		CB762B2C29119F0700881194 /* ARSentryReporter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSentryReporter.m; sourceTree = "<group>"; };
+		CB762B2F2911A5E100881194 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
+		CB762B302911A5E100881194 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
+		CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
+		CB762B322911A5E100881194 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
+		CB762B332911A5E100881194 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
+		CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
+		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
+		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -976,7 +989,6 @@
 		CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
 		CBE3246227E275A100395A93 /* UIViewController+Popovers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popovers.h"; sourceTree = "<group>"; };
 		CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageFromColor.h"; sourceTree = "<group>"; };
-		CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
 		CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		CBE3246627E275A100395A93 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		CBE3246727E275A100395A93 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
@@ -987,26 +999,21 @@
 		CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSKeyedUnarchiver+ErrorLogging.h"; sourceTree = "<group>"; };
 		CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AsyncImageLoading.m"; sourceTree = "<group>"; };
-		CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FullScreenLoading.h"; sourceTree = "<group>"; };
 		CBE3247127E275A100395A93 /* NSDate+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
 		CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
-		CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
 		CBE3247427E275A100395A93 /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
-		CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
 		CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		CBE3247727E275A100395A93 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
 		CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		CBE3247927E275A100395A93 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
 		CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
 		CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
-		CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ScrollToTop.h"; sourceTree = "<group>"; };
 		CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSKeyedUnarchiver+ErrorLogging.m"; sourceTree = "<group>"; };
 		CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SimpleChildren.m"; sourceTree = "<group>"; };
 		CBE3248127E275A100395A93 /* NSDate+DateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateRange.m"; sourceTree = "<group>"; };
-		CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
 		CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		CBE3248427E275A100395A93 /* NSDate+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
 		CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FullScreenLoading.m"; sourceTree = "<group>"; };
@@ -1023,7 +1030,6 @@
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
 		CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
-		CBE3249D27E275A100395A93 /* ARModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModalViewController.m; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		CBE3249F27E275A100395A93 /* ArtsyEcho.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyEcho.m; sourceTree = "<group>"; };
 		CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
@@ -1044,7 +1050,6 @@
 		CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
 		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
-		CBE324B327E275A100395A93 /* ARModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModalViewController.h; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
@@ -1162,14 +1167,6 @@
 		CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
 		CBE3253E27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARVIRHorizontalPlaneInteractionController.h; sourceTree = "<group>"; };
 		CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARVIRHorizontalPlaneInteractionController.m; sourceTree = "<group>"; };
-		CBE3254127E275A100395A93 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
-		CBE3254227E275A100395A93 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
-		CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
-		CBE3254427E275A100395A93 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
-		CBE3254527E275A100395A93 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
-		CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
-		CBE3254727E275A100395A93 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
-		CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfig.m; sourceTree = "<group>"; };
 		CBE3254B27E275A100395A93 /* ARInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInformationView.h; sourceTree = "<group>"; };
 		CBE3254C27E275A100395A93 /* ARInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInformationView.m; sourceTree = "<group>"; };
@@ -1317,7 +1314,6 @@
 		CBE325F627E275A200395A93 /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		CBE325F727E275A200395A93 /* ARRouter+GraphQL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRouter+GraphQL.h"; sourceTree = "<group>"; };
 		CBE325F827E275A200395A93 /* ARSystemTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSystemTime.h; sourceTree = "<group>"; };
-		CBE325F927E275A200395A93 /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBE325FA27E275A200395A93 /* ArtsyAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyAPI.m; sourceTree = "<group>"; };
 		CBE325FC27E275A200395A93 /* ArtsyAPI+HEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+HEAD.m"; sourceTree = "<group>"; };
 		CBE325FD27E275A200395A93 /* ArtsyAPI+Sales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Sales.h"; sourceTree = "<group>"; };
@@ -1350,13 +1346,12 @@
 		CBE3261927E275A200395A93 /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		CBE3261A27E275A200395A93 /* ARRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouter.m; sourceTree = "<group>"; };
 		CBE3261B27E275A200395A93 /* ARRouter+GraphQL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRouter+GraphQL.m"; sourceTree = "<group>"; };
-		CBE3261D27E275A200395A93 /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CBE3261E27E275A200395A93 /* ArtsyAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyAPI.h; sourceTree = "<group>"; };
 		CBE3261F27E275A200395A93 /* ARSystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTime.m; sourceTree = "<group>"; };
 		CBE3262227E275A200395A93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBE3262327E275A200395A93 /* Artsy.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Artsy.entitlements; sourceTree = "<group>"; };
 		CBE3262427E275A200395A93 /* Artsy.Store.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Artsy.Store.entitlements; sourceTree = "<group>"; };
-		CBE3262527E275A200395A93 /* Artsy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy-Info.plist"; sourceTree = "<group>"; };
+		CBE3262527E275A200395A93 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBE3262627E275A200395A93 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CBE3262827E275A300395A93 /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CBE3262927E275A300395A93 /* ARFeedHostItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
@@ -1417,12 +1412,11 @@
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
-		DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.release.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.release.xcconfig"; sourceTree = "<group>"; };
+		CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-MediumItalic.otf"; path = "Artsy/fonts/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
+		CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Regular.otf"; path = "Artsy/fonts/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
+		DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Medium.otf"; path = "Artsy/fonts/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
-		F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.release.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FA81742737039A65CB15C5D7 /* Pods-Artsy-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
+		F73EDC3B30A3B9A2CBD401A5 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1431,7 +1425,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB43299027FDFE3F00B29DD6 /* CoreSpotlight.framework in Frameworks */,
-				91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */,
 				CB43299A27FDFE6B00B29DD6 /* WebKit.framework in Frameworks */,
 				CB43298E27FDFE2700B29DD6 /* CoreServices.framework in Frameworks */,
 				CB43298A27FDFE0A00B29DD6 /* AppTrackingTransparency.framework in Frameworks */,
@@ -1442,6 +1435,7 @@
 				CB43299227FDFE4700B29DD6 /* iAd.framework in Frameworks */,
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
+				72B930384C1E516C2D20C622 /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1465,7 +1459,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */,
+				86C184E45BE1AB77984F038E /* libPods-ArtsyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1535,10 +1529,8 @@
 			children = (
 				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
 				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
-				1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */,
 				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
 				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
-				1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */,
 			);
 			path = EigenCommunications;
 			sourceTree = "<group>";
@@ -1594,8 +1586,8 @@
 		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
 				1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */,
+				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
 			);
 			path = ArtsyUIColors;
 			sourceTree = "<group>";
@@ -1618,6 +1610,21 @@
 			path = ArtsyUIButtons;
 			sourceTree = "<group>";
 		};
+		1AE9F25B2902DA87002A561B /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				1AE9F25C2902DA87002A561B /* App.xcconfig */,
+				1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */,
+				1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */,
+				1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */,
+				1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */,
+				1AE9F2612902DA87002A561B /* Shared.xcconfig */,
+				1AE9F2622902DA87002A561B /* App-Store.xcconfig */,
+				1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */,
+			);
+			path = Configs;
+			sourceTree = SOURCE_ROOT;
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1633,34 +1640,12 @@
 				CB43298727FDFE0000B29DD6 /* AdSupport.framework */,
 				CB43298527FDFDF800B29DD6 /* AdServices.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */,
-				EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */,
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
-				4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */,
+				34CE551258CDFFF7B96A622E /* libPods-Artsy.a */,
+				F73EDC3B30A3B9A2CBD401A5 /* libPods-ArtsyTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		676C72DD1D291306F09E9C48 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */,
-				236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */,
-				17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */,
-				13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */,
-				775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */,
-				DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */,
-				BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */,
-				FA81742737039A65CB15C5D7 /* Pods-Artsy-ArtsyTests.release.xcconfig */,
-				BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */,
-				F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */,
-				8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */,
-				46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */,
-				EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */,
-				9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		83CBB9F61A601CBA00E9B192 = {
@@ -1668,12 +1653,12 @@
 			children = (
 				CBE3210527D9615000395A93 /* Artsy */,
 				CB43271D27E8FE5400B29DD6 /* ArtsyTests */,
-				676C72DD1D291306F09E9C48 /* Pods */,
 				CB43266427E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268727E8FA6900B29DD6 /* ArtsyWidget */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				CB8672711C005915043C63E8 /* Pods */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -2533,9 +2518,36 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		CB762B2E2911A5E100881194 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				CB762B2F2911A5E100881194 /* ARVIRModalClose.png */,
+				CB762B302911A5E100881194 /* ARVIRTick.png */,
+				CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */,
+				CB762B322911A5E100881194 /* ARVIRTick@2x.png */,
+				CB762B332911A5E100881194 /* ARVIRTick@3x.png */,
+				CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */,
+				CB762B352911A5E100881194 /* ARVIRShadow.png */,
+				CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		CB8672711C005915043C63E8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */,
+				B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */,
+				1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */,
+				A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				1AE9F25B2902DA87002A561B /* Configs */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
 				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
 				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
@@ -2608,41 +2620,35 @@
 			isa = PBXGroup;
 			children = (
 				CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */,
-				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
-				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
-				CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */,
-				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3246627E275A100395A93 /* Int+Metrification.swift */,
-				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
-				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
-				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
-				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
-				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */,
-				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
-				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
-				CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */,
-				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
-				CBE3247127E275A100395A93 /* NSDate+Util.m */,
-				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
-				CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */,
-				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
-				CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */,
+				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
 				CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */,
+				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
 				CBE3247727E275A100395A93 /* UIViewController+Popovers.m */,
 				CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */,
+				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
+				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
+				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
 				CBE3247927E275A100395A93 /* NSArray+Additions.m */,
 				CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */,
+				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
 				CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */,
-				CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */,
+				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */,
+				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
 				CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */,
+				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
 				CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */,
+				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */,
+				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
 				CBE3248127E275A100395A93 /* NSDate+DateRange.m */,
-				CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */,
+				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
 				CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */,
 				CBE3248427E275A100395A93 /* NSDate+Util.h */,
+				CBE3247127E275A100395A93 /* NSDate+Util.m */,
+				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
 				CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */,
 			);
 			path = Apple;
@@ -2674,10 +2680,10 @@
 				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
 				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
+				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
-				CBE3249D27E275A100395A93 /* ARModalViewController.m */,
 				CBE3249E27E275A100395A93 /* AROptions.h */,
 				CBE3249F27E275A100395A93 /* ArtsyEcho.m */,
 				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
@@ -2693,12 +2699,10 @@
 				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
 				CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
-				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
 				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
 				CBE324B227E275A100395A93 /* AROptions.m */,
-				CBE324B327E275A100395A93 /* ARModalViewController.h */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324B527E275A100395A93 /* EchoNew.json */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
@@ -2793,6 +2797,7 @@
 				CBE324E527E275A100395A93 /* LiveAuctionsAdminViewController.swift */,
 				CBE324E627E275A100395A93 /* Views */,
 				CBE324F427E275A100395A93 /* LiveAuctionBidButton.swift */,
+				CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */,
 				CBE324F527E275A100395A93 /* LiveAuctionPlaceMaxBidViewController.swift */,
 			);
 			path = Live_Auctions;
@@ -2909,6 +2914,8 @@
 			children = (
 				CBE3251D27E275A100395A93 /* ARNetworkErrorManager.h */,
 				CBE3251E27E275A100395A93 /* ARNetworkErrorManager.m */,
+				CB762B2B29119F0700881194 /* ARSentryReporter.h */,
+				CB762B2C29119F0700881194 /* ARSentryReporter.m */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2938,11 +2945,11 @@
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
+				CB762B2E2911A5E100881194 /* New Group */,
 				CBE3253227E275A100395A93 /* Nodes */,
 				CBE3253727E275A100395A93 /* ARAugmentedRealityConfig.h */,
 				CBE3253827E275A100395A93 /* VCs */,
 				CBE3253D27E275A100395A93 /* AR */,
-				CBE3254027E275A100395A93 /* New Group */,
 				CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */,
 				CBE3254A27E275A100395A93 /* Views */,
 			);
@@ -2978,21 +2985,6 @@
 				CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */,
 			);
 			path = AR;
-			sourceTree = "<group>";
-		};
-		CBE3254027E275A100395A93 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3254127E275A100395A93 /* ARVIRModalClose.png */,
-				CBE3254227E275A100395A93 /* ARVIRTick.png */,
-				CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */,
-				CBE3254427E275A100395A93 /* ARVIRTick@2x.png */,
-				CBE3254527E275A100395A93 /* ARVIRTick@3x.png */,
-				CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */,
-				CBE3254727E275A100395A93 /* ARVIRShadow.png */,
-				CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */,
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		CBE3254A27E275A100395A93 /* Views */ = {
@@ -3265,14 +3257,12 @@
 				CBE325F627E275A200395A93 /* ARNetworkConstants.h */,
 				CBE325F727E275A200395A93 /* ARRouter+GraphQL.h */,
 				CBE325F827E275A200395A93 /* ARSystemTime.h */,
-				CBE325F927E275A200395A93 /* ARAuthProviders.m */,
 				CBE325FA27E275A200395A93 /* ArtsyAPI.m */,
 				CBE325FB27E275A200395A93 /* API_Modules */,
 				CBE3261827E275A200395A93 /* static_sale_data.graphql */,
 				CBE3261927E275A200395A93 /* ARNetworkConstants.m */,
 				CBE3261A27E275A200395A93 /* ARRouter.m */,
 				CBE3261B27E275A200395A93 /* ARRouter+GraphQL.m */,
-				CBE3261D27E275A200395A93 /* ARAuthProviders.h */,
 				CBE3261E27E275A200395A93 /* ArtsyAPI.h */,
 				CBE3261F27E275A200395A93 /* ARSystemTime.m */,
 			);
@@ -3339,7 +3329,7 @@
 				CBE3262127E275A200395A93 /* InfoPlist.strings */,
 				CBE3262327E275A200395A93 /* Artsy.entitlements */,
 				CBE3262427E275A200395A93 /* Artsy.Store.entitlements */,
-				CBE3262527E275A200395A93 /* Artsy-Info.plist */,
+				CBE3262527E275A200395A93 /* Info.plist */,
 				CBE3262627E275A200395A93 /* Launch Screen.xib */,
 			);
 			path = App_Resources;
@@ -3513,15 +3503,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				26390072526D18F01CC42A6C /* [CP] Check Pods Manifest.lock */,
+				400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */,
+				1A08BBFB291E6B7000062A70 /* Setup .env from react-native-config */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				54EE436FC81664CC0C6F0A54 /* [CP] Embed Pods Frameworks */,
-				E4875BC980DDBF81A3B3418A /* [CP] Copy Pods Resources */,
 				CB43266B27E8F39B00B29DD6 /* Embed App Extensions */,
+				4867A6DC8E7BCFE19EF05DBB /* [CP] Embed Pods Frameworks */,
+				DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3588,7 +3579,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
-				C43DDB41B4350A3E0D09B275 /* [CP] Check Pods Manifest.lock */,
+				21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
@@ -3662,20 +3653,20 @@
 				CBE326B627E275A300395A93 /* LiveAuctions.storyboard in Resources */,
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
 				CBE3275D27E275A400395A93 /* CloseButtonLargeHighlighted@2x.png in Resources */,
-				CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */,
+				1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */,
 				CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */,
-				CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */,
+				1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CB289A9D286DE04D006ECC91 /* Unica77LL-Regular.otf in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
-				CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */,
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
+				CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
 				CB289AA0286DE04D006ECC91 /* Unica77LL-MediumItalic.otf in Resources */,
@@ -3696,28 +3687,31 @@
 				CBE3273827E275A400395A93 /* followButtonChecked@3x.png in Resources */,
 				CBE3275527E275A400395A93 /* Range@2x.png in Resources */,
 				CBE3274327E275A400395A93 /* full_logo_white_small@2x.png in Resources */,
-				CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */,
 				CBE3272C27E275A400395A93 /* ViewInRoom_Base@2x.png in Resources */,
 				1A4B97D0283CFA1E00878EAE /* fonts in Resources */,
 				CBE3274127E275A400395A93 /* followButton@2x.png in Resources */,
-				CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */,
 				CBE326D127E275A300395A93 /* live_auctions_static.json in Resources */,
 				CBE3273027E275A400395A93 /* SmallMoreVerticalArrow.png in Resources */,
+				CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */,
 				CBE3274D27E275A400395A93 /* ARVIRRefresh@3x.png in Resources */,
 				CBE3273927E275A400395A93 /* followButtonChecked@2x.png in Resources */,
+				1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */,
 				CBE3276A27E275A400395A93 /* CircleXRed@2x.png in Resources */,
 				CBE3274227E275A400395A93 /* paddle.png in Resources */,
 				CBE3273C27E275A400395A93 /* AttentionIcon@2x.png in Resources */,
 				CBE3275E27E275A400395A93 /* CircleXRed@3x.png in Resources */,
 				CBE3274827E275A400395A93 /* CircularInfoButton.png in Resources */,
+				1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */,
 				CBE3274727E275A400395A93 /* BackChevron.png in Resources */,
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
+				CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */,
+				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
 				CBE3275727E275A400395A93 /* paddle@3x.png in Resources */,
+				1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */,
 				CBE3274E27E275A400395A93 /* CloseButtonLarge@2x.png in Resources */,
 				CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */,
-				CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */,
 				CBE3275F27E275A400395A93 /* BackChevron@2x.png in Resources */,
 				CBE3275627E275A400395A93 /* Thumb@2x.png in Resources */,
 				CBE3274927E275A400395A93 /* CircularCancelButton@2x.png in Resources */,
@@ -3729,26 +3723,35 @@
 				CBE3276527E275A400395A93 /* full_logo_black_medium@2x.png in Resources */,
 				CBE3273427E275A400395A93 /* MoreArrow@2x.png in Resources */,
 				CBE3269F27E275A300395A93 /* EchoNew.json in Resources */,
+				CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */,
+				CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */,
 				CBE3274A27E275A400395A93 /* followButton.png in Resources */,
 				CBE3275C27E275A400395A93 /* ARVIRRefresh@2x.png in Resources */,
-				CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */,
 				CBE3275B27E275A400395A93 /* CircleCheckGreen@3x.png in Resources */,
 				CBE3273527E275A400395A93 /* ARVIRBack@3x.png in Resources */,
 				CBE3274C27E275A400395A93 /* full_logo_white_large@2x.png in Resources */,
 				CB289A9F286DE04D006ECC91 /* Unica77LL-Italic.otf in Resources */,
 				CBE3272A27E275A400395A93 /* ViewInRoom_Man_3@2x.png in Resources */,
 				CBE3275927E275A400395A93 /* CircleCheckGreen.png in Resources */,
+				CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
+				1AE9F2642902DA87002A561B /* App.xcconfig in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
+				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
 				CBE3273E27E275A400395A93 /* serif_modal_close@2x.png in Resources */,
 				CBE3273227E275A400395A93 /* SearchButton@3x.png in Resources */,
 				CBE3276827E275A400395A93 /* Thumb.png in Resources */,
 				CBE3274027E275A400395A93 /* SearchButton@2x.png in Resources */,
+				1AE9F2662902DA87002A561B /* WidgetExt.xcconfig in Resources */,
 				CBE3273327E275A400395A93 /* Hash@3x.png in Resources */,
 				CBE3273A27E275A400395A93 /* AuctionRefineCheck.png in Resources */,
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
-				CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */,
+				B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */,
+				B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */,
+				4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */,
+				9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */,
+				CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3811,7 +3814,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		26390072526D18F01CC42A6C /* [CP] Check Pods Manifest.lock */ = {
+		1A08BBFB291E6B7000062A70 /* Setup .env from react-native-config */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3819,38 +3822,17 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "Setup .env from react-native-config";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "cp \"${PROJECT_DIR}/../.env.shared\" \"${PROJECT_DIR}/../.env\"\n";
 		};
-		54EE436FC81664CC0C6F0A54 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C43DDB41B4350A3E0D09B275 /* [CP] Check Pods Manifest.lock */ = {
+		21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3872,7 +3854,46 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E4875BC980DDBF81A3B3418A /* [CP] Copy Pods Resources */ = {
+		400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4867A6DC8E7BCFE19EF05DBB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3919,7 +3940,6 @@
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
-				CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
@@ -3989,14 +4009,12 @@
 				CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */,
 				CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */,
 				CBE326B427E275A300395A93 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
-				CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */,
 				CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */,
 				CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */,
 				CBE326C827E275A300395A93 /* LiveAuctionBiddingViewModel.swift in Sources */,
 				1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */,
 				1A4E5121283F91BA0008EF35 /* UIColor+ArtsyColors.m in Sources */,
 				CBE3267027E275A300395A93 /* ARDefaults.m in Sources */,
-				1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */,
 				CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */,
 				CBE326B927E275A300395A93 /* LiveAuctionStateManager.swift in Sources */,
 				CBE326A927E275A300395A93 /* LiveAuctionViewModel.swift in Sources */,
@@ -4041,7 +4059,6 @@
 				CBE3278A27E275A400395A93 /* Partner.m in Sources */,
 				CBE3279827E275A400395A93 /* SaleStatusType.swift in Sources */,
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
-				CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */,
 				CBE326BF27E275A300395A93 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
 				1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */,
 				CBE326A127E275A300395A93 /* ARDefaultNavigationTransition.m in Sources */,
@@ -4108,7 +4125,6 @@
 				CBE3279727E275A400395A93 /* LiveEvent.m in Sources */,
 				CBE3278E27E275A400395A93 /* AuctionLot.m in Sources */,
 				CBE326FF27E275A300395A93 /* ARAdminTableViewController.m in Sources */,
-				CBE3277027E275A400395A93 /* ARAuthProviders.m in Sources */,
 				CBE3277D27E275A400395A93 /* ARUserManager.m in Sources */,
 				CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */,
 				CBE326BE27E275A300395A93 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
@@ -4128,6 +4144,7 @@
 				CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
 				CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */,
 				CBE3270927E275A300395A93 /* StoryboardImages.swift in Sources */,
+				CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */,
 				CBE326E027E275A300395A93 /* ARBackButton.m in Sources */,
 				1A4B97C2283CDD5A00878EAE /* ARMapComponentViewController.m in Sources */,
 				CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */,
@@ -4141,12 +4158,12 @@
 				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
-				CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */,
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
 				CBE3278227E275A400395A93 /* ARRouter+GraphQL.m in Sources */,
 				CBE326D227E275A300395A93 /* AuctionBiddersNetworkModel.swift in Sources */,
 				1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */,
 				CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */,
+				CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */,
 				CBE326E227E275A300395A93 /* ARNavigationController.m in Sources */,
 				CBE3271527E275A300395A93 /* ARSeparatorViews.m in Sources */,
 				CBE3277A27E275A400395A93 /* ArtsyAPI+Sales.m in Sources */,
@@ -4365,7 +4382,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4378,6 +4395,7 @@
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4392,11 +4410,14 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				MARKETING_VERSION = 6.7.7;
 				OTHER_LDFLAGS = (
@@ -4404,11 +4425,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
@@ -4424,7 +4443,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */;
+			baseConfigurationReference = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4437,6 +4456,7 @@
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4450,11 +4470,14 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				MARKETING_VERSION = 6.7.7;
 				OTHER_LDFLAGS = (
@@ -4462,11 +4485,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
@@ -4513,7 +4534,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4529,7 +4550,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -4537,7 +4557,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -4584,7 +4603,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -4593,7 +4612,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -4601,7 +4619,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SDKROOT)/usr/lib/swift\"",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -4630,7 +4647,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4663,7 +4683,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
@@ -4677,6 +4700,7 @@
 		};
 		CB43267B27E8F6F900B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4694,16 +4718,18 @@
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4717,6 +4743,7 @@
 		};
 		CB43267C27E8F6F900B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4735,15 +4762,17 @@
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
 				SKIP_INSTALL = YES;
@@ -4757,6 +4786,7 @@
 		};
 		CB43269427E8FA6B00B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -4776,16 +4806,18 @@
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4799,6 +4831,7 @@
 		};
 		CB43269527E8FA6B00B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -4819,15 +4852,17 @@
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.ArtsyWidget";
 				SKIP_INSTALL = YES;
@@ -4841,7 +4876,7 @@
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */;
+			baseConfigurationReference = 1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4856,6 +4891,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ArtsyTests/Supporting_Files/Artsy_Tests-Prefix.pch";
@@ -4873,7 +4909,10 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4894,7 +4933,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */;
+			baseConfigurationReference = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4910,12 +4949,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ArtsyTests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";

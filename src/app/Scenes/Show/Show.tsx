@@ -1,16 +1,19 @@
-import { Show_show$data } from "__generated__/Show_show.graphql"
+import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Separator } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
@@ -32,18 +35,6 @@ interface ShowQueryRendererProps {
 
 interface ShowProps {
   show: Show_show$data
-}
-
-export interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: Section
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
 }
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
@@ -73,7 +64,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       key: "filter",
       element: (
         <Flex backgroundColor="white">
-          <Spacer mt={1} mb={0.5} />
+          <Spacer y={1} />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
             onPress={toggleFilterArtworksModal}
@@ -122,9 +113,9 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
           viewabilityConfig={viewConfigRef.current}
-          ListHeaderComponent={<Spacer mt={6} pt={2} />}
-          ListFooterComponent={<Spacer my={2} />}
-          ItemSeparatorComponent={() => <Spacer my={15} />}
+          ListHeaderComponent={<Spacer y={6} />}
+          ListFooterComponent={<Spacer y={2} />}
+          ItemSeparatorComponent={() => <Spacer y="15px" />}
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
             paddingBottom: 40,
@@ -140,7 +131,10 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
+      <SearchImageHeaderButton
+        isImageSearchButtonVisible={shouldShowImageSearchButton}
+        owner={{ type: OwnerType.show, id: show.internalID, slug: show.slug }}
+      />
     </ProvideScreenTracking>
   )
 }
@@ -190,34 +184,37 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
   )
 }
 
-export const ShowPlaceholder: React.FC = () => (
-  <Flex px={2} pt={useScreenDimensions().safeAreaInsets.top + 80}>
-    {/* Title */}
-    <PlaceholderText height={25} width={200 + Math.random() * 100} />
-    <PlaceholderText height={25} width={100 + Math.random() * 100} />
-    <Spacer mb={15} />
-    <PlaceholderText width={220} />
-    <Spacer mb={20} />
-    {/* Owner */}
-    <PlaceholderText width={70} />
-    <Spacer mb={15} />
-    {/* Images */}
-    <Flex flexDirection="row" py={2}>
-      {times(3).map((index: number) => (
-        <Flex key={index} marginRight={1}>
-          <PlaceholderBox height={300} width={250} />
-        </Flex>
-      ))}
-    </Flex>
-    <Spacer mb={15} />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <Spacer mb={15} />
+export const ShowPlaceholder: React.FC = () => {
+  const saInsets = useSafeAreaInsets()
+  return (
+    <Flex px={2} pt={`${saInsets.top + 80}px`}>
+      {/* Title */}
+      <PlaceholderText height={25} width={200 + Math.random() * 100} />
+      <PlaceholderText height={25} width={100 + Math.random() * 100} />
+      <Spacer y="15px" />
+      <PlaceholderText width={220} />
+      <Spacer y={2} />
+      {/* Owner */}
+      <PlaceholderText width={70} />
+      <Spacer y="15px" />
+      {/* Images */}
+      <Flex flexDirection="row" py={2}>
+        {times(3).map((index: number) => (
+          <Flex key={index} marginRight={1}>
+            <PlaceholderBox height={300} width={250} />
+          </Flex>
+        ))}
+      </Flex>
+      <Spacer y="15px" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <Spacer y="15px" />
 
-    {/* masonry grid */}
-    <PlaceholderGrid />
-  </Flex>
-)
+      {/* masonry grid */}
+      <PlaceholderGrid />
+    </Flex>
+  )
+}

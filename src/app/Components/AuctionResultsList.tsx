@@ -1,3 +1,4 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
@@ -6,7 +7,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -71,9 +72,10 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         keyExtractor={(item) => item.internalID}
         stickySectionHeadersEnabled
         ListHeaderComponent={ListHeaderComponent}
+        ItemSeparatorComponent={() => <Flex mt={2} />}
         renderSectionHeader={({ section: { sectionTitle } }) => (
-          <Flex bg="white" mx="2">
-            <Text my="2" variant="md">
+          <Flex bg="white" mx={2}>
+            <Text my={2} variant="sm-display">
               {sectionTitle}
             </Text>
           </Flex>
@@ -92,7 +94,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         }
         ListFooterComponent={
           isLoadingNext ? (
-            <Flex my={3} flexDirection="row" justifyContent="center">
+            <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           ) : null
@@ -113,11 +115,11 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
   for (let i = 0; i < 8; i++) {
     placeholderResults.push(
       <React.Fragment key={i}>
-        <Spacer height={20} />
+        <Spacer y={2} />
         <Flex flexDirection="row" flexGrow={1}>
           {/* Image */}
           <PlaceholderBox width={60} height={60} />
-          <Spacer width={15} />
+          <Spacer x="15px" />
           <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
             <Flex>
               {/* Artist name */}
@@ -137,20 +139,20 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
             </Flex>
           </Flex>
         </Flex>
-        <Spacer height={10} />
+        <Spacer y={1} />
         <Separator borderColor="black10" />
       </React.Fragment>
     )
   }
   return (
     <ProvidePlaceholderContext>
-      <Spacer mb={5} />
+      <Spacer y={6} />
 
       {listHeader}
       <Flex mx={2}>
-        <Spacer height={20} />
+        <Spacer y={2} />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer height={10} />
+        <Spacer y={1} />
         <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>

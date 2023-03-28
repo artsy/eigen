@@ -1,17 +1,19 @@
+import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
+import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
+import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
+import { Button } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { OnboardingNavigationStack } from "../Onboarding"
-import { OnboardingSocialPick } from "../OnboardingSocialPick"
-import { OnboardingWebView, OnboardingWebViewRoute } from "../OnboardingWebView"
 import {
   OnboardingCreateAccountEmail,
   OnboardingCreateAccountEmailParams,
@@ -21,10 +23,11 @@ import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPasswo
 
 export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mode="signup" />
 
-export interface OnboardingCreateAccountProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
+export type OnboardingCreateAccountProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingCreateAccount"
+>
 
-// tslint:disable-next-line:interface-over-type-literal
 export type OnboardingCreateAccountNavigationStack = {
   OnboardingCreateAccountEmail: OnboardingCreateAccountEmailParams
   OnboardingCreateAccountPassword: undefined
@@ -34,8 +37,7 @@ export type OnboardingCreateAccountNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingCreateAccountNavigationStack>()
 
-// tslint:disable-next-line:variable-name
-export const __unsafe__createAccountNavigationRef: React.MutableRefObject<NavigationContainerRef | null> =
+export const __unsafe__createAccountNavigationRef: React.MutableRefObject<NavigationContainerRef<any> | null> =
   {
     current: null,
   }
@@ -65,15 +67,13 @@ export const passwordSchema = Yup.object().shape({
     .required("Password field is required"),
 })
 export const nameSchema = Yup.object().shape({
-  name: Yup.string().required("Full name field is required").trim(),
+  name: Yup.string().trim().required("Full name field is required"),
 })
 
 export const getCurrentRoute = () =>
   __unsafe__createAccountNavigationRef.current?.getCurrentRoute()?.name as
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
-
-const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 
 export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({
   navigation,
@@ -94,25 +94,11 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
       agreedToReceiveEmails: false,
     },
     initialErrors: {},
-    onSubmit: async (
-      { email, password, name, agreedToReceiveEmails, acceptedTerms },
-      { setErrors }
-    ) => {
+    onSubmit: async ({ email, password, name, agreedToReceiveEmails, acceptedTerms }) => {
       switch (currentRoute) {
         case "OnboardingCreateAccountEmail":
-          const userExists = await GlobalStore.actions.auth.userExists({ email })
-
-          // When the user exists already we want to take them to the login screen
-          if (userExists) {
-            setErrors({
-              email: EMAIL_EXISTS_ERROR_MESSAGE,
-            })
-            // If the email is new continue with the signup
-          } else {
-            __unsafe__createAccountNavigationRef.current?.navigate(
-              "OnboardingCreateAccountPassword"
-            )
-          }
+          // continue with the sign up
+          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
           break
         case "OnboardingCreateAccountPassword":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
@@ -126,11 +112,15 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               name: name.trim(),
               agreedToReceiveEmails,
             })
+
             if (!res.success) {
-              Alert.alert("Try again", res.message)
+              if (res.error === "blocked_attempt") {
+                showBlockedAuthError("sign up")
+              } else {
+                Alert.alert("Try again", res.message)
+              }
             }
           }
-
           break
 
         default:
@@ -152,14 +142,14 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
           <NavigationContainer
             onStateChange={(state) => {
               const routes = state?.routes
               const index = state?.index
-              if (index && routes) {
+              if (index !== undefined && routes) {
                 setCurrentRoute(routes[index].name as any)
               }
             }}
@@ -167,10 +157,10 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
             independent
           >
             <StackNavigator.Navigator
-              headerMode="screen"
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
+                headerMode: "screen",
               }}
             >
               <StackNavigator.Screen
@@ -188,16 +178,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               />
               <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
             </StackNavigator.Navigator>
-            {currentRoute !== "OnboardingWebView" && (
-              <OnboardingCreateAccountButton
-                navigateToLoginWithEmail={() => {
-                  navigation.replace("OnboardingLoginWithEmail", {
-                    withFadeAnimation: true,
-                    email: formik.values.email,
-                  })
-                }}
-              />
-            )}
+            {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
           </NavigationContainer>
         </FormikProvider>
       </ArtsyKeyboardAvoidingView>
@@ -226,19 +207,19 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <Spacer mt={60} />
+        <Spacer y="60px" />
         <Box minHeight={85}>
-          <Text variant="lg">{title}</Text>
+          <Text variant="lg-display">{title}</Text>
           {!!caption && (
             <>
-              <Spacer mt={0.5} />
+              <Spacer y={0.5} />
               <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>
             </>
           )}
         </Box>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         {children}
       </ScrollView>
       {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
@@ -246,48 +227,18 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
   )
 }
 
-export interface OnboardingCreateAccountButtonProps {
-  navigateToLoginWithEmail: () => void
-}
-
-export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
-  navigateToLoginWithEmail,
-}) => {
+export const OnboardingCreateAccountButton: React.FC = () => {
   const { values, handleSubmit, isSubmitting, errors } = useFormikContext<FormikSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
 
   useEffect(() => {
-    if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
-      Animated.timing(yTranslateAnim.current, {
-        toValue: -50,
-        duration: 500,
-        useNativeDriver: true,
-      }).start()
-    } else {
-      yTranslateAnim.current = new Animated.Value(0)
-    }
+    yTranslateAnim.current = new Animated.Value(0)
   }, [errors.email])
 
   return (
     <Flex px={2} paddingBottom={2} backgroundColor="white" pt={0.5}>
-      {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
-        <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
-          <Button
-            onPress={navigateToLoginWithEmail}
-            block
-            haptic="impactMedium"
-            mb={1}
-            mt={1.5}
-            variant="outline"
-            testID="loginButton"
-          >
-            Go to Login
-          </Button>
-        </Animated.View>
-      )}
-
       <Button
         onPress={handleSubmit}
         block

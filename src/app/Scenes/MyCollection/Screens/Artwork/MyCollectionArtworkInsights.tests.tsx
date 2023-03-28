@@ -1,65 +1,50 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
-jest.unmock("react-relay")
-
 describe("MyCollectionArtworkInsights", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkInsightsTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
-          artwork(id: "some-artwork-id") {
-            ...MyCollectionArtworkInsights_artwork
-          }
-
-          marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-            ...MyCollectionArtworkInsights_marketPriceInsights
-          }
-          me {
-            ...MyCollectionArtworkInsights_me
-          }
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkInsightsTestsQuery>({
+    Component: (props) => {
+      if (!props?.artwork || !props?.marketPriceInsights) {
+        return null
+      }
+      return (
+        <StickyTabPage
+          tabs={[
+            {
+              title: "test",
+              content: (
+                <MyCollectionArtworkInsights
+                  me={props.me}
+                  marketPriceInsights={props.marketPriceInsights}
+                  artwork={props?.artwork}
+                />
+              ),
+            },
+          ]}
+        />
+      )
+    },
+    query: graphql`
+      query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
+        artwork(id: "some-artwork-id") {
+          ...MyCollectionArtworkInsights_artwork
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (!props?.artwork || !props?.marketPriceInsights) {
-          return null
-        }
-        return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: (
-                  <MyCollectionArtworkInsights
-                    me={props.me}
-                    marketPriceInsights={props.marketPriceInsights}
-                    artwork={props?.artwork}
-                  />
-                ),
-              },
-            ]}
-          />
-        )
-      }}
-    />
-  )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+        marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
+          ...MyCollectionArtworkInsights_marketPriceInsights
+        }
+        me {
+          ...MyCollectionArtworkInsights_me
+        }
+      }
+    `,
   })
 
   it("renders without throwing an error", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,
@@ -71,73 +56,109 @@ describe("MyCollectionArtworkInsights", () => {
     expect(await getByText("Artist Market")).toBeTruthy()
     expect(await getByText("Based on the last 36 months of auction data")).toBeTruthy()
     expect(await getByText("Annual Value Sold")).toBeTruthy()
-    expect(await getByText("$1,000")).toBeTruthy()
+    expect(await getByText("$1k")).toBeTruthy()
     expect(await getByText("Annual Lots Sold")).toBeTruthy()
     expect(await getByText("100")).toBeTruthy()
     expect(await getByText("Sell-through Rate")).toBeTruthy()
     expect(await getByText("20%")).toBeTruthy()
-    expect(await getByText("Sale Price to Estimate")).toBeTruthy()
-    expect(await getByText("1x")).toBeTruthy()
+    expect(await getByText("Price Over Estimate")).toBeTruthy()
+    expect(await getByText("200%")).toBeTruthy()
     expect(await getByText("Liquidity")).toBeTruthy()
     expect(await getByText("High")).toBeTruthy()
-    expect(await getByText("One-Year Trend")).toBeTruthy()
-    expect(await getByText("Trending up")).toBeTruthy()
 
     // Artwork Comparable Works
 
     expect(await getByText("Comparable Works")).toBeTruthy()
-
-    // Why Sell or Submit To Sell
-
-    // TODO: fix this test
-    // jest won, i don't get how to mock the showSubmitToSell function ><'
-    expect(await getByText("Sell Art From Your Collection")).toBeTruthy()
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowRequestPriceEstimateBanner: true })
-    })
-
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByTestId } = renderWithRelay({
         Query: () => ({
           artwork: mockArtwork,
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
         }),
       })
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
-    it("does not display RequestForPriceEstimateBanner when DemandIndex < 9", () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("does not display when artwork is submitted", () => {
+      const { queryByTestId } = renderWithRelay({
         Query: () => ({
-          artwork: mockArtworkForP1Artist,
-          marketPriceInsights: mockMarketPriceInsights,
-        }),
-      })
-
-      expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
-    })
-
-    it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          artwork: mockArtworkForP1Artist,
+          artwork: {
+            ...mockArtworkForP1Artist,
+            consignmentsSubmission: { displayText: "Consignment" },
+          },
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
         }),
       })
 
-      expect(queryByTestId("request-price-estimate-button")).toBeDefined()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeDefined()
+      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+    })
+  })
+
+  describe("display of Submit for Sale section", () => {
+    it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
+      const { getByText } = renderWithRelay({
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: true,
+              },
+            },
+            submissionId: null,
+          },
+        }),
+      })
+      expect(getByText("Interested in Selling This Work?")).toBeTruthy()
+    })
+
+    it("does not render Submit for Sale section if not P1 artist", () => {
+      const { getByText } = renderWithRelay({
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: false,
+              },
+            },
+          },
+        }),
+      })
+
+      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+        "Unable to find an element with text: Interested in Selling This Work?"
+      )
+    })
+    it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
+      const { getByText } = renderWithRelay({
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: true,
+              },
+            },
+            submissionId: "someId",
+          },
+        }),
+      })
+
+      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+        "Unable to find an element with text: Interested in Selling This Work?"
+      )
     })
   })
 })
+
+const mockMarketPriceInsights = {
+  sellThroughRate: 0.2,
+  annualLotsSold: 100,
+  annualValueSoldDisplayText: "$1k",
+  medianSaleOverEstimatePercentage: "200",
+  liquidityRankDisplayText: "High",
+}
 
 const mockArtwork = {
   internalID: "some-artwork-id",
@@ -180,16 +201,7 @@ const mockArtwork = {
       },
     ],
   },
-}
-
-const mockMarketPriceInsights = {
-  demandRank: 0.7,
-  demandTrend: 9,
-  sellThroughRate: 20,
-  annualLotsSold: 100,
-  annualValueSoldCents: 100000,
-  medianSaleToEstimateRatio: 1,
-  liquidityRank: 0.7,
+  marketPriceInsights: mockMarketPriceInsights,
 }
 
 const mockMarketPriceInsightsForHighDemandIndex = {

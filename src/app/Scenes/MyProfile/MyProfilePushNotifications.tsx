@@ -1,9 +1,11 @@
-import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
+import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -11,7 +13,7 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Box, Button, Flex, Join, Sans, Separator } from "palette"
+import { Button, Join, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
@@ -23,7 +25,6 @@ import {
   View,
 } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 const INSTRUCTIONS = Platform.select({
   ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
@@ -42,16 +43,18 @@ export type UserPushNotificationSettings =
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
   | "receiveOrderNotification"
+  | "receiveViewingRoomNotification"
+  | "receivePartnerShowNotification"
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Sans size="4t" weight="medium" color="black">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
-      </Sans>
-      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      </Text>
+      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
         {INSTRUCTIONS}
-      </Sans>
+      </Text>
       <Button
         size="large"
         onPress={Platform.select({
@@ -70,14 +73,14 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Sans size="4t" weight="medium" color="black">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
-      </Sans>
-      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      </Text>
+      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
         We need your permission to send push notifications, which may include alerts, artwork
         reminders or purchase updates.
-      </Sans>
+      </Text>
       <Button
         size="large"
         onPress={() => {
@@ -101,9 +104,9 @@ const NotificationPermissionsBox = ({
   isLoading: boolean
 }) => (
   <Box py={1} px={2}>
-    <Sans size="4t" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+    <Text variant="sm-display" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
       {title}
-    </Sans>
+    </Text>
     {children}
   </Box>
 )
@@ -247,6 +250,24 @@ export const MyProfilePushNotifications: React.FC<{
             }}
           />
           <SwitchMenu
+            title="New Viewing Rooms for You"
+            description="New viewing rooms added by galleries you follow"
+            value={!!userNotificationSettings.receiveViewingRoomNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receiveViewingRoomNotification", value)
+            }}
+          />
+          <SwitchMenu
+            title="New Shows for You"
+            description="New shows added by galleries you follow"
+            value={!!userNotificationSettings.receivePartnerShowNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receivePartnerShowNotification", value)
+            }}
+          />
+          <SwitchMenu
             title="Promotions"
             description="Updates on Artsy's latest campaigns and special offers."
             value={!!userNotificationSettings.receivePromotionNotification}
@@ -292,6 +313,8 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receivePurchaseNotification
         receiveSaleOpeningClosingNotification
         receiveOrderNotification
+        receiveViewingRoomNotification
+        receivePartnerShowNotification
       }
     `,
   },

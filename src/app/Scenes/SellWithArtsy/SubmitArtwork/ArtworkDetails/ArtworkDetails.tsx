@@ -1,44 +1,17 @@
-import { captureMessage } from "@sentry/react-native"
-import { ErrorView } from "app/Components/ErrorView/ErrorView"
-import { navigate } from "app/navigation/navigate"
-import { artworkDetailsCompletedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
+import { Spacer, Flex, LinkText } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
-import React, { useState } from "react"
-import { useTracking } from "react-tracking"
+import { CTAButton, BulletedItem } from "palette"
+import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
-import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
-export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
-  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
-  const { submissionId, artworkDetails } = GlobalStore.useAppState(
-    (state) => state.artworkSubmission.submission
-  )
-  const { trackEvent } = useTracking()
-  const [submissionError, setSubmissionError] = useState(false)
-
-  const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
-    try {
-      const id = await createOrUpdateSubmission(values, submissionId)
-      if (id) {
-        GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
-        GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)
-
-        trackEvent(artworkDetailsCompletedEvent(id, userEmail, userID))
-
-        handlePress()
-      }
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setSubmissionError(true)
-    }
-  }
-
-  if (submissionError) {
-    return <ErrorView />
-  }
+export const ArtworkDetails: React.FC<{
+  handlePress: (formValues: ArtworkDetailsFormModel) => void
+  isLastStep: boolean
+}> = ({ handlePress, isLastStep }) => {
+  const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
   return (
     <Flex flex={3} py={1} mt={1}>
@@ -56,23 +29,23 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
       </BulletedItem>
       <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
 
-      <Spacer mt={4} />
+      <Spacer y={4} />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}
-        onSubmit={handleArtworkDetailsSubmit}
+        onSubmit={handlePress}
         validationSchema={artworkDetailsValidationSchema}
         validateOnMount
       >
         {({ values, isValid }) => (
           <>
             <ArtworkDetailsForm />
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <CTAButton
               disabled={!isValid}
-              onPress={() => handleArtworkDetailsSubmit(values)}
+              onPress={() => handlePress(values)}
               testID="Submission_ArtworkDetails_Button"
             >
-              Save & Continue
+              {isLastStep ? "Submit Artwork" : "Save & Continue"}
             </CTAButton>
           </>
         )}

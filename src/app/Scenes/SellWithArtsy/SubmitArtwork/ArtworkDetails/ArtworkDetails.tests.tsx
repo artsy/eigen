@@ -1,16 +1,22 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { ContactInformationFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ContactInformation/validation"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
+import {
+  createConsignSubmission,
+  updateConsignSubmission,
+} from "app/Scenes/SellWithArtsy/mutations"
+import { GlobalStore } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { createConsignSubmission, updateConsignSubmission } from "../../mutations"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
+import { ArtworkDetailsFormModel } from "./validation"
 
 jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
   createConsignSubmission: jest.fn().mockResolvedValue("12345"),
@@ -19,30 +25,28 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
 
-jest.unmock("react-relay")
-
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetails", () => {
-  const TestRenderer = () => (
+  const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails handlePress={jest.fn()} />
+      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} />
     </RelayEnvironmentProvider>
   )
 
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation for form fields", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    expect(getByText(/Currently, artists can not sell their own work on Artsy./)).toBeTruthy()
     expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
   it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     const inputs = {
       year: getByTestId("Submission_YearInput"),
@@ -61,33 +65,39 @@ describe("ArtworkDetails", () => {
 
   describe("createOrUpdateSubmission", () => {
     it("creates new submission when no submission ID passed", async () => {
-      await createOrUpdateSubmission(mockFormValues, "")
+      await createOrUpdateSubmission(
+        mockFormValues as ArtworkDetailsFormModel & ContactInformationFormModel,
+        ""
+      )
       expect(createConsignSubmissionMock).toHaveBeenCalled()
     })
 
     it("updates existing submission when submission ID passed", async () => {
-      await createOrUpdateSubmission(mockFormValues, "12345")
+      await createOrUpdateSubmission(
+        mockFormValues as ArtworkDetailsFormModel & ContactInformationFormModel,
+        "12345"
+      )
       expect(updateConsignSubmissionMock).toHaveBeenCalled()
     })
   })
 
   describe("Save & Continue button", () => {
     it("corrently rendered", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
     })
 
     it("still corrently rendered when location is set", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      const locationInput = getByTestId("Submission_LocationInput")
+      const locationInput = getByTestId("autocomplete-location-input")
       fireEvent.changeText(locationInput, "Berlin, Germany")
 
       expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
     })
 
     it("disabled when a required field is missing", async () => {
-      const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
 
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
@@ -162,7 +172,9 @@ describe("ArtworkDetails", () => {
     })
 
     it("tracks artworkDetailsCompleted event on submission create", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.ArtworkDetails]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })
@@ -183,7 +195,9 @@ describe("ArtworkDetails", () => {
 
     it("tracks artworkDetailsCompleted event on submission update", async () => {
       GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.ArtworkDetails]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })

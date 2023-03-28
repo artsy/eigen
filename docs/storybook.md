@@ -5,21 +5,12 @@
 1. Add your NewComponent.tsx to palette inside NewComponent folder
 2. Create NewComponent.stories.tsx and add the NewComponent stories
 3. Inside your NewComponent folder create index.tsx and `export * from './NewComponent'`
-4. In src/storybook/storyLoader.js
+4. In src/storybook/storybook.requires.js
 
-```
-function loadStories() {
-...
-+ require("../palette/elements/NewComponent/NewComponent.stories")
-...
+```tsx
+const getStories = () => {
+  return [require("<path>/NewComponent.stories.tsx")]
 }
-
-const stories = [
-...
-+ /palette/elements/NewComponent/NewComponent.stories
-...
-
-]
 ```
 
 We use [Storybook](https://storybook.js.org/tutorials/intro-to-storybook/react-native/en/get-started/) to build and display our UI components in isolation.
@@ -40,7 +31,7 @@ Opens Storybook without loading the entire app (instead of `yarn start`).
 yarn start-storybook
 ```
 
-The screen can also be opened from the admin menu.
+The screen can also be opened from the Dev Menu.
 
 **Run Storybook**
 

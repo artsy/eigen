@@ -1,5 +1,5 @@
 import { UpdateConversationMutation } from "__generated__/UpdateConversationMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 import { MutationConfig } from "relay-runtime"
 
@@ -16,8 +16,7 @@ export function updateConversation(
 ) {
   return commitMutation<UpdateConversationMutation>(defaultEnvironment, {
     updater: (store) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      store.get(conversation.id).setValue(false, "unread")
+      store!.get(conversation.id)!.setValue(false, "unread")
     },
     onCompleted,
     onError,

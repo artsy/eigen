@@ -1,13 +1,13 @@
+import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
-import { defaultRules } from "app/utils/renderMarkdown"
-import { renderMarkdown } from "app/utils/renderMarkdown"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -31,14 +31,14 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
       ruleOverrides: {
         paragraph: {
           react: (node, output, state) => (
-            <Sans
-              size="3t"
+            <Text
+              variant="sm"
               color="black100"
               key={state.key}
               numberOfLines={titleLength > 32 ? 3 : 4}
             >
               {output(node.content, state)}
-            </Sans>
+            </Text>
           ),
         },
       },
@@ -53,10 +53,10 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 
   return collections.length > 0 ? (
     <>
-      <Flex ml="-20px">
-        <Sans size="4" my={2} ml={4} testID="group">
+      <Flex ml={-2}>
+        <Text variant="sm-display" my={2} ml={4} testID="group">
           {collectionGroup.name}
-        </Sans>
+        </Text>
       </Flex>
       <AboveTheFoldFlatList<FeaturedCollection>
         horizontal
@@ -64,9 +64,9 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         data={collections as FeaturedCollection[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={() => <Spacer x={1} />}
+        ListFooterComponent={() => <Spacer x={1} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           return (
             <Touchable
@@ -94,13 +94,13 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt="15px" testID={"title-" + index}>
+                <Text variant="sm" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}
-                </Sans>
+                </Text>
                 {!!result.priceGuidance && (
-                  <Sans color={color("black60")} size="3t" mb={1} testID={"price-" + index}>
+                  <Text variant="sm" color={color("black60")} mb={1} testID={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
-                  </Sans>
+                  </Text>
                 )}
                 {handleMarkdown(result.descriptionMarkdown || "", result.title.length)}
               </ImageWrapper>

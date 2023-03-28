@@ -1,14 +1,15 @@
+import { Spacer, Box, Text, useSpace } from "@artsy/palette-mobile"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { filter } from "lodash"
-import { Box, Join, Separator, Spacer } from "palette"
+import { Join, Separator } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { ContextGridCTA } from "./ContextGridCTA"
-import { Header } from "./Header"
 
 type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>
 type ArtworkGrid = NonNullable<
@@ -24,10 +25,14 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   }
 }
 
+// @ts-expect-error
 export const OtherWorksFragmentContainer = createFragmentContainer<{
   artwork: OtherWorks_artwork$data
 }>(
+  // @ts-expect-error
   (props) => {
+    const { width } = useScreenDimensions()
+    const space = useSpace()
     const grids = props.artwork.contextGrids
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
@@ -35,19 +40,22 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
       return (
         <Join
           separator={
-            <Box my={3}>
+            <Box my={4}>
               <Separator />
             </Box>
           }
         >
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
-              <Header title={grid.title!} />
-              <Spacer mb={2} />
+              <Text variant="md" textAlign="left">
+                {grid.title}
+              </Text>
+              <Spacer y={2} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
                 artworks={extractNodes(grid.artworks)}
+                width={width - space(2)}
               />
               <Box mt={2}>
                 <ContextGridCTA

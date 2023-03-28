@@ -1,5 +1,5 @@
+import { BoxProps } from "@artsy/palette-mobile"
 import { ShowHours_show$data } from "__generated__/ShowHours_show.graphql"
-import { BoxProps } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ShowLocationHoursFragmentContainer as ShowLocationHours } from "./ShowLocationHours"
 

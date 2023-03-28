@@ -1,13 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkComparableWorks_artwork$key } from "__generated__/MyCollectionArtworkComparableWorks_artwork.graphql"
 import {
   AuctionResultListItemFragmentContainer,
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -32,13 +32,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
 
   return (
     <Flex mb={6}>
-      <SectionTitle
-        title="Comparable Works"
-        onPress={() => {
-          trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork?.slug))
-          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
-        }}
-      />
+      <SectionTitle title="Comparable Works" />
 
       <FlatList
         data={comparableWorks}

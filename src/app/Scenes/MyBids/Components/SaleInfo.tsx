@@ -1,8 +1,7 @@
+import { BoltFill, IconProps, Stopwatch, Flex, Box, Text } from "@artsy/palette-mobile"
+import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
-import { Box, Flex, IconProps, Text } from "palette"
-import { BoltFill, Stopwatch } from "palette/svgs/sf"
-import { TimelySale } from "../helpers/timely"
 
 export const SaleInfo = ({
   sale,
@@ -85,7 +84,7 @@ export const SaleInfo = ({
         </Text>
       </Flex>
       {!!line2 && (
-        <Text ml="25px" variant="xs" color="yellow100">
+        <Text ml="25px" variant="xs" color="copper100">
           {line2}
         </Text>
       )}

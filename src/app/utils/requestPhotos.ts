@@ -6,7 +6,7 @@ import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 
-export async function requestPhotos(allowMultiple: boolean = true): Promise<Image[]> {
+export async function requestPhotos(allowMultiple = true): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
     return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(allowMultiple)
   } else {
@@ -22,9 +22,9 @@ export async function requestPhotos(allowMultiple: boolean = true): Promise<Imag
 }
 
 export async function showPhotoActionSheet(
-  showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void,
-  useModal: boolean = false,
-  allowMultiple: boolean = true
+  showActionSheet: (options: ActionSheetOptions, callback: (i?: number) => void) => void,
+  useModal = false,
+  allowMultiple = true
 ): Promise<Image[]> {
   return new Promise((resolve, reject) => {
     showActionSheet(

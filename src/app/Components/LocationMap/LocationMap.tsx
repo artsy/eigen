@@ -1,11 +1,11 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { LocationMap_location$data } from "__generated__/LocationMap_location.graphql"
-import { Pin } from "app/Icons/Pin"
+import { Pin } from "app/Components/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
-import { Box, Flex, Text } from "palette"
 import { Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -97,7 +97,7 @@ export const tappedOnMap = (
         return this.options.length - 1
       },
     },
-    (buttonIndex: number) => {
+    (buttonIndex: number | undefined) => {
       if (buttonIndex === 0) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,

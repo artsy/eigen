@@ -1,8 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { mockFormValues } from "./utils/testUtils"
@@ -23,7 +22,7 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("correctly displays formik values in form", () => {
-    const { findByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
+    const { findByText } = renderWithWrappers(<ArtworkDetailsForm />)
     expect(findByText("hello")).toBeTruthy()
     expect(findByText("Caspar David Friedrich")).toBeTruthy()
     expect(findByText("oil on canvas")).toBeTruthy()
@@ -33,7 +32,7 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("when rarity is limited edition, renders additional inputs for edition number and size", () => {
-    const { getByTestId } = renderWithWrappersTL(<ArtworkDetailsForm />)
+    const { getByTestId } = renderWithWrappers(<ArtworkDetailsForm />)
 
     const inputs = {
       editionNumber: getByTestId("Submission_EditionNumberInput"),
@@ -45,7 +44,7 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("opens up rarity modal, when rarity select tooltip pressed", async () => {
-    const { getAllByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
+    const { getAllByText } = renderWithWrappers(<ArtworkDetailsForm />)
 
     const raritySelectTooltip = getAllByText("What is this?")[0]
     expect(raritySelectTooltip).toBeTruthy()
@@ -61,7 +60,7 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("opens up provenance modal, when provenance tooltip pressed", async () => {
-    const { getByText, getAllByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
+    const { getByText, getAllByText } = renderWithWrappers(<ArtworkDetailsForm />)
 
     const provenanceTooltip = getAllByText("What is this?")[1]
     expect(provenanceTooltip).toBeTruthy()

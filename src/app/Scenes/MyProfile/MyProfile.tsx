@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { MyCollectionArtworkForm } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfileProvider } from "./MyProfileProvider"
@@ -16,7 +16,6 @@ export const MyProfile = () => {
           detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
-            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
             cardStyle: { backgroundColor: "white" },
           }}
         >

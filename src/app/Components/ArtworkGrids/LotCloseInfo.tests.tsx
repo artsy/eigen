@@ -1,6 +1,5 @@
-import { render } from "@testing-library/react-native"
-import { Theme } from "palette"
-import { DurationProvider } from "../Countdown"
+import { DurationProvider } from "app/Components/Countdown"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { LotCloseInfo } from "./LotCloseInfo"
 
 // Today is Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
@@ -36,18 +35,16 @@ describe("LotCloseInfo", () => {
       endAt: "2019-04-25T11:12:48-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            lotEndAt={saleArtwork.endAt}
-            duration={null}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          lotEndAt={saleArtwork.endAt}
+          duration={null}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
     expect(() => getByText(/(Closed|Closes)$/)).toThrow()
@@ -64,18 +61,16 @@ describe("LotCloseInfo", () => {
       endAt: "2018-05-25T11:12:48-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            lotEndAt={saleArtwork.endAt}
-            duration={null}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          lotEndAt={saleArtwork.endAt}
+          duration={null}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
     const lotCloseText = getByText("Formatted end date time")
@@ -95,21 +90,19 @@ describe("LotCloseInfo", () => {
       endAt: "2018-05-11T10:50:50-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            lotEndAt={saleArtwork.endAt}
-            duration={null}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          lotEndAt={saleArtwork.endAt}
+          duration={null}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
-    const lotCloseText = getByText("Closes, 18h 28m")
+    const lotCloseText = getByText("Closes in 18h 28m")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black100")
@@ -126,21 +119,19 @@ describe("LotCloseInfo", () => {
       endAt: "2018-05-11T10:50:50-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            lotEndAt={saleArtwork.endAt}
-            duration={null}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          lotEndAt={saleArtwork.endAt}
+          duration={null}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
-    const lotCloseText = getByText("Closes, 18h 28m")
+    const lotCloseText = getByText("Closes in 18h 28m")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black100")
@@ -157,21 +148,19 @@ describe("LotCloseInfo", () => {
       endAt: "2018-05-10T16:22:50-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            duration={null}
-            lotEndAt={saleArtwork.endAt}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          duration={null}
+          lotEndAt={saleArtwork.endAt}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
-    const lotCloseText = getByText("Closes, 0m 18s")
+    const lotCloseText = getByText("Closes in 0m 18s")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("red100")
@@ -187,18 +176,16 @@ describe("LotCloseInfo", () => {
       endAt: "2017-04-25T11:12:48-04:00",
       ...basicSaleArtwork,
     }
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo
-            duration={null}
-            lotEndAt={saleArtwork.endAt}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended={false}
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.endAt}>
+        <LotCloseInfo
+          duration={null}
+          lotEndAt={saleArtwork.endAt}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended={false}
+        />
+      </DurationProvider>
     )
 
     const lotCloseText = getByText("Closed")
@@ -219,18 +206,16 @@ describe("LotCloseInfo", () => {
       extendedBiddingEndAt: new Date(Date.now() + 1000 * 60 * 2).toISOString(),
     }
 
-    const { getByText } = render(
-      <Theme>
-        <DurationProvider startAt={saleArtwork.extendedBiddingEndAt}>
-          <LotCloseInfo
-            lotEndAt={saleArtwork.extendedBiddingEndAt}
-            duration={null}
-            saleArtwork={saleArtwork}
-            sale={sale}
-            hasBeenExtended
-          />
-        </DurationProvider>
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <DurationProvider startAt={saleArtwork.extendedBiddingEndAt}>
+        <LotCloseInfo
+          lotEndAt={saleArtwork.extendedBiddingEndAt}
+          duration={null}
+          saleArtwork={saleArtwork}
+          sale={sale}
+          hasBeenExtended
+        />
+      </DurationProvider>
     )
 
     const lotCloseText = getByText("Extended, 2m 0s")

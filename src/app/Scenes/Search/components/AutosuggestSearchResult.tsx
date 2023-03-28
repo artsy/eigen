@@ -1,17 +1,18 @@
+import { Spacer, AuctionIcon, ArtworkIcon, CloseIcon, Flex, Text } from "@artsy/palette-mobile"
+import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   EntityType,
   navigate,
   navigateToEntity,
   navigateToPartner,
   SlugType,
-} from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+} from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useContext } from "react"
+import { Pill, Touchable } from "palette"
+import { useContext } from "react"
 import { useTracking } from "react-tracking"
-import { AutosuggestResult } from "../AutosuggestResults"
-import { SearchContext } from "../SearchContext"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
@@ -79,7 +80,6 @@ export const AutosuggestSearchResult: React.FC<{
 
       if (trackResultPress) {
         trackResultPress(result, itemIndex)
-
         return
       }
 
@@ -87,6 +87,7 @@ export const AutosuggestSearchResult: React.FC<{
         action_type: displayingRecentResult
           ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
           : Schema.ActionNames.ARAnalyticsSearchItemSelected,
+        // @ts-expect-error
         query: queryRef.current,
         selected_object_type: result.displayType || result.__typename,
         selected_object_slug: result.slug,
@@ -96,6 +97,8 @@ export const AutosuggestSearchResult: React.FC<{
 
   const resultType = getResultType(result)
 
+  const initials = result.__typename === "Artist" ? result.initials : undefined
+
   return (
     <>
       <Touchable
@@ -103,9 +106,13 @@ export const AutosuggestSearchResult: React.FC<{
         testID={`autosuggest-search-result-${result.displayLabel}`}
       >
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-          <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
+          <SearchResultImage
+            imageURL={result.imageUrl}
+            initials={initials}
+            resultType={resultType}
+          />
 
-          <Spacer ml={1} />
+          <Spacer x={1} />
 
           <Flex flex={1}>
             <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
@@ -138,25 +145,27 @@ export const AutosuggestSearchResult: React.FC<{
 
       {!!showNavigationButtons && (
         <>
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Flex flexDirection="row" alignItems="center">
-            <Spacer ml={4} />
+            <Spacer x={4} />
 
-            <Spacer ml={1} />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={ArtworkIcon}
               rounded
               onPress={() => onPress({ artistTab: "Artworks" })}
+              block
             >
               Artworks
             </Pill>
-            <Spacer ml={1} />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={AuctionIcon}
               rounded
               onPress={() => onPress({ artistTab: "Insights" })}
+              block
             >
               Auction Results
             </Pill>

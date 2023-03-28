@@ -1,5 +1,3 @@
-import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
-import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
   Aggregations,
@@ -7,13 +5,15 @@ import {
   filterKeyFromAggregation,
   FilterParamName,
   getDisplayNameForTimePeriod,
-} from "../ArtworkFilterHelpers"
-import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
-import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
-import { parsePriceRangeLabel, parseRange } from "../Filters/helpers"
-import { getSizeOptions } from "../Filters/SizesOptionsScreen"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
+import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 
-import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
+import { WAYS_TO_BUY_OPTIONS } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
+import { parsePriceRangeLabel, parseRange } from "app/Components/ArtworkFilter/Filters/helpers"
+import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
+import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteria, SearchCriteriaAttributes } from "./types"
 

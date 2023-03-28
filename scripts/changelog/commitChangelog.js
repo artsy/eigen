@@ -4,21 +4,11 @@ const { spawnSync } = require("child_process")
 const updatePlatfromChangeLog = require("./generatePlatformChangelog").updatePlatfromChangeLog
 const Octokit = require("@octokit/rest")
 const ora = require("ora")
+const { exec } = require("../helpers/exec")
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
 
 const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
-
-/**
- * @param {string} command
- */
-const exec = (command) => {
-  const task = spawnSync(command, { shell: true })
-  if (task.status != 0) {
-    console.log(task.stderr.toString())
-  }
-  return task.stdout.toString()
-}
 
 /**
  * Checks out the branch, creating it if it doesn't already exist
@@ -89,7 +79,7 @@ const createAndMergePullRequest = async () => {
     repo: "eigen",
     issue_number: res.data.number,
     owner: "artsy",
-    labels: ["Changelog Updater", "Merge On Green"],
+    labels: ["Changelog Updater"],
   })
 
   logger.succeed()
@@ -99,7 +89,10 @@ const main = async () => {
   // Make sure we are on a clean branch and checkout to it
   forceCheckout()
   // Run the changelog updater
-  await Promise.all([updatePlatfromChangeLog("android", "beta"), updatePlatfromChangeLog("ios", "beta")])
+  await Promise.all([
+    updatePlatfromChangeLog("android", "beta"),
+    updatePlatfromChangeLog("ios", "beta"),
+  ])
 
   // Check if we have any changes in the changelog
   // If no changes were found, no further action needed, quit

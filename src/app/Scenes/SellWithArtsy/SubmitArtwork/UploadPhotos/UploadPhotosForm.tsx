@@ -1,19 +1,26 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import {
   Photo,
   PhotosFormModel,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/removeAssetFromConsignmentSubmissionMutation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
-import { removeAssetFromSubmission } from "../../mutations/removeAssetFromConsignmentSubmissionMutation"
+import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
-import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
+import {
+  calculateSinglePhotoSize,
+  getPhotosSize,
+  isSizeLimitExceeded,
+} from "./utils/calculatePhotoSize"
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
@@ -22,6 +29,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
   const [progress, setProgress] = useState<Record<string, number | undefined>>({})
+  const { trackEvent } = useTracking()
 
   useEffect(() => {
     // add initial photos when a My Collection artwork gets submitted
@@ -51,17 +59,19 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         })
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
-          const isTotalSizeLimitExceeded = isSizeLimitExceeded([
-            ...values.photos,
-            ...processedPhotos,
-            sizedPhoto,
-          ])
+
+          const availablePhotos = [...values.photos, ...processedPhotos, sizedPhoto]
+          const isTotalSizeLimitExceeded = isSizeLimitExceeded(availablePhotos)
           // when total size limit exceeded, set photo's err state and stop the upload loop
           if (isTotalSizeLimitExceeded) {
             sizedPhoto.error = true
             sizedPhoto.errorMessage =
               "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
             processedPhotos.push(sizedPhoto)
+
+            trackEvent(
+              tracks.hasExceededUploadSize(getPhotosSize(availablePhotos), availablePhotos.length)
+            )
             break
           }
           processedPhotos.push(sizedPhoto)
@@ -83,12 +93,12 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: allPhotos,
     })
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
+      submission.submissionId
+    )
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
-
-    // store photos in asynstorage to be retrieved later when the user goes to My Collection
-    storeLocalPhotos(submission.submissionId, allPhotos)
 
     setFieldValue("photos", allPhotos)
   }
@@ -104,25 +114,23 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   // remove photo from submission and Formik values
   const handlePhotoDelete = async (photo: Photo) => {
     try {
-      await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
-      const isTotalSizeLimitExceeded = isSizeLimitExceeded(filteredPhotos)
-      // make sure to clean error state from photos, if total size limit is not exceed after deletion
-      if (!isTotalSizeLimitExceeded) {
-        filteredPhotos.forEach((p: Photo) => {
-          p.error = false
-          p.errorMessage = ""
-        })
-      }
 
       // set photos for my collection, and submission flow state and Formik
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
         photos: filteredPhotos,
       })
+
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
+        submission.submissionId
+      )
+
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,
       })
       setFieldValue("photos", filteredPhotos)
+
+      await removeAssetFromSubmission({ assetID: photo.id })
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
@@ -132,14 +140,14 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
   return (
     <>
-      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={3} pb={3}>
-        <Text variant="lg" color="black100" marginBottom={1}>
+      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={4} pb={4}>
+        <Text variant="lg-display" color="black100" marginBottom={1}>
           Add Files Here
         </Text>
-        <Text variant="md" color="black60" marginBottom={1}>
+        <Text variant="sm-display" color="black60" marginBottom={1}>
           Files Supported: JPG, PNG, HEIC
         </Text>
-        <Text variant="md" color="black60" marginBottom={3}>
+        <Text variant="sm-display" color="black60" marginBottom={4}>
           Total Maximum Size: 30MB
         </Text>
         <Button
@@ -152,17 +160,30 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         >
           Add Photo
         </Button>
-        <Spacer mt={1} />
+        <Spacer y={1} />
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (
         <PhotoRow
           key={idx}
           photo={photo}
+          hideDeleteButton={isAnyPhotoLoading}
           onPhotoDelete={handlePhotoDelete}
           progress={progress[photo.path] ?? 0}
         />
       ))}
     </>
   )
+}
+
+export const tracks = {
+  hasExceededUploadSize: (
+    uploadSizeInBytes: number,
+    numberOfFiles: number
+  ): UploadSizeLimitExceeded => ({
+    action: ActionType.uploadSizeLimitExceeded,
+    context_owner_type: OwnerType.sell,
+    upload_size_in_kb: Math.floor(Math.log2(uploadSizeInBytes) / 10),
+    number_of_files: numberOfFiles,
+  }),
 }

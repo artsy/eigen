@@ -1,18 +1,19 @@
 import { fireEvent } from "@testing-library/react-native"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Text } from "react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
-} from "../ArtworkFilterStore"
-import { getEssentialProps } from "./helper"
-import { Range } from "./helpers"
-import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
-
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
+import { Text } from "react-native"
+import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
+import { getEssentialProps } from "./helper"
+import { Range } from "./helpers"
 
 const DEFAULT_RANGE: Range = {
   min: "*",
@@ -26,13 +27,13 @@ jest.mock("lodash", () => ({
 
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
-    renderWithWrappersTL(
+    renderWithWrappers(
       <Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
     )
   })
 
   it("renders the min value", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-min-input"
         value={{ min: 444, max: 99999 }}
@@ -45,7 +46,7 @@ describe("CustomPriceInput", () => {
   })
 
   it("renders the max value", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-max-input"
         value={{ min: 444, max: 99999 }}
@@ -59,7 +60,7 @@ describe("CustomPriceInput", () => {
 
   it("calls onChange with the min when it is updated", () => {
     const handleChange = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-min-input"
         value={DEFAULT_RANGE}
@@ -75,7 +76,7 @@ describe("CustomPriceInput", () => {
 
   it("calls onChange with the max when it is updated", () => {
     const handleChange = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-max-input"
         value={DEFAULT_RANGE}
@@ -116,7 +117,7 @@ describe("PriceRangeOptions", () => {
   }
 
   const getTree = () => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <ArtworkFiltersStoreProvider initialData={INITIAL_DATA}>
         <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>
@@ -199,5 +200,59 @@ describe("PriceRangeOptions", () => {
 
     fireEvent.changeText(minInput, "1242135")
     queryByDisplayValue("1242135")
+  })
+
+  describe("Recent price ranges analytics", () => {
+    it("should correctly track analytics", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
+      })
+
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–100"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": false,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
+          },
+        ]
+      `)
+    })
+
+    it("should correctly track analytics when the collector profile-sourced price range is selected", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
+      })
+
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–5,000"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": true,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
+          },
+        ]
+      `)
+    })
   })
 })

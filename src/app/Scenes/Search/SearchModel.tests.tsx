@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { times } from "lodash"
 import {
   MAX_SAVED_RECENT_SEARCHES,
@@ -103,7 +103,7 @@ describe(useRecentSearches, () => {
       return null
     }
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <GlobalStoreProvider>
         <TestComponent numSearches={5} />
       </GlobalStoreProvider>

@@ -1,10 +1,9 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
-import { Flex, Sans, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
@@ -161,34 +160,30 @@ export const Countdown: React.FC<CountdownProps> = ({
   extendedBiddingPeriodMinutes,
   biddingEndAt,
 }) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-
   return (
     <Flex alignItems="center" accessibilityLabel="Countdown">
-      {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
+      {cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
-        <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+        <SimpleTicker duration={duration} separator="  " variant="sm-display" weight="medium" />
       )}
-      {!!extendedBiddingPeriodMinutes &&
-        !!extendedBiddingIntervalMinutes &&
-        !!cascadingEndTimeFeatureEnabled && (
-          <ArtworkAuctionProgressBar
-            startAt={startAt}
-            extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
-            extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-            biddingEndAt={biddingEndAt}
-            hasBeenExtended={!!hasBeenExtended}
-          />
-        )}
-      <Sans size="2" weight="medium" color="black60">
+      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
+        <ArtworkAuctionProgressBar
+          startAt={startAt}
+          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+          biddingEndAt={biddingEndAt}
+          hasBeenExtended={!!hasBeenExtended}
+        />
+      )}
+      <Text variant="xs" weight="medium" color="black60">
         {label}
-      </Sans>
-      {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
+      </Text>
+      {!!extendedBiddingPeriodMinutes && (
         <>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <Text variant="xs" color="black60" textAlign="center">
-            *Closure times may be extended to accommodate last minute bids
+            *Closure times may be extended to accommodate last-minute bids
           </Text>
         </>
       )}

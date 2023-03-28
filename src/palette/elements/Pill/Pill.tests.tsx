@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Pill } from "./Pill"
 
 describe("<Pill />", () => {
   it("invokes the onClick callback", () => {
     const onPress = jest.fn()
 
-    const { getByText } = renderWithWrappersTL(<Pill onPress={onPress}>wow</Pill>)
+    const { getByText } = renderWithWrappers(<Pill onPress={onPress}>wow</Pill>)
 
     fireEvent.press(getByText("wow"))
     expect(onPress).toHaveBeenCalled()
@@ -15,7 +15,7 @@ describe("<Pill />", () => {
   it("should not be pressable if disabled is passed", () => {
     const onPress = jest.fn()
 
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <Pill disabled onPress={onPress}>
         Press me
       </Pill>

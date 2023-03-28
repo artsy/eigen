@@ -1,7 +1,8 @@
-import { navigate } from "app/navigation/navigate"
+import { ClassTheme, Text, LinkText, TextProps } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
 import _ from "lodash"
-import { ClassTheme, LinkText, Sans, Separator, Serif, Text } from "palette"
+import { Separator } from "palette"
 import { Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
 import { sendEmailWithMailTo } from "./sendEmail"
@@ -61,6 +62,7 @@ export function defaultRules({
             key={state.key}
             testID={`linktext-${state.key}`}
             onPress={() => openUrl(node.target)}
+            variant="xs"
           >
             {output(node.content, state)}
           </LinkText>
@@ -81,37 +83,29 @@ export function defaultRules({
             {output(node.content, state)}
           </Text>
         ) : (
-          <Sans size="3t" color="black60" key={state.key} textAlign="center">
+          <Text variant="sm" color="black60" key={state.key} textAlign="center">
             {output(node.content, state)}
-          </Sans>
+          </Text>
         )
       },
     },
 
     strong: {
       react: (node, output, state) => {
-        return useNewTextStyles ? (
-          <Text variant="sm" key={state.key}>
+        return (
+          <Text variant="sm" weight="medium" key={state.key}>
             {output(node.content, state)}
           </Text>
-        ) : (
-          <Serif size="3t" weight="semibold" key={state.key}>
-            {output(node.content, state)}
-          </Serif>
         )
       },
     },
 
     em: {
       react: (node, output, state) => {
-        return useNewTextStyles ? (
-          <Text variant="sm" fontStyle="italic" key={state.key}>
+        return (
+          <Text variant="xs" italic key={state.key}>
             {output(node.content, state)}
           </Text>
-        ) : (
-          <Serif size="3t" italic key={state.key}>
-            {output(node.content, state)}
-          </Serif>
         )
       },
     },
@@ -133,20 +127,12 @@ export function defaultRules({
         const items = _.map(node.items, (item, i) => {
           let bullet
           if (node.ordered) {
-            bullet = useNewTextStyles ? (
-              <Text variant="sm" key={state.key}>{`${i + 1} . `}</Text>
-            ) : (
-              <Serif size="3t" key={state.key}>{`${i + 1} . `}</Serif>
-            )
+            bullet = <Text variant="sm" key={state.key}>{`${i + 1} . `}</Text>
           } else {
-            bullet = useNewTextStyles ? (
+            bullet = (
               <Text variant="sm" key={state.key}>
                 -{" "}
               </Text>
-            ) : (
-              <Serif size="3t" key={state.key}>
-                -{" "}
-              </Serif>
             )
           }
 
@@ -155,9 +141,9 @@ export function defaultRules({
               {output(node.content, state)}
             </Text>
           ) : (
-            <Serif size="3t" key={String(state.key) + 1}>
+            <Text variant="sm" key={String(state.key) + 1}>
               {output(item, state)}
-            </Serif>
+            </Text>
           )
           return (
             <View key={i} style={{ flexDirection: "row" }}>
@@ -173,60 +159,38 @@ export function defaultRules({
 
     codeBlock: {
       react: (node, _output, state) => {
-        return useNewTextStyles ? (
+        return (
           <Text variant="sm" key={state.key}>
             {node.content}
           </Text>
-        ) : (
-          <Sans size="3t" key={state.key}>
-            {node.content}
-          </Sans>
         )
       },
     },
 
     inlineCode: {
       react: (node, _output, state) => {
-        return useNewTextStyles ? (
+        return (
           <Text variant="sm" key={state.key}>
             {node.content}
           </Text>
-        ) : (
-          <Sans size="3t" key={state.key}>
-            {node.content}
-          </Sans>
         )
       },
     },
 
     heading: {
       react: (node, output, state) => {
-        const map = {
-          1: "8",
-          2: "6",
-          3: "5t",
-          4: "5",
+        const map: Record<number, TextProps["variant"]> = {
+          1: "lg",
+          2: "lg",
+          3: "md",
+          4: "md",
         }
 
-        const newTextMap = {
-          1: "largeTitle",
-          2: "title",
-          3: "subtitle",
-          4: "text",
-        }
-        const size = useNewTextStyles
-          ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            newTextMap[node.level] || "subtitle"
-          : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            map[node.level] || "4"
-        return useNewTextStyles ? (
-          <Text mb="1" variant={size} key={state.key}>
+        const variant = map[node.level] || "md"
+        return (
+          <Text mb={1} key={state.key} variant={variant}>
             {output(node.content, state)}
           </Text>
-        ) : (
-          <Sans mb="1" key={state.key} size={size}>
-            {output(node.content, state)}
-          </Sans>
         )
       },
     },

@@ -1,14 +1,12 @@
 import { LotsByFollowedArtistsRailTestsQuery } from "__generated__/LotsByFollowedArtistsRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedArtistsRail"
-
-jest.unmock("react-relay")
+import { LotsByFollowedArtistsRailContainer } from "./LotsByFollowedArtistsRail"
 
 describe("LotsByFollowedArtistsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -38,17 +36,17 @@ describe("LotsByFollowedArtistsRail", () => {
   })
 
   it("Renders list of sale artworks without throwing an error", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auctions")
-    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
+    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(5)
   })
 
   it("returns null if there are no artworks", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({

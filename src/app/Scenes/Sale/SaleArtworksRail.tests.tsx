@@ -1,14 +1,12 @@
+import { Flex } from "@artsy/palette-mobile"
 import { SaleArtworksRailTestsQuery } from "__generated__/SaleArtworksRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { Flex } from "palette"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
-
-jest.unmock("react-relay")
 
 describe("SaleArtworksRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -38,7 +36,7 @@ describe("SaleArtworksRail", () => {
   })
 
   it("Renders list of sale artworks without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
@@ -51,7 +49,7 @@ describe("SaleArtworksRail", () => {
   })
 
   it("returns null if there are no artworks", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({

@@ -1,11 +1,11 @@
-import type { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import type { NativeState } from "app/store/NativeModel"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
-import type { Image as RNCImage } from "react-native-image-crop-picker"
 import { getLocales, getTimeZone } from "react-native-localize"
 import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
+import type { NativeState } from "app/store/NativeModel"
+import type { ViewDescriptor } from "app/system/navigation/navigate"
+import type { Image as RNCImage } from "react-native-image-crop-picker"
 
 const noop: any = (name: string) => () =>
   console.warn(`method ${name} doesn't exist on android yet`)
@@ -86,15 +86,6 @@ interface LegacyNativeModules {
     popToRootAndScrollToTop(stackID: string): Promise<void>
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
-  ARTakeCameraPhotoModule: {
-    errorCodes: {
-      cameraNotAvailable: string
-      imageMediaNotAvailable: string
-      cameraAccessDenied: string
-      saveFailed: string
-    }
-    triggerCameraModal(reactTag: number | null): Promise<void>
-  }
   AREventsModule: {
     requestAppStoreRating(): void
   }
@@ -114,15 +105,6 @@ const LegacyNativeModulesAndroid = {
     presentMediaPreviewController: () => {
       noop("presentMediaPreviewController not yet supported on android")
     },
-  },
-  ARTakeCameraPhotoModule: {
-    errorCodes: {
-      cameraNotAvailable: "cameraNotAvailable",
-      imageMediaNotAvailable: "imageMediaNotAvailable",
-      cameraAccessDenied: "cameraAccessDenied",
-      saveFailed: "saveFailed",
-    },
-    triggerCameraModal: noop("triggerCameraModal"),
   },
 
   ARCocoaConstantsModule: {
@@ -166,7 +148,6 @@ const LegacyNativeModulesAndroid = {
 const LegacyNativeModulesIOS: LegacyNativeModules = {
   ARScreenPresenterModule,
   ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
-  ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
   ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
   ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,
   ARNotificationsManager: AllNativeModules.ARNotificationsManager,

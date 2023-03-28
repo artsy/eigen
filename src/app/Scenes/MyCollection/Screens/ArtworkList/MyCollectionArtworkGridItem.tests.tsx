@@ -1,18 +1,16 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectionArtworkGridItemTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { extractText } from "app/tests/extractText"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
-
-jest.unmock("react-relay")
 
 describe("MyCollectionArtworkGridItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -55,13 +53,16 @@ describe("MyCollectionArtworkGridItem", () => {
           },
           images: null,
           medium: "artwork medium",
+          mediumType: {
+            name: "artwork category",
+          },
         }),
       })
     )
   }
 
   it("renders correct fields", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     expect(wrapper.root.findByType(tests.TouchElement)).toBeDefined()
     expect(wrapper.root.findByProps({ testID: "Fallback" })).toBeDefined()
@@ -71,19 +72,20 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("navigates to artwork detail on tap", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
         artistInternalID: "artist-id",
         medium: "artwork medium",
+        category: "artwork category",
       },
     })
   })
 
   it("tracks analytics event on tap", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
 
@@ -97,19 +99,16 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("uses last uploaded image as a fallback when no url is present", async () => {
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
     const localImage: LocalImage = {
       path: "some-local-path",
       width: 10,
       height: 10,
     }
-    const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
-      resolve([localImage])
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+    localImageStoreMock.mockImplementation(async () => localImage)
 
     act(async () => {
-      const wrapper = renderWithWrappers(<TestRenderer />)
+      const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Artwork: () => ({
@@ -121,14 +120,13 @@ describe("MyCollectionArtworkGridItem", () => {
           }),
         })
       )
-      await retrievalPromise
       const image = wrapper.root.findByType(RNImage)
       expect(image.props.source).toEqual({ uri: "some-local-path" })
     })
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     // mocking isP1 and demandRank
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>

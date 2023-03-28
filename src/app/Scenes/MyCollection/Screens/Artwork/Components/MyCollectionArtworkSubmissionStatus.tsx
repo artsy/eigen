@@ -1,6 +1,10 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
-import { navigate } from "app/navigation/navigate"
-import { Box, Flex, Text, Touchable } from "palette"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
+import { Touchable } from "palette"
+import { useState } from "react"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
 // See https://artsyproduct.atlassian.net/browse/SWA-217
@@ -13,6 +17,9 @@ export const STATUSES: { [key: string]: { color: string; text: string } } = {
 export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: string }> = ({
   displayText,
 }) => {
+  const [isSubmissionStatusModalVisible, setIsSubmissionStatusModalVisible] =
+    useState<boolean>(false)
+
   const wasSubmitted = Boolean(displayText)
   if (!wasSubmitted) {
     return null
@@ -20,28 +27,32 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
 
   const approvedDisplayText = STATUSES[displayText!.toLowerCase()]?.text
 
-  const handleFAQ = () => {
-    navigate("artwork-submission-status")
-  }
-
   if (!Boolean(approvedDisplayText)) {
     return null
   }
   return (
     <Box testID="MyCollectionArtworkSubmissionStatus-Container">
       <Flex>
+        <FancyModal fullScreen visible={isSubmissionStatusModalVisible}>
+          <FancyModalHeader
+            onLeftButtonPress={() => setIsSubmissionStatusModalVisible(false)}
+            hideBottomDivider
+          ></FancyModalHeader>
+          <ArtworkSubmissionStatusFAQ closeModal={() => setIsSubmissionStatusModalVisible(false)} />
+        </FancyModal>
+
         <Flex justifyContent="space-between" flexDirection="row">
           <Text variant="xs" color="black100">
             Submission Status
           </Text>
-          <Touchable onPress={() => handleFAQ()}>
+          <Touchable onPress={() => setIsSubmissionStatusModalVisible(true)}>
             <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
               What is this?
             </Text>
           </Touchable>
         </Flex>
         <Text
-          lineHeight={16}
+          lineHeight="16px"
           mt={1}
           color={STATUSES[displayText!.toLowerCase()]?.color ?? "black100"}
         >

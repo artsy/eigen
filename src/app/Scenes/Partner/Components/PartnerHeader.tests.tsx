@@ -1,13 +1,11 @@
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerHeaderContainer as PartnerHeader } from "./PartnerHeader"
-
-jest.unmock("react-relay")
 
 describe("PartnerHeader", () => {
   const env = createMockEnvironment()
@@ -33,7 +31,7 @@ describe("PartnerHeader", () => {
   )
 
   it("renders artwork counts", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -43,11 +41,11 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("1.2k works")
+    expect(extractText(tree.root)).toContain("1.2K works")
   })
 
   it("renders the partner name", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -61,7 +59,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the follow button", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -75,7 +73,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

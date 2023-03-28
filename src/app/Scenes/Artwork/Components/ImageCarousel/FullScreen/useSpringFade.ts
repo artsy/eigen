@@ -1,6 +1,6 @@
+import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useContext } from "react"
-import { ImageCarouselContext } from "../ImageCarouselContext"
-import { useSpringValue } from "../useSpringValue"
 
 /**
  * Hooks into the lifecycle of the full screen carousel to fade components in/out

@@ -1,16 +1,13 @@
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
-import { PartnerContainer } from "app/Scenes/Partner"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { PartnerContainer } from "app/Scenes/Partner/Partner"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Spinner } from "palette"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { VanityURLEntityRenderer } from "./VanityURLEntity"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
-
-jest.unmock("react-relay")
 
 jest.mock("./VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,
@@ -28,15 +25,15 @@ describe("VanityURLEntity", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    env = require("app/relay/createEnvironment").defaultEnvironment
+    require("app/system/relay/createEnvironment").reset()
+    env = require("app/system/relay/createEnvironment").defaultEnvironment
   })
 
   it("renders a VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+    const { UNSAFE_getAllByType } = renderWithWrappers(
       <TestRenderer entity="unknown" slug="a-cool-new-url" />
     )
     env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
@@ -44,7 +41,7 @@ describe("VanityURLEntity", () => {
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
     )
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
@@ -57,7 +54,7 @@ describe("VanityURLEntity", () => {
 
   describe("rendering a profile", () => {
     it("shows a fair placeholder when entityType is fair", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
       )
       const fairPlaceholder = tree.root.findByType(FairPlaceholder)
@@ -65,7 +62,7 @@ describe("VanityURLEntity", () => {
     })
 
     it("shows a partner placeholder when entityType is partner", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="partner" slugType="profileID" slug="some-partner" />
       )
       const partnerPlaceholder = tree.root.findByType(HeaderTabsGridPlaceholder)
@@ -73,7 +70,7 @@ describe("VanityURLEntity", () => {
     })
 
     it("shows a spinner when entityType is unknown", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />
       )
       const spinner = tree.root.findByType(Spinner)
@@ -81,7 +78,7 @@ describe("VanityURLEntity", () => {
     })
 
     it("renders a partner when a partner is returned", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />
       )
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -106,7 +103,7 @@ describe("VanityURLEntity", () => {
     })
 
     it("renders a fair when a fair is returned", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
       )
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
@@ -130,7 +127,7 @@ describe("VanityURLEntity", () => {
     })
 
     it("renders a webview when an unknown profile type is returned", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />
       )
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(

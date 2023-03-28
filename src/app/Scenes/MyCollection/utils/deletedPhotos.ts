@@ -1,4 +1,4 @@
-import { Image } from "../State/MyCollectionArtworkModel"
+import { Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 
 export function deletedPhotos(initialPhotos: Image[], submittedPhotos: Image[]) {
   let removedPhotos: Array<{ id: string; index: number }> = []

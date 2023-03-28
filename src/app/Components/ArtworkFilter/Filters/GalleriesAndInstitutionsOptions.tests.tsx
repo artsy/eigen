@@ -1,8 +1,10 @@
-import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
-import { MockFilterScreen } from "../FilterTestHelper"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { GalleriesAndInstitutionsOptionsScreen } from "./GalleriesAndInstitutionsOptions"
 import { getEssentialProps } from "./helper"
 
@@ -56,7 +58,7 @@ describe("Galleries and Institutions Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <MockGalleriesAndInstitutionsScreen initialData={initialState} />
       )
 
@@ -79,13 +81,13 @@ describe("Galleries and Institutions Options Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
+      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(within(getByText("Galleries & Institutions")).getByText("• 1")).toBeTruthy()
+      expect(getByText("Galleries & Institutions • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(
+      const { getAllByA11yState } = renderWithWrappers(
         <MockGalleriesAndInstitutionsScreen initialData={state} />
       )
 

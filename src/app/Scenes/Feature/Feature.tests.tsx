@@ -1,20 +1,18 @@
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
 
-jest.unmock("react-relay")
-
 let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {
-  mockRelayEnvironment = require("app/relay/createEnvironment").defaultEnvironment =
+  mockRelayEnvironment = require("app/system/relay/createEnvironment").defaultEnvironment =
     createMockEnvironment()
 })
 
 describe(FeatureQueryRenderer, () => {
   it("renders without failing", () => {
-    const tree = renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
+    const tree = renderWithWrappersLEGACY(<FeatureQueryRenderer slug="anything" />)
 
     mockRelayEnvironment.mock.resolveMostRecentOperation((op) => {
       return MockPayloadGenerator.generate(op, {
@@ -82,7 +80,6 @@ describe(FeatureQueryRenderer, () => {
                             description: "link 1 description",
                           },
                         },
-                        ,
                       ],
                     },
                   },

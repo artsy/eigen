@@ -1,12 +1,12 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, ArrowRightIcon, Flex, Text } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { ArrowRightIcon, Flex, Spacer, Text } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -29,7 +29,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
   }
 
   return (
-    <Flex mb={3}>
+    <Flex mb={4}>
       <TouchableOpacity
         onPress={() => {
           trackEvent(tracks.tappedArticleGroup())
@@ -38,7 +38,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
       >
         <Flex flexDirection="row" alignItems="flex-start" mb={2}>
           <Flex flex={1} flexDirection="row">
-            <Text variant="md">{`Articles featuring ${props.artistNames || ""}`}</Text>
+            <Text variant="sm-display">{`Articles featuring ${props.artistNames || ""}`}</Text>
             {!!props?.totalCount && (
               <Text variant="xs" color="blue100" ml={0.5} mt={-0.5}>
                 {props?.totalCount}
@@ -55,10 +55,11 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
       <FlatList<MyCollectionArtworkArticles_article$data[number]>
         testID="test-articles-flatlist"
         horizontal
-        ItemSeparatorComponent={() => <Spacer ml="2" />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         scrollsToTop={false}
         style={{ overflow: "visible" }}
         initialNumToRender={2}
+        showsHorizontalScrollIndicator={false}
         data={articles}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (

@@ -1,9 +1,9 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { goBack, navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { goBack, navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
 }))
@@ -22,21 +22,21 @@ describe("OfferSubmittedModal", () => {
   })
 
   it("renders", () => {
-    const { getByText } = renderWithWrappersTL(<OfferSubmittedModal />)
+    const { getByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    expect(getByText("Your offer has been submitted")).toBeTruthy()
+    expect(getByText("Thank you, your offer has been submitted")).toBeTruthy()
     expect(getByText("Negotiation with the gallery will continue in the Inbox.")).toBeTruthy()
-    expect(getByText("Offer number 1234")).toBeTruthy()
+    expect(getByText("Offer #1234")).toBeTruthy()
     expect(getByText("Test message")).toBeTruthy()
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("onClose", () => {
-    const { getAllByText } = renderWithWrappersTL(<OfferSubmittedModal />)
+  it("onGoToInbox", () => {
+    const { getAllByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    act(() => fireEvent.press(getAllByText("Go to inbox")[0]))
+    fireEvent.press(getAllByText("Go to inbox")[0])
     expect(navigate).toHaveBeenCalledWith("inbox")
   })
 })

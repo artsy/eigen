@@ -1,9 +1,6 @@
-import { Flex } from "../Elements/Flex"
+import { Flex, FlexProps } from "app/Components/Bidding/Elements/Flex"
+import { ViewProps } from "react-native"
 
-export const Container = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Flex m="2" flex={1} flexDirection="column" justifyContent="space-between" {...props} />
-)
-
-export const CenteringContainer = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Flex flex={1} justifyContent="center" alignItems="center" {...props} />
+export const Container = (props: FlexProps & ViewProps) => (
+  <Flex m={2} flex={1} flexDirection="column" justifyContent="space-between" {...props} />
 )

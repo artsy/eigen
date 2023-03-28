@@ -1,16 +1,15 @@
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { BoltFill, Stopwatch, Text } from "@artsy/palette-mobile"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { DateTime, Settings } from "luxon"
-import { Text } from "palette"
-import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import { ReactTestRenderer } from "react-test-renderer"
 import { SaleInfo } from "./Components/SaleInfo"
 
 Settings.now = () => Date.parse("2020-07-31T05:21:14+00:00")
 Settings.defaultZone = "America/New_York"
 
-const renderText = (node: React.ReactElement) => extractText(renderWithWrappers(node).root)
+const renderText = (node: React.ReactElement) => extractText(renderWithWrappersLEGACY(node).root)
 
 interface SaleInfoProps {
   liveStartAt?: string | null
@@ -25,7 +24,7 @@ describe(SaleInfo, () => {
   describe("live sale", () => {
     it("has a lightning bolt", () => {
       expect(
-        renderWithWrappers(
+        renderWithWrappersLEGACY(
           <SaleInfo sale={saleFixture({ liveStartAt: "2020-08-01T15:00:00+00:00" })} />
         ).root.findAllByType(BoltFill).length
       ).toEqual(1)
@@ -35,7 +34,9 @@ describe(SaleInfo, () => {
       let tree: ReactTestRenderer
       beforeEach(() => {
         const liveStartAt = DateTime.now().minus({ minutes: 5 }).toJSON()
-        tree = renderWithWrappers(<SaleInfo sale={saleFixture({ liveStartAt, status: "open" })} />)
+        tree = renderWithWrappersLEGACY(
+          <SaleInfo sale={saleFixture({ liveStartAt, status: "open" })} />
+        )
       })
       it("has a blue100 icon + note if live bidding is active, black60 otherwise", () => {
         expect(tree.root.findByType(BoltFill).props.fill).toMatch("blue100")
@@ -70,12 +71,12 @@ describe(SaleInfo, () => {
         const subject = (
           <SaleInfo sale={saleFixture({ liveStartAt: "2020-07-31T06:00:00+00:00" })} />
         )
-        const tree = renderWithWrappers(subject)
+        const tree = renderWithWrappersLEGACY(subject)
         const text = renderText(subject)
 
         const lines = tree.root.findAllByType(Text)
         expect(lines.length).toEqual(2)
-        expect(lines[1].props.color).toEqual("yellow100")
+        expect(lines[1].props.color).toEqual("copper100")
 
         expect(text).toContain("Live bidding begins today at 2:00 a.m. (EDT)")
         expect(text).toContain("Opens in 38 minutes")
@@ -129,7 +130,7 @@ describe(SaleInfo, () => {
   describe("timed auction", () => {
     it("has a little stopwatch", () => {
       expect(
-        renderWithWrappers(
+        renderWithWrappersLEGACY(
           <SaleInfo sale={saleFixture({ endAt: "2020-08-01T15:00:00+00:00" })} />
         ).root.findAllByType(Stopwatch).length
       ).toBe(1)
@@ -154,12 +155,12 @@ describe(SaleInfo, () => {
 
       it("displays an additional timely message in minutes if the sale is within 1 hour", () => {
         const subject = <SaleInfo sale={saleFixture({ endAt: "2020-07-31T06:00:00+00:00" })} />
-        const tree = renderWithWrappers(subject)
+        const tree = renderWithWrappersLEGACY(subject)
         const text = renderText(subject)
 
         const lines = tree.root.findAllByType(Text)
         expect(lines.length).toEqual(2)
-        expect(lines[1].props.color).toEqual("yellow100")
+        expect(lines[1].props.color).toEqual("copper100")
         expect(text).toContain("Closes today at 2:00 a.m.")
         expect(text).toContain("Ends in 38 minutes")
       })

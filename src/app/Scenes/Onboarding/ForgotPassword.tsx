@@ -1,8 +1,9 @@
+import { Text, Spacer, Flex, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Button, Input } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -17,8 +18,7 @@ export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export interface ForgotPasswordProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
+export type ForgotPasswordProps = StackScreenProps<OnboardingNavigationStack, "OnboardingLogin">
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>
@@ -34,19 +34,19 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   const color = useColor()
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
           keyboardShouldPersistTaps="always"
         >
-          <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
-            <Text variant="lg">Forgot Password?</Text>
+          <Flex flex={1} px={2} pt={6} justifyContent="flex-start">
+            <Text variant="lg-display">Forgot Password?</Text>
             <Text pt={0.5} color="black100" variant="xs">
               Please enter the email address associated with your Artsy account to receive a reset
               link.
             </Text>
-            <Spacer mt={2} />
+            <Spacer y={2} />
 
             {!!requestedPasswordReset ? (
               <Text color="blue100">Password reset link sent. Check your email.</Text>
@@ -77,7 +77,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           </Flex>
         </ScrollView>
         <BackButton onPress={() => navigation.goBack()} />
-        <Flex px={1.5} paddingBottom={1.5}>
+        <Flex px={2} paddingBottom={2}>
           {!!requestedPasswordReset ? (
             <>
               <Button
@@ -89,7 +89,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               >
                 Return to login
               </Button>
-              <Spacer mt={1} />
+              <Spacer y={1} />
               <Button
                 onPress={handleSubmit}
                 block

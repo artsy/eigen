@@ -1,5 +1,5 @@
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistSearchResult } from "./ArtistSearchResult"
 
 describe("ArtistSearchResult", () => {
@@ -10,7 +10,7 @@ describe("ArtistSearchResult", () => {
   }
 
   it("renders correct components", async () => {
-    const { findByText } = renderWithWrappersTL(
+    const { findByText } = renderWithWrappers(
       <ArtistSearchResult result={result as AutosuggestResult} />
     )
     expect(await findByText("Banksy")).toBeTruthy()

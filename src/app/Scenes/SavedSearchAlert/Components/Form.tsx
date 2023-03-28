@@ -1,20 +1,13 @@
+import { CloseIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { navigate } from "app/navigation/navigate"
-import { useFormikContext } from "formik"
 import {
-  Box,
-  Button,
-  CloseIcon as RemoveIcon,
-  Flex,
-  Input,
-  InputTitle,
-  Pill,
-  Spacer,
-  Text,
-} from "palette"
-import { LayoutAnimation } from "react-native"
-import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
-import { SavedSearchStore } from "../SavedSearchStore"
+  SavedSearchAlertFormValues,
+  SavedSearchPill,
+} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { navigate } from "app/system/navigation/navigate"
+import { useFormikContext } from "formik"
+import { Button, Input, InputTitle, Pill } from "palette"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -73,15 +66,6 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = true
   }
 
-  const handleToggleEmailNotification = (value: boolean) => {
-    LayoutAnimation.configureNext({
-      ...LayoutAnimation.Presets.easeInEaseOut,
-      duration: 300,
-    })
-
-    onToggleEmailNotification(value)
-  }
-
   const handleUpdateEmailPreferencesPress = () => {
     if (onUpdateEmailPreferencesPress) {
       return onUpdateEmailPreferencesPress()
@@ -101,7 +85,7 @@ export const Form: React.FC<FormProps> = (props) => {
   return (
     <Box>
       {!isEditMode && (
-        <Text variant="lg" mb={4}>
+        <Text variant="lg-display" mb={4}>
           Create Alert
         </Text>
       )}
@@ -132,7 +116,8 @@ export const Form: React.FC<FormProps> = (props) => {
                   onRemovePill(pill)
                 }
               }}
-              Icon={isArtistPill(pill) ? undefined : RemoveIcon}
+              Icon={isArtistPill(pill) ? undefined : CloseIcon}
+              block
             >
               {pill.label}
             </Pill>
@@ -144,10 +129,10 @@ export const Form: React.FC<FormProps> = (props) => {
         onChange={onTogglePushNotification}
         active={values.push}
       />
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <SavedSearchAlertSwitch
         label="Email Alerts"
-        onChange={handleToggleEmailNotification}
+        onChange={onToggleEmailNotification}
         active={values.email}
       />
       {!!shouldShowEmailWarning && (
@@ -171,7 +156,7 @@ export const Form: React.FC<FormProps> = (props) => {
           Update email preferences
         </Text>
       )}
-      <Box mt={5}>
+      <Box mt={6}>
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}
@@ -184,7 +169,7 @@ export const Form: React.FC<FormProps> = (props) => {
         </Button>
         {!!isEditMode && (
           <>
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Button
               testID="delete-alert-button"
               variant="outline"

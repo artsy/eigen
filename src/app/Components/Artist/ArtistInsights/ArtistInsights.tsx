@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
+import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -15,8 +16,6 @@ import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ReactElement } from "simple-markdown"
-import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -24,18 +23,6 @@ interface ArtistInsightsProps {
   artist: ArtistInsights_artist$data
   relay: RelayProp
   tabIndex: number
-}
-
-export interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: ReactElement
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
 }
 
 const FILTER_BUTTON_OFFSET = 50
@@ -67,7 +54,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
       auctionResultYOffset += ARTIST_HEADER_HEIGHT
     }
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultYOffset })
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
   // Show or hide floating filter button depending on the scroll position

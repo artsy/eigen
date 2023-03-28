@@ -1,3 +1,4 @@
+import { Color, Flex, useColor } from "@artsy/palette-mobile"
 import React from "react"
 import {
   GestureResponderEvent,
@@ -7,13 +8,11 @@ import {
 } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
-import { useColor } from "../../hooks"
-import { Flex } from "../Flex"
-
 interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
   noFeedback?: boolean
+  underlayColor?: Color
 }
 
 export type TouchableProps = TouchableHighlightProps & ExtraTouchableProps
@@ -30,9 +29,11 @@ export const Touchable: React.FC<TouchableProps> = ({
   haptic,
   noFeedback,
   onPress,
+  underlayColor,
   ...props
 }) => {
   const color = useColor()
+
   const inner =
     React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
@@ -54,7 +55,7 @@ export const Touchable: React.FC<TouchableProps> = ({
     </TouchableWithoutFeedback>
   ) : (
     <TouchableHighlight
-      underlayColor={color("white100")}
+      underlayColor={underlayColor ?? color("white100")}
       activeOpacity={0.8}
       {...props}
       onPress={onPressWrapped}

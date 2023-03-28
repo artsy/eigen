@@ -1,10 +1,8 @@
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
-
-jest.unmock("react-relay")
 
 describe("AuctionBuyersPremium", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -19,7 +17,7 @@ describe("AuctionBuyersPremium", () => {
 
   describe("one point", () => {
     it("renders the schedule correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => ({
@@ -33,7 +31,7 @@ describe("AuctionBuyersPremium", () => {
 
   describe("two points", () => {
     it("renders the schedule correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       const textOne = "On the hammer price up to and including $500,000: 25%"
       const textTwo = "On the portion of the hammer price in excess of $500,000: 20%"
 
@@ -53,7 +51,7 @@ describe("AuctionBuyersPremium", () => {
 
   describe("three or more points", () => {
     it("renders the schedule correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       const textOne = "On the hammer price up to and including $250,000: 25%"
       const textTwo =
         "On the hammer price in excess of $250,000 up to and including $2,500,000: 20%"
@@ -76,7 +74,7 @@ describe("AuctionBuyersPremium", () => {
 
     describe("with a percentage that isn't a whole number", () => {
       it("rounds to a single decimal place", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
+        const { getByText } = renderWithWrappers(<TestRenderer />)
 
         resolveMostRecentRelayOperation(mockEnvironment, {
           Sale: () => ({

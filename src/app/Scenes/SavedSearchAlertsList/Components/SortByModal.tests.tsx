@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SortByModal, SortByModalProps, SortOption } from "./SortByModal"
 
 describe("SortByModal", () => {
@@ -18,7 +18,7 @@ describe("SortByModal", () => {
   }
 
   it("should render options", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("Option One")).toBeTruthy()
     expect(getByText("Option Two")).toBeTruthy()
@@ -26,13 +26,13 @@ describe("SortByModal", () => {
 
   it("should call `onSelectOption` with selected option", () => {
     const mockOnSelectOption = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestRenderer onSelectOption={mockOnSelectOption} />)
+    const { getByText } = renderWithWrappers(<TestRenderer onSelectOption={mockOnSelectOption} />)
 
     fireEvent.press(getByText("Option Two"))
 
     expect(mockOnSelectOption.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "text": "Option Two",
           "value": "OPTION_TWO",
         },
@@ -41,7 +41,7 @@ describe("SortByModal", () => {
   })
 
   it("should render selected option state when `selectedValue` prop is passed", () => {
-    const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
     const selectedOptions = getAllByA11yState({ selected: true })
 
     expect(selectedOptions).toHaveLength(1)

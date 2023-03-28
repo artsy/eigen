@@ -1,9 +1,10 @@
-import { Header_gene$data } from "__generated__/Header_gene.graphql"
+import { Box, Text } from "@artsy/palette-mobile"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
-import { Box, FollowButton, Sans } from "palette"
+import { Header_gene$data } from "__generated__/Header_gene.graphql"
+import { Schema, Track, track as _track } from "app/utils/track"
+import { FollowButton } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { Schema, Track, track as _track } from "../../utils/track"
 
 interface Props {
   gene: Header_gene$data
@@ -27,10 +28,10 @@ class Header extends React.Component<Props, State> {
 
     return (
       <>
-        <Box marginTop={60} justifyContent="center">
-          <Sans size="8" numberOfLines={2}>
+        <Box marginTop={6} justifyContent="center">
+          <Text variant="lg-display" numberOfLines={2}>
             {title}
-          </Sans>
+          </Text>
         </Box>
         {this.renderFollowButton()}
       </>
@@ -90,8 +91,7 @@ class Header extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            store.get(id).setValue(!isFollowed, "isFollowed")
+            store!.get(id)!.setValue(!isFollowed, "isFollowed")
           },
           onError: () => this.failedFollowChange(),
         })
@@ -138,7 +138,7 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
 
     return (
-      <Box mt={15}>
+      <Box mt="15px">
         <FollowButton
           block
           isFollowed={!!gene.isFollowed}

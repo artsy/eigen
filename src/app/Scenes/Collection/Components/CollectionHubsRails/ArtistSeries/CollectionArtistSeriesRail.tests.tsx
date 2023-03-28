@@ -1,31 +1,17 @@
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-
+import { act, fireEvent } from "@testing-library/react-native"
 import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
-import {
-  GenericArtistSeriesMeta,
-  GenericArtistSeriesRail,
-  GenericArtistSeriesTitle,
-} from "app/Components/GenericArtistSeriesRail"
-import {
-  CardRailArtworkImageContainer as ArtworkImageContainer,
-  CardRailCard,
-} from "app/Components/Home/CardRailCard"
+import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
+import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
-
-jest.unmock("react-relay")
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("Artist Series Rail", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -61,7 +47,7 @@ describe("Artist Series Rail", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -114,123 +100,71 @@ describe("Artist Series Rail", () => {
       }
     })
 
-    it("renders the Trending Artists Series rail component", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-
-      expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
-    })
-
     it("renders three artist series in the Trending Artists Series", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(wrapper.find(ArtworkImageContainer)).toHaveLength(3)
+      expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
+      expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
+      expect(queryByText("Hunt Slonem: Bunnies")).toBeTruthy()
     })
 
     it("renders three images of the correct size in an artist series", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { UNSAFE_getAllByType } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(wrapper.find(ImageView).at(0).props().imageURL).toBe(
+      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp(
+        "imageURL",
         "https://cindy-sherman-untitled-film-stills/medium.jpg"
       )
+      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp("height", 180)
+      expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp("width", 180)
 
-      expect(wrapper.find(ImageView).at(0).props().height).toBe(180)
-
-      expect(wrapper.find(ImageView).at(0).props().width).toBe(180)
-
-      expect(wrapper.find(ImageView).at(1).props().imageURL).toBe(
+      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp(
+        "imageURL",
         "https://cindy-sherman-untitled-film-stills-2/medium.jpg"
       )
+      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp("height", 90)
+      expect(UNSAFE_getAllByType(ImageView)[1]).toHaveProp("width", 90)
 
-      expect(wrapper.find(ImageView).at(1).props().height).toBe(90)
-
-      expect(wrapper.find(ImageView).at(1).props().width).toBe(90)
-
-      expect(wrapper.find(ImageView).at(2).props().imageURL).toBe(
+      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp(
+        "imageURL",
         "https://cindy-sherman-untitled-film-stills-3/medium.jpg"
       )
-
-      expect(wrapper.find(ImageView).at(2).props().height).toBe(88)
-
-      expect(wrapper.find(ImageView).at(2).props().width).toBe(90)
+      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("height", 90)
+      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("width", 90)
     })
 
     it("renders the collection hub rail title", () => {
-      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(queryByText("Trending Artist Series")).toBeTruthy()
     })
 
     it("renders each artist series' title", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe(
-        "Cindy Sherman: Untitled Film Stills"
-      )
-
-      expect(wrapper.find(GenericArtistSeriesTitle).at(1).text()).toBe("Damien Hirst: Butterflies")
-
-      expect(wrapper.find(GenericArtistSeriesTitle).at(2).text()).toBe("Hunt Slonem: Bunnies")
+      expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
+      expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
+      expect(queryByText("Hunt Slonem: Bunnies")).toBeTruthy()
     })
 
     it("renders each artist series' metadata", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(wrapper.find(GenericArtistSeriesMeta).at(0).text()).toBe("From $20,000")
-
-      expect(wrapper.find(GenericArtistSeriesMeta).at(1).text()).toBe("From $7,500")
-
-      expect(wrapper.find(GenericArtistSeriesMeta).at(2).text()).toBe("From $2,000")
+      expect(queryByText("From $20,000")).toBeTruthy()
+      expect(queryByText("From $7,500")).toBeTruthy()
+      expect(queryByText("From $2,000")).toBeTruthy()
     })
 
     it("navigates to a new collection when a series is tapped", () => {
-      const wrapper = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <CollectionArtistSeriesRail {...props} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { getByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      wrapper.find(CardRailCard).at(0).props().onPress()
-
+      fireEvent.press(getByText("Cindy Sherman: Untitled Film Stills"))
       expect(navigate).toHaveBeenCalledWith("/collection/cindy-sherman-untitled-film-stills")
 
-      wrapper.find(CardRailCard).at(1).props().onPress()
-
+      fireEvent.press(getByText("Damien Hirst: Butterflies"))
       expect(navigate).toHaveBeenCalledWith("/collection/damien-hirst-butterflies")
 
-      wrapper.find(CardRailCard).at(2).props().onPress()
-
+      fireEvent.press(getByText("Hunt Slonem: Bunnies"))
       expect(navigate).toHaveBeenCalledWith("/collection/hunt-slonem-bunnies")
     })
   })

@@ -1,12 +1,12 @@
-import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworkFiltersState,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { getEssentialProps } from "./helper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
+import { getEssentialProps } from "./helper"
 
 describe("TimePeriodOptions Screen", () => {
   const initialState: ArtworkFiltersState = {
@@ -58,13 +58,13 @@ describe("TimePeriodOptions Screen", () => {
 
   describe("before any filters are selected", () => {
     it("should render name without count label", () => {
-      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={initialState} />)
+      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
       expect(getByText("Time Period")).toBeTruthy()
     })
 
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <MockTimePeriodOptionsScreen initialData={initialState} />
       )
 
@@ -87,13 +87,13 @@ describe("TimePeriodOptions Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
+      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(within(getByText("Time Period")).getByText("• 1")).toBeTruthy()
+      expect(getByText("Time Period • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(
+      const { getAllByA11yState } = renderWithWrappers(
         <MockTimePeriodOptionsScreen initialData={state} />
       )
       const options = getAllByA11yState({ checked: true })

@@ -1,21 +1,21 @@
 import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
+import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
+import { ArtworkAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtworkAutosuggest"
+import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { omit, pickBy } from "lodash"
-import { Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { fetchQuery, graphql } from "relay-runtime"
-import { ScreenMargin } from "../../../Components/ScreenMargin"
-import { ArtistSearchResult } from "../Components/ArtistSearchResult"
-import { ArtworkAutosuggest } from "../Components/ArtworkAutosuggest"
-import { useArtworkForm } from "../Form/useArtworkForm"
-import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 export const MyCollectionArtworkFormArtwork: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
@@ -75,7 +75,10 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     }
   }
 
-  const onSkip = () => {
+  const onSkip = (artworkTitle?: string) => {
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      title: artworkTitle,
+    })
     trackEvent(
       tracks.tappedOnSkip(
         formik.values.artistSearchResult?.internalID!,
@@ -100,7 +103,6 @@ export const MyCollectionArtworkFormArtwork: React.FC<
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
-        rightButtonTestId="my-collection-artwork-form-artwork-skip-button"
         onRightButtonPress={onSkip}
         hideBottomDivider
       >
@@ -111,7 +113,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
           {!!formik.values.artistSearchResult && (
             <ArtistSearchResult result={formik.values.artistSearchResult} />
           )}
-          <Spacer mb={2} />
+          <Spacer y={2} />
           <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
         </ScreenMargin>
       </ScrollView>
@@ -128,7 +130,7 @@ const fetchArtwork = async (
     graphql`
       query MyCollectionArtworkFormArtworkQuery($artworkID: String!) {
         artwork(id: $artworkID) {
-          medium: category
+          medium
           date
           depth
           editionSize
@@ -141,7 +143,7 @@ const fetchArtwork = async (
             width
           }
           isEdition
-          category: medium
+          category
           metric
           title
           width

@@ -1,23 +1,20 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { mockEdges } from "app/tests/resolveMostRecentRelayOperation"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { FlatList } from "react-native"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import {
+  mockEdges,
+  resolveMostRecentRelayOperation,
+} from "app/utils/tests/resolveMostRecentRelayOperation"
+import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  ArtistInsightsAuctionResultsPaginationContainer,
-  SortMode,
-} from "./ArtistInsightsAuctionResults"
-
-jest.unmock("react-relay")
+import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -69,23 +66,96 @@ describe("ArtistInsightsAuctionResults", () => {
     />
   )
 
-  it("renders list auction results when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artist: () => ({
-        auctionResultsConnection: {
-          totalCount: 5,
-          edges: mockEdges(5),
+  describe("Upcoming auction results", () => {
+    it("are shown when upcoming auction results are available", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        AuctionResultConnection: (context) => {
+          if (context.alias === "upcomingAuctionResults") {
+            return {
+              totalCount: 2,
+              edges: mockEdges(2),
+            }
+          }
+          return {
+            totalCount: 5,
+            edges: mockEdges(5),
+          }
         },
-      }),
+      })
+
+      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
+      expect(extractText(tree.root.findByType(SectionList))).toContain("Upcoming Auctions")
     })
 
-    expect(tree.root.findAllByType(FlatList).length).toEqual(1)
-    expect(tree.root.findAllByType(AuctionResultListItemFragmentContainer).length).toEqual(5)
+    it("are hidden when no upcoming auction results are available", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        AuctionResultConnection: (context) => {
+          if (context.alias === "upcomingAuctionResults") {
+            return {
+              totalCount: 0,
+              edges: mockEdges(0),
+            }
+          }
+          return {
+            totalCount: 5,
+            edges: mockEdges(5),
+          }
+        },
+      })
+
+      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
+      expect(extractText(tree.root.findByType(SectionList))).not.toContain("Upcoming Auctions")
+    })
+  })
+
+  describe("Past auction reuslt", () => {
+    it("are shown when past auction results are available", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        AuctionResultConnection: (context) => {
+          if (context.alias === "pastAuctionResults") {
+            return {
+              totalCount: 2,
+              edges: mockEdges(2),
+            }
+          }
+          return {
+            totalCount: 5,
+            edges: mockEdges(5),
+          }
+        },
+      })
+
+      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
+      expect(extractText(tree.root.findByType(SectionList))).toContain("Past Auctions")
+    })
+
+    it("are hidden when no past auction results are available", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        AuctionResultConnection: (context) => {
+          if (context.alias === "pastAuctionResults") {
+            return {
+              totalCount: 0,
+              edges: mockEdges(0),
+            }
+          }
+          return {
+            totalCount: 5,
+            edges: mockEdges(5),
+          }
+        },
+      })
+
+      expect(tree.root.findAllByType(SectionList).length).toEqual(1)
+      expect(extractText(tree.root.findByType(SectionList))).not.toContain("Past Auctions")
+    })
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -100,7 +170,7 @@ describe("ArtistInsightsAuctionResults", () => {
 
   describe("ListHeaderComponent", () => {
     it("renders the results string when totalCount is equal to 1", () => {
-      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {
@@ -110,13 +180,13 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findByType(SortMode))).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
         "1 result • Sorted by most recent sale date"
       )
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
-      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {
@@ -125,7 +195,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findByType(SortMode))).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
         "10 results • Sorted by most recent sale date"
       )
     })

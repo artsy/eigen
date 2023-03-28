@@ -1,14 +1,12 @@
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
-import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import moment from "moment"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
-
-jest.unmock("react-relay")
 
 describe("AuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -48,7 +46,7 @@ describe("AuctionResults", () => {
   )
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -61,6 +59,9 @@ describe("AuctionResults", () => {
                   display: "$one gazillion",
                   displayUSD: "$one gazillion",
                 },
+                performance: {
+                  mid: "10",
+                },
                 artist: {
                   name: "artist-name",
                   slug: "artist-slug",
@@ -72,12 +73,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion")
     expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders price in USD when currency is not USD", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -90,6 +91,9 @@ describe("AuctionResults", () => {
                   display: "€one gazillion",
                   displayUSD: "$one gazillion",
                 },
+                performance: {
+                  mid: "10",
+                },
                 artist: {
                   name: "artist-name",
                   slug: "artist-slug",
@@ -101,12 +105,14 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("€one gazillion")
-    expect(tree.findByProps({ testID: "priceUSD" }).props.children).toBe("$one gazillion")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
+      "€one gazillion • $one gazillion"
+    )
+    expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -117,6 +123,9 @@ describe("AuctionResults", () => {
                 priceRealized: {
                   display: null,
                   displayUSD: null,
+                },
+                performance: {
+                  mid: "10",
                 },
                 saleDate: moment().subtract(1, "day").toISOString(),
               },
@@ -131,7 +140,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders auction result when auction result is `bought in`", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -142,6 +151,9 @@ describe("AuctionResults", () => {
                 priceRealized: {
                   display: null,
                   displayUSD: null,
+                },
+                performance: {
+                  mid: "10",
                 },
                 saleDate: moment().subtract(2, "months").toISOString(),
                 boughtIn: true,
@@ -157,7 +169,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -174,9 +186,5 @@ describe("AuctionResults", () => {
     })
 
     expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
-      "est"
-    )
   })
 })

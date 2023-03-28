@@ -1,11 +1,12 @@
 import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
+import { Spacer, ShieldIcon, Flex, Text } from "@artsy/palette-mobile"
 import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
+import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ShadowSeparator } from "../ShadowSeparator"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
@@ -33,12 +34,12 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
         <Flex flexDirection="row">
           <ShieldIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
-            <Text color="black60" variant="md" mb={1}>
+            <Text color="black60" variant="sm-display" mb={1}>
               Always complete purchases with our secure checkout in order to be covered by{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
                 color="black100"
-                variant="md"
+                variant="sm-display"
                 onPress={() => {
                   navigate(`/buyer-guarantee`)
                 }}
@@ -70,7 +71,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x={1} />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <Button
@@ -106,7 +107,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x={1} />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <InquiryMakeOfferButtonFragmentContainer

@@ -1,17 +1,21 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { Box, SimpleMessage, Text } from "palette"
+import { SimpleMessage } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
 
 interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene$data
@@ -71,7 +75,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
 
   return (
     <Box mt={1}>
-      <Text variant="md" color="black60" mb={2}>
+      <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works
       </Text>
       <InfiniteScrollArtworksGrid

@@ -1,17 +1,17 @@
+import { useTheme } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useTheme } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
-import { getVersion } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
   const { color } = useTheme()
-  const appVersion = getVersion()
+  const appVersion = DeviceInfo.getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
   const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(

@@ -1,21 +1,27 @@
-import { captureMessage } from "@sentry/react-native"
-import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
+import { Flex } from "@artsy/palette-mobile"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { useLocalImages } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
-import { Flex } from "palette"
+import { guardFactory } from "app/utils/types/guardFactory"
 import { useMemo } from "react"
-import { PixelRatio } from "react-native"
+import { PixelRatio, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
-import { fitInside } from "./geometry"
+import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
 import {
   ImageCarouselContext,
+  ImageCarouselImage,
+  ImageCarouselVideo,
   ImageDescriptor,
   useNewImageCarouselContext,
 } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
+import { fitInside } from "./geometry"
+import { captureMessage } from "@sentry/react-native"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
@@ -24,11 +30,14 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
   width: number
   height: number
   url: string
+  largeImageURL: string | null
 }
 
 export interface ImageCarouselProps {
   /** CarouselImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images$data | CarouselImageDescriptor[]
+  staticImages?: CarouselImageDescriptor[]
+  figures?: ImageCarousel_figures$data
+  setVideoAsCover?: boolean
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
@@ -42,64 +51,18 @@ export interface ImageCarouselProps {
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
 export const ImageCarousel = (props: ImageCarouselProps) => {
-  const screenDimensions = useScreenDimensions()
-  const { cardHeight, onImageIndexChange } = props
-
-  const embeddedCardBoundingBox = {
-    width: screenDimensions.width,
-    height: isPad() ? 460 : cardHeight,
-  }
-
-  // TODO:- Deepzoom for local images?
-  const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))
-
-  const images: ImageDescriptor[] = useMemo(() => {
-    let result = props.images
-      .map((image): MappedImageDescriptor | null => {
-        if (!image.height || !image.width || !image.url) {
-          // something is very wrong
-          return null
-        }
-        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
-        return {
-          width,
-          height,
-          url:
-            isALocalImage(image.url) || !imageHasVersions(image)
-              ? image.url
-              : createGeminiUrl({
-                  imageURL: image.url.replace(
-                    ":version",
-                    getBestImageVersionForThumbnail(image.imageVersions as string[])
-                  ),
-                  // upscale to match screen resolution
-                  width: width * PixelRatio.get(),
-                  height: height * PixelRatio.get(),
-                }),
-          deepZoom: image.deepZoom,
-        }
-      })
-      .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
-
-    if (!disableDeepZoom) {
-      if (result.some((image) => !image.deepZoom)) {
-        const filteredResult = result.filter((image) => image.deepZoom)
-        if (filteredResult.length === 0) {
-          result = [result[0]]
-        } else {
-          result = filteredResult
-        }
-      }
-    }
-
-    return result
-  }, [props.images])
-
-  const context = useNewImageCarouselContext({ images, onImageIndexChange })
+  const { cardHeight, onImageIndexChange, setVideoAsCover } = props
+  const { images, videos, disableDeepZoom } = useImageCarouselMedia(props)
+  const context = useNewImageCarouselContext({
+    images,
+    videos,
+    setVideoAsCover,
+    onImageIndexChange,
+  })
 
   context.fullScreenState.useUpdates()
 
-  if (images.length === 0) {
+  if (context.media.length === 0) {
     return null
   }
 
@@ -107,30 +70,66 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     <ImageCarouselContext.Provider value={context}>
       <Flex>
         <ImageCarouselEmbedded cardHeight={cardHeight} disableFullScreen={disableDeepZoom} />
-        {images.length > 1 && <PaginationIndicator indicatorType={props.paginationIndicatorType} />}
-        {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
+
+        {context.media.length > 1 && (
+          <PaginationIndicator indicatorType={props.paginationIndicatorType} />
+        )}
+
+        {context.fullScreenState.current !== "none" && <ImagesCarousel />}
       </Flex>
     </ImageCarouselContext.Provider>
   )
 }
 
+export const ImagesCarousel = () => {
+  const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
+
+  if (Platform.OS === "ios") {
+    return <ImageCarouselFullScreen />
+  }
+
+  if (enableAndroidImagesGallery) {
+    return <ImageCarouselFullScreenAndroid />
+  }
+
+  return null
+}
+
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
-  images: graphql`
-    fragment ImageCarousel_images on Image @relay(plural: true) {
-      url: imageURL
-      width
-      height
-      imageVersions
-      deepZoom {
-        image: Image {
-          tileSize: TileSize
-          url: Url
-          format: Format
-          size: Size {
-            width: Width
-            height: Height
+  figures: graphql`
+    fragment ImageCarousel_figures on ArtworkFigures @relay(plural: true) {
+      ... on Image {
+        __typename
+        internalID
+        url
+        largeImageURL: url(version: "larger")
+        resized(width: 590, height: 590, version: ["normalized", "larger", "large"]) {
+          src
+        }
+        width
+        height
+        imageVersions
+        versions
+        isDefault
+        deepZoom {
+          image: Image {
+            tileSize: TileSize
+            url: Url
+            format: Format
+            size: Size {
+              width: Width
+              height: Height
+            }
           }
         }
+      }
+      ... on Video {
+        __typename
+        # Unfortunately, in MP, these types are ambiguous within the union
+        # so we have to alias them to avoid a conflict.
+        videoWidth: width
+        videoHeight: height
+        playerUrl
       }
     }
   `,
@@ -152,15 +151,9 @@ export const isALocalImage = (imageUrl?: string | null) => {
 // gemini for the actual thumbnail we fetch.
 function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   for (const size of imageVersionsSortedBySize) {
-    if (imageVersions.includes(size)) {
+    if (imageVersions?.includes(size)) {
       return size
     }
-  }
-
-  if (!__DEV__) {
-    captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
-  } else {
-    console.warn("No appropriate image size found!")
   }
 
   // doesn't really matter what we return here, the gemini image url
@@ -169,6 +162,128 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   return "normalized"
 }
 
-const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
-  return image.imageVersions && image.imageVersions.length
+const useImageCarouselMedia = (
+  props: ImageCarouselProps
+): {
+  images: ImageCarouselImage[]
+  videos: ImageCarouselVideo[]
+  disableDeepZoom: boolean | undefined
+} => {
+  const screenDimensions = useScreenDimensions()
+
+  const embeddedCardBoundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : props.cardHeight,
+  }
+
+  const imageFigures = props.staticImages?.length
+    ? props.staticImages
+    : props.figures?.filter(guardFactory("__typename", "Image"))
+
+  const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
+
+  const localImages = useLocalImages(imageFigures)
+
+  const disableDeepZoom = imageFigures?.some(
+    (image, index) => isALocalImage(image.url) || localImages?.[index]
+  )
+
+  const fallbackSize = screenDimensions.width
+
+  const images = useMemo(() => {
+    const mappedImages =
+      imageFigures?.map((image, i) => {
+        const imageWidth = localImages?.[i]?.width || image.width
+        const imageHeight = localImages?.[i]?.height || image.height
+
+        if (!imageWidth || !imageHeight) {
+          if (!__DEV__) {
+            captureMessage("ImageCarousel: image width or height is missing.")
+          }
+          console.log("ImageCarousel: image width or height is missing", image)
+        }
+
+        return {
+          ...image,
+          url: localImages?.[i]?.path || image.url,
+          width: imageWidth || fallbackSize,
+          height: imageHeight || fallbackSize,
+        }
+      }) ??
+      props.staticImages ??
+      []
+
+    let result = mappedImages
+      .map((image, index) => {
+        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
+
+        const url = (() => {
+          if (!image.url || localImages?.[index]) {
+            return image.url
+          }
+
+          return createGeminiUrl({
+            imageURL: image.url.replace(
+              ":version",
+              getBestImageVersionForThumbnail(image.imageVersions as string[])
+            ),
+            // upscale to match screen resolution
+            width: width * PixelRatio.get(),
+            height: height * PixelRatio.get(),
+          })
+        })()
+
+        const largeImageURL = localImages?.[index]
+          ? image.url
+          : image.largeImageURL ?? image.url ?? null
+
+        return {
+          ...image,
+          deepZoom: image?.deepZoom,
+          height,
+          largeImageURL,
+          url,
+          width,
+        }
+      })
+      .filter((mappedImage) => {
+        return Boolean(mappedImage)
+      })
+
+    if (!disableDeepZoom) {
+      if (result.some((image) => !image?.deepZoom)) {
+        const filteredResult = result.filter((image) => image?.deepZoom)
+        if (filteredResult.length === 0) {
+          result = [result[0]]
+        } else {
+          result = filteredResult
+        }
+      }
+    }
+
+    // Filter out (local) images that are not loaded yet
+    result = result.filter((image) => image?.width && image?.height)
+
+    return result
+  }, [props.staticImages, imageFigures, localImages]) as ImageCarouselImage[]
+
+  // Map video props to the same format thats used for images
+  const videos = useMemo(() => {
+    if (!videoFigures) {
+      return []
+    }
+
+    return videoFigures.map((video) => ({
+      ...video,
+      width: video.videoWidth,
+      height: video.videoHeight,
+      url: video.playerUrl,
+    }))
+  }, [videoFigures]) as ImageCarouselVideo[]
+
+  return {
+    disableDeepZoom,
+    images: images ?? [],
+    videos,
+  }
 }

@@ -1,5 +1,4 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import { LoadFailureView } from "./LoadFailureView"
@@ -15,14 +14,8 @@ afterEach(() => {
 
 describe("RetryErrorBoundary", () => {
   describe("when the rendered component crashes", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCascadingEndTimerSalePageGrid: true,
-      })
-    })
-
     it("renders Unable to load", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash />
         </RetryErrorBoundary>
@@ -33,10 +26,6 @@ describe("RetryErrorBoundary", () => {
   })
 
   describe("when the rendered component crashes with a 404 status code", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: true })
-    })
-
     const error = {
       res: {
         json: {
@@ -52,7 +41,7 @@ describe("RetryErrorBoundary", () => {
     }
 
     it("renders NotFoundFailureView", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash error={error} />
         </RetryErrorBoundary>
@@ -64,7 +53,7 @@ describe("RetryErrorBoundary", () => {
 })
 describe("RetryErrorBoundaryLegacy", () => {
   it("Renders the fallback view when the rendered component crashes", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy render={() => <CrashingComponent shouldCrash />} />
     )
     expect(tree.root.findAllByType(LoadFailureView)).toHaveLength(1)
@@ -72,7 +61,7 @@ describe("RetryErrorBoundaryLegacy", () => {
 
   it("passes false for isRetry to render prop on first pass", () => {
     let receivedIsRetry = true
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy
         render={({ isRetry }) => {
           receivedIsRetry = isRetry
@@ -85,7 +74,7 @@ describe("RetryErrorBoundaryLegacy", () => {
 
   it("passes true for isRetry to render prop on retry", () => {
     let receivedIsRetry = false
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy
         render={({ isRetry }) => {
           receivedIsRetry = isRetry

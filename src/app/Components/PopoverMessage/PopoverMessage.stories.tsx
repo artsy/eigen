@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Button } from "palette/elements/Button"
+import { Button } from "palette"
 import { DataList, List } from "storybook/helpers"
 import { PopoverMessageItem, PopoverMessageType } from "./PopoverMessage"
 import { usePopoverMessage } from "./popoverMessageHooks"
@@ -51,6 +51,13 @@ storiesOf("Popover message", module)
         title="Some title"
         message="Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
       />
+    </List>
+  ))
+  .add("With Pointer", () => (
+    <List>
+      <PopoverMessage label="With bottom pointer" title="Some title" withPointer="bottom" />
+      <PopoverMessage label="With top pointer" title="Some title" withPointer="top" />
+      <PopoverMessage label="With out pointer" title="Some title" />
     </List>
   ))
   .add("Miscellaneous", () => (

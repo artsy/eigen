@@ -1,10 +1,11 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Flex, RadioDot, Text } from "palette"
+import { RadioDot } from "palette"
 import React, { Fragment } from "react"
 import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
@@ -107,7 +108,7 @@ export const ListItem = ({
   return (
     <TouchableRow accessibilityState={{ selected }} onPress={() => onSelect(item)}>
       <OptionListItem>
-        <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 3 : 2}>
+        <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 4 : 2}>
           <Text color="black100" variant="xs">
             {item.displayText}
             {!!item.count && (

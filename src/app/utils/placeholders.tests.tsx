@@ -1,8 +1,9 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
-describe(PlaceholderBox, () => {
-  it(`requires a placeholder context`, () => {
+describe("PlaceholderBox", () => {
+  it("requires a placeholder context", () => {
     try {
       renderWithWrappers(<PlaceholderBox width={400} />)
     } catch (error: any) {
@@ -19,14 +20,14 @@ describe(PlaceholderBox, () => {
   })
 })
 
-describe(PlaceholderRaggedText, () => {
-  it(`creates the right number of placeholders matching the given number of lines`, () => {
-    const tree = renderWithWrappers(
+describe("PlaceholderRaggedText", () => {
+  it("creates the right number of placeholders matching the given number of lines", () => {
+    renderWithWrappers(
       <ProvidePlaceholderContext>
         <PlaceholderRaggedText numLines={4} />
       </ProvidePlaceholderContext>
     )
 
-    expect(tree.root.findAllByType(PlaceholderBox)).toHaveLength(4)
+    expect(screen.UNSAFE_queryAllByType(PlaceholderBox)).toHaveLength(4)
   })
 })

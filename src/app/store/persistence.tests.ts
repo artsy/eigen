@@ -11,7 +11,7 @@ import {
 
 jest.mock("./migration", () => ({ migrate: jest.fn((a) => a.state) }))
 
-describe(sanitize, () => {
+describe("sanitize", () => {
   const fixture = {
     sessionState: { blah: true },
     get computedProperty() {
@@ -55,7 +55,7 @@ describe(sanitize, () => {
   })
 })
 
-describe(assignDeep, () => {
+describe("assignDeep", () => {
   it("merges one object into another, modifying the underlying object", () => {
     const obj = {
       foo: true,
@@ -129,7 +129,10 @@ describe(persist, () => {
   })
   it("omits the sessionStorage key", async () => {
     await persist({
-      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "home",
+        sessionState: { unreadCounts: { conversations: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
@@ -137,13 +140,19 @@ describe(persist, () => {
   })
   it("overwrites the previous value", async () => {
     await persist({
-      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "home",
+        sessionState: { unreadCounts: { conversations: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
     })
     await persist({
-      bottomTabs: { selectedTab: "explore", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "explore",
+        sessionState: { unreadCounts: { conversations: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "explore" },

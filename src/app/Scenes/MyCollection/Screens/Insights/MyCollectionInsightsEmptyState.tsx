@@ -1,43 +1,38 @@
-import { navigate, popToRoot } from "app/navigation/navigate"
+import { useSpace } from "@artsy/palette-mobile"
+import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { Button, Flex, Text, useSpace } from "palette"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { Image } from "react-native"
 
 export const MyCollectionInsightsEmptyState = () => {
   const space = useSpace()
 
   return (
-    <Flex px={2} testID="my-collection-insights-empty-state">
-      <Text variant="md" textAlign="center">
-        Gain deeper knowledge of your artwork
-      </Text>
-      <Text variant="xs" color="black60" textAlign="center">
-        Get free market insights about the artists you collect.
-      </Text>
-      <Image
-        source={require("images/my-collection-empty-state.webp")}
-        resizeMode="contain"
-        style={{
-          alignSelf: "center",
-          height: 120,
-          width: 327,
-          marginVertical: space(2),
-        }}
-      />
-      <Button
-        block
-        onPress={() =>
-          navigate("my-collection/artworks/new", {
-            passProps: {
-              mode: "add",
-              source: Tab.insights,
-              onSuccess: popToRoot,
-            },
-          })
-        }
-      >
-        Upload Your Artwork
-      </Button>
-    </Flex>
+    <ZeroState
+      bigTitle="Gain Deeper Knowledge of your Collection"
+      subtitle="Get free market insights about the artists you collect."
+      image={
+        <Image
+          source={require("images/my-collection-insights-empty-state-median.png")}
+          resizeMode="contain"
+          style={{ alignSelf: "center", marginVertical: space(2) }}
+        />
+      }
+      callToAction={
+        <>
+          <Button
+            block
+            onPress={() => {
+              navigate("my-collection/artworks/new", {
+                passProps: { mode: "add", source: Tab.insights, onSuccess: popToRoot },
+              })
+            }}
+          >
+            Upload Artwork
+          </Button>
+        </>
+      }
+    />
   )
 }

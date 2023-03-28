@@ -1,6 +1,6 @@
 import { fireEvent, getDefaultNormalizer } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FilteredArtworkGridZeroState, ZeroStateProps } from "./FilteredArtworkGridZeroState"
 
 describe("FilteredArtworkGridZeroState", () => {
@@ -19,7 +19,7 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it("displays correct text", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     expect(
       getByText("No results found\nPlease try another search.", {
@@ -31,17 +31,17 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it(`displays "Clear filters" button`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryAllByText } = renderWithWrappers(<TestWrapper />)
     expect(queryAllByText("Clear filters")[0]).toBeDefined()
   })
 
   it(`doesn't display "Clear filters" button when "hideClearButton" prop is passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper hideClearButton />)
+    const { queryAllByText } = renderWithWrappers(<TestWrapper hideClearButton />)
     expect(queryAllByText("Clear filters")).toHaveLength(0)
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if id is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(
+    const { queryAllByText } = renderWithWrappers(
       <TestWrapper slug="test-slug" trackClear={trackClearMock} />
     )
     fireEvent(queryAllByText("Clear filters")[0], "press")
@@ -49,7 +49,7 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if slug is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(
+    const { queryAllByText } = renderWithWrappers(
       <TestWrapper id="test-id" trackClear={trackClearMock} />
     )
     fireEvent(queryAllByText("Clear filters")[0], "press")
@@ -57,7 +57,7 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it(`calls "trackClear" callback with id and slug on "Clear filters" button press if both are passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(
+    const { queryAllByText } = renderWithWrappers(
       <TestWrapper slug="test-slug" id="test-id" trackClear={trackClearMock} />
     )
     fireEvent(queryAllByText("Clear filters")[0], "press")

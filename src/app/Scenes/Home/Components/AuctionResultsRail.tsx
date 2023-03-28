@@ -1,105 +1,122 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AuctionResultsRail_me$data } from "__generated__/AuctionResultsRail_me.graphql"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "app/Components/Lists/AuctionResultListItem"
+import { Flex } from "@artsy/palette-mobile"
+import { AuctionResultsRail_auctionResults$key } from "__generated__/AuctionResultsRail_auctionResults.graphql"
+import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
-import { createFragmentContainer, graphql } from "react-relay"
+import { memo } from "react"
+import { FlatList } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 
-interface Props {
+interface AuctionResultsRailProps {
+  auctionResults: AuctionResultsRail_auctionResults$key
+  contextModule: ContextModule
   title: string
-  mb?: number
 }
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> = ({
-  title,
-  me,
-  mb,
-}) => {
-  const { trackEvent } = useTracking()
-  const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
-  const navigateToAuctionResultsForArtistsYouFollow = () => {
-    trackEvent(tracks.tappedHeader())
-    navigate(`/auction-results-for-artists-you-follow`)
+export const getDetailsByContextModule = (
+  contextModule: ContextModule
+): { viewAllUrl: string; browseAllButtonText: string } => {
+  switch (contextModule) {
+    case ContextModule.upcomingAuctionsRail:
+      return {
+        viewAllUrl: "/upcoming-auction-results",
+        browseAllButtonText: "Browse All Auctions",
+      }
+    case ContextModule.auctionResultsRail:
+      return {
+        viewAllUrl: "/auction-results-for-artists-you-follow",
+        browseAllButtonText: "Browse All Results",
+      }
+    default:
+      throw "Unknown ContextModule"
   }
+}
 
-  if (!auctionResultsByFollowedArtists?.length) {
-    return null
-  }
+export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
+  ({ contextModule, title, ...restProps }) => {
+    const { viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
+    const { trackEvent } = useTracking()
+    const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
-  return (
-    <Flex mb={mb}>
-      <Flex pl="2" pr="2">
-        <SectionTitle title={title} onPress={navigateToAuctionResultsForArtistsYouFollow} />
-      </Flex>
+    const { width: screenWidth } = useScreenDimensions()
 
-      <CardRailFlatList
-        data={auctionResultsByFollowedArtists}
-        keyExtractor={(_, index) => String(index)}
-        horizontal={false}
-        initialNumToRender={3}
-        ItemSeparatorComponent={AuctionResultListSeparator}
-        renderItem={({ item, index }) => {
-          if (!item) {
-            return <></>
-          }
+    const filteredAuctionResults = extractNodes(auctionResults).filter(
+      (auctionResult) => auctionResult
+    )
 
-          return (
+    if (!auctionResults || auctionResults?.totalCount === 0) {
+      return null
+    }
+
+    const handleMorePress = () => {
+      trackEvent(tracks.tappedViewAll(contextModule))
+      navigate(viewAllUrl)
+    }
+
+    return (
+      <Flex>
+        <Flex pl={2} pr={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedHeader(contextModule))
+              navigate(viewAllUrl)
+            }}
+          />
+        </Flex>
+        <FlatList
+          horizontal
+          data={filteredAuctionResults}
+          showsHorizontalScrollIndicator={false}
+          initialNumToRender={3}
+          renderItem={({ item }) => (
             <AuctionResultListItemFragmentContainer
               showArtistName
               auctionResult={item}
-              onPress={() => {
-                trackEvent(tracks.tappedThumbnail(item.internalID, index))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-              }}
+              width={screenWidth * 0.9}
             />
-          )
-        }}
-      />
-    </Flex>
-  )
-}
-
-export const AuctionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
-  me: graphql`
-    fragment AuctionResultsRail_me on Me {
-      auctionResultsByFollowedArtists(first: 3) {
-        totalCount
-        edges {
-          cursor
-          node {
-            ...AuctionResultListItem_auctionResult
-            artistID
-            internalID
+          )}
+          ListFooterComponent={
+            handleMorePress ? (
+              <BrowseMoreRailCard onPress={handleMorePress} text={browseAllButtonText} />
+            ) : undefined
           }
-        }
+        />
+      </Flex>
+    )
+  }
+)
+
+const meFragment = graphql`
+  fragment AuctionResultsRail_auctionResults on AuctionResultConnection {
+    totalCount
+    edges {
+      node {
+        ...AuctionResultListItem_auctionResult
+        internalID
       }
     }
-  `,
-})
+  }
+`
 
-export const tracks = {
-  tappedHeader: () => ({
-    action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
+const tracks = {
+  tappedHeader: (contextModule: ContextModule) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+    destination_screen_owner_type: OwnerType.upcomingAuctions,
     type: "header",
   }),
-
-  tappedThumbnail: (auctionResultId: string, position: number) => ({
-    action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
+  tappedViewAll: (contextModule: ContextModule) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctionResult,
-    destination_screen_owner_id: auctionResultId,
-    horizontal_slide_position: position,
-    type: "thumbnail",
+    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    type: "viewAll",
   }),
 }

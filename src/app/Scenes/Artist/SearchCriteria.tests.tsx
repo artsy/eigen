@@ -1,10 +1,9 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
-
-jest.unmock("react-relay")
 
 describe("SearchCriteria", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -16,7 +15,7 @@ describe("SearchCriteria", () => {
   it("should not query the search criteria when searchCriteriaId is not passed", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
       />
@@ -31,11 +30,11 @@ describe("SearchCriteria", () => {
   it("should query the search criteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment}
+        environment={mockEnvironment as unknown as RelayModernEnvironment}
       />
     )
 
@@ -50,11 +49,11 @@ describe("SearchCriteria", () => {
   it("should call renderPlaceholder when query is loading", () => {
     const mockRenderPlaceholder = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
-        environment={mockEnvironment}
+        environment={mockEnvironment as unknown as RelayModernEnvironment}
       />
     )
 
@@ -64,15 +63,15 @@ describe("SearchCriteria", () => {
   it("should return error if something went wrong during query", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment}
+        environment={mockEnvironment as unknown as RelayModernEnvironment}
       />
     )
 
-    mockEnvironment.mock.rejectMostRecentOperation(new Error())
+    rejectMostRecentRelayOperation(mockEnvironment, new Error())
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: new Error(),

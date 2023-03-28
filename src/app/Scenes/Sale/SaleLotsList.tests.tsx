@@ -1,25 +1,22 @@
+import { Text } from "@artsy/palette-mobile"
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
-import { FilterParamName, ViewAsValues } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { FilterParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterParamName,
+  ViewAsValues,
+  FilterParams,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"
-import {
-  FilterDescription,
-  FilterTitle,
-  SaleLotsListContainer,
-  SaleLotsListSortMode,
-} from "./Components/SaleLotsList"
-
-jest.unmock("react-relay")
+import { SaleLotsListContainer, SaleLotsListSortMode } from "./Components/SaleLotsList"
 
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -94,7 +91,7 @@ describe("SaleLotsListContainer", () => {
   // Most likely this has something to do with the unfilteredSaleArtworksConnection
   // Follow-up ticket https://artsyproduct.atlassian.net/browse/CX-1108
   it.skip("Renders nothing if not sale artworks are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -111,7 +108,9 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a grid", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState(ViewAsValues.Grid)} />)
+    const tree = renderWithWrappersLEGACY(
+      <TestRenderer initialData={getState(ViewAsValues.Grid)} />
+    )
 
     const mockProps = {
       SaleArtworksConnection: () => ({
@@ -129,7 +128,7 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a list", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -147,7 +146,7 @@ describe("SaleLotsListContainer", () => {
 
   describe("SaleLotsListSortMode", () => {
     it("renders the right sort mode and count", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <SaleLotsListSortMode
           filterParams={{ sort: "bidder_positions_count" } as FilterParams}
           filteredTotal={20}
@@ -155,8 +154,8 @@ describe("SaleLotsListContainer", () => {
         />
       )
 
-      expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
-      expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
+      expect(extractText(tree.root.findAllByType(Text)[0])).toBe("Sorted by least bids")
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe("Showing 20 of 100")
     })
   })
 })

@@ -1,8 +1,9 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
+import { Input, INPUT_HEIGHT, InputTitle, Separator } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 
@@ -30,7 +31,7 @@ export const Rarity: React.FC = () => {
         testID="rarity-select"
       />
       {formik.values.attributionClass === "LIMITED_EDITION" && (
-        <Flex flexDirection="row" mt="2" alignItems="flex-end">
+        <Flex flexDirection="row" mt={2} alignItems="flex-end">
           <Flex flex={1}>
             <Flex>
               <Input

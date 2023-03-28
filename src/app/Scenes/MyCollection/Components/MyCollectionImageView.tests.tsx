@@ -1,6 +1,6 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { MyCollectionImageView, MyCollectionImageViewProps } from "./MyCollectionImageView"
 
@@ -13,7 +13,7 @@ describe("MyCollectionImageView", () => {
       imageURL: "https://some-url/:version.jpg",
       artworkSlug: "some-slug",
     }
-    const { getAllByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+    const { getAllByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
     expect(getAllByTestId("Image-Remote")).toBeDefined()
   })
 
@@ -24,20 +24,17 @@ describe("MyCollectionImageView", () => {
       aspectRatio: 1,
       artworkSlug: "some-slug",
     }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
     const localImage: LocalImage = {
       path: "some-local-path",
       width: 10,
       height: 10,
     }
-    const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
-      resolve([localImage])
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+
+    localImageStoreMock.mockImplementation(async () => localImage)
 
     act(async () => {
-      await retrievalPromise
-      const { getByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const image = getByTestId("Image-Local")
       expect(image).toBeDefined()
       expect(image.props.source).toEqual({ uri: "some-local-path" })
@@ -51,15 +48,11 @@ describe("MyCollectionImageView", () => {
       aspectRatio: 1,
       artworkSlug: "some-slug",
     }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
-    const retrievalPromise = new Promise<LocalImage[] | null>((resolve) => {
-      resolve(null)
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
+    localImageStoreMock.mockImplementation(async () => null)
 
     act(async () => {
-      await retrievalPromise
-      const { getByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const fallback = getByTestId("Fallback")
       expect(fallback).toBeDefined()
     })

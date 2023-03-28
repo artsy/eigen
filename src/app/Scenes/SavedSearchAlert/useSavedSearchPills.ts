@@ -1,7 +1,7 @@
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useMemo } from "react"
-import { extractPills } from "./pillExtractors"
 import { SavedSearchStore } from "./SavedSearchStore"
+import { extractPills } from "./pillExtractors"
 
 export const useSavedSearchPills = () => {
   const { localizedUnit } = useLocalizedUnit()

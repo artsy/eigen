@@ -1,20 +1,21 @@
-import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
+import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
 const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
@@ -25,7 +26,6 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     )
   }
 
-  const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
   const showLinkApple = Platform.OS === "ios"
 
   const showLinkedAccounts = !me.secondFactors?.length
@@ -46,9 +46,10 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     isLoading: appleLoading,
   } = useAppleLink(relay.environment)
 
-  const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
-  const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
-  const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
+  const providers = me.authentications.map((a) => a.provider)
+  const facebookLinked = providers.includes("FACEBOOK")
+  const googleLinked = providers.includes("GOOGLE")
+  const appleLinked = providers.includes("APPLE")
 
   const linkOrUnlink = (provider: "facebook" | "google" | "apple") => {
     switch (provider) {
@@ -65,14 +66,13 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
 
   const loading = fbLoading || googleLoading || appleLoading
 
+  const priceRangeValue = me.priceRange
+    ? PRICE_BUCKETS.find((i) => me.priceRange === i.value)?.label ?? "Select a price range"
+    : "Select a price range"
+
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem
-          title="Full Name"
-          value={me.name}
-          onPress={() => navigate("my-account/edit-name")}
-        />
         <MenuItem
           title="Email"
           value={me.email}
@@ -86,6 +86,11 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
           value={me.phone || "Add phone"}
           onPress={() => navigate("my-account/edit-phone")}
         />
+        <MenuItem
+          title="Price Range"
+          value={priceRangeValue}
+          onPress={() => navigate("my-account/edit-price-range")}
+        />
         {!!me.hasPassword && (
           <MenuItem
             title="Password"
@@ -95,7 +100,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
-          <Flex mt={3}>
+          <Flex mt={4}>
             <Box mx={2}>
               <SectionTitle title="LINKED ACCOUNTS" />
             </Box>
@@ -110,11 +115,11 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/facebook.webp`)}
+                      source={require(`images/facebook.png`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="md" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {facebookLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -127,34 +132,32 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
               }
             />
 
-            {!!showLinkGoogle && (
-              <MenuItem
-                title="Google"
-                disabled={loading || onlyExistingAuthFor("GOOGLE")}
-                allowDisabledVisualClue
-                rightView={
-                  googleLoading ? (
-                    <ActivityIndicator size="small" color="black" />
-                  ) : (
-                    <Flex flexDirection="row" alignItems="center">
-                      <Image
-                        source={require(`images/google.webp`)}
-                        resizeMode="contain"
-                        style={{ marginRight: 10 }}
-                      />
-                      <Text variant="md" color="black60" lineHeight={18}>
-                        {googleLinked ? "Unlink" : "Link"}
-                      </Text>
-                    </Flex>
-                  )
-                }
-                onPress={
-                  googleLoading || onlyExistingAuthFor("GOOGLE")
-                    ? () => null
-                    : () => linkOrUnlink("google")
-                }
-              />
-            )}
+            <MenuItem
+              title="Google"
+              disabled={loading || onlyExistingAuthFor("GOOGLE")}
+              allowDisabledVisualClue
+              rightView={
+                googleLoading ? (
+                  <ActivityIndicator size="small" color="black" />
+                ) : (
+                  <Flex flexDirection="row" alignItems="center">
+                    <Image
+                      source={require(`images/google.png`)}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
+                      {googleLinked ? "Unlink" : "Link"}
+                    </Text>
+                  </Flex>
+                )
+              }
+              onPress={
+                googleLoading || onlyExistingAuthFor("GOOGLE")
+                  ? () => null
+                  : () => linkOrUnlink("google")
+              }
+            />
             {!!showLinkApple && (
               <MenuItem
                 title="Apple"
@@ -166,11 +169,11 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`images/apple.webp`)}
+                        source={require(`images/apple.png`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
-                      <Text variant="md" color="black60" lineHeight={18}>
+                      <Text variant="sm-display" color="black60" lineHeight="18px">
                         {appleLinked ? "Unlink" : "Link"}
                       </Text>
                     </Flex>
@@ -185,7 +188,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             )}
           </Flex>
         )}
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
           <Text color="red100">Delete My Account</Text>
         </Button>
@@ -199,7 +202,7 @@ const MyAccountPlaceholder: React.FC = () => {
     <PageWithSimpleHeader title="Account">
       <Flex px={2} py={1}>
         {times(5).map((index: number) => (
-          <Flex key={index} py={7.5}>
+          <Flex key={index} py="7.5px">
             <PlaceholderText width={100 + Math.random() * 100} />
           </Flex>
         ))}
@@ -211,11 +214,13 @@ const MyAccountPlaceholder: React.FC = () => {
 export const MyAccountContainer = createFragmentContainer(MyAccount, {
   me: graphql`
     fragment MyAccount_me on Me {
-      name
       email
       phone
       paddleNumber
       hasPassword
+      priceRange
+      priceRangeMax
+      priceRangeMin
       authentications {
         provider
       }

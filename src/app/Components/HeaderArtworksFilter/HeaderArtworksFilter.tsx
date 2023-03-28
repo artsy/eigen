@@ -1,5 +1,6 @@
+import { FilterIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
+import { Separator, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -102,7 +103,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
   }
 
   return (
-    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)}>
+    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
       {!!animationValue && <SeparatorWithSmoothOpacity {...separatorProps} />}
       {!!total && (
         <Animated.View
@@ -139,7 +140,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                   ],
                 }}
               >
-                <Text variant="md" color="black60">
+                <Text variant="sm-display" color="black60">
                   Showing {total} works
                 </Text>
               </Animated.View>
@@ -149,7 +150,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 render={({ color }) => (
                   <Flex flexDirection="row" alignItems="center">
                     <FilterIcon fill={color} width="20px" height="20px" />
-                    <Text variant="md" color={color}>
+                    <Text variant="sm-display" color={color}>
                       Sort & Filter
                     </Text>
                   </Flex>

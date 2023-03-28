@@ -2,33 +2,33 @@
 .DS_Store
 
 # Xcode
-build/
-*.pbxuser
-!default.pbxuser
-*.mode1v3
 !default.mode1v3
-*.mode2v3
 !default.mode2v3
-*.perspectivev3
+!default.pbxuser
 !default.perspectivev3
 !default.xcworkspace
-xcuserdata
-profile
-*.moved-aside
-DerivedData
-.idea/
-*.xcscmblueprint
-.pt
-.clang-format
 .build
-.swiftpm
-xcode_test_raw.log
-xcode_build_raw.log
+.clang-format
+.idea/
+.pt
 .recordingSnapshots
+.swiftpm
+*.mode1v3
+*.mode2v3
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+*.xcscmblueprint
+build/
+DerivedData
+profile
+xcode_build_raw.log
+xcode_test_raw.log
+xcuserdata
 
 # Artsy Development APN certificate
-net.artsy.artsy.dev.pem
 .clang-format
+net.artsy.artsy.dev.pem
 
 # See note in Podfile
 ios/Artsy/App/Echo.json
@@ -51,25 +51,29 @@ derived_data
 ## js bundle
 dist/*
 
+# JS caches
+.cache
+
+# Yalc local publishing for local dev
+.yalc/
+yalc.lock
+
 # Custom
+.apphub
+.awcache
+.vscode/.browse.VC.db
+.vscode/.react/
+.vscode/launchReactNative.js
+.vscode/tasks.json.old
+.vscode/typings
+coverage
 node_modules
 npm-debug.log
-.vscode/launchReactNative.js
-.vscode/.react/
-.vscode/typings
-.vscode/tasks.json.old
-.vscode/.browse.VC.db
-.apphub
-coverage
 package-lock.json
 yarn-error.log
-.awcache
 
-# jest
-.jest/cache
 
-# Danger artifacts
-tslint-errors.json
+eslint-errors.json
 
 # typescript
 tsc_raw.log
@@ -82,12 +86,6 @@ native-code-checksum.hash
 
 .manifests
 
-# metro cache
-.metro
-
-# user-managed "state" files
-.i-am-helping-out-with-the-strictness-migration
-
 # auto-managed "state" files
 .i-had-a-netrc-file
 
@@ -96,12 +94,11 @@ native-code-checksum.hash
 !.env.example
 
 # Android/IntelliJ
-build/
-.idea
 .gradle
-local.properties
+.idea
 *.iml
-google-services.json
+build/
+local.properties
 
 # android
 *.keystore
@@ -116,9 +113,9 @@ ios/Artsy/Resources/Fonts/*
 ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts/*
 
 # Firebase files
-android/app/google-services.json
-GoogleService-Info.plist
 eigen-firebase-app-distribution.json
+google-services.json
+GoogleService-Info.plist
 
 metaflags.json
 
@@ -131,6 +128,8 @@ reports
 # Homebrew lock file
 Brewfile.lock.json
 
+# for tsconfig `incremental`
+tsconfig.tsbuildinfo
 
 #########################################################
 # Keep this rule last.

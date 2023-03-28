@@ -1,24 +1,21 @@
+import { Flex } from "@artsy/palette-mobile"
+import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
+import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Schema, screenTrack } from "app/utils/track"
+import { compact } from "lodash"
+import { Button } from "palette"
+import { Select } from "palette/elements/Select"
 import React, { memo } from "react"
 import { ActivityIndicator, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-
-import { Schema, screenTrack } from "../../../utils/track"
-
-import { Button, Flex } from "palette"
-
-import { ConfirmBidScreen } from "./ConfirmBid"
-
-import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
-import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { compact } from "lodash"
-import { Select } from "palette/elements/Select"
 import { ScreenDimensionsContext } from "shared/hooks"
+import { ConfirmBidScreen } from "./ConfirmBid"
 
 interface SelectMaxBidProps extends ViewProps {
   sale_artwork: SelectMaxBid_sale_artwork$data
@@ -54,6 +51,10 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
     )
   }
 
+  _test_refreshSaleArtwork = (value: boolean) => {
+    this.setState({ isRefreshingSaleArtwork: value })
+  }
+
   onPressNext = () => {
     this.props.navigator.push({
       component: ConfirmBidScreen,
@@ -71,10 +72,10 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
     const bids = compact(this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
-      <Flex flex={1} m="2">
+      <Flex flex={1} m={2}>
         <View style={{ flexGrow: 1, justifyContent: "center" }}>
           {this.state.isRefreshingSaleArtwork ? (
-            <ActivityIndicator />
+            <ActivityIndicator testID="spinner" />
           ) : (
             <ScreenDimensionsContext.Consumer>
               {({ height }) => (
@@ -91,7 +92,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
           )}
         </View>
 
-        <Button block onPress={this.onPressNext} style={{ flexGrow: 0 }}>
+        <Button testID="next-button" block onPress={this.onPressNext} style={{ flexGrow: 0 }}>
           Next
         </Button>
       </Flex>
@@ -99,7 +100,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 }
 
-const SelectMaxBidContainer = createRefetchContainer(
+export const SelectMaxBidContainer = createRefetchContainer(
   SelectMaxBid,
   {
     sale_artwork: graphql`
@@ -135,11 +136,11 @@ export const SelectMaxBidQueryRenderer: React.FC<{
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <Flex flex={1}>
-      <FancyModalHeader useXButton onLeftButtonPress={dismissModal}>
+      <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()}>
         Place a max bid
       </FancyModalHeader>
       <QueryRenderer<SelectMaxBidQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query SelectMaxBidQuery($artworkID: String!, $saleID: String!) {
             artwork(id: $artworkID) {

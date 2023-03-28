@@ -1,8 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
+import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
 import { EditSavedSearchAlert_artworksConnection$data } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
 import { EditSavedSearchAlert_viewer$data } from "__generated__/EditSavedSearchAlert_viewer.graphql"
-import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -10,8 +10,8 @@ import {
   SavedSearchEntityArtist,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { goBack, GoBackProps, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"
@@ -38,7 +38,7 @@ interface EditSavedSearchAlertProps {
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
-  const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
+  const { userAlertSettings, ...attributes } = me?.savedSearch ?? {}
   const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
     return (
       preference.channel === "email" &&

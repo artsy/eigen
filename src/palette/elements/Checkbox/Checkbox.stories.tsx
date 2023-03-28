@@ -1,5 +1,5 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { LinkText, Text } from "palette"
 import { List } from "storybook/helpers"
 import { Checkbox } from "./Checkbox"
 
@@ -8,13 +8,11 @@ storiesOf("Checkbox", module).add("Variants", () => (
     <Checkbox />
     <Checkbox text="Checkbox" />
     <Checkbox
-      // tslint:disable-next-line: jsx-curly-brace-presence
       text={`Multiline
 Text`}
     />
     <Checkbox text="Checkbox" subtitle="Subtitle" />
     <Checkbox
-      // tslint:disable-next-line: jsx-curly-brace-presence
       text={`Multiline
 Text`}
       subtitle="With Subtitle"
@@ -26,7 +24,7 @@ Text`}
     <Checkbox error text="With Error" />
     <Checkbox error text="With Error" subtitle="Subtitle" />
     <Checkbox>
-      <Text variant="md">
+      <Text variant="sm-display">
         Agree to <LinkText onPress={() => console.warn("tapped")}>Conditions of Sale</LinkText>
       </Text>
     </Checkbox>

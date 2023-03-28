@@ -1,11 +1,14 @@
-import { useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
 import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
+import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { useStickyTabPageContext } from "./StickyTabPageContext"
 
 interface FlatListRequiredContext {
+  /** This is the position/index of the Flatlist in the SnappyHorizontalRail.
+   */
+  __INTERNAL__indexInRail: number
   tabIsActive: Animated.Node<number>
   tabSpecificContentHeight: Animated.Node<number> | null
   setJSX(jsx: JSX.Element | null): void
@@ -13,7 +16,7 @@ interface FlatListRequiredContext {
 
 export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
-const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 export interface StickyTabSection {
   key: string // must be unique per-tab
@@ -38,7 +41,10 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   if (!stickyHeaderHeight) {
     throw new Error("invalid state, mounted flat list before stickyHeaderHeight was determined")
   }
-  const { tabIsActive, tabSpecificContentHeight } = useContext(StickyTabPageFlatListContext)
+  const { tabIsActive, tabSpecificContentHeight, __INTERNAL__indexInRail } = useContext(
+    StickyTabPageFlatListContext
+  )
+  const { __INTERNAL__registerFlatListRef } = useContext(StickyTabPageContext)
 
   const totalStickyHeaderHeight = Animated.add(stickyHeaderHeight, tabSpecificContentHeight ?? 0)
 
@@ -71,13 +77,12 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
             // white space before allowing the scroll offset to affect the header position
             Animated.cond(
               Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
-              Animated.call([headerOffsetY], ([y]) => {
+              Animated.call([headerOffsetY], () => {
                 if (!flatListRef.current) {
                   throw new Error(
                     "Please make sure that tab content is wrapped with a StickyTabPageFlatList or a StickyTabPageScrollView"
                   )
                 }
-                flatListRef.current.getNode().scrollToOffset({ offset: -y, animated: false })
                 lockHeaderPosition.setValue(0)
               }),
               Animated.set(lockHeaderPosition, 0)
@@ -108,6 +113,9 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         showsVerticalScrollIndicator={false}
         ref={(ref) => {
           flatListRef.current = ref as any
+
+          __INTERNAL__registerFlatListRef(ref as any, __INTERNAL__indexInRail)
+
           if (props.innerRef) {
             props.innerRef.current = ref as any
           }
@@ -131,12 +139,10 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         ListHeaderComponent={
           <Animated.View
             onLayout={() => setHeaderDidMount(true)}
-            style={{
-              flex: 1,
-              height: staticHeaderHeight,
-            }}
+            style={{ marginTop: staticHeaderHeight }}
           />
         }
+        // @ts-expect-error
         renderItem={({ item }) => <>{item.content}</>}
         data={headerDidMount ? data : []}
         {...otherProps}

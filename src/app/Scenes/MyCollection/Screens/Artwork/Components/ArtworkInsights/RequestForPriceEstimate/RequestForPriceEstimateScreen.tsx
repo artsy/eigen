@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType, SentRequestPriceEstimate } from "@artsy/cohesion"
+import { CommonActions, useNavigation } from "@react-navigation/native"
 import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { FormikProvider, useFormik } from "formik"
 import { Environment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -74,6 +75,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
   phone,
 }) => {
   const { trackEvent } = useTracking()
+  const navigation = useNavigation()
 
   const formik = useFormik<RequestForPriceEstimateFormikSchema>({
     validateOnChange: true,
@@ -93,14 +95,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             artworkId: myCollectionArtworkId,
             requestedAt: new Date().getTime(),
           })
-          Toast.show(
-            "Request Sent. \nAn Artsy Specialist will contact you with a response",
-            "top",
-            {
-              backgroundColor: "blue100",
-              duration: "long",
-            }
-          )
           trackEvent(
             tracks.sentRequestPriceEstimate(
               myCollectionArtworkId,
@@ -108,7 +102,22 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
               demandRank ?? undefined
             )
           )
-          goBack()
+          // Remove this screen from the nav stack. This way when we go back we won't land on this screen again
+          navigation.dispatch((state) => {
+            const routes = state.routes.slice(0, state.routes.length - 1)
+            return CommonActions.reset({
+              ...state,
+              routes,
+              index: 0,
+            })
+          })
+          navigate(`/my-collection/artwork/${artworkID}/price-estimate/success`)
+        }
+
+        if (response.requestPriceEstimate?.priceEstimateParamsOrError?.mutationError) {
+          Toast.show("Error: Failed to send a price estimate request.", "top", {
+            backgroundColor: "red100",
+          })
         }
       }
       const onError = () => {

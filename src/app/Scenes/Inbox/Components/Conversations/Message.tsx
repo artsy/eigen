@@ -1,11 +1,11 @@
+import { Spacer, Flex, BoxProps, ClassTheme, Text } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact } from "lodash"
-import { BoxProps, ClassTheme, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { View } from "react-native"
+import { Linking, Platform, View } from "react-native"
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -35,12 +35,15 @@ export class Message extends React.Component<Props> {
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
       const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
-      LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
-        reactNodeHandle,
-        attachment.downloadURL,
-        attachment.contentType,
-        attachment.internalID
-      )
+      if (Platform.OS === "ios") {
+        return LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
+          reactNodeHandle,
+          attachment.downloadURL,
+          attachment.contentType,
+          attachment.internalID
+        )
+      }
+      return Linking.openURL(attachment.downloadURL)
     }
 
     return compact(attachments).map((attachment, index) => {
@@ -121,7 +124,7 @@ export class Message extends React.Component<Props> {
                     </Text>
                   </Hyperlink>
                 </AttachmentContainer>
-                {!!message.attachments?.length && <Spacer mb={0.5} />}
+                {!!message.attachments?.length && <Spacer y={0.5} />}
                 {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
               </Flex>
               {!!showTimeSince && (

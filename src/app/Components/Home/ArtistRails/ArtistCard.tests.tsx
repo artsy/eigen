@@ -1,10 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import { ArtistCard } from "./ArtistCard"
 
 it("renders without throwing a error", () => {
-  renderWithWrappers(<ArtistCard artist={artistProps().artist as any} />)
+  renderWithWrappersLEGACY(<ArtistCard artist={artistProps().artist as any} />)
 })
 
 const artistProps = () => {

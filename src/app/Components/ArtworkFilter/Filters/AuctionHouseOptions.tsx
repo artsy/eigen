@@ -24,10 +24,22 @@ export const AUCTION_HOUSE_OPTIONS: FilterData[] = [
     paramName: FilterParamName.organizations,
     paramValue: "Phillips",
   },
+  {
+    displayText: "Bonhams",
+    paramName: FilterParamName.organizations,
+    paramValue: "Bonhams",
+  },
+  {
+    displayText: "Artsy Auction",
+    paramName: FilterParamName.organizations,
+    paramValue: "Artsy Auction",
+  },
 ]
 
-interface AuctionHouseOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "AuctionHouseOptionsScreen"> {}
+type AuctionHouseOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "AuctionHouseOptionsScreen"
+>
 
 export const AuctionHouseOptionsScreen: React.FC<AuctionHouseOptionsScreenProps> = ({
   navigation,

@@ -39,9 +39,16 @@ export const Versions = {
   AddZipCodeAndCountryCodeInSubmissionArtworkDetails: 27,
   AddDirtyFormValuesToSubmissionState: 28,
   RemoveDeviceId: 29,
+  AddSubmissionIdForMyCollection: 30,
+  AddRecentPriceRangesModel: 31,
+  AddUserPreferredPriceRange: 32,
+  RenameAdminToLocalOverridesForFeatures: 33,
+  MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
+  AddCategoryToSubmissionArtworkDetails: 35,
+  AddOnboardingArtQuizStateToAuthModel: 36,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveDeviceId
+export const CURRENT_APP_VERSION = Versions.AddOnboardingArtQuizStateToAuthModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -235,6 +242,34 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveDeviceId]: (state) => {
     delete state.native.deviceId
+  },
+  [Versions.AddSubmissionIdForMyCollection]: (state) => {
+    state.artworkSubmission.submission.submissionIdForMyCollection = ""
+  },
+  [Versions.AddRecentPriceRangesModel]: (state) => {
+    state.recentPriceRanges = {
+      ranges: [],
+    }
+  },
+  [Versions.AddUserPreferredPriceRange]: (state) => {
+    state.userPrefs.priceRange = "*-*"
+  },
+  [Versions.RenameAdminToLocalOverridesForFeatures]: (state) => {
+    state.artsyPrefs.features.localOverrides = state.artsyPrefs.features.adminOverrides
+    delete state.artsyPrefs.features.adminOverrides
+  },
+  [Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal]: (state) => {
+    state.devicePrefs.environment = state.artsyPrefs.environment
+    delete state.artsyPrefs.environment
+    state.devicePrefs.environment.localOverrides = state.devicePrefs.environment.adminOverrides
+    delete state.devicePrefs.environment.adminOverrides
+  },
+  [Versions.AddCategoryToSubmissionArtworkDetails]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.category = null
+    state.artworkSubmission.submission.dirtyArtworkDetailsValues.category = null
+  },
+  [Versions.AddOnboardingArtQuizStateToAuthModel]: (state) => {
+    state.auth.onboardingArtQuizState = "none"
   },
 }
 

@@ -1,24 +1,15 @@
-import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
-import {
-  Animated,
-  LayoutRectangle,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  ViewProps,
-} from "react-native"
+import { Animated, LayoutRectangle, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
-
-export const TAB_BAR_HEIGHT = 48
 
 export const StickyTabPageTabBar: React.FC<{
   onTabPress?(tab: { label: string; index: number }): void
 }> = ({ onTabPress }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabVisualClues } = useStickyTabPageContext()
+  const { activeTabIndex, adjustCurrentOffset, setActiveTabIndex, tabLabels, tabVisualClues } =
+    useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
@@ -50,6 +41,10 @@ export const StickyTabPageTabBar: React.FC<{
     visualClues: tabVisualClues[index],
   }))
 
+  useEffect(() => {
+    adjustCurrentOffset()
+  }, [screen.width])
+
   return (
     <NavigationalTabs
       tabs={tabs}
@@ -59,32 +54,6 @@ export const StickyTabPageTabBar: React.FC<{
       }}
       activeTab={activeTabIndex.current}
     />
-  )
-}
-
-export const StickyTab: React.FC<{
-  label: string
-  active: boolean
-  onLayout: ViewProps["onLayout"]
-  onPress(): void
-}> = ({ label, active, onPress, onLayout }) => {
-  return (
-    <View onLayout={onLayout} style={{ flex: 1, height: TAB_BAR_HEIGHT }}>
-      <TouchableOpacity onPress={onPress}>
-        <View
-          style={{
-            height: TAB_BAR_HEIGHT,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 15,
-          }}
-        >
-          <Sans size="3" weight={active ? "medium" : "regular"}>
-            {label}
-          </Sans>
-        </View>
-      </TouchableOpacity>
-    </View>
   )
 }
 

@@ -1,17 +1,14 @@
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTimezone } from "app/utils/tests/mockTimezone"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SaleHeaderContainer } from "./Components/SaleHeader"
-
-jest.unmock("react-relay")
 
 describe("SaleHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -36,15 +33,15 @@ describe("SaleHeader", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableCascadingEndTimerSalePageDetails: false,
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
     })
+    mockEnvironment = createMockEnvironment()
     mockTimezone("America/New_York")
   })
 
   it("renders without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -66,8 +63,8 @@ describe("SaleHeader", () => {
     expect(tree.root.findAllByType(CaretButton)).toHaveLength(1)
   })
 
-  it("renders auction is closed when an auction has passed", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  it("does not render auction is closed when cascading end time is enabled", () => {
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -81,48 +78,16 @@ describe("SaleHeader", () => {
           name: "sale name",
           liveStartAt: "2020-09-01T15:00:00",
           internalID: "the-sale-internal",
+          cascadingEndTimeIntervalMinutes: 1,
         }),
       })
     )
 
-    expect(extractText(tree.root.findByProps({ testID: "sale-header-hero" }))).toBe(
-      "Auction closed"
-    )
-  })
-
-  describe("when the cascading end time feature flag is on", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCascadingEndTimerSalePageDetails: true,
-      })
-    })
-
-    it("does not render auction is closed when cascading end time is enabled", () => {
-      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Sale: () => ({
-            endAt: moment().subtract(1, "day").toISOString(),
-            startAt: "2020-09-01T15:00:00",
-            timeZone: "Europe/Berlin",
-            coverImage: {
-              url: "cover image url",
-            },
-            name: "sale name",
-            liveStartAt: "2020-09-01T15:00:00",
-            internalID: "the-sale-internal",
-            cascadingEndTimeIntervalMinutes: 1,
-          }),
-        })
-      )
-
-      expect(queryByText("Auction closed")).toBeFalsy()
-    })
+    expect(queryByText("Auction closed")).toBeFalsy()
   })
 
   it("does not render auction is closed when an auction is still active", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -160,15 +125,13 @@ describe("SaleHeader", () => {
 
     describe("when the cascade end time flag is turned on", () => {
       beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageDetails: true,
+        jest.useFakeTimers({
+          legacyFakeTimers: true,
         })
-
-        jest.useFakeTimers()
       })
 
       it("shows the cascading end time label", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
+        const { getByText } = renderWithWrappers(<TestRenderer />)
 
         mockEnvironment.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -188,7 +151,7 @@ describe("SaleHeader", () => {
 
       describe("absolute date label", () => {
         it("shows the start date if the sale has not started", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -207,7 +170,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows the end date if the sale has started", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -228,8 +191,9 @@ describe("SaleHeader", () => {
 
       describe("relative date label", () => {
         it("shows minutes and seconds left until bidding starts", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
-          jest.useFakeTimers()
+          jest.useFakeTimers({ legacyFakeTimers: true })
+
+          const { getByText } = renderWithWrappers(<TestRenderer />)
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
@@ -250,7 +214,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows Days left until bidding starts", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -271,7 +235,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows 6 Days Until Lots Start Closing if the sale started and ends in 6+ days", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -292,7 +256,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows 9h37m if the sale started and ends in less than 24 hours but > 1 hour", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           const nineHoursAndThirtySevenMins = 1000 * 60 * 60 * 9 + 1000 * 60 * 37
 
@@ -315,7 +279,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows 37m28s if the sale started and ends in 37+ minutes", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           const ThirtySevenMinsAndTwentyEightSecs = 1000 * 60 * 37 + 28 * 1000
 
@@ -338,7 +302,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows Lots are closing the sale started and the sale end date has passed", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -359,7 +323,7 @@ describe("SaleHeader", () => {
         })
 
         it("shows Closed date if the last lots closed", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappers(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -376,33 +340,6 @@ describe("SaleHeader", () => {
           const absoluteTime = getByText("Closed May 8, 2018 • 12:00pm EDT")
           expect(absoluteTime).toBeTruthy()
         })
-      })
-    })
-
-    describe("when the cascade end time flag is turned off", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageDetails: false,
-        })
-      })
-
-      it("does not show the cascading end time label", () => {
-        const { queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Sale: () => ({
-              endAt: "2018-05-10T18:00:00",
-              startAt: "2018-05-13T15:00:00",
-              endedAt: null,
-              cascadingEndTimeIntervalMinutes: 1,
-              ...baseSale,
-            }),
-          })
-        )
-
-        const cascadeEndTimeLabel = queryByText("Lots close at 1-minute intervals")
-        expect(cascadeEndTimeLabel).toBeFalsy()
       })
     })
   })

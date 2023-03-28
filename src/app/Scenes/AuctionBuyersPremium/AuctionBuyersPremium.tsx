@@ -1,12 +1,12 @@
-import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
+import { Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQuery.graphql"
+import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { goBack } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Flex, Text, useSpace } from "palette"
 import { FC } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -27,8 +27,8 @@ export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) =>
     <Flex flex={1}>
       <FancyModalHeader useXButton onLeftButtonPress={() => goBack()} />
 
-      <ScrollView contentContainerStyle={{ padding: space("2"), paddingBottom: space("4") }}>
-        <Text variant="lg" mb={1}>
+      <ScrollView contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}>
+        <Text variant="lg-display" mb={1}>
           What is a Buyer’s Premium?
         </Text>
 
@@ -42,7 +42,7 @@ export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) =>
 
         {schedule.length > 0 && (
           <>
-            <Text variant="lg" mt={2} mb={1}>
+            <Text variant="lg-display" mt={2} mb={1}>
               Buyer’s Premium For This Auction on Artsy
             </Text>
 

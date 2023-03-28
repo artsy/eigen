@@ -1,12 +1,10 @@
 import { ArtworkRecommendationsRailTestsQuery } from "__generated__/ArtworkRecommendationsRailTestsQuery.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkRecommendationsRail } from "./ArtworkRecommendationsRail"
-
-jest.unmock("react-relay")
 
 describe("ArtworkRecommendationsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

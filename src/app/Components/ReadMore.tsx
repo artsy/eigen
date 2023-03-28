@@ -1,18 +1,17 @@
-import { plainTextFromTree } from "app/utils/plainTextFromTree"
-import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
-import { Schema } from "app/utils/track"
-import _ from "lodash"
 import {
-  Color,
+  nbsp,
   emdash,
   Flex,
   LinkText,
-  nbsp,
-  Sans,
-  SansProps,
   Text as PaletteText,
   TextProps as PaletteTextProps,
-} from "palette"
+  Color,
+} from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
+import { plainTextFromTree } from "app/utils/plainTextFromTree"
+import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
+import { sendEmailWithMailTo } from "app/utils/sendEmail"
+import { Schema } from "app/utils/track"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
@@ -27,7 +26,8 @@ interface Props {
   color?: ResponsiveValue<Color>
   textStyle?: "sans" | "new"
   testID?: string
-  type?: "show"
+  textVariant?: PaletteTextProps["variant"]
+  linkTextVariant?: PaletteTextProps["variant"]
 }
 
 export const ReadMore = React.memo(
@@ -40,36 +40,62 @@ export const ReadMore = React.memo(
     contextModule,
     textStyle = "sans",
     testID,
-    type,
+    textVariant = "xs",
+    linkTextVariant = "xs",
   }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (
-      textStyle === "new" ? PaletteText : Sans
-    ) as any
-    const textProps: SansProps | PaletteTextProps =
-      textStyle === "new" ? { variant: "xs" } : { size: "3" }
+    const TextComponent: React.ComponentType<PaletteTextProps> = PaletteText
+    const textProps: PaletteTextProps = { variant: textVariant }
     const rules = {
       ...basicRules,
-      ...(type === "show" && {
-        list: {
-          ...basicRules.paragraph,
-          react: (
-            node: SimpleMarkdown.SingleASTNode,
-            output: SimpleMarkdown.Output<React.ReactNode>,
-            state: SimpleMarkdown.State
-          ) => {
-            return (
-              <TextComponent {...textProps} color={color || "black100"} key={state.key}>
-                {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
-                {output(node.content, state)}
-              </TextComponent>
-            )
-          },
+      list: {
+        ...basicRules.paragraph,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          return (
+            <TextComponent {...textProps} color={color || "black100"} key={state.key}>
+              {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
+              {output(node.content, state)}
+            </TextComponent>
+          )
         },
-      }),
+      },
+      link: {
+        ...basicRules.link,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          state.withinText = true
+          const openUrl = (url: string) => {
+            if (node.target.startsWith("mailto:")) {
+              sendEmailWithMailTo(url)
+            } else if (presentLinksModally) {
+              navigate(url, { modal: true })
+            } else {
+              navigate(url)
+            }
+          }
+
+          return (
+            <LinkText
+              key={state.key}
+              testID={`linktext-${state.key}`}
+              onPress={() => openUrl(node.target)}
+              variant={linkTextVariant}
+            >
+              {output(node.content, state)}
+            </LinkText>
+          )
+        },
+      },
       paragraph: {
         ...basicRules.paragraph,
         react: (
@@ -103,6 +129,7 @@ export const ReadMore = React.memo(
     ) : (
       <Flex testID={testID}>
         {truncate({
+          linkTextVariant,
           root,
           maxChars,
           onExpand: () => {
@@ -129,7 +156,9 @@ function truncate({
   root,
   maxChars,
   onExpand,
+  linkTextVariant,
 }: {
+  linkTextVariant: PaletteTextProps["variant"]
   root: React.ReactNode
   maxChars: number
   onExpand(): void
@@ -139,8 +168,7 @@ function truncate({
   // keep track of how many text nodes deep we are
   let textDepth = 0
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  function traverse(node: React.ReactNode) {
+  function traverse(node: React.ReactNode): React.ReactNode {
     if (offset === maxChars) {
       return null
     }
@@ -148,7 +176,6 @@ function truncate({
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const truncated = traverse(child)
         if (truncated) {
           result.push(truncated)
@@ -162,21 +189,20 @@ function truncate({
 
     if (React.isValidElement(node)) {
       // TODO: find a way to make the rendering extensible while allowing textDepth to be tracked.
-      // Right now we assume that only these two Text nodes will be used.
-      if (node.type === Sans || node.type === PaletteText) {
+      // Right now we assume that only PaletteText will be used.
+      if (node.type === PaletteText) {
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const truncatedChildren = traverse(children)
+      const truncatedChildren = traverse(children) as React.ReactNode[]
 
-      if (node.type === Sans || node.type === PaletteText) {
+      if (node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
           truncatedChildren.push(
             <>
               {"... "}
-              <LinkText onPress={onExpand}>
-                <PaletteText variant="sm">{`Read${nbsp}more`}</PaletteText>
+              <LinkText onPress={onExpand} variant={linkTextVariant}>
+                {`Read${nbsp}more`}
               </LinkText>
             </>
           )
@@ -184,8 +210,7 @@ function truncate({
         textDepth -= 1
       }
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return React.cloneElement(node, null, ...truncatedChildren)
+      return React.cloneElement(node, {}, ...truncatedChildren)
     }
 
     if (node === null || typeof node === "boolean" || typeof node === "undefined") {

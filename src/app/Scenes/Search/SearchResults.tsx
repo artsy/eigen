@@ -1,14 +1,15 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Schema } from "app/utils/track"
-import { FC } from "react"
+import { Flex } from "@artsy/palette-mobile"
+import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
-import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
-import { TOP_PILL } from "./constants"
-import { getContextModuleByPillName } from "./helpers"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
-import { AlgoliaSearchResult, PillType } from "./types"
+import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
+import { ARTWORKS_PILL, objectTabByContextModule, TOP_PILL, tracks } from "./constants"
+import { getContextModuleByPillName } from "./helpers"
+import { AlgoliaSearchResult, PillType, TappedSearchResultData } from "./types"
 
 interface SearchResultsProps {
   selectedPill: PillType
@@ -16,17 +17,11 @@ interface SearchResultsProps {
   onRetry: () => void
 }
 
-interface TappedSearchResultData {
-  query: string
-  type: string
-  position: number
-  contextModule: ContextModule
-  slug: string
-  objectTab?: string
-}
-
-export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
+export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
   const { trackEvent } = useTracking()
+  const isTopPillSelected = selectedPill.key === TOP_PILL.key
+  const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
+  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
 
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -68,14 +63,31 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
     )
   }
 
-  if (selectedPill.key === TOP_PILL.key) {
+  if (isTopPillSelected) {
     return (
-      <AutosuggestResults
+      <Flex p={2} pt={0}>
+        <AutosuggestResults
+          query={query}
+          showResultType
+          showQuickNavigationButtons
+          showOnRetryErrorMessage
+          trackResultPress={handleTrackAutosuggestResultPress}
+        />
+      </Flex>
+    )
+  }
+
+  if (
+    isESOnlySearchEnabled &&
+    !isTopPillSelected &&
+    !isArtworksPillSelected &&
+    selectedPill.type === "elastic"
+  ) {
+    return (
+      <ElasticSearchResults2Screen
         query={query}
-        showResultType
-        showQuickNavigationButtons
-        showOnRetryErrorMessage
-        trackResultPress={handleTrackAutosuggestResultPress}
+        selectedPill={selectedPill}
+        key={selectedPill.key}
       />
     )
   }
@@ -85,21 +97,3 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
 
 const AlgoliaSearchResultsWithState = connectStateResults(AlgoliaSearchResults)
 const AlgoliaSearchResultsContainer = connectInfiniteHits(AlgoliaSearchResultsWithState)
-
-const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
-  [ContextModule.auctionTab]: "Auction Results",
-  [ContextModule.artistsTab]: "Artworks",
-}
-
-const tracks = {
-  tappedSearchResult: (data: TappedSearchResultData) => ({
-    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
-    context_screen: Schema.PageNames.Search,
-    query: data.query,
-    position: data.position,
-    selected_object_type: data.type,
-    selected_object_slug: data.slug,
-    context_module: data.contextModule,
-    action: Schema.ActionNames.SelectedResultFromSearchScreen,
-  }),
-}

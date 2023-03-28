@@ -1,17 +1,16 @@
 import { GlobalStore } from "app/store/GlobalStore"
-import React, { useContext, useMemo } from "react"
+import { createContext, useContext, useMemo } from "react"
 import { Toast } from "./Toast"
 import { ToastComponent } from "./ToastComponent"
 import { ToastDetails, ToastPlacement } from "./types"
 
 type ToastContextValue = typeof Toast
 
-const ToastContext = React.createContext<ToastContextValue>({
-  // tslint:disable-next-line:no-empty
+const ToastContext = createContext<ToastContextValue>({
   show: () => {},
-  // tslint:disable-next-line:no-empty
+
   hide: () => {},
-  // tslint:disable-next-line:no-empty
+
   hideOldest: () => {},
 })
 const useToastContext = () => useContext(ToastContext)
@@ -40,7 +39,7 @@ const filterToastsAndPosition = (
       { idx: 0, arr: [] }
     ).arr
 
-export const ToastProvider: React.FC = ({ children }) => {
+export const ToastProvider = ({ children }: { children?: React.ReactNode }) => {
   const toasts = GlobalStore.useAppState((store) => store.toast.sessionState.toasts)
 
   const topToasts = useMemo(() => filterToastsAndPosition(toasts, "top"), [toasts])

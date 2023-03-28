@@ -1,7 +1,7 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { navigate } from "app/navigation/navigate"
 import { Event } from "app/Scenes/City/Components/Event"
-import { Box, Serif } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { RelayProp } from "react-relay"
 
@@ -21,12 +21,11 @@ export class EventSection extends React.Component<Props> {
 
   renderEvents = () => {
     const { data } = this.props
-    let finalShowsForPreviewBricks
     const eligibleForBrick = data.filter(
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       (s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url
     )
-    finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
+    const finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -45,7 +44,7 @@ export class EventSection extends React.Component<Props> {
     return (
       <>
         <Box my={2} px={2}>
-          <Serif size="8">{title}</Serif>
+          <Text variant="lg-display">{title}</Text>
         </Box>
         {this.renderEvents()}
         {data.length > 2 && (

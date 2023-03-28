@@ -1,7 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import React from "react"
 import { Route } from "react-native"
 
+/**
+ * @deprecated Stop using this. This is for mocking NavigationIOS, which has been deprecated for years.
+ */
 export class FakeNavigator {
   private stack: Route[] = []
 
@@ -34,7 +37,7 @@ export class FakeNavigator {
   nextStep() {
     const currentRoute = this.stack[this.stack.length - 1]
 
-    return renderWithWrappers(
+    return renderWithWrappersLEGACY(
       <>
         {React.createElement(currentRoute.component!, {
           ...currentRoute.passProps,

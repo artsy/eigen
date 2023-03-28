@@ -1,12 +1,14 @@
-import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
+import { Flex } from "@artsy/palette-mobile"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
+import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FadeIn } from "app/Components/FadeIn"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, Flex } from "palette"
+import { trim } from "lodash"
+import { Button } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -16,7 +18,7 @@ export interface ArtworkAutosuggestResultsProps {
   relay: RelayPaginationProp
   keyword: string
   onPress?: (artworkID: string) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artworkTitle?: string) => void
   setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }
 
@@ -38,7 +40,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   }, [viewer.artworks?.edges?.length])
 
   return (
-    <Flex py="2">
+    <Flex py={2}>
       <InfiniteScrollArtworksGridContainer
         connection={viewer.artworks!}
         loadMore={relay.loadMore}
@@ -46,16 +48,17 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         contextScreenQuery={keyword}
         useParentAwareScrollView={false}
         itemComponentProps={{ hideSaleInfo: true, hidePartner: true, onPress: handlePress }}
-        FooterComponent={() => (
+        hideSaveIcon
+        FooterComponent={
           <Flex alignItems="center">
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
-              <Button variant="outline" onPress={onSkipPress} mt={3}>
+              <Button variant="outline" onPress={() => onSkipPress?.(trim(keyword))} mt={4}>
                 Go to Add Artwork Details
               </Button>
             </FadeIn>
           </Flex>
-        )}
+        }
       />
     </Flex>
   )
@@ -83,7 +86,7 @@ export const ArtworkAutosuggestResultsPaginationContainer = createPaginationCont
               title
               id
               slug
-              image {
+              image(includeAll: false) {
                 aspectRatio
               }
             }
@@ -124,7 +127,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
   keyword: string
   artistSlug: string
   onPress?: (artworkId: string) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artworkTitle?: string) => void
   setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (

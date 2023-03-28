@@ -1,10 +1,9 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
-import { Flex } from "../Flex"
-import { Text } from "../Text"
 
 const DEFAULT_SIZE = "md"
 
@@ -34,11 +33,18 @@ export interface AvatarProps extends ImgHTMLAttributes<any> {
   initials?: string
   /** The size of the Avatar */
   size?: "xxs" | "xs" | "sm" | "md"
+  /** Custom diameter */
+  diameter?: number
 }
 
 /** An circular Avatar component containing an image or initials */
-export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
-  const { diameter, typeSize } = SIZES[size]
+export const Avatar = ({
+  src,
+  initials,
+  size = DEFAULT_SIZE,
+  diameter = SIZES[size].diameter,
+}: AvatarProps) => {
+  const { typeSize } = SIZES[size]
 
   if (src) {
     return (
@@ -65,9 +71,7 @@ export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
       alignItems="center"
       borderRadius={diameter}
     >
-      <Text fontSize={typeSize} lineHeight={diameter}>
-        {initials}
-      </Text>
+      <Text fontSize={typeSize}>{initials}</Text>
     </InitialsHolder>
   )
 }

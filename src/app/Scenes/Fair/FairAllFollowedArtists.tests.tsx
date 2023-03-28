@@ -1,5 +1,5 @@
 import { FairAllFollowedArtistsTestsQuery } from "__generated__/FairAllFollowedArtistsTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -8,8 +8,6 @@ import {
   FairAllFollowedArtists,
   FairAllFollowedArtistsFragmentContainer,
 } from "./FairAllFollowedArtists"
-
-jest.unmock("react-relay")
 
 describe("FairAllFollowedArtists", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -48,7 +46,7 @@ describe("FairAllFollowedArtists", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

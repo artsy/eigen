@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Button, Flex, Join, Spacer, Text } from "palette"
+import { Button, Separator } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -18,14 +19,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const { trackEvent } = useTracking()
   const artwork = useFragment(artworkFragment, props.artwork)
 
-  const isInProgress = artwork.consignmentSubmission?.inProgress
-  const isSold = artwork.consignmentSubmission?.isSold
+  const submissionId = artwork.submissionId
 
-  const isP1Artist = artwork.artist?.targetSupply?.isP1
-
-  if (isInProgress || isSold) {
+  if (submissionId) {
     return null
   }
+
   let setContextModule = ContextModule.sellFooter
   let setContextScreen: Schema.PageNames
   if (contextModule === "insights") {
@@ -38,82 +37,51 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   return (
     <Flex>
-      <Join separator={<Spacer my={3} />}>
-        <Text variant="lg" textAlign="center" testID="SWA-banner-in-MC">
-          Sell Art From Your Collection
-        </Text>
-      </Join>
-      <Spacer mt={2} />
-      <Text variant="xs" color="black60" textAlign="center">
-        Submit an artwork and reach Artsy’s global network. Our specialists will guide you through
-        creating a strategy and selling your work.
+      <Separator mb={2} />
+      <Text variant="sm-display" testID="SWA-banner-in-MC">
+        Interested in Selling This Work?
       </Text>
-      <Spacer mb={3} />
-      {isP1Artist ? (
-        <>
-          <Button
-            size="large"
-            variant="fillDark"
-            block
-            onPress={() => {
-              trackEvent(
-                tracks.tappedSellArtwork(
-                  setContextModule,
-                  artwork.internalID,
-                  artwork.slug,
-                  setContextScreen,
-                  "Submit This Artwork to Sell"
-                )
+      <Spacer y={0.5} />
+      <Text variant="xs" color="black60" mb={2}>
+        Let our experts find the best sales option for you.
+      </Text>
+      <>
+        <Button
+          size="large"
+          variant="fillDark"
+          mb={2}
+          block
+          onPress={() => {
+            trackEvent(
+              tracks.tappedSellArtwork(
+                setContextModule,
+                artwork.internalID,
+                artwork.slug,
+                setContextScreen,
+                "Submit This Artwork to Sell"
               )
-              initializeSubmissionArtworkForm(artwork)
-              navigate("/collections/my-collection/artworks/new/submissions/new")
-            }}
-            testID="submitArtworkToSellButton"
-          >
-            Submit This Artwork to Sell
-          </Button>
-          <Spacer mb={3} />
+            )
+            initializeSubmissionArtworkForm(artwork)
+            navigate("/collections/my-collection/artworks/new/submissions/new")
+          }}
+          testID="submitArtworkToSellButton"
+        >
+          Submit for Sale
+        </Button>
+        <Text variant="xs" color="black60">
+          Learn more about{" "}
           <Text
             variant="xs"
-            color="black60"
-            textAlign="center"
+            underline
             onPress={() => {
               navigate("/selling-with-artsy")
             }}
             testID="learnMoreLink"
           >
-            Learn more about{" "}
-            <Text variant="xs" underline>
-              selling with Artsy.
-            </Text>
+            selling with Artsy.
           </Text>
-        </>
-      ) : (
-        <Button
-          size="large"
-          variant="fillDark"
-          block
-          onPress={() => {
-            if (contextModule === "oldAbout") {
-              trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
-            } else {
-              trackEvent(
-                tracks.tappedLearnMore(
-                  artwork.internalID,
-                  artwork.slug,
-                  setContextModule,
-                  setContextScreen,
-                  "Learn More"
-                )
-              )
-            }
-            navigate("/sales")
-          }}
-          testID="learnMoreButton"
-        >
-          Learn More
-        </Button>
-      )}
+        </Text>
+      </>
     </Flex>
   )
 }
@@ -125,6 +93,9 @@ const artworkFragment = graphql`
     title
     date
     medium
+    mediumType {
+      name
+    }
     artist {
       internalID
       name
@@ -132,7 +103,7 @@ const artworkFragment = graphql`
     attributionClass {
       name
     }
-    images {
+    images(includeAll: true) {
       url: imageURL
     }
     editionNumber
@@ -143,15 +114,7 @@ const artworkFragment = graphql`
     depth
     provenance
     artworkLocation
-    consignmentSubmission {
-      inProgress
-      isSold
-    }
-    artist {
-      targetSupply {
-        isP1
-      }
-    }
+    submissionId
   }
 `
 const tracks = {

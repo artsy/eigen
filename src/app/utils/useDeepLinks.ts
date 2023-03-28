@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
 import { useTracking } from "react-tracking"
@@ -30,7 +30,10 @@ export function useDeepLinks() {
   }, [isHydrated, isLoggedIn])
 
   const handleDeepLink = (url: string) => {
-    trackEvent(tracks.deepLink(url))
+    // These will be redirected, avoided double tracking
+    if (!url.includes("click.artsy.net")) {
+      trackEvent(tracks.deepLink(url))
+    }
 
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
@@ -45,7 +48,11 @@ export function useDeepLinks() {
 
   useEffect(() => {
     if (isLoggedIn && launchURL.current) {
-      trackEvent(tracks.deepLink(launchURL.current))
+      // These will be redirected, avoided double tracking
+      if (!launchURL.current.includes("click.artsy.net")) {
+        trackEvent(tracks.deepLink(launchURL.current))
+      }
+
       // Navigate to the saved launch url
       navigate(launchURL.current)
       // Reset the launchURL

@@ -1,7 +1,7 @@
 import { MyBidsTestsQuery } from "__generated__/MyBidsTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { PlaceholderText } from "app/utils/placeholders"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -9,8 +9,6 @@ import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 import { WatchedLot } from "./Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "./MyBids"
-
-jest.unmock("react-relay")
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ testID: "closed-section" })
@@ -55,7 +53,7 @@ describe("My Bids", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -66,7 +64,7 @@ describe("My Bids", () => {
 
   describe("MyBidsQueryRenderer loading state", () => {
     it("shows placeholder until the operation resolves", () => {
-      const tree = renderWithWrappers(<MyBidsQueryRenderer />)
+      const tree = renderWithWrappersLEGACY(<MyBidsQueryRenderer />)
       expect(tree.root.findAllByType(PlaceholderText).length).toBeGreaterThan(0)
     })
   })

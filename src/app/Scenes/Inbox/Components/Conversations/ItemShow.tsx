@@ -1,7 +1,8 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ItemShow_show$data } from "__generated__/ItemShow_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
-import { Box, Flex, Separator, Text, Touchable } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { Separator, Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ItemShowProps {
@@ -12,7 +13,7 @@ export const ItemShow: React.FC<ItemShowProps> = ({ show }) => {
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="md" mb={2} weight="medium">
+        <Text variant="sm-display" mb={2} weight="medium">
           Show
         </Text>
 

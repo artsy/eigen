@@ -1,12 +1,9 @@
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
-import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
-import { FilterArtworkButton } from "app/Components/ArtworkFilter"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer } from "./Collection"
-
-jest.unmock("react-relay")
 
 describe("Collection", () => {
   let environment: ReturnType<typeof createMockEnvironment>
@@ -40,10 +37,60 @@ describe("Collection", () => {
     jest.clearAllMocks()
   })
 
-  it("does not display a filter artworks button by default", () => {
-    const root = renderWithWrappers(<TestRenderer />).root
+  it("should show the Featured artists section when showFeaturedArtists is true", () => {
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-    expect(root.findAllByType(AnimatedBottomButton)).toHaveLength(0)
-    expect(root.findAllByType(FilterArtworkButton)).toHaveLength(0)
+    resolveMostRecentRelayOperation(environment, {
+      MarketingCollection: () => ({
+        ...mockedCollection,
+        featuredArtistExclusionIds: [],
+        query: {
+          artistIDs: [],
+        },
+      }),
+    })
+
+    expect(queryByText("Featured Artists")).toBeTruthy()
+  })
+
+  it("should hide the Featured artists section when showFeaturedArtists is false", () => {
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(environment, {
+      MarketingCollection: () => ({
+        ...mockedCollection,
+        showFeaturedArtists: false,
+        featuredArtistExclusionIds: [],
+        query: {
+          artistIDs: [],
+        },
+      }),
+    })
+
+    expect(queryByText("Featured Artists")).toBeFalsy()
   })
 })
+
+const mockedCollection = {
+  showFeaturedArtists: true,
+  artworksConnection: {
+    merchandisableArtists: [
+      {
+        slug: "banksy",
+        name: "Banksy",
+        href: "/artist/banksy",
+      },
+      {
+        slug: "keith-haring",
+        name: "Keith Haring",
+        href: "/artist/keith-haring",
+      },
+      {
+        slug: "retna",
+        name: "RETNA",
+        initials: "R",
+        href: "/artist/retna",
+      },
+    ],
+  },
+}

@@ -1,21 +1,31 @@
 import { render } from "@testing-library/react-native"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
     {
+      internalID: "123",
       height: 5,
       width: 5,
       url: "a",
+      largeImageURL: "a",
+      resized: {
+        src: "a",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
     },
     {
+      internalID: "1234",
       height: 5,
       width: 5,
       url: "b",
+      largeImageURL: "a",
+      resized: {
+        src: "a",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
@@ -147,23 +157,23 @@ describe("image carousel context", () => {
     context!.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 2 })
 
     expect(mockTrackEvent.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",
           },
         ],
-        Array [
-          Object {
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",
           },
         ],
-        Array [
-          Object {
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",

@@ -1,7 +1,7 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Text } from "palette"
 
 export function DarkModeSettings() {
   const syncWithSystem = GlobalStore.useAppState(
@@ -11,10 +11,10 @@ export function DarkModeSettings() {
 
   return (
     <PageWithSimpleHeader title="Dark Mode Settings">
-      <Text variant="lg" textAlign="center">
+      <Text variant="lg-display" textAlign="center">
         Choose your destiny
       </Text>
-      <Flex mx="2" mt="2">
+      <Flex mx={2} mt={2}>
         <SwitchMenu
           title="Sync with system"
           description="Automatically turn dark mode on or off based on the system's dark mode setting."

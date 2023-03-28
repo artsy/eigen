@@ -16,16 +16,6 @@
         return nil;                                                                     \
     }
 
-#define AR_CODER_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS    \
-    AR_OVERRIDE_SUPER_DESIGNATED_INITIALIZER(initWithCoder \
-                                             : (NSCoder *)aDecoder);
-
-#define AR_VC_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS                           \
-    AR_CODER_OVERRIDE_SUPER_DESIGNATED_INITIALIZERS;                           \
-    AR_OVERRIDE_SUPER_DESIGNATED_INITIALIZER(initWithNibName                   \
-                                             : (NSString *)nibNameOrNil bundle \
-                                             : (NSBundle *)nibBundleOrNil);
-
 #define ar_keypath(anObject, aKeyPath) ((void)(NO && ((void)anObject.aKeyPath, NO)), @ #aKeyPath)
 
 #endif

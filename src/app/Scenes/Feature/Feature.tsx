@@ -1,15 +1,16 @@
-import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
+import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
-import { Flex, Sans, Separator, Spacer } from "palette"
+import { Separator } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -67,12 +68,12 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={3} pt="3" px="2" maxWidth={600}>
+          <Stack spacing={4} pt={4} px={2} maxWidth={600}>
             {!!feature.description && (
-              <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
+              <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}
             {!!feature.callout && (
-              <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />
+              <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
             )}
           </Stack>
         </Flex>
@@ -98,12 +99,12 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       renderedSet.push({
         key: "setTitle:" + set.id,
         content: (
-          <Flex pb="2" mx="2">
-            {!!set.name && <Sans size="6">{set.name}</Sans>}
+          <Flex pb={2} mx={2}>
+            {!!set.name && <Text variant="lg-display">{set.name}</Text>}
             {!!set.description && (
-              <Sans size="3" color="black60">
+              <Text variant="sm" color="black60">
                 {set.description}
-              </Sans>
+              </Text>
             )}
           </Flex>
         ),
@@ -112,7 +113,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
     if (count > 0) {
       switch (set.itemType) {
-        case "FeaturedLink":
+        case "FeaturedLink": {
           const numColumns = isPad() ? (orientation === "landscape" ? 3 : 2) : 1
           const columnWidth = (width - 20) / numColumns - 20
 
@@ -123,7 +124,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             renderedRows.push({
               key: "featuredLinkRow:" + row[0].id,
               content: (
-                <Stack horizontal px="2">
+                <Stack horizontal px={2}>
                   {row.map((item) => {
                     return (
                       <FeatureFeaturedLinkFragmentContainer
@@ -139,19 +140,16 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           }
 
           renderedSet.push(
-            addSeparatorBetweenAllSections(
-              renderedRows,
-              set.id + ":featuredLink",
-              <Spacer mb={4} />
-            )
+            addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer y={4} />)
           )
 
           break
+        }
         case "Artwork":
           renderedSet.push({
             key: "artworks:" + set.id,
             content: (
-              <Flex mx="2">
+              <Flex mx={2}>
                 <GenericGrid artworks={items as any} width={width - 40} />
               </Flex>
             ),
@@ -174,7 +172,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           addSeparatorBetweenAllSections(
             contentSections,
             "content",
-            <Separator mt={4} mb={3} style={{ borderColor: "black" }} />
+            <Separator mt={4} mb={4} style={{ borderColor: "black" }} />
           )
         ),
       ]}
@@ -237,7 +235,7 @@ export const FeatureQueryRenderer: React.FC<{ slug: string }> = ({ slug }) => {
           return (
             <Flex>
               <FeatureHeaderPlaceholder />
-              <Flex p={2} pt={3}>
+              <Flex p={2} pt={4}>
                 <Stack width="100%" alignSelf="center" maxWidth={550}>
                   <PlaceholderRaggedText numLines={12} />
                   <PlaceholderRaggedText numLines={12} />

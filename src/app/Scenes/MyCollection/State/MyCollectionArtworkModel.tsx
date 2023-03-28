@@ -1,4 +1,5 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
@@ -22,8 +23,6 @@ export interface ArtworkFormValues {
   artistDisplayName?: string
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  pricePaidDollars: string
-  pricePaidCurrency: string
   date: string
   depth: string
   editionSize: string
@@ -32,12 +31,15 @@ export interface ArtworkFormValues {
   isEdition: boolean
   medium: string
   metric: Metric | ""
+  confidentialNotes: string
   photos: Image[]
   provenance: string
+  pricePaidDollars: string
+  pricePaidCurrency: string
   title: string
   width: string
   artworkLocation: string
-  attributionClass: string
+  attributionClass: ArtworkAttributionClassType | undefined
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -46,8 +48,6 @@ export const initialFormValues: ArtworkFormValues = {
   artistDisplayName: undefined,
   artistSearchResult: null,
   category: "",
-  pricePaidDollars: "",
-  pricePaidCurrency: "",
   date: "",
   depth: "",
   editionSize: "",
@@ -56,12 +56,15 @@ export const initialFormValues: ArtworkFormValues = {
   isEdition: false,
   medium: "",
   metric: "",
+  confidentialNotes: "",
   photos: [],
+  pricePaidDollars: "",
+  pricePaidCurrency: "",
   provenance: "",
   title: "",
   width: "",
   artworkLocation: "",
-  attributionClass: "",
+  attributionClass: undefined,
 }
 
 export interface MyCollectionArtworkModel {
@@ -88,7 +91,7 @@ export interface MyCollectionArtworkModel {
     Partial<MyCollectionArtwork_sharedProps$data> & {
       internalID: string
       id: string
-      artist: { internalID: string }
+      artist: { internalID: string; initials: string }
       artistNames: string
       images: Image[]
     },
@@ -186,9 +189,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         displayLabel: artwork?.artistNames,
         imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
         formattedNationalityAndBirthday: artwork?.artist?.formattedNationalityAndBirthday,
+        initials: artwork?.artist?.initials,
       },
       attributionClass,
       category: artwork.category,
+      confidentialNotes: artwork.confidentialNotes,
       date: artwork.date,
       depth: artwork.depth,
       pricePaidDollars: pricePaidDollars?.toString() ?? "",

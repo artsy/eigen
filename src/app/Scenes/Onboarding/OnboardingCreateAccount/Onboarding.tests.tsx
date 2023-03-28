@@ -1,42 +1,35 @@
+import { Onboarding, OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
-import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
-import { OnboardingPersonalization } from "../OnboardingPersonalization/OnboardingPersonalization"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-jest.mock("../OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
-  OnboardingPersonalization: () => "OnboardingPersonalization",
+jest.mock("../OnboardingQuiz/OnboardingQuiz.tsx", () => ({
+  OnboardingQuiz: () => "OnboardingQuiz",
 }))
 
 describe("Onboarding", () => {
   it("renders the welcome screens when the onboarding state is none or complete", () => {
-    const tree1 = renderWithWrappers(<Onboarding />)
+    const tree1 = renderWithWrappersLEGACY(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })
-    expect(tree1.root.findAllByType(OnboardingPersonalization).length).toEqual(0)
+    expect(tree1.root.findAllByType(OnboardingQuiz).length).toEqual(0)
     expect(tree1.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(1)
 
-    const tree2 = renderWithWrappers(<Onboarding />)
+    const tree2 = renderWithWrappersLEGACY(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "complete" } })
-    expect(tree2.root.findAllByType(OnboardingPersonalization).length).toEqual(0)
+    expect(tree2.root.findAllByType(OnboardingQuiz).length).toEqual(0)
     expect(tree2.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(1)
   })
 
   it("renders the personalization flow when the onboarding state is incomplete", () => {
-    const tree = renderWithWrappers(<Onboarding />)
+    const tree = renderWithWrappersLEGACY(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "incomplete" } })
-    expect(tree.root.findAllByType(OnboardingPersonalization).length).toEqual(1)
+    expect(tree.root.findAllByType(OnboardingQuiz).length).toEqual(1)
     expect(tree.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(0)
   })
 
-  it("renders NetworkAwareProvider when ARShowNetworkUnavailableModal is set to true", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: true })
-    const tree = renderWithWrappers(<Onboarding />)
+  it("renders NetworkAwareProvider", () => {
+    const tree = renderWithWrappersLEGACY(<Onboarding />)
     expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(1)
-  })
-
-  it("does not render NetworkAwareProvider when ARShowNetworkUnavailableModal is set to false", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: false })
-    const tree = renderWithWrappers(<Onboarding />)
-    expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(0)
   })
 })

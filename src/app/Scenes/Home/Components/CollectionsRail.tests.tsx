@@ -1,19 +1,15 @@
-import { cloneDeep, first } from "lodash"
+import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-
-import { navigate } from "app/navigation/navigate"
-
-import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
-import { CardRailCard } from "app/Components/Home/CardRailCard"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
-
-jest.unmock("react-relay")
+import { fireEvent } from "@testing-library/react-native"
 
 describe("CollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -68,11 +64,13 @@ describe("CollectionsRailFragmentContainer", () => {
 
   it("looks correct when rendered with sales missing artworks", () => {
     const collectionsCopy = cloneDeep(collectionsModuleMock)
+
     collectionsCopy.results.forEach((result) => {
-      // @ts-ignore
       result.artworksConnection.edges = []
     })
+
     renderWithWrappers(<TestRenderer />)
+
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -85,8 +83,9 @@ describe("CollectionsRailFragmentContainer", () => {
     })
   })
 
-  it("routes to collection URL", () => {
+  it("routes to collection URL", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
+
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -97,13 +96,15 @@ describe("CollectionsRailFragmentContainer", () => {
         },
       })
     })
-    // @ts-ignore
-    first(tree.root.findAllByType(CardRailCard)).props.onPress()
+
+    fireEvent.press(await tree.findByTestId("collections-rail-card-test-collection-one"))
+
     expect(navigate).toHaveBeenCalledWith("/collection/test-collection-one")
   })
 
-  it("tracks collection thumbnail taps", () => {
+  it("tracks collection thumbnail taps", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
+
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -114,8 +115,9 @@ describe("CollectionsRailFragmentContainer", () => {
         },
       })
     })
-    // @ts-ignore
-    first(tree.root.findAllByType(CardRailCard)).props.onPress()
+
+    fireEvent.press(await tree.findByTestId("collections-rail-card-test-collection-one"))
+
     expect(mockTrackEvent).toHaveBeenCalledWith(
       HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0)
     )

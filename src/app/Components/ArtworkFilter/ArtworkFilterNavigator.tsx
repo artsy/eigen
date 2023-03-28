@@ -1,12 +1,16 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import {
   changedFiltersParams,
   FilterArray,
   filterArtworksParams,
+  FilterParamName,
   FilterParams,
   getUnitedSelectedAndAppliedFilters,
+  ParamDefaultValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
@@ -26,23 +30,22 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
-import _ from "lodash"
-import React, { useEffect, useState } from "react"
-import { View, ViewProps } from "react-native"
+import { useEffect, useState } from "react"
+import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
-import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
-import { FancyModal } from "../FancyModal/FancyModal"
 import {
   ArtworkFilterOptionsScreen,
   FilterModalMode as ArtworkFilterMode,
 } from "./ArtworkFilterOptionsScreen"
-import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 import { getSearchCriteriaFromFilters } from "./SavedSearch/searchCriteriaHelpers"
 import { SavedSearchEntity } from "./SavedSearch/types"
+import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -71,7 +74,7 @@ interface ArtworkFilterOptionsScreenParams {
 
 // This needs to be a `type` rather than an `interface`
 // see src/app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm.tsx#L35
-// tslint:disable-next-line:interface-over-type-literal
+
 export type ArtworkFilterNavigationStack = {
   AdditionalGeneIDsOptionsScreen: undefined
   ArtistIDsOptionsScreen: undefined
@@ -136,7 +139,25 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     closeModal?.()
   }
 
+  const saveRecentPriceRange = () => {
+    const priceRange = selectedFiltersState.find(
+      (filter) => filter.paramName === FilterParamName.priceRange
+    )
+
+    if (priceRange?.paramValue && priceRange.paramValue !== ParamDefaultValues.priceRange) {
+      /**
+       * We wait until the filter modal is closed, then save the recent price range
+       * Otherwise the recent price range will be displayed immediately after clicking on the "Show Results" button,
+       * Which can negatively affect the UI
+       */
+      setTimeout(() => {
+        GlobalStore.actions.recentPriceRanges.addNewPriceRange(priceRange.paramValue as string)
+      }, 500)
+    }
+  }
+
   const applyFilters = () => {
+    saveRecentPriceRange()
     applyFiltersAction()
     exitModal?.()
   }
@@ -296,14 +317,13 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
         fullScreen
         animationPosition="right"
       >
-        <View style={{ flex: 1 }}>
+        <Flex flex={1}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
               ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
-              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
             }}
           >
@@ -383,7 +403,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             attributes={attributes}
             aggregations={filterState.aggregations}
           />
-        </View>
+        </Flex>
       </FancyModal>
     </NavigationContainer>
   )

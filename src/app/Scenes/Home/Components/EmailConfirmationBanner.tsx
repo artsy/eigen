@@ -1,11 +1,10 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
-import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
-import React, { useState } from "react"
+import { Spinner } from "palette"
+import { useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-
-const Text: React.FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
   me: EmailConfirmationBanner_me$data
@@ -13,7 +12,6 @@ export interface Props {
 }
 
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
-  const color = useColor()
   const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me?.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [confirmed, setConfirmed] = useState<boolean>(false)
@@ -54,18 +52,20 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   if (shouldDisplayBanner) {
     return (
       <Flex
-        px="2"
-        py="1"
-        background={color("black100")}
+        px={2}
+        py={1}
+        backgroundColor="black100"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
       >
         {isLoading ? (
           <>
-            <Text>Sending a confirmation email...</Text>
+            <Text variant="sm" color="white100">
+              Sending a confirmation email...
+            </Text>
 
-            <Flex pr="1">
+            <Flex pr={1}>
               <Spinner size="small" color="white100" />
             </Flex>
           </>
@@ -77,10 +77,12 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text>{message}</Text>
+              <Text variant="sm" color="white100">
+                {message}
+              </Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
-                <Image source={require("images/close-x.webp")} />
+                <Image source={require("images/close-x.png")} />
               </TouchableWithoutFeedback>
             </Flex>
           </TouchableWithoutFeedback>

@@ -1,13 +1,12 @@
+import { Spacer, ChevronIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/navigation/navigate"
 import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
+import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { shouldShowFairBMWArtActivationLink } from "../FairBMWArtActivation"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
 
 interface FairHeaderProps {
@@ -28,7 +27,6 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     fairContact,
     summary,
     fairTickets,
-    sponsoredContent,
   } = fair
   const screenWidth = Dimensions.get("screen").width
   const profileImageUrl = fair?.profile?.icon?.imageUrl
@@ -44,8 +42,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     !!fairLinks ||
     !!fairContact ||
     !!summary ||
-    !!fairTickets ||
-    shouldShowFairBMWArtActivationLink({ sponsoredContent })
+    !!fairTickets
 
   return (
     <Box>
@@ -81,7 +78,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         <SafeTopMargin />
       )}
       <Box px={2}>
-        <Text variant="lg" py={2}>
+        <Text variant="lg-display" py={2}>
           {name}
         </Text>
         <FairTiming fair={fair} />
@@ -90,9 +87,9 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         )}
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
-            <Flex pt={2} flexDirection="row" justifyContent="flex-start">
+            <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
               <Text variant="sm">More info</Text>
-              <ChevronIcon mr="-5px" mt="2px" />
+              <ChevronIcon mr="-5px" mt="4px" />
             </Flex>
           </TouchableOpacity>
         )}
@@ -101,7 +98,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
   )
 }
 
-const SafeTopMargin = () => <Spacer mt={6} pt={2} />
+const SafeTopMargin = () => <Spacer y={6} />
 
 export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
   fair: graphql`
@@ -129,10 +126,6 @@ export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
         }
       }
       ticketsLink
-      sponsoredContent {
-        activationText
-        pressReleaseUrl
-      }
       fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer

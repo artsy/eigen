@@ -5,14 +5,12 @@ import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 const trackEvent = useTracking().trackEvent
 
@@ -58,7 +56,7 @@ describe("ArtistSeriesMoreSeries", () => {
   )
 
   const getWrapper = (testFixture: any) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

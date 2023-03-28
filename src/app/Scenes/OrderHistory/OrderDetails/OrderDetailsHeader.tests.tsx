@@ -1,208 +1,163 @@
 import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { QueryRenderer } from "react-relay"
+import { extractText } from "app/utils/tests/extractText"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
 import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
-
-jest.unmock("react-relay")
 
 const mockInfo = {
   createdAt: "2021-06-02T14:51:19+03:00",
   code: "075381384",
-  state: "SUBMITTED",
   requestedFulfillment: { __typename: "CommerceShip" },
   lineItems: { edges: [{ node: { shipment: null } }] },
 }
 
 describe("OrderDetailsHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
-  const TestRenderer = () => (
-    <QueryRenderer<OrderDetailsHeaderTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query OrderDetailsHeaderTestsQuery @relay_test_operation {
-          commerceOrder(id: "some-id") {
-            ...OrderDetailsHeader_info
-          }
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsHeaderTestsQuery>({
+    Component: (props) => {
+      if (props?.commerceOrder) {
+        return <OrderDetailsHeaderFragmentContainer info={props.commerceOrder} />
+      }
+      return null
+    },
+    query: graphql`
+      query OrderDetailsHeaderTestsQuery @relay_test_operation {
+        commerceOrder(id: "some-id") {
+          ...OrderDetailsHeader_info
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.commerceOrder) {
-          return <OrderDetailsHeaderFragmentContainer info={props.commerceOrder} />
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("renders date, code, status, fulfillment fields", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
+    const tree = renderWithRelay({
+      CommerceOrder: () => ({ ...mockInfo, displayState: "SUBMITTED" }),
+    })
 
-    expect(extractText(tree.findByProps({ testID: "date" }))).toBe("Jun 2, 2021")
-    expect(extractText(tree.findByProps({ testID: "code" }))).toBe("075381384")
-    expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
-    expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "date" }))).toBe("Jun 2, 2021")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "code" }))).toBe("075381384")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("pending")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
   })
 
   describe("Renders correctly status and fulfillment fields", () => {
     describe("Renders correctly status and fulfillment fields", () => {
       describe("CommerceShip", () => {
-        it("SUBMITTED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
-
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
-        })
-
-        it("APPROVED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
+        it("SUBMITTED displayState", () => {
+          const tree = renderWithRelay({
+            CommerceOrder: () => ({ ...mockInfo, displayState: "SUBMITTED" }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("confirmed")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("pending")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("FULFILLED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
+        it("APPROVED displayState", () => {
+          const tree = renderWithRelay({
+            CommerceOrder: () => ({ ...mockInfo, displayState: "APPROVED" }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("delivered")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("confirmed")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
+        })
+
+        it("FULFILLED displayState", () => {
+          const tree = renderWithRelay({
+            CommerceOrder: () => ({ ...mockInfo, displayState: "FULFILLED" }),
+          })
+
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("delivered")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
       })
 
       describe("CommerceShipArtA", () => {
-        it("PENDING status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("PROCESSING displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "pending" } } }] },
+              displayState: "PROCESSING",
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("processing")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("processing")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("CONFIRMED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("IN_TRANSIT displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "confirmed" } } }] },
+              displayState: "IN_TRANSIT",
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("processing")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("in transit")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("COLLECTED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("FULFILLED displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "collected" } } }] },
+              displayState: "FULFILLED",
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("in transit")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("delivered")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("IN_TRANSIT status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("CANCELED displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "in_transit" } } }] },
+              displayState: "CANCELED",
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("in transit")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
-        })
-
-        it("COMPLETED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            CommerceOrder: () => ({
-              ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "completed" } } }] },
-            }),
-          })
-
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("delivered")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
-        })
-
-        it("CANCELED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            CommerceOrder: () => ({
-              ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "canceled" } } }] },
-            }),
-          })
-
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("canceled")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("canceled")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
       })
 
       describe("CommercePickup", () => {
-        it("SUBMITTED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("SUBMITTED displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
+              displayState: "SUBMITTED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Pickup")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("pending")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Pickup")
         })
 
-        it("APPROVED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("APPROVED displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              state: "APPROVED",
+              displayState: "APPROVED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("confirmed")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Pickup")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("confirmed")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Pickup")
         })
 
-        it("FULFILLED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+        it("FULFILLED displayState", () => {
+          const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              state: "FULFILLED",
+              displayState: "FULFILLED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
 
-          expect(extractText(tree.findByProps({ testID: "status" }))).toBe("delivered")
-          expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Pickup")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("delivered")
+          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Pickup")
         })
       })
     })

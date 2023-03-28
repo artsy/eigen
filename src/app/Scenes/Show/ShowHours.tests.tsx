@@ -1,12 +1,10 @@
 import { ShowHoursTestsQuery } from "__generated__/ShowHoursTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowHoursFragmentContainer } from "./Components/ShowHours"
-
-jest.unmock("react-relay")
 
 describe("ShowHours", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -37,7 +35,7 @@ describe("ShowHours", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

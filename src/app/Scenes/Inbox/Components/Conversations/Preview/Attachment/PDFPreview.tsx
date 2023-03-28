@@ -1,11 +1,10 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
-
-import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
 
 export const AttachmentContainer = styled(Flex)`
   flex: 1;
@@ -19,10 +18,10 @@ export const AttachmentTextContainer = styled.View`
 `
 const Icon = styled(Image)`
   resize-mode: contain;
-  width: 40;
-  margin-top: 12;
-  margin-right: 12;
-  margin-bottom: 12;
+  width: 40px;
+  margin-top: 12px;
+  margin-right: 12px;
+  margin-bottom: 12px;
 `
 
 interface Props extends AttachmentProps {
@@ -32,7 +31,7 @@ interface Props extends AttachmentProps {
 export const PDFPreview: React.FC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment} onSelected={onSelected}>
     <AttachmentContainer>
-      <Icon source={require("images/pdf.webp")} />
+      <Icon source={require("images/pdf.png")} />
       <AttachmentTextContainer>
         <Text>{attachment.fileName}</Text>
       </AttachmentTextContainer>

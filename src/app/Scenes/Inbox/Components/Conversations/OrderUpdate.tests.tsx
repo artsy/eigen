@@ -1,16 +1,13 @@
+import { fireEvent } from "@testing-library/react-native"
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { AlertCircleFillIcon, LinkText, MoneyFillIcon } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
-
-jest.unmock("react-relay")
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -93,91 +90,67 @@ it("renders without throwing an error", () => {
 
 describe("OrderUpdate with order updates", () => {
   it("displays the offer approved event", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_approved",
+      state: "APPROVED",
     })
-
-    expect(extractText(tree.root)).toMatch("Offer Accepted")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
+    expect(getByText("Offer Accepted")).toBeTruthy()
   })
 
   it("displays the seller declined event", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_rejected",
     })
 
-    expect(extractText(tree.root)).toMatch("Offer Declined")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
-  })
-
-  it("displays the buyer declined event", () => {
-    const tree = getWrapper({
-      __typename: "CommerceOrderStateChangedEvent",
-      orderUpdateState: "offer_rejected",
-    })
-
-    expect(extractText(tree.root)).toMatch("Offer Declined")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
+    expect(getByText("Offer Declined")).toBeTruthy()
   })
 
   it("displays the offer expired event", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "offer_lapsed",
+      state: "CANCELED",
+      stateReason: ["_lapsed"],
     })
-
-    expect(extractText(tree.root)).toMatch("Offer Expired")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
+    expect(getByText("Offer Expired")).toBeTruthy()
   })
 
   it("shows an offer submitted event", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
-      offer: { respondsTo: null },
+      offer: { respondsTo: null, amount: "$100" },
     })
 
-    expect(extractText(tree.root)).toMatch("You sent an offer")
-    expect(extractText(tree.root)).toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
-
-    tree.root.findByType(LinkText).props.onPress()
+    expect(getByText("You sent an offer for $100. See details.")).toBeTruthy()
+    fireEvent.press(getByText("See details."))
     expect(navigate).toHaveBeenCalledWith("/conversation/12345/details")
   })
 
   it("shows a counteroffer offer from the user", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
-      offer: { respondsTo: {} },
+      offer: { respondsTo: {}, amount: "$150" },
     })
-
-    expect(extractText(tree.root)).toMatch("You sent a counteroffer")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
+    expect(getByText("You sent a counteroffer for $150")).toBeTruthy()
   })
 
   it("shows a counteroffer from the partner", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: {
+        amount: "$200",
         respondsTo: {},
         fromParticipant: "SELLER",
         offerAmountChanged: true,
       },
     })
-
-    expect(extractText(tree.root)).toMatch("You received a counteroffer")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(AlertCircleFillIcon)
+    expect(getByText("You received a counteroffer for $200")).toBeTruthy()
   })
 
   it("shows an accepted offer from the partner with pending action", () => {
-    const tree = getWrapper({
+    const { getByText } = getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
       offer: {
         respondsTo: {},
@@ -185,20 +158,49 @@ describe("OrderUpdate with order updates", () => {
         offerAmountChanged: false,
       },
     })
-
-    expect(extractText(tree.root)).toMatch("Offer Accepted - Pending Action")
-    expect(extractText(tree.root)).not.toMatch("See details")
-    tree.root.findByType(AlertCircleFillIcon)
+    expect(getByText("Offer Accepted - Pending Action")).toBeTruthy()
   })
 
-  it("shows an approved buy order", () => {
-    const tree = getWrapper({
+  it("shows buy order processing approval", () => {
+    const { getByText } = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_processing_approval",
+    })
+    expect(getByText("Order approved. Payment Processing")).toBeTruthy()
+  })
+
+  it("shows offer order processing approval", () => {
+    const { getByText } = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "offer_processing_approval",
+    })
+    expect(getByText("Offer accepted. Payment Processing")).toBeTruthy()
+  })
+
+  it("shows a submitted buy order", () => {
+    const { getByText } = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_submitted",
     })
 
-    expect(extractText(tree.root)).toMatch("You purchased this artwork")
-    expect(extractText(tree.root)).toMatch("See details")
-    tree.root.findByType(MoneyFillIcon)
+    expect(getByText("You purchased this artwork. See details.")).toBeTruthy()
+  })
+
+  it("shows an expired buy order", () => {
+    const { getByText } = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_lapsed",
+      state: "CANCELED",
+      stateReason: ["_lapsed"],
+    })
+    expect(getByText("Purchase Expired")).toBeTruthy()
+  })
+  it("shows an approved buy order", () => {
+    const { getByText } = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_approved",
+      state: "APPROVED",
+    })
+    expect(getByText("Purchase Accepted")).toBeTruthy()
   })
 })

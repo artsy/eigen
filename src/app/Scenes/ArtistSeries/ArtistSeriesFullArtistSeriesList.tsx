@@ -1,12 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, Flex, Sans } from "palette"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -29,10 +29,10 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
       }}
     >
       <ScrollView>
-        <Box px="2" py="2">
-          <Sans size="4" weight="medium" textAlign="center">
+        <Box px={2} py={2}>
+          <Text variant="sm-display" weight="medium" textAlign="center">
             Artist Series
-          </Sans>
+          </Text>
         </Box>
         {seriesList.map((series, index) => (
           <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>

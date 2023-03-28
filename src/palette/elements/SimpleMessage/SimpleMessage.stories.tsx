@@ -1,5 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { SimpleMessage, Text } from "palette"
+import { SimpleMessage } from "palette"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 

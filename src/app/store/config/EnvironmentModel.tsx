@@ -1,9 +1,9 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { Platform } from "react-native"
-import { unsafe__getEnvironment } from "../GlobalStore"
-import { GlobalStoreModel } from "../GlobalStoreModel"
 
 type Environment = "staging" | "production"
 
@@ -32,7 +32,7 @@ export const environment = defineEnvironmentOptions({
   metaphysicsURL: {
     description: "Metaphysics URL",
     presets: {
-      local: "http://localhost:3000/v2",
+      local: "http://localhost:5001/v2",
       staging: "https://metaphysics-staging.artsy.net/v2",
       production: "https://metaphysics-production.artsy.net/v2",
     },
@@ -67,9 +67,9 @@ export interface EnvironmentModel {
   env: Environment
   setEnv: Action<this, this["env"]>
 
-  adminOverrides: { [k in EnvironmentKey]?: string }
-  setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
-  clearAdminOverrides: Action<EnvironmentModel>
+  localOverrides: { [k in EnvironmentKey]?: string }
+  setLocalOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
+  clearLocalOverrides: Action<EnvironmentModel>
 
   strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
 
@@ -78,32 +78,32 @@ export interface EnvironmentModel {
 
 export const getEnvironmentModel = (): EnvironmentModel => ({
   env: ArtsyNativeModule.isBetaOrDev ? "staging" : "production",
-  adminOverrides: {},
-  strings: computed(({ env, adminOverrides }) => {
+  localOverrides: {},
+  strings: computed(({ env, localOverrides }) => {
     const result: { [k in EnvironmentKey]: string } = {} as any
 
     for (const [key, val] of Object.entries(environment)) {
-      // use the admin override value if present, otherwise use the value for the current environment
-      result[key as EnvironmentKey] = adminOverrides[key as EnvironmentKey] ?? val.presets[env]
+      // use the local override value if present, otherwise use the value for the current environment
+      result[key as EnvironmentKey] = localOverrides[key as EnvironmentKey] ?? val.presets[env]
     }
 
     return result
   }),
-  setAdminOverride: action((state, { key, value }) => {
+  setLocalOverride: action((state, { key, value }) => {
     if (value === null) {
-      delete state.adminOverrides[key]
+      delete state.localOverrides[key]
     } else {
-      state.adminOverrides[key] = value
+      state.localOverrides[key] = value
     }
   }),
   setEnv: action((state, env) => {
     state.env = env
   }),
-  clearAdminOverrides: action((state) => {
-    state.adminOverrides = {}
+  clearLocalOverrides: action((state) => {
+    state.localOverrides = {}
   }),
   updateNativeState: thunkOn(
-    (actions) => [actions.clearAdminOverrides, actions.setAdminOverride, actions.setEnv],
+    (actions) => [actions.clearLocalOverrides, actions.setLocalOverride, actions.setEnv],
     () => {
       if (Platform.OS === "ios") {
         LegacyNativeModules.ARNotificationsManager.reactStateUpdated(unsafe__getEnvironment())

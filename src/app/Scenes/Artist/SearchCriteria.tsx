@@ -1,6 +1,6 @@
 import { SearchCriteriaQuery } from "__generated__/SearchCriteriaQuery.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
 import { graphql, QueryRenderer } from "react-relay"

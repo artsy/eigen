@@ -9,6 +9,8 @@ export interface Range {
   max: Numeric
 }
 
+export type PriceRange = Numeric[]
+
 const ONE_IN_TO_CM = 2.54
 // to be removed in favor of userPrefs.metric
 export const IS_USA = LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
@@ -33,7 +35,7 @@ export const cmToIn = (centimeters: Numeric) => {
   return centimeters / ONE_IN_TO_CM
 }
 
-export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
+export const inToCm = (inches: Numeric, shouldRound = true) => {
   if (inches === "*") {
     return inches
   }
@@ -109,4 +111,15 @@ export const parsePriceRangeLabel = (min: Numeric, max: Numeric) => {
   }
 
   return `${parsedMin}${parsedMax}`
+}
+
+// TODO: Refactor and combine it with parseRange
+export const parsePriceRange = (range = "*-*"): PriceRange => {
+  return range.split("-").map((s) => {
+    if (s === "*") {
+      return s
+    }
+
+    return parseInt(s, 10)
+  })
 }

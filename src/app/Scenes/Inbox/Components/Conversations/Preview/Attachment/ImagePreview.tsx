@@ -1,13 +1,12 @@
+import { ImagePreview_attachment$data } from "__generated__/ImagePreview_attachment.graphql"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
-import { ImagePreview_attachment$data } from "__generated__/ImagePreview_attachment.graphql"
-
 const Image = styled(OpaqueImageView)`
-  height: 250;
+  height: 250px;
   flex: 1;
 `
 

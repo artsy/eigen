@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 
 interface HeaderProps {
   title: string
@@ -6,7 +6,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title }) => (
   <Flex flexDirection="column">
-    <Text variant="md" textAlign="left">
+    <Text variant="sm-display" textAlign="left">
       {title}
     </Text>
   </Flex>

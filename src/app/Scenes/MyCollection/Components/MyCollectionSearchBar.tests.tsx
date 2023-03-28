@@ -1,21 +1,17 @@
 import { fireEvent } from "@testing-library/react-native"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MyCollectionSearchBar, MyCollectionSearchBarProps } from "./MyCollectionSearchBar"
 
 describe("MyCollectionSearchBar", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
-  })
-
   const defaultProps: MyCollectionSearchBarProps = {
     onChangeText: jest.fn(),
     searchString: "",
   }
 
   const renderWithStickyTabPage = (props: Partial<MyCollectionSearchBarProps> = {}) =>
-    renderWithWrappersTL(
+    renderWithWrappers(
       <StickyTabPage
         tabs={[
           {

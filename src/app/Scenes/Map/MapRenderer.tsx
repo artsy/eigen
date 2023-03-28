@@ -1,6 +1,6 @@
+import { useTheme } from "@artsy/palette-mobile"
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useTheme } from "palette"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { SafeAreaInsets } from "shared/hooks"
@@ -50,8 +50,7 @@ export const MapRenderer: React.FC<{
                 error,
                 retry: () => {
                   isRetrying = true
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  retry()
+                  retry!()
                 },
                 isRetrying,
               }}

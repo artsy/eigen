@@ -1,17 +1,24 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { Avatar, Flex, Spacer, Text } from "palette"
+import { Avatar } from "palette"
 
-export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ result }) => {
+export const ArtistSearchResult: React.FC<{
+  result: AutosuggestResult
+}> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Avatar src={result.imageUrl || undefined} size="xs" />
-      <Spacer ml="1" />
+      <Avatar
+        src={result.imageUrl || undefined}
+        initials={result.initials || undefined}
+        size="xs"
+      />
+      <Spacer x={1} />
       <Flex flex={1} flexDirection="column" justifyContent="center">
-        <Text variant="md" ellipsizeMode="tail" numberOfLines={1}>
+        <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
           {result.displayLabel}
         </Text>
         {!!result.formattedNationalityAndBirthday && (
-          <Text numberOfLines={1} color="black60" ellipsizeMode="tail">
+          <Text variant="xs" numberOfLines={1} color="black60" ellipsizeMode="tail">
             {result.formattedNationalityAndBirthday}
           </Text>
         )}

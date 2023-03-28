@@ -1,21 +1,23 @@
-import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Box, Flex, Separator, Text } from "palette"
+import { Separator } from "palette"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeaderFragmentContainer } from "./OrderDetailsHeader"
-import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
+import { PaymentMethodSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./SoldBySection"
 import { SummarySectionFragmentContainer } from "./SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./TrackOrderSection"
+import { WirePaymentSectionFragmentContainer } from "./WirePaymentSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order$data
@@ -29,6 +31,10 @@ export interface SectionListItem {
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
   const fulfillmentType = order.requestedFulfillment?.__typename
+  const isProcessingWireTransfer =
+    !!order.paymentMethod &&
+    order.paymentMethod === "WIRE_TRANSFER" &&
+    order.state === "PROCESSING_APPROVAL"
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
 
   const getShippingName = () => {
@@ -53,6 +59,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer key="Artwork_InfoComponent" artwork={order} />],
     },
+    isProcessingWireTransfer && {
+      key: "WirePayment",
+      data: [<WirePaymentSectionFragmentContainer key="WirePaymentComponent" order={order} />],
+    },
     {
       key: "Summary_Section",
       title: "Order Summary",
@@ -62,7 +72,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       key: "Payment_Method",
       title: "Payment Method",
       data: [
-        <CreditCardSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />,
+        <PaymentMethodSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />,
       ],
     },
     isShipping && {
@@ -111,7 +121,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         SectionSeparatorComponent={(data) => (
           <Box
             height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
-            marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
+            mt={data.leadingItem && data.trailingSection ? 2 : 0}
             backgroundColor="black10"
             flexDirection="column"
             justifyContent="center"
@@ -141,7 +151,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
         </Flex>
       </Flex>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-        <Separator mt={15} mb={2} />
+        <Separator mt="15px" mb={2} />
       </Flex>
       <Flex>
         <PlaceholderText width={90} />
@@ -161,7 +171,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
       </Flex>
       <PlaceholderText width={100} />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex mt={2.2}>
+        <Flex mt="2px">
           <PlaceholderText width={40} />
           <PlaceholderText width={60} marginTop={15} />
           <PlaceholderText width={30} />
@@ -184,6 +194,9 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      state
+      paymentMethod
+
       requestedFulfillment {
         ... on CommerceShip {
           __typename
@@ -217,6 +230,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       ...TrackOrderSection_section
       ...ShipsToSection_address
       ...SoldBySection_soldBy
+      ...WirePaymentSection_order
     }
   `,
 })

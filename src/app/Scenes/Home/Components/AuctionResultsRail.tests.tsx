@@ -1,16 +1,13 @@
+import { ContextModule } from "@artsy/cohesion"
+import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-import { navigate } from "app/navigation/navigate"
-
-import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
-import { SectionTitle } from "app/Components/SectionTitle"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
-
-jest.unmock("react-relay")
+import { AuctionResultsRail, getDetailsByContextModule } from "./AuctionResultsRail"
 
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -21,14 +18,22 @@ describe("AuctionResultsRailFragmentContainer", () => {
       query={graphql`
         query AuctionResultsRailTestsQuery @raw_response_type {
           me {
-            ...AuctionResultsRail_me
+            auctionResultsByFollowedArtists(first: 12, state: UPCOMING) {
+              ...AuctionResultsRail_auctionResults
+            }
           }
         }
       `}
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return <AuctionResultsRailFragmentContainer title="Auction Results" me={props.me!} />
+          return (
+            <AuctionResultsRail
+              title="Latest Auction Results"
+              contextModule={ContextModule.auctionResultsRail}
+              auctionResults={props?.me?.auctionResultsByFollowedArtists!}
+            />
+          )
         } else if (error) {
           console.log(error)
         }
@@ -41,7 +46,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -57,7 +62,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
       result.auctionResultsByFollowedArtists.edges = []
     })
 
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -68,7 +73,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
   })
 
   it("routes to auction-results-for-artists-you-follow URL", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -79,6 +84,24 @@ describe("AuctionResultsRailFragmentContainer", () => {
 
     first(tree.root.findAllByType(SectionTitle))?.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
+  })
+})
+
+describe(getDetailsByContextModule, () => {
+  it("returns the correct details for the upcoming auction results rail", () => {
+    const details = getDetailsByContextModule(ContextModule.upcomingAuctionsRail)
+    expect(details).toEqual({
+      viewAllUrl: "/upcoming-auction-results",
+      browseAllButtonText: "Browse All Auctions",
+    })
+  })
+
+  it("returns the correct details for the past auction results rail", () => {
+    const details = getDetailsByContextModule(ContextModule.auctionResultsRail)
+    expect(details).toEqual({
+      viewAllUrl: "/auction-results-for-artists-you-follow",
+      browseAllButtonText: "Browse All Results",
+    })
   })
 })
 

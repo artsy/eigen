@@ -1,6 +1,7 @@
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -20,7 +21,7 @@ export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   long: 5000,
 }
 
-export const ToastComponent: React.FC<ToastDetails> = ({
+export const ToastComponent = ({
   id,
   positionIndex,
   placement,
@@ -29,7 +30,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   Icon,
   backgroundColor = "black100",
   duration = "short",
-}) => {
+}: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
@@ -58,7 +59,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   if (placement === "middle") {
     const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
-        {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
+        {Icon !== undefined && <Icon fill="white100" width={45} height={45} />}
         <Text variant="xs" color="white100" textAlign="center" px={0.5}>
           {message}
         </Text>
@@ -74,8 +75,8 @@ export const ToastComponent: React.FC<ToastDetails> = ({
         left={(width - MIDDLE_TOAST_SIZE) / 2}
         backgroundColor={color(backgroundColor)}
         opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
+        borderRadius={6}
         overflow="hidden"
-        paddingRight={2}
         zIndex={999}
       >
         {onPress !== undefined ? (
@@ -94,8 +95,8 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   }
 
   const innerTopBottom = (
-    <Flex flex={1} flexDirection="row" alignItems="center" mx="2">
-      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr="1" /> : null}
+    <Flex flex={1} flexDirection="row" alignItems="center" mx={2}>
+      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
       <Text variant="xs" color="white100">
         {message}
       </Text>

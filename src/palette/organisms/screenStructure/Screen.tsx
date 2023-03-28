@@ -1,5 +1,6 @@
-import { BackButton, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
-import { Flex, FlexProps } from "palette/elements"
+import { Spacer, FlexProps, Flex, SpacingUnitDSValueNumber, Text } from "@artsy/palette-mobile"
+import { BackButton, BackButtonWithBackground } from "palette"
+import { Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -10,8 +11,7 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Wrap } from "shared/utils"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
   handleTopSafeArea: boolean
@@ -80,21 +80,42 @@ const NAVBAR_HEIGHT = 44
 
 interface HeaderProps {
   onBack?: () => void
+  title?: string
+  onSkip?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onBack }) => {
+export const Header: React.FC<HeaderProps> = ({ onBack, title, onSkip }) => {
   useUpdateScreenContext({ header: "regular" })
   const insets = useSafeAreaInsets()
 
   return (
     <Flex
-      mt={insets.top}
+      mt={`${insets.top}px`}
       height={NAVBAR_HEIGHT}
-      px={SCREEN_HORIZONTAL_PADDING}
       flexDirection="row"
       alignItems="center"
+      justifyContent="space-between"
+      px={SCREEN_HORIZONTAL_PADDING}
     >
-      <BackButton onPress={onBack} />
+      <Flex>
+        {!!onBack && (
+          <BackButton
+            onPress={onBack}
+            containerStyle={{ flex: 1, justifyContent: "center" }}
+            hitSlop={{ left: 20, right: 20 }}
+          />
+        )}
+      </Flex>
+      {!!title && <Text>{title}</Text>}
+      {!!onSkip && (
+        <Touchable haptic="impactLight" onPress={onSkip}>
+          <Flex height="100%" justifyContent="center">
+            <Text textAlign="right" variant="xs">
+              Skip
+            </Text>
+          </Flex>
+        </Touchable>
+      )}
     </Flex>
   )
 }
@@ -114,7 +135,7 @@ export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
         left={0}
         right={0}
         height={NAVBAR_HEIGHT}
-        px={10}
+        px={1}
         flexDirection="row"
         alignItems="center"
       >
@@ -125,18 +146,20 @@ export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   return null
 }
 
-const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2
+const SCREEN_HORIZONTAL_PADDING: SpacingUnitDSValueNumber = 2
 
 interface BodyProps extends Pick<FlexProps, "backgroundColor"> {
   children?: React.ReactNode
   scroll?: boolean
-  nosafe?: boolean
+  noTopSafe?: boolean
+  noBottomSafe?: boolean
   fullwidth?: boolean
 }
 
 const Body = ({
   scroll = false,
-  nosafe = false,
+  noTopSafe = false,
+  noBottomSafe = false,
   fullwidth = false,
   children,
   ...restFlexProps
@@ -145,8 +168,8 @@ const Body = ({
   const bottomView = getChildrenByType(children, Screen.BottomView)
   const { options } = useScreenContext()
   const insets = useSafeAreaInsets()
-  const withTopSafeArea = options.handleTopSafeArea && !nosafe
-  const withBottomSafeArea = !nosafe
+  const withTopSafeArea = options.handleTopSafeArea && !noTopSafe
+  const withBottomSafeArea = !noBottomSafe
 
   return (
     <>
@@ -245,7 +268,7 @@ const BottomView: React.FC = ({ children }) => {
       />
       <Flex
         px={SCREEN_HORIZONTAL_PADDING}
-        py={keyboardShowing ? "1" : undefined}
+        py={keyboardShowing ? 1 : undefined}
         backgroundColor="white100"
       >
         {children}

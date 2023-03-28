@@ -1,12 +1,10 @@
-import { Box, Flex, Sans, Serif } from "palette"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
-import { Bid } from "app/Components/Bidding/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-
-import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
+import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
+import { Bid } from "app/Components/Bidding/types"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface PriceSummaryViewProps {
   calculatedCost: PriceSummary_calculatedCost$data
@@ -15,40 +13,40 @@ interface PriceSummaryViewProps {
 
 const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
   <Box mx={4}>
-    <Serif mb={1} size="4" weight="semibold" color="black100">
+    <Text variant="sm-display" mb={1} weight="medium" color="black100">
       Summary
-    </Serif>
+    </Text>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Your max bid
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {`${bid.display}.00`}
-      </Sans>
+      </Text>
     </Flex>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Buyer’s premium
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {calculatedCost.buyersPremium! /* STRICTNESS_MIGRATION */.display}
-      </Sans>
+      </Text>
     </Flex>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Subtotal
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {calculatedCost.subtotal! /* STRICTNESS_MIGRATION */.display}
-      </Sans>
+      </Text>
     </Flex>
 
-    <Sans size="3" color="black60">
+    <Text variant="sm" color="black60">
       Plus any applicable shipping, taxes, and fees.
-    </Sans>
+    </Text>
   </Box>
 )
 
@@ -84,15 +82,11 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
       }
     `}
     variables={{
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      saleArtworkId,
+      saleArtworkId: saleArtworkId!,
       bidAmountMinor: bid.cents,
     }}
-    render={renderWithLoadProgress<PriceSummaryQuery["response"]>(
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      ({ node: { calculatedCost } }) => (
-        <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
-      )
-    )}
+    render={renderWithLoadProgress<PriceSummaryQuery["response"]>(({ node }) => (
+      <PriceSummaryFragmentContainer bid={bid} calculatedCost={node?.calculatedCost!} />
+    ))}
   />
 )

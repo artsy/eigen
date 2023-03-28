@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { navigate } from "app/navigation/navigate"
-import { Button, Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { useTracking } from "react-tracking"
 
 export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
@@ -18,8 +19,8 @@ export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
   }
 
   return (
-    <Flex mt={3} mx={2}>
-      <Text variant="md" textAlign="center" fontWeight="normal">
+    <Flex mt={4} mx={2}>
+      <Text variant="sm-display" textAlign="center" fontWeight="normal">
         {headerText}
       </Text>
       <Text

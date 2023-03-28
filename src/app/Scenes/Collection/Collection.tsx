@@ -1,16 +1,16 @@
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
+import { Collection_collection$data } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "app/Scenes/Collection/Components/CollectionArtworksFilter"
+import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
+import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Spacer } from "palette"
+import { Schema, screenTrack } from "app/utils/track"
 import React, { Component, createRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Collection_collection$data } from "../../../__generated__/Collection_collection.graphql"
-import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "../../../app/Scenes/Collection/Components/CollectionArtworksFilter"
-import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../app/Scenes/Collection/Screens/CollectionArtworks"
-import { CollectionHeaderContainer as CollectionHeader } from "../../../app/Scenes/Collection/Screens/CollectionHeader"
-import { Schema, screenTrack } from "../../../app/utils/track"
 import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Components/CollectionHubsRails/index"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
@@ -40,12 +40,17 @@ export class Collection extends Component<CollectionProps> {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = [
-      "collectionFeaturedArtists",
-      "collectionHubsRails",
-      "collectionArtworksFilter",
-      "collectionArtworks",
-    ]
+    let sections = ["collectionHubsRails", "collectionArtworksFilter", "collectionArtworks"]
+
+    // Show the Featured artists section only when showFeaturedArtists is true
+    if (collection.showFeaturedArtists) {
+      sections = ["collectionFeaturedArtists", ...sections]
+    }
+
+    // Small hack that takes into account the list header component when looking for the index
+    const stickySectionIndex = ["ListHeaderComponent", ...sections].findIndex(
+      (section) => section === "collectionArtworksFilter"
+    )
 
     return (
       <ArtworkFiltersStoreProvider>
@@ -61,8 +66,8 @@ export class Collection extends Component<CollectionProps> {
             keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-            ItemSeparatorComponent={() => <Spacer mb={2} />}
-            stickyHeaderIndices={[3]}
+            ItemSeparatorComponent={() => <Spacer y={2} />}
+            stickyHeaderIndices={[stickySectionIndex]}
             keyboardShouldPersistTaps="handled"
             renderItem={({ item }): null | any => {
               switch (item) {
@@ -107,6 +112,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       id
       slug
       isDepartment
+      showFeaturedArtists
       ...CollectionHeader_collection
       ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
       ...CollectionArtworksFilter_collection

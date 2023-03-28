@@ -1,21 +1,22 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ScrollableTab } from "app/Components/ScrollableTabBar"
 import TabBar from "app/Components/TabBar"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { EventEmitter } from "app/Scenes/Map/EventEmitter"
+import { BucketResults } from "app/Scenes/Map/bucketCityResults"
+import { MapTab, RelayErrorState } from "app/Scenes/Map/types"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { Box, Button, Flex, Sans } from "palette"
+import { Button } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { BucketResults } from "../Map/bucketCityResults"
-import { EventEmitter } from "../Map/EventEmitter"
-import { MapTab, RelayErrorState } from "../Map/types"
-import { cityTabs } from "./cityTabs"
 import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
+import { cityTabs } from "./cityTabs"
 
 interface Props {
   verticalMargin?: number
@@ -31,7 +32,6 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-  sponsoredContent: { introText: string; artGuideUrl: string }
   relayErrorState?: RelayErrorState
 }
 const AllCityMetaTab = 0
@@ -50,7 +50,6 @@ export class CityView extends Component<Props, State> {
     relay: null,
     cityName: "",
     citySlug: "",
-    sponsoredContent: null,
     relayErrorState: null,
   }
 
@@ -62,14 +61,12 @@ export class CityView extends Component<Props, State> {
     cityName,
     citySlug,
     relay,
-    sponsoredContent,
   }: {
     filter: MapTab
     buckets: BucketResults
     cityName: string
     relay: RelayProp
     citySlug: string
-    sponsoredContent: { introText: string; artGuideUrl: string }
   }) => {
     // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
     this.setState(
@@ -79,7 +76,6 @@ export class CityView extends Component<Props, State> {
         cityName,
         citySlug,
         relay,
-        sponsoredContent,
       },
       () => {
         LegacyNativeModules.ARNotificationsManager.postNotificationName(
@@ -213,7 +209,6 @@ export class CityView extends Component<Props, State> {
                 cityName={cityName}
                 citySlug={citySlug}
                 key={cityName}
-                sponsoredContent={this.state.sponsoredContent as any /* STRICTNESS_MIGRATION */}
                 buckets={buckets as any /* STRICTNESS_MIGRATION */}
                 relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
               />
@@ -258,9 +253,9 @@ const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({
 }) => {
   return (
     <Box py={2}>
-      <Sans size="3t" textAlign="center" mx={2}>
+      <Text variant="sm" textAlign="center" mx={2}>
         We are having trouble loading content right now, please try again later.
-      </Sans>
+      </Text>
       <Flex justifyContent="center" flexDirection="row">
         <Box mt={2}>
           <Button onPress={retry} loading={isRetrying}>

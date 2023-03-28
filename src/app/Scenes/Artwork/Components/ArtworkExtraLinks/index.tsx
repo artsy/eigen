@@ -1,14 +1,14 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Sans } from "palette"
-import { Text, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { View } from "react-native"
+import { createFragmentContainer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { graphql } from "relay-runtime"
 import { AuctionFaqSection } from "./AuctionFaqSection"
-import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork$data
@@ -20,12 +20,9 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
   const artistName = artists.length === 1 ? artists[0]!.name : null
 
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
-
   return (
     <>
       <AuctionFaqSection artwork={artwork} auctionState={auctionState} />
-      {!enableCreateArtworkAlert && <FaqAndSpecialistSection artwork={artwork} />}
       {!!consignableArtistsCount && (
         <ConsignmentsLink
           artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
@@ -41,9 +38,10 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 
   return (
     <View>
-      <Sans size="2" color="black60">
+      <Text variant="xs" color="black60">
         Want to sell a work by {artistName}?{" "}
         <Text
+          variant="xs"
           style={{ textDecorationLine: "underline" }}
           onPress={() => {
             tracking.trackEvent({
@@ -57,7 +55,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
           Consign with Artsy
         </Text>
         .
-      </Sans>
+      </Text>
     </View>
   )
 }
@@ -65,7 +63,6 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
   artwork: graphql`
     fragment ArtworkExtraLinks_artwork on Artwork {
-      ...FaqAndSpecialistSection_artwork
       isAcquireable
       isInAuction
       isOfferable

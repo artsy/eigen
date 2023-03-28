@@ -1,39 +1,38 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFormikContext } from "formik"
-import {
-  Box,
-  BulletedItem,
-  Flex,
-  Input,
-  InputTitle,
-  LinkButton,
-  RadioButton,
-  Spacer,
-  Text,
-} from "palette"
-import { Select } from "palette/elements/Select"
-import React, { useEffect, useState } from "react"
-import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
-import { LocationAutocomplete } from "../../../../Components/LocationAutocomplete/LocationAutocomplete"
+import { LinkButton, BulletedItem, Input, InputTitle, RadioButton } from "palette"
+import { Select, SelectOption } from "palette/elements/Select"
+import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
+import {
+  acceptableCategoriesForSubmission,
+  AcceptableCategoryValue,
+} from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from "./validation"
+import { ArtworkDetailsFormModel } from "./validation"
 
-const StandardSpace = () => <Spacer mt={4} />
+const StandardSpace = () => <Spacer y={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, errors, setFieldValue, touched, handleBlur, setFieldTouched } =
-    useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-  const [isZipInputFocused, setIsZipInputFocused] = useState(false)
 
   useEffect(() => {
     if (values) {
       GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
     }
   }, [values])
+
+  const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
+    acceptableCategoriesForSubmission()
+  ).current
 
   return (
     <>
@@ -56,6 +55,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
         accessibilityLabel="Year"
+      />
+      <StandardSpace />
+      <CategoryPicker<AcceptableCategoryValue | null>
+        handleChange={(category) => setFieldValue("category", category)}
+        options={categories}
+        required={false}
+        value={values.category}
       />
       <StandardSpace />
       <Input
@@ -98,7 +104,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       {values.attributionClass === limitedEditionValue && (
         <>
-          <Spacer mt={2} />
+          <Spacer y={2} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
               <Input
@@ -125,7 +131,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       )}
       <StandardSpace />
       <InputTitle>Dimensions</InputTitle>
-      <Spacer mt={1} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <RadioButton
           mr={2}
@@ -139,7 +145,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input
@@ -164,6 +170,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
+            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
@@ -210,37 +217,19 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       <StandardSpace />
       <LocationAutocomplete
-        initialLocation={values.location}
-        onChange={(e: Location) => {
-          setFieldValue("location", e)
-          if (!e.countryCode) {
-            setFieldValue("location.zipCode", "")
-            setFieldTouched("location.zipCode", false)
-          }
+        showError
+        title="City"
+        placeholder="Enter city where artwork is located"
+        displayLocation={buildLocationDisplay(values.location)}
+        onChange={({ city, state, country, countryCode }: LocationWithDetails) => {
+          setFieldValue("location", {
+            city: city ?? "",
+            state: state ?? "",
+            country: country ?? "",
+            countryCode: countryCode ?? "",
+          })
         }}
       />
-      {countriesRequirePostalCode.includes(values.location.countryCode.toUpperCase()) && (
-        <>
-          <Spacer m={2} />
-          <Input
-            title="Zip/Postal code"
-            placeholder="Zip/postal code where artwork is located"
-            testID="Submission_ZipInput"
-            value={values.location.zipCode}
-            onBlur={(e) => {
-              setIsZipInputFocused(false)
-              handleBlur("location.zipCode")(e)
-            }}
-            onFocus={() => setIsZipInputFocused(true)}
-            error={
-              !isZipInputFocused && touched.location?.zipCode && errors.location?.zipCode
-                ? errors.location.zipCode
-                : ""
-            }
-            onChangeText={(e) => setFieldValue("location.zipCode", e)}
-          />
-        </>
-      )}
       <StandardSpace />
     </>
   )

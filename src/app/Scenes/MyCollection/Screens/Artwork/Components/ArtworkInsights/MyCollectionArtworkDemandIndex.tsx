@@ -1,17 +1,17 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, TriangleDown, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
-import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
+import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import HighDemandIcon from "app/Icons/HighDemandIcon"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer, Text, TriangleDown } from "palette"
+import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
+import { Separator } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkDemandIndexProps {
   artwork: MyCollectionArtworkDemandIndex_artwork$key
-  marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights$key
+  marketPriceInsights: MyCollectionArtworkDemandIndex_artworkPriceInsights$key
 }
 
 export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (
@@ -21,8 +21,9 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
+  const marketPriceInsights = useFragment(artworkPriceInsightsFragment, props.marketPriceInsights)
 
+  const { demandRankDisplayText } = marketPriceInsights
   if (!artwork || !marketPriceInsights?.demandRank) {
     return null
   }
@@ -30,12 +31,12 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
   const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <Flex mb={2}>
+    <Flex mt={1}>
       <InfoButton
         title="Demand index"
         modalContent={
           <>
-            <Spacer my={1} />
+            <Spacer y={1} />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last
               36 months of auction sale data from top commercial auction houses.
@@ -45,15 +46,18 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer my={1} />
-      <DemandRankScale demandRank={demandRank} />
+      <Spacer y={1} />
+      <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
+
+      <Separator my={2} borderColor="black10" />
     </Flex>
   )
 }
 
-const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const enableDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
-
+const DemandRankScale: React.FC<{ demandRank: number; demandRankDisplayText: string | null }> = ({
+  demandRank,
+  demandRankDisplayText,
+}) => {
   let width = demandRank * 10
   if (width > 100) {
     width = 100
@@ -69,12 +73,10 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         <Text color={color} variant="xl">
           {adjustedDemandRank}
         </Text>
-        {!!enableDemandIndexHints && (
-          <Flex flexDirection="row" alignItems="center" mb={1}>
-            {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
-            <Text color={color}>{getDemandRankText(demandRank)}</Text>
-          </Flex>
-        )}
+        <Flex flexDirection="row" alignItems="center" mb={1}>
+          {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
+          <Text color={color}>{demandRankDisplayText}</Text>
+        </Flex>
       </Flex>
       <ProgressBar width={width} />
       <Spacer />
@@ -116,18 +118,6 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   )
 }
 
-const getDemandRankText = (demandRank: number) => {
-  if (demandRank >= 9) {
-    return "High Demand"
-  } else if (demandRank >= 7) {
-    return "Active Demand"
-  } else if (demandRank >= 4) {
-    return "Moderate Demand"
-  }
-
-  return "Less Active Demand"
-}
-
 const artworkFragment = graphql`
   fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
     internalID
@@ -135,9 +125,10 @@ const artworkFragment = graphql`
   }
 `
 
-const marketPriceInsightsFragment = graphql`
-  fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
+const artworkPriceInsightsFragment = graphql`
+  fragment MyCollectionArtworkDemandIndex_artworkPriceInsights on ArtworkPriceInsights {
     demandRank
+    demandRankDisplayText
   }
 `
 

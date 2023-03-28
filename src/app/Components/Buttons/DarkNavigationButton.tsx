@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
-import { Box, ClassTheme, Flex, Serif } from "palette"
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 
@@ -18,11 +18,11 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
           <Box px={2} py={1} style={{ backgroundColor: color("black100") }}>
             <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
               <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Serif color={color("white100")} size="3t">
+                <Text variant="sm" color={color("white100")}>
                   {this.props.title}
-                </Serif>
+                </Text>
                 {!!showNavArrow && (
-                  <Image source={require("images/horizontal_chevron_white.webp")} />
+                  <Image source={require("images/horizontal_chevron_white.png")} />
                 )}
               </Flex>
             </TouchableWithoutFeedback>

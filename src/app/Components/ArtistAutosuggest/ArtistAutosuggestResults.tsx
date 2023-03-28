@@ -1,16 +1,20 @@
+import { Spacer, quoteLeft, quoteRight, Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
+import { ErrorView } from "app/Components/ErrorView/ErrorView"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import {
+  ProvidePlaceholderContext,
+  PlaceholderBox,
+  RandomWidthPlaceholderText,
+} from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
+import { Separator } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { ErrorView } from "../ErrorView/ErrorView"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<
@@ -73,12 +77,12 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   if (noResults) {
     return (
       <AutoSuggestBoxContainer>
-        <Spacer mt={3} />
-        <Text variant="md" textAlign="center">
+        <Spacer y={4} />
+        <Text variant="sm-display" textAlign="center">
           Sorry, we couldn’t find anything for {quoteLeft}
           {query}.{quoteRight}
         </Text>
-        <Text variant="md" color="black60" textAlign="center">
+        <Text variant="sm-display" color="black60" textAlign="center">
           Please try searching again with a different spelling.
         </Text>
       </AutoSuggestBoxContainer>

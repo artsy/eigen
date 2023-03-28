@@ -3,7 +3,7 @@ interface IdentityVerificationRequireable {
 }
 
 interface IdentityVerifiable {
-  identityVerified: boolean
+  isIdentityVerified: boolean
 }
 
 interface Bidder {
@@ -28,5 +28,7 @@ export const bidderNeedsIdentityVerification = ({
   user?: IdentityVerifiable
   bidder?: Bidder
 }) => {
-  return !bidder?.qualifiedForBidding && sale.requireIdentityVerification && !user?.identityVerified
+  return (
+    !bidder?.qualifiedForBidding && sale.requireIdentityVerification && !user?.isIdentityVerified
+  )
 }

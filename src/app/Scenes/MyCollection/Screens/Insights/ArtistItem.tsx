@@ -1,12 +1,12 @@
+import { NoArtworkIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import { graphql, useFragment } from "react-relay"
-import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtistModal"
 
 interface ArtistItemProps {
   artist: ArtistItem_artist$key
-  onPress: (artist: AverageSalePriceArtistType) => void
+  onPress: (artistID: string) => void
   isFirst?: boolean
 }
 
@@ -18,7 +18,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
     <Touchable
       testID={`artist-section-item-${artist.name}`}
       underlayColor={color("black5")}
-      onPress={() => onPress(artist)}
+      onPress={() => onPress(artist.internalID)}
       haptic
     >
       <Flex
@@ -47,7 +47,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
         {/* Sale Artwork Artist Name, Nationality and Birthday */}
         <Flex flex={1} pl={1}>
           {!!artist.name && (
-            <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
+            <Text variant="sm-display" ellipsizeMode="middle" numberOfLines={2}>
               {artist.name}
             </Text>
           )}
@@ -66,6 +66,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
 
 const CollectedArtistsFragment = graphql`
   fragment ArtistItem_artist on Artist {
+    internalID
     name
     initials
     formattedNationalityAndBirthday

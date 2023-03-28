@@ -1,11 +1,9 @@
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { View, ViewProps } from "react-native"
-
+import { Text } from "@artsy/palette-mobile"
 import { Metadata_show$data } from "__generated__/Metadata_show.graphql"
 import { capitalize } from "lodash"
-import { Sans } from "palette"
 import React from "react"
+import { View, ViewProps } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props extends ViewProps {
   show: Metadata_show$data
@@ -18,17 +16,17 @@ class Metadata extends React.Component<Props> {
     return (
       <View>
         {!!partnerName && (
-          <Sans size="3t" weight="medium" numberOfLines={1}>
+          <Text variant="sm" weight="medium" numberOfLines={1}>
             {partnerName}
-          </Sans>
+          </Text>
         )}
-        <Sans size="3t" numberOfLines={1}>
+        <Text variant="sm" numberOfLines={1}>
           {this.props.show.name}
-        </Sans>
+        </Text>
         {!!showType && (
-          <Sans size="3t" color="black60">
+          <Text variant="sm" color="black60">
             {showType}
-          </Sans>
+          </Text>
         )}
         {this.dateAndLocationString()}
         {this.statusText()}
@@ -51,9 +49,9 @@ class Metadata extends React.Component<Props> {
     if (city || exhibition_period) {
       const text = city ? city.trim() + ", " + exhibition_period : exhibition_period
       return (
-        <Sans size="3t" color="black60">
+        <Text variant="sm" color="black60">
           {text}
-        </Sans>
+        </Text>
       )
     }
     return null
@@ -62,9 +60,9 @@ class Metadata extends React.Component<Props> {
   statusText() {
     if (this.props.show.status_update) {
       return (
-        <Sans size="3" color="black60">
+        <Text variant="sm" color="black60">
           {this.props.show.status_update}
-        </Sans>
+        </Text>
       )
     }
     return null

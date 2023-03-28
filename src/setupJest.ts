@@ -1,70 +1,59 @@
-import "@testing-library/jest-native/extend-expect"
-import "jest-extended"
-
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
-import { mockNavigate } from "app/tests/navigationMocks"
-import chalk from "chalk"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Enzyme from "enzyme"
-import expect from "expect"
 import { format } from "util"
+// @ts-expect-error
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
+// @ts-expect-error
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
+import "@testing-library/jest-native/extend-expect"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
+import chalk from "chalk"
+import expect from "expect"
+import "jest-extended"
+import { NativeModules } from "react-native"
+// @ts-expect-error
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+import track, { useTracking } from "react-tracking"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+import diff from "snapshot-diff"
 
-import "app/tests/renderUntil"
-
-// MARK: - General preparation
-
-Enzyme.configure({ adapter: new Adapter() })
-const originalConsoleError = console.error
-// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
+/**
+ * General Preparation
+ */
 
 // @ts-expect-error
 global.__TEST__ = true
 declare const process: any
 
+function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
+  const explanation =
+    chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
+    chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
+  if (args[0] instanceof Error) {
+    const msg = explanation + chalk.red(args[0].message)
+    const err = new Error(msg)
+    err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+    return err
+  } else if (
+    // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
+    // not care for, so ignore these.
+    typeof args[0] === "string" &&
+    !args[0].includes("is using incorrect casing") &&
+    !args[0].includes("is unrecognized in this browser") &&
+    ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
+  ) {
+    const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
+    ;(Error as any).captureStackTrace(err, constructorOpt)
+    return err
+  }
+  return null
+}
+
 if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   const originalLoggers = {
     error: console.error,
     warn: console.warn,
-  }
-
-  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
-    const explanation =
-      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
-      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
-    if (args[0] instanceof Error) {
-      const msg = explanation + chalk.red(args[0].message)
-      const err = new Error(msg)
-      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
-      return err
-    } else if (
-      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
-      // not care for, so ignore these.
-      typeof args[0] === "string" &&
-      !args[0].includes("is using incorrect casing") &&
-      !args[0].includes("is unrecognized in this browser") &&
-      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
-    ) {
-      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
-      ;(Error as any).captureStackTrace(err, constructorOpt)
-      return err
-    }
-    return null
   }
 
   beforeEach((done) => {
@@ -88,35 +77,28 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 }
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
-import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
-// MARK: - External deps mocks
+/**
+ * External deps mocks
+ */
 
 jest.mock("react-native-screens", () => ({
   ...jest.requireActual("react-native-screens"),
   enableScreens: jest.fn(),
 }))
 
-// @ts-expect-error typescript doesn't see this for some reason
-import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
-// @ts-expect-error
-import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
-// @ts-expect-error
-import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+jest.mock("react-native-vision-camera", () => {})
+
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
-// tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-import { mockPostEventToProviders, mockTrackEvent } from "app/tests/globallyMockedStuff"
-
 jest.mock("react-tracking")
-import track, { useTracking } from "react-tracking"
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
@@ -136,6 +118,7 @@ jest.mock("@react-navigation/native", () => {
     useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: jest.fn(),
+      addListener: jest.fn(),
     }),
   }
 })
@@ -145,7 +128,7 @@ jest.mock("react-native-share", () => ({
 }))
 
 jest.mock("react-native-device-info", () => ({
-  getBuildNumber: jest.fn(),
+  getBuildNumber: () => "some-build-number",
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
@@ -159,12 +142,6 @@ jest.mock("rn-fetch-blob", () => ({
       DocumentDir: "",
     },
   },
-}))
-
-jest.mock("danger", () => ({
-  danger: {},
-  markdown: (message: string) => message,
-  warn: jest.fn(),
 }))
 
 jest.mock("@react-native-cookies/cookies", () => ({ clearAll: jest.fn() }))
@@ -194,6 +171,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
+    isSignedIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -213,9 +191,14 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
   },
 }))
 
-// prettier-ignore
-// tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
+jest.mock("@sentry/react-native", () => ({
+  captureMessage() {},
+  init() {},
+  setUser() {},
+  addBreadcrumb() {},
+  withScope() {},
+  Severity: "info",
+}))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
@@ -249,6 +232,10 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
+require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
+
+// @ts-expect-error
+global.__reanimatedWorkletInit = () => {}
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
@@ -296,6 +283,13 @@ jest.mock("react-native-gesture-handler", () => {
     TouchableWithoutFeedback,
   }
 })
+
+jest.mock("react-native-image-crop-picker", () => ({
+  openPicker: jest.fn(),
+  openCamera: jest.fn(),
+  cleanSingle: jest.fn(),
+  clean: jest.fn(),
+}))
 
 jest.mock("react-native-config", () => {
   const mockConfig = {
@@ -349,13 +343,11 @@ jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
 
-// MARK: - Our mocks
+/**
+ * Mocks for our code
+ */
 
 // Native modules
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NativeModules } from "react-native"
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -367,16 +359,6 @@ function getNativeModules(): OurNativeModules {
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -447,16 +429,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -533,7 +505,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
-  reset(require("app/navigation/navigate"), {})
+  reset(require("app/system/navigation/navigate"), {})
 })
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
@@ -545,13 +517,32 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-jest.mock("app/relay/createEnvironment", () => ({
+// TODO: DELETE THIS MOCK when that file is deleted.
+jest.mock("app/system/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
   createEnvironment: require("relay-test-utils").createMockEnvironment,
   reset(this: { defaultEnvironment: any }) {
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
   },
 }))
+
+const { createMockEnvironment } = require("relay-test-utils")
+let mockEnvironment = createMockEnvironment()
+jest.mock("app/system/relay/defaultEnvironment", () => {
+  const mockedFunction = () => mockEnvironment
+  return {
+    getRelayEnvironment: mockedFunction,
+    getMockRelayEnvironment: mockedFunction,
+    bottomTabsRelayEnvironment: mockEnvironment,
+  }
+})
+const resetMockEnvironment = () => {
+  mockEnvironment = createMockEnvironment()
+}
+// resetting relay mock env before each test is needed, for a clean env to resolve on.
+beforeEach(() => {
+  resetMockEnvironment()
+})
 
 jest.mock("shared/hooks", () => {
   const React = require("react")
@@ -585,11 +576,7 @@ jest.mock("app/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
-jest.mock("app/utils/userHadMeaningfulInteraction.tsx", () => ({
-  userHadMeaningfulInteraction: jest.fn(),
-}))
-
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
@@ -614,3 +601,17 @@ jest.mock("app/utils/track/providers.tsx", () => ({
   postEventToProviders: jest.fn(),
   _addTrackingProvider: jest.fn(),
 }))
+
+jest.mock("@gorhom/bottom-sheet", () => {
+  const RN = require("react-native")
+
+  return {
+    __esModule: true,
+    default: RN.View, // mocks the BottomSheet
+    BottomSheetScrollView: RN.ScrollView,
+    namedExport: {
+      ...require("react-native-reanimated/mock"),
+      ...jest.requireActual("@gorhom/bottom-sheet"),
+    },
+  }
+})

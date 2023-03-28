@@ -29,6 +29,7 @@ describe("MyCollectionArtworkModel", () => {
               artistIds: ["some-artist-id-0", "some-artist-id-1"],
               artistSearchResult: null,
               category: "some-category",
+              confidentialNotes: "some-notes",
               pricePaidDollars: "100",
               pricePaidCurrency: "USD",
               date: "some-date",
@@ -54,10 +55,12 @@ describe("MyCollectionArtworkModel", () => {
     const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     const expectedInitialFormValues = {
       artist: "",
+      artistDisplayName: undefined,
       artistIds: [],
       artworkLocation: "",
       artistSearchResult: null,
       category: "",
+      confidentialNotes: "",
       pricePaidDollars: "",
       pricePaidCurrency: "",
       date: "",
@@ -72,7 +75,7 @@ describe("MyCollectionArtworkModel", () => {
       provenance: "",
       title: "",
       width: "",
-      attributionClass: "",
+      attributionClass: undefined,
     }
     expect(artworkState?.sessionState.formValues).toEqual(expectedInitialFormValues)
   })

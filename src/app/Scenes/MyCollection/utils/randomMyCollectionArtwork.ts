@@ -1,7 +1,8 @@
 import { MyCollectionCreateArtworkInput } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { uploadPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
+import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { myCollectionCreateArtwork } from "../mutations/myCollectionCreateArtwork"
-import { storeLocalPhotos, uploadPhotos } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 const randomValue = (array: any[]) => {
   const randIndex = Math.floor(Math.random() * array.length)
@@ -40,9 +41,20 @@ export const addRandomMyCollectionArtwork = async () => {
   }
   const response = await myCollectionCreateArtwork(input)
 
-  const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
-  if (slug) {
-    storeLocalPhotos(slug, photos)
-  }
+  const artwork = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node
+
+  // Store images locally
+  photos.forEach((image, index) => {
+    const imageID = artwork?.images?.[index]?.internalID
+
+    if (!imageID) return
+
+    storeLocalImage(imageID, {
+      path: image.path!,
+      width: image.width!,
+      height: image.height!,
+    })
+  })
+
   return response
 }

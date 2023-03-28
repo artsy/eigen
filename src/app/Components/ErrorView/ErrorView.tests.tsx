@@ -1,9 +1,9 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ErrorView } from "./ErrorView"
 
 describe("ErrorView", () => {
   it("renders a default message", async () => {
-    const { findByText } = renderWithWrappersTL(<ErrorView />)
+    const { findByText } = renderWithWrappers(<ErrorView />)
     expect(
       await findByText(
         "There seems to be a problem with submission creation. Please try again shortly."
@@ -12,7 +12,7 @@ describe("ErrorView", () => {
   })
 
   it("renders a default message", async () => {
-    const { findByText } = renderWithWrappersTL(<ErrorView message="something errory" />)
+    const { findByText } = renderWithWrappers(<ErrorView message="something errory" />)
     expect(await findByText("something errory")).toBeTruthy()
   })
 })

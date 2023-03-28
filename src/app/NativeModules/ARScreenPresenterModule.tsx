@@ -1,14 +1,15 @@
 import {
+  NavigationAction,
   NavigationContainerRef,
   NavigationState,
   StackActions,
   TabActions,
 } from "@react-navigation/native"
-import { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { ViewDescriptor } from "app/system/navigation/navigate"
 import immer from "immer-peasy"
 import { last } from "lodash"
-import { NativeModules } from "react-native"
+import { NativeModules, StatusBar } from "react-native"
 /**
  * Here we maintain references to all the navigators in the main app navigation hierarchy, which are:
  * - tab nav stacks
@@ -20,8 +21,7 @@ import { NativeModules } from "react-native"
  *   These are unique in that they are created and destroyed, while all the others are only created once
  */
 
-// tslint:disable-next-line:variable-name
-export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef | null }
+export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef<any> | null }
 
 type Mutable<T> = T extends object
   ? {
@@ -43,6 +43,9 @@ function updateTabStackState(
   updater: (draft: Mutable<NavigationState>) => void
 ) {
   updateNavigationState((state) => {
+    if (!state) {
+      return
+    }
     const tabs = state.routes[0].state?.routes
     const tabState = (
       tabs as Array<{ name: BottomTabType; state: Mutable<NavigationState> }>
@@ -72,20 +75,33 @@ function getCurrentlyPresentedModalNavStackKey() {
   return key
 }
 
+// When coming from a killed state our nav stack may not be
+// set up yet, we check and wait for animations to finish
+// to more reliably navigate
+function dispatchNavAction(action: NavigationAction) {
+  if (!__unsafe_mainModalStackRef.current) {
+    requestAnimationFrame(() => {
+      __unsafe_mainModalStackRef.current?.dispatch(action)
+    })
+  } else {
+    __unsafe_mainModalStackRef.current?.dispatch(action)
+  }
+}
+
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
   switchTab(tab: BottomTabType) {
-    __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
+    dispatchNavAction(TabActions.jumpTo(tab))
   },
   presentModal(viewDescriptor: ViewDescriptor) {
     if (viewDescriptor.replace) {
-      __unsafe_mainModalStackRef.current?.dispatch(
+      dispatchNavAction(
         StackActions.replace("modal", {
           rootModuleName: viewDescriptor.moduleName,
           rootModuleProps: viewDescriptor.props,
         })
       )
     } else {
-      __unsafe_mainModalStackRef.current?.dispatch(
+      dispatchNavAction(
         StackActions.push("modal", {
           rootModuleName: viewDescriptor.moduleName,
           rootModuleProps: viewDescriptor.props,
@@ -118,26 +134,12 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
-
-    if (!__unsafe_mainModalStackRef.current) {
-      // modal stack has not yet been instantiated
-      // try to delay nav to after animations
-      requestAnimationFrame(() => {
-        __unsafe_mainModalStackRef.current?.dispatch(
-          StackActions.push("screen:" + stackKey, {
-            moduleName: viewDescriptor.moduleName,
-            props: viewDescriptor.props,
-          })
-        )
+    dispatchNavAction(
+      StackActions.push("screen:" + stackKey, {
+        moduleName: viewDescriptor.moduleName,
+        props: viewDescriptor.props,
       })
-    } else {
-      __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.push("screen:" + stackKey, {
-          moduleName: viewDescriptor.moduleName,
-          props: viewDescriptor.props,
-        })
-      )
-    }
+    )
   },
   popStack(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
@@ -149,6 +151,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     __unsafe_mainModalStackRef.current?.goBack()
   },
   dismissModal(..._args: any[]) {
+    StatusBar.setBarStyle("dark-content", true)
     updateNavigationState((state) => {
       if (state.routes.length === 1) {
         return

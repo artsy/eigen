@@ -1,11 +1,11 @@
-import { navigate } from "app/navigation/navigate"
-import { track as _track } from "app/utils/track"
-import { Flex, QuestionCircleIcon, Text, Touchable } from "palette"
+import { QuestionCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
+import { Touchable } from "palette"
 
 export const Support = () => {
   return (
     <Flex flexDirection="column" p={2} key="support-section">
-      <Text variant="md" mb={1} weight="medium">
+      <Text variant="sm-display" mb={1} weight="medium">
         Support
       </Text>
       <Touchable

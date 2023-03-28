@@ -30,7 +30,7 @@ export interface CreateSavedSearchAlertProps {
 }
 
 // This needs to be a `type` rather than an `interface`
-// tslint:disable-next-line:interface-over-type-literal
+
 export type CreateSavedSearchAlertNavigationStack = {
   CreateSavedSearchAlert: CreateSavedSearchAlertParams
   EmailPreferences: undefined

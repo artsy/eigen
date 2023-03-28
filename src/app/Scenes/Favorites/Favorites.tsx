@@ -1,14 +1,12 @@
-import { View, ViewProps } from "react-native"
-
-import { ProvideScreenTracking, Schema } from "app/utils/track"
-
+import { Flex, Text } from "@artsy/palette-mobile"
 import DarkNavigationButton from "app/Components/Buttons/DarkNavigationButton"
 
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "app/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "app/store/GlobalStore"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
+import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
@@ -109,7 +107,7 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
 const StickyHeaderContent: React.FC = ({}) => {
   return (
     <Flex mt={4}>
-      <Text variant="lg" m={2}>
+      <Text variant="lg-display" m={2}>
         Follows
       </Text>
     </Flex>

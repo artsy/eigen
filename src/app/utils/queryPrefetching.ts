@@ -1,7 +1,7 @@
 import { modules } from "app/AppRegistry"
-import { matchRoute } from "app/navigation/routes"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { matchRoute } from "app/routes"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import {
@@ -9,7 +9,9 @@ import {
   fetchQuery,
   getRequest,
   GraphQLTaggedNode,
+  OperationType,
   Variables,
+  VariablesOf,
 } from "relay-runtime"
 import { logPrefetching } from "./loggers"
 
@@ -46,15 +48,25 @@ const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) =>
   const environment = defaultEnvironment
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
-  await fetchQuery(environment, query, variables ?? {}, {
-    networkCacheConfig: { force: false },
-  }).toPromise()
-
-  // this will retain the result in the relay store so it's not garbage collected.
-  environment.retain(operation)
+  try {
+    await fetchQuery(environment, query, variables ?? {}, {
+      networkCacheConfig: { force: true },
+    }).toPromise()
+    // this will retain the result in the relay store so it's not garbage collected.
+    environment.retain(operation)
+  } catch (error) {
+    // We don't want to throw an error here because we don't want to block the user from navigating to the page.
+    // We still want to log the error so we can investigate it.
+    if (__DEV__) {
+      console.log(`Prefetching query failed: ${error}`)
+    }
+  }
 }
 
-const prefetchUrl = async (url: string, variables?: Variables) => {
+const prefetchUrl = async <TQuery extends OperationType>(
+  url: string,
+  variables?: VariablesOf<TQuery>
+) => {
   if (await isRateLimited()) {
     console.log("Reached prefetching rate limit.")
     return

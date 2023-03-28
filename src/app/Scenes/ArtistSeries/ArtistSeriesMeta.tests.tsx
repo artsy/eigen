@@ -1,18 +1,16 @@
 import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
 import {
   ArtistSeriesMeta,
   ArtistSeriesMetaFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("Artist Series Meta", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -47,7 +45,7 @@ describe("Artist Series Meta", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

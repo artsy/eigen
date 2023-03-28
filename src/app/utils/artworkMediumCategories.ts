@@ -21,5 +21,10 @@ export const artworkMediumCategories: Medium[] = [
   { label: "Jewelry", value: "Jewelry" },
   { label: "Design/Decorative Art", value: "Design/Decorative Art" },
   { label: "Textile Arts", value: "Textile Arts" },
+  { label: "Posters", value: "Posters" },
+  { label: "Books and Portfolios", value: "Books and Portfolios" },
   { label: "Other", value: "Other" },
+  { label: "Ephemera or Merchandise", value: "Ephemera or Merchandise" },
+  { label: "Reproduction", value: "Reproduction" },
+  { label: "NFT", value: "NFT" },
 ]

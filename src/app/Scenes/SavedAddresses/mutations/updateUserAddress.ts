@@ -1,6 +1,6 @@
 import { UserAddressAttributes } from "__generated__/addNewAddressMutation.graphql"
 import { updateUserAddressMutation } from "__generated__/updateUserAddressMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export const updateUserAddress = (userAddressID: string, address: UserAddressAttributes) => {

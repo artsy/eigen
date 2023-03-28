@@ -1,10 +1,8 @@
 import { FAIR2_ARTICLES_QUERY, FairArticlesPaginationContainer } from "app/Scenes/Fair/FairArticles"
-import { extractText } from "app/tests/extractText"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { extractText } from "app/utils/tests/extractText"
+import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 
-jest.unmock("react-relay")
-
-const { getWrapper } = setupTestWrapper({
+const { getWrapper } = setupTestWrapper_LEGACY({
   Component: FairArticlesPaginationContainer,
   query: FAIR2_ARTICLES_QUERY,
 })

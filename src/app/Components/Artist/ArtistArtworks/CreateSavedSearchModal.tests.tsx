@@ -4,20 +4,17 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
 import { delay } from "app/utils/delay"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import {
   CreateSavedSearchModal,
   CreateSavedSearchModalProps,
   tracks,
 } from "./CreateSavedSearchModal"
-
-jest.unmock("react-relay")
 
 const savedSearchEntity: SavedSearchEntity = {
   placeholder: "Placeholder",
@@ -51,13 +48,14 @@ describe("CreateSavedSearchModal", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+
     fireEvent.press(getByText("Your alert has been created."))
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
@@ -67,9 +65,9 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("should call navigate twice", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_root, getByText } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
 
     await delay(200)
@@ -82,9 +80,9 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
-    const { container } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")

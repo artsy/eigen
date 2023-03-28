@@ -1,5 +1,5 @@
-import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OnboardingLoginWithOTPForm, OTPMode } from "./OnboardingLoginWithOTP"
 
 const navigationPropsMock = {
@@ -39,13 +39,13 @@ describe("OnboardingLoginWithOTPTests", () => {
   describe("on demand requests", () => {
     it("shows a message when requesting an on demand code", () => {
       const testProvider = TestProvider("on_demand")
-      const { queryByTestId } = renderWithWrappersTL(testProvider)
+      const { queryByTestId } = renderWithWrappers(testProvider)
       expect(queryByTestId("on_demand_message")).not.toBeNull()
     })
 
     it("doesn't show a message for standard flow", () => {
       const testProvider = TestProvider("standard")
-      const { queryByTestId } = renderWithWrappersTL(testProvider)
+      const { queryByTestId } = renderWithWrappers(testProvider)
       expect(queryByTestId("on_demand_message")).toBeNull()
     })
   })

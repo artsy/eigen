@@ -1,5 +1,5 @@
-import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
+import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -37,7 +37,7 @@ export const Articles: React.FC = () => {
       articles={articles as any}
       isLoading={() => isLoadingNext}
       hasMore={() => hasNext}
-      title="Market News"
+      title="Artsy Editorial"
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}

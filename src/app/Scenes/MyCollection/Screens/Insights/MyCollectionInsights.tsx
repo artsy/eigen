@@ -1,39 +1,41 @@
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   MY_COLLECTION_INSIGHTS_REFRESH_KEY,
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Flex, Spinner, useSpace } from "palette"
-import React, { Suspense, useContext, useEffect, useState } from "react"
-import { RefreshControl } from "react-native"
+import { Spinner } from "palette"
+import { Suspense, useContext, useEffect, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
-import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionArtworkUploadMessages"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
-import { AverageAuctionPriceRail } from "./AverageAuctionPriceRail"
-import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
+import { CareerHighlightsRail } from "./CareerHighlightsRail"
+import { MedianAuctionPriceRail } from "./MedianAuctionPriceRail"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 import { MyCollectionInsightsIncompleteMessage } from "./MyCollectionMessages"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
-  const space = useSpace()
-  const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
-  const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
 
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
+  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(
+    MyCollectionInsightsScreenQuery,
+    {},
+    { fetchPolicy: "store-and-network" }
+  )
 
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
 
@@ -100,11 +102,12 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     return (
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
-        {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
+
+        {hasMarketSignals /* || average sale price data */ && (
           <>
-            <MarketSignalsSectionHeader />
+            <CareerHighlightsRail me={data.me!} />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
-            {!!enablePhase1Part2 && <AverageAuctionPriceRail me={data.me} />}
+            <MedianAuctionPriceRail me={data.me} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
@@ -115,15 +118,12 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   return (
     <StickyTabPageScrollView
-      style={{
-        flex: 1,
-      }}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+      refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
-        paddingTop: space("2"),
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
         justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
+        height: myCollectionArtworksCount > 0 ? "auto" : "100%",
       }}
       paddingHorizontal={0}
     >
@@ -154,7 +154,8 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
-      ...AverageAuctionPriceRail_me
+      ...MedianAuctionPriceRail_me
+      ...CareerHighlightsRail_me
       auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }

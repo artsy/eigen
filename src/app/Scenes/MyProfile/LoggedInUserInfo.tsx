@@ -1,8 +1,8 @@
-import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
+import { Box, Text } from "@artsy/palette-mobile"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
+import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { Box, Serif } from "palette"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -14,7 +14,7 @@ class UserProfile extends React.Component<UserProfileProps> {
   render() {
     const { me } = this.props
     const loginInfo = !!me.name ? `${me.name} (${me.email})` : me.email
-    return <Serif size="3t">Logged in as: {loginInfo}</Serif>
+    return <Text variant="sm">Logged in as: {loginInfo}</Text>
   }
 }
 

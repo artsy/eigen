@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.graphql"
+import { SmallCard } from "app/Components/Cards"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
-import { Box, BoxProps, Flex, SmallCard, Text } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -105,7 +106,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
   )
 
   return (
-    <Box {...rest}>
+    <Box {...rest} testID="ShowContextCard">
       <SectionTitle title={sectionTitle} onPress={onPress} />
 
       <TouchableOpacity onPress={onPress}>

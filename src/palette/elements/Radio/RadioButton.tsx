@@ -1,6 +1,6 @@
+import { Box, CssTransition, useTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Flex, FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { CssTransition, Text, useTheme } from "palette"
 import {
   PixelRatio,
   StyleSheet,
@@ -27,10 +27,8 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   disabled,
   error,
   onPress,
-  style,
   text,
   subtitle,
-  children,
   accessibilityState,
   ...restProps
 }) => {
@@ -82,6 +80,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
         onPress?.(event)
       }}
+      hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
     >
       <Flex {...restProps}>
         <Flex flexDirection="row">
@@ -89,7 +88,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
             <CssTransition
               style={[
                 styles(fontScale).container,
-                { marginRight: space("1") * fontScale },
+                { marginRight: space(1) * fontScale },
                 radioButtonStyle,
               ]}
               animate={["borderColor"]}
@@ -106,14 +105,14 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
           <Flex justifyContent="center">
             {!!text && (
-              <Text variant="md" color={textColor}>
+              <Text variant="sm-display" color={textColor}>
                 {text}
               </Text>
             )}
           </Flex>
         </Flex>
 
-        <Flex ml={(RADIOBUTTON_SIZE + space("1")) * fontScale} mt="6px">
+        <Flex ml={(RADIOBUTTON_SIZE + space(1)) * fontScale} mt="6px">
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
@@ -147,12 +146,14 @@ interface RadioDotProps {
 // This component represents the white ● mark in CSS. We are not using styled-system since it's easier to specify raw CSS
 // properties with styled-component.
 // Height, Width, and Border Radius calculations are used to maintain the size of the white dot when scaling
-export const RadioDot = styled.View.attrs<RadioDotProps>({})`
-  height: ${({ size }) => size * 0.625};
-  width: ${({ size }) => size * 0.625};
-  border-radius: ${({ size }) => `${size * 0.3125}px`};
-  background-color: white;
-`
+export const RadioDot = ({ size }: RadioDotProps) => (
+  <Box
+    width={size * 0.625}
+    height={size * 0.625}
+    borderRadius={size * 0.3125}
+    backgroundColor="white100"
+  />
+)
 
 export const DisabledDot = styled(RadioDot)`
   border-bottom-color: ${themeGet("colors.black30")};

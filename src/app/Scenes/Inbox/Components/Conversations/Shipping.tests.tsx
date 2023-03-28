@@ -1,17 +1,13 @@
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
+import { Shipping_Test_Query } from "__generated__/Shipping_Test_Query.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ShippingFragmentContainer } from "./Shipping"
 
-jest.unmock("react-relay")
-
 describe("ShippingFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapper<Shipping_Test_Query>({
     Component: ({ me }) => {
       return (
-        <Theme>
-          <ShippingFragmentContainer order={me.conversation.orderConnection.edges[0].node} />
-        </Theme>
+        <ShippingFragmentContainer order={me!.conversation!.orderConnection!.edges![0]!.node!} />
       )
     },
     query: graphql`

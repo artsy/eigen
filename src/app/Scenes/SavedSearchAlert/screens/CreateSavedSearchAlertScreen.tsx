@@ -1,8 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Box } from "palette"
-import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainer"
-import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
-import { SavedSearchStoreProvider } from "../SavedSearchStore"
+import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { SavedSearchStoreProvider } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 

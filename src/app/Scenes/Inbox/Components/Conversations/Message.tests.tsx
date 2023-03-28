@@ -1,11 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
 import "react-native"
 
 import Message from "./Message"
 
 it("renders without throwing an error", () => {
-  // tslint:disable-next-line:max-line-length
   const messageBody =
     "Hi, I'm interested in purchasing this work. Could you please provide more information about the piece, including price?"
   const props = {
@@ -24,5 +23,5 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderWithWrappers(<Message conversationId="420" showTimeSince message={props as any} />)
+  renderWithWrappersLEGACY(<Message conversationId="420" showTimeSince message={props as any} />)
 })

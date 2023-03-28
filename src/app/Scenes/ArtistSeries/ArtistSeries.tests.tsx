@@ -5,15 +5,13 @@ import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtwor
 import { ArtistSeriesHeader } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMeta } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
-
-jest.unmock("react-relay")
 
 const trackEvent = useTracking().trackEvent
 
@@ -48,7 +46,7 @@ describe("Artist Series Rail", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

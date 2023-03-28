@@ -9,7 +9,8 @@ export const ArtistIDsOptionsScreen = (
 ) => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  if (filterType === "saleArtwork") {
+  // TODO: Replace newSaleArtwork when AREnableArtworksConnectionForAuction is released
+  if (filterType === "saleArtwork" || filterType === "newSaleArtwork") {
     return <ArtistIDsSaleArtworksOptionsScreen {...props} />
   }
   return <ArtistIDsArtworksOptionsScreen {...props} />

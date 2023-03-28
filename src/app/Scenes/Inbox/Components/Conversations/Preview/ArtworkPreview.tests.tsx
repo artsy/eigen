@@ -1,32 +1,48 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import "react-native"
-
-import ArtworkPreview from "./ArtworkPreview"
-
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkPreviewTestsQuery } from "__generated__/ArtworkPreviewTestsQuery.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Touchable } from "palette"
+import { graphql } from "react-relay"
+import ArtworkPreview, { ArtworkPreviewProps } from "./ArtworkPreview"
 
 describe("concerning selection handling", () => {
-  it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
-    const tree = renderWithWrappers(
-      <ArtworkPreview artwork={artwork as any} onSelected={() => null} />
-    )
-    expect(tree.root.findByType(Touchable).props.onPress).toBeTruthy()
+  const { renderWithRelay } = setupTestWrapper<ArtworkPreviewTestsQuery, ArtworkPreviewProps>({
+    Component: ({ artwork, onSelected }) => (
+      <ArtworkPreview artwork={artwork!} onSelected={onSelected} />
+    ),
+    query: graphql`
+      query ArtworkPreviewTestsQuery @relay_test_operation {
+        artwork(id: "bradley-theodore-karl-and-anna-face-off-diptych") {
+          ...ArtworkPreview_artwork
+        }
+      }
+    `,
   })
 
-  it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
-    const tree = renderWithWrappers(<ArtworkPreview artwork={artwork as any} />)
-    expect(tree.root.findByType(Touchable).props.onPress).toBeFalsy()
+  const onSelected = jest.fn()
+  beforeEach(() => {
+    onSelected.mockClear()
+  })
+
+  it("passes an onPress handler to the touchable component if an onSelected handler is given", () => {
+    renderWithRelay(
+      { Artwork: () => ({ title: "Karl and Anna Face Off (Diptych)", date: "2016" }) },
+      { onSelected }
+    )
+
+    expect(screen.queryByText("Karl and Anna Face Off (Diptych) / 2016")).toBeTruthy()
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+
+    expect(onSelected).toHaveBeenCalledTimes(1)
+  })
+
+  it("does not pass an onPress handler to the touchable component if no onSelected handler is given", () => {
+    renderWithRelay({
+      Artist: () => ({}),
+    })
+
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+
+    expect(onSelected).not.toHaveBeenCalled()
   })
 })
-
-const artwork = {
-  id: "bradley-theodore-karl-and-anna-face-off-diptych",
-  internalID: "mongoID",
-  href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
-  title: "Karl and Anna Face Off (Diptych)",
-  date: "2016",
-  artist_names: "Bradley Theodore",
-  image: {
-    url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-  },
-}

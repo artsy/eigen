@@ -37,7 +37,7 @@ Push up the branch for posterity:
 
 Communicate with other devs that a release candidate will be deployed and they should hold off on deploying betas until a build is submitted for review.
 
-`./scripts/deploy-both`
+`./scripts/deploy-beta-both`
 
 ## Do bug fix QA and some smoketests and release to the app store
 
@@ -52,7 +52,7 @@ The changes on the release-candidate branch might be cherry-picks only, or it mi
 ## Slack thread for reference
 
 Here is a thread from a previous time we did this:
-https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500
+[Slack Thread 🔐](https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500)
 
 ## Example PR
 

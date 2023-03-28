@@ -2,7 +2,7 @@ import {
   UpdateMyProfileInput,
   updateMyUserProfileMutation,
 } from "__generated__/updateMyUserProfileMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, Environment, graphql } from "react-relay"
 
 export const updateMyUserProfile = async (
@@ -41,6 +41,9 @@ export const updateMyUserProfile = async (
               receivePromotionNotification
               receivePurchaseNotification
               receiveSaleOpeningClosingNotification
+              priceRangeMin
+              priceRangeMax
+              priceRange
             }
           }
         }
@@ -68,6 +71,7 @@ export const updateMyUserProfile = async (
         } catch (e) {
           // fall through
         }
+        console.error(e)
         reject("Something went wrong")
       },
     })

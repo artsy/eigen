@@ -1,7 +1,7 @@
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Flex, Input } from "palette"
-import { useColor } from "palette/hooks"
+import { Input } from "palette"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"
 import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
@@ -12,8 +12,10 @@ import {
 } from "./OnboardingCreateAccount"
 import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
-export interface OnboardingCreateAccountNameProps
-  extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
+export type OnboardingCreateAccountNameProps = StackScreenProps<
+  OnboardingCreateAccountNavigationStack,
+  "OnboardingCreateAccountName"
+>
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({
   navigation,

@@ -1,20 +1,21 @@
+import { Spacer, Flex, Box, useTheme, Text } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import ChevronIcon from "app/Icons/ChevronIcon"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
+import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Input, Join, Separator, Spacer, Text, useTheme } from "palette"
+import { Input, Join, Separator } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { SubmitInquiryRequest } from "../Mutation/SubmitInquiryRequest"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 import { ShippingModal } from "./ShippingModal"
 
@@ -88,7 +89,7 @@ const InquiryQuestionOption: React.FC<{
         >
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
-              <Join separator={<Spacer ml={3} />}>
+              <Join separator={<Spacer x={4} />}>
                 <Checkbox
                   testID={`checkbox-${id}`}
                   checked={questionSelected}
@@ -151,6 +152,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
+  const [loading, setLoading] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
   const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
@@ -196,6 +198,34 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     }
   }, [mutationSuccessful])
 
+  useEffect(() => {
+    if (mutationSuccessful || mutationError) {
+      setLoading(false)
+    }
+  }, [mutationSuccessful, mutationError])
+
+  const sendInquiry = () => {
+    if (loading) {
+      return
+    }
+    setLoading(true)
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Tap,
+      action_name: Schema.ActionNames.InquirySend,
+      owner_type: Schema.OwnerEntityTypes.Artwork,
+      owner_id: artwork.internalID,
+      owner_slug: artwork.slug,
+    })
+    SubmitInquiryRequest(
+      relay.environment,
+      artwork,
+      state,
+      setMutationSuccessful,
+      setMutationError,
+      handleErrorTracking
+    )
+  }
+
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
       <FancyModalHeader
@@ -212,23 +242,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         }}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
-        onRightButtonPress={() => {
-          tracking.trackEvent({
-            action_type: Schema.ActionTypes.Tap,
-            action_name: Schema.ActionNames.InquirySend,
-            owner_type: Schema.OwnerEntityTypes.Artwork,
-            owner_id: artwork.internalID,
-            owner_slug: artwork.slug,
-          })
-          SubmitInquiryRequest(
-            relay.environment,
-            artwork,
-            state,
-            setMutationSuccessful,
-            setMutationError,
-            handleErrorTracking
-          )
-        }}
+        onRightButtonPress={sendInquiry}
       >
         {state.inquiryType}
       </FancyModalHeader>

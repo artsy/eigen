@@ -1,10 +1,10 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 import renderWithLoadProgress from "./renderWithLoadProgress"
 
 describe(renderWithLoadProgress, () => {
   it(`renders a spinner while the graphqls are loading`, () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       renderWithLoadProgress(() => null, {})({ error: null, props: null, retry: () => null })!
     )
 
@@ -12,7 +12,7 @@ describe(renderWithLoadProgress, () => {
   })
 
   it(`renders the real content when the graphqls are done`, () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       renderWithLoadProgress(
         () => <Text>the real content</Text>,
         {}

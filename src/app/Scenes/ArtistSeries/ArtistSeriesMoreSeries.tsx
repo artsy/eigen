@@ -1,8 +1,8 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { Flex, FlexProps, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtistSeriesMoreSeries_artist$data } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
-import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { Flex, FlexProps, Sans } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,6 +15,7 @@ export type ArtistSeriesConnectionEdge = NonNullable<
 interface ArtistSeriesMoreSeriesProps extends FlexProps {
   artist: ArtistSeriesMoreSeries_artist$data | null | undefined
   artistSeriesHeader: string
+  headerVariant?: TextProps["variant"]
   contextScreenOwnerType: ScreenOwnerType
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
@@ -30,6 +31,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   currentArtistSeriesExcluded,
+  headerVariant = "sm-display",
   ...rest
 }) => {
   const series = artist?.artistSeriesConnection?.edges ?? []
@@ -52,10 +54,10 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
 
   return (
     <Flex {...rest}>
-      <Flex mb="15px" flexDirection="row" justifyContent="space-between">
-        <Sans size="4t" testID="header">
+      <Flex mb="15px" flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Text variant={headerVariant} testID="header">
           {artistSeriesHeader}
-        </Sans>
+        </Text>
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
@@ -63,7 +65,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Sans testID="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
+            <Text variant="sm-display" testID="viewAll">{`View All (${totalCount})`}</Text>
           </TouchableOpacity>
         )}
       </Flex>

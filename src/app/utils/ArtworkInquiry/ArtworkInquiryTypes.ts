@@ -1,6 +1,6 @@
 import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import { Dispatch } from "react"
-import { LocationWithDetails } from "../googleMaps"
 
 export type ArtworkInquiryActions =
   | SelectInquiryType

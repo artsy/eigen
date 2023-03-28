@@ -1,37 +1,42 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
+import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
+import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
+import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import { Sale_me$data } from "__generated__/Sale_me.graphql"
 import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
-import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
-import { navigate, popParentViewController } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
+import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
+import { navigate, popParentViewController } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
-import { Box, Flex, Join, Spacer } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Join } from "palette"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
-import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
+import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
+import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -72,11 +77,11 @@ interface ViewToken {
   section?: any
 }
 
-// tslint:disable-next-line:no-empty
 const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   const flatListRef = useRef<FlatList<any>>(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -139,7 +144,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+  const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item?.key === "saleLotsList"
     })
@@ -163,6 +168,44 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
   }
 
+  const renderSaleLotsList = () => {
+    if (below) {
+      if (enableArtworksConnection) {
+        return (
+          <NewSaleLotsListContainer
+            unfilteredArtworks={
+              (below as unknown as SaleBelowTheFoldNewQuery$data).viewer?.unfilteredArtworks!
+            }
+            viewer={(below as unknown as SaleBelowTheFoldNewQuery$data).viewer}
+            saleID={sale.internalID}
+            saleSlug={sale.slug}
+            scrollToTop={scrollToTop}
+            artworksRefetchRef={artworksRefetchRef}
+          />
+        )
+      }
+
+      return (
+        <SaleLotsListContainer
+          saleArtworksConnection={below}
+          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
+          saleID={sale.internalID}
+          saleSlug={sale.slug}
+          scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
+        />
+      )
+    }
+
+    // Since most likely this part of the screen will be already loaded when the user
+    // reaches it, there is no need to create the fancy placeholders here
+    return (
+      <Flex justifyContent="center" alignItems="center" height={200}>
+        <Spinner />
+      </Flex>
+    )
+  }
+
   const saleSectionsData: SaleSection[] = _.compact([
     {
       key: SALE_HEADER,
@@ -171,7 +214,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
       key: SALE_REGISTER_TO_BID,
       content: (
-        <Flex mx="2" mt={2}>
+        <Flex mx={2} mt={2}>
           <RegisterToBidButtonContainer
             sale={sale}
             me={me}
@@ -185,10 +228,12 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       !sale.isClosed && {
         key: SALE_CASCADING_END_TIMES_BANNER,
         content: (
-          <CascadingEndTimesBanner
-            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
-            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
-          />
+          <Flex my={2}>
+            <CascadingEndTimesBanner
+              cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+            />
+          </Flex>
         ),
       },
     {
@@ -201,26 +246,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: BUY_NOW_ARTWORKS_RAIL,
-      content: <BuyNowArtworksRailContainer sale={sale} />,
+      content: enableArtworksConnection ? (
+        <NewBuyNowArtworksRailContainer sale={sale} />
+      ) : (
+        <BuyNowArtworksRailContainer sale={sale} />
+      ),
     },
     {
       key: SALE_LOTS_LIST,
-      content: below ? (
-        <SaleLotsListContainer
-          saleArtworksConnection={below}
-          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
-          saleID={sale.internalID}
-          saleSlug={sale.slug}
-          scrollToTop={scrollToTop}
-          artworksRefetchRef={artworksRefetchRef}
-        />
-      ) : (
-        // Since most likely this part of the screen will be already loaded when the user
-        // reaches it, there is no need to create the fancy placeholders here
-        <Flex justifyContent="center" alignItems="center" height={200}>
-          <Spinner />
-        </Flex>
-      ),
+      content: renderSaleLotsList(),
     },
   ])
 
@@ -318,18 +352,18 @@ export const SalePlaceholder: React.FC<{}> = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
     <Flex px={2}>
-      <Join separator={<Spacer my={2} />}>
+      <Join separator={<Spacer y={2} />}>
         <Box>
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
-          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={6} />
         </Box>
         <Box>
           <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
           <PlaceholderBox height={50} width="100%" />
         </Box>
         <Box>
-          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={6} />
           <Flex flexDirection="row" py={2}>
             {times(3).map((index: number) => (
               <Flex key={index} marginRight={1}>
@@ -359,6 +393,7 @@ export const SaleContainer = createRefetchContainer(
         ...SaleHeader_sale
         ...RegisterToBidButton_sale
         ...BuyNowArtworksRail_sale
+        ...NewBuyNowArtworksRail_sale
         endAt
         internalID
         liveStartAt
@@ -394,11 +429,42 @@ export const SaleScreenQuery = graphql`
   }
 `
 
+const SaleScreenBelowQuery = graphql`
+  query SaleBelowTheFoldQuery($saleID: ID) {
+    ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+    unfilteredSaleArtworksConnection: saleArtworksConnection(
+      saleID: $saleID
+      aggregations: [TOTAL]
+    ) {
+      ...SaleLotsList_unfilteredSaleArtworksConnection
+      counts {
+        total
+      }
+    }
+  }
+`
+
+const SaleScreenBelowNewQuery = graphql`
+  query SaleBelowTheFoldNewQuery($saleID: ID, $input: FilterArtworksInput) {
+    viewer {
+      unfilteredArtworks: artworksConnection(
+        saleID: $saleID
+        aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
+        first: 0
+      ) {
+        ...NewSaleLotsList_unfilteredArtworks
+      }
+      ...NewSaleLotsList_viewer @arguments(saleID: $saleID, input: $input)
+    }
+  }
+`
+
 export const SaleQueryRenderer: React.FC<{
   saleID: string
   environment?: RelayModernEnvironment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   useEffect(() => {
     trackEvent(tracks.pageView(saleID))
@@ -409,29 +475,29 @@ export const SaleQueryRenderer: React.FC<{
       render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
+            environment={environment || getRelayEnvironment()}
             above={{
               query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },
             }}
-            below={{
-              query: graphql`
-                # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
-                query SaleBelowTheFoldQuery($saleID: ID) {
-                  ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
-                  unfilteredSaleArtworksConnection: saleArtworksConnection(
-                    saleID: $saleID
-                    aggregations: [TOTAL]
-                  ) {
-                    ...SaleLotsList_unfilteredSaleArtworksConnection
-                    counts {
-                      total
-                    }
+            below={
+              enableArtworksConnection
+                ? {
+                    query: SaleScreenBelowNewQuery,
+                    variables: {
+                      saleID,
+                      // @ts-ignore
+                      input: {
+                        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                        priceRange: "",
+                      },
+                    },
                   }
-                }
-              `,
-              variables: { saleID },
-            }}
+                : {
+                    query: SaleScreenBelowQuery,
+                    variables: { saleID },
+                  }
+            }
             render={({ props, error }) => {
               if (error) {
                 if (__DEV__) {

@@ -1,21 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
-import {
-  maybeReportExperimentFlag,
-  maybeReportExperimentVariant,
-} from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
-import { Keyboard, Platform, ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import {
   FetchPolicy,
   fetchQuery,
@@ -25,20 +18,21 @@ import {
 } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import styled from "styled-components"
-import { CityGuideCTA } from "./components/CityGuideCTA"
-import { CityGuideCTANew } from "./components/CityGuideCTANew"
-import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { SearchInput } from "./components/SearchInput"
-import { SearchPills } from "./components/SearchPills"
-import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
-import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
+import styled from "styled-components/native"
+import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
-import { AlgoliaIndexKey } from "./types"
-import { PillType } from "./types"
+import { TrendingArtists } from "./TrendingArtists"
+import { CityGuideCTA } from "./components/CityGuideCTA"
+import { SearchInput } from "./components/SearchInput"
+import { SearchPills } from "./components/SearchPills"
+import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
+import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
+import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
+import { AlgoliaIndexKey, PillType } from "./types"
+import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
 const SearchInputContainer = connectSearchBox(SearchInput)
 
@@ -60,7 +54,7 @@ export const Search: React.FC = () => {
   const { system } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
-  const enableMaps = useFeatureFlag("AREnableMapScreen")
+  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -108,18 +102,6 @@ export const Search: React.FC = () => {
   })
   const { trackEvent } = useTracking()
 
-  const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
-  const enableImprovedSearchPills = useExperimentFlag("eigen-enable-improved-search-pills")
-  const smudgeValue = useExperimentVariant("test-search-smudge")
-  nonCohesionTracks.experimentVariant(
-    "test-search-smudge",
-    smudgeValue.enabled,
-    smudgeValue.variant,
-    smudgeValue.payload
-  )
-  const smudge2Value = useExperimentFlag("test-eigen-smudge2")
-  nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
-
   const pillsArray = useMemo<PillType[]>(() => {
     const allowedIndices = indices.filter((indice) =>
       ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
@@ -130,33 +112,35 @@ export const Search: React.FC = () => {
       return {
         ...other,
         type: "algolia",
-        disabled: enableImprovedSearchPills && !indicesInfo[name]?.hasResults,
+        disabled: !indicesInfo[name]?.hasResults,
         indexName: name,
       }
     })
 
     return [...DEFAULT_PILLS, ...formattedIndices]
-  }, [indices, indicesInfo, enableImprovedSearchPills])
+  }, [indices, indicesInfo])
 
   useEffect(() => {
     /**
      * Refetch up-to-date info about Algolia indices for specified search query
      * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
      */
-    if (enableImprovedSearchPills && searchClient && shouldStartSearching(searchQuery)) {
+    if (searchClient && shouldStartSearching(searchQuery)) {
       updateIndicesInfo(searchQuery)
     }
-  }, [searchClient, enableImprovedSearchPills])
+  }, [searchClient])
 
   const onTextChange = useCallback(
-    (value) => {
-      handleResetSearchInput()
+    (value: string) => {
+      if (value.length === 0) {
+        handleResetSearchInput()
+      }
 
-      if (enableImprovedSearchPills && shouldStartSearching(value)) {
+      if (shouldStartSearching(value)) {
         updateIndicesInfo(value)
       }
     },
-    [searchClient, enableImprovedSearchPills]
+    [searchClient]
   )
 
   if (!searchClient || !searchInsightsConfigured) {
@@ -172,7 +156,6 @@ export const Search: React.FC = () => {
 
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-    Keyboard.dismiss()
     trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
   }
 
@@ -183,6 +166,14 @@ export const Search: React.FC = () => {
   const handleResetSearchInput = () => {
     searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
     setSelectedPill(TOP_PILL)
+  }
+
+  const renderCityGuideCTA = () => {
+    if (Platform.OS === "ios" && !isPad()) {
+      return <CityGuideCTA />
+    }
+
+    return null
   }
 
   return (
@@ -196,11 +187,6 @@ export const Search: React.FC = () => {
         >
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
-          {!!enableMaps && (
-            <Flex p={2} pb={1}>
-              <Text variant="xl">Explore</Text>
-            </Flex>
-          )}
           <Flex p={2} pb={0}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
@@ -228,45 +214,26 @@ export const Search: React.FC = () => {
               </>
             ) : (
               <Scrollable>
-                <RecentSearches />
-                <Spacer mb={3} />
-                {!!enableMaps ? (
-                  <Touchable onPress={() => navigate("/map")}>
-                    <CityGuideCTANew />
-                  </Touchable>
+                <HorizontalPadding>
+                  <RecentSearches />
+                </HorizontalPadding>
+
+                {!!isSearchDiscoveryContentEnabled ? (
+                  <>
+                    <Spacer y={4} />
+                    <TrendingArtists data={queryData} mb={4} />
+                    <CuratedCollections collections={queryData} mb={4} />
+                  </>
                 ) : (
-                  !isPad() && Platform.OS === "ios" && <CityGuideCTA />
+                  <Spacer y={4} />
                 )}
-                <Spacer mb="40px" />
+
+                <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
+
+                <Spacer y={4} />
               </Scrollable>
             )}
           </Flex>
-          {!!exampleExperiments && !!smudge2Value && (
-            <Flex
-              position="absolute"
-              width={51}
-              height={51}
-              backgroundColor="black"
-              top={0}
-              left={0}
-              alignItems="center"
-              justifyContent="center"
-              borderWidth={4}
-              borderColor="red100"
-            >
-              <Text color="white100">wow</Text>
-            </Flex>
-          )}
-          {!!exampleExperiments && !!smudgeValue.enabled && (
-            <Flex
-              position="absolute"
-              width={51}
-              height={51}
-              backgroundColor={smudgeValue.payload ?? "orange"}
-              top={0}
-              right={0}
-            />
-          )}
         </InstantSearch>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
@@ -287,6 +254,8 @@ export const SearchScreenQuery = graphql`
         }
       }
     }
+    ...CuratedCollections_collections
+    ...TrendingArtists_query
   }
 `
 
@@ -301,9 +270,12 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardShouldPersistTaps: "handled",
 }))`
   flex: 1;
-  padding: 0 20px;
   padding-top: 20px;
 `
+
+const HorizontalPadding: React.FC = ({ children }) => {
+  return <Box px={2}>{children}</Box>
+}
 
 const tracks = {
   tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
@@ -314,25 +286,6 @@ const tracks = {
     query,
     action: ActionType.tappedNavigationTab,
   }),
-}
-
-const nonCohesionTracks = {
-  experimentFlag: (name: string, enabled: boolean) =>
-    maybeReportExperimentFlag({
-      name,
-      enabled,
-      context_screen_owner_type: OwnerType.search,
-      context_screen: Schema.PageNames.Search,
-    }),
-  experimentVariant: (name: string, enabled: boolean, variant: string, payload?: string) =>
-    maybeReportExperimentVariant({
-      name,
-      enabled,
-      variant,
-      payload,
-      context_screen_owner_type: OwnerType.search,
-      context_screen: Schema.PageNames.Search,
-    }),
 }
 
 const shouldStartSearching = (value: string) => {

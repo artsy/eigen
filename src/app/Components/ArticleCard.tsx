@@ -1,8 +1,9 @@
+import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, OpaqueImageView, Spacer, Text, useTheme } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { OpaqueImageView } from "palette"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
@@ -31,7 +32,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   const { space } = useTheme()
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <Flex width={isFluid ? "100%" : WIDTH}>
@@ -61,14 +62,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             ) : (
               <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg">
+          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {article.thumbnailTitle}
           </Text>
-          {!!article.author && (
+          {!!article.byline && (
             <Text color="black60" variant="xs">
-              {article.author.name}
+              {article.byline}
             </Text>
           )}
         </Flex>
@@ -82,15 +83,13 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
     fragment ArticleCard_article on Article {
       internalID
       slug
-      author {
-        name
-      }
       href
       thumbnailImage {
         url(version: "large")
       }
       thumbnailTitle
       vertical
+      byline
     }
   `,
 })

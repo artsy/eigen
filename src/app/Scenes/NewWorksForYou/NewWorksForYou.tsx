@@ -1,41 +1,45 @@
 import { OwnerType } from "@artsy/cohesion"
-import { NewWorksForYou_me$data } from "__generated__/NewWorksForYou_me.graphql"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
+import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, SimpleMessage, Spacer } from "palette"
+import { SimpleMessage } from "palette"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
-const PAGE_SIZE = 10
+const PAGE_SIZE = 100
+export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
+export const DEFAULT_RECS_MODEL_VERSION = "C"
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
-  me: NewWorksForYou_me$data
+  viewer: NewWorksForYou_viewer$data
 }
 
-const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
-  const { hasMore, loadMore } = relay
-
+const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         <Box>
-          {!!me.artworks?.edges?.length ? (
+          {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
-              connection={me.artworks!}
-              loadMore={loadMore}
-              hasMore={hasMore}
+              connection={viewer.artworks!}
+              loadMore={() => null}
+              hasMore={() => false}
               pageSize={PAGE_SIZE}
               contextScreenOwnerType={OwnerType.newWorksForYou}
-              HeaderComponent={<Spacer mt={2} />}
+              HeaderComponent={<Spacer y={2} />}
               shouldAddPadding
               showLoadingSpinner
               useParentAwareScrollView={false}
@@ -52,11 +56,22 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
 export const NewWorksForYouFragmentContainer = createPaginationContainer(
   NewWorksForYou,
   {
-    me: graphql`
-      fragment NewWorksForYou_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        artworks: newWorksByInterestingArtists(first: $count, after: $cursor)
-          @connection(key: "NewWorksForYou_artworks") {
+    viewer: graphql`
+      fragment NewWorksForYou_viewer on Viewer
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 100 }
+        cursor: { type: "String" }
+        includeBackfill: { type: "Boolean!" }
+        version: { type: "String" }
+        maxWorksPerArtist: { type: "Int" }
+      ) {
+        artworks: artworksForUser(
+          after: $cursor
+          first: $count
+          includeBackfill: $includeBackfill
+          maxWorksPerArtist: $maxWorksPerArtist
+          version: $version
+        ) @connection(key: "NewWorksForYou_artworks") {
           edges {
             node {
               id
@@ -69,7 +84,7 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props?.me?.artworks
+      return props?.viewer?.artworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -85,9 +100,22 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query NewWorksForYouRefetchQuery($cursor: String, $count: Int!) {
-        me {
-          ...NewWorksForYou_me @arguments(cursor: $cursor, count: $count)
+      query NewWorksForYouRefetchQuery(
+        $cursor: String
+        $count: Int!
+        $version: String
+        $includeBackfill: Boolean!
+        $maxWorksPerArtist: Int
+      ) {
+        viewer {
+          ...NewWorksForYou_viewer
+            @arguments(
+              cursor: $cursor
+              count: $count
+              includeBackfill: $includeBackfill
+              version: $version
+              maxWorksPerArtist: $maxWorksPerArtist
+            )
         }
       }
     `,
@@ -95,19 +123,65 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
 )
 
 export const NewWorksForYouScreenQuery = graphql`
-  query NewWorksForYouQuery {
-    me {
-      ...NewWorksForYou_me
+  query NewWorksForYouQuery($includeBackfill: Boolean!, $version: String, $maxWorksPerArtist: Int) {
+    viewer {
+      ...NewWorksForYou_viewer
+        @arguments(
+          includeBackfill: $includeBackfill
+          version: $version
+          maxWorksPerArtist: $maxWorksPerArtist
+        )
     }
   }
 `
 
-export const NewWorksForYouQueryRenderer: React.FC = () => {
+interface NewWorksForYouQueryRendererProps {
+  utm_medium?: string
+  includeBackfill?: boolean
+  maxWorksPerArtist?: number
+  version?: string
+}
+
+export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
+  utm_medium,
+  includeBackfill = true,
+  maxWorksPerArtist = 3,
+  version: versionProp,
+}) => {
+  const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
+
+  const isReferredFromEmail = utm_medium === "email"
+
+  // Use the version specified in the URL or no version if the screen is opened from the email.
+  const version = isReferredFromEmail
+    ? versionProp?.toUpperCase() || undefined
+    : worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION
+
+  useEffect(() => {
+    if (isReferredFromEmail) {
+      return
+    }
+
+    maybeReportExperimentVariant({
+      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+      enabled: worksForYouRecommendationsModel.enabled,
+      variantName: worksForYouRecommendationsModel.variant,
+      payload: worksForYouRecommendationsModel.payload,
+      context_owner_type: OwnerType.newWorksForYou,
+      context_owner_screen: OwnerType.newWorksForYou,
+      storeContext: true,
+    })
+  }, [])
+
   return (
     <QueryRenderer<NewWorksForYouQuery>
       environment={defaultEnvironment}
       query={NewWorksForYouScreenQuery}
-      variables={{}}
+      variables={{
+        version,
+        includeBackfill,
+        maxWorksPerArtist,
+      }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,
         renderPlaceholder: Placeholder,
@@ -121,7 +195,7 @@ const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <PlaceholderGrid />
       </PageWithSimpleHeader>
     </ProvidePlaceholderContext>

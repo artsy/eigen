@@ -1,20 +1,20 @@
-import Clipboard from "@react-native-community/clipboard"
+import { MoreIcon, LinkIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
+import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
+import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
-import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React, { useState } from "react"
 import { Animated, Dimensions, View } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
-import { CaretButton } from "../../../Components/Buttons/CaretButton"
-import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "../../../navigation/navigate"
-import { useFeatureFlag } from "../../../store/GlobalStore"
 
 export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23
@@ -26,8 +26,7 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
-
-  const enableAuctionShare = useFeatureFlag("AREnableAuctionShareButton")
+  const saInsets = useSafeAreaInsets()
 
   const toast = useToast()
 
@@ -37,9 +36,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
-  const cascadingEndTimeFeatureEnabled =
-    useFeatureFlag("AREnableCascadingEndTimerSalePageDetails") &&
-    sale.cascadingEndTimeIntervalMinutes
+  const cascadingEndTimeFeatureEnabled = sale.cascadingEndTimeIntervalMinutes
 
   const handleCopyLinkPress = () => {
     const clipboardLink = getShareURL(sale.href!)
@@ -111,7 +108,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="md" fontWeight="500" color="white">
+                <Text variant="sm-display" fontWeight="500" color="white">
                   Auction closed
                 </Text>
               </Flex>
@@ -122,40 +119,36 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       <View
         style={{
           backgroundColor: "white",
-          marginTop: !!sale.coverImage?.url
-            ? COVER_IMAGE_HEIGHT
-            : useScreenDimensions().safeAreaInsets.top + 40,
+          marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : saInsets.top + 40,
         }}
       >
-        <Flex mx="2" mt="2">
+        <Flex mx={2} mt={2}>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Flex flex={1}>
-              <Text variant="lg" testID="saleName">
+              <Text variant="lg-display" testID="saleName">
                 {sale.name}
               </Text>
             </Flex>
-            {!!enableAuctionShare && (
-              <Flex flex={0.1}>
-                <Touchable
-                  onPress={() => {
-                    setShareSheetVisible(true)
-                  }}
-                  style={{
-                    width: 30,
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                  }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  haptic="impactLight"
-                >
-                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                </Touchable>
-              </Flex>
-            )}
+            <Flex flex={0.1}>
+              <Touchable
+                onPress={() => {
+                  setShareSheetVisible(true)
+                }}
+                style={{
+                  width: 30,
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                haptic="impactLight"
+              >
+                <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+              </Touchable>
+            </Flex>
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (
             <>
-              <Flex mb="1" mt="2">
+              <Flex mb={1} mt={2}>
                 {!!relativeTimeOfSale?.copy && (
                   <Text variant="sm" color={relativeTimeOfSale.color}>
                     {relativeTimeOfSale.copy}
@@ -171,7 +164,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
               )}
             </>
           ) : (
-            <Flex my="1">
+            <Flex my={1}>
               {saleTimeDetails.absolute !== null && (
                 <Text style={{ fontWeight: "bold" }} variant="sm">
                   {saleTimeDetails.absolute}

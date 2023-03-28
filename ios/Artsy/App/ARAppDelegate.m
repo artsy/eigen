@@ -37,7 +37,6 @@
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
-#import "ARTakeCameraPhotoModule.h"
 #import "ARPHPhotoPickerModule.h"
 #import "ARNotificationsManager.h"
 #import "ARCocoaConstantsModule.h"
@@ -348,7 +347,6 @@ static ARAppDelegate *_sharedInstance = nil;
     return @[
         [[AREmission sharedInstance] eventsModule],
         [[AREmission sharedInstance] APIModule],
-        [ARTakeCameraPhotoModule new],
         [ARPHPhotoPickerModule new],
         [[AREmission sharedInstance] notificationsManagerModule],
         [ARCocoaConstantsModule new],

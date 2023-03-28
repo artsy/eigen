@@ -1,39 +1,18 @@
 import { ArtistNotableWorksRailTestsQuery } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("Notable Works Rail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<ArtistNotableWorksRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtistNotableWorksRailTestsQuery @relay_test_operation @raw_response_type {
-            artist(id: "a-really-talented-artist") {
-              ...ArtistNotableWorksRail_artist
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artist) {
-            return <ArtistNotableWorksRailFragmentContainer artist={props.artist} />
-          }
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtistNotableWorksRailTestsQuery>({
+    Component: (props) => <ArtistNotableWorksRailFragmentContainer artist={props.artist!} />,
+    query: graphql`
+      query ArtistNotableWorksRailTestsQuery @relay_test_operation @raw_response_type {
+        artist(id: "a-really-talented-artist") {
+          ...ArtistNotableWorksRail_artist
+        }
+      }
+    `,
   })
 
   afterEach(() => {
@@ -41,22 +20,19 @@ describe("Notable Works Rail", () => {
   })
 
   it("renders without throwing an error when 3 or more notable artworks", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artist: () => artistMockData,
     })
 
     expect(getByText("My Second Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toHaveProp("fontStyle", "italic")
     expect(getByText("My Greatest Art, 2020")).toBeTruthy()
     expect(getByText("My Third Greatest Art, 2020")).toBeTruthy()
   })
 
   describe("Notable artwork metadata", () => {
     it("renders artwork price", async () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText } = renderWithRelay({
         Artist: () => artistMockData,
       })
 
@@ -64,9 +40,7 @@ describe("Notable Works Rail", () => {
     })
 
     it("renders 'Bidding closed' when artwork is in closed auction state", async () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText } = renderWithRelay({
         Artist: () => artistMockData,
       })
 
@@ -74,9 +48,7 @@ describe("Notable Works Rail", () => {
     })
 
     it("renders current bid value and bids count", async () => {
-      const { queryByText } = renderWithWrappersTL(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByText } = renderWithRelay({
         Artist: () => artistMockData,
       })
 
@@ -97,6 +69,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
+          isSaved: false,
           date: "2020",
           partner: null,
           image: {
@@ -121,6 +94,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
@@ -152,6 +126,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id-3",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",

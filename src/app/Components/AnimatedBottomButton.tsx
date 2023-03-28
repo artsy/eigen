@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { Touchable } from "palette"
 import React, { useEffect, useMemo } from "react"
 import { Animated, StyleProp, ViewStyle } from "react-native"
@@ -6,7 +5,7 @@ import styled from "styled-components/native"
 
 export const BottomButtonContainer = styled(Animated.View)`
   position: absolute;
-  bottom: 20;
+  bottom: 20px;
   flex: 1;
   justify-content: center;
   width: 100%;

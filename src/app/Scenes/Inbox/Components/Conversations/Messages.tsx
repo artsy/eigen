@@ -1,17 +1,16 @@
+import { ShieldIcon } from "@artsy/palette-mobile"
+import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
+import { ToastComponent } from "app/Components/Toast/ToastComponent"
+import { PAGE_SIZE } from "app/Components/constants"
+
+import { extractNodes } from "app/utils/extractNodes"
+
+import { sortBy } from "lodash"
+import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
-
-import { PAGE_SIZE } from "app/Components/constants"
-
-import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
-import { extractNodes } from "app/utils/extractNodes"
-
-import { ToastComponent } from "app/Components/Toast/ToastComponent"
-import { sortBy } from "lodash"
-import { DateTime } from "luxon"
-import { ShieldIcon } from "palette"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
@@ -35,12 +34,6 @@ type Order = NonNullable<
 >
 type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
-
-export type ConversationMessage = NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]
-  >["node"]
->
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const { conversation, relay, onDataFetching, onRefresh } = props
@@ -149,7 +142,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       <ToastComponent
         id={1}
         positionIndex={-0.3}
-        message="To protect your payment, always communicate and pay through the Artsy platform."
+        message="To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
         placement="top"
         backgroundColor="blue100"
         duration="long"

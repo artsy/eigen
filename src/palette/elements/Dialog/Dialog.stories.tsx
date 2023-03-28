@@ -1,9 +1,9 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
+import { Button } from "palette"
 import { useState } from "react"
 import { List } from "storybook/helpers"
 import { Dialog, DialogProps } from "."
-import { Button } from "../Button/Button"
 
 const DialogDemo: React.FC<Omit<DialogProps, "isVisible" | "primaryCta" | "title">> = (props) => {
   const [visible, setVisible] = useState(false)

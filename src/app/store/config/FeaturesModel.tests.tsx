@@ -1,8 +1,8 @@
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
+import * as loads from "app/utils/jsonFiles"
 import { DevToggleDescriptor, FeatureDescriptor, features } from "./features"
 
-import * as loads from "app/utils/jsonFiles"
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
 const echoLaunchJsonActual = loads.echoLaunchJson()
@@ -59,32 +59,32 @@ describe("Feature flags", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
     expect(getComputedFeatures().FeatureB).toBe(false)
   })
-  it("support admin overrides", () => {
+  it("support local overrides", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
-    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "FeatureA" as any,
       value: false,
     })
     expect(getComputedFeatures().FeatureA).toBe(false)
-    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "FeatureA" as any,
       value: null,
     })
     expect(getComputedFeatures().FeatureA).toBe(true)
 
     expect(getComputedFeatures().FeatureB).toBe(false)
-    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "FeatureB" as any,
       value: true,
     })
     expect(getComputedFeatures().FeatureB).toBe(true)
-    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "FeatureB" as any,
       value: null,
     })
     expect(getComputedFeatures().FeatureB).toBe(false)
 
-    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
       key: "DevToggleA" as any,
       value: true,
     })

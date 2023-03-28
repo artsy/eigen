@@ -1,17 +1,15 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FairHeaderTestsQuery } from "__generated__/FairHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { FairHeader, FairHeaderFragmentContainer } from "app/Scenes/Fair/Components/FairHeader"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Spacer } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairTimingFragmentContainer } from "./Components/FairTiming"
-
-jest.unmock("react-relay")
 
 describe("FairHeader", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -42,7 +40,7 @@ describe("FairHeader", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -62,7 +60,7 @@ describe("FairHeader", () => {
         name: "Art Basel Hong Kong 2020",
       }),
     })
-    expect(wrapper.root.findByProps({ variant: "lg" }).props.children).toBe(
+    expect(wrapper.root.findByProps({ variant: "lg-display" }).props.children).toBe(
       "Art Basel Hong Kong 2020"
     )
   })
@@ -150,7 +148,6 @@ describe("FairHeader", () => {
         summary: "",
         tagline: "",
         ticketsLink: "",
-        sponsoredContent: null,
       }),
     })
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)

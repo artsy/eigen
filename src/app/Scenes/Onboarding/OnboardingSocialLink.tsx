@@ -1,13 +1,15 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { OAuthProvider } from "app/auth/types"
-import { BackButton } from "app/navigation/BackButton"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { OAuthProvider } from "app/store/AuthModel"
+import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
+import { osMajorVersion } from "app/utils/platformUtil"
 import { FormikProvider, useFormik } from "formik"
 import { capitalize } from "lodash"
-import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
+import { Button, Input, Spinner, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ImageSourcePropType, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -35,9 +37,9 @@ export const OnboardingSocialLink: React.FC<
 
   const permittedProvidersTable: { [key: string]: boolean } = {
     email: true,
-    google: useFeatureFlag("ARGoogleAuth"),
+    google: true,
     facebook: true,
-    apple: Platform.OS === "ios",
+    apple: Platform.OS === "ios" && osMajorVersion() >= 13,
   }
 
   const permittedProviders = providers.filter((provider) => permittedProvidersTable[provider])
@@ -167,12 +169,12 @@ export const OnboardingSocialLink: React.FC<
       <FormikProvider value={formik}>
         <Flex flex={1} backgroundColor="white100">
           <BackButton onPress={() => navigation.goBack()} />
-          <Flex px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
-            <Text variant="lg">Link Accounts</Text>
-            <Spacer mt={2} />
+          <Flex px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
+            <Text variant="lg-display">Link Accounts</Text>
+            <Spacer y={2} />
             <Text variant="xs">{screenText()}</Text>
 
-            <Spacer mt={3} />
+            <Spacer y={4} />
 
             <Input
               title="Artsy Password"
@@ -195,13 +197,13 @@ export const OnboardingSocialLink: React.FC<
               error={errors.password}
               testID="artsySocialLinkPasswordInput"
             />
-            <Spacer mt={1} />
+            <Spacer y={1} />
             <Touchable onPress={() => navigation.replace("ForgotPassword")}>
               <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>
             </Touchable>
-            <Spacer mt={4} />
+            <Spacer y={4} />
 
             <Button
               block
@@ -213,7 +215,7 @@ export const OnboardingSocialLink: React.FC<
                 ? "Yes, Link Accounts"
                 : "Link Accounts"}
             </Button>
-            <Spacer mt="2" />
+            <Spacer y={2} />
             <Button
               block
               variant="outline"
@@ -236,11 +238,11 @@ export const OnboardingSocialLink: React.FC<
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton onPress={() => navigation.goBack()} />
-      <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
-        <Text variant="lg">Link Accounts</Text>
-        <Spacer mt={2} />
+      <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
+        <Text variant="lg-display">Link Accounts</Text>
+        <Spacer y={2} />
         <Text variant="xs">{screenText()}</Text>
-        <Spacer mt={3} />
+        <Spacer y={4} />
         {permittedProviders.map((provider) => (
           <LinkAccountButton
             key={provider}
@@ -277,10 +279,10 @@ interface LinkAccountButtonProps {
 export function LinkAccountButton({ onPress, provider, loading }: LinkAccountButtonProps) {
   const titleizedProvider = capitalize(provider)
   const imageSources: Record<OAuthProvider, ImageSourcePropType> = {
-    facebook: require(`images/facebook.webp`),
-    google: require(`images/google.webp`),
-    email: require(`images/email.webp`),
-    apple: require(`images/apple.webp`),
+    facebook: require(`images/facebook.png`),
+    google: require(`images/google.png`),
+    email: require(`images/email.png`),
+    apple: require(`images/apple.png`),
   }
   return (
     <Button

@@ -1,12 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { navigate } from "app/navigation/navigate"
+import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Sans, Separator, useColor } from "palette"
+import { Separator } from "palette"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -48,7 +50,7 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }
 
-  const refreshConversations = (withSpinner: boolean = false) => {
+  const refreshConversations = (withSpinner = false) => {
     if (!relay.isLoading()) {
       if (withSpinner) {
         setIsFetching(true)
@@ -96,14 +98,9 @@ export const Conversations: React.FC<Props> = (props) => {
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
       <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Sans
-          mx={2}
-          mt={1}
-          size="8"
-          style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
-        >
+        <Text variant="lg-display" mx={2} mt={1}>
           Inbox {unreadCounter}
-        </Sans>
+        </Text>
       </Flex>
       <FlatList
         data={conversations}
@@ -117,6 +114,17 @@ export const Conversations: React.FC<Props> = (props) => {
         }
         keyExtractor={(item) => item.internalID!}
         ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
+        ListFooterComponent={() => {
+          if (!!(relay.hasMore() && isLoading)) {
+            return (
+              <Flex mb={`${ICON_HEIGHT}px`} mt={2} alignItems="center">
+                <ActivityIndicator />
+              </Flex>
+            )
+          }
+
+          return null
+        }}
         renderItem={({ item }) => {
           return (
             <ConversationSnippet
@@ -133,11 +141,6 @@ export const Conversations: React.FC<Props> = (props) => {
         }}
         ListEmptyComponent={<NoMessages />}
       />
-      {!!(relay.hasMore() && isLoading) && (
-        <Flex p={3} alignItems="center">
-          <ActivityIndicator />
-        </Flex>
-      )}
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

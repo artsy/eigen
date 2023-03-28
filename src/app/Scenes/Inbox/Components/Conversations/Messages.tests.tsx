@@ -1,16 +1,13 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Flex, Text } from "palette"
-import "react-native"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import Messages from "./Messages"
-
-jest.unmock("react-relay")
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -29,8 +26,10 @@ jest.mock("@react-native-community/netinfo", () => {
 let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
+  jest.useFakeTimers({
+    legacyFakeTimers: true,
+  })
   env = createMockEnvironment()
-  jest.useFakeTimers()
 })
 
 const onRefresh = jest.fn()
@@ -59,7 +58,7 @@ const TestRenderer = () => (
 )
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
@@ -131,6 +130,7 @@ describe("messages with order updates", () => {
   })
 
   it("shows the toast message and fades out after 5 seconds", () => {
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const tree = withConversationItems(getWrapper, {
       events: [
         {
@@ -144,12 +144,13 @@ describe("messages with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch(
-      "To protect your payment, always communicate and pay through the Artsy platform."
+      "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
+
     const toast = tree.root.findAllByType(Flex)[0]
-    jest.advanceTimersByTime(150)
-    expect(toast.props.opacity).toBe(1)
     jest.advanceTimersByTime(5000)
+    expect(toast.props.opacity).toBe(1)
+    jest.advanceTimersByTime(900000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
     expect(toast.props.opacity).toBe(0)
   })
 
@@ -196,7 +197,7 @@ describe("messages with order updates", () => {
       .map((element) => extractText(element))
 
     // messages print in reverse order because FlatList is inverted
-    expect(messagesAndUpdates[4]).toContain("Day 1 message")
+    expect(messagesAndUpdates[5]).toContain("Day 1 message")
     expect(messagesAndUpdates[3]).toContain("You sent an offer")
     expect(messagesAndUpdates[2]).toContain("Day 2 message")
     expect(messagesAndUpdates[1]).toContain("You received a counteroffer")
@@ -233,12 +234,12 @@ describe("messages with order updates", () => {
   it("does not remove 'Offer accepted' events when payment succeeds", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
-
     const tree = withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOrderStateChangedEvent",
           orderUpdateState: "offer_approved",
+          state: "APPROVED",
           createdAt: day1Time1,
         },
         {
@@ -255,7 +256,6 @@ describe("messages with order updates", () => {
       .findAllByType(Text)
       .filter((element) => element.props.color !== "black30")
       .map((element) => extractText(element))
-
     expect(messagesAndUpdates).toContain("Offer Accepted")
   })
 

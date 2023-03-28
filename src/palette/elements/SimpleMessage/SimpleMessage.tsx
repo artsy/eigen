@@ -1,15 +1,13 @@
+import { Flex, FlexProps, Text, TextProps } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Text } from "palette"
 import styled from "styled-components/native"
-import { Flex, FlexProps } from "../Flex"
-import { SansV1Props } from "../Text"
 
 interface SimpleMessageProps extends FlexProps {
   children: React.ReactNode | null
   /**
    * Size of text to display in message window
    */
-  textSize?: SansV1Props["size"]
+  variant?: TextProps["variant"]
 }
 
 const StyledFlex = styled(Flex)`
@@ -18,16 +16,18 @@ const StyledFlex = styled(Flex)`
 `
 
 /**
- * A generic message window for displaying ZerStates, notices, errors, etc.
+ * A generic message window for displaying ZeroStates, notices, errors, etc.
  */
 export const SimpleMessage: React.FC<SimpleMessageProps> = ({
   children,
-  textSize = "3t",
+  variant = "sm",
   ...others
 }) => {
   return (
     <StyledFlex p={2} {...others}>
-      <Text color="black60">{children}</Text>
+      <Text variant={variant} color="black60">
+        {children}
+      </Text>
     </StyledFlex>
   )
 }

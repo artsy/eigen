@@ -1,8 +1,8 @@
-import { Sans } from "palette"
+import { Text } from "@artsy/palette-mobile"
+import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useContext, useMemo } from "react"
 import { Animated, View } from "react-native"
-import { ImageCarouselContext } from "../ImageCarouselContext"
-import { useSpringValue } from "../useSpringValue"
 import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 
@@ -48,9 +48,9 @@ export const IndexIndicator: React.FC = () => {
           },
         ]}
       >
-        <Sans size="3">
+        <Text variant="sm">
           {imageIndex.current + 1} of {images.length}
-        </Sans>
+        </Text>
       </Animated.View>
     </View>
   )

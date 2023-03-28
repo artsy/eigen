@@ -1,37 +1,32 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { Spacer, HeartIcon, HeartFillIcon, Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
+import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
-import {
-  Box,
-  Flex,
-  OpaqueImageView as NewOpaqueImageView,
-  Sans,
-  Spacer,
-  Text,
-  TextProps,
-  Touchable,
-} from "palette"
+import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
-import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
-export interface ArtworkProps {
+const SAVE_ICON_SIZE = 22
+
+export interface ArtworkProps extends Partial<PageableRouteProps> {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
@@ -52,8 +47,8 @@ export interface ArtworkProps {
   hidePartner?: boolean
   /** Hide sale info */
   hideSaleInfo?: boolean
+  hideSaveIcon?: boolean
   height?: number
-  width?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
@@ -70,10 +65,10 @@ export interface ArtworkProps {
 export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
+  navigateToPageableRoute,
   trackTap,
   itemIndex,
   height,
-  width,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -82,6 +77,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   hideSaleInfo = false,
+  hideSaveIcon = false,
   showLotLabel = false,
   urgencyTagTextStyle,
   lotLabelTextStyle,
@@ -93,12 +89,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
+  const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
+  const [saveArtwork] = useMutation(SaveArtworkMutation)
 
-  let filterParams: any
+  let filterParams: any = undefined
 
   // This is needed to make sure the filter context is defined
   if (ArtworksFiltersStore.useStore()) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
     filterParams = filterArtworksParams(appliedFilters)
   }
@@ -130,6 +129,33 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
+  const handleArtworkSave = () => {
+    const { id, internalID, isSaved } = artwork
+
+    saveArtwork({
+      variables: {
+        input: {
+          artworkID: internalID,
+          remove: isSaved,
+        },
+      },
+      optimisticResponse: {
+        saveArtwork: {
+          artwork: {
+            id,
+            isSaved: !isSaved,
+          },
+        },
+      },
+      onCompleted: () => {
+        refreshFavoriteArtworks()
+      },
+      onError: () => {
+        refreshFavoriteArtworks()
+      },
+    })
+  }
+
   const handleTap = () => {
     if (onPress) {
       return onPress(artwork.slug)
@@ -137,7 +163,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    navigate(artwork.href!)
+    navigateToPageableRoute?.(artwork.href!)
   }
 
   const trackArtworkTap = () => {
@@ -163,18 +189,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
-  const endsAt =
-    cascadingEndTimeFeatureEnabled && artwork.sale?.cascadingEndTimeIntervalMinutes
-      ? currentBiddingEndAt
-      : artwork.saleArtwork?.endAt || artwork.sale?.endAt
+  const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
+    ? currentBiddingEndAt
+    : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
   const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
-    cascadingEndTimeFeatureEnabled &&
-    !!artwork.sale?.extendedBiddingPeriodMinutes &&
-    !!artwork.sale?.extendedBiddingIntervalMinutes
+    !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
@@ -186,7 +208,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 aspectRatio={artwork.image?.aspectRatio ?? 1}
                 imageURL={artwork.image?.url}
                 height={height}
-                width={width}
               />
             ) : (
               <OpaqueImageView
@@ -207,9 +228,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 borderRadius={2}
                 alignSelf="flex-start"
               >
-                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
                   {urgencyTag}
-                </Sans>
+                </Text>
               </Flex>
             )}
           </View>
@@ -228,74 +249,96 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </DurationProvider>
           </Box>
         )}
-        <Box mt={1}>
-          {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <>
-              <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                Lot {artwork.saleArtwork.lotLabel}
+        <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+          <Flex flex={1}>
+            {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+              <>
+                <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                  Lot {artwork.saleArtwork.lotLabel}
+                </Text>
+                {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+                  <DurationProvider startAt={endsAt ?? undefined}>
+                    <LotCloseInfo
+                      duration={null}
+                      saleArtwork={artwork.saleArtwork}
+                      sale={artwork.sale}
+                      lotEndAt={endsAt ?? undefined}
+                      hasBeenExtended={lotSaleExtended}
+                    />
+                  </DurationProvider>
+                )}
+              </>
+            )}
+            {!!artwork.artistNames && (
+              <Text
+                lineHeight="18px"
+                weight="regular"
+                variant="xs"
+                numberOfLines={1}
+                {...artistNamesTextStyle}
+              >
+                {artwork.artistNames}
               </Text>
-              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
-                <DurationProvider startAt={endsAt ?? undefined}>
-                  <LotCloseInfo
-                    duration={null}
-                    saleArtwork={artwork.saleArtwork}
-                    sale={artwork.sale}
-                    lotEndAt={endsAt ?? undefined}
-                    hasBeenExtended={lotSaleExtended}
+            )}
+            {!!artwork.title && (
+              <Text
+                lineHeight="18px"
+                variant="xs"
+                weight="regular"
+                color="black60"
+                numberOfLines={1}
+                {...titleTextStyle}
+              >
+                <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                  {artwork.title}
+                </Text>
+                {artwork.date ? `, ${artwork.date}` : ""}
+              </Text>
+            )}
+            {!hidePartner && !!artwork.partner?.name && (
+              <Text
+                variant="xs"
+                lineHeight="18px"
+                color="black60"
+                numberOfLines={1}
+                {...partnerNameTextStyle}
+              >
+                {artwork.partner.name}
+              </Text>
+            )}
+            {!!saleInfo && !hideSaleInfo && (
+              <Text
+                lineHeight="18px"
+                variant="xs"
+                weight="medium"
+                numberOfLines={1}
+                {...saleInfoTextStyle}
+              >
+                {saleInfo}
+              </Text>
+            )}
+          </Flex>
+          {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
+            <Flex>
+              <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
+                {artwork.isSaved ? (
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                    fill="blue100"
                   />
-                </DurationProvider>
-              )}
-            </>
+                ) : (
+                  <HeartIcon
+                    testID="empty-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                  />
+                )}
+              </Touchable>
+            </Flex>
           )}
-          {!!artwork.artistNames && (
-            <Text
-              lineHeight="18"
-              weight="regular"
-              variant="xs"
-              numberOfLines={1}
-              {...artistNamesTextStyle}
-            >
-              {artwork.artistNames}
-            </Text>
-          )}
-          {!!artwork.title && (
-            <Text
-              lineHeight="18"
-              variant="xs"
-              weight="regular"
-              color="black60"
-              numberOfLines={1}
-              {...titleTextStyle}
-            >
-              <Text lineHeight="18" variant="xs" weight="regular" italic>
-                {artwork.title}
-              </Text>
-              {artwork.date ? `, ${artwork.date}` : ""}
-            </Text>
-          )}
-          {!hidePartner && !!artwork.partner?.name && (
-            <Text
-              variant="xs"
-              lineHeight="18"
-              color="black60"
-              numberOfLines={1}
-              {...partnerNameTextStyle}
-            >
-              {artwork.partner.name}
-            </Text>
-          )}
-          {!!saleInfo && !hideSaleInfo && (
-            <Text
-              lineHeight="18"
-              variant="xs"
-              weight="medium"
-              numberOfLines={1}
-              {...saleInfoTextStyle}
-            >
-              {saleInfo}
-            </Text>
-          )}
-        </Box>
+        </Flex>
       </View>
     </Touchable>
   )
@@ -364,12 +407,15 @@ export const saleMessageOrBidInfo = ({
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
-    fragment ArtworkGridItem_artwork on Artwork {
+    fragment ArtworkGridItem_artwork on Artwork
+    @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
       title
       date
       saleMessage
       slug
+      id
       internalID
+      isSaved
       artistNames
       href
       sale {
@@ -398,7 +444,7 @@ export default createFragmentContainer(Artwork, {
       partner {
         name
       }
-      image {
+      image(includeAll: $includeAllImages) {
         url(version: "large")
         aspectRatio
       }
@@ -407,6 +453,17 @@ export default createFragmentContainer(Artwork, {
   `,
 })
 
+const SaveArtworkMutation = graphql`
+  mutation ArtworkGridItemSaveArtworkMutation($input: SaveArtworkInput!) {
+    saveArtwork(input: $input) {
+      artwork {
+        id
+        isSaved
+      }
+    }
+  }
+`
+
 export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   seed = Math.random(),
 }) => {
@@ -414,7 +471,7 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   return (
     <Flex>
       <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
-      <Spacer mb="1" />
+      <Spacer y={1} />
       <PlaceholderRaggedText seed={rng.next()} numLines={2} />
     </Flex>
   )

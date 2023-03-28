@@ -1,20 +1,19 @@
 import { useNavigationState } from "@react-navigation/native"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { switchTab } from "app/navigation/navigate"
-import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { switchTab } from "app/system/navigation/navigate"
+import { loadDevNavigationStateCache } from "app/system/navigation/useReloadedDevNavigationState"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
-// @ts-ignore
-import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
-import { DevToggleName, FeatureName, features } from "./config/features"
-import { FeatureMap } from "./config/FeaturesModel"
-import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
+import { FeatureMap } from "./config/FeaturesModel"
+import { DevToggleName, FeatureName, features } from "./config/features"
+import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -63,7 +62,6 @@ function createGlobalStore() {
   return store
 }
 
-// tslint:disable-next-line:variable-name
 export const __globalStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
@@ -73,10 +71,10 @@ export const __globalStoreTestUtils__ = __TEST__
         GlobalStore.actions.__inject(state)
       },
       setProductionMode() {
-        this.injectState({ artsyPrefs: { environment: { env: "production" } } })
+        this.injectState({ devicePrefs: { environment: { env: "production" } } })
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
-        this.injectState({ artsyPrefs: { features: { adminOverrides: options } } })
+        this.injectState({ artsyPrefs: { features: { localOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance().getState(),
       dispatchedActions: [] as Action[],
@@ -227,8 +225,8 @@ export function getCurrentEmissionState() {
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
-    __DEV__ ? "Artsy-Mobile " + Platform.OS : getUserAgentSync()
-  } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
+    __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
+  } Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",
@@ -258,7 +256,7 @@ export function unsafe__getSelectedTab(): BottomTabType {
 }
 
 export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.artsyPrefs.environment.env === "staging")
+  return GlobalStore.useAppState((state) => state.devicePrefs.environment.env === "staging")
 }
 
 /**
@@ -268,17 +266,21 @@ export function useIsStaging() {
  */
 export function unsafe__getEnvironment() {
   const {
-    environment: { env, strings },
     echo: { stripePublishableKey },
     userIsDev: { value },
   } = globalStoreInstance().getState().artsyPrefs
+  const {
+    environment: { env, strings },
+  } = globalStoreInstance().getState().devicePrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
 export function useEnvironment() {
   const {
-    environment: { env, strings },
     echo: { stripePublishableKey },
   } = GlobalStore.useAppState((state) => state.artsyPrefs)
+  const {
+    environment: { env, strings },
+  } = GlobalStore.useAppState((state) => state.devicePrefs)
   return { ...strings, stripePublishableKey, env }
 }

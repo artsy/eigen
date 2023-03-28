@@ -1,15 +1,12 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
+import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
-import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
-import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
+import { Schema } from "app/utils/track"
+import { FollowButton } from "palette"
 import { useState } from "react"
-import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
-import { Schema } from "../../utils/track"
 
 export const ARTIST_HEADER_HEIGHT = 156
 
@@ -99,13 +96,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
       owner_type: Schema.OwnerEntityTypes.Artist,
     })
 
-    // callback for analytics purposes
-    userHadMeaningfulInteraction({
-      contextModule: ContextModule.artistHeader,
-      contextOwnerType: OwnerType.artist,
-      contextOwnerId: artist.internalID,
-      contextOwnerSlug: artist.slug,
-    })
     setIsFollowedChanging(false)
   }
 
@@ -129,17 +119,17 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   return (
     <Box px={2} pt={6} pb={1}>
-      <Sans size="8">{artist.name}</Sans>
-      <Spacer mb={1} />
+      <Text variant="lg-display">{artist.name}</Text>
+      <Spacer y={1} />
 
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flex={1}>
           {!!bylineRequired && (
-            <Sans mr={1} size="3t">
+            <Text variant="sm" mr={1}>
               {descriptiveString}
-            </Sans>
+            </Text>
           )}
-          <Sans size="3t">
+          <Text variant="sm">
             {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
             {!!artist?.counts?.follows && artist.counts.follows > 1 && (
               <>
@@ -147,7 +137,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
                 {formatLargeNumberOfItems(artist.counts.follows, "follower")}
               </>
             )}
-          </Sans>
+          </Text>
         </Flex>
 
         <Flex>
@@ -175,5 +165,3 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
     }
   `,
 })
-
-export const TextWrapper = styled(Text)``

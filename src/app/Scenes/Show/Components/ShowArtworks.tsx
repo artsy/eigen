@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Show_show$data } from "__generated__/Show_show.graphql"
+import { Box } from "@artsy/palette-mobile"
 import { ShowArtworks_show$data } from "__generated__/ShowArtworks_show.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { aggregationsType, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -8,7 +9,6 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
-import { Box } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 

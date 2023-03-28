@@ -1,28 +1,47 @@
-import { useSpace } from "palette"
-import React, { useMemo, useRef, useState } from "react"
-import Animated from "react-native-reanimated"
+import { useSpace } from "@artsy/palette-mobile"
+import { useState } from "react"
+import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { useSharedValue } from "react-native-reanimated"
 import { AnimatableHeaderContext } from "./AnimatableHeaderContext"
 
-export const AnimatableHeaderProvider: React.FC<{}> = (props) => {
-  const { children } = props
+export const AnimatableHeaderProvider = ({ children }: { children: React.ReactNode }) => {
   const space = useSpace()
-  const headerHeight = space(6)
   const largeTitleVerticalOffset = space(1)
-  const largeTitleHeight = useRef<Animated.Value<number>>(new Animated.Value(-1)).current
-  const largeTitleEndEdge = Animated.sub(largeTitleHeight, largeTitleVerticalOffset + 10)
-  const scrollOffsetY = useMemo(() => new Animated.Value(0), [])
+  const [largeTitleHeight, setLargeTitleHeight] = useState(-1)
+  const largeTitleEndEdge = largeTitleHeight - largeTitleVerticalOffset - 10
+  const scrollOffsetY = useSharedValue(0)
   const [title, setTitle] = useState("")
+  const [titleShown, setTitleShown] = useState(false)
+
+  const headerHeight = space(6)
+
+  const onScrollForAnimation = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    scrollOffsetY.value = event.nativeEvent.contentOffset.y
+
+    if (largeTitleHeight === -1) {
+      setTitleShown(false)
+    } else {
+      if (scrollOffsetY.value >= largeTitleEndEdge) {
+        setTitleShown(true)
+      } else {
+        setTitleShown(false)
+      }
+    }
+  }
 
   return (
     <AnimatableHeaderContext.Provider
       value={{
         scrollOffsetY,
+        onScrollForAnimation,
         headerHeight,
         largeTitleVerticalOffset,
         largeTitleHeight,
+        setLargeTitleHeight,
         largeTitleEndEdge,
         title,
         setTitle,
+        titleShown,
       }}
     >
       {children}

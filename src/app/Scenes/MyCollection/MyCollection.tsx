@@ -1,26 +1,28 @@
-import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PAGE_SIZE } from "app/Components/constants"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   GlobalStore,
   setVisualClueAsSeen,
   useDevToggle,
-  useFeatureFlag,
   useVisualClue,
 } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -37,13 +39,10 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Separator, Spacer } from "palette"
+import { Button, Separator } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
@@ -65,7 +64,6 @@ const MyCollection: React.FC<{
   const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -147,7 +145,7 @@ const MyCollection: React.FC<{
             }}
             haptic
           >
-            Add Works
+            Upload Artwork
           </Button>
         </ArtworksFilterHeader>
         {!!showNewWorksMessage && (
@@ -160,12 +158,10 @@ const MyCollection: React.FC<{
             onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
           />
         )}
-        {!!enableMyCollectionInsights && (
-          <MyCollectionArtworkUploadMessages
-            sourceTab={Tab.collection}
-            hasMarketSignals={hasMarketSignals}
-          />
-        )}
+        <MyCollectionArtworkUploadMessages
+          sourceTab={Tab.collection}
+          hasMarketSignals={hasMarketSignals}
+        />
       </Flex>
     )
   }
@@ -203,14 +199,16 @@ const MyCollection: React.FC<{
           // Extend the container flex when there are no artworks for accurate vertical centering
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
+          height: artworks.length ? "auto" : "100%",
         }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+        refreshControl={
+          <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
+        }
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks
-          innerFlatlistRef={innerFlatListRef}
           me={me}
           relay={relay}
           showSearchBar={showSearchBar}
@@ -251,7 +249,11 @@ export const MyCollectionContainer = createPaginationContainer(
           edges {
             node {
               id
+              internalID
               medium
+              mediumType {
+                name
+              }
               title
               pricePaid {
                 minor
@@ -319,7 +321,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
             // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
           ),
         })}
       />
@@ -328,60 +330,44 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
-  const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Spacer />
-        <Spacer />
-        <PlaceholderText width={70} margin={20} />
-      </Flex>
-      {/* collector's insfo */}
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-        <Flex>
-          <Spacer mb={20} />
+      {/* collector's info */}
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
+        <Flex flex={1}>
+          <Spacer y={2} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
-            <PlaceholderBox width={100} height={100} borderRadius={50} />
-            <Flex justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={35} />
-              <PlaceholderText width={100} height={35} />
-              <PlaceholderText width={100} />
+            <PlaceholderBox width={50} height={50} borderRadius={50} />
+            <Flex flex={1} justifyContent="center" ml={2}>
+              <PlaceholderText width={80} height={25} />
+              <PlaceholderText width={100} height={15} />
             </Flex>
+            {/* settings icon */}
+            <PlaceholderBox width={20} height={20} />
           </Flex>
-          <Spacer mb={2} mt={1} />
-          <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
+          <Spacer y={1} />
         </Flex>
       </Flex>
-      <Spacer mb={2} mt={1} />
+      <Spacer y={4} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!!enableMyCollectionInsights ? (
-          <>
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-          </>
-        ) : (
-          <>
-            <PlaceholderText width="40%" height={22} />
-            <PlaceholderText width="40%" height={22} />
-          </>
-        )}
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
       </Flex>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Separator />
-      <Spacer mb={1} />
+      <Spacer y={1} />
       {/* Sort & Filter  */}
       <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
         <PlaceholderText width={120} height={22} />
         <PlaceholderText width={90} height={22} borderRadius={11} />
       </Flex>
       <Separator />
-      <Spacer mb={1} mt={0.5} />
+      <Spacer y={2} />
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />
@@ -396,7 +382,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
                   height={ARTWORK_LIST_IMAGE_SIZE}
                 />
               </Flex>
-              <Flex pl={15} flex={1}>
+              <Flex pl="15px" flex={1}>
                 <RandomWidthPlaceholderText minWidth={80} maxWidth={120} />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
@@ -410,7 +396,12 @@ export const MyCollectionPlaceholder: React.FC = () => {
 }
 
 const tracks = {
-  addCollectedArtwork,
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
+  }),
 }
 
 export type MyCollectionArtworkEdge = NonNullable<

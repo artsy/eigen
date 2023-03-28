@@ -1,13 +1,12 @@
 import { themeGet } from "@styled-system/theme-get"
+import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { BodyText, MetadataText } from "app/Scenes/Inbox/Components/Typography"
+import { navigate } from "app/system/navigation/navigate"
+import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { BodyText, MetadataText } from "../Typography"
-
-import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
-import React from "react"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -27,7 +26,7 @@ const Content = styled.View`
 const ImageView = styled(OpaqueImageView)`
   width: 80px;
   height: 80px;
-  border-radius: 4;
+  border-radius: 4px;
 `
 
 const MetadataContainer = styled.View`
@@ -38,7 +37,7 @@ const MetadataContainer = styled.View`
 `
 
 const Separator = styled.View`
-  height: 1;
+  height: 1px;
   width: 100%;
   background-color: ${themeGet("colors.black10")};
 `
@@ -50,7 +49,7 @@ const StatusLabel = styled(MetadataText)`
       case "winning":
         return themeGet("colors.green100")
       case "reserve":
-        return themeGet("colors.yellow100")
+        return themeGet("colors.copper100")
       case "losing":
         return themeGet("colors.red100")
       case "live_auction":

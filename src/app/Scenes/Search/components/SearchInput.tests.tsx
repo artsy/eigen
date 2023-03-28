@@ -1,15 +1,15 @@
 import { fireEvent } from "@testing-library/react-native"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {
-  const TestRenderer = (props: Partial<SearchInputProps>) => {
-    return <SearchInput {...defaultProps} {...props} />
-  }
+  const TestRenderer = (props: Partial<SearchInputProps>) => (
+    <SearchInput {...defaultProps} {...props} />
+  )
 
   it("renders without throwing an error", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByPlaceholderText("Placeholder")).toBeTruthy()
   })
@@ -18,7 +18,7 @@ describe("SearchInput", () => {
     const onChangeTextMock = jest.fn()
     const refineMock = jest.fn()
 
-    const { getByPlaceholderText } = renderWithWrappersTL(
+    const { getByPlaceholderText } = renderWithWrappers(
       <TestRenderer onTextChange={onChangeTextMock} refine={refineMock} />
     )
 
@@ -29,7 +29,7 @@ describe("SearchInput", () => {
   })
 
   it("should have the correct value prop", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     const searchInput = getByPlaceholderText("Placeholder")
 
     fireEvent.changeText(searchInput, "text")
@@ -38,13 +38,13 @@ describe("SearchInput", () => {
   })
 
   it("track event when the text is changed", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action_type": "Searched",
           "query": "text",
         },
@@ -53,14 +53,14 @@ describe("SearchInput", () => {
   })
 
   it("track event when the text is cleared", () => {
-    const { getByPlaceholderText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
     fireEvent.press(getByLabelText("Clear input button"))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action_type": "Cleared input in search screen",
         },
       ]

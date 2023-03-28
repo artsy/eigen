@@ -1,7 +1,7 @@
+import { useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Input } from "palette"
-import { useColor } from "palette/hooks"
 import { Platform } from "react-native"
 import {
   FormikSchema,
@@ -13,11 +13,10 @@ export interface OnboardingCreateAccountEmailParams {
   navigateToWelcomeScreen: () => void
 }
 
-interface OnboardingCreateAccountEmailProps
-  extends StackScreenProps<
-    OnboardingCreateAccountNavigationStack,
-    "OnboardingCreateAccountEmail"
-  > {}
+type OnboardingCreateAccountEmailProps = StackScreenProps<
+  OnboardingCreateAccountNavigationStack,
+  "OnboardingCreateAccountEmail"
+>
 
 export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({
   route,

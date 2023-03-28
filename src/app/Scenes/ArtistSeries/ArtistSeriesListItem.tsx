@@ -5,10 +5,11 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
+import { ArrowRightIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArrowRightIcon, Flex, Sans, Touchable, useColor } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { Touchable } from "palette"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -57,6 +58,8 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
 
   return (
     <Touchable
+      accessibilityLabel="Artist Series List Item"
+      accessibilityRole="button"
       underlayColor={color("black5")}
       // the negative margin here is for resetting padding of 20 that all the parent components of this instance
       // have and to avoid changing the component tree in multiple spots.
@@ -76,13 +79,13 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
               style={{ borderRadius: 2, overflow: "hidden" }}
             />
             <Flex ml={1} justifyContent="center">
-              <Sans size="3t" testID="title">
+              <Text variant="sm" testID="title">
                 {listItem?.node?.title}
-              </Sans>
+              </Text>
               {!!artworksCountMessage && (
-                <Sans size="3" color="black60" testID="count">
+                <Text variant="sm" color="black60" testID="count">
                   {artworksCountMessage}
-                </Sans>
+                </Text>
               )}
             </Flex>
           </Flex>

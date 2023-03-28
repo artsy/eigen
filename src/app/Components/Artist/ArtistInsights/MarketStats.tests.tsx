@@ -1,28 +1,30 @@
+import { IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { DecreaseIcon, IncreaseIcon } from "palette"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { ReactTestInstance } from "react-test-renderer"
-import { useTracking } from "react-tracking"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
-
-jest.unmock("react-relay")
-
-const trackEvent = useTracking().trackEvent
 
 describe("MarketStats", () => {
   let environment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (environment = createMockEnvironment()))
 
   const TestWrapper = () => {
-    return <MarketStatsQueryRenderer artistInternalID="some-id" environment={environment} />
+    return (
+      <MarketStatsQueryRenderer
+        artistInternalID="some-id"
+        environment={environment as unknown as RelayModernEnvironment}
+      />
+    )
   }
 
   it("renders market stats", () => {
-    const tree = renderWithWrappers(<TestWrapper />).root
+    const tree = renderWithWrappersLEGACY(<TestWrapper />).root
     resolveMostRecentRelayOperation(environment)
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
@@ -30,7 +32,7 @@ describe("MarketStats", () => {
   describe("available mediums", () => {
     let tree: ReactTestInstance
     beforeEach(() => {
-      tree = renderWithWrappers(<TestWrapper />).root
+      tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           { node: { medium: "crayon", annualLotsSold: 123 } },
@@ -60,7 +62,7 @@ describe("MarketStats", () => {
         NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
-      const tree = renderWithWrappers(<TestWrapper />).root
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           {
@@ -106,13 +108,13 @@ describe("MarketStats", () => {
 
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
-      const tree = renderWithWrappers(<TestWrapper />).root
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       resolveMostRecentRelayOperation(environment)
 
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedInfoBubble",
         context_module: "auctionResults",
         context_screen_owner_type: "artistAuctionResults",

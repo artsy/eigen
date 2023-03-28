@@ -1,5 +1,6 @@
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
-import { Flex, Separator, Spacer } from "palette"
+import { Separator } from "palette"
 
 export const TagPlaceholder: React.FC = () => (
   <Flex>
@@ -7,15 +8,15 @@ export const TagPlaceholder: React.FC = () => (
       {/* Entity name */}
       <PlaceholderText />
     </Flex>
-    <Spacer mb={1} />
+    <Spacer y={1} />
     <Separator />
-    <Spacer mb={2} />
+    <Spacer y={2} />
     {/* Filters */}
     <Flex justifyContent="space-between" flexDirection="row" px={2}>
       <PlaceholderText width={180} />
       <PlaceholderText width={50} />
     </Flex>
-    <Spacer mb={0.5} />
+    <Spacer y={0.5} />
     {/* Grid */}
     <PlaceholderGrid />
   </Flex>

@@ -1,7 +1,7 @@
+import { Flex, Box } from "@artsy/palette-mobile"
+import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Box, Flex } from "palette"
-import { IMAGE_SIZE } from "../SearchResultImage"
 
 const TEXT_SIZE = 12
 
@@ -13,7 +13,7 @@ export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlacehold
   showResultType,
 }) => {
   return (
-    <Box p={2} accessibilityLabel="Autosuggest results are loading">
+    <Box accessibilityLabel="Autosuggest results are loading">
       {times(20).map((index) => (
         <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
           <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} borderRadius={IMAGE_SIZE / 2} />
@@ -29,7 +29,7 @@ export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlacehold
                 minWidth={50}
                 maxWidth={100}
                 height={TEXT_SIZE}
-                marginTop={5}
+                marginTop={6}
                 marginBottom={0}
               />
             )}

@@ -1,14 +1,14 @@
-import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
+import { PartnerMapContainer as PartnerMap } from "app/Scenes/Partner/Components/PartnerMap"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Sans, Serif, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { PartnerMapContainer as PartnerMap } from "../Components/PartnerMap"
 
 const PAGE_SIZE = 4
 
@@ -40,12 +40,12 @@ const PartnerLocations: React.FC<{
       onScroll={isCloseToBottom(fetchNextPage)}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => (
-        <Box pt={60} px={2}>
-          <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
-          <Serif size="5">{partner.name}</Serif>
+        <Box pt={6} px={2}>
+          <Text variant="sm">{locations.length > 1 ? "Locations" : "Location"}</Text>
+          <Text variant="sm-display">{partner.name}</Text>
         </Box>
       )}
-      ListFooterComponent={() => <Spacer mb={2} />}
+      ListFooterComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => <PartnerMap location={item} />}
     />
   )

@@ -1,10 +1,10 @@
-import { UpcomingAuctions_viewer$key } from "__generated__/UpcomingAuctions_viewer.graphql"
-import { UpcomingAuctionsRefetchQuery } from "__generated__/UpcomingAuctionsRefetchQuery.graphql"
 import { Stack } from "app/Components/Stack"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useEffect } from "react"
 import { graphql, RefetchFnDynamic, useRefetchableFragment } from "react-relay"
 import { Options } from "react-relay/relay-hooks/useRefetchableFragmentNode"
+import { UpcomingAuctionsRefetchQuery } from "__generated__/UpcomingAuctionsRefetchQuery.graphql"
+import { UpcomingAuctions_viewer$key } from "__generated__/UpcomingAuctions_viewer.graphql"
 import { SaleList } from "./Components/SaleList"
 
 export type UpcomingAuctionsRefetchType = RefetchFnDynamic<
@@ -39,7 +39,7 @@ export const UpcomingAuctions: React.FC<UpcomingAuctionsProps> = ({
   }, [nodes.length])
 
   return (
-    <Stack py={2} spacing={3}>
+    <Stack py={2} spacing={4}>
       <SaleList title="Upcoming Auctions" sales={nodes} />
     </Stack>
   )

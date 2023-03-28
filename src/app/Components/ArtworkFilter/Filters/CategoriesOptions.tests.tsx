@@ -3,7 +3,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CategoriesOptionsScreen } from "./CategoriesOptions"
 import { getEssentialProps } from "./helper"
 
@@ -35,7 +35,7 @@ describe("Categories options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+    const { getByText, getAllByA11yState } = renderWithWrappers(
       <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
     )
     fireEvent.press(getByText("Painting"))
@@ -47,7 +47,7 @@ describe("Categories options screen", () => {
   })
 
   it("allows multiple categories to be selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+    const { getByText, getAllByA11yState } = renderWithWrappers(
       <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
     )
     fireEvent.press(getByText("Painting"))

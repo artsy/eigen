@@ -1,11 +1,10 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { getLocationDetails, LocationWithDetails, SimpleLocation } from "app/utils/googleMaps"
-import { Flex } from "palette"
+import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
-
-import { LocationAutocomplete } from "./LocationAutocomplete"
 
 interface ShippingModalProps {
   toggleVisibility: () => void
@@ -17,7 +16,7 @@ interface ShippingModalProps {
 export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const { location, toggleVisibility, modalIsVisible, setLocation } = props
 
-  const [locationInput, setLocationInput] = useState<SimpleLocation | null>(null)
+  const [locationDetails, setLocationDetails] = useState<LocationWithDetails | null>(null)
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
@@ -27,19 +26,29 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
           toggleVisibility()
         }}
         rightButtonText="Apply"
-        onRightButtonPress={async () => {
-          const locationDetails = await getLocationDetails(locationInput as SimpleLocation)
-
-          setLocation(locationDetails)
+        onRightButtonPress={() => {
+          setLocation(locationDetails as LocationWithDetails)
           toggleVisibility()
         }}
-        rightButtonDisabled={!locationInput}
+        rightButtonDisabled={!locationDetails}
       >
         Add Location
       </FancyModalHeader>
       <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
         <Flex m={2} flex={1}>
-          <LocationAutocomplete onChange={setLocationInput} initialLocation={location} />
+          <LocationAutocomplete
+            title="Location"
+            placeholder="Add Location"
+            onChange={setLocationDetails}
+            initialLocation={location}
+            floating
+            FooterComponent={() => (
+              <Text mt={1} color="black60">
+                Sharing your location with galleries helps them provide fast and accurate shipping
+                quotes.
+              </Text>
+            )}
+          />
         </Flex>
       </ScrollView>
     </FancyModal>

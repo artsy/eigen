@@ -1,14 +1,14 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
-import { Box, Flex, Text } from "palette"
+import { ViewingRoomStatus } from "app/Scenes/ViewingRoom/ViewingRoom"
+import { navigate } from "app/system/navigation/navigate"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { ViewingRoomStatus } from "../ViewingRoom"
 
 interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom$data
@@ -24,7 +24,7 @@ const CountdownContainer = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  height: 20;
+  height: 20px;
   justify-content: center;
 `
 
@@ -86,7 +86,7 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 }
 
 export const PartnerIconImage = styled.Image`
-  border-radius: 100;
+  border-radius: 100px;
 `
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
@@ -114,7 +114,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text testID="title" variant="lg" textAlign="center" color="white100">
+            <Text testID="title" variant="lg-display" textAlign="center" color="white100">
               {title}
             </Text>
           </Flex>

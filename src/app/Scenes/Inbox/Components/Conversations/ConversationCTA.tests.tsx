@@ -1,17 +1,15 @@
+import { MoneyFillIcon, AlertCircleFillIcon, Flex, Color } from "@artsy/palette-mobile"
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
 import { CTAPopUp } from "./CTAPopUp"
+import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
-jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -70,7 +68,7 @@ describe("ConversationCTA", () => {
   }
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

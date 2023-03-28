@@ -1,15 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { AuctionResultsForArtistsYouCollectRail_me$key } from "__generated__/AuctionResultsForArtistsYouCollectRail_me.graphql"
 import {
   AuctionResultListItemFragmentContainer,
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Flex } from "palette"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -25,6 +25,8 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
 
   const fragmentData = useFragment(auctionResultsForArtistsYouCollectRailFragment, me)
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
+
+  const { width } = useScreenDimensions()
 
   if (!auctionResultsData.length) {
     return null
@@ -54,7 +56,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
           />
         )}
         ItemSeparatorComponent={AuctionResultListSeparator}
-        style={{ width: useScreenDimensions().width, left: -20 }}
+        style={{ width, left: -20 }}
       />
     </Flex>
   )
@@ -62,7 +64,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
 
 const auctionResultsForArtistsYouCollectRailFragment = graphql`
   fragment AuctionResultsForArtistsYouCollectRail_me on Me {
-    myCollectionAuctionResults(first: 3) {
+    myCollectionAuctionResults(first: 3, state: PAST) {
       totalCount
       edges {
         node {

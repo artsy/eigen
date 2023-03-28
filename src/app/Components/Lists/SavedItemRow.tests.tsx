@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { SavedItemRow } from "./SavedItemRow"
 
@@ -9,5 +9,5 @@ const props = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<SavedItemRow {...props} />)
+  renderWithWrappersLEGACY(<SavedItemRow {...props} />)
 })

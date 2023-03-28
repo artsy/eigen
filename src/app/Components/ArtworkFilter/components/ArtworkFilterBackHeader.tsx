@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, Box, Separator, Text, useTheme } from "palette"
+import { ArrowLeftIcon, Box, useTheme, Text } from "@artsy/palette-mobile"
+import { Separator } from "palette"
 import { TouchableOpacity } from "react-native"
 
 export interface ArtworkFilterBackHeaderProps {
@@ -37,7 +38,7 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
           <ArrowLeftIcon fill="black100" />
         </TouchableOpacity>
         <Box flex={1} ml={1} mr={2}>
-          <Text variant="md" numberOfLines={2} lineHeight={18}>
+          <Text variant="sm-display" numberOfLines={2} lineHeight="18px">
             {title}
           </Text>
         </Box>

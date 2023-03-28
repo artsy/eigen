@@ -1,9 +1,10 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Input, RadioButton, Spacer, Text } from "palette"
+import { throttle } from "lodash"
+import { Input, RadioButton } from "palette"
 import React, { useState } from "react"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
@@ -11,36 +12,37 @@ export const Dimensions: React.FC = () => {
   // Using a local state to improve performance
   const [localMetric, setLocalMetric] = useState(formik.values.metric)
 
-  const handleMetricChange = (unit: Metric) => {
-    setLocalMetric(unit)
+  const handleMetricChange = throttle((unit: Metric) => {
+    if (unit !== localMetric) {
+      setLocalMetric(unit)
 
-    requestAnimationFrame(() => {
       formik.handleChange("metric")(unit)
       GlobalStore.actions.userPrefs.setMetric(unit)
-    })
-  }
+    }
+  }, 100)
 
   return (
     <>
       <Flex flexDirection="row">
         <Text variant="xs">DIMENSIONS</Text>
       </Flex>
-      <Spacer mt={1} mb={0.3} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
-        <TouchableWithoutFeedback onPress={() => handleMetricChange("cm")}>
-          <Flex flexDirection="row">
-            <RadioButton selected={localMetric === "cm"} />
-            <Text marginRight="3">cm</Text>
-          </Flex>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => handleMetricChange("in")}>
-          <Flex flexDirection="row">
-            <RadioButton selected={localMetric === "in"} />
-            <Text>in</Text>
-          </Flex>
-        </TouchableWithoutFeedback>
+        <RadioButton
+          onPress={() => handleMetricChange("cm")}
+          selected={localMetric === "cm"}
+          text="cm"
+        />
+
+        <Spacer x={4} />
+
+        <RadioButton
+          onPress={() => handleMetricChange("in")}
+          selected={localMetric === "in"}
+          text="in"
+        />
       </Flex>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <Flex mr={1} flex={1}>
           <Input

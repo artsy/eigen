@@ -1,28 +1,8 @@
 import { MyCollectionArtworkHeader_artwork$data } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { ArtworkFormValues, Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
-import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
-import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
-
-export const storeLocalPhotos = (slug: string, photos: Image[]) => {
-  const localImages: LocalImage[] = []
-  photos.forEach((photo, _) => {
-    if (photo.path && photo.height && photo.width) {
-      const image: LocalImage = {
-        path: photo.path,
-        width: photo.width,
-        height: photo.height,
-      }
-      localImages.push(image)
-    }
-  })
-  storeLocalImages(localImages, slug)
-}
-
-export const removeLocalPhotos = (slug: string) => {
-  deleteLocalImages(slug)
-}
 
 /**
  * Upload photos to s3 bucket
@@ -37,14 +17,17 @@ export const uploadPhotos = async (photos: ArtworkFormValues["photos"]) => {
     .filter((path): path is string => path !== undefined)
   const externalImageUrls: string[] = []
 
-  for (const path of imagePaths) {
-    const url = await getConvertedImageUrlFromS3(path)
-    if (!url) {
-      console.error(`Could not get converted image url for ${path}`)
-      continue
-    }
-    externalImageUrls.push(url)
+  const urls = await Promise.all(imagePaths.map((path) => getConvertedImageUrlFromS3(path)))
+  if (urls) {
+    urls.forEach((url) => {
+      if (!url) {
+        console.error(`Could not get converted image url for ${imagePaths[urls.indexOf(url)]}`)
+        return
+      }
+      externalImageUrls.push(url)
+    })
   }
+
   return externalImageUrls
 }
 
@@ -69,7 +52,7 @@ export const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
 export const hasImagesStillProcessing = (
   mainImage: any,
-  imagesToCheck: MyCollectionArtworkHeader_artwork$data["images"]
+  imagesToCheck: MyCollectionArtworkHeader_artwork$data["figures"]
 ) => {
   if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
     return true
@@ -98,7 +81,7 @@ export const getBoundingBox = (
 
 export const getImageMeasurements = (imageSize: Size, boundingBox: Size) => {
   const measurements = getMeasurements({
-    images: [
+    media: [
       {
         height: imageSize.height,
         width: imageSize.width,

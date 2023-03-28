@@ -1,5 +1,6 @@
+import { Spacer, DocumentIcon, Box, Text } from "@artsy/palette-mobile"
 import { AttachmentList_conversation$data } from "__generated__/AttachmentList_conversation.graphql"
-import { Box, DocumentIcon, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
@@ -28,11 +29,11 @@ const AttachmentList: React.FC<Props> = ({ conversation }) => {
             return item && <FileDownload tiny attachment={item} Icon={DocumentIcon} />
           }}
           ListHeaderComponent={
-            <Text variant="md" weight="medium" mb={1}>
+            <Text variant="sm-display" weight="medium" mb={1}>
               Attachments
             </Text>
           }
-          ItemSeparatorComponent={() => <Spacer mb={0.5} />}
+          ItemSeparatorComponent={() => <Spacer y={0.5} />}
         />
       </Box>
       <Separator />

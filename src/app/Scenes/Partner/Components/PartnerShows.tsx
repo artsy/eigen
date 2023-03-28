@@ -1,15 +1,15 @@
+import { Spacer, Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
-import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import {
   StickyTabPageFlatList,
   StickyTabPageFlatListContext,
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -55,14 +55,14 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
                   ) : (
                     <EmptyImage />
                   )}
-                  <Spacer mb={0.5} />
-                  <Sans size="3t">{show.name}</Sans>
-                  <Sans size="3t" color="black60">
+                  <Spacer y={0.5} />
+                  <Text variant="sm">{show.name}</Text>
+                  <Text variant="sm" color="black60">
                     {show.exhibitionPeriod}
-                  </Sans>
+                  </Text>
                 </Box>
               </TouchableWithoutFeedback>
-              <Spacer mb={2} />
+              <Spacer y={2} />
             </GridItem>
           )
         }}
@@ -95,7 +95,7 @@ export const PartnerShows: React.FC<{
       key: "past_shows_header",
       content: (
         <Flex mb={2}>
-          <Sans size="4t">Past shows</Sans>
+          <Text variant="sm-display">Past shows</Text>
         </Flex>
       ),
     })
@@ -232,7 +232,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
 )
 
 const BackgroundImage = styled(ImageBackground)`
-  height: 120;
+  height: 120px;
 `
 
 const GridItem = styled(Box)`
@@ -240,7 +240,7 @@ const GridItem = styled(Box)`
 `
 
 const EmptyImage = styled(Box)`
-  height: 120;
+  height: 120px;
   background-color: ${themeGet("colors.black10")};
 `
 

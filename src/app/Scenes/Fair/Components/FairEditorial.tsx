@@ -1,8 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
+import { Box, BoxProps, useColor, Text } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
-import { Box, BoxProps, Text, Touchable, useColor } from "palette"
+import { navigate } from "app/system/navigation/navigate"
+import { Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -43,7 +44,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text variant="md">Related Reading</Text>
+        <Text variant="sm-display">Related Reading</Text>
 
         {(fair.articles.totalCount ?? 0) > 5 && (
           <Touchable
@@ -75,7 +76,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
           >
             <Box flexDirection="row" py={1} px={2}>
               <Box flex={1} pr={2}>
-                <Text variant="md">{article.title}</Text>
+                <Text variant="sm-display">{article.title}</Text>
 
                 <Text variant="sm" color="black60">
                   {article.publishedAt}

@@ -1,7 +1,7 @@
+import { InfoCircleIcon, Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
-import { Flex, InfoCircleIcon, Text } from "palette"
 import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
@@ -49,7 +49,11 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
           <InfoCircleIcon fill="black60" />
         </TouchableOpacity>
       </Flex>
-      {!!subTitle && <Text color="black60">{subTitle}</Text>}
+      {!!subTitle && (
+        <Text variant="xs" color="black60">
+          {subTitle}
+        </Text>
+      )}
       <FancyModal
         visible={modalVisible}
         maxHeight={maxModalHeight}

@@ -1,4 +1,4 @@
-import { Flex, Sans, useColor } from "palette"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { Switch } from "react-native"
 
 interface SwitchMenuProps {
@@ -20,12 +20,12 @@ export const SwitchMenu = ({
   return (
     <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
       <Flex style={{ width: "80%", justifyContent: "center" }}>
-        <Sans size="4t" color={disabled ? "black60" : "black100"}>
+        <Text variant="sm-display" color={disabled ? "black60" : "black100"}>
           {title}
-        </Sans>
-        <Sans size="3t" color={disabled ? "black30" : "black60"} py={0.5}>
+        </Text>
+        <Text variant="sm" color={disabled ? "black30" : "black60"} py={0.5}>
           {description}
-        </Sans>
+        </Text>
       </Flex>
       <Flex style={{ width: "20%" }} alignItems="flex-end">
         <Switch

@@ -1,17 +1,25 @@
+import { TextProps } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
+import { Stack } from "app/Components/Stack"
+import {
+  PageableRouteProps,
+  useNavigateToPageableRoute,
+} from "app/system/navigation/useNavigateToPageableRoute"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
-interface Props {
+interface Props extends Partial<PageableRouteProps> {
+  artistNamesTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
   artworks: GenericGrid_artworks$data
   sectionDirection?: "column" // FIXME: We don’t actually support more options atm
   sectionMargin?: number
+  hidePartner?: boolean
   itemMargin?: number
   isLoading?: boolean
   trackingFlow?: string
@@ -34,7 +42,7 @@ type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer 
 
 export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
   static defaultProps = {
-    sectionDirection: "column" as "column",
+    sectionDirection: "column" as const,
     sectionMargin: 20,
     itemMargin: 20,
   }
@@ -50,11 +58,11 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
   layoutState(width: number): State {
     const isPad = width > 600
-    const isPadHorizontal = width > 900
 
-    const sectionCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
+    const sectionCount = isPad ? 3 : 2
     const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
-    const sectionDimension = (width - sectionMargins) / sectionCount
+    const artworkPadding = 20
+    const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
 
     return {
       sectionCount,
@@ -71,6 +79,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
     if (layout.width !== this.width) {
       // this means we've rotated or are on our initial load
       this.width = layout.width
+
       this.setState(this.layoutState(layout.width))
     }
   }
@@ -209,11 +218,17 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
+const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props) => {
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
+  return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
+}
+
+const GenericGrid = createFragmentContainer(injectHooks(GenericArtworksGrid), {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
-      image {
+      slug
+      image(includeAll: false) {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
@@ -225,15 +240,14 @@ export default GenericGrid
 
 export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) => {
   const isPad = width > 600
-  const isPadHorizontal = width > 900
 
-  const numColumns = isPad ? (isPadHorizontal ? 4 : 3) : 2
+  const numColumns = isPad ? 3 : 2
   const rng = new RandomNumberGenerator(3432)
 
   return (
     <Stack horizontal>
       {times(numColumns).map((i) => (
-        <Stack key={i} spacing={3} width={(width + 20) / numColumns - 20}>
+        <Stack key={i} spacing={4} width={(width + 20) / numColumns - 20}>
           {times(isPad ? 10 : 5).map((j) => (
             <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
           ))}

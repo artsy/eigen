@@ -1,6 +1,6 @@
-import { act, fireEvent } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { fireEvent } from "@testing-library/react-native"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Rarity } from "./Rarity"
 
@@ -19,20 +19,20 @@ describe("Rarity", () => {
   })
 
   it("displays the correct rarity", async () => {
-    const { getByText, findByText, getByTestId } = renderWithWrappersTL(<Rarity />)
+    const { getByText, findByText, getByTestId } = renderWithWrappers(<Rarity />)
 
-    act(() => fireEvent.press(getByTestId("rarity-select")))
+    fireEvent.press(getByTestId("rarity-select"))
     await flushPromiseQueue()
-    act(() => fireEvent.press(getByText("Limited Edition")))
+    fireEvent.press(getByText("Limited Edition"))
     await flushPromiseQueue()
 
     expect(findByText("EDITION NUMBER")).toBeTruthy()
   })
 
   it("displays the modal with all classification types", async () => {
-    const { getByText } = renderWithWrappersTL(<Rarity />)
+    const { getByText } = renderWithWrappers(<Rarity />)
 
-    act(() => fireEvent.press(getByText("What is this?")))
+    fireEvent.press(getByText("What is this?"))
     await flushPromiseQueue()
 
     expect(getByText("Unique")).toBeTruthy()

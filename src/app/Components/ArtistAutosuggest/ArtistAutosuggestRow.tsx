@@ -1,7 +1,7 @@
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { Box, Flex, Spacer } from "palette"
 
 const IMAGE_SIZE = 40
 
@@ -22,7 +22,7 @@ export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onRes
           overflow: "hidden",
         }}
       />
-      <Spacer ml={1} />
+      <Spacer x={1} />
       <Flex flex={1}>
         <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
       </Flex>

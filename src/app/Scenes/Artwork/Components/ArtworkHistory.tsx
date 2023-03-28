@@ -1,8 +1,9 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Box, Join, Sans, Spacer } from "palette"
+import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkHistoryProps {
@@ -15,7 +16,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const sections = [
     { title: "Provenance", value: provenance, contextModule: Schema.ContextModules.Provenance },
     {
-      title: "Exhibition History",
+      title: "Exhibition history",
       value: exhibitionHistory,
       contextModule: Schema.ContextModules.ExhibitionHistory,
     },
@@ -26,17 +27,19 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const textLimit = truncatedTextLimit()
 
   return (
-    <Join separator={<Spacer pb={3} />}>
+    <Join separator={<Spacer y={4} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
-          <Sans size="4t" pb={2}>
+          <Text variant="md" pb={1}>
             {title}
-          </Sans>
+          </Text>
           <ReadMore
             content={value || ""}
             contextModule={contextModule}
             maxChars={textLimit}
-            textStyle="sans"
+            textStyle="new"
+            textVariant="sm"
+            linkTextVariant="sm-display"
             trackingFlow={Schema.Flow.ArtworkDetails}
           />
         </Box>

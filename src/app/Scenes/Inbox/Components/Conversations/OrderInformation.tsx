@@ -1,7 +1,7 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { OrderInformation_artwork$data } from "__generated__/OrderInformation_artwork.graphql"
 import { OrderInformation_order$data } from "__generated__/OrderInformation_order.graphql"
-import { track as _track } from "app/utils/track"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Join, Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderInformationProps {
@@ -17,8 +17,8 @@ export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, ord
   return (
     <>
       <Flex flexDirection="column" p={2} key="support-section">
-        <Join separator={<Spacer my={0.5} />}>
-          <Text variant="md" weight="medium" mb={0.5}>
+        <Join separator={<Spacer y={0.5} />}>
+          <Text variant="sm-display" weight="medium" mb={0.5}>
             {`Order No. ${order.code}`}
           </Text>
 

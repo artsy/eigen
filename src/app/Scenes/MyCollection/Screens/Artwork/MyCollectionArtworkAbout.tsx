@@ -1,13 +1,12 @@
+import { Flex, useTheme } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, useTheme } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
-import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkAboutProps {
@@ -22,13 +21,14 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   const articles = extractNodes(artwork.artist?.articles)
+
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView
   return (
     <Wrapper style={{ paddingHorizontal: space(2) }}>
-      <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={3}>
+      <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={4}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
-
-        <MyCollectionArtworkPurchaseDetails artwork={artwork} />
 
         <MyCollectionArtworkArticles
           artistSlug={artwork.artist?.slug}
@@ -36,7 +36,8 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
-        <MyCollectionWhySell artwork={artwork} contextModule="about" />
+
+        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="about" />}
       </Flex>
     </Wrapper>
   )
@@ -45,7 +46,6 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
 const artworkFragment = graphql`
   fragment MyCollectionArtworkAbout_artwork on Artwork {
     ...MyCollectionArtworkAboutWork_artwork
-    ...MyCollectionArtworkPurchaseDetails_artwork
     artistNames
     consignmentSubmission {
       displayText

@@ -55,10 +55,10 @@ export const useWebViewCallback = () => {
 
       const { key, ...rest } = data
 
-      const event = eventCallbacks.filter((evt) => evt?.[0] === data.key)?.[0] ?? null
+      const event = eventCallbacks.filter((evt) => evt?.[0] === key)?.[0] ?? null
       if (event && event[1]) {
         event[1](rest)
-        const newEvents = eventCallbacks.filter((evt) => evt?.[0] !== data.key)
+        const newEvents = eventCallbacks.filter((evt) => evt?.[0] !== key)
         eventCallbacks = newEvents
         setWebViewEvent(newEvents)
         console.log("setWebViewEvent", setWebViewEvent)

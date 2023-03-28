@@ -1,55 +1,51 @@
+import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
+import {
+  Spacer,
+  CheckCircleIcon,
+  CheckCircleFillIcon,
+  Flex,
+  Box,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
+import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import {
-  buildLocationDisplay,
-  DetailedLocationAutocomplete,
-} from "app/Components/DetailedLocationAutocomplete"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { navigate } from "app/navigation/navigate"
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { navigate } from "app/system/navigation/navigate"
+import { storeLocalImage, useLocalImageStorage } from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact, isArray } from "lodash"
-import {
-  Avatar,
-  Box,
-  Button,
-  CheckCircleFillIcon,
-  CheckCircleIcon,
-  Flex,
-  Input,
-  Join,
-  Spacer,
-  Text,
-  Touchable,
-  useColor,
-} from "palette"
-import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
-import { ScrollView, TextInput } from "react-native"
+import { Button, Avatar, Input, Join, Message, Touchable } from "palette"
+import React, { Suspense, useEffect, useRef, useState } from "react"
+import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-import { MyProfileContext } from "./MyProfileProvider"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
-const PRIMARY_LOCATION_OFFSET = 240
 const ICON_SIZE = 22
 
+interface EditableLocationProps extends EditableLocation {
+  display: string | null
+}
 interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
-  location: EditableLocation | null
+  location: EditableLocationProps | null
   profession: string
   otherRelevantPositions: string
   bio: string
@@ -61,7 +57,12 @@ const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export const MyProfileEditForm: React.FC = () => {
+interface MyProfileEditFormProps {
+  onSuccess?: () => void
+}
+
+export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
+  const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
   const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
@@ -72,15 +73,15 @@ export const MyProfileEditForm: React.FC = () => {
   const color = useColor()
   const navigation = useNavigation()
 
-  const scrollViewRef = useRef<ScrollView>(null)
-
   const { showActionSheetWithOptions } = useActionSheet()
 
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
+  const professionInputRef = useRef<Input>(null)
   const locationInputRef = useRef<Input>(null)
 
+  const [refreshKey, setRefreshKey] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
@@ -93,12 +94,10 @@ export const MyProfileEditForm: React.FC = () => {
     handleVerification: handleIDVerification,
   } = useHandleIDVerification()
 
-  const { localImage, setLocalImage } = useContext(MyProfileContext)
+  const localImage = useLocalImageStorage("profile", undefined, undefined, refreshKey)
 
   const uploadProfilePhoto = async (photo: string) => {
     try {
-      // We want to show the local image initially for better UX since Gemini takes a while to process
-      setLocalImage(photo)
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
@@ -113,9 +112,11 @@ export const MyProfileEditForm: React.FC = () => {
     otherRelevantPositions,
     bio,
   }: Partial<EditMyProfileValuesSchema>) => {
+    const updatedLocation = { ...location }
+    delete updatedLocation.display
     const payload = {
       name,
-      ...(location ? { location } : {}),
+      ...(location ? { location: updatedLocation } : {}),
       profession,
       otherRelevantPositions,
       bio,
@@ -135,28 +136,32 @@ export const MyProfileEditForm: React.FC = () => {
       validateOnBlur: true,
       initialValues: {
         name: me?.name ?? "",
-        displayLocation: { display: buildLocationDisplay(me?.location || null) },
-        location: null,
+        displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
+        location: me?.location ?? null,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: localImage || me?.icon?.url || "",
+        photo: localImage?.path || me?.icon?.url || "",
       },
       initialErrors: {},
       onSubmit: async ({ photo, ...otherValues }) => {
         try {
           setLoading(true)
-          await Promise.all(
-            compact([
-              await updateUserInfo(otherValues),
-              didUpdatePhoto && (await uploadProfilePhoto(photo)),
-            ])
-          )
+          await Promise.all([
+            updateUserInfo(otherValues),
+            didUpdatePhoto && uploadProfilePhoto(photo),
+          ])
+
+          trackEvent(tracks.editedUserProfile())
         } catch (error) {
-          console.error("Failed to update user profile ", error)
+          console.error("Failed to update profile", error)
         } finally {
           setLoading(false)
         }
+
+        InteractionManager.runAfterInteractions(() => {
+          onSuccess?.()
+        })
         navigation.goBack()
       },
       validationSchema: editMyProfileSchema,
@@ -167,10 +172,12 @@ export const MyProfileEditForm: React.FC = () => {
 
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
-      .then((images) => {
-        if (isArray(images) && images.length >= 1) {
+      .then(async (images) => {
+        if (images?.length >= 1) {
+          storeLocalImage("profile", images[0])
           setDidUpdatePhoto(true)
-          ;(handleChange("photo") as (value: string) => void)(images[0].path)
+          setRefreshKey(refreshKey + 1)
+          handleChange("photo")(images[0].path)
         }
       })
       .catch((e) =>
@@ -195,6 +202,8 @@ export const MyProfileEditForm: React.FC = () => {
     navigation.goBack()
   }
 
+  const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
+
   return (
     <>
       <FancyModalHeader
@@ -204,8 +213,18 @@ export const MyProfileEditForm: React.FC = () => {
       >
         Edit Profile
       </FancyModalHeader>
+
+      {showCompleteYourProfileBanner && (
+        <Message
+          variant="info"
+          title="Complete your profile and make a great impression"
+          text="Galleries are more likely to respond to collectors with complete profiles and a brief bio."
+          showCloseButton
+        />
+      )}
+
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Join separator={<Spacer py={1} />}>
+        <Join separator={<Spacer y={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
             <Touchable onPress={chooseImageHandler}>
               <Box
@@ -217,10 +236,10 @@ export const MyProfileEditForm: React.FC = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                {!!values.photo ? (
-                  <Avatar src={values.photo} size="md" />
+                {!!localImage || values.photo ? (
+                  <Avatar src={localImage?.path || values.photo} size="md" />
                 ) : (
-                  <Image source={require("images/profile_placeholder_avatar.webp")} />
+                  <Image source={require("images/profile_placeholder_avatar.png")} />
                 )}
               </Box>
             </Touchable>
@@ -229,7 +248,7 @@ export const MyProfileEditForm: React.FC = () => {
             </Touchable>
           </Flex>
           <Flex m={2}>
-            <Join separator={<Spacer py={2} />}>
+            <Join separator={<Spacer y={2} />}>
               <Input
                 ref={nameInputRef}
                 title="Full name"
@@ -243,29 +262,30 @@ export const MyProfileEditForm: React.FC = () => {
                 }}
               />
 
-              <DetailedLocationAutocomplete
-                locationInputRef={locationInputRef}
+              <LocationAutocomplete
+                allowCustomLocation
+                inputRef={locationInputRef}
                 title="Primary location"
                 placeholder="City name"
                 returnKeyType="next"
-                initialLocation={values.displayLocation?.display!}
-                onFocus={() =>
-                  requestAnimationFrame(() =>
-                    scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
-                  )
-                }
-                onChange={({ city, country, postalCode, state, stateCode }) => {
+                onSubmitEditing={() => {
+                  professionInputRef.current?.focus()
+                }}
+                displayLocation={buildLocationDisplay(values.location)}
+                onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
                   setFieldValue("location", {
                     city: city ?? "",
                     country: country ?? "",
                     postalCode: postalCode ?? "",
                     state: state ?? "",
                     stateCode: stateCode ?? "",
+                    coordinates,
                   })
                 }}
               />
 
               <Input
+                ref={professionInputRef}
                 title="Profession"
                 onChangeText={handleChange("profession")}
                 onBlur={() => validateForm()}
@@ -308,9 +328,9 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <ProfileVerifications
-                isIDVerified={!!me?.identityVerified}
+                isIDVerified={!!me?.isIdentityVerified}
                 canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                emailConfirmed={!!me?.emailConfirmed}
+                isEmailConfirmed={!!me?.isEmailConfirmed}
                 handleEmailVerification={handleEmailVerification}
                 handleIDVerification={handleIDVerification}
               />
@@ -349,9 +369,12 @@ const meFragment = graphql`
       url(version: "thumbnail")
     }
     email
-    emailConfirmed
-    identityVerified
+    isEmailConfirmed
+    isIdentityVerified
     canRequestEmailConfirmation
+    collectorProfile {
+      isProfileComplete
+    }
   }
 `
 
@@ -363,11 +386,11 @@ const MyProfileEditFormScreenQuery = graphql`
   }
 `
 
-export const MyProfileEditFormScreen: React.FC = () => {
+export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props) => {
   return (
     <ArtsyKeyboardAvoidingView>
       <Suspense fallback={<LoadingSkeleton />}>
-        <MyProfileEditForm />
+        <MyProfileEditForm {...props} />
       </Suspense>
     </ArtsyKeyboardAvoidingView>
   )
@@ -377,36 +400,36 @@ const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
-        <Text variant="md" mr={0.5}>
+        <Text variant="sm-display" mr={0.5}>
           Edit Profile
         </Text>
       </Flex>
-      <Spacer mb={4} />
+      <Spacer y={4} />
       <Flex flexDirection="row" pl={2} alignItems="center">
         <PlaceholderBox width={99} height={99} borderRadius={50} />
-        <PlaceholderText width={100} height={20} marginTop={5} marginLeft={20} />
+        <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />
       </Flex>
       {[...Array(4)].map((_x, i) => (
-        <Flex mt={30} key={i}>
-          <Flex mx={20}>
-            <PlaceholderText width={100} height={20} marginTop={5} />
-            <PlaceholderBox height={50} marginTop={5} />
+        <Flex mt={4} key={i}>
+          <Flex mx={2}>
+            <PlaceholderText width={100} height={20} marginTop={6} />
+            <PlaceholderBox height={50} marginTop={6} />
           </Flex>
         </Flex>
       ))}
-      <Flex mt={30}>
-        <Flex mx={20}>
-          <PlaceholderText width={100} height={20} marginTop={5} />
-          <PlaceholderBox height={100} marginTop={5} />
+      <Flex mt={4}>
+        <Flex mx={2}>
+          <PlaceholderText width={100} height={20} marginTop={6} />
+          <PlaceholderBox height={100} marginTop={6} />
         </Flex>
       </Flex>
-      <Spacer mb={2} />
-      <PlaceholderBox height={50} marginTop={5} borderRadius={50} marginHorizontal={20} />
+      <Spacer y={2} />
+      <PlaceholderBox height={50} marginTop={6} borderRadius={50} marginHorizontal={20} />
     </ProvidePlaceholderContext>
   )
 }
 
-const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
   const color = useColor()
 
   return (
@@ -424,13 +447,13 @@ const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: strin
 
 const ProfileVerifications = ({
   canRequestEmailConfirmation,
-  emailConfirmed,
+  isEmailConfirmed,
   handleEmailVerification,
   handleIDVerification,
   isIDVerified,
 }: {
   canRequestEmailConfirmation: boolean
-  emailConfirmed: boolean
+  isEmailConfirmed: boolean
   handleEmailVerification: () => void
   handleIDVerification: () => void
   isIDVerified: boolean
@@ -441,10 +464,10 @@ const ProfileVerifications = ({
     <Flex testID="profile-verifications" pr={2}>
       {/* ID Verification */}
       {isIDVerified ? (
-        renderVerifiedRow({
-          title: "ID Verified",
-          subtitle: "For details, see FAQs or contact verification@artsy.net",
-        })
+        <VerifiedRow
+          title="ID Verified"
+          subtitle="For details, see FAQs or contact verification@artsy.net"
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
@@ -475,14 +498,14 @@ const ProfileVerifications = ({
         </Flex>
       )}
 
-      <Spacer height={30} />
+      <Spacer y={4} />
 
       {/* Email Verification */}
-      {emailConfirmed ? (
-        renderVerifiedRow({
-          title: "Email Address Verified",
-          subtitle: "Secure your account and receive updates about your transactions on Artsy.",
-        })
+      {isEmailConfirmed ? (
+        <VerifiedRow
+          title="Email Address Verified"
+          subtitle="Secure your account and receive updates about your transactions on Artsy."
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
@@ -525,7 +548,7 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       px={2}
       py={1}
       // Avoid system bottom navigation bar
-      background={color("black100")}
+      backgroundColor="black100"
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
@@ -538,4 +561,13 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  editedUserProfile: (): EditedUserProfile => ({
+    action: ActionType.editedUserProfile,
+    context_screen: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.editProfile,
+    platform: "mobile",
+  }),
 }

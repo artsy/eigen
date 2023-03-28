@@ -1,8 +1,8 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Articles_articles$data } from "__generated__/Articles_articles.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Spacer } from "palette"
 import { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -21,7 +21,7 @@ class Articles extends Component<Props> {
         <AboveTheFoldFlatList<Articles_articles$data[number]>
           horizontal
           showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <Spacer ml="2" />}
+          ItemSeparatorComponent={() => <Spacer x={2} />}
           scrollsToTop={false}
           style={{ overflow: "visible" }}
           initialNumToRender={2}

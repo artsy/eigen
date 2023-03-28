@@ -1,14 +1,15 @@
-import { themeGet } from "@styled-system/theme-get"
 import {
-  ArrowLeftIcon,
   ArrowRightIcon,
   CloseIcon,
-  Flex,
-  Separator,
+  ArrowLeftIcon,
   ShareIcon,
-  Text,
+  Flex,
   useTheme,
-} from "palette"
+  Text,
+} from "@artsy/palette-mobile"
+import { themeGet } from "@styled-system/theme-get"
+import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
+import { Separator } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
@@ -24,6 +25,7 @@ export interface FancyModalHeaderProps {
   useShareButton?: boolean
   rightCloseButton?: boolean
   renderRightButton?: () => JSX.Element
+  alignItems?: ResponsiveAlignItemsValue
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
@@ -39,13 +41,14 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   useShareButton,
   rightCloseButton,
   renderRightButton,
+  alignItems,
 }) => {
   const { space } = useTheme()
   const leftButton = () => {
-    if (!useXButton) {
-      return <ArrowLeftIcon fill="black100" />
-    } else {
+    if (useXButton) {
       return <CloseIcon fill="black100" />
+    } else {
+      return <ArrowLeftIcon fill="black100" />
     }
   }
 
@@ -81,6 +84,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             <RightButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
+              testID="fancy-modal-header-right-button"
             >
               {rightButtonText ? (
                 <Text
@@ -96,7 +100,13 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             </RightButtonContainer>
           )}
         </Flex>
-        <Flex position="absolute" left={0} right={0} alignItems="center" pointerEvents="none">
+        <Flex
+          position="absolute"
+          left={0}
+          right={0}
+          alignItems={alignItems || "center"}
+          pointerEvents="none"
+        >
           <Text variant="sm" color="black100">
             {children}
           </Text>
@@ -112,17 +122,17 @@ export const Container = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${themeGet("space.6")}px;
+  height: ${themeGet("space.6")};
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `
 
 export const RightButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `

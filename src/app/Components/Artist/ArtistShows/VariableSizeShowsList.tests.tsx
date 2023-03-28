@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import ShowsList from "./VariableSizeShowsList"
@@ -10,11 +10,10 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderWithWrappers(<ShowsList shows={shows as any} showSize="medium" />)
+  renderWithWrappersLEGACY(<ShowsList shows={shows as any} showSize="medium" />)
 })
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const showProps = (n) => {
+const showProps = (n: number) => {
   return {
     id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",

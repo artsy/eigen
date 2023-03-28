@@ -1,4 +1,7 @@
-import { ConsignmentSubmissionSource } from "__generated__/createConsignSubmissionMutation.graphql"
+import {
+  ConsignmentSubmissionCategoryAggregation,
+  ConsignmentSubmissionSource,
+} from "__generated__/createConsignSubmissionMutation.graphql"
 import {
   ConsignmentAttributionClass,
   ConsignmentSubmissionStateAggregation,
@@ -17,44 +20,37 @@ export interface Location {
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
-  title: string
-  year: string
-  medium: string
   attributionClass: ConsignmentAttributionClass | null
+  category: Exclude<ConsignmentSubmissionCategoryAggregation, "%future added value"> | null
+  depth: string
+  dimensionsMetric: string
   editionNumber: string
   editionSizeFormatted: string
-  dimensionsMetric: string
   height: string
-  width: string
-  depth: string
-  provenance: string
-  state: ConsignmentSubmissionStateAggregation
-  utmMedium: string | undefined
-  utmSource: string | undefined
-  utmTerm: string | undefined
   location: Location
-  source: ConsignmentSubmissionSource | null
+  medium: string
   myCollectionArtworkID: string | null
+  provenance: string
+  source: ConsignmentSubmissionSource | null
+  state?: ConsignmentSubmissionStateAggregation
+  utmMedium?: string
+  utmSource?: string
+  utmTerm?: string
+  width: string
+  title: string
+  year: string
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   artist: "",
   artistId: "",
-  title: "",
-  year: "",
-  medium: "",
   attributionClass: null,
+  category: null,
+  depth: "",
+  dimensionsMetric: "in",
   editionNumber: "",
   editionSizeFormatted: "",
-  dimensionsMetric: "in",
   height: "",
-  width: "",
-  depth: "",
-  provenance: "",
-  state: "DRAFT",
-  utmMedium: "",
-  utmSource: "",
-  utmTerm: "",
   location: {
     city: "",
     state: "",
@@ -62,42 +58,18 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
     countryCode: "",
     zipCode: "",
   },
-  source: null,
+  medium: "",
   myCollectionArtworkID: null,
+  provenance: "",
+  source: null,
+  state: "DRAFT",
+  utmMedium: "",
+  utmSource: "",
+  utmTerm: "",
+  width: "",
+  title: "",
+  year: "",
 }
-
-export const countriesRequirePostalCode = [
-  "US",
-  "AT", // Austria
-  "BE", // Belgium
-  "CA", // Canada
-  "CN", // China
-  "HR", // Croatia
-  "CY", // Cyprus
-  "DK", // Denmark
-  "EE", // Estonia
-  "FI", // Finland
-  "FR", // France
-  "DE", // Germany
-  "GR", // Greece
-  "HU", // Hungary
-  "IS", // Iceland
-  "IL", // Ireland
-  "IT", // Italy
-  "JP", // Japan
-  "LV", // Latvia
-  "MC", // Monaco
-  "NO", // Norway
-  "PL", // Poland
-  "PT", // Portugal
-  "ES", // Spain
-  "SE", // Sweden
-  "CH", // Switzerland
-  "GB", // United Kingdom
-  "NL", // Netherlands
-]
-
-const usPostalCodeErrorMessage = "Please enter a 5-digit US zip code."
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
   artist: Yup.string().trim(),
@@ -129,16 +101,5 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     city: Yup.string().required().trim(),
     state: Yup.string(),
     country: Yup.string(),
-    zipCode: Yup.string().when("countryCode", {
-      is: (countryCode) => countryCode?.toUpperCase() === "US",
-      then: Yup.string()
-        .required(usPostalCodeErrorMessage)
-        .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
-        .trim(),
-      otherwise: Yup.string().when("countryCode", {
-        is: (countryCode) => countriesRequirePostalCode.includes(countryCode?.toUpperCase()),
-        then: Yup.string().required("Please enter a valid zip/postal code for your region").trim(),
-      }),
-    }),
   }),
 })

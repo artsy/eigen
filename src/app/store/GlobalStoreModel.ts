@@ -15,19 +15,20 @@ import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
-import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import {
   getPendingPushNotificationModel,
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
-import { assignDeep, sanitize } from "./persistence"
+import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import {
   getRequestedPriceEstimatesModel,
   RequestedPriceEstimatesModel,
 } from "./RequestedPriceEstimatesModel"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
+import { CURRENT_APP_VERSION } from "./migration"
+import { assignDeep, sanitize } from "./persistence"
 
 interface GlobalStoreStateModel {
   version: number
@@ -48,6 +49,7 @@ interface GlobalStoreStateModel {
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
+  recentPriceRanges: RecentPriceRangesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -84,14 +86,23 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (a) => a.auth.signOut,
     (actions, _, store) => {
       const {
-        artsyPrefs: existingConfig,
+        artsyPrefs: existingArtsyConfig,
+        devicePrefs: existingDeviceConfig,
         search,
         auth: { userID },
+        recentPriceRanges,
       } = store.getState()
 
       // keep existing config state
-      const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ artsyPrefs: config, search, auth: { previousSessionUserID: userID } })
+      const artsyConfig = sanitize(existingArtsyConfig) as typeof existingArtsyConfig
+      const deviceConfig = sanitize(existingDeviceConfig) as typeof existingDeviceConfig
+      actions.reset({
+        artsyPrefs: artsyConfig,
+        devicePrefs: deviceConfig,
+        search,
+        recentPriceRanges,
+        auth: { previousSessionUserID: userID },
+      })
     }
   ),
   didRehydrate: thunkOn(
@@ -122,6 +133,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
+  recentPriceRanges: getRecentPriceRangesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

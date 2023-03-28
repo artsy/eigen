@@ -4,7 +4,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
 import { getEssentialProps } from "./helper"
 
@@ -74,7 +74,7 @@ describe("Artist options screen", () => {
       },
       sizeMetric: "cm",
     }
-    const { getAllByA11yState } = renderWithWrappersTL(
+    const { getAllByA11yState } = renderWithWrappers(
       <MockArtistScreen initialData={injectedState} />
     )
 
@@ -103,7 +103,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { getAllByA11yState } = renderWithWrappersTL(
+      const { getAllByA11yState } = renderWithWrappers(
         <MockArtistScreen initialData={injectedState} />
       )
       const selectedOptions = getAllByA11yState({ checked: true })
@@ -126,7 +126,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { getByText, getAllByA11yState } = renderWithWrappersTL(
+      const { getByText, getAllByA11yState } = renderWithWrappers(
         <MockArtistScreen initialData={injectedState} />
       )
 
@@ -163,7 +163,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { queryByA11yState, getAllByA11yState, getByText } = renderWithWrappersTL(
+      const { queryByA11yState, getAllByA11yState, getByText } = renderWithWrappers(
         <MockArtistScreen initialData={injectedState} />
       )
 
@@ -193,7 +193,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const { queryByText } = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(queryByText("All Artists I Follow")).toBeTruthy()
     })
@@ -213,7 +213,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const { queryByText } = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(queryByText("All Artists I Follow")).toBeTruthy()
     })
@@ -246,7 +246,7 @@ describe("Artist options screen", () => {
         sizeMetric: "cm",
       }
 
-      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const { queryByText } = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
       expect(queryByText("All Artists I Follow")).toBeFalsy()
     })

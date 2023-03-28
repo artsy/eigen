@@ -1,7 +1,7 @@
+import * as fs from "fs"
 import { danger, fail, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
-import * as fs from "fs"
 
 /**
  * Helpers
@@ -25,28 +25,8 @@ const preventUsingMoment = () => {
   })
   if (newMomentImports.length > 0) {
     warn(`We are trying to migrate away from moment towards \`luxon\`, but found moment imports in the following new files:
-
 ${newMomentImports.map((filename) => `- \`${filename}\``).join("\n")}
-
 See [docs](https://moment.github.io/luxon/api-docs/index.html).
-  `)
-  }
-}
-
-// We are trying to migrate away from Enzyme towards @testing-library/react-native
-const preventUsingEnzyme = () => {
-  const newEnzymeImports = getCreatedFileNames(danger.git.created_files)
-    .filter(testOnlyFilter)
-    .filter((filename) => {
-      const content = fs.readFileSync(filename).toString()
-      return content.includes('from "enzyme"')
-    })
-  if (newEnzymeImports.length > 0) {
-    warn(`We are trying to migrate away from Enzyme towards \`@testing-library/react-native\`, but found Enzyme imports in the following new unit test files:
-
-${newEnzymeImports.map((filename) => `- \`${filename}\``).join("\n")}
-
-See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
   `)
   }
 }
@@ -58,34 +38,16 @@ const preventUsingTestRenderer = () => {
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
       return (
-        content.includes('from "app/tests/renderWithWrappers"') &&
-        (content.includes("renderWithWrappers ") || content.includes("renderWithWrappers,"))
+        content.includes('from "app/utils/tests/renderWithWrappers"') &&
+        (content.includes("renderWithWrappersLEGACY ") ||
+          content.includes("renderWithWrappersLEGACY,"))
       )
     })
   if (newTRImports.length > 0) {
     warn(`We are trying to migrate away from \`react-test-renderer\` towards \`@testing-library/react-native\`, but found Test-Renderer imports in the following new unit test files:
-
 ${newTRImports.map((filename) => `- \`${filename}\``).join("\n")}
-
 See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
   `)
-  }
-}
-
-const preventUsingRenderRelayTree = () => {
-  const newRenderRelayTreeImports = getCreatedFileNames(danger.git.created_files)
-    .filter(testOnlyFilter)
-    .filter((filename) => {
-      const content = fs.readFileSync(filename).toString()
-      return content.includes('from "app/tests/renderRelayTree"')
-    })
-  if (newRenderRelayTreeImports.length > 0) {
-    warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`, but found Enzyme imports in the following new unit test files:
-
-  ${newRenderRelayTreeImports.map((filename) => `- \`${filename}\``).join("\n")}
-
-  See [\`LoggedInUserInfo-tests.tsx\`](https://github.com/artsy/eigen/blob/f33577ebb09800224731365734be411b66ad8126/src/lib/Scenes/MyProfile/__tests__/LoggedInUserInfo-tests.tsx) as an example, or [the docs](https://relay.dev/docs/en/testing-relay-components).
-    `)
   }
 }
 
@@ -142,12 +104,10 @@ export const useWebPs = (fileNames: string[]) => {
   }
 }
 ;(async function () {
-  const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
+  // const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
 
   preventUsingMoment()
-  preventUsingEnzyme()
   preventUsingTestRenderer()
-  preventUsingRenderRelayTree()
   verifyRemainingDevWork()
-  useWebPs(newCreatedFileNames)
+  // useWebPs(newCreatedFileNames)
 })()

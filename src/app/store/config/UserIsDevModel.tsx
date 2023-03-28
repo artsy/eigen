@@ -1,7 +1,7 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
-import { unsafe__getEnvironment } from "../GlobalStore"
-import { GlobalStoreModel } from "../GlobalStoreModel"
 
 export interface UserIsDevModel {
   flipValue: boolean

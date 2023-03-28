@@ -1,49 +1,24 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionArtworkHeaderTestQuery.graphql"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"
 
-jest.unmock("react-relay")
-
 describe("MyCollectionArtworkHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkHeaderTestQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionArtworkHeaderTestQuery @relay_test_operation {
-          artwork(id: "artwork-id") {
-            ...MyCollectionArtworkHeader_artwork
-          }
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkHeaderTestQuery>({
+    Component: (props) => <MyCollectionArtworkHeader artwork={props.artwork!} />,
+    query: graphql`
+      query MyCollectionArtworkHeaderTestQuery @relay_test_operation {
+        artwork(id: "artwork-id") {
+          ...MyCollectionArtworkHeader_artwork
         }
-      `}
-      render={({ props }) => {
-        if (props?.artwork) {
-          return <MyCollectionArtworkHeader artwork={props.artwork} />
-        }
-        return null
-      }}
-      variables={{}}
-    />
-  )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappersTL(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
-    return renderer
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   it("renders without throwing an error", () => {
-    const { getByText } = getWrapper({
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         artistNames: "some artist name",
         date: "Jan 20th",
@@ -59,7 +34,7 @@ describe("MyCollectionArtworkHeader", () => {
   })
 
   it("fires the analytics tracking event when image is pressed", () => {
-    const { getByLabelText } = getWrapper({
+    const { getByLabelText } = renderWithRelay({
       Artwork: () => ({
         internalID: "someInternalId",
         slug: "someSlug",
@@ -76,19 +51,21 @@ describe("MyCollectionArtworkHeader", () => {
     })
   })
 
-  it("shows fallback view when images are null", () => {
-    const { getByTestId } = getWrapper({
+  it("shows fallback view when images are null", async () => {
+    const { getByTestId } = renderWithRelay({
       Artwork: () => ({
         artistNames: "names",
         date: new Date().toISOString(),
-        images: null,
+        figures: null,
         internalID: "internal-id",
         title: "a title",
         slug: "some-slug",
       }),
     })
 
-    const fallbackView = getByTestId("Fallback-image-mycollection-header")
-    expect(fallbackView).toBeDefined()
+    await waitFor(() => {
+      const fallbackView = getByTestId("MyCollectionArtworkHeaderFallback")
+      expect(fallbackView).toBeDefined()
+    })
   })
 })

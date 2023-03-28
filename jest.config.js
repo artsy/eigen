@@ -1,19 +1,21 @@
 const moduleNameMap = require("./alias").jestModuleNameMap
 
 module.exports = {
-  preset: "react-native",
+  cacheDirectory: ".cache/jest",
   moduleFileExtensions: ["ts", "tsx", "js"],
-  rootDir: "./",
   moduleNameMapper: moduleNameMap,
-  testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
-  testEnvironment: "jsdom",
-  testURL: "http://localhost/",
+  preset: "react-native",
+  rootDir: "./",
   setupFilesAfterEnv: [
     "jest-extended",
     "@testing-library/jest-native/extend-expect",
     "./src/setupJest.ts",
   ],
-  cacheDirectory: ".jest/cache",
+  testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
+  testEnvironment: "jest-environment-jsdom",
+  testEnvironmentOptions: {
+    url: "http://localhost/",
+  },
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
       "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",

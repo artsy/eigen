@@ -1,13 +1,12 @@
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Suspense } from "react"
 import { Text } from "react-native"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { Questions } from "./Questions"
-
-jest.unmock("react-relay")
 
 describe("Questions", () => {
   const TestRenderer = () => {
@@ -28,7 +27,7 @@ describe("Questions", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders", async () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <Suspense fallback={<Text>SusLoading</Text>}>
           <TestRenderer />
@@ -36,9 +35,11 @@ describe("Questions", () => {
       </RelayEnvironmentProvider>
     )
     resolveMostRecentRelayOperation(mockEnvironment, { Artwork: () => ({}) })
-    expect(queryByText("SusLoading")).toBeDefined()
+    expect(getByText("SusLoading")).toBeDefined()
 
-    expect(queryByText("Questions about this piece?")).toBeDefined()
-    expect(queryByText("Contact Gallery")).toBeDefined()
+    await flushPromiseQueue()
+
+    expect(getByText("Questions about this piece?")).toBeDefined()
+    expect(getByText("Contact Gallery")).toBeDefined()
   })
 })

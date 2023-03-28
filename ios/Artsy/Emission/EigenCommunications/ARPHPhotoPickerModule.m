@@ -53,7 +53,8 @@ RCT_EXPORT_METHOD(requestPhotos:(BOOL)allowMultiple
         config.selectionLimit = allowMultiple ? 10 : 1;
         config.filter = [PHPickerFilter imagesFilter];
         PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
-        picker.delegate = self;
+        __unsafe_unretained ARPHPhotoPickerModule *weakVersionOfSelf = self;
+        picker.delegate = weakVersionOfSelf;
         UIViewController *currentVC = RCTPresentedViewController();
         [currentVC presentViewController:picker animated:true completion:nil];
     });

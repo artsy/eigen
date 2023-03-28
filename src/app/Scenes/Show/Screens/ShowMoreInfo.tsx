@@ -1,15 +1,15 @@
-import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
+import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
 import { ReadMore } from "app/Components/ReadMore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ShowHoursFragmentContainer as ShowHours } from "app/Scenes/Show/Components/ShowHours"
+import { ShowLocationFragmentContainer as ShowLocation } from "app/Scenes/Show/Components/ShowLocation"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Spacer, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ShowHoursFragmentContainer as ShowHours } from "../Components/ShowHours"
-import { ShowLocationFragmentContainer as ShowLocation } from "../Components/ShowLocation"
 
 const DISPLAYABLE_PARTNER_TYPES = {
   "Institutional Seller": "Institution",
@@ -45,7 +45,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       key: "title",
       element: (
         <Box mx={2}>
-          <Text variant="lg">About</Text>
+          <Text variant="lg-display">About</Text>
         </Box>
       ),
     },
@@ -93,7 +93,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
                 <Text variant="sm" mb={0.5}>
                   Press Release
                 </Text>
-                <ReadMore type="show" content={show.pressRelease} textStyle="sans" maxChars={500} />
+                <ReadMore content={show.pressRelease} textStyle="sans" maxChars={500} />
               </Box>
             ),
           },
@@ -145,9 +145,9 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       <FlatList<Section>
         data={sections}
         keyExtractor={({ key }) => key}
-        ListHeaderComponent={<Spacer mt={6} pt={2} />}
-        ListFooterComponent={<Spacer my={2} />}
-        ItemSeparatorComponent={() => <Spacer my={15} />}
+        ListHeaderComponent={<Spacer y={6} />}
+        ListFooterComponent={<Spacer y={2} />}
+        ItemSeparatorComponent={() => <Spacer y="15px" />}
         renderItem={({ item: { element } }) => element}
       />
     </ProvideScreenTracking>

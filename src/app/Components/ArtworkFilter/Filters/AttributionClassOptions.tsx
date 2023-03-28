@@ -8,8 +8,10 @@ import {
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface AttributionClassOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "AttributionClassOptionsScreen"> {}
+type AttributionClassOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "AttributionClassOptionsScreen"
+>
 
 export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
   { displayText: "Unique", paramValue: "unique", paramName: FilterParamName.attributionClass },

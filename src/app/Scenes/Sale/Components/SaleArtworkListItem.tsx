@@ -5,12 +5,12 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -80,25 +80,25 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 
         <Flex ml={2} height={100} flex={1} justifyContent="center">
           {!!artwork.saleArtwork?.lotLabel && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               Lot {artwork.saleArtwork.lotLabel}
-            </Sans>
+            </Text>
           )}
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
+            <Text variant="sm" weight="medium" numberOfLines={1}>
               {artwork.artistNames}
-            </Sans>
+            </Text>
           )}
           {!!artwork.title && (
-            <Sans size="3t" color="black60" numberOfLines={2}>
+            <Text variant="sm" color="black60" numberOfLines={2}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
-            </Sans>
+            </Text>
           )}
           {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               {saleInfo}
-            </Sans>
+            </Text>
           )}
         </Flex>
       </Flex>
@@ -112,7 +112,7 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
       artistNames
       date
       href
-      image {
+      image(includeAll: false) {
         small: url(version: "small")
         aspectRatio
         height

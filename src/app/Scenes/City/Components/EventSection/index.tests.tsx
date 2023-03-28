@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayProp } from "react-relay"
 import { EventSection } from "./index"
 
@@ -20,7 +20,7 @@ const data = [
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <EventSection
         title="Gallery shows"
         section="galleries"

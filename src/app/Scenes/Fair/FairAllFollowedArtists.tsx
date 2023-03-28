@@ -1,6 +1,7 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import { FairAllFollowedArtists_fair$data } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters$data } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
-import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -12,10 +13,10 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -50,7 +51,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
           Artworks
         </Text>
         <Separator />
-        <Spacer mb={2} />
+        <Spacer y={2} />
         <Box px="15px">
           <FairArtworksFragmentContainer
             fair={fair}
@@ -151,7 +152,7 @@ export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> =
 
 export const FairAllFollowedArtistsPlaceholder: React.FC = () => (
   <Flex>
-    <Spacer mb={2} />
+    <Spacer y={2} />
     <PlaceholderText width={220} />
     <Separator my={2} />
     {/* masonry grid */}

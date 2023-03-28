@@ -1,12 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, Spinner } from "palette"
-import React, { Suspense, useRef, useState } from "react"
+import { Spinner } from "palette"
+import { Suspense, useRef, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ZeroState } from "./Components/ZeroState"
@@ -30,7 +31,16 @@ export const SalesScreenQuery = graphql`
   }
 `
 
-export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
+export const Sales: React.FC = () => {
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
+
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
@@ -67,7 +77,7 @@ export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
         testID="Sales-Screen-ScrollView"
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
-        <Stack py={2} spacing={3}>
+        <Stack py={2} spacing={4}>
           {!!data.me && (
             <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={data.me} />
           )}
@@ -88,15 +98,7 @@ export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
   )
 }
 
-export const SalesQueryRenderer = () => {
-  const data = useLazyLoadQuery<SalesQuery>(
-    SalesScreenQuery,
-    {},
-    {
-      fetchPolicy: "store-and-network",
-      networkCacheConfig: { force: true },
-    }
-  )
+export const SalesScreen = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}
@@ -105,12 +107,12 @@ export const SalesQueryRenderer = () => {
         fallback={
           <PageWithSimpleHeader title="Auctions">
             <Flex flex={1} justifyContent="center" alignItems="center">
-              <Spinner />
+              <Spinner testID="SalePlaceholder" />
             </Flex>
           </PageWithSimpleHeader>
         }
       >
-        <Sales data={data} />
+        <Sales />
       </Suspense>
     </ProvideScreenTrackingWithCohesionSchema>
   )

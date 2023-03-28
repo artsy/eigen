@@ -1,13 +1,11 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { LinkText, Text } from "palette"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairMoreInfoFragmentContainer } from "./FairMoreInfo"
-
-jest.unmock("react-relay")
 
 const getText = (wrapper: ReactTestRenderer) =>
   [...wrapper.root.findAllByType(Text), ...wrapper.root.findAllByType(LinkText)]
@@ -17,7 +15,7 @@ const getText = (wrapper: ReactTestRenderer) =>
 describe("FairMoreInfo", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairMoreInfoTestsQuery>
         environment={env}
         query={graphql`
@@ -66,10 +64,6 @@ describe("FairMoreInfo", () => {
           __typename: "OpeningHoursText",
           text: null,
         },
-        sponsoredContent: {
-          activationText: "Some activation text",
-          pressReleaseUrl: "Some press release text",
-        },
         tagline: "Buy lots of art",
         fairLinks: "Google it",
         fairContact: "Art Basel Hong Kong",
@@ -87,7 +81,6 @@ describe("FairMoreInfo", () => {
     expect(rootText).toContain("Art Basel Hong Kong")
     expect(rootText).toContain("Buy Tickets")
     expect(rootText).toContain("Google it")
-    expect(rootText).toContain("View BMW art activations")
     expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(1)
   })
 
@@ -103,7 +96,6 @@ describe("FairMoreInfo", () => {
         fairTickets: "",
         fairContact: "",
         summary: "",
-        sponsoredContent: null,
       }),
     })
     const rootText = getText(wrapper)
@@ -113,7 +105,6 @@ describe("FairMoreInfo", () => {
     expect(rootText).not.toContain("Links")
     expect(rootText).not.toContain("Tickets")
     expect(rootText).not.toContain("Contact")
-    expect(rootText).not.toContain("View BMW art activations")
     expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(0)
   })
 })

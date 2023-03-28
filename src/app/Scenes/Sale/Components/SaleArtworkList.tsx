@@ -1,13 +1,13 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { SaleArtworkList_connection$data } from "__generated__/SaleArtworkList_connection.graphql"
-import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { Spacer } from "palette"
+import { PAGE_SIZE } from "app/Components/constants"
+import { extractNodes } from "app/utils/extractNodes"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
-import { extractNodes } from "../../../utils/extractNodes"
 import { SaleArtworkListItemContainer as SaleArtworkListItem } from "./SaleArtworkListItem"
 
 interface Props {
@@ -48,7 +48,7 @@ export const SaleArtworkList: React.FC<Props> = ({
     <FlatList
       data={artworks}
       onEndReached={loadMoreArtworks}
-      ItemSeparatorComponent={() => <Spacer mb="20px" />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       ListFooterComponent={
         loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
       }

@@ -1,10 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import { ImagePreview } from "./ImagePreview"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<ImagePreview attachment={attachment as any} />)
+  renderWithWrappersLEGACY(<ImagePreview attachment={attachment as any} />)
 })
 
 const attachment = {

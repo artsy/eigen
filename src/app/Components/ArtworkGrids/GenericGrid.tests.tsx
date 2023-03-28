@@ -1,4 +1,4 @@
-import { renderWithLayout } from "app/tests/renderWithLayout"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"
@@ -6,16 +6,14 @@ import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"
 it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]
 
-  const layout = { width: 768 }
-
-  renderWithLayout(<RelayGenericArtworksGrid artworks={artworks as any} />, layout)
+  renderWithHookWrappersTL(<RelayGenericArtworksGrid artworks={artworks as any} />)
 })
 
 it("handles showing an update when there are new artworks", () => {
   const artworks = [artwork(), artwork()] as any
   const newArtworks = [artwork(), artwork(), artwork()] as any
 
-  const grid = new GenericArtworksGrid({ artworks })
+  const grid = new GenericArtworksGrid({ artworks, navigateToPageableRoute: jest.fn() })
   const shouldUpdate = grid.shouldComponentUpdate({ artworks: newArtworks }, {} as any)
 
   expect(shouldUpdate).toBeTruthy()
@@ -24,7 +22,11 @@ it("handles showing an update when there are new artworks", () => {
 it("handles showing an update when data loading was stopped", () => {
   const artworks = [artwork(), artwork()] as any
 
-  const grid = new GenericArtworksGrid({ artworks, isLoading: true })
+  const grid = new GenericArtworksGrid({
+    artworks,
+    isLoading: true,
+    navigateToPageableRoute: jest.fn(),
+  })
   const shouldUpdate = grid.shouldComponentUpdate({ artworks, isLoading: false }, {} as any)
 
   expect(shouldUpdate).toBeTruthy()

@@ -1,8 +1,8 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
-import { Box, Flex, Sans } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -32,13 +32,13 @@ export class FairEventSectionCard extends Component<Props> {
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
             <Flex flexDirection="column" flexGrow={1}>
-              <Sans size="3t" weight="medium" color="white">
+              <Text variant="sm" weight="medium" color="white">
                 {name}
-              </Sans>
+              </Text>
               {!!exhibition_period && (
-                <Sans size="3" color="white">
+                <Text variant="sm" color="white">
                   {exhibition_period}
-                </Sans>
+                </Text>
               )}
             </Flex>
           </Box>
@@ -56,8 +56,8 @@ const BackgroundImage = styled(OpaqueImageView)`
 `
 
 const Container = styled(Box)`
-  width: ${Dimensions.get("window").width / 2 + 50};
-  height: 310;
+  width: ${Dimensions.get("window").width / 2 + 50}px;
+  height: 310px;
   position: relative;
   overflow: hidden;
   background: ${themeGet("colors.black60")};
@@ -72,9 +72,9 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 100;
-  height: 100;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
-  margin-bottom: ${themeGet("space.1")}px;
+  margin-bottom: ${themeGet("space.1")};
   tint-color: white;
 `

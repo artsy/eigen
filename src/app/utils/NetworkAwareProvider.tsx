@@ -1,5 +1,6 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -36,19 +37,19 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
           alignItems="center"
           px={2}
           py={2}
-          paddingBottom={safeAreaInsets.bottom + 20}
+          pb={`${safeAreaInsets.bottom + 20}px`}
         >
-          <Text textAlign="center" variant="lg">
+          <Text textAlign="center" variant="lg-display">
             Connection Error
           </Text>
 
-          <Spacer mt={1} />
+          <Spacer y={1} />
 
           <Text textAlign="center" variant="sm" color="black60">
             Oops! Looks like your device is not connected to the Internet.
           </Text>
 
-          <Spacer mt={2} />
+          <Spacer y={2} />
 
           <Button
             block

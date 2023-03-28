@@ -1,10 +1,11 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
-import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
+import { ButtonProps } from "@artsy/palette-mobile"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
-import { navigate } from "app/navigation/navigate"
+import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
+import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
+import { Button } from "palette"
 
-import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -115,7 +116,6 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
-                  modal: true,
                   passProps: { orderID: orderOrError.order.internalID, title: "Make Offer" },
                 })
               }

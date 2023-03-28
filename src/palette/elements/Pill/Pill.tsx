@@ -1,9 +1,14 @@
+import {
+  Spacer,
+  IconProps,
+  FlexProps,
+  Flex,
+  useColor,
+  Text,
+  useTextStyleForPalette,
+  Color,
+} from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Color } from "palette/Theme"
-import { Flex, FlexProps } from "../Flex"
-import { Text, useTextStyleForPalette } from "../Text"
-
-import { IconProps, Spacer, useColor } from "palette"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -24,6 +29,13 @@ export interface PillProps extends FlexProps {
   selected?: boolean
   imageUrl?: string
   highlightEnabled?: boolean
+  block?: boolean
+  pressablePros?: Omit<
+    PressableProps,
+    "style" | "disabled" | "onPress" | "onPressIn" | "onPressOut"
+  >
+  /** Allows for overriding the pill style when in different states */
+  stateStyle?: { [key in DisplayState]?: ReturnType<typeof useStyleForState> }
 }
 
 enum DisplayState {
@@ -67,6 +79,9 @@ export const Pill: React.FC<PillProps> = ({
   disabled,
   rounded,
   highlightEnabled = false,
+  block = false,
+  pressablePros = {},
+  stateStyle,
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
@@ -88,13 +103,15 @@ export const Pill: React.FC<PillProps> = ({
   }
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
-  const to = useStyleForState(displayState)
+  const to = useStyleForState(displayState, stateStyle)
   const iconColor = to.textColor as Color
 
   return (
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
         <Pressable
+          {...pressablePros}
+          style={block ? {} : { alignSelf: "flex-start" }}
           disabled={disabled || !onPress}
           onPress={handlePress}
           onPressIn={() => {
@@ -124,8 +141,8 @@ export const Pill: React.FC<PillProps> = ({
           >
             {iconPosition === "left" && !!Icon && (
               <>
-                {<Icon fill={iconColor} />}
-                <Spacer mr={iconSpacerMargin} />
+                <Icon fill={iconColor} />
+                <Spacer x={iconSpacerMargin} />
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
@@ -134,7 +151,7 @@ export const Pill: React.FC<PillProps> = ({
             </AnimatedText>
             {iconPosition === "right" && !!Icon && (
               <>
-                <Spacer mr={iconSpacerMargin} />
+                <Spacer x={iconSpacerMargin} />
                 <Icon fill={iconColor} />
               </>
             )}
@@ -146,35 +163,46 @@ export const Pill: React.FC<PillProps> = ({
 }
 
 const useStyleForState = (
-  state: DisplayState
+  state: DisplayState,
+  stateStyle: PillProps["stateStyle"]
 ): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
+  let desiredStyleForState
 
   switch (state) {
-    case DisplayState.Pressed:
-      retval.textColor = color("blue100")
-      retval.borderColor = color("blue100")
-      retval.backgroundColor = color("white100")
+    case DisplayState.Pressed: {
+      desiredStyleForState = stateStyle?.pressed
+      retval.textColor = desiredStyleForState?.textColor ?? color("blue100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    case DisplayState.Selected:
-      retval.textColor = color("white100")
-      retval.borderColor = color("blue100")
-      retval.backgroundColor = color("blue100")
+    }
+    case DisplayState.Selected: {
+      desiredStyleForState = stateStyle?.selected
+      retval.textColor = desiredStyleForState?.textColor ?? color("white100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("blue100")
       break
-    case DisplayState.Enabled:
-      retval.textColor = color("black100")
-      retval.borderColor = color("black60")
-      retval.backgroundColor = color("white100")
+    }
+    case DisplayState.Enabled: {
+      desiredStyleForState = stateStyle?.enabled
+      retval.textColor = desiredStyleForState?.textColor ?? color("black100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("black60")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    case DisplayState.Disabled:
-      retval.textColor = color("black30")
-      retval.borderColor = color("black30")
-      retval.backgroundColor = color("white100")
+    }
+    case DisplayState.Disabled: {
+      desiredStyleForState = stateStyle?.disabled
+      retval.textColor = desiredStyleForState?.textColor ?? color("black30")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("black30")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    default:
+    }
+    default: {
       assertNever(state)
+    }
   }
 
   return retval
@@ -185,11 +213,11 @@ const Container = styled(Flex)<PillProps>`
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`
-  width: 30;
-  height: 30;
-  border-radius: 15;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   overflow: hidden;
-  margin-right: 10;
+  margin-right: 10px;
 `
 
 const AnimatedContainer = animated(Container)

@@ -1,5 +1,10 @@
+import { FilterIcon, Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
+import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
+import { AnimatableHeaderFlatList } from "app/Components/AnimatableHeader/AnimatableHeaderFlatList"
+import { AnimatableHeaderProvider } from "app/Components/AnimatableHeader/AnimatableHeaderProvider"
+import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
@@ -14,14 +19,9 @@ import {
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
-import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { AnimatableHeader } from "../AnimatableHeader/AnimatableHeader"
-import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
-import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
-import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
@@ -168,7 +168,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(item.ScreenComponent)
+                  navigateToNextFilterScreen(
+                    item.ScreenComponent as keyof ArtworkFilterNavigationStack
+                  )
                 }}
               />
             )
@@ -186,18 +188,18 @@ export const getStaticFilterOptionsByMode = (
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
+        filterOptionToDisplayConfigMap.estimateRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
-        filterOptionToDisplayConfigMap.estimateRange,
       ]
 
     case FilterModalMode.AuctionResults:
       return [
-        filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.categories,
-        filterOptionToDisplayConfigMap.sizes,
-        filterOptionToDisplayConfigMap.year,
         filterOptionToDisplayConfigMap.organizations,
+        filterOptionToDisplayConfigMap.sizes,
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.year,
       ]
 
     case FilterModalMode.Custom:
@@ -205,9 +207,9 @@ export const getStaticFilterOptionsByMode = (
 
     default:
       return [
+        filterOptionToDisplayConfigMap.attributionClass,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
-        filterOptionToDisplayConfigMap.attributionClass,
       ]
   }
 }
@@ -308,6 +310,14 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
       if (hasEarliestCreatedYearFilterEnabled || hasLatestCreatedYearFilterEnabled) {
         --selectedFiltersSum
       }
+
+      const hasFilteredUpcomingAuctionResults =
+        appliedFiltersState.find((filter) => filter.paramName === FilterParamName.state)
+          ?.paramValue === "ALL"
+
+      if (hasFilteredUpcomingAuctionResults) {
+        --selectedFiltersSum
+      }
     }
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     // Therefore we need to decrement the number of filters by one to give the user the impression they are one
@@ -330,19 +340,19 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
-      <FilterArtworkButton px="2" style={roundedButtonStyle}>
+      <FilterArtworkButton px={2} style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
-        <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+        <Text variant="sm" pl={1} py={1} color="white100" weight="medium">
           {text}
-        </Sans>
+        </Text>
         {getFiltersCount() > 0 && (
           <>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
               {"\u2022"}
-            </Sans>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            </Text>
+            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
               {getFiltersCount()}
-            </Sans>
+            </Text>
           </>
         )}
       </FilterArtworkButton>
@@ -425,6 +435,12 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.sizes,
     filterType: "sizes",
     ScreenComponent: "SizesOptionsScreen",
+  },
+  state: {
+    displayText: FilterDisplayName.state,
+    filterType: "state",
+    ScreenComponent: "none",
+    configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
   viewAs: {
     displayText: FilterDisplayName.viewAs,

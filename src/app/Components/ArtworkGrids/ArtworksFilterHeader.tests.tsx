@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtworksFilterHeader } from "./ArtworksFilterHeader"
 
 describe("ArtistSeriesFilterHeader", () => {
   const onPress = jest.fn()
 
   it("renders without throwing an error and shows correct artworks count", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />
     )
 
@@ -15,7 +15,7 @@ describe("ArtistSeriesFilterHeader", () => {
   })
 
   it("should call `onFilterPress` when `sort & filter` button is pressed", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} />
     )
 
@@ -24,7 +24,7 @@ describe("ArtistSeriesFilterHeader", () => {
   })
 
   it("Should render the custom title text if passed as prop", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ArtworksFilterHeader selectedFiltersCount={3} onFilterPress={onPress} title="Custom title" />
     )
 

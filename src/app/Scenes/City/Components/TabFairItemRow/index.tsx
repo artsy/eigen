@@ -1,7 +1,7 @@
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -24,7 +24,7 @@ export class TabFairItemRow extends React.Component<Props> {
           const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
           return (
             <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
-              <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={10}>
+              <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={1}>
                 <RoundedImageWrapper>
                   <OpaqueImageView
                     height={58}
@@ -34,21 +34,21 @@ export class TabFairItemRow extends React.Component<Props> {
                 </RoundedImageWrapper>
                 <Box width={boxWidth} pl={1}>
                   {!!item.name && (
-                    <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                       {item.name}
-                    </Sans>
+                    </Text>
                   )}
                   {!!item.counts && !!item.counts.partners && (
-                    <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
                       {item.counts.partners > 1
                         ? `${item.counts.partners} Exhibitors`
                         : `${item.counts.partners} Exhibitor`}
-                    </Sans>
+                    </Text>
                   )}
                   {!!item.exhibition_period && (
-                    <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
                       {item.exhibition_period}
-                    </Sans>
+                    </Text>
                   )}
                 </Box>
               </Flex>
@@ -61,7 +61,7 @@ export class TabFairItemRow extends React.Component<Props> {
 }
 
 const RoundedImageWrapper = styled(Box)`
-  width: 58;
-  border-radius: 30;
+  width: 58px;
+  border-radius: 30px;
   overflow: hidden;
 `

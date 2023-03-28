@@ -1,6 +1,6 @@
+import { ArtsyLogoBlackIcon, Flex, Text } from "@artsy/palette-mobile"
 import { useDevToggle } from "app/store/GlobalStore"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
-import { ArtsyLogoBlackIcon, Flex, Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
@@ -41,7 +41,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
   const scale = width / InstagramStoryBackgroundDimensions.width
 
   return (
-    <Flex {...offscreenStyle} alignItems="center">
+    <Flex style={offscreenStyle} alignItems="center">
       <ViewShot
         ref={shotRef}
         options={{ format: "png", result: "base64" }}
@@ -50,19 +50,25 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
         <Image source={{ uri: href }} style={{ width, height }} resizeMode="contain" />
 
         <Flex
-          mt={40 * scale}
-          mb={180 * scale}
-          px={50 * scale}
+          mt={`${40 * scale}px`}
+          mb={`${180 * scale}px`}
+          px={`${50 * scale}px`}
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between"
         >
           <Flex flex={1}>
-            <Text variant="md" weight="medium">
+            <Text variant="sm-display" weight="medium">
               {artist}
             </Text>
             {title ? (
-              <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
+              <Text
+                variant="sm-display"
+                italic
+                opacity={0.6}
+                mt={10 * scale}
+                ellipsizeMode="middle"
+              >
                 {title}
               </Text>
             ) : null}

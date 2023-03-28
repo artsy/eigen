@@ -1,18 +1,16 @@
-import { Button, Sans, Theme } from "palette"
+import { Text } from "@artsy/palette-mobile"
+import { Icon20 } from "app/Components/Bidding/Components/Icon"
+import { Title } from "app/Components/Bidding/Components/Title"
+import { Flex } from "app/Components/Bidding/Elements/Flex"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Markdown } from "app/Components/Markdown"
+import { dismissModal } from "app/system/navigation/navigate"
+import { defaultRules } from "app/utils/renderMarkdown"
+import { Schema, screenTrack } from "app/utils/track"
+import { Button } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
-
-import { Icon20 } from "../Components/Icon"
-import { Flex } from "../Elements/Flex"
-
-import { Markdown } from "../../Markdown"
-import { Title } from "../Components/Title"
-
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "app/navigation/navigate"
-import { defaultRules } from "app/utils/renderMarkdown"
-import { Schema, screenTrack } from "app/utils/track"
 
 interface RegistrationResultProps {
   status: RegistrationStatus
@@ -27,10 +25,10 @@ export enum RegistrationStatus {
 }
 
 const Icons = {
-  RegistrationStatusComplete: require("images/circle-check-green.webp"),
-  RegistrationStatusPending: require("images/circle-exclamation.webp"),
-  RegistrationStatusNetworkError: require("images/circle-x-red.webp"),
-  RegistrationStatusError: require("images/circle-x-red.webp"),
+  RegistrationStatusComplete: require("images/circle-check-green.png"),
+  RegistrationStatusPending: require("images/circle-exclamation.png"),
+  RegistrationStatusNetworkError: require("images/circle-x-red.png"),
+  RegistrationStatusError: require("images/circle-x-red.png"),
 }
 
 const registrationCompleteMessage = {
@@ -74,9 +72,9 @@ const markdownRules = defaultRules({
       match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Sans size="4" key={state.key} textAlign="center">
+          <Text variant="sm-display" key={state.key} textAlign="center">
             {output(node.content, state)}
-          </Sans>
+          </Text>
         )
       },
     },
@@ -162,9 +160,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (
@@ -173,11 +169,11 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
             <Title mt={2} mb={4}>
               {title}
             </Title>
-            <Markdown rules={markdownRules} mb={5}>
+            <Markdown rules={markdownRules} mb={6}>
               {msg}
             </Markdown>
           </Flex>
-          <Button variant="outline" onPress={dismissModal} block width={100}>
+          <Button variant="outline" onPress={() => dismissModal()} block width={100}>
             {status === RegistrationStatus.RegistrationStatusPending
               ? "View works in this sale"
               : "Continue"}

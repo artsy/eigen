@@ -1,16 +1,14 @@
 import { MakeOfferModalTestsQuery } from "__generated__/MakeOfferModalTestsQuery.graphql"
 import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { EditionSelectBox } from "./EditionSelectBox"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 import { MakeOfferModalFragmentContainer } from "./MakeOfferModal"
-
-jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
@@ -110,7 +108,7 @@ const mockSingleEditionResolver = {
 }
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)

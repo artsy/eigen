@@ -1,4 +1,8 @@
-import { Aggregation, Aggregations, FilterParamName } from "../ArtworkFilterHelpers"
+import {
+  Aggregation,
+  Aggregations,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   AggregationByFilterParamName,
   convertAggregationValueNamesToFilterParam,
@@ -372,14 +376,14 @@ describe("convertWaysToBuyToFilterParams", () => {
 
     expect(result).toEqual([
       {
-        displayText: "Buy Now",
+        displayText: "Purchase",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
       },
       {
-        displayText: "Inquire",
+        displayText: "Contact Gallery",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
       },
     ])
   })

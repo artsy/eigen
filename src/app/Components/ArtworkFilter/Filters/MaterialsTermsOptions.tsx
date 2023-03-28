@@ -5,14 +5,16 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter/ArtworkFilterNavigator"
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { orderBy } from "lodash"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface MaterialsTermsOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "MaterialsTermsOptionsScreen"> {}
+type MaterialsTermsOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "MaterialsTermsOptionsScreen"
+>
 
 export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenProps> = ({
   navigation,

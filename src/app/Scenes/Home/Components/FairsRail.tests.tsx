@@ -1,18 +1,17 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { cloneDeep } from "lodash"
-import "react-native"
-
+import { Text } from "@artsy/palette-mobile"
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
-import { extractText } from "app/tests/extractText"
-import { FairsRailFragmentContainer } from "./FairsRail"
 
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { navigate } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
-import { Text } from "palette"
-import HomeAnalytics from "../homeAnalytics"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { cloneDeep } from "lodash"
+import "react-native"
+import { FairsRailFragmentContainer } from "./FairsRail"
 
 const mockScrollRef = jest.fn()
 const artworkNode = {
@@ -68,7 +67,7 @@ const fairsModule: CleanRelayFragment<FairsRail_fairsModule$data> = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Fairs"
       fairsModule={fairsModule as any}
@@ -78,7 +77,7 @@ it("renders without throwing an error", () => {
 })
 
 it("renders results when there are fairs returned", () => {
-  const tree = renderWithWrappers(
+  const tree = renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Featured Fairs"
       fairsModule={fairsModule as any}
@@ -89,7 +88,7 @@ it("renders results when there are fairs returned", () => {
 })
 
 it("does not render results when there are no fairs returned", () => {
-  const tree = renderWithWrappers(
+  const tree = renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Fairs"
       fairsModule={emptyFairsModule as any}
@@ -108,7 +107,7 @@ it("renders without throwing an error when missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -123,7 +122,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.city = "New Yawk"
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -139,7 +138,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.country = "Canada"
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -154,7 +153,7 @@ describe("location", () => {
 
 describe("navigation", () => {
   it("navigates to the fair url", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsModule as any}
@@ -170,7 +169,7 @@ describe("navigation", () => {
 describe("analytics", () => {
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}

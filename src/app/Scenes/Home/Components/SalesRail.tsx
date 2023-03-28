@@ -1,32 +1,29 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
+import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
   CardRailCard,
-  CardRailDivision as Division,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
-import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { bullet, Flex, Text } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
+import { useScreenDimensions } from "shared/hooks"
 import { RailScrollProps } from "./types"
 
 interface Props {
   title: string
   subtitle?: string
   salesModule: SalesRail_salesModule$data
-  mb?: number
 }
 
 type Sale = SalesRail_salesModule$data["results"][0]
@@ -36,24 +33,13 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
   subtitle,
   scrollRef,
   salesModule,
-  mb,
 }) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
-  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerHomeSalesRail")
+  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
-  const getSaleSubtitle = (
-    liveStartAt: string | undefined | null,
-    displayTimelyAt: string | undefined | null
-  ) => {
-    const saleSubtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
-    const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
-    if (dateAt) {
-      return `${saleSubtitle} ${bullet} ${dateAt}`
-    } else {
-      return `${saleSubtitle}`
-    }
-  }
+  const { width } = useScreenDimensions()
+  const isTablet = width > 700
 
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -61,13 +47,18 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 
   const hasSales = salesModule.results?.length
 
+  const handleMorePress = () => {
+    tracking.trackEvent(HomeAnalytics.auctionBrowseMoreTapEvent())
+    navigate("/auctions")
+  }
+
   if (!hasSales) {
     return null
   }
 
   return (
-    <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+    <Flex>
+      <Flex px={2}>
         <SectionTitle
           title={title}
           subtitle={subtitle}
@@ -82,17 +73,22 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={salesModule.results}
+        initialNumToRender={isTablet ? 10 : 5}
         renderItem={({ item: result, index }) => {
+          let imageURLs
+
+          if (isArtworksConnectionEnabled) {
+            imageURLs = extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url)
+          } else {
+            imageURLs = extractNodes(
+              result?.saleArtworksConnection,
+              (artwork) => artwork.artwork?.image?.url
+            )
+          }
+
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const availableArtworkImageURLs = compact(
-            extractNodes(result?.saleArtworksConnection, (artwork) => artwork.artwork?.image?.url)
-          )
-
-          // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
-          const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
-            return [...acc, availableArtworkImageURLs[i] || acc[i - 1]]
-          }, [])
+          const availableArtworkImageURLs = compact(imageURLs)
 
           return (
             <CardRailCard
@@ -108,70 +104,62 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               }}
             >
               <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1]}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[2]}
-                    />
-                  </View>
-                </ArtworkImageContainer>
+                <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
-                  <Text numberOfLines={2} lineHeight="20" variant="sm">
+                  <Text numberOfLines={2} lineHeight="20px" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     variant="sm"
                     testID="sale-subtitle"
                     ellipsizeMode="middle"
                   >
-                    {isCascadingEnabled
-                      ? result?.formattedStartDateTime
-                      : getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
+                    {result?.formattedStartDateTime}
                   </Text>
                 </MetadataContainer>
               </View>
             </CardRailCard>
           )
         }}
+        ListFooterComponent={
+          handleMorePress ? (
+            <BrowseMoreRailCard onPress={handleMorePress} text="Browse All Auctions" />
+          ) : undefined
+        }
       />
     </Flex>
   )
 }
 
-export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
-  salesModule: graphql`
-    fragment SalesRail_salesModule on HomePageSalesModule {
-      results {
-        id
-        slug
-        internalID
-        href
-        name
-        liveURLIfOpen
-        liveStartAt
-        displayTimelyAt
-        formattedStartDateTime
-        saleArtworksConnection(first: 3) {
-          edges {
-            node {
-              artwork {
+export const SalesRailFragmentContainer = memo(
+  createFragmentContainer(SalesRail, {
+    salesModule: graphql`
+      fragment SalesRail_salesModule on HomePageSalesModule {
+        results {
+          id
+          slug
+          internalID
+          href
+          name
+          liveURLIfOpen
+          formattedStartDateTime
+          saleArtworksConnection(first: 3) {
+            edges {
+              node {
+                artwork {
+                  image {
+                    url(version: "large")
+                  }
+                }
+              }
+            }
+          }
+          artworksConnection(first: 3) {
+            edges {
+              node {
                 image {
                   url(version: "large")
                 }
@@ -180,6 +168,6 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
           }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)

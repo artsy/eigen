@@ -1,10 +1,10 @@
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
-import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { fetchMockResponseOnce } from "app/tests/fetchMockHelpers"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
+import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
 import { Button, Spinner } from "palette"
 import { Linking } from "react-native"
@@ -22,7 +22,7 @@ describe(VanityURLPossibleRedirect, () => {
       status: 200,
       url: "https://artsy.net/test",
     })
-    const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
     await flushPromiseQueue()
   })
@@ -32,14 +32,14 @@ describe(VanityURLPossibleRedirect, () => {
       status: 200,
       url: "https://www.artsy.net/test",
     })
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
     await flushPromiseQueue()
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
+      [
         "https://www.artsy.net/test",
-        Object {
-          "headers": Object {
+        {
+          "headers": {
             "X-Access-Token": "authenticationToken",
           },
           "method": "HEAD",
@@ -54,7 +54,7 @@ describe(VanityURLPossibleRedirect, () => {
       url: "https://google.com/blah",
     })
 
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
     await flushPromiseQueue()
     expect(navigate).toHaveBeenCalledWith("https://google.com/blah")
   })
@@ -64,7 +64,7 @@ describe(VanityURLPossibleRedirect, () => {
       status: 200,
       url: "https://www.artsy.net/artist/banksy",
     })
-    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
     await flushPromiseQueue()
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artist/banksy")
   })
@@ -84,7 +84,7 @@ describe(VanityURLPossibleRedirect, () => {
 
     it("shows the error page if the fetch fails", async () => {
       fetchMock.mockRejectOnce()
-      const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test-fail" />)
+      const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test-fail" />)
       await flushPromiseQueue()
       expect(extractText(tree.root)).toContain("We can't find that page")
       expect(openURLMock).not.toHaveBeenCalled()
@@ -97,7 +97,7 @@ describe(VanityURLPossibleRedirect, () => {
         status: 404,
         url: "https://whatever",
       })
-      const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="test-not-ok" />)
+      const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test-not-ok" />)
       await flushPromiseQueue()
       expect(extractText(tree.root)).toContain("We can't find that page")
       expect(openURLMock).not.toHaveBeenCalled()
@@ -111,7 +111,7 @@ describe(VanityURLPossibleRedirect, () => {
       status: 200,
       url: "https://artsy.net/no-redirect",
     })
-    const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
+    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="no-redirect" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
   })
@@ -121,7 +121,7 @@ describe(VanityURLPossibleRedirect, () => {
       status: 200,
       url: "https://artsy.net/categories",
     })
-    const tree = renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
+    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="genes" />)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
   })

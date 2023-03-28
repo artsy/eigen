@@ -1,74 +1,75 @@
 import { OrderDetailsPaymentTestsQuery } from "__generated__/OrderDetailsPaymentTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
-
-jest.unmock("react-relay")
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { PaymentMethodSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
 describe("PaymentSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = ({}) => (
-    <QueryRenderer<OrderDetailsPaymentTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
-          order: commerceOrder(id: $orderID) {
-            ...OrderDetailsPayment_order
-          }
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsPaymentTestsQuery>({
+    Component: (props) => {
+      if (props?.order) {
+        return <PaymentMethodSummaryItemFragmentContainer order={props.order} />
+      }
+      return null
+    },
+    query: graphql`
+      query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
+        order: commerceOrder(id: $orderID) {
+          ...OrderDetailsPayment_order
         }
-      `}
-      variables={{ orderID: "uhi" }}
-      render={({ props }) => {
-        if (props?.order) {
-          return <CreditCardSummaryItemFragmentContainer order={props.order} />
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
-  it("renders when credit card exists", () => {
-    const tree = getWrapper({
+  it("renders when payment method is credit card", () => {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
-        creditCard: {
+        paymentMethodDetails: {
+          __typename: "CreditCard",
           brand: "visa",
           lastDigits: "4242",
         },
       }),
     })
 
-    expect(extractText(tree.root.findByProps({ testID: "credit-card-info" }))).toEqual(
-      `visa ending in 4242`
-    )
+    expect(getByText("visa ending in 4242")).toBeTruthy()
   })
 
-  it("renders when credit card doesn't exist", () => {
-    const tree = getWrapper({
+  it("renders when payment method is wire transfer", () => {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
-        creditCard: null,
+        paymentMethodDetails: {
+          __typename: "WireTransfer",
+        },
       }),
     })
-    expect(extractText(tree.root.findByProps({ testID: "credit-card-null" }))).toBe("N/A")
+
+    expect(getByText("Wire transfer")).toBeTruthy()
+  })
+
+  it("renders when payment method is bank transfer", () => {
+    const { getByText } = renderWithRelay({
+      CommerceOrder: () => ({
+        paymentMethodDetails: {
+          __typename: "BankAccount",
+          last4: "4242",
+        },
+      }),
+    })
+
+    expect(getByText("Bank transfer •••• 4242")).toBeTruthy()
+  })
+
+  it("renders when payment method doesn't exist", () => {
+    const { getByText } = renderWithRelay({
+      CommerceOrder: () => ({
+        paymentMethodDetails: null,
+      }),
+    })
+
+    expect(getByText("N/A")).toBeTruthy()
   })
 })

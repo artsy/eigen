@@ -1,1 +1,0 @@
-export { MyBidsQueryRenderer } from "./MyBids"

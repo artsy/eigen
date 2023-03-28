@@ -1,10 +1,11 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
-import { navigate } from "app/navigation/navigate"
 import { MapTab, Show } from "app/Scenes/Map/types"
+import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
-import { Box, Separator, Serif, SimpleMessage } from "palette"
+import { Separator, SimpleMessage } from "palette"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -60,7 +61,7 @@ export class EventList extends React.Component<Props> {
       return (
         <>
           <Separator />
-          <Box mt={2} mb={3}>
+          <Box mt={2} mb={4}>
             <CaretButton
               onPress={() => this.viewAllPressed()}
               text={`View all ${bucket.length} shows`}
@@ -97,8 +98,8 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt={3} mb={2}>
-                <Serif size="8">{header}</Serif>
+              <Box pt={6} mt={4} mb={2}>
+                <Text variant="lg-display">{header}</Text>
               </Box>
             )
           } else {
@@ -124,19 +125,19 @@ export class EventList extends React.Component<Props> {
       case "saved":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+            <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
           </Box>
         )
       case "fairs":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
           </Box>
         )
       default:
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
           </Box>
         )
     }

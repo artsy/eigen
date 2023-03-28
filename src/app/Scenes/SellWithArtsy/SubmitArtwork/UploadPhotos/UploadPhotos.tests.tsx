@@ -1,28 +1,27 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
-
-jest.unmock("react-relay")
 
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("UploadPhotos", () => {
-  const TestRenderer = () => (
+  const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <UploadPhotos handlePress={jest.fn()} />
+      <UploadPhotos handlePress={jest.fn()} isLastStep={isLastStep} />
     </RelayEnvironmentProvider>
   )
 
   beforeEach(() => mockEnvironment.mockClear())
 
   it("renders correct explanation for upload photos form", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     expect(
       getByText(
         "To evaluate your submission faster, please upload high-quality photos of the work's front and back."
@@ -35,7 +34,7 @@ describe("UploadPhotos", () => {
   })
 
   it("renders Save and Continue button", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     expect(getByTestId("Submission_Save_Photos_Button")).toBeTruthy()
   })
 
@@ -71,12 +70,23 @@ describe("UploadPhotos", () => {
     })
 
     it("tracks uploadPhotosCompleted event on save", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.UploadPhotos]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_Save_Photos_Button",
       })
 
       SaveButton.props.onPress()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          consignmentSubmission: () => ({
+            internalID: "54321",
+          }),
+        })
+      })
+
       await flushPromiseQueue()
 
       expect(trackEvent).toHaveBeenCalled()
@@ -84,7 +94,7 @@ describe("UploadPhotos", () => {
         action: ActionType.uploadPhotosCompleted,
         context_owner_type: OwnerType.consignmentFlow,
         context_module: ContextModule.uploadPhotos,
-        submission_id: "54321",
+        submission_id: '<mock-value-for-field-"internalID">',
         user_email: "user@mail.com",
         user_id: "1",
       })
