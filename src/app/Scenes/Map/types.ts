@@ -25,7 +25,7 @@ export type Fair = NonNullable<
 
 export interface MapTab {
   /** UUID for the tab */
-  id: BucketKey | "all" | "BMW Art Guide"
+  id: BucketKey | "all"
   /** Display string */
   text: string
   /** A func to grab the right shows for this tab on the map */

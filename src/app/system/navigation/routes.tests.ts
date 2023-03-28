@@ -1032,27 +1032,6 @@ describe("artsy.net routes", () => {
         }
       `)
     })
-
-    it("routes to FairBMWArtActivation", () => {
-      expect(matchRoute("/fair/red/bmw-sponsored-content")).toMatchInlineSnapshot(`
-        {
-          "module": "FairBMWArtActivation",
-          "params": {
-            "fairID": "red",
-          },
-          "type": "match",
-        }
-      `)
-      expect(matchRoute("/fair/blue/bmw-sponsored-content")).toMatchInlineSnapshot(`
-        {
-          "module": "FairBMWArtActivation",
-          "params": {
-            "fairID": "blue",
-          },
-          "type": "match",
-        }
-      `)
-    })
   })
 
   it("routes to CitySectionList", () => {
@@ -1158,27 +1137,6 @@ describe("artsy.net routes", () => {
         "module": "ReactWebView",
         "params": {
           "url": "/privacy",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to CityBMWList", () => {
-    expect(matchRoute("/city-bmw-list/la")).toMatchInlineSnapshot(`
-      {
-        "module": "CityBMWList",
-        "params": {
-          "citySlug": "la",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/city-bmw-list/ny")).toMatchInlineSnapshot(`
-      {
-        "module": "CityBMWList",
-        "params": {
-          "citySlug": "ny",
         },
         "type": "match",
       }

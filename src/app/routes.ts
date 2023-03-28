@@ -243,7 +243,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/fair/:fairID/info", "FairMoreInfo"),
     addRoute("/fair/:fairID/articles", "FairArticles"),
     addRoute("/fair/:fairID/followedArtists", "FairAllFollowedArtists"),
-    addRoute("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 
     addRoute("/city/:citySlug/:section", "CitySectionList"),
     addRoute("/city-fair/:citySlug", "CityFairList"),
@@ -261,8 +260,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/unsubscribe"),
-
-    addRoute("/city-bmw-list/:citySlug", "CityBMWList"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),
     addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/user/purchases/:orderID", "OrderDetails"),

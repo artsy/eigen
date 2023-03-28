@@ -2,7 +2,6 @@ import { Spacer, ChevronIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
-import { shouldShowFairBMWArtActivationLink } from "app/Scenes/Fair/FairBMWArtActivation"
 import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
@@ -28,7 +27,6 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     fairContact,
     summary,
     fairTickets,
-    sponsoredContent,
   } = fair
   const screenWidth = Dimensions.get("screen").width
   const profileImageUrl = fair?.profile?.icon?.imageUrl
@@ -44,8 +42,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     !!fairLinks ||
     !!fairContact ||
     !!summary ||
-    !!fairTickets ||
-    shouldShowFairBMWArtActivationLink({ sponsoredContent })
+    !!fairTickets
 
   return (
     <Box>
@@ -129,10 +126,6 @@ export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
         }
       }
       ticketsLink
-      sponsoredContent {
-        activationText
-        pressReleaseUrl
-      }
       fairHours: hours(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairLinks: links(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer
       fairTickets: tickets(format: MARKDOWN) # aliased to avoid conflicts in the VanityURLQueryRenderer

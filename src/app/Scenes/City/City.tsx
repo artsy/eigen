@@ -32,7 +32,6 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-  sponsoredContent: { introText: string; artGuideUrl: string }
   relayErrorState?: RelayErrorState
 }
 const AllCityMetaTab = 0
@@ -51,7 +50,6 @@ export class CityView extends Component<Props, State> {
     relay: null,
     cityName: "",
     citySlug: "",
-    sponsoredContent: null,
     relayErrorState: null,
   }
 
@@ -63,14 +61,12 @@ export class CityView extends Component<Props, State> {
     cityName,
     citySlug,
     relay,
-    sponsoredContent,
   }: {
     filter: MapTab
     buckets: BucketResults
     cityName: string
     relay: RelayProp
     citySlug: string
-    sponsoredContent: { introText: string; artGuideUrl: string }
   }) => {
     // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
     this.setState(
@@ -80,7 +76,6 @@ export class CityView extends Component<Props, State> {
         cityName,
         citySlug,
         relay,
-        sponsoredContent,
       },
       () => {
         LegacyNativeModules.ARNotificationsManager.postNotificationName(
@@ -214,7 +209,6 @@ export class CityView extends Component<Props, State> {
                 cityName={cityName}
                 citySlug={citySlug}
                 key={cityName}
-                sponsoredContent={this.state.sponsoredContent as any /* STRICTNESS_MIGRATION */}
                 buckets={buckets as any /* STRICTNESS_MIGRATION */}
                 relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
               />
