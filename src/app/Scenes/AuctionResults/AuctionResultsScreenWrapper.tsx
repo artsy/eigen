@@ -164,7 +164,7 @@ const getTitleByState = (state: AuctionResultsState) => {
     case AuctionResultsState.PAST:
       return "Latest Auction Results"
     case AuctionResultsState.UPCOMING:
-      return "Upcoming Auction Results"
+      return "Upcoming Auction Lots For You"
     case AuctionResultsState.ALL:
       return "Latest Auction Results"
   }
