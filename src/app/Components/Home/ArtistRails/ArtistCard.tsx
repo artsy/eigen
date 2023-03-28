@@ -18,7 +18,6 @@ interface ArtistCardProps {
 
 const IMAGE_MAX_HEIGHT = 180
 
-// Ge
 export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFollow, onPress }) => {
   const color = useColor()
 
