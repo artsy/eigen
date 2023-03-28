@@ -25,7 +25,6 @@
 		1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B6283CDD5900878EAE /* ARCity.m */; };
 		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
 		1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */; };
-		1A4B97D0283CFA1E00878EAE /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A4B97CF283CFA1E00878EAE /* fonts */; };
 		1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */; };
 		1A4E511A283F91BA0008EF35 /* UIView+ARDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */; };
 		1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5104283F91B90008EF35 /* ARSpinner.m */; };
@@ -47,6 +46,11 @@
 		72B930384C1E516C2D20C622 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CE551258CDFFF7B96A622E /* libPods-Artsy.a */; };
 		86C184E45BE1AB77984F038E /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F73EDC3B30A3B9A2CBD401A5 /* libPods-ArtsyTests.a */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
+		CB18283A29D36A3A006A0805 /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */; };
+		CB18283B29D36A3A006A0805 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = CB18283629D36A3A006A0805 /* .gitkeep */; };
+		CB18283C29D36A3A006A0805 /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283729D36A3A006A0805 /* Unica77LL-MediumItalic.otf */; };
+		CB18283D29D36A3A006A0805 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283829D36A3A006A0805 /* Unica77LL-Regular.otf */; };
+		CB18283E29D36A3A006A0805 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283929D36A3A006A0805 /* Unica77LL-Italic.otf */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
@@ -597,7 +601,6 @@
 		1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageViewManager.m; sourceTree = "<group>"; };
 		1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
 		1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
-		1A4B97CF283CFA1E00878EAE /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UILabels.m"; sourceTree = "<group>"; };
 		1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ARDrawing.m"; sourceTree = "<group>"; };
 		1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy+UILabels.h"; sourceTree = "<group>"; };
@@ -631,6 +634,11 @@
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-Medium.otf"; sourceTree = "<group>"; };
+		CB18283629D36A3A006A0805 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		CB18283729D36A3A006A0805 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
+		CB18283829D36A3A006A0805 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-Regular.otf"; sourceTree = "<group>"; };
+		CB18283929D36A3A006A0805 /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-Italic.otf"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1669,11 +1677,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CB289A98286DDE25006ECC91 /* Fonts */ = {
+		CB18283429D36A3A006A0805 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
+				CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */,
+				CB18283629D36A3A006A0805 /* .gitkeep */,
+				CB18283729D36A3A006A0805 /* Unica77LL-MediumItalic.otf */,
+				CB18283829D36A3A006A0805 /* Unica77LL-Regular.otf */,
+				CB18283929D36A3A006A0805 /* Unica77LL-Italic.otf */,
 			);
-			path = Fonts;
+			path = fonts;
 			sourceTree = "<group>";
 		};
 		CB43266427E8F39900B29DD6 /* ArtsyStickers */ = {
@@ -2535,6 +2548,7 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				CB18283429D36A3A006A0805 /* fonts */,
 				1AE9F25B2902DA87002A561B /* Configs */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
 				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
@@ -2547,7 +2561,6 @@
 				CBE3245F27E275A100395A93 /* Categories */,
 				CBE3245A27E275A100395A93 /* Constants */,
 				CBE325A227E275A200395A93 /* Images.xcassets */,
-				1A4B97CF283CFA1E00878EAE /* fonts */,
 				CBE3262B27E275A300395A93 /* Models */,
 				CBE3259527E275A200395A93 /* NativeModules */,
 				CBE324B827E275A100395A93 /* Navigation_Transitions */,
@@ -3139,7 +3152,6 @@
 			isa = PBXGroup;
 			children = (
 				CB18282A29D35F29006A0805 /* GoogleService-Info.plist */,
-				CB289A98286DDE25006ECC91 /* Fonts */,
 				CBE325A427E275A200395A93 /* Map_Annotations */,
 				CBE325A627E275A200395A93 /* Artsy-Bridging-Header.h */,
 				CBE325A727E275A200395A93 /* ViewInRoom */,
@@ -3652,7 +3664,9 @@
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
+				CB18283B29D36A3A006A0805 /* .gitkeep in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
+				CB18283A29D36A3A006A0805 /* Unica77LL-Medium.otf in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
 				CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
@@ -3675,7 +3689,6 @@
 				CBE3275527E275A400395A93 /* Range@2x.png in Resources */,
 				CBE3274327E275A400395A93 /* full_logo_white_small@2x.png in Resources */,
 				CBE3272C27E275A400395A93 /* ViewInRoom_Base@2x.png in Resources */,
-				1A4B97D0283CFA1E00878EAE /* fonts in Resources */,
 				CBE3274127E275A400395A93 /* followButton@2x.png in Resources */,
 				CBE326D127E275A300395A93 /* live_auctions_static.json in Resources */,
 				CBE3273027E275A400395A93 /* SmallMoreVerticalArrow.png in Resources */,
@@ -3692,6 +3705,7 @@
 				CBE3274727E275A400395A93 /* BackChevron.png in Resources */,
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */,
+				CB18283C29D36A3A006A0805 /* Unica77LL-MediumItalic.otf in Resources */,
 				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
@@ -3722,6 +3736,7 @@
 				CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
 				1AE9F2642902DA87002A561B /* App.xcconfig in Resources */,
+				CB18283D29D36A3A006A0805 /* Unica77LL-Regular.otf in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
 				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
 				CBE3273E27E275A400395A93 /* serif_modal_close@2x.png in Resources */,
@@ -3731,6 +3746,7 @@
 				1AE9F2662902DA87002A561B /* WidgetExt.xcconfig in Resources */,
 				CBE3273327E275A400395A93 /* Hash@3x.png in Resources */,
 				CBE3273A27E275A400395A93 /* AuctionRefineCheck.png in Resources */,
+				CB18283E29D36A3A006A0805 /* Unica77LL-Italic.otf in Resources */,
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
 				CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */,
