@@ -59,7 +59,6 @@ import {
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
-import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
@@ -69,7 +68,6 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
-import { FairBMWArtActivationQueryRenderer } from "./Scenes/Fair/FairBMWArtActivation"
 import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
@@ -436,7 +434,6 @@ export const modules = defineModules({
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
-  CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),
   CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
   CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
   CitySavedList: reactModule(CitySavedListQueryRenderer),
@@ -449,7 +446,6 @@ export const modules = defineModules({
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, { fullBleed: true }),
   Favorites: reactModule(Favorites),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),

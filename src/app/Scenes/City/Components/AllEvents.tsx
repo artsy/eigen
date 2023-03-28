@@ -1,13 +1,11 @@
 import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { EventSection } from "app/Scenes/City/Components/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
-import { Show } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
 import { Separator } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
-import { BMWEventSection } from "./BMWEventSection"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
@@ -15,14 +13,6 @@ interface Props extends ViewProps {
   buckets: BucketResults
   cityName: string
   citySlug: string
-  sponsoredContent: {
-    introText: string
-    artGuideUrl: string
-    shows: {
-      totalCount: number
-    }
-    featuredShows: [Show]
-  }
   relay: RelayProp
 }
 
@@ -56,13 +46,6 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   shouldUpdate(otherProps: Props): boolean {
-    let bmwUpdated
-    if (this.props.sponsoredContent && this.props.sponsoredContent.featuredShows) {
-      bmwUpdated = !isEqual(
-        this.props.sponsoredContent.featuredShows.map((g) => g.is_followed),
-        otherProps.sponsoredContent.featuredShows.map((g) => g.is_followed)
-      )
-    }
     const showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
       .map((key) => {
         return !isEqual(
@@ -74,12 +57,12 @@ export class AllEvents extends React.Component<Props, State> {
       })
       .some((a) => a)
 
-    return bmwUpdated || showsUpdated
+    return showsUpdated
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateSections = (props) => {
-    const { buckets, cityName, sponsoredContent } = props
+    const { buckets, cityName } = props
     const sections = []
 
     sections.push({
@@ -115,12 +98,6 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
-    if (sponsoredContent && sponsoredContent.featuredShows) {
-      sections.push({
-        type: "bmw",
-      })
-    }
-
     if (buckets.closing && buckets.closing.length) {
       sections.push({
         type: "closing",
@@ -152,7 +129,7 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }: { item: State["sections"][0] }) => {
-    const { sponsoredContent, citySlug } = this.props
+    const { citySlug } = this.props
     switch (type) {
       case "fairs":
         return <FairEventSection citySlug={citySlug} data={data} />
@@ -196,23 +173,8 @@ export class AllEvents extends React.Component<Props, State> {
             relay={this.props.relay}
           />
         )
-      case "bmw":
-        return (
-          <BMWEventSection
-            title="BMW Art Guide by Independent Collectors"
-            sponsoredContent={sponsoredContent}
-            citySlug={citySlug}
-            relay={this.props.relay}
-          />
-        )
       case "saved":
-        return (
-          <SavedEventSection
-            data={data}
-            citySlug={citySlug}
-            sponsoredContentUrl={sponsoredContent.artGuideUrl}
-          />
-        )
+        return <SavedEventSection data={data} citySlug={citySlug} />
       case "header":
         return (
           <Box px={2} pt={4}>

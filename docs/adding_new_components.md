@@ -41,7 +41,6 @@ Then add a route in `routes.tsx`
 
 ```diff
   new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
-  new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 + new RouteMatcher("/my-new-component", "MyNewComponent"),
   new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
   new RouteMatcher("/city-fair/:citySlug", "CityFairList"),

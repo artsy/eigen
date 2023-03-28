@@ -1,4 +1,4 @@
-import { Spacer, ChevronIcon, Flex, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
@@ -10,7 +10,6 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { shouldShowFairBMWArtActivationLink } from "./FairBMWArtActivation"
 
 interface FairMoreInfoQueryRendererProps {
   fairID: string
@@ -84,15 +83,6 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               )}
               <Spacer y={1} />
             </>
-          )}
-
-          {!!shouldShowFairBMWArtActivationLink(fair) && (
-            <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/bmw-sponsored-content`)}>
-              <Flex py={2} flexDirection="row" justifyContent="flex-start">
-                <Text variant="sm">View BMW art activations</Text>
-                <ChevronIcon mr="-5px" mt="3px" />
-              </Flex>
-            </TouchableOpacity>
           )}
 
           {!!fair.fairHours && (
