@@ -8,4 +8,7 @@ sed -i'old' 's/OSS=.*/OSS=True/g' .env.shared
 
 cp metaflags.example.json metaflags.json
 
+# Need a phony Google plist to compile the project but it won't be used
+touch ios/Artsy/GoogleService-Info.plist
+
 ./scripts/setup-oss-fonts
