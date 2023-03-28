@@ -9,7 +9,7 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Button, Separator } from "palette"
+import { Button, RegularFontFamily, Separator } from "palette"
 import React from "react"
 import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -61,7 +61,7 @@ const Content = styled.View`
 const InquiryTextInput = styled.TextInput`
   font-size: 16;
   margin-top: 20px;
-  font-family: "Unica77LL-Regular";
+  font-family: ${RegularFontFamily};
 `
 const ResponseRate = styled(SmallHeadline)`
   color: ${themeGet("colors.copper100")};

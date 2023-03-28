@@ -91,10 +91,12 @@ const fixTextTreatments = (
 }
 
 const isOSS = Config.OSS === "True"
-const RegularFontFamily = isOSS ? "HelveticaNeue" : "Unica77LL-Regular"
-const MediumFontFamily = isOSS ? "HelveticaNeue-Medium" : "Unica77LL-Medium"
-const ItalicFontFamily = isOSS ? "HelveticaNeue-Italic" : "Unica77LL-Italic"
-const MediumItalicFontFamily = isOSS ? "HelveticaNeue-MediumItalic" : "Unica77LL-MediumItalic"
+export const RegularFontFamily = isOSS ? "HelveticaNeue" : "Unica77LL-Regular"
+export const MediumFontFamily = isOSS ? "HelveticaNeue-Medium" : "Unica77LL-Medium"
+export const ItalicFontFamily = isOSS ? "HelveticaNeue-Italic" : "Unica77LL-Italic"
+export const MediumItalicFontFamily = isOSS
+  ? "HelveticaNeue-MediumItalic"
+  : "Unica77LL-MediumItalic"
 
 const THEMES = {
   v3: {

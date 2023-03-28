@@ -13,7 +13,7 @@ const Container = styled.View`
 const ConnectivityMessage = styled.Text`
   color: ${themeGet("colors.copper100")};
   text-align: center;
-  font-family: "Unica77LL-Regular";
+  font-family: RegularFontFamily;
   font-size: 16;
   padding-top: 5px;
 `
