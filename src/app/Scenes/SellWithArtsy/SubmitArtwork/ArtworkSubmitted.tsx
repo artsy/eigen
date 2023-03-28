@@ -42,7 +42,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
           </Text>
           <Spacer y={2} />
           <Text mx={2} color="black60">
-            We will email you within 1-3 days to confirm if your artwork has been accepted or not.
+            We will email you within 3-5 days to confirm if your artwork has been accepted or not.
             In the meantime your submission will appear in the feature, My Collection.
           </Text>
           <Spacer y={2} />
