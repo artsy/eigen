@@ -18,7 +18,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
 export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
-export const DEFAULT_RECS_MODEL_VERSION = "B"
+export const DEFAULT_RECS_MODEL_VERSION = "C"
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
