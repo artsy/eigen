@@ -225,11 +225,7 @@ const CGFloat MARGIN = 10;
     }
 }
 
-- (void)showCityPicker {
-    [self showCityPicker:nil];
-}
-
-- (void)showCityPicker:(NSString *)sponsoredContentUrl
+- (void)showCityPicker
 {
     if (self.cityPickerContainerView) {
         // Only ever allow one city picker on screen at once.
@@ -247,9 +243,7 @@ const CGFloat MARGIN = 10;
     NSString *previouslySelectedCity = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
 
     self.cityPickerController = [[ARCityPickerComponentViewController alloc] initWithSelectedCityName:previouslySelectedCity];
-    if (sponsoredContentUrl) {
-        [self.cityPickerController setProperty:sponsoredContentUrl forKey:@"sponsoredContentUrl"];
-    }
+
     [self addChildViewController:self.cityPickerController];
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;

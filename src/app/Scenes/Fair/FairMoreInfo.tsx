@@ -146,10 +146,6 @@ export const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInf
         }
         summary
       }
-      sponsoredContent {
-        activationText
-        pressReleaseUrl
-      }
       ticketsLink
       fairHours: hours(format: MARKDOWN)
       fairLinks: links(format: MARKDOWN)

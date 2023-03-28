@@ -64,10 +64,6 @@ describe("FairMoreInfo", () => {
           __typename: "OpeningHoursText",
           text: null,
         },
-        sponsoredContent: {
-          activationText: "Some activation text",
-          pressReleaseUrl: "Some press release text",
-        },
         tagline: "Buy lots of art",
         fairLinks: "Google it",
         fairContact: "Art Basel Hong Kong",
@@ -100,7 +96,6 @@ describe("FairMoreInfo", () => {
         fairTickets: "",
         fairContact: "",
         summary: "",
-        sponsoredContent: null,
       }),
     })
     const rootText = getText(wrapper)

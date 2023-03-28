@@ -25,12 +25,11 @@ interface Props {
   onPress?: () => void
   city: City
   isLoading: boolean
-  sponsoredContentUrl?: string
 }
 
 export class CitySwitcherButton extends Component<Props> {
   render() {
-    const { city, isLoading, sponsoredContentUrl } = this.props
+    const { city, isLoading } = this.props
     return isLoading || city ? (
       <ClassTheme>
         {({ color }) => (
@@ -41,9 +40,7 @@ export class CitySwitcherButton extends Component<Props> {
               }
               LegacyNativeModules.ARNotificationsManager.postNotificationName(
                 "ARLocalDiscoveryOpenCityPicker",
-                {
-                  ...(sponsoredContentUrl && { sponsoredContentUrl }),
-                }
+                {}
               )
             }}
           >
