@@ -104,8 +104,9 @@ export const AuctionResultsScreenWrapperContainer = createPaginationContainer(
         first: { type: "Int", defaultValue: 10 }
         after: { type: "String" }
         state: { type: "AuctionResultsState", defaultValue: ALL }
+        sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
       ) {
-        auctionResultsByFollowedArtists(first: $first, after: $after, state: $state)
+        auctionResultsByFollowedArtists(first: $first, after: $after, state: $state, sort: $sort)
           @connection(key: "AuctionResultsScreenWrapperContainer_auctionResultsByFollowedArtists") {
           totalCount
           edges {
@@ -136,9 +137,11 @@ export const AuctionResultsScreenWrapperContainer = createPaginationContainer(
         $first: Int!
         $after: String
         $state: AuctionResultsState!
+        $sort: AuctionResultSorts!
       ) {
         me {
-          ...AuctionResultsScreenWrapper_me @arguments(first: $first, after: $after, state: $state)
+          ...AuctionResultsScreenWrapper_me
+            @arguments(first: $first, after: $after, state: $state, sort: $sort)
         }
       }
     `,

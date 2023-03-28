@@ -476,6 +476,7 @@ export const HomeFragmentContainer = memo(
           auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
             first: 12
             state: UPCOMING
+            sort: DATE_ASC
           ) {
             totalCount
             ...AuctionResultsRail_auctionResults
