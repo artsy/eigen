@@ -18,7 +18,6 @@ const TextContainer = styled(Box)`
 interface Props {
   relay: RelayProp
   event: Show
-  section?: string
 }
 
 interface State {
@@ -41,13 +40,8 @@ export class Event extends React.Component<Props, State> {
 
   @track((props) => {
     const { slug, internalID, is_followed } = props.event
-    const { section } = props
-    let actionName
-    if (!!section && section === "bmw") {
-      actionName = is_followed ? Schema.ActionNames.UnsaveBMWShow : Schema.ActionNames.SaveBMWShow
-    } else {
-      actionName = is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow
-    }
+    const actionName = is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow
+
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Success,
@@ -123,11 +117,8 @@ export class Event extends React.Component<Props, State> {
   }
 
   handleTap = () => {
-    const { section } = this.props
-    const { slug, internalID } = this.props.event
-    if (section === "bmw") {
-      this.trackShowTap(Schema.ActionNames.OpenBMWShow, slug, internalID)
-    }
+    const { slug } = this.props.event
+
     navigate(`/show/${slug}`)
   }
 

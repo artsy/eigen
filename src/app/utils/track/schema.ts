@@ -97,9 +97,7 @@ export enum PageNames {
   BidFlowRegistrationResultConfirmed = "RegistrationConfirmed",
   BidFlowRegistrationResultError = "RegistrationError",
   BidFlowRegistrationResultPending = "RegistrationPending",
-  BMWFairActivation = "BMWFairActivation",
   CityGuide = "CityGuideGuide",
-  CityGuideBMWList = "CityGuideBMWList",
   CityGuideClosingSoonList = "CityGuideClosingSoonList",
   CityGuideFairsList = "CityGuideFairsList",
   CityGuideGalleriesList = "CityGuideGalleriesList",
@@ -214,11 +212,6 @@ export enum ActionNames {
   WatchLiveBidding = "watchLiveBidding",
 
   /**
-   * City and Map Page Events
-   */
-  GetBMWArtGuide = "getBMWArtGuide",
-
-  /**
    * Gene Page Events
    */
   GeneFollow = "geneFollow",
@@ -252,10 +245,6 @@ export enum ActionNames {
   /**
    *  City guide
    */
-  BMWLogo = "bmwLogo",
-  OpenBMWShow = "openBMWShow",
-  UnsaveBMWShow = "unsaveBMWShow",
-  SaveBMWShow = "saveBMWShow",
   ClusteredMapPin = "clusteredMapPin",
   SingleMapPin = "singleMapPin",
   AllTab = "allTab",
