@@ -1,4 +1,4 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, Spacer, useColor } from "@artsy/palette-mobile"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
@@ -107,5 +107,19 @@ export const PlaceholderRaggedText = ({
 export const PlaceholderGrid = () => (
   <Flex mx={2} flexDirection="row">
     <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
+  </Flex>
+)
+
+export const PlaceholderFeed = () => (
+  <Flex mx={2}>
+    <PlaceholderBox height={320} />
+    <Spacer y={1} />
+    <PlaceholderText width={100} />
+    <PlaceholderText width={200} />
+    <PlaceholderText width={300} />
+    <Spacer y={2} />
+    <PlaceholderBox height={400} width="100%" paddingHorizontal={2} />
+    <Spacer y={2} />
+    <PlaceholderBox height={400} width="100%" paddingHorizontal={2} />
   </Flex>
 )

@@ -4,10 +4,11 @@ import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { PlaceholderFeed, PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -34,6 +35,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
         <Box>
           {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
+              isNewFeedEnabled
               connection={viewer.artworks!}
               loadMore={() => null}
               hasMore={() => false}
@@ -148,6 +150,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
+  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed")
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   const isReferredFromEmail = utm_medium === "email"
@@ -184,7 +187,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,
-        renderPlaceholder: Placeholder,
+        renderPlaceholder: isNewFeedEnabled ? FeedPlaceholder : Placeholder,
         renderFallback: () => null,
       })}
     />
@@ -201,3 +204,12 @@ const Placeholder = () => {
     </ProvidePlaceholderContext>
   )
 }
+
+const FeedPlaceholder = () => (
+  <ProvidePlaceholderContext>
+    <PageWithSimpleHeader title={SCREEN_TITLE}>
+      <Spacer y={2} />
+      <PlaceholderFeed />
+    </PageWithSimpleHeader>
+  </ProvidePlaceholderContext>
+)

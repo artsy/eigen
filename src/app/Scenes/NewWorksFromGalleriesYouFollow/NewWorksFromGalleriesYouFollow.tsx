@@ -5,8 +5,9 @@ import { NewWorksFromGalleriesYouFollow_artworksConnection$key } from "__generat
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { PlaceholderFeed, PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -37,6 +38,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
+            isNewFeedEnabled
             connection={data?.newWorksFromGalleriesYouFollowConnection}
             loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}
@@ -85,8 +87,9 @@ const artworkConnectionFragment = graphql`
 `
 
 export const NewWorksFromGalleriesYouFollowScreen: React.FC = () => {
+  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed")
   return (
-    <Suspense fallback={<Placeholder />}>
+    <Suspense fallback={isNewFeedEnabled ? <FeedPlaceholder /> : <Placeholder />}>
       <NewWorksFromGalleriesYouFollow />
     </Suspense>
   )
@@ -102,3 +105,12 @@ const Placeholder = () => {
     </ProvidePlaceholderContext>
   )
 }
+
+const FeedPlaceholder = () => (
+  <ProvidePlaceholderContext>
+    <PageWithSimpleHeader title={SCREEN_TITLE}>
+      <Spacer y={2} />
+      <PlaceholderFeed />
+    </PageWithSimpleHeader>
+  </ProvidePlaceholderContext>
+)
