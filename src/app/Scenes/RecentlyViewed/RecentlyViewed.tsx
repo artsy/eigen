@@ -16,7 +16,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "Recently Viewed"
 
-export const RecentlyViewed: React.FC<{}> = () => {
+export const RecentlyViewed: React.FC = () => {
   const queryData = useLazyLoadQuery<RecentlyViewedQuery>(
     RecentlyViewedScreenQuery,
     recentlyViewedQueryVariables
