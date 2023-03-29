@@ -1,9 +1,9 @@
+import { SimilarToRecentlyViewedTestsQuery } from "__generated__/SimilarToRecentlyViewedTestsQuery.graphql"
 import { SimilarToRecentlyViewed } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Suspense } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SimilarToRecentlyViewedTestsQuery } from "__generated__/SimilarToRecentlyViewedTestsQuery.graphql"
 
 describe("SimilarToRecentlyViewed", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -21,7 +22,6 @@ import {
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 import { fitInside } from "./geometry"
-import { captureMessage } from "@sentry/react-native"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]

@@ -1,9 +1,9 @@
+import { NewWorksFromGalleriesYouFollowTestsQuery } from "__generated__/NewWorksFromGalleriesYouFollowTestsQuery.graphql"
 import { NewWorksFromGalleriesYouFollow } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Suspense } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { NewWorksFromGalleriesYouFollowTestsQuery } from "__generated__/NewWorksFromGalleriesYouFollowTestsQuery.graphql"
 
 describe("NewWorksFromGalleriesYouFollow", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

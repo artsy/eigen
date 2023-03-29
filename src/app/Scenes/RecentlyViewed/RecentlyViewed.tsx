@@ -1,8 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
+import { RecentlyViewedQuery } from "__generated__/RecentlyViewedQuery.graphql"
+import { RecentlyViewed_artworksConnection$key } from "__generated__/RecentlyViewed_artworksConnection.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -11,14 +13,10 @@ import { screen } from "app/utils/track/helpers"
 import { SimpleMessage } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { RecentlyViewedQuery } from "__generated__/RecentlyViewedQuery.graphql"
-import { RecentlyViewed_artworksConnection$key } from "__generated__/RecentlyViewed_artworksConnection.graphql"
 
 const SCREEN_TITLE = "Recently Viewed"
 
-interface RecentlyViewedScreenProps {}
-
-export const RecentlyViewed: React.FC<RecentlyViewedScreenProps> = () => {
+export const RecentlyViewed: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<RecentlyViewedQuery>(
     RecentlyViewedScreenQuery,
     recentlyViewedQueryVariables
@@ -86,10 +84,10 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const RecentlyViewedScreen: React.FC<RecentlyViewedScreenProps> = (props) => {
+export const RecentlyViewedScreen: React.FC<{}> = () => {
   return (
     <Suspense fallback={<Placeholder />}>
-      <RecentlyViewed {...props} />
+      <RecentlyViewed />
     </Suspense>
   )
 }

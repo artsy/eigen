@@ -1,8 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
+import { SimilarToRecentlyViewedQuery } from "__generated__/SimilarToRecentlyViewedQuery.graphql"
+import { SimilarToRecentlyViewed_artworksConnection$key } from "__generated__/SimilarToRecentlyViewed_artworksConnection.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -11,14 +13,10 @@ import { screen } from "app/utils/track/helpers"
 import { SimpleMessage } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { SimilarToRecentlyViewedQuery } from "__generated__/SimilarToRecentlyViewedQuery.graphql"
-import { SimilarToRecentlyViewed_artworksConnection$key } from "__generated__/SimilarToRecentlyViewed_artworksConnection.graphql"
 
 const SCREEN_TITLE = "Similar to Works You've Viewed"
 
-interface SimilarToRecentlyViewedScreenProps {}
-
-export const SimilarToRecentlyViewed: React.FC<SimilarToRecentlyViewedScreenProps> = () => {
+export const SimilarToRecentlyViewed: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<SimilarToRecentlyViewedQuery>(
     SimilarToRecentlyViewedScreenQuery,
     similarToRecentlyViewedQueryVariables
@@ -86,12 +84,10 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const SimilarToRecentlyViewedScreen: React.FC<SimilarToRecentlyViewedScreenProps> = (
-  props
-) => {
+export const SimilarToRecentlyViewedScreen: React.FC<{}> = () => {
   return (
     <Suspense fallback={<Placeholder />}>
-      <SimilarToRecentlyViewed {...props} />
+      <SimilarToRecentlyViewed />
     </Suspense>
   )
 }
