@@ -16,7 +16,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "New Works from Galleries You Follow"
 
-export const NewWorksFromGalleriesYouFollow: React.FC<{}> = () => {
+export const NewWorksFromGalleriesYouFollow: React.FC = () => {
   const queryData = useLazyLoadQuery<NewWorksFromGalleriesYouFollowQuery>(
     NewWorksFromGalleriesYouFollowScreenQuery,
     newWorksFromGalleriesYouFollowQueryVariables
