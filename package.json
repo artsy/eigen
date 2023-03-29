@@ -331,7 +331,8 @@
   },
   "resolutions": {
     "@types/relay-runtime": "14.1.3",
-    "@types/react-relay": "14.1.3"
+    "@types/react-relay": "14.1.3",
+    "react-devtools-core": "4.27.4"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
