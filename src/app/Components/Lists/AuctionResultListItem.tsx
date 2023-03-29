@@ -45,14 +45,13 @@ const AuctionResultListItem: React.FC<Props> = ({
   )
 
   const handlePress = () => {
+    if (onPress) {
+      onPress()
+      return
+    }
     // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
     if (auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL) {
       navigate(auctionResult.externalURL)
-      return
-    }
-
-    if (onPress) {
-      onPress()
     } else {
       navigate(`/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`)
     }
