@@ -16,7 +16,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "Similar to Works You've Viewed"
 
-export const SimilarToRecentlyViewed: React.FC<{}> = () => {
+export const SimilarToRecentlyViewed: React.FC = () => {
   const queryData = useLazyLoadQuery<SimilarToRecentlyViewedQuery>(
     SimilarToRecentlyViewedScreenQuery,
     similarToRecentlyViewedQueryVariables
