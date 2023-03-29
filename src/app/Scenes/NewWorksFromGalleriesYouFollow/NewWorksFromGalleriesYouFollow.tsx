@@ -84,7 +84,7 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const NewWorksFromGalleriesYouFollowScreen: React.FC<{}> = () => {
+export const NewWorksFromGalleriesYouFollowScreen: React.FC = () => {
   return (
     <Suspense fallback={<Placeholder />}>
       <NewWorksFromGalleriesYouFollow />
