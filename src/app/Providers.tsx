@@ -3,7 +3,6 @@ import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Theme as LegacyTheme, Spinner } from "palette"
 import { Component, Suspense } from "react"
-import Config from "react-native-config"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -107,12 +106,9 @@ function LegacyThemeProvider({ children }: { children?: React.ReactNode }) {
 function ThemeProvider({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-  const isOSS = Config.OSS === "True"
-  const darkTheme = isOSS ? "v3darkOSS" : "v3dark"
-  const lightTheme = isOSS ? "v3lightOSS" : "v3light"
 
   return (
-    <Theme theme={supportDarkMode ? (darkMode === "dark" ? darkTheme : lightTheme) : lightTheme}>
+    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
       {children}
     </Theme>
   )

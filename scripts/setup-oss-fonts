@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# Set up some phony fonts files so we can compile
-# If you have OSS=True in ENV these will never be loaded
-# System fonts will be used instead
 ANDROID_FONT_DIR="android/app/src/main/assets/fonts/"
 IOS_FONT_DIR="ios/Artsy/fonts/"
 
 declare -a fonts=("Unica77LL-Regular" "Unica77LL-Italic" "Unica77LL-MediumItalic" "Unica77LL-Medium")
 
+mkdir -p ./fonts
+
 for i in "${fonts[@]}"
 do
-   touch "$ANDROID_FONT_DIR$i.otf"
-   touch "$IOS_FONT_DIR$i.otf"
+   aws s3 cp "s3://artsy-webfonts-production/$i.otf" "./fonts/$i.otf"
+   cp "./fonts/$i.otf" "$ANDROID_FONT_DIR"
+   cp "./fonts/$i.otf" "$IOS_FONT_DIR"
 done
+
+rm -rf ./fonts

@@ -4,7 +4,6 @@ import {
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 import _ from "lodash"
-import Config from "react-native-config"
 import { ThemeProvider } from "styled-components/native"
 
 const {
@@ -90,13 +89,10 @@ const fixTextTreatments = (
   return textTreatments
 }
 
-const isOSS = Config.OSS === "True"
-export const RegularFontFamily = isOSS ? "HelveticaNeue" : "Unica77LL-Regular"
-export const MediumFontFamily = isOSS ? "HelveticaNeue-Medium" : "Unica77LL-Medium"
-export const ItalicFontFamily = isOSS ? "HelveticaNeue-Italic" : "Unica77LL-Italic"
-export const MediumItalicFontFamily = isOSS
-  ? "HelveticaNeue-MediumItalic"
-  : "Unica77LL-MediumItalic"
+const RegularFontFamily = "Unica77LL-Regular"
+const MediumFontFamily = "Unica77LL-Medium"
+const ItalicFontFamily = "Unica77LL-Italic"
+const MediumItalicFontFamily = "Unica77LL-MediumItalic"
 
 const THEMES = {
   v3: {

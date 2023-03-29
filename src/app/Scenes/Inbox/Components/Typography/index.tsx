@@ -1,5 +1,4 @@
 import { useTheme } from "@artsy/palette-mobile"
-import { ItalicFontFamily, RegularFontFamily } from "palette"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
@@ -134,11 +133,11 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleRequired: {
-    fontFamily: ItalicFontFamily,
+    fontFamily: "Unica77LL-Italic",
   },
 
   fromSignatureDefault: {
-    fontFamily: RegularFontFamily,
+    fontFamily: "Unica77LL-Regular",
   },
 
   metadataDefault: {
@@ -153,6 +152,6 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
-    fontFamily: RegularFontFamily,
+    fontFamily: "Unica77LL-Regular",
   },
 })

@@ -35,8 +35,6 @@
         }
 
         CFRelease(font);
-    } else {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Font failed to load if you are an open source contributor set OSS=True in your ENV file." userInfo:@{}];
     }
 
     if (provider) {
@@ -47,11 +45,6 @@
 @end
 
 @implementation UIFont (ArtsyFonts)
-
-+ (BOOL)useClosedFonts {
-    NSString *ossString = [ReactNativeConfig envFor:@"OSS"];
-    return ![ossString isEqual: @"True"];
-}
 
 + (instancetype)ar_LoadAndReturnFont:(NSString *)fontName extension:(NSString *)extension size:(CGFloat)fontSize onceToken:(dispatch_once_t *)onceToken {
     // Overload to default to fontName for fontFileName
@@ -70,37 +63,24 @@
 + (UIFont *)serifSemiBoldFontWithSize:(CGFloat)size
 {
     static dispatch_once_t onceToken;
-  if (![UIFont useClosedFonts]) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
 + (UIFont *)serifFontWithSize:(CGFloat)size
 {
   static dispatch_once_t onceToken;
-  if (![UIFont useClosedFonts]) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Regular" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Regular"];
 }
 
 + (UIFont *)serifItalicFontWithSize:(CGFloat)size
 {
   static dispatch_once_t onceToken;
-  if (![UIFont useClosedFonts]) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
 }
 
 + (UIFont *)sansSerifFontWithSize:(CGFloat)size
 {
-    static dispatch_once_t onceToken;
-  if (![UIFont useClosedFonts]) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
-
+  static dispatch_once_t onceToken;
   return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
@@ -108,10 +88,6 @@
 + (UIFont *)displayMediumSansSerifFontWithSize:(CGFloat)size
 {
     static dispatch_once_t onceToken;
-    if (![UIFont useClosedFonts]) {
-        return [UIFont fontWithName:@"Helvetica" size:size];
-    }
-
     return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
