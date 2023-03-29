@@ -652,9 +652,6 @@ PODS:
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.2.13):
-    - React-Core
-    - Sentry (= 7.9.0)
   - RNShare (8.2.1):
     - React-Core
   - RNSVG (9.13.3):
@@ -674,9 +671,6 @@ PODS:
   - Segment-Appboy/Full-SDK (4.5.0):
     - Analytics
     - Appboy-iOS-SDK (~> 4.4.1)
-  - Sentry (7.9.0):
-    - Sentry/Core (= 7.9.0)
-  - Sentry/Core (7.9.0)
   - Specta (1.0.7)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
@@ -826,7 +820,6 @@ DEPENDENCIES:
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.11.1)
@@ -912,7 +905,6 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - Segment-Adjust
     - Segment-Appboy
-    - Sentry
     - Specta
     - Starscream
     - Stripe
@@ -1071,8 +1063,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSentry:
-    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNSVG:
@@ -1238,14 +1228,12 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 42b5b57609de75e270722e27d2b94ade03c49931
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
-  RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
-  Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
