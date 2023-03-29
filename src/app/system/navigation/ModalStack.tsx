@@ -4,7 +4,7 @@ import {
   createStackNavigator,
   StackCardStyleInterpolator,
 } from "@react-navigation/stack"
-import { Severity, addBreadcrumb } from "@sentry/react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { logNavigation } from "app/utils/loggers"
@@ -44,7 +44,7 @@ export const ModalStack: React.FC = ({ children }) => {
             message: `navigated to ${params.moduleName}`,
             category: "navigation",
             data: { ...params },
-            level: Severity.Info,
+            level: "info",
           })
         }
       }}
