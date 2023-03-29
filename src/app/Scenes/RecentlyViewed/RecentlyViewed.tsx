@@ -84,7 +84,7 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const RecentlyViewedScreen: React.FC<{}> = () => {
+export const RecentlyViewedScreen: React.FC = () => {
   return (
     <Suspense fallback={<Placeholder />}>
       <RecentlyViewed />
