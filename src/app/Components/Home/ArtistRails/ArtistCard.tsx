@@ -51,7 +51,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
           <Flex flex={1} flexDirection="column" justifyContent="center">
             <Text numberOfLines={1}>{artist.name}</Text>
             {!!artist.formattedNationalityAndBirthday && (
-              <Text numberOfLines={1} color="black60">
+              <Text numberOfLines={1} variant="xs" color="black60">
                 {artist.formattedNationalityAndBirthday}
               </Text>
             )}
