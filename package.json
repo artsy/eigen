@@ -128,6 +128,7 @@
     "@segment/analytics-react-native-appboy": "1.5.0",
     "@sentry/cli": "2.12.0",
     "@sentry/react-native": "3.2.13",
+    "@shopify/flash-list": "1.4.2",
     "@storybook/addon-actions": "6.3.13",
     "@storybook/addon-controls": "6.3.13",
     "@storybook/addon-ondevice-actions": "6.0.1-beta.5",
