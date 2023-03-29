@@ -53,6 +53,11 @@ You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV v
 
 <details><summary>Independent Contributor?</summary>
 
+#### Set up awscli
+
+You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our font files.
+You can configure it with a personal user account.
+
 #### Set up your env file and download assets:
 
 ```sh
@@ -72,6 +77,10 @@ Add the token to .env.shared as MAPBOX_DOWNLOAD_TOKEN
 ```sh
 yarn install:all
 ```
+
+### Known limitations
+
+Some third party services will not function when working as an open source contributor including but not limited to Braze, Unleash, Sentry and Google Sign In. The conversations tab and related features are also inaccessible. Thanks for supporting open source!
 
 </details>
 
