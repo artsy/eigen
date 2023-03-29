@@ -1,20 +1,24 @@
 import {
-  MapPinIcon,
-  BriefcaseIcon,
-  SettingsIcon,
-  InstitutionIcon,
-  Flex,
   Box,
-  useColor,
+  BriefcaseIcon,
+  Flex,
+  InstitutionIcon,
+  MapPinIcon,
+  SettingsIcon,
+  Spacer,
   Text,
+  useColor,
 } from "@artsy/palette-mobile"
+import { MyProfileHeaderQuery } from "__generated__/MyProfileHeaderQuery.graphql"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImageStorage } from "app/utils/LocalImageStore"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useRefetch } from "app/utils/relayHelpers"
+import { withSuspense } from "app/utils/withSuspense"
 import { Avatar, Touchable } from "palette"
 import { Image, TouchableOpacity } from "react-native"
-import { useFragment } from "react-relay"
+import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeMyProfileBio } from "./utils"
 
@@ -142,3 +146,37 @@ const myProfileHeaderFragment = graphql`
     createdAt
   }
 `
+const myProfileHeaderQuery = graphql`
+  query MyProfileHeaderQuery {
+    me {
+      ...MyProfileHeader_me
+    }
+  }
+`
+
+const MyProfileHeaderPlaceholder = () => {
+  return (
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
+      <Flex flex={1}>
+        <Spacer y={2} />
+        {/* icon, name, time joined */}
+        <Flex flexDirection="row">
+          <PlaceholderBox width={50} height={50} borderRadius={50} />
+          <Flex flex={1} justifyContent="center" ml={2}>
+            <PlaceholderText width={80} height={25} />
+            <PlaceholderText width={100} height={15} />
+          </Flex>
+          {/* settings icon */}
+          <PlaceholderBox width={20} height={20} />
+        </Flex>
+        <Spacer y={1} />
+      </Flex>
+    </Flex>
+  )
+}
+
+export const MyProfileHeaderWrapper = withSuspense(() => {
+  const data = useLazyLoadQuery<MyProfileHeaderQuery>(myProfileHeaderQuery, {})
+
+  return <MyProfileHeader me={data.me!} />
+}, MyProfileHeaderPlaceholder)
