@@ -3,7 +3,6 @@
 
 #import "UIFont+ArtsyFonts.h"
 #import <CoreText/CoreText.h>
-#import <react-native-config/ReactNativeConfig.h>
 
 // Based on https://github.com/CocoaPods-Fonts/OpenSans/blob/874e65bc21abe54284e195484d2259b2fe858680/UIFont%2BOpenSans.m
 
