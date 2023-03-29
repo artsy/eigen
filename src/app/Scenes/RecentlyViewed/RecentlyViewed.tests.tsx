@@ -17,10 +17,10 @@ describe("RecentlyViewed", () => {
           }
         }
       `}
-      render={({ props }) => {
+      render={() => {
         return (
           <Suspense fallback={null}>
-            <RecentlyViewed {...props} />
+            <RecentlyViewed />
           </Suspense>
         )
       }}

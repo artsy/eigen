@@ -17,10 +17,10 @@ describe("SimilarToRecentlyViewed", () => {
           }
         }
       `}
-      render={({ props }) => {
+      render={() => {
         return (
           <Suspense fallback={null}>
-            <SimilarToRecentlyViewed {...props} />
+            <SimilarToRecentlyViewed />
           </Suspense>
         )
       }}

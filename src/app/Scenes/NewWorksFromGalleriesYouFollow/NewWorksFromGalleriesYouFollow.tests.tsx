@@ -17,10 +17,10 @@ describe("NewWorksFromGalleriesYouFollow", () => {
           }
         }
       `}
-      render={({ props }) => {
+      render={() => {
         return (
           <Suspense fallback={null}>
-            <NewWorksFromGalleriesYouFollow {...props} />
+            <NewWorksFromGalleriesYouFollow />
           </Suspense>
         )
       }}
