@@ -283,6 +283,11 @@ export const features = defineFeatures({
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableArtworkFeed: {
+    description: "Enable Artwork Feed",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
