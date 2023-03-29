@@ -7,6 +7,7 @@ export const BottomTabOption = {
   inbox: OwnerType.inbox,
   sell: OwnerType.sell,
   profile: OwnerType.profile,
+  profile2: "profile2",
 } as const
 
 export type BottomTabType = keyof typeof BottomTabOption

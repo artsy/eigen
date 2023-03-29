@@ -30,4 +30,10 @@ export const bottomTabsConfig: {
     route: "/my-profile",
     analyticsDescription: OwnerType.profile,
   },
+  profile2: {
+    // @ts-ignore
+    route: "/my-profile-2",
+    // @ts-ignore
+    analyticsDescription: "profile2",
+  },
 }

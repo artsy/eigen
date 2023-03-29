@@ -47,6 +47,11 @@ export const BottomTabsNavigator = () => {
         component={TabContent}
         initialParams={{ tabName: "profile", rootModuleName: "MyProfile" }}
       />
+      <Tab.Screen
+        name="profile2"
+        component={TabContent}
+        initialParams={{ tabName: "profile2", rootModuleName: "MyProfile2" }}
+      />
     </Tab.Navigator>
   )
 }

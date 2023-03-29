@@ -248,6 +248,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
+  ARENewMyCollectionTab: {
+    description: "Enable New My Collection Tab",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

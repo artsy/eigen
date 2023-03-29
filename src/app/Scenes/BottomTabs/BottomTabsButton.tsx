@@ -58,6 +58,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       tappedTabBar({
         tab: bottomTabsConfig[tab].analyticsDescription,
         badge: badgeCount > 0,
+        // @ts-ignore
         contextScreenOwnerType: BottomTabOption[selectedTab],
       })
     )
