@@ -238,8 +238,6 @@ GEM
     optparse (0.1.1)
     os (1.1.4)
     plist (3.7.0)
-    psych (5.1.0)
-      stringio
     public_suffix (4.0.7)
     rake (13.0.6)
     representable (3.2.0)
@@ -263,7 +261,6 @@ GEM
     simctl (1.6.10)
       CFPropertyList
       naturally
-    stringio (3.0.5)
     terminal-notifier (2.0.0)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
@@ -313,7 +310,6 @@ DEPENDENCIES
   fastlane-plugin-sentry
   json
   lowdown
-  psych
   sentry-ruby
   xcode-install
   xcpretty
