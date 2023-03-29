@@ -2677,6 +2677,7 @@ type AuctionLotPerformance {
 }
 
 type AuctionResult implements Node {
+  # Be careful when querying for artist data within a connection as it can lead to performance issues.
   artist: Artist
   artistID: String!
   boughtIn: Boolean
