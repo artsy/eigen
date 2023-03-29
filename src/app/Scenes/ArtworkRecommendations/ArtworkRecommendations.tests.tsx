@@ -1,9 +1,9 @@
+import { ArtworkRecommendationsTestsQuery } from "__generated__/ArtworkRecommendationsTestsQuery.graphql"
 import { ArtworkRecommendations } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Suspense } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkRecommendationsTestsQuery } from "__generated__/ArtworkRecommendationsTestsQuery.graphql"
 
 describe("ArtworkRecommendations", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
