@@ -12463,7 +12463,7 @@ moment@2.29.4, "moment@>= 2.9.0":
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
-moti@0.14.0:
+moti@0.24.2:
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/moti/-/moti-0.24.2.tgz#e1829e0c521912bb89702f1e0d5b13bc3fce39ff"
   integrity sha512-68sd6pdF976MgAZIZSQzVMmJFd8ENRAFeD2A67N2FJTvZEhzsAqDbEwwIYwhoDgYer+MrT5Y9X0pqofVO61tUg==
