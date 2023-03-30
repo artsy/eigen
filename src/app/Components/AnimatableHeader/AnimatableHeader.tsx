@@ -58,7 +58,6 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
             </Text>
           </View>
         </AnimatePresence>
-        {/* )} */}
       </Flex>
 
       {!!onRightButtonPress && !!rightButtonText && (
