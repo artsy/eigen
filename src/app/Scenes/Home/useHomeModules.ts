@@ -3,7 +3,7 @@ import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
@@ -12,7 +12,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
 
-  // const selectedCity = GlobalStore.useAppState((state) => state.userPrefs.city)
+  const selectedCity = GlobalStore.useAppState((state) => state.userPrefs.city)
 
   return useMemo(() => {
     const allModules = [
@@ -22,7 +22,23 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "nearby",
         data: [""],
         isEmpty: false,
-        hidden: false, // selectedCity !== null,
+        hidden: selectedCity !== null,
+        prefetchURL: "",
+      },
+      {
+        title: "Shows in your city",
+        type: "showsInYourCity",
+        data: [""],
+        isEmpty: false,
+        hidden: selectedCity === null,
+        prefetchURL: "",
+      },
+      {
+        title: "Fairs in your city",
+        type: "fairsInYourCity",
+        data: [""],
+        isEmpty: false,
+        hidden: selectedCity === null,
         prefetchURL: "",
       },
       {

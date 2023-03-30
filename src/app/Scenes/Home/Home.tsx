@@ -36,7 +36,9 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
-import { NearbyRail } from "app/Scenes/Home/Components/NearbyRail"
+import { NearbyFairsInYourCityRail } from "app/Scenes/Home/Components/NearbyFairsInYourCityRail"
+import { NearbySelectACityRail } from "app/Scenes/Home/Components/NearbySelectACityRail"
+import { NearbyShowsInYourCityRail } from "app/Scenes/Home/Components/NearbyShowsInYourCityRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
@@ -187,7 +189,11 @@ const Home = memo((props: HomeProps) => {
 
       switch (item.type) {
         case "nearby":
-          return <NearbyRail />
+          return <NearbySelectACityRail />
+        case "showsInYourCity":
+          return <NearbyShowsInYourCityRail />
+        case "fairsInYourCity":
+          return <NearbyFairsInYourCityRail />
         case "marketingCollection":
           return (
             <MarketingCollectionRail
