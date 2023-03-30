@@ -9,6 +9,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { Dimensions } from "react-native"
 
+// a rough estimation of each artwork size in pixels
+const ESTIMATED_ITEM_SIZE = 420
+
 export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
   connection,
   hasMore,
@@ -51,7 +54,7 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
       <FlashList
         ListHeaderComponent={HeaderComponent}
         contentContainerStyle={{ paddingBottom: space(6), paddingHorizontal: space(2) }}
-        estimatedItemSize={PAGE_SIZE}
+        estimatedItemSize={ESTIMATED_ITEM_SIZE}
         data={artworksToRender}
         renderItem={({ item }) => {
           const aspectRatio = item.image?.aspectRatio ?? 1
