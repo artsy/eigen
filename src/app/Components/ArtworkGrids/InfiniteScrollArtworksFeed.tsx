@@ -27,7 +27,6 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
   const { width, height } = Dimensions.get("screen")
 
   const fetchNextPage = () => {
-    console.warn("fetchNextPage")
     if (!hasMore() || localIsLoading || isLoading?.()) {
       return
     }
@@ -41,16 +40,12 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
         console.error("InfiniteScrollGrid.tsx", error.message)
       }
     })
-
-    console.warn("done")
   }
-
-  console.warn({ restProps })
-  console.warn({ itemComponentProps })
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const bottomTabBarHeight = useBottomTabBarHeight()
+
   return (
     <Flex height={height - bottomTabBarHeight} paddingBottom={`${bottomTabBarHeight}px`}>
       <FlashList
