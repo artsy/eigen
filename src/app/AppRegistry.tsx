@@ -500,6 +500,7 @@ export const modules = defineModules({
   ),
   MyProfile2: reactModule(MyProfile2, {
     isRootViewForTabName: "profile2",
+    // fullBleed: true
   }),
   MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
