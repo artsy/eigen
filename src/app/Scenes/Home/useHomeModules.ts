@@ -12,14 +12,17 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
 
+  // const selectedCity = GlobalStore.useAppState((state) => state.userPrefs.city)
+
   return useMemo(() => {
     const allModules = [
       // Above-The-Fold Modules
       {
-        title: "Stuff Nearby",
+        title: "Select a city",
         type: "nearby",
-        data: ["fakedata"],
+        data: [""],
         isEmpty: false,
+        hidden: false, // selectedCity !== null,
         prefetchURL: "",
       },
       {
