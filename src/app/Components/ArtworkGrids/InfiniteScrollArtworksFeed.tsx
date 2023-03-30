@@ -12,6 +12,8 @@ import { Dimensions } from "react-native"
 // a rough estimation of each artwork size in pixels
 const ESTIMATED_ITEM_SIZE = 420
 
+const HEADER_HEIGHT = 55
+
 export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
   connection,
   hasMore,
@@ -55,6 +57,10 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
         ListHeaderComponent={HeaderComponent}
         contentContainerStyle={{ paddingBottom: space(6), paddingHorizontal: space(2) }}
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        estimatedListSize={{
+          height: height - bottomTabBarHeight - HEADER_HEIGHT,
+          width: width,
+        }}
         data={artworksToRender}
         renderItem={({ item }) => {
           const aspectRatio = item.image?.aspectRatio ?? 1
@@ -70,7 +76,7 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
             />
           )
         }}
-        ItemSeparatorComponent={() => <Spacer y={2} />}
+        ItemSeparatorComponent={() => <Spacer y={6} />}
         keyExtractor={(item) => item.id}
         onEndReached={() => fetchNextPage()}
         onEndReachedThreshold={0.2}
