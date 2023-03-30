@@ -16,6 +16,13 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     const allModules = [
       // Above-The-Fold Modules
       {
+        title: "Stuff Nearby",
+        type: "nearby",
+        data: ["fakedata"],
+        isEmpty: false,
+        prefetchURL: "",
+      },
+      {
         contextModule: ContextModule.newWorksForYouRail,
         data: props.newWorksForYou,
         isEmpty: isEmpty(props.newWorksForYou),

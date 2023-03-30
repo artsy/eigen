@@ -8,6 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { NearbyCityPicker } from "app/Components/Nearby/NearbyCityPicker"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
@@ -463,6 +464,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
+  NearbyCityPicker: reactModule(NearbyCityPicker),
   ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,

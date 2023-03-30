@@ -193,6 +193,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/privacy-request", "PrivacyRequest"),
     addWebViewRoute("/price-database"),
+    addRoute("/nearby/city-picker", "NearbyCityPicker"),
 
     addRoute("/orders", "OrderHistory"),
 
