@@ -1,7 +1,8 @@
 import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { useFadeInLeft } from "app/utils/animations"
+import { AnimatePresence, View } from "moti"
 import { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
-import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export interface AnimatableHeaderProps {
@@ -16,13 +17,18 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
   const { space } = useTheme()
   const { headerHeight, setTitle, titleShown } = useAnimatableHeaderContext()
+  const titleAnimationState = useFadeInLeft()
+
+  useEffect(() => {
+    titleAnimationState.transitionTo(titleShown ? "to" : "from")
+  }, [titleShown])
 
   useEffect(() => {
     setTitle(title)
   }, [title])
 
   return (
-    <Animated.View
+    <View
       style={{
         flexDirection: "row",
         paddingHorizontal: space(2),
@@ -45,13 +51,14 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         justifyContent="center"
         ml={`${space(0.5) + space(1)}px`}
       >
-        {!!titleShown && (
-          <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
+        <AnimatePresence exitBeforeEnter>
+          <View state={titleAnimationState}>
             <Text testID="animated-header-title" variant="sm" numberOfLines={2}>
               {title}
             </Text>
-          </Animated.View>
-        )}
+          </View>
+        </AnimatePresence>
+        {/* )} */}
       </Flex>
 
       {!!onRightButtonPress && !!rightButtonText && (
@@ -69,6 +76,6 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
           </Text>
         </TouchableOpacity>
       )}
-    </Animated.View>
+    </View>
   )
 }
