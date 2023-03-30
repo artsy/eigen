@@ -1,11 +1,12 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { TouchableRow } from "app/Components/TouchableRow"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Button, Input } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import rawCities from "./cities.json"
 
-interface City {
+export interface City {
   name: string
   full_name: string
   slug: string
@@ -13,18 +14,19 @@ interface City {
 
 export const NearbyCityPicker: React.FC = () => {
   const [filteredCities, setFilteredCities] = useState<City[]>([])
-  const [selectedCity, setSelectedCity] = useState<City | null>(null)
+
+  const selectedCity = GlobalStore.useAppState((state) => state.userPrefs.city)
 
   const cities = rawCities as City[]
   const onSelect = (city: City) => {
-    setSelectedCity(city)
+    GlobalStore.actions.userPrefs.setCity(city)
   }
 
   return !!selectedCity ? (
     <Flex flex={1} alignItems="center" justifyContent="center">
       <Text>{selectedCity.full_name}</Text>
       <Spacer y={2} />
-      <Button onPress={() => setSelectedCity(null)}>Change</Button>
+      <Button onPress={() => GlobalStore.actions.userPrefs.setCity(undefined)}>Change</Button>
     </Flex>
   ) : (
     <Flex m={2}>

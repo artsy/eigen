@@ -1,4 +1,5 @@
 import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
+import { City } from "app/Components/Nearby/NearbyCityPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
@@ -29,8 +30,10 @@ export interface UserPrefsModel {
   currency: Currency
   metric: Metric | ""
   priceRange: string
+  city: City | undefined
   artworkViewOption: ViewOption
   setCurrency: Action<this, Currency>
+  setCity: Action<this, City | undefined>
   setMetric: Action<this, Metric>
   setPriceRange: Action<this, string>
   fetchRemoteUserPrefs: Thunk<UserPrefsModel>
@@ -43,12 +46,16 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   metric: DEFAULT_METRIC,
   artworkViewOption: DEFAULT_VIEW_OPTION,
   priceRange: DEFAULT_PRICE_RANGE,
+  city: undefined,
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
     } else {
       console.warn("Currency not supported")
     }
+  }),
+  setCity: action((state, city) => {
+    state.city = city
   }),
   setMetric: action((state, metric) => {
     if (metrics.includes(metric)) {
