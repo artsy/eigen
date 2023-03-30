@@ -9,7 +9,7 @@ else
 fi
 
 # Set the OSS flag to true
-sed -i'old' 's/OSS=.*/OSS=True/g' .env.shared
+sed -i'old' 's/OSS=.*/OSS=true/g' .env.shared
 
 cp metaflags.example.json metaflags.json
 

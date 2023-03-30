@@ -12,7 +12,7 @@ import { UnleashClient } from "unleash-proxy-client"
  * or create a new one in the requested env.
  */
 export function getUnleashClient(env?: "production" | "staging", userId?: string | null) {
-  if (Config.OSS === "True") {
+  if (Config.OSS === "true") {
     return null
   }
 

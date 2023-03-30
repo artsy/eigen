@@ -81,7 +81,7 @@ const Main = () => {
   useRageShakeDevMenu()
   useDebugging()
   useEffect(() => {
-    if (Config.OSS === "True") {
+    if (Config.OSS === "true") {
       return
     }
     GoogleSignin.configure({

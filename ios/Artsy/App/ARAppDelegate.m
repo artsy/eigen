@@ -186,7 +186,7 @@ static ARAppDelegate *_sharedInstance = nil;
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
     [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
 
-    BOOL ossUser = [[ReactNativeConfig envFor:@"OSS"] isEqualToString:@"True"];
+    BOOL ossUser = [[ReactNativeConfig envFor:@"OSS"] isEqualToString:@"true"];
     if ([FIRApp defaultApp] == nil && !ossUser) {
         [FIRApp configure];
     }

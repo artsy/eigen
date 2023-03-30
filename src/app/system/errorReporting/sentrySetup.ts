@@ -14,7 +14,7 @@ export const eigenSentryReleaseName = () => {
 
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   const sentryDSN = Config.SENTRY_DSN
-  const ossUser = Config.OSS === "True"
+  const ossUser = Config.OSS === "true"
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
