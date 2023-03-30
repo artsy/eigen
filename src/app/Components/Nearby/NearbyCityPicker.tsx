@@ -3,21 +3,27 @@ import { TouchableRow } from "app/Components/TouchableRow"
 import { Button, Input } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
-import cities from "./cities.json"
+import rawCities from "./cities.json"
+
+interface City {
+  name: string
+  full_name: string
+  slug: string
+}
 
 export const NearbyCityPicker: React.FC = () => {
-  const [filteredCities, setFilteredCities] = useState<string[]>([])
-  const [selectedCity, setSelectedCity] = useState<string | null>(null)
+  const [filteredCities, setFilteredCities] = useState<City[]>([])
+  const [selectedCity, setSelectedCity] = useState<City | null>(null)
 
-  const cityNames = cities.map((city) => city.name.toLowerCase())
-
-  const onSelect = (city: string) => {
+  const cities = rawCities as City[]
+  const onSelect = (city: City) => {
     setSelectedCity(city)
   }
 
   return !!selectedCity ? (
     <Flex flex={1} alignItems="center" justifyContent="center">
-      <Text>{selectedCity}</Text>
+      <Text>{selectedCity.full_name}</Text>
+      <Spacer y={2} />
       <Button onPress={() => setSelectedCity(null)}>Change</Button>
     </Flex>
   ) : (
@@ -28,7 +34,9 @@ export const NearbyCityPicker: React.FC = () => {
       <Input
         onChangeText={(text) => {
           if (text.length > 2) {
-            const matchingCities = cityNames.filter((city) => city.includes(text.toLowerCase()))
+            const matchingCities = cities.filter((city) =>
+              city.name.toLowerCase().includes(text.toLowerCase())
+            )
             setFilteredCities(matchingCities)
             console.log(matchingCities)
           } else {
@@ -36,13 +44,16 @@ export const NearbyCityPicker: React.FC = () => {
           }
         }}
       />
+      <Spacer y={2} />
       <FlatList
         data={filteredCities}
         renderItem={({ item }) => {
           return (
-            <TouchableRow onPress={() => onSelect(item)}>
-              <Text>{item}</Text>
-            </TouchableRow>
+            <Flex mb={2}>
+              <TouchableRow onPress={() => onSelect(item)}>
+                <Text>{item.full_name}</Text>
+              </TouchableRow>
+            </Flex>
           )
         }}
       />
