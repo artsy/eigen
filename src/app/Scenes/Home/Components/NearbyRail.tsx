@@ -9,7 +9,6 @@ export const NearbyRail: React.FC = () => {
       <Button
         onPress={() => {
           navigate("nearby/city-picker")
-          console.log("here is where i should show the city picker")
         }}
       >
         Select a city
