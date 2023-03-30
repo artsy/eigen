@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-cp .env.example .env.shared
+if [ -f ".env.shared" ]; then
+  echo "You already have a .env.shared file, skipping .env.shared creation"
+else
+  echo "Creating .env.shared file"
+  cp .env.example .env.shared
+fi
 
 # Set the OSS flag to true
 sed -i'old' 's/OSS=.*/OSS=True/g' .env.shared
