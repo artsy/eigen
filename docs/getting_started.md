@@ -72,10 +72,11 @@ Follow the instructions here: https://docs.mapbox.com/ios/maps/guides/install.
 
 Add the token to .env.shared as MAPBOX_DOWNLOAD_TOKEN
 
-#### Install dependencies:
+#### Install dependencies and generate relay files:
 
 ```sh
 yarn install:all
+yarn relay
 ```
 
 ### Known limitations
