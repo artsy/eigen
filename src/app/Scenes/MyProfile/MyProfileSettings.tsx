@@ -21,8 +21,8 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
 
   return (
     <ScrollView>
-      <Text variant="lg-display" mx={2} mt="6">
-        Settings
+      <Text variant="lg-display" mx={2} mt={6}>
+        Account
       </Text>
       <Spacer y={1} />
       <MenuItem
@@ -36,6 +36,8 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         }
       />
       <Separator my={1} borderColor={separatorColor} />
+      <MenuItem title="Account" onPress={() => navigate("my-account")} />
+      <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem
@@ -48,12 +50,6 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
           })
         }
       />
-      <Separator my={1} borderColor={separatorColor} />
-
-      <Spacer y={2} />
-      <SectionHeading title="Account Settings" />
-      <Spacer y={1} />
-      <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <Separator my={1} borderColor={separatorColor} />
       {!!showOrderHistory && (
         <>
