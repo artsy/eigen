@@ -4,7 +4,7 @@ import { Button } from "palette"
 
 export const NearbySelectACityRail: React.FC = () => {
   return (
-    <Flex mt={2} flex={1} alignItems="center" justifyContent="center">
+    <Flex mt={2} alignItems="center" justifyContent="center">
       <Text>Select a city to see nearby shows and fairs</Text>
       <Spacer y={2} />
       <Button

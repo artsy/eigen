@@ -22,7 +22,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "nearby",
         data: [""],
         isEmpty: false,
-        hidden: selectedCity !== null,
+        hidden: selectedCity !== undefined,
         prefetchURL: "",
       },
       {
@@ -30,7 +30,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "showsInYourCity",
         data: props.nearbyShowsInYourCity,
         isEmpty: isEmpty(props.nearbyShowsInYourCity),
-        hidden: selectedCity === null,
+        hidden: selectedCity === undefined,
         prefetchURL: "",
       },
       {
@@ -38,7 +38,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "fairsInYourCity",
         data: props.nearbyFairsInYourCity,
         isEmpty: isEmpty(props.nearbyFairsInYourCity),
-        hidden: selectedCity === null,
+        hidden: selectedCity === undefined,
         prefetchURL: "",
       },
       {
