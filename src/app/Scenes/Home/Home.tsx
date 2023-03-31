@@ -15,6 +15,7 @@ import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphq
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_nearbyFairsInYourCity$data } from "__generated__/Home_nearbyFairsInYourCity.graphql"
 import { Home_nearbyShowsInYourCity$data } from "__generated__/Home_nearbyShowsInYourCity.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
@@ -118,7 +119,7 @@ export interface HomeProps extends ViewProps {
   homePageBelow: Home_homePageBelow$data | null
   newWorksForYou: Home_newWorksForYou$data | null
   nearbyShowsInYourCity?: Home_nearbyShowsInYourCity$data | null
-  nearbyFairsInYourCity?: null
+  nearbyFairsInYourCity?: Home_nearbyFairsInYourCity$data | null
   loading: boolean
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
@@ -196,7 +197,7 @@ const Home = memo((props: HomeProps) => {
         case "showsInYourCity":
           return <NearbyShowsInYourCityRail showsConnection={item.data} title={item.title} />
         case "fairsInYourCity":
-          return <NearbyFairsInYourCityRail />
+          return <NearbyFairsInYourCityRail fairsConnection={item.data} title={item.title} />
         case "marketingCollection":
           return (
             <MarketingCollectionRail
@@ -508,7 +509,11 @@ export const HomeFragmentContainer = memo(
           ...NearbyShowsInYourCityRail_showsConnection
         }
       `,
-      // nearbyFairsInYourCity: graphql``,
+      nearbyFairsInYourCity: graphql`
+        fragment Home_nearbyFairsInYourCity on City {
+          ...NearbyFairsInYourCityRail_fairsConnection
+        }
+      `,
       emergingPicks: graphql`
         fragment Home_emergingPicks on MarketingCollection {
           ...MarketingCollectionRail_marketingCollection
@@ -547,6 +552,11 @@ export const HomeFragmentContainer = memo(
         nearbyShowsInYourCity: viewer {
           city(slug: $citySlug) {
             ...Home_nearbyShowsInYourCity
+          }
+        }
+        nearbyFairsInYourCity: viewer {
+          city(slug: $citySlug) {
+            ...Home_nearbyFairsInYourCity
           }
         }
         emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
@@ -731,6 +741,11 @@ export const HomeQueryRenderer: React.FC = () => {
                 ...Home_nearbyShowsInYourCity
               }
             }
+            nearbyFairsInYourCity: viewer @optionalField {
+              city(slug: $citySlug) {
+                ...Home_nearbyFairsInYourCity
+              }
+            }
           }
         `,
         variables: {
@@ -783,6 +798,7 @@ export const HomeQueryRenderer: React.FC = () => {
               homePageBelow={below ? below.homePage : null}
               newWorksForYou={above.newWorksForYou}
               nearbyShowsInYourCity={above.nearbyShowsInYourCity?.city}
+              nearbyFairsInYourCity={above.nearbyFairsInYourCity?.city}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}

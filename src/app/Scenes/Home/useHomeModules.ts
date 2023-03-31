@@ -34,10 +34,10 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         prefetchURL: "",
       },
       {
-        title: "Fairs in your city",
+        title: `Fairs in ${selectedCity?.name}`,
         type: "fairsInYourCity",
-        data: [""],
-        isEmpty: false,
+        data: props.nearbyFairsInYourCity,
+        isEmpty: isEmpty(props.nearbyFairsInYourCity),
         hidden: selectedCity === null,
         prefetchURL: "",
       },
@@ -202,6 +202,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
   }, [
     cards,
     props.nearbyShowsInYourCity,
+    props.nearbyFairsInYourCity,
     props.newWorksForYou,
     props.homePageAbove?.activeBidsArtworkModule,
     props.meAbove,

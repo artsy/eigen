@@ -4,8 +4,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { graphql, useFragment } from "react-relay"
 
 interface NearbyShowsInYourCityRailProps {
   showsConnection: NearbyShowsInYourCityRail_showsConnection$key
