@@ -26,10 +26,10 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         prefetchURL: "",
       },
       {
-        title: "Shows in your city",
+        title: `Shows in ${selectedCity?.name}`,
         type: "showsInYourCity",
-        data: [""],
-        isEmpty: false,
+        data: props.nearbyShowsInYourCity,
+        isEmpty: isEmpty(props.nearbyShowsInYourCity),
         hidden: selectedCity === null,
         prefetchURL: "",
       },
@@ -201,6 +201,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     return allModules.filter((module) => !module.hidden && !module.isEmpty)
   }, [
     cards,
+    props.nearbyShowsInYourCity,
     props.newWorksForYou,
     props.homePageAbove?.activeBidsArtworkModule,
     props.meAbove,

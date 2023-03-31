@@ -15,6 +15,7 @@ import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphq
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_nearbyShowsInYourCity$data } from "__generated__/Home_nearbyShowsInYourCity.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
@@ -116,6 +117,8 @@ export interface HomeProps extends ViewProps {
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
   newWorksForYou: Home_newWorksForYou$data | null
+  nearbyShowsInYourCity?: Home_nearbyShowsInYourCity$data | null
+  nearbyFairsInYourCity?: null
   loading: boolean
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
@@ -191,7 +194,7 @@ const Home = memo((props: HomeProps) => {
         case "nearby":
           return <NearbySelectACityRail />
         case "showsInYourCity":
-          return <NearbyShowsInYourCityRail />
+          return <NearbyShowsInYourCityRail showsConnection={item.data} title={item.title} />
         case "fairsInYourCity":
           return <NearbyFairsInYourCityRail />
         case "marketingCollection":
@@ -500,6 +503,12 @@ export const HomeFragmentContainer = memo(
           ...NewWorksForYouRail_artworkConnection
         }
       `,
+      nearbyShowsInYourCity: graphql`
+        fragment Home_nearbyShowsInYourCity on City {
+          ...NearbyShowsInYourCityRail_showsConnection
+        }
+      `,
+      // nearbyFairsInYourCity: graphql``,
       emergingPicks: graphql`
         fragment Home_emergingPicks on MarketingCollection {
           ...MarketingCollectionRail_marketingCollection
@@ -508,7 +517,7 @@ export const HomeFragmentContainer = memo(
       `,
     },
     graphql`
-      query HomeRefetchQuery($version: String) {
+      query HomeRefetchQuery($version: String, $citySlug: String) {
         homePage @optionalField {
           ...Home_homePageAbove
         }
@@ -534,6 +543,11 @@ export const HomeFragmentContainer = memo(
         }
         newWorksForYou: viewer {
           ...Home_newWorksForYou
+        }
+        nearbyShowsInYourCity: viewer {
+          city(slug: $citySlug) {
+            ...Home_nearbyShowsInYourCity
+          }
         }
         emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
           ...Home_emergingPicks
@@ -702,7 +716,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery($version: String!) {
+          query HomeAboveTheFoldQuery($version: String!, $citySlug: String) {
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -712,10 +726,16 @@ export const HomeQueryRenderer: React.FC = () => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
+            nearbyShowsInYourCity: viewer @optionalField {
+              city(slug: $citySlug) {
+                ...Home_nearbyShowsInYourCity
+              }
+            }
           }
         `,
         variables: {
           version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+          citySlug: GlobalStore.useAppState((state) => state.userPrefs.city?.slug),
         },
       }}
       below={{
@@ -762,6 +782,7 @@ export const HomeQueryRenderer: React.FC = () => {
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
               newWorksForYou={above.newWorksForYou}
+              nearbyShowsInYourCity={above.nearbyShowsInYourCity?.city}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
