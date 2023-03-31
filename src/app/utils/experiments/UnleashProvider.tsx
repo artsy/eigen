@@ -22,33 +22,33 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
     if (isHydrated) {
       const client = getUnleashClient(unleashEnv, userId)
 
-      client?.on("initialized", () => {
+      client.on("initialized", () => {
         if (__DEV__) {
           console.log("Unleash initialized")
         }
       })
 
-      client?.on("ready", () => {
+      client.on("ready", () => {
         if (__DEV__) {
           console.log("Unleash ready")
         }
       })
 
-      client?.on("update", () => {
+      client.on("update", () => {
         if (__DEV__) {
           console.log("Unleash updated")
         }
         setLastUpdate(new Date())
       })
 
-      client?.on("error", () => {
+      client.on("error", () => {
         console.error("Unleash error")
       })
 
-      client?.on("impression", () => {})
+      client.on("impression", () => {})
 
       return () => {
-        client?.stop()
+        client.stop()
       }
     }
   }, [unleashEnv, isHydrated])

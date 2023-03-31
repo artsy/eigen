@@ -5,11 +5,11 @@ import { getUnleashClient } from "./unleashClient"
 
 export function useExperimentFlag(name: string) {
   const client = getUnleashClient()
-  const [enabled, setEnabled] = useState(client?.isEnabled(name))
+  const [enabled, setEnabled] = useState(client.isEnabled(name))
 
   const { lastUpdate } = useContext(UnleashContext)
   useEffect(() => {
-    setEnabled(client?.isEnabled(name))
+    setEnabled(client.isEnabled(name))
   }, [lastUpdate])
 
   return enabled
@@ -21,13 +21,13 @@ export function useExperimentVariant(name: string): {
   payload?: string
 } {
   const client = getUnleashClient()
-  const [enabled, setEnabled] = useState(client?.isEnabled(name))
-  const [variant, setVariant] = useState(client?.getVariant(name))
+  const [enabled, setEnabled] = useState(client.isEnabled(name))
+  const [variant, setVariant] = useState(client.getVariant(name))
 
   const { lastUpdate } = useContext(UnleashContext)
   useEffect(() => {
-    setEnabled(client?.isEnabled(name))
-    setVariant(client?.getVariant(name))
+    setEnabled(client.isEnabled(name))
+    setVariant(client.getVariant(name))
   }, [lastUpdate])
 
   return {

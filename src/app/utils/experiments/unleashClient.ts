@@ -4,6 +4,16 @@ import { nullToUndef } from "app/utils/nullAndUndef"
 import { Config } from "react-native-config"
 import { UnleashClient } from "unleash-proxy-client"
 
+// We want to return a phony unleash client for oss builds
+// Some typescript magic so we only have to specify public fields
+type PublicFields<T> = {
+  [K in keyof T]: T[K] extends { [P in keyof T[K]]: T[K][P] } ? K : never
+}[keyof T]
+
+type PublicType<T> = Pick<T, PublicFields<T>>
+
+export type PublicUnleashClient = PublicType<UnleashClient>
+
 /**
  * This will return an unleash client
  * If `env` is undefined, it will use whatever environment we are currently using,
@@ -11,9 +21,12 @@ import { UnleashClient } from "unleash-proxy-client"
  * If a specific env is asked, then it will either use the current one if it's right,
  * or create a new one in the requested env.
  */
-export function getUnleashClient(env?: "production" | "staging", userId?: string | null) {
+export function getUnleashClient(
+  env?: "production" | "staging",
+  userId?: string | null
+): PublicUnleashClient {
   if (Config.OSS === "true") {
-    return null
+    return fakeUnleashClient
   }
 
   if (!unleashClient || (env !== undefined && env !== envBeingUsed)) {
@@ -72,3 +85,33 @@ const createUnleashClient = (userId: string | undefined) => {
 }
 
 let envBeingUsed: "production" | "staging" = "production"
+
+// Phony unleash client for oss contributors
+const fakeUnleashClient: PublicUnleashClient = {
+  isEnabled: () => false,
+  getVariant: () => ({ name: "disabled", enabled: false }),
+  getAllToggles() {
+    return []
+  },
+  updateContext: () => Promise.resolve(),
+  getContext: () => ({ appName: "eigen" }),
+  start: () => Promise.resolve(),
+  stop: () => Promise.resolve(),
+  on: (_event: string, _callback: Function, _ctx?: any) => {
+    console.log("[oss] unleash not available, returning fake client")
+    return {} as UnleashClient
+  },
+  once: (_event: string, _callback: Function, _ctx?: any) => {
+    console.log("[oss] unleash not available, returning fake client")
+    return {} as UnleashClient
+  },
+  emit: (_event: string, _callback: Function, _ctx?: any) => {
+    console.log("[oss] unleash not available, returning fake client")
+    return {} as UnleashClient
+  },
+  off: (_event: string, _callback?: Function) => {
+    console.log("[oss] unleash not available, returning fake client")
+    return {} as UnleashClient
+  },
+  setContextField: (_field: string, _value: string) => Promise.resolve(),
+}
