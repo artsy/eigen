@@ -378,7 +378,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 }
 
 const StyledInput = styled(TextInput)`
-  padding: ${themeGet("space.1")};
+  padding: 10px;
   font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"
