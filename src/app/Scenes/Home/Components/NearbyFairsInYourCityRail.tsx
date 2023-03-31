@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, MapPinIcon, Text } from "@artsy/palette-mobile"
 import {
   NearbyFairsInYourCityRail_fairsConnection$data,
   NearbyFairsInYourCityRail_fairsConnection$key,
@@ -38,7 +38,11 @@ export const NearbyFairsInYourCityRail: React.FC<NearbyFairsInYourCityRailProps>
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title={title} />
+        <SectionTitle
+          title={title}
+          RightButtonContent={() => <MapPinIcon fill="blue100" />}
+          onPress={() => navigate("/nearby/city-picker")}
+        />
       </Flex>
 
       <CardRailFlatList<FairItem>

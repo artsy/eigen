@@ -1,7 +1,8 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Flex, MapPinIcon, Spacer } from "@artsy/palette-mobile"
 import { NearbyShowsInYourCityRail_showsConnection$key } from "__generated__/NearbyShowsInYourCityRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -29,7 +30,11 @@ export const NearbyShowsInYourCityRail: React.FC<NearbyShowsInYourCityRailProps>
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title={title} />
+        <SectionTitle
+          title={title}
+          RightButtonContent={() => <MapPinIcon fill="blue100" />}
+          onPress={() => navigate("/nearby/city-picker")}
+        />
       </Flex>
       <Flex>
         <FlatList
