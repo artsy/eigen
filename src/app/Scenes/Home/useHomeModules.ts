@@ -163,7 +163,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "recommended-artists",
       },
       {
-        contextModule: ContextModule.trendingArtistsRail,
+        contextModule: ContextModule.curatedTrendingArtistsRail,
         data: props.homePageBelow?.popularArtistsArtistModule,
         isEmpty: isEmpty(props.homePageBelow?.popularArtistsArtistModule),
         key: "trendingArtistsRail",
