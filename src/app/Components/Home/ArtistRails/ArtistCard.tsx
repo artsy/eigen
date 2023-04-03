@@ -130,8 +130,6 @@ const ArtworkCardImages = ({
     <Flex flexDirection="row" justifyContent="space-around" width={ARTIST_CARD_WIDTH}>
       {images.length > 0 ? (
         images.map((image, index) => {
-          const imageAspectRatio = image.width / image.height
-
           const containerHeight = getContainerHeight(index)
 
           return (
@@ -145,8 +143,8 @@ const ArtworkCardImages = ({
               >
                 <NewOpaqueImageView
                   imageURL={image.src}
-                  aspectRatio={imageAspectRatio}
                   height={containerHeight * ZOOM_IN_FACTOR}
+                  width={imageWidth * ZOOM_IN_FACTOR}
                 />
               </Flex>
             </Flex>
