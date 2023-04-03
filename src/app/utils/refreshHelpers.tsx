@@ -16,6 +16,10 @@ export const refreshOnArtworkSave = () => {
   refreshHomeScreen()
 }
 
+export const refreshOnArtistFollow = () => {
+  refreshHomeScreen()
+}
+
 export const refreshHomeScreen = () => {
   RefreshEvents.emit(HOME_SCREEN_REFRESH_KEY)
 }
