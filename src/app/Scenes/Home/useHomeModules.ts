@@ -8,29 +8,6 @@ import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
-export const HOME_RAILS_SORT = [
-  "newWorksForYouRail",
-  "contentCardsRail",
-  "activeBidsRail",
-  "lotsByFollowedArtistsRail",
-  "auctionsRail",
-  "upcomingAuctionLotsForYouRail",
-  "latestAuctionResultsRail",
-  "editorialRail",
-  "onboardingRail",
-  "marketCollectionRail",
-  "collectionsRail",
-  "artworkRecommendationsRail",
-  "newWorksFromGalleriesYouFollowRail",
-  "recommendedArtistsRail",
-  "trendingArtistsRail",
-  "recentlyViewedRail",
-  "similarToWorksYouViewedRail",
-  "viewingRoomsRail",
-  "showsRail",
-  "fairsRail",
-]
-
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
@@ -214,9 +191,12 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
     ]
 
-    return allModules
-      .sort((a, b) => HOME_RAILS_SORT.indexOf(a.key) - HOME_RAILS_SORT.indexOf(b.key))
-      .filter((module) => !module.hidden && !module.isEmpty)
+    const modules = allModules.filter((module) => !module.hidden && !module.isEmpty)
+
+    return {
+      modules,
+      allModulesKeys: allModules.map((module) => module.key),
+    }
   }, [
     cards,
     props.newWorksForYou,

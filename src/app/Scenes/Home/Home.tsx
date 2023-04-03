@@ -89,7 +89,7 @@ import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
-import { HOME_RAILS_SORT, useHomeModules } from "./useHomeModules"
+import { useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
@@ -157,7 +157,7 @@ const Home = memo((props: HomeProps) => {
   )
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const modules: HomeModule[] = useHomeModules(props, cards)
+  const { modules, allModulesKeys } = useHomeModules(props, cards)
 
   const onViewableItemsChanged = React.useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
@@ -168,7 +168,7 @@ const Home = memo((props: HomeProps) => {
             tracking.trackEvent(
               HomeAnalytics.trackRailViewed({
                 contextModule: contextModule,
-                positionY: HOME_RAILS_SORT.findIndex((key) => key === key),
+                positionY: allModulesKeys.findIndex((key) => key === key),
               })
             )
           }
