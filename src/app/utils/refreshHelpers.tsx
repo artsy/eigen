@@ -9,6 +9,16 @@ RefreshEvents.setMaxListeners(20)
 export const FAVORITE_ARTWORKS_REFRESH_KEY = "refreshFavoriteArtworks"
 export const MY_COLLECTION_REFRESH_KEY = "refreshMyCollection"
 export const MY_COLLECTION_INSIGHTS_REFRESH_KEY = "refreshMyCollectionInsights"
+export const HOME_SCREEN_REFRESH_KEY = "refreshHomeScreen"
+
+export const refreshOnArtworkSave = () => {
+  refreshFavoriteArtworks()
+  refreshHomeScreen()
+}
+
+export const refreshHomeScreen = () => {
+  RefreshEvents.emit(HOME_SCREEN_REFRESH_KEY)
+}
 
 export const refreshMyCollection = () => {
   RefreshEvents.emit(MY_COLLECTION_REFRESH_KEY)

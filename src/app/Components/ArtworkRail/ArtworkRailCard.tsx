@@ -9,7 +9,7 @@ import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidt
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
@@ -159,10 +159,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         },
       },
       onCompleted: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
       },
       onError: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
       },
     })
 

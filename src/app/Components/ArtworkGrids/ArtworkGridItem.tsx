@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Spacer, HeartIcon, HeartFillIcon, Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
+import { Box, Flex, HeartFillIcon, HeartIcon, Spacer, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -15,7 +15,7 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
@@ -148,10 +148,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
         },
       },
       onCompleted: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
       },
       onError: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
       },
     })
   }

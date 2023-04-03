@@ -10,7 +10,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { Touchable } from "palette"
@@ -87,7 +87,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         },
       },
       onCompleted: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
         trackEvent({
           action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
           action_type: Schema.ActionTypes.Success,
@@ -95,7 +95,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         })
       },
       onError: () => {
-        refreshFavoriteArtworks()
+        refreshOnArtworkSave()
       },
     })
   }
