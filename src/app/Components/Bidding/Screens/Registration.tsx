@@ -457,10 +457,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           />
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
             <Text variant="xs" fontSize="2">
-              Agree to{" "}
+              I agree to the{" "}
               <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>
                 Conditions of Sale
               </LinkText>
+              . I understand that all bids are binding and may not be retracted.
             </Text>
           </Checkbox>
         </Flex>

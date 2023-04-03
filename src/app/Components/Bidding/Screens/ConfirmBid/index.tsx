@@ -569,25 +569,25 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 flex={undefined}
               >
                 <Text color="black60">
-                  You agree to{" "}
+                  I agree to{" "}
                   <LinkText
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
                   >
                     {partnerName(sale!)} Conditions of Sale
                   </LinkText>
-                  .
+                  . I understand that all bids are binding and may not be retracted.
                 </Text>
               </Checkbox>
             ) : (
               <Flex alignItems="center" px={4}>
                 <Text variant="xs" mt={2} color="black60">
-                  You agree to{" "}
+                  I agree to{" "}
                   <LinkText
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
                   >
                     {partnerName(sale!)} Conditions of Sale
                   </LinkText>
-                  .
+                  . I understand that all bids are binding and may not be retracted.
                 </Text>
               </Flex>
             )}
