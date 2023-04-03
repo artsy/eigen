@@ -89,6 +89,11 @@ const fixTextTreatments = (
   return textTreatments
 }
 
+const RegularFontFamily = "Unica77LL-Regular"
+const MediumFontFamily = "Unica77LL-Medium"
+const ItalicFontFamily = "Unica77LL-Italic"
+const MediumItalicFontFamily = "Unica77LL-MediumItalic"
+
 const THEMES = {
   v3: {
     ...eigenUsefulTHEME_V3,
@@ -96,10 +101,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
@@ -114,10 +119,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
@@ -132,10 +137,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),

@@ -31,9 +31,9 @@ export function useExperimentVariant(name: string): {
   }, [lastUpdate])
 
   return {
-    enabled,
-    variant: variant.name,
-    payload: variant.payload?.value,
+    enabled: enabled ?? false,
+    variant: variant?.name ?? "default-variant",
+    payload: variant?.payload?.value,
   }
 }
 

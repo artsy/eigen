@@ -13,19 +13,28 @@ export const eigenSentryReleaseName = () => {
 }
 
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
+  const sentryDSN = Config.SENTRY_DSN
+  const ossUser = Config.OSS === "true"
+
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
   if (__DEV__) {
     console.log("[dev] Sentry disabled in dev mode.")
     return
   }
-  if (!Config.SENTRY_DSN) {
+
+  if (ossUser) {
+    console.log("[oss] Sentry disabled in for oss user.")
+    return
+  }
+
+  if (!sentryDSN) {
     console.error("Sentry DSN not set!!")
     return
   }
 
   Sentry.init({
-    dsn: Config.SENTRY_DSN,
+    dsn: sentryDSN,
     release: eigenSentryReleaseName(),
     dist: DeviceInfo.getBuildNumber(),
     enableAutoSessionTracking: true,

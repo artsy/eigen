@@ -19,7 +19,8 @@ $ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
 
 def check_for_existing_netrc_file
-  if !ENV['MAPBOX_DOWNLOAD_TOKEN']
+  mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
+  if !mapbox_token || mapbox_token.length <= 1
     raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
   end
   # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post-pod-install.rb
