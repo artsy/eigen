@@ -8,6 +8,29 @@ import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
+const HOME_RAILS_SORT = [
+  "newWorksForYouRail",
+  "contentCardsRail",
+  "activeBidsRail",
+  "lotsByFollowedArtistsRail",
+  "auctionsRail",
+  "upcomingAuctionLotsForYouRail",
+  "latestAuctionResultsRail",
+  "editorialRail",
+  "onboardingRail",
+  "marketCollectionRail",
+  "collectionsRail",
+  "artworkRecommendationsRail",
+  "newWorksFromGalleriesYouFollowRail",
+  "recommendedArtistsRail",
+  "trendingArtistsRail",
+  "recentlyViewedRail",
+  "similarToWorksYouViewedRail",
+  "viewingRoomsRail",
+  "showsRail",
+  "fairsRail",
+]
+
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
@@ -16,6 +39,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     const allModules = [
       // Above-The-Fold Modules
       {
+        key: "newWorksForYouRail",
         contextModule: ContextModule.newWorksForYouRail,
         data: props.newWorksForYou,
         isEmpty: isEmpty(props.newWorksForYou),
@@ -23,6 +47,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "newWorksForYou",
       },
       {
+        key: "contentCardsRail",
         title: "",
         type: "contentCards",
         data: cards,
@@ -30,12 +55,14 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         prefetchUrl: "",
       },
       {
+        key: "activeBidsRail",
         data: props.homePageAbove?.activeBidsArtworkModule,
         isEmpty: isEmpty(props.homePageAbove?.activeBidsArtworkModule?.results),
         title: "Your Active Bids",
         type: "artwork",
       },
       {
+        key: "lotsByFollowedArtistsRail",
         contextModule: ContextModule.auctionLotsEndingSoonRail,
         data: props.meAbove,
         isEmpty: !props.meAbove?.lotsByFollowedArtistsConnectionCount?.edges?.length,
@@ -45,6 +72,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "lotsByFollowedArtists",
       },
       {
+        key: "auctionsRail",
         contextModule: ContextModule.auctionRail,
         data: props.homePageAbove?.salesModule,
         isEmpty: isEmpty(props.homePageAbove?.salesModule),
@@ -55,6 +83,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       // Below-The-Fold Modules
       {
+        key: "upcomingAuctionLotsForYouRail",
         title: "Upcoming Auction Lots For You",
         type: "auction-results",
         data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
@@ -63,6 +92,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         contextModule: ContextModule.upcomingAuctionsRail,
       },
       {
+        key: "latestAuctionResultsRail",
         title: "Latest Auction Results",
         type: "auction-results",
         data: props.meBelow?.auctionResultsByFollowedArtistsPast,
@@ -71,6 +101,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         contextModule: ContextModule.auctionResultsRail,
       },
       {
+        key: "editorialRail",
         contextModule: ContextModule.articleRail,
         data: props.articlesConnection,
         hidden: !props.articlesConnection,
@@ -81,6 +112,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "articles",
       },
       {
+        key: "onboardingRail",
         data: props.homePageBelow?.onboardingModule,
         hidden: !props.homePageBelow?.onboardingModule,
         isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
@@ -88,6 +120,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "homeFeedOnboarding",
       },
       {
+        key: "marketCollectionRail",
         title: "Curators’ Picks: Emerging",
         subtitle: "The best work by rising talents on Artsy, available now.",
         type: "marketingCollection",
@@ -97,6 +130,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         contextModule: ContextModule.curatorsPicksEmergingRail,
       },
       {
+        key: "collectionsRail",
         contextModule: ContextModule.collectionRail,
         data: props.homePageBelow?.marketingCollectionsModule,
         isEmpty: isEmpty(props.homePageBelow?.marketingCollectionsModule),
@@ -105,6 +139,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "collections",
       },
       {
+        key: "artworkRecommendationsRail",
         contextModule: ContextModule.artworkRecommendationsRail,
         data: props.meBelow,
         isEmpty: !props.meBelow?.artworkRecommendationsCounts?.totalCount,
@@ -112,6 +147,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "artwork-recommendations",
       },
       {
+        key: "newWorksFromGalleriesYouFollowRail",
         contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
         data: props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule?.results),
@@ -119,6 +155,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "artwork",
       },
       {
+        key: "recommendedArtistsRail",
         contextModule: ContextModule.recommendedArtistsRail,
         data: props.meBelow,
         isEmpty: !props.meBelow?.artistRecommendationsCounts?.totalCount,
@@ -126,14 +163,15 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "recommended-artists",
       },
       {
+        key: "trendingArtistsRail",
         contextModule: ContextModule.trendingArtistsRail,
         data: props.homePageBelow?.popularArtistsArtistModule,
         isEmpty: isEmpty(props.homePageBelow?.popularArtistsArtistModule),
         title: "Trending Artists",
         type: "artist",
       },
-
       {
+        key: "recentlyViewedRail",
         contextModule: ContextModule.recentlyViewedRail,
         data: props.homePageBelow?.recentlyViewedWorksArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.recentlyViewedWorksArtworkModule?.results),
@@ -141,6 +179,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "artwork",
       },
       {
+        key: "similarToWorksYouViewedRail",
         contextModule: ContextModule.similarToWorksYouViewedRail,
         data: props.homePageBelow?.similarToRecentlyViewedArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.similarToRecentlyViewedArtworkModule?.results),
@@ -148,6 +187,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "artwork",
       },
       {
+        key: "viewingRoomsRail",
         contextModule: ContextModule.featuredViewingRoomsRail,
         data: props.featured,
         isEmpty: isEmpty(props.featured),
@@ -156,6 +196,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "viewing-rooms",
       },
       {
+        key: "showsRail",
         contextModule: ContextModule.showsRail,
         data: props.showsByFollowedArtists,
         isEmpty: isEmpty(props.showsByFollowedArtists),
@@ -163,6 +204,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "shows",
       },
       {
+        key: "fairsRail",
         contextModule: ContextModule.fairRail,
         data: props.homePageBelow?.fairsModule,
         isEmpty: isEmpty(props.homePageBelow?.fairsModule),
@@ -172,7 +214,9 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
     ]
 
-    return allModules.filter((module) => !module.hidden && !module.isEmpty)
+    return allModules
+      .sort((a, b) => HOME_RAILS_SORT.indexOf(a.key) - HOME_RAILS_SORT.indexOf(b.key))
+      .filter((module) => !module.hidden && !module.isEmpty)
   }, [
     cards,
     props.newWorksForYou,
