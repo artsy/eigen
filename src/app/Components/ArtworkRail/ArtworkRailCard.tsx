@@ -9,14 +9,14 @@ import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidt
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { Touchable } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
-import { graphql, useFragment, useMutation } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
@@ -76,7 +76,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
-  const [saveArtwork] = useMutation(SaveArtworkMutation)
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { artistNames, date, id, image, internalID, isSaved, partner, slug, title } = artwork
@@ -142,32 +141,15 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     }
   }, [image?.resized?.height, image?.resized?.width])
 
-  const handleArtworkSave = () => {
-    saveArtwork({
-      variables: {
-        input: {
-          artworkID: internalID,
-          remove: isSaved,
-        },
-      },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: !isSaved,
-          },
-        },
-      },
-      onCompleted: () => {
-        refreshFavoriteArtworks()
-      },
-      onError: () => {
-        refreshFavoriteArtworks()
-      },
-    })
-
-    trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
-  }
+  const handleArtworkSave = useSaveArtwork({
+    id,
+    internalID,
+    isSaved,
+    onCompleted: () => {
+      trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
+    },
+    contextScreen: trackingContextScreenOwnerType,
+  })
 
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork &&
@@ -438,17 +420,6 @@ const RecentlySoldCardSection: React.FC<
     </>
   )
 }
-
-const SaveArtworkMutation = graphql`
-  mutation ArtworkRailCardSaveArtworkMutation($input: SaveArtworkInput!) {
-    saveArtwork(input: $input) {
-      artwork {
-        id
-        isSaved
-      }
-    }
-  }
-`
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {

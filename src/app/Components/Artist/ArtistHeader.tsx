@@ -2,6 +2,7 @@ import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
+import { refreshOnArtistFollow } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { FollowButton } from "palette"
 import { useState } from "react"
@@ -55,7 +56,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     setIsFollowedChanging(true)
 
     commitMutation<ArtistHeaderFollowArtistMutation>(relay.environment, {
-      onCompleted: () => successfulFollowChange(),
       mutation: graphql`
         mutation ArtistHeaderFollowArtistMutation($input: FollowArtistInput!) {
           followArtist(input: $input) {
@@ -81,11 +81,13 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           },
         },
       },
+      onCompleted: () => successfulFollowChange(),
       onError: () => failedFollowChange(),
     })
   }
 
   const successfulFollowChange = () => {
+    refreshOnArtistFollow()
     trackEvent({
       action_name: artist.isFollowed
         ? Schema.ActionNames.ArtistUnfollow

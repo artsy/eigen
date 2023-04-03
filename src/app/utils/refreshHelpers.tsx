@@ -1,5 +1,6 @@
 import EventEmitter from "events"
 import { PAGE_SIZE } from "app/Components/constants"
+import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
 
@@ -9,6 +10,24 @@ RefreshEvents.setMaxListeners(20)
 export const FAVORITE_ARTWORKS_REFRESH_KEY = "refreshFavoriteArtworks"
 export const MY_COLLECTION_REFRESH_KEY = "refreshMyCollection"
 export const MY_COLLECTION_INSIGHTS_REFRESH_KEY = "refreshMyCollectionInsights"
+export const HOME_SCREEN_REFRESH_KEY = "refreshHomeScreen"
+
+export const refreshOnArtworkSave = (contextScreen?: Schema.OwnerEntityTypes) => {
+  refreshFavoriteArtworks()
+
+  refreshHomeScreen(contextScreen)
+}
+
+export const refreshOnArtistFollow = (contextScreen?: Schema.OwnerEntityTypes) => {
+  refreshHomeScreen(contextScreen)
+}
+
+export const refreshHomeScreen = (contextScreen?: Schema.OwnerEntityTypes) => {
+  // Only refresh home screen if we are not on the home screen
+  if (contextScreen === Schema.OwnerEntityTypes.Home) return
+
+  RefreshEvents.emit(HOME_SCREEN_REFRESH_KEY)
+}
 
 export const refreshMyCollection = () => {
   RefreshEvents.emit(MY_COLLECTION_REFRESH_KEY)
