@@ -89,11 +89,11 @@ import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
-import { useHomeModules } from "./useHomeModules"
+import { HOME_RAILS_SORT, useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
-interface HomeModule {
+export interface HomeModule {
   // Used for tracking rail views
   contextModule?: ContextModule
   data: any
@@ -101,6 +101,7 @@ interface HomeModule {
   isEmpty: boolean
   prefetchUrl?: string
   prefetchVariables?: object
+  key: string
   subtitle?: string
   title: string
   type: string
@@ -161,13 +162,13 @@ const Home = memo((props: HomeProps) => {
   const onViewableItemsChanged = React.useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
-        viewableItems.forEach(({ item: { title, contextModule } }: { item: HomeModule }) => {
-          if (contextModule && !viewedRails.has(title)) {
-            viewedRails.add(title)
+        viewableItems.forEach(({ item: { key, contextModule } }: { item: HomeModule }) => {
+          if (contextModule && !viewedRails.has(key)) {
+            viewedRails.add(key)
             tracking.trackEvent(
               HomeAnalytics.trackRailViewed({
                 contextModule: contextModule,
-                positionY: modules.findIndex((module) => module.title === title),
+                positionY: HOME_RAILS_SORT.findIndex((key) => key === key),
               })
             )
           }

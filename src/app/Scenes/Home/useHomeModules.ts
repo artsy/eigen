@@ -1,14 +1,14 @@
 import { ContextModule } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
-import { HomeProps } from "app/Scenes/Home/Home"
+import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
-const HOME_RAILS_SORT = [
+export const HOME_RAILS_SORT = [
   "newWorksForYouRail",
   "contentCardsRail",
   "activeBidsRail",
@@ -36,7 +36,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
 
   return useMemo(() => {
-    const allModules = [
+    const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
       {
         contextModule: ContextModule.newWorksForYouRail,
