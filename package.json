@@ -150,6 +150,7 @@
     "metro-cache": "0.66.2",
     "moment": "2.29.4",
     "moment-timezone": "0.5.40",
+    "moti": "0.24.2",
     "ordinal": "1.0.3",
     "prop-types": "15.7.2",
     "query-string": "4.3.4",
