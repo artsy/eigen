@@ -14,13 +14,14 @@ import { graphql } from "relay-runtime"
 
 interface MarketingCollectionRailProps {
   home: MarketingCollectionRail_home$key | null
+  contextScreenOwnerType: Schema.OwnerEntityTypes
   contextModuleKey: string
   marketingCollection: MarketingCollectionRail_marketingCollection$key
   marketingCollectionSlug: string
 }
 
 export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = memo(
-  ({ contextModuleKey, marketingCollectionSlug, ...restProps }) => {
+  ({ contextScreenOwnerType, contextModuleKey, marketingCollectionSlug, ...restProps }) => {
     const { trackEvent } = useTracking()
     const contextModule = HomeAnalytics.artworkRailContextModule(contextModuleKey)
 
@@ -94,7 +95,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
         <LargeArtworkRail
           artworks={artworks}
           onPress={handleArtworkPress}
-          trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+          trackingContextScreenOwnerType={contextScreenOwnerType}
           dark
           showPartnerName
           onMorePress={handleMorePress}

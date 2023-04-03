@@ -10,12 +10,12 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
-import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
+import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { Touchable } from "palette"
 import { StyleSheet } from "react-native"
-import { graphql, useFragment, useMutation } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworkSaveButtonProps {
@@ -66,39 +66,21 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
   const space = useSpace()
   const { trackEvent } = useTracking()
   const { isSaved, internalID, id, sale } = useFragment(ArtworkSaveButtonFragment, artwork)
-  const [commit] = useMutation(ArtworkSaveMutation)
 
   const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 
-  const handleArtworkSave = () => {
-    commit({
-      variables: {
-        input: {
-          artworkID: internalID,
-          remove: isSaved,
-        },
-      },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: !isSaved,
-          },
-        },
-      },
-      onCompleted: () => {
-        refreshOnArtworkSave()
-        trackEvent({
-          action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
-          action_type: Schema.ActionTypes.Success,
-          context_module: Schema.ContextModules.ArtworkActions,
-        })
-      },
-      onError: () => {
-        refreshOnArtworkSave()
-      },
-    })
-  }
+  const handleArtworkSave = useSaveArtwork({
+    id,
+    internalID,
+    isSaved,
+    onCompleted: () => {
+      trackEvent({
+        action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+        action_type: Schema.ActionTypes.Success,
+        context_module: Schema.ContextModules.ArtworkActions,
+      })
+    },
+  })
 
   const a11yLabel = getA11yLabel(!!isSaved, !!isOpenSale)
   const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
@@ -144,17 +126,6 @@ const ArtworkSaveButtonFragment = graphql`
     sale {
       isAuction
       isClosed
-    }
-  }
-`
-
-const ArtworkSaveMutation = graphql`
-  mutation ArtworkSaveButtonMutation($input: SaveArtworkInput!) {
-    saveArtwork(input: $input) {
-      artwork {
-        id
-        isSaved
-      }
     }
   }
 `

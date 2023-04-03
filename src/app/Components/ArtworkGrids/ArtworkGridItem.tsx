@@ -10,16 +10,16 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql, useMutation } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
@@ -91,7 +91,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
-  const [saveArtwork] = useMutation(SaveArtworkMutation)
 
   let filterParams: any = undefined
 
@@ -129,32 +128,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const handleArtworkSave = () => {
-    const { id, internalID, isSaved } = artwork
+  const { id, internalID, isSaved } = artwork
 
-    saveArtwork({
-      variables: {
-        input: {
-          artworkID: internalID,
-          remove: isSaved,
-        },
-      },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: !isSaved,
-          },
-        },
-      },
-      onCompleted: () => {
-        refreshOnArtworkSave()
-      },
-      onError: () => {
-        refreshOnArtworkSave()
-      },
-    })
-  }
+  const handleArtworkSave = useSaveArtwork({
+    id,
+    internalID,
+    isSaved,
+  })
 
   const handleTap = () => {
     if (onPress) {
@@ -452,17 +432,6 @@ export default createFragmentContainer(Artwork, {
     }
   `,
 })
-
-const SaveArtworkMutation = graphql`
-  mutation ArtworkGridItemSaveArtworkMutation($input: SaveArtworkInput!) {
-    saveArtwork(input: $input) {
-      artwork {
-        id
-        isSaved
-      }
-    }
-  }
-`
 
 export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   seed = Math.random(),

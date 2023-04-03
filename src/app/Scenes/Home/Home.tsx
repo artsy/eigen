@@ -197,6 +197,7 @@ const Home = memo((props: HomeProps) => {
         case "marketingCollection":
           return (
             <MarketingCollectionRail
+              contextScreenOwnerType={Schema.OwnerEntityTypes.Home}
               contextModuleKey="curators-picks-emerging"
               home={props.homePageAbove}
               marketingCollection={item.data}

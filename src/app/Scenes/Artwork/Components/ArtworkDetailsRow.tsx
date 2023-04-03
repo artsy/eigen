@@ -25,7 +25,7 @@ export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
 }) => {
   return (
     <Flex flexDirection="row" key={key}>
-      <Box flex={1} maxWidth="128">
+      <Box flex={1} maxWidth={128}>
         <Text variant="sm" color="black60">
           {title}
         </Text>
