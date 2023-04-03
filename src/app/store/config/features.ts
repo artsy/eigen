@@ -248,6 +248,12 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
+  AREnableSkeletonAnimation: {
+    description: "Enable Skeleton Animation",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSkeletonAnimation",
+  },
 })
 
 export interface DevToggleDescriptor {
