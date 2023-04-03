@@ -78,8 +78,8 @@ commands:
           keys:
             - v7-metro-{{ checksum ".manifests/js_transform" }}
       - run:
-          name: Bundle emission
-          command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
+          name: Bundle javascript
+          command: ls dist/main.jsbundle || yarn bundle:ios
       - save_cache:
           key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
@@ -87,8 +87,8 @@ commands:
       - save_cache:
           key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - dist/jsbundle.js
-            - dist/jsbundle.js.map
+            - dist/main.jsbundle
+            - dist/main.jsbundle.map
             - dist/assets
   install-gems:
     steps:
