@@ -5,7 +5,6 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as RelayCache from "app/system/relay/RelayCache"
-import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -407,10 +406,6 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
-
-      if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
-        requestPushNotificationsPermission()
-      }
 
       onSignIn?.()
 
