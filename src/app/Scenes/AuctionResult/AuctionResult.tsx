@@ -172,9 +172,9 @@ export const AuctionResult: React.FC<Props> = (props) => {
                 {!!auctionResult?.performance?.mid && (
                   <Text color={ratioColor(auctionResult.performance.mid)}>
                     {"    "}
-                    {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
+                    {auctionResult.performance.mid[0] === "-" ? "-" : "+"}
                     {new Intl.NumberFormat().format(
-                      Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
+                      Number(auctionResult.performance.mid.replace(/%|-/gm, ""))
                     )}
                     % est
                   </Text>
