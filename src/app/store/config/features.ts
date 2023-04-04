@@ -266,6 +266,24 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
+  AREnableProgressiveOnboardingSaves: {
+    description: "Enable Progressive Onboarding for Artwork Saves",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableProgressiveOnboardingSaves",
+  },
+  AREnableProgressiveOnboardingFollows: {
+    description: "Enable Progressive Onboarding for Artist Follows",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableProgressiveOnboardingFollows",
+  },
+  AREnableProgressiveOnboardingAlerts: {
+    description: "Enable Progressive Onboarding for Alerts",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableProgressiveOnboardingAlerts",
+  },
 })
 
 export interface DevToggleDescriptor {
