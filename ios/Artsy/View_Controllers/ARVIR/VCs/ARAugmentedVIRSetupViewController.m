@@ -17,6 +17,7 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
+#import "Artsy-Swift.h"
 
 @interface ARAugmentedVIRSetupViewController () <ARMenuAwareViewController>
 @property (nonatomic, copy) NSURL *movieURL;
@@ -235,15 +236,29 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
-
-            UIViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
-            vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:vc animated:YES completion:nil];
+            [self showVIRVC];
         } else {
             [self requestDenied];
         }
     }];
+}
+
+- (void)showVIRVC
+{
+    BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
+    if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
+        ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
+        [viewInRoomWallVC initWithConfig:self.config];
+        viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        viewInRoomWallVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:viewInRoomWallVC animated:YES completion:nil];
+    } else {
+        ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
+
+        viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        viewInRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:viewInRoomVC animated:YES completion:nil];
+    }
 }
 
 - (void)requestDenied

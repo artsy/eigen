@@ -181,10 +181,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     @objc func exitARContext() {
         // TODO: do I need the time tracking or idle timer thing
 
+        // Ensure we jump past the SetupVC
         var presentingVC : UIViewController? = nil
         if let initialPresentingVC = self.presentingViewController {
             presentingVC = initialPresentingVC
-            if (initialPresentingVC.isKind(of: ARAugmentedWallBasedVIRViewController.self)) {
+            if (initialPresentingVC.isKind(of: ARAugmentedVIRSetupViewController.self)) {
                 presentingVC = initialPresentingVC.presentingViewController
             }
         }

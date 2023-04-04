@@ -56,10 +56,12 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                     ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
                     [viewInRoomWallVC initWithConfig:config];
                     viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    viewInRoomWallVC.modalPresentationStyle = UIModalPresentationFullScreen;
                     [[self.class currentlyPresentedVC] presentViewController:viewInRoomWallVC animated:YES completion:nil];
                 } else {
                     ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
                     viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    viewInRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
                     [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
                 }
             } else {
@@ -71,6 +73,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                setupVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [[self.class currentlyPresentedVC] presentViewController:setupVC animated:YES completion:nil];
             }
         };
