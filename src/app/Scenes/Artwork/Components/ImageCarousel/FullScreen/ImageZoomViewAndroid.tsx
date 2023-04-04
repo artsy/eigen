@@ -1,9 +1,8 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, useColor, Spinner } from "@artsy/palette-mobile"
 import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
-import { Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"

@@ -166,7 +166,6 @@ export const AuctionResult: React.FC<Props> = (props) => {
               modalContent={renderRealizedPriceModal()}
             />
           </Flex>
-
           {auctionResult.priceRealized?.display ? (
             <Flex mb={0.5}>
               <Text variant="md">

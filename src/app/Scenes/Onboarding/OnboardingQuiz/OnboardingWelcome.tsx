@@ -1,8 +1,8 @@
-import { ArtsyLogoBlackIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button, Spinner } from "palette"
+import { Button } from "palette"
 import { Suspense, useEffect } from "react"
 import { Image } from "react-native"
 import Animated, {
