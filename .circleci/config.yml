@@ -73,19 +73,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v9-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v7-metro-{{ checksum ".manifests/js_transform" }}
+            - v8-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle javascript
           command: ls dist/main.jsbundle || yarn bundle:ios
       - save_cache:
-          key: v7-metro-{{ checksum ".manifests/js_transform" }}
+          key: v8-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .cache/metro
       - save_cache:
-          key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v9-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - dist/main.jsbundle
             - dist/main.jsbundle.map
@@ -124,7 +124,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v9-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -132,7 +132,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v9-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
