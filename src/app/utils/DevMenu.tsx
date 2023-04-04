@@ -6,7 +6,6 @@ import {
   Flex,
   useColor,
   Text,
-  useSpace,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -60,7 +59,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
-  const space = useSpace()
   const toast = useToast()
 
   useEffect(
@@ -75,8 +73,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
     return true
   }
   const { unleashEnv } = useUnleashEnvironment()
-
-  const chevronStyle = { marginRight: space(1) }
 
   return (
     <Flex position="absolute" top={0} left={0} right={0} bottom={0} py={2}>
@@ -102,7 +98,14 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           title="Open RN Dev Menu"
           onPress={() => NativeModules.DevMenu.show()}
         />
-
+        {Platform.OS === "ios" && (
+          <FeatureFlagMenuItem
+            title="Go to old Dev Menu"
+            onPress={() => {
+              navigate("/dev-menu-old", { modal: true })
+            }}
+          />
+        )}
         <FeatureFlagMenuItem
           title="Go to Storybook"
           onPress={() => {
@@ -136,7 +139,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           <Separator my="1" />
         </Flex>
 
-        <CollapseMenu title="Feature Flags" chevronStyle={chevronStyle}>
+        <CollapseMenu title="Feature Flags">
           <Flex px={2} mb={1}>
             <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
           </Flex>
@@ -159,7 +162,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         <Flex mx={2}>
           <Separator my="1" />
         </Flex>
-        <CollapseMenu title="Dev tools" chevronStyle={chevronStyle}>
+        <CollapseMenu title="Dev tools">
           <Flex px={2} mb={1}>
             <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
           </Flex>
@@ -255,15 +258,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               toast.show("Copied to clipboard", "middle")
             }}
           />
-          {Platform.OS === "ios" && (
-            <FeatureFlagMenuItem
-              title="Go to old Dev Menu"
-              onPress={() => {
-                navigate("/dev-menu-old", { modal: true })
-              }}
-            />
-          )}
-
           <FeatureFlagMenuItem
             title="Log out"
             titleColor="red100"
