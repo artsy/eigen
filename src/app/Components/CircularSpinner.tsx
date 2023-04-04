@@ -1,9 +1,8 @@
-import { useColor } from "@artsy/palette-mobile"
+import { useColor, SpinnerProps } from "@artsy/palette-mobile"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, { useEffect } from "react"
 import { Animated, Easing } from "react-native"
 import styled from "styled-components/native"
-import { SpinnerProps } from "./Spinner"
 
 /**
  * Returns width, height, border width and radius of the circle spinner based on size

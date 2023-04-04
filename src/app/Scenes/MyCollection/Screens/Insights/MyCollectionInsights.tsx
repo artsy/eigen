@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spinner } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
@@ -13,7 +13,6 @@ import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Spinner } from "palette"
 import { Suspense, useContext, useEffect, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
