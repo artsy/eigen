@@ -65,7 +65,7 @@ import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import { Join } from "palette"
+import { Button, Join } from "palette"
 import React, {
   RefObject,
   createRef,
@@ -324,6 +324,14 @@ const Home = memo((props: HomeProps) => {
       }}
     >
       <View style={{ flex: 1 }}>
+        <Button
+          block
+          onPress={() => {
+            throw Error("Sentry test error")
+          }}
+        >
+          Sentry Error
+        </Button>
         <AboveTheFoldFlatList<HomeModule>
           testID="home-flat-list"
           data={modules}
