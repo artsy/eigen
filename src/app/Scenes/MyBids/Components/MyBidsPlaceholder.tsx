@@ -1,7 +1,7 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Separator } from "@artsy/palette-mobile"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Join, Separator } from "palette"
+import { Join } from "palette"
 import { COVER_IMAGE_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (

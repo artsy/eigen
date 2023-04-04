@@ -1,7 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Separator } from "@artsy/palette-mobile"
 import { SaleActiveBids_me$data } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Separator } from "palette"
 import React, { useEffect, useRef } from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"

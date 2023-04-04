@@ -1,4 +1,4 @@
-import { Separator } from "palette"
+import { Separator } from "@artsy/palette-mobile"
 import styled from "styled-components/native"
 
 export const ShadowSeparator = styled(Separator)`

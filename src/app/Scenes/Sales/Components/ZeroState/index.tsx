@@ -1,5 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { Separator } from "palette"
+import { Flex, Text, Separator } from "@artsy/palette-mobile"
 import React from "react"
 import { View } from "react-native"
 

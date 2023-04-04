@@ -7,6 +7,7 @@ import {
   useColor,
   Text,
   useSpace,
+  Separator,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -23,7 +24,7 @@ import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
 import { capitalize, compact, sortBy } from "lodash"
-import { Separator, Touchable } from "palette"
+import { Touchable } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
 import { useCallback, useEffect, useState } from "react"
 import {

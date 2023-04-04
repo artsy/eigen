@@ -5,6 +5,7 @@ import {
   ExclamationMarkCircleFill,
   Flex,
   Text,
+  Separator,
 } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
@@ -12,7 +13,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
 import { navigate } from "app/system/navigation/navigate"
-import { Separator, Touchable } from "palette"
+import { Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

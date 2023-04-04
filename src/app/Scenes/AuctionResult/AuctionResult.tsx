@@ -8,6 +8,7 @@ import {
   Text,
   useSpace,
   useTheme,
+  Separator,
 } from "@artsy/palette-mobile"
 import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
@@ -27,7 +28,6 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Separator } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
 import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
 import FastImage from "react-native-fast-image"
