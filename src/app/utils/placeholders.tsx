@@ -1,6 +1,6 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { useSkeletonAnimation } from "app/utils/useSkeletonAnimation"
+import { useSkeletonAnimation } from "app/utils/animations/useSkeletonAnimation"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
