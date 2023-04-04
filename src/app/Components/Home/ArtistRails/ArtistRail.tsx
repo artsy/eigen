@@ -14,7 +14,7 @@ import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { Schema } from "app/utils/track"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View, ViewProps } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,9 +40,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  const [artists, setArtists] = useState<SuggestedArtist[]>(
-    props.rail.results?.map((a) => ({ ...a, _ref: null })) ?? ([] as any)
-  )
+  const artists = props.rail.results?.map((a) => ({ ...a, _ref: null })) ?? ([] as any)
 
   const followOrUnfollowArtist = (followArtist: SuggestedArtist) => {
     return new Promise<void>((resolve, reject) => {
@@ -81,17 +79,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               source_screen: "home page",
               context_module: "artist rail",
             })
-            // since we manage the artists array ourselves we can't rely on the relay cache to keep the isFollowed
-            // field up-to-date.
-            setArtists((_artists) =>
-              _artists.map((a) => {
-                if (a.internalID === followArtist.internalID) {
-                  return { ...a, isFollowed: !followArtist.isFollowed }
-                } else {
-                  return a
-                }
-              })
-            )
             resolve()
           }
         },
