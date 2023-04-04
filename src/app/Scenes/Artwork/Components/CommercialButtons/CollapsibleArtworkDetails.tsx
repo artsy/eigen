@@ -1,9 +1,9 @@
-import { Spacer, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Separator, Join } from "@artsy/palette-mobile"
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { Collapse, Join } from "palette"
+import { Collapse } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 

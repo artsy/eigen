@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, Join } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -13,7 +13,7 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Button, Join } from "palette"
+import { Button } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
