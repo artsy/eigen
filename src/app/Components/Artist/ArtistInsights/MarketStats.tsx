@@ -1,5 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, Separator } from "@artsy/palette-mobile"
+import {
+  DecreaseIcon,
+  Flex,
+  IncreaseIcon,
+  Spacer,
+  Text,
+  Separator,
+  Join,
+} from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -8,7 +16,6 @@ import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Join } from "palette"
 import { Select } from "palette/elements/Select"
 import { useRef, useState } from "react"
 import { ScrollView } from "react-native"

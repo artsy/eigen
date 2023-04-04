@@ -5,6 +5,7 @@ import {
   Flex,
   Spacer,
   SpacingUnitDSValueNumber,
+  Join,
 } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
@@ -65,7 +66,6 @@ import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import { Join } from "palette"
 import React, {
   createRef,
   memo,
