@@ -336,7 +336,7 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     return selectedFiltersSum
   }
 
-  const roundedButtonStyle = { borderRadius: 20 }
+  const roundedButtonStyle = { borderRadius: 50 }
 
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
