@@ -98,6 +98,10 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         <Text variant="xs" color="grey" mx={2}>
           {userEmail}
         </Text>
+        <FeatureFlagMenuItem
+          title="Open RN Dev Menu"
+          onPress={() => NativeModules.DevMenu.show()}
+        />
 
         <FeatureFlagMenuItem
           title="Go to Storybook"
@@ -250,10 +254,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               Clipboard.setString(DeviceInfo.getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
             }}
-          />
-          <FeatureFlagMenuItem
-            title="Open RN Dev Menu"
-            onPress={() => NativeModules.DevMenu.show()}
           />
           {Platform.OS === "ios" && (
             <FeatureFlagMenuItem
