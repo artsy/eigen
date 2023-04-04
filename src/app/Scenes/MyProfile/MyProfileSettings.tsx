@@ -1,10 +1,10 @@
-import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Text, Separator } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Separator } from "palette"
+import { Button } from "palette"
 import { Alert, ScrollView } from "react-native"
 
 interface MyProfileSettingsProps {

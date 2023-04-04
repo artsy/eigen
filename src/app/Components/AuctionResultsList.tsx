@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
 import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
@@ -7,7 +7,6 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Separator } from "palette"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

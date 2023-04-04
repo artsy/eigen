@@ -1,7 +1,7 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
 import { OrderInformation_artwork$data } from "__generated__/OrderInformation_artwork.graphql"
 import { OrderInformation_order$data } from "__generated__/OrderInformation_order.graphql"
-import { Join, Separator } from "palette"
+import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderInformationProps {

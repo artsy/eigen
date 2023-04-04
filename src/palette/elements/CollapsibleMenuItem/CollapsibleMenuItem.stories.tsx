@@ -1,6 +1,6 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Join, Separator } from "palette"
+import { Button, Join } from "palette"
 import { CollapsibleMenuItem } from "palette/elements/CollapsibleMenuItem/CollapsibleMenuItem"
 import { useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
