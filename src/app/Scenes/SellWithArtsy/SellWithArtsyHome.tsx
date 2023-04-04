@@ -1,10 +1,4 @@
-import {
-  ContextModule,
-  OwnerType,
-  tappedConsign,
-  TappedConsignArgs,
-  TappedConsignmentInquiry,
-} from "@artsy/cohesion"
+import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
@@ -21,7 +15,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { Button, Screen } from "palette"
+import { Screen } from "palette"
 import { useEffect } from "react"
 import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -32,13 +26,6 @@ import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
-import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
-
-const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellFooter,
-  contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit an Artwork",
-}
 
 interface SellWithArtsyHomeProps {
   recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
@@ -49,13 +36,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
 }) => {
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
   const enableMeetTheSpecialist = useFeatureFlag("AREnableSWALandingPageMeetTheSpecialist")
   const enableTestimonials = useFeatureFlag("AREnableSWALandingPageTestimonials")
 
-  const onFocusStatusBarStyle: StatusBarStyle = enableNewSWALandingPage
-    ? "dark-content"
-    : "light-content"
+  const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
@@ -110,7 +94,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         justifyContent="center"
         alignItems="center"
         minHeight={screenHeight}
-        style={{ paddingTop: enableNewSWALandingPage ? safeAreaInsets.top : undefined }}
+        style={{ paddingTop: safeAreaInsets.top }}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
@@ -118,61 +102,36 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={4} />}>
-                <Highlights />
-                <WaysWeSell />
-              </Join>
-            )}
-            {enableNewSWALandingPage && <Spacer y={6} />}
+            <Join separator={<Spacer y={4} />}>
+              <Highlights />
+              <WaysWeSell />
+            </Join>
+
+            <Spacer y={6} />
 
             <HowItWorks onConsignPress={handleConsignPress} />
-            {enableNewSWALandingPage && <Spacer y={2} />}
+            <Spacer y={2} />
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && <SpeakToTheTeam onInquiryPress={handleInquiryPress} />}
-            {enableNewSWALandingPage && enableMeetTheSpecialist && <Spacer y={6} />}
-            {enableNewSWALandingPage && enableMeetTheSpecialist && (
-              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
-            )}
-            {enableNewSWALandingPage && <Spacer y={6} />}
-            {enableNewSWALandingPage && <CollectorsNetwork />}
-            {enableNewSWALandingPage && <Spacer y={6} />}
+            <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
+            {enableMeetTheSpecialist && <Spacer y={6} />}
+            {enableMeetTheSpecialist && <MeetTheSpecialists onInquiryPress={handleInquiryPress} />}
+            <Spacer y={6} />
+            <CollectorsNetwork />
+            <Spacer y={6} />
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
-            {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={6} />}>
-                <></>
-                {enableTestimonials && <Testimonials />}
-                <FAQSWA />
-              </Join>
-            )}
+            <Join separator={<Spacer y={6} />}>
+              <></>
+              {enableTestimonials && <Testimonials />}
+              <FAQSWA />
+            </Join>
 
             <Spacer y={4} />
-            {enableNewSWALandingPage && <Spacer y={2} />}
-
-            {!enableNewSWALandingPage && <WhySellWithArtsy />}
-
-            {!enableNewSWALandingPage && (
-              <>
-                <Spacer y={4} />
-                <Flex mx={2}>
-                  <Button
-                    testID="footer-cta"
-                    variant="fillDark"
-                    block
-                    onPress={() => handleConsignPress(consignArgs)}
-                    haptic
-                  >
-                    Submit an Artwork
-                  </Button>
-                </Flex>
-                <Spacer y={4} />
-              </>
-            )}
+            <Spacer y={2} />
 
             <Footer onConsignPress={handleConsignPress} />
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            <Spacer y={4} />
           </Flex>
         </ScrollView>
       </Flex>
