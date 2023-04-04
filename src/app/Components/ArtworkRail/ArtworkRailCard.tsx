@@ -1,4 +1,4 @@
-import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -7,7 +7,6 @@ import {
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
@@ -72,8 +71,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 }) => {
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
 
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
-
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -105,10 +102,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         height: image?.resized?.height ?? 0,
       },
       {
-        width:
-          isRecentlySoldArtwork && enableNewSWALandingPage
-            ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-            : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        width: isRecentlySoldArtwork
+          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
       }
     )
@@ -152,9 +148,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   })
 
   const displayForRecentlySoldArtwork =
-    !!isRecentlySoldArtwork &&
-    (size === "large" || size === "extraLarge") &&
-    enableNewSWALandingPage
+    !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
@@ -303,7 +297,6 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 }) => {
   const color = useColor()
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
 
   const { width, height, src } = image?.resized || {}
 
@@ -324,10 +317,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       height: height ?? 0,
     },
     {
-      width:
-        isRecentlySoldArtwork && enableNewSWALandingPage
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      width: isRecentlySoldArtwork
+        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
     }
   )
@@ -371,53 +363,23 @@ const RecentlySoldCardSection: React.FC<
     ArtworkRailCardProps,
     "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
   > & { secondaryTextColor: string }
-> = ({
-  priceRealizedDisplay,
-  lowEstimateDisplay,
-  highEstimateDisplay,
-  performanceDisplay,
-  secondaryTextColor,
-}) => {
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
-  if (enableNewSWALandingPage) {
-    return (
-      <Flex>
-        <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-          <Text variant="lg-display" numberOfLines={1}>
-            {priceRealizedDisplay}
-          </Text>
-          {performanceDisplay && (
-            <Text variant="lg-display" color="green" numberOfLines={1}>
-              {`+${performanceDisplay}`}
-            </Text>
-          )}
-        </Flex>
-        <Text variant="xs" color="black60" lineHeight="20px">
-          Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-        </Text>
-      </Flex>
-    )
-  }
+> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
   return (
-    <>
-      <Spacer y={2} />
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
-          Estimate
-        </Text>
-        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
-          {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-        </Text>
-      </Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-          Sold For (incl. premium)
-        </Text>
-        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+        <Text variant="lg-display" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
+        {performanceDisplay && (
+          <Text variant="lg-display" color="green" numberOfLines={1}>
+            {`+${performanceDisplay}`}
+          </Text>
+        )}
       </Flex>
-    </>
+      <Text variant="xs" color="black60" lineHeight="20px">
+        Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+      </Text>
+    </Flex>
   )
 }
 

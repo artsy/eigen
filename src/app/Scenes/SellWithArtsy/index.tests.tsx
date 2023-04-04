@@ -1,11 +1,9 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
+import { createMockEnvironment } from "relay-test-utils"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 jest.mock("../../utils/useStatusBarStyle", () => {
@@ -47,67 +45,6 @@ jest.mock("./utils/useSWALandingPageData", () => {
   }
 })
 
-describe("ConsignmentsHome index", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableNewSWALandingPage: false,
-      AREnableSWALandingPageMeetTheSpecialist: false,
-      AREnableSWALandingPageTestimonials: false,
-    })
-  })
-
-  const TestWrapper = () => {
-    return (
-      <SellWithArtsyHomeQueryRenderer
-        environment={mockEnvironment as unknown as RelayModernEnvironment}
-      />
-    )
-  }
-
-  it("renders dynamic components", () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
-
-    expect(tree.root.findAllByType(SellWithArtsyRecentlySold)).toHaveLength(1)
-  })
-
-  it("tracks a cta tap in the header", () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
-
-    tree.root.findByProps({ testID: "header-cta" }).props.onPress()
-
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-    expect(mockTrackEvent).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        context_module: ContextModule.sellHeader,
-        context_screen_owner_type: OwnerType.sell,
-        subject: "Submit an Artwork",
-      })
-    )
-  })
-
-  it("tracks a cta tap in the footer", () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
-
-    tree.root.findByProps({ testID: "footer-cta" }).props.onPress()
-
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-    expect(mockTrackEvent).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        context_module: ContextModule.sellFooter,
-        context_screen_owner_type: OwnerType.sell,
-        subject: "Submit an Artwork",
-      })
-    )
-  })
-})
-
 describe("New SellWithArtsyLandingPage", () => {
   describe("Tracking", () => {
     let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -115,7 +52,6 @@ describe("New SellWithArtsyLandingPage", () => {
     beforeEach(() => {
       mockEnvironment = createMockEnvironment()
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableNewSWALandingPage: true,
         AREnableSWALandingPageMeetTheSpecialist: true,
         AREnableSWALandingPageTestimonials: true,
       })
