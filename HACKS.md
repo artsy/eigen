@@ -396,3 +396,13 @@ Once we have removed the `palette` directory from eigen.
 #### Explanation/Context:
 
 Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
+
+## hermes
+
+#### When can we remove this:
+
+Once we update let's check if NativeModules in android hermes are working properly (not returning empty object `{}`)
+
+#### Explanation/Context:
+
+https://github.com/artsy/eigen/blob/9aae916dfba8cc25aaa7eacf165dda8578b08869/src/app/utils/DevMenu.tsx#L99

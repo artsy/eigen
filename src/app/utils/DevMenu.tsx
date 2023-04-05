@@ -100,7 +100,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         </Text>
         <FeatureFlagMenuItem
           title="Open RN Dev Menu"
-          onPress={() => NativeModules.DevMenu.show()}
+          onPress={() => NativeModules?.DevMenu?.show?.()}
         />
 
         <FeatureFlagMenuItem
