@@ -168,7 +168,7 @@ describe("ConfirmBid", () => {
       const serifs = component.root.findAllByType(Text)
       expect(
         serifs.find(
-          (s) => s.props.children.join && s.props.children.join("").includes("You agree to")
+          (s) => s.props.children.join && s.props.children.join("").includes("I agree to")
         )
       ).toBeTruthy()
     })
