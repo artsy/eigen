@@ -1,8 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- A new Sell With Artsy page with more details on how to sell art from your collection
-- See auction results directly on your home feed
-- Enjoy bigger images on the auction results page
-- A new look for Collections in the home feed
+- New look for Artists on the home feed
 
 Have feedback? Email us at support@artsy.net
