@@ -7,6 +7,7 @@ import {
   Text,
   useColor,
 } from "@artsy/palette-mobile"
+import { addBreadcrumb, Severity } from "@sentry/react-native"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { navigate } from "app/system/navigation/navigate"
@@ -14,6 +15,7 @@ import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { Touchable } from "palette"
+import { useState } from "react"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -36,6 +38,8 @@ const AuctionResultListItem: React.FC<Props> = ({
   width,
   withHorizontalPadding = true,
 }) => {
+  const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
+
   const color = useColor()
 
   const QAInfo: React.FC = () => (
@@ -61,7 +65,7 @@ const AuctionResultListItem: React.FC<Props> = ({
     <Touchable underlayColor={color("black5")} onPress={handlePress}>
       <Flex px={withHorizontalPadding ? 2 : 0} flexDirection="row" width={width}>
         {/* Sale Artwork Thumbnail Image */}
-        {!auctionResult.images?.thumbnail?.url ? (
+        {!auctionResult.images?.thumbnail?.url || couldNotLoadImage ? (
           <Flex
             width={IMAGE_WIDTH}
             height={IMAGE_HEIGHT}
@@ -90,6 +94,13 @@ const AuctionResultListItem: React.FC<Props> = ({
               }}
               source={{
                 uri: auctionResult.images.thumbnail.url,
+              }}
+              onError={() => {
+                addBreadcrumb({
+                  message: `Failed to load auction result image for id: ${auctionResult.internalID}`,
+                  level: Severity.Info,
+                })
+                setCouldNotLoadImage(true)
               }}
               resizeMode={FastImage.resizeMode.cover}
             />
