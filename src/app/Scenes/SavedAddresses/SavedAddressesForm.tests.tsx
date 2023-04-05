@@ -2,7 +2,7 @@ import { SavedAddressesFormTestsQuery } from "__generated__/SavedAddressesFormTe
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button, Input } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
+import { Checkbox } from "@artsy/palette-mobile"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

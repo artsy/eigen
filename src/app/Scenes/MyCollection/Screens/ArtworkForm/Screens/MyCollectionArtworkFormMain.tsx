@@ -1,4 +1,14 @@
-import { Spacer, Flex, Box, useSpace, useColor, Text, Separator, Join } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Box,
+  useSpace,
+  useColor,
+  Text,
+  Separator,
+  Join,
+  Message,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -16,7 +26,7 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Button, Input, Message, MoneyInput } from "palette"
+import { Button, Input, MoneyInput } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"

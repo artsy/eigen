@@ -1,3 +1,4 @@
+import { Checkbox } from "@artsy/palette-mobile"
 import {
   aggregationForFilter,
   FilterParamName,
@@ -6,7 +7,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Checkbox } from "palette"
 import { useMemo } from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
