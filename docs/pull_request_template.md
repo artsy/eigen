@@ -14,16 +14,11 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 - [ ] I have documented any **follow-up work** that this PR will require, or it does not require any.
 - [ ] I have added a **changelog entry** below, or my changes do not require one.
 
-### To the reviewers 👀
-
-- [ ] I would like **at least one** of the reviewers to **run** this PR on the simulator or device.
-
 <details><summary>Changelog updates</summary>
 
 ### Changelog updates
 
 <!-- 📝 Please fill out at least one of these sections. -->
-<!-- ⓘ 'User-facing' changes will be published as release notes. -->
 <!-- ⌫ Feel free to remove sections that don't apply. -->
 <!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
 <!-- 📖 eg. `Enable lotsByFollowedArtists - john` or `Fix phone input misalignment - mary`. -->
@@ -50,8 +45,5 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 </details>
 
-Need help with something? Have a look at our [docs], or get in touch with us.
-
 [app state migration]: ../blob/main/docs/adding_state_migrations.md
 [feature flag]: ../blob/main/docs/developing_a_feature.md
-[docs]: ../blob/main/docs/README.md
