@@ -169,7 +169,7 @@ const Home = memo((props: HomeProps) => {
             tracking.trackEvent(
               HomeAnalytics.trackRailViewed({
                 contextModule: contextModule,
-                positionY: allModulesKeys.findIndex((key) => key === key),
+                positionY: allModulesKeys.findIndex((moduleKey) => moduleKey === key),
               })
             )
           }
