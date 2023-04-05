@@ -1,5 +1,5 @@
 import { NoImageIcon, Flex, useColor } from "@artsy/palette-mobile"
-import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import React from "react"
 
 export interface MyCollectionImageViewProps {
@@ -40,7 +40,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const targetURL = imageURL.replace(":version", "large")
   return (
     <Flex testID="Image-Remote">
-      <OpaqueImageView2
+      <OpaqueImageView
         imageURL={targetURL}
         retryFailedURLs
         height={imageHeight}

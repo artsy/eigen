@@ -1,5 +1,5 @@
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"
@@ -13,6 +13,6 @@ describe("ImageWithLoadingState", () => {
     const images = getAllByLabelText("Image with Loading State")
 
     expect(images).toHaveLength(1)
-    expect(images[0].findByType(OpaqueImageView2)).toHaveProp("imageURL", imageURL)
+    expect(images[0].findByType(OpaqueImageView)).toHaveProp("imageURL", imageURL)
   })
 })

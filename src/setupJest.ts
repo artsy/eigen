@@ -544,6 +544,11 @@ beforeEach(() => {
   resetMockEnvironment()
 })
 
+// FIXME: As we're migrating code to @artsy/palette-mobile, this folder needs to be
+// added to our tests, due to some unknown interdependencies from this folder. Without
+// it here, tests will unexpectedly fail.
+require("palette")
+
 jest.mock("shared/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
