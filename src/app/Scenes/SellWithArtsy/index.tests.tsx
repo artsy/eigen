@@ -52,6 +52,11 @@ describe("ConsignmentsHome index", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableNewSWALandingPage: false,
+      AREnableSWALandingPageMeetTheSpecialist: false,
+      AREnableSWALandingPageTestimonials: false,
+    })
   })
 
   const TestWrapper = () => {
