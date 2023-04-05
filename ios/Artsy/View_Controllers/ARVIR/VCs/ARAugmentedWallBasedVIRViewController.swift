@@ -328,13 +328,53 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         let results = self.sceneView.hitTest(self.pointOnScreenForArtworkProjection, options: options)
 
         for result in results {
-            print("Node: \(result.node), Distance: \(result.localCoordinates)")
+            if self.foundWalls.contains(result.node) {
+                print("Node: \(result.node), Distance: \(result.localCoordinates)")
+                if self.ghostArtwork == nil {
+                    // Artwork + Outline live inside this node
+                    let rootNode = SCNNode()
+                    rootNode.position = result.localCoordinates
+                    rootNode.eulerAngles = SCNVector3(x: 0, y: 0, z: -Float.pi)
+
+                    let box = SCNArtworkNode(config: config)
+                    let artwork = SCNNode(geometry: box)
+                    artwork.opacity = 0.5
+
+                    let outline = SCNArtworkNode.ghostOutlineNode(with: config)
+
+                    guard
+                        let outline = outline
+                    else {
+                        break
+                    }
+
+                    rootNode.addChildNode(outline)
+                    rootNode.addChildNode(artwork)
+                    result.node.addChildNode(rootNode)
+
+                    self.ghostArtwork = rootNode
+                }
+                self.ghostArtwork?.position = result.localCoordinates
+                // TODO: something around notifying if we want delegate separate
+                 // [self.delegate isShowingGhostWork:YES];
+                return
+            }
+
+        }
+
+        if (self.ghostArtwork != nil) {
+            // [self.delegate isShowingGhostWork:NO];
+            self.ghostArtwork?.removeFromParentNode()
+            self.ghostArtwork = nil;
         }
     }
 
     // MARK: ARSessionDelegate
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        // self.renderWhenPlacingArtwork(frame: frame)
+        if foundWalls.isEmpty {
+            return
+        }
+        self.renderWhenPlacingArtwork(frame: frame)
     }
 }

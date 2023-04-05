@@ -122,3 +122,4 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARInformationView.h"
 #import "ARSCNWallNode.h"
+#import "SCNArtworkNode.h"
