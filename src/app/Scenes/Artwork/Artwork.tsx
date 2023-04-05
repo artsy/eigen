@@ -7,10 +7,13 @@ import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkA
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
+import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
+import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -40,7 +43,6 @@ import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInfor
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
-import { ArtworkScreenHeaderFragmentContainer } from "./Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "./Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
@@ -57,17 +59,14 @@ interface ArtworkProps {
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null
   me: Artwork_me$data | null
   isVisible: boolean
+  onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
   tracking?: TrackingProp
 }
 
-export const Artwork: React.FC<ArtworkProps> = ({
-  artworkAboveTheFold,
-  artworkBelowTheFold,
-  isVisible,
-  me,
-  relay,
-}) => {
+export const Artwork: React.FC<ArtworkProps> = (props) => {
+  const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
+
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
@@ -130,6 +129,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
       navigationEvents.removeListener("modalDismissed", handleModalDismissed)
     }
   }, [])
+
+  // TODO: Remove feature flag once we're ready to launch.
+  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
+  const { activeScreen } = usePageableScreensContext() ?? {}
+
+  useEffect(() => {
+    if (enablePageableArtworkScreens) {
+      if (activeScreen.name === artworkAboveTheFold?.slug) {
+        onLoad(props)
+      }
+    } else {
+      onLoad(props)
+    }
+  }, [artworkAboveTheFold?.slug, activeScreen?.name])
 
   // This is a hack to make useEffect behave exactly like didComponentUpdate.
   const firstUpdate = useRef(true)
@@ -376,8 +389,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   return (
     <>
-      <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
-
       <FlatList<ArtworkPageSection>
         keyboardShouldPersistTaps="handled"
         data={sectionsData()}
@@ -598,12 +609,11 @@ export const ArtworkScreenQuery = graphql`
   }
 `
 
-export const ArtworkQueryRenderer: React.FC<{
-  artworkID: string
-  isVisible: boolean
-  environment?: RelayModernEnvironment | RelayMockEnvironment
-  tracking?: TrackingProp
-}> = ({ artworkID, environment, ...others }) => {
+export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
+  artworkID,
+  environment,
+  ...others
+}) => {
   return (
     <>
       <RetryErrorBoundaryLegacy
@@ -630,10 +640,10 @@ export const ArtworkQueryRenderer: React.FC<{
                 renderComponent: ({ above, below }) => {
                   return (
                     <ArtworkContainer
+                      {...others}
                       artworkAboveTheFold={above.artwork}
                       artworkBelowTheFold={below?.artwork ?? null}
                       me={above.me}
-                      {...others}
                     />
                   )
                 },
@@ -644,6 +654,54 @@ export const ArtworkQueryRenderer: React.FC<{
           )
         }}
       />
+    </>
+  )
+}
+
+interface ArtworkPageableScreenProps {
+  artworkID: string
+  isVisible: boolean
+  pageableSlugs: string[]
+  environment?: RelayModernEnvironment | RelayMockEnvironment
+  tracking?: TrackingProp
+  onLoad: ArtworkProps["onLoad"]
+}
+
+export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (props) => {
+  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
+  const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
+
+  const pageableSlugs = props.pageableSlugs ?? []
+
+  const screens = pageableSlugs.map((slug) => ({
+    name: slug,
+    Component: (
+      <ArtworkQueryRenderer
+        {...props}
+        artworkID={slug}
+        onLoad={(props) => setArtworkProps(props)}
+      />
+    ),
+  }))
+
+  return (
+    <>
+      {artworkProps?.artworkAboveTheFold && (
+        <ArtworkScreenHeaderFragmentContainer artwork={artworkProps.artworkAboveTheFold} />
+      )}
+      {/*
+        Check to see if we're within the context of an artwork rail and show pager view.
+        TODO: Remove feature flag once we're ready to launch.
+      */}
+      {enablePageableArtworkScreens && screens.length > 0 ? (
+        <PageableScreensView
+          screens={screens}
+          initialScreenName={props.artworkID}
+          prefetchScreensCount={5}
+        />
+      ) : (
+        <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
+      )}
     </>
   )
 }

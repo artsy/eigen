@@ -23,7 +23,7 @@ import { merge } from "lodash"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
-import { Artwork, ArtworkQueryRenderer } from "./Artwork"
+import { Artwork, ArtworkPageableScreen } from "./Artwork"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
 
@@ -49,16 +49,18 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = ({ isVisible = true }) => (
+  const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
     // use suspense and one of the containers in our tree is suspending itself only in tests :|
     <Suspense fallback={() => null}>
       <ModalStack>
-        <ArtworkQueryRenderer
+        <ArtworkPageableScreen
           isVisible={isVisible}
           artworkID="ignored"
           environment={environment}
           tracking={{ trackEvent: jest.fn() } as any}
+          onLoad={onLoad}
+          pageableSlugs={[]}
         />
       </ModalStack>
     </Suspense>
