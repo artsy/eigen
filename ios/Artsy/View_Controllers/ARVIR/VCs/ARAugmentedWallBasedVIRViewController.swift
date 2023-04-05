@@ -8,8 +8,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
 
-    // The full version of the wall which you fire an artwork at
-    var wall : SCNNode?
+    // walls identified
+    var foundWalls: [SCNNode] = []
+
+    // The selected wall which you fire an artwork at
+    var selectedWall : SCNNode?
 
     // The WIP version of the artwork placed on the `wall` above
     var ghostArtwork : SCNNode?
@@ -25,8 +28,10 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         self.ghostArtwork?.removeFromParentNode()
         self.ghostArtwork = nil
 
-        self.wall?.removeFromParentNode()
-        self.wall = nil
+        self.selectedWall?.removeFromParentNode()
+        self.selectedWall = nil
+
+        self.foundWalls = []
 
         let bounds = UIScreen.main.bounds;
         self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
@@ -145,7 +150,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
 
         let pointAtWallViewState = InformationalViewState()
-        pointAtWallViewState.xOutOfYMessage = "Step 1 of 2"
+        pointAtWallViewState.xOutOfYMessage = "Step 1 of 3"
         pointAtWallViewState.bodyString = "Point your device at a wall nearby."
         let spinner = ARSpinner()
         spinner.spinnerColor = UIColor.white
@@ -155,8 +160,17 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
             spinner.startAnimating()
         }
 
+        let selectWallViewState = InformationalViewState()
+        selectWallViewState.xOutOfYMessage = "Step 2 of 3"
+        selectWallViewState.bodyString = "Tap to select a wall."
+        let selectWallButton = ARWhiteFlatButton()
+        selectWallButton.setTitle("Select Wall", for: .normal)
+        selectWallButton.constrainHeight("50")
+        selectWallButton.addTarget(self, action: #selector(placeWall), for: .touchUpInside)
+        selectWallViewState.contents = selectWallButton
+
         let positionArtworkViewState = InformationalViewState()
-        positionArtworkViewState.xOutOfYMessage = "Step 2 of 2"
+        positionArtworkViewState.xOutOfYMessage = "Step 3 of 3"
         positionArtworkViewState.bodyString = "Position the work on the wall and tap to place."
         let placeArtworkButton = ARWhiteFlatButton()
         placeArtworkButton.setTitle("Place Work", for: .normal)
@@ -174,7 +188,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         doneArtworkButton.addTarget(self, action: #selector(dismissInformationalViewAnimated), for: .touchUpInside)
         congratsArtworkViewState.contents = doneArtworkButton
 
-        return [pointAtWallViewState, positionArtworkViewState, congratsArtworkViewState]
+        return [pointAtWallViewState, selectWallViewState, positionArtworkViewState, congratsArtworkViewState]
     }
 
     @objc func placeArtwork() {
@@ -218,7 +232,21 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
 
+        guard let informationView = self.informationView else {
+            return
+        }
+
+        let currentState = informationView.currentState()
+
+        // TODO: better check
+        if (currentState.xOutOfYMessage == "Step 1 of 3") {
+            DispatchQueue.main.async {
+                informationView.next()
+            }
+        }
+
         let planeNode = createPlaneNode(for: planeAnchor)
+        self.foundWalls = self.foundWalls + [planeNode]
         node.addChildNode(planeNode)
     }
 
@@ -250,7 +278,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     // MARK: User interaction
 
-    func placeWall() {
+    @objc func placeWall() {
+        if foundWalls.isEmpty {
+            return
+        }
+
         let options: [SCNHitTestOption: Any] = [
             .ignoreHiddenNodes: false,
             .firstFoundOnly: true,
@@ -260,21 +292,22 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         let results = sceneView.hitTest(pointOnScreenForWallProjection, options: options)
         for result in results {
             // When you want to place the invisible wall, based on the current ghostWall
-            if wall == nil {
-                let wallNode = ARSCNWallNode.full()
-                let userWall = SCNNode(geometry: wallNode)
-                result.node.addChildNode(userWall)
+            if selectedWall == nil, foundWalls.contains(result.node) {
+                print("Found a result in foundWalls")
+//                let wallNode = ARSCNWallNode.full()
+//                let userWall = SCNNode(geometry: foundWall.geometry)
+//                result.node.addChildNode(userWall)
 
-                userWall.position = result.localCoordinates
-                userWall.eulerAngles = SCNVector3(x: -Float.pi / 2, y: 0, z: 0)
+//                userWall.position = result.localCoordinates
+//                userWall.eulerAngles = SCNVector3(x: -Float.pi / 2, y: 0, z: 0)
+//
+//                let userPosition = sceneView.pointOfView!.position
+//                let bottomPosition = SCNVector3(x: userPosition.x, y: result.worldCoordinates.y, z: userPosition.z)
+//                userWall.look(at: bottomPosition)
+//
+//                userWall.position = SCNVector3(x: userWall.position.x, y: userWall.position.y, z: userWall.position.z + Float(ARSCNWallNode.wallHeight() / 2))
 
-                let userPosition = sceneView.pointOfView!.position
-                let bottomPosition = SCNVector3(x: userPosition.x, y: result.worldCoordinates.y, z: userPosition.z)
-                userWall.look(at: bottomPosition)
-
-                userWall.position = SCNVector3(x: userWall.position.x, y: userWall.position.y, z: userWall.position.z + Float(ARSCNWallNode.wallHeight() / 2))
-
-                self.wall = userWall
+                //self.selectedWall = userWall
 
                 // self.state = .createdWall
                 return
