@@ -32,7 +32,6 @@ const getStories = () => {
     require("../app/Components/PopoverMessage/PopoverMessage.stories.tsx"),
     require("../app/Components/ReadMore.stories.tsx"),
     require("../app/utils/placeholders.stories.tsx"),
-    require("../palette/atoms/BackButton/BackButton.stories.tsx"),
     require("../palette/elements/Avatar/Avatar.stories.tsx"),
     require("../palette/elements/Checkbox/Checkbox.stories.tsx"),
     require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories.tsx"),
