@@ -526,6 +526,11 @@ jest.mock("app/system/relay/createEnvironment", () => ({
   },
 }))
 
+// FIXME: As we're migrating code to @artsy/palette-mobile, this folder needs to be
+// added to our tests, due to some unknown interdependencies from this folder. Without
+// it here, tests will unexpectedly fail.
+require("palette")
+
 const { createMockEnvironment } = require("relay-test-utils")
 let mockEnvironment = createMockEnvironment()
 jest.mock("app/system/relay/defaultEnvironment", () => {
