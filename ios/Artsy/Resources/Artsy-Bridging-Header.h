@@ -121,3 +121,4 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARInformationView.h"
+#import "ARSCNWallNode.h"

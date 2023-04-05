@@ -8,9 +8,31 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
 
+    // The full version of the wall which you fire an artwork at
+    var wall : SCNNode?
+
+    // The WIP version of the artwork placed on the `wall` above
+    var ghostArtwork : SCNNode?
+
+    var pointOnScreenForWallProjection : CGPoint!
+    var pointOnScreenForArtworkProjection : CGPoint!
+
+
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
         self.sceneView = ARSCNView()
+
+        self.ghostArtwork?.removeFromParentNode()
+        self.ghostArtwork = nil
+
+        self.wall?.removeFromParentNode()
+        self.wall = nil
+
+        let bounds = UIScreen.main.bounds;
+        self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+
+        // Use a subset of the screen for centering, the 221 comes from the height of the UI in the ARAugmentedVIRVC
+        self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, (bounds.size.height - 221)/2);
     }
 
     override func viewDidLoad() {
@@ -224,5 +246,62 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         plane.height = CGFloat(planeAnchor.extent.z)
 
         planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
+    }
+
+    // MARK: User interaction
+
+    func placeWall() {
+        let options: [SCNHitTestOption: Any] = [
+            .ignoreHiddenNodes: false,
+            .firstFoundOnly: true,
+            .searchMode: SCNHitTestSearchMode.all.rawValue
+        ]
+
+        let results = sceneView.hitTest(pointOnScreenForWallProjection, options: options)
+        for result in results {
+            // When you want to place the invisible wall, based on the current ghostWall
+            if wall == nil {
+                let wallNode = ARSCNWallNode.full()
+                let userWall = SCNNode(geometry: wallNode)
+                result.node.addChildNode(userWall)
+
+                userWall.position = result.localCoordinates
+                userWall.eulerAngles = SCNVector3(x: -Float.pi / 2, y: 0, z: 0)
+
+                let userPosition = sceneView.pointOfView!.position
+                let bottomPosition = SCNVector3(x: userPosition.x, y: result.worldCoordinates.y, z: userPosition.z)
+                userWall.look(at: bottomPosition)
+
+                userWall.position = SCNVector3(x: userWall.position.x, y: userWall.position.y, z: userWall.position.z + Float(ARSCNWallNode.wallHeight() / 2))
+
+                self.wall = userWall
+
+                // self.state = .createdWall
+                return
+            }
+        }
+    }
+
+    // MARK: Rendering
+
+    func renderWhenPlacingArtwork(frame: ARFrame) {
+        let options : [SCNHitTestOption : Any] = [
+            SCNHitTestOption.ignoreHiddenNodes : false,
+            SCNHitTestOption.firstFoundOnly : true,
+            SCNHitTestOption.searchMode : SCNHitTestSearchMode.all.rawValue,
+            SCNHitTestOption.backFaceCulling : false
+        ]
+
+        let results = self.sceneView.hitTest(self.pointOnScreenForArtworkProjection, options: options)
+
+        for result in results {
+            print("Node: \(result.node), Distance: \(result.localCoordinates)")
+        }
+    }
+
+    // MARK: ARSessionDelegate
+
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        // self.renderWhenPlacingArtwork(frame: frame)
     }
 }
