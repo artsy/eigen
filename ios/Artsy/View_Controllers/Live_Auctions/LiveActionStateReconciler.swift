@@ -90,6 +90,9 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
     }
 
     func processCurrentLotUpdate(_ update: AnyObject) {
+        guard let update = update as? [String: AnyObject] else {
+            return
+        }
         let currentLotID = update["lotId"] as? String
         updateCurrentLotWithIDIfNecessary(currentLotID)
     }
