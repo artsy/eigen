@@ -149,9 +149,12 @@ export const AuctionResultsScreenWrapperContainer = createPaginationContainer(
 )
 
 const AuctionResultsScreenWrapperQuery = graphql`
-  query AuctionResultsScreenWrapperContainerQuery($state: AuctionResultsState!) {
+  query AuctionResultsScreenWrapperContainerQuery(
+    $state: AuctionResultsState!
+    $sort: AuctionResultSorts
+  ) {
     me {
-      ...AuctionResultsScreenWrapper_me @arguments(state: $state)
+      ...AuctionResultsScreenWrapper_me @arguments(state: $state, sort: $sort)
     }
   }
 `
@@ -160,6 +163,11 @@ export enum AuctionResultsState {
   PAST = "PAST",
   UPCOMING = "UPCOMING",
   ALL = "ALL",
+}
+
+export enum AuctionResultsSorts {
+  DATE_ASC = "DATE_ASC",
+  DATE_DESC = "DATE_DESC",
 }
 
 const getTitleByState = (state: AuctionResultsState) => {
@@ -187,12 +195,17 @@ const getDescriptionByState = (state: AuctionResultsState) => {
 export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
+  const sort =
+    state === AuctionResultsState.UPCOMING
+      ? AuctionResultsSorts.DATE_ASC
+      : AuctionResultsSorts.DATE_DESC
   return (
     <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
       environment={defaultEnvironment}
       query={AuctionResultsScreenWrapperQuery}
       variables={{
         state,
+        sort,
       }}
       cacheConfig={{
         force: true,
@@ -209,6 +222,7 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
         },
         initialProps: {
           state,
+          sort,
         },
       })}
     />
