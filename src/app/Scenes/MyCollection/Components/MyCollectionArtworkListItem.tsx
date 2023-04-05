@@ -5,11 +5,11 @@ import {
   MyCollectionArtworkListItem_artwork$key,
 } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Touchable } from "palette"
-import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -38,7 +38,7 @@ const ListItemImageView: React.FC<{
         // To align the image with the text we have to add top margin to compensate the line height.
         style={{ marginTop: 3 }}
       >
-        <OpaqueImageView2
+        <OpaqueImageView
           imageURL={localImage?.path || image.url}
           width={imageDimensions.width}
           height={imageDimensions.height}
