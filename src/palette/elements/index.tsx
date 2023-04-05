@@ -1,4 +1,3 @@
-export * from "./Dialog"
 export * from "./Input"
 export * from "./List"
 export * from "./ProgressBar"
