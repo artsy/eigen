@@ -78,12 +78,12 @@ import React, {
 } from "react"
 import {
   Alert,
-  FlatListProps,
   ListRenderItem,
   RefreshControl,
   View,
   ViewProps,
   ViewToken,
+  ViewabilityConfig,
 } from "react-native"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 
@@ -131,10 +131,9 @@ const Home = memo((props: HomeProps) => {
 
   const { cards } = useContentCards()
 
-  const viewabilityConfig = useRef<FlatListProps<HomeModule>["viewabilityConfig"]>({
+  const viewabilityConfig = useRef<ViewabilityConfig>({
     // Percent of of the item that is visible for a partially occluded item to count as "viewable"
     itemVisiblePercentThreshold: 60,
-    viewAreaCoveragePercentThreshold: null,
     minimumViewTime: 2000,
     waitForInteraction: false,
   }).current
