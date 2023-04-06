@@ -177,7 +177,7 @@ lane :ship_beta_android_play_store do
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android:hermes")
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -207,7 +207,7 @@ lane :ship_beta_android_firebase do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android:hermes")
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -373,7 +373,7 @@ lane :upload_sentry_artifacts do |options|
     bundle_path = 'dist/main.jsbundle'
     outfile = '~/main.jsbundle'
   else
-    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
+    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android:hermes
     source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
     bundle_path = 'android/app/src/main/assets/index.android.bundle'
     outfile = '~/index.android.bundle'
