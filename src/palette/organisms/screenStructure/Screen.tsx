@@ -1,5 +1,12 @@
-import { Spacer, FlexProps, Flex, SpacingUnitDSValueNumber, Text } from "@artsy/palette-mobile"
-import { BackButton, BackButtonWithBackground } from "palette"
+import {
+  Spacer,
+  FlexProps,
+  Flex,
+  SpacingUnitDSValueNumber,
+  Text,
+  BackButton,
+  BackButtonWithBackground,
+} from "@artsy/palette-mobile"
 import { Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
@@ -101,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack, title, onSkip }) => {
         {!!onBack && (
           <BackButton
             onPress={onBack}
-            containerStyle={{ flex: 1, justifyContent: "center" }}
+            style={{ flex: 1, justifyContent: "center" }}
             hitSlop={{ left: 20, right: 20 }}
           />
         )}

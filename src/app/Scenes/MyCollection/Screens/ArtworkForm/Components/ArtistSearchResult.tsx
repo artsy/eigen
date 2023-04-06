@@ -1,6 +1,5 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Avatar, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { Avatar } from "palette"
 
 export const ArtistSearchResult: React.FC<{
   result: AutosuggestResult

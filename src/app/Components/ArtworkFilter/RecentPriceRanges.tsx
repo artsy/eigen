@@ -5,7 +5,7 @@ import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
-import { Pill } from "palette"
+import { Pill } from "app/Components/Pill"
 import { useRef } from "react"
 import { Platform, ScrollView, TouchableOpacity } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"

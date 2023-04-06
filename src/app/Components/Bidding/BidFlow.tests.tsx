@@ -3,7 +3,7 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { waitUntil } from "app/utils/tests/waitUntil"
-import { Checkbox } from "palette/elements/Checkbox"
+import { Checkbox } from "@artsy/palette-mobile"
 import { Select } from "palette/elements/Select"
 import "react-native"
 import relay from "react-relay"

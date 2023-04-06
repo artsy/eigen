@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Spacer,
   CloseIcon,
   CheckIcon,
@@ -11,7 +12,7 @@ import {
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
-import { Autocomplete, InputTitle, Touchable } from "palette"
+import { InputTitle, Touchable } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
