@@ -25,8 +25,6 @@ export const useItemsImpressionsTracking = ({
   const viewabilityConfig = useRef<ViewabilityConfig>({
     // Percent of of the item that is visible for a partially occluded item to count as "viewable"
     itemVisiblePercentThreshold: 60,
-    // @ts-expect-error
-    viewAreaCoveragePercentThreshold: null,
     minimumViewTime: 2000,
     waitForInteraction: false,
   }).current

@@ -15,7 +15,7 @@ import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
 interface ArtworkRecommendationsRailProps {
-  isRailVisible?: boolean
+  isRailVisible: boolean
   mb?: SpacingUnit
   me: ArtworkRecommendationsRail_me$key
   title: string
@@ -32,7 +32,7 @@ export const ArtworkRecommendationsRail: React.FC<
   const listRef = useRef<FlatList<any>>(null)
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-    isRailVisible: !!isRailVisible,
+    isRailVisible,
     contextModule: ContextModule.artworkRecommendationsRail,
   })
 

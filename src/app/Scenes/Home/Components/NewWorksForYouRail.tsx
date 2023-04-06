@@ -19,7 +19,7 @@ import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
   artworkConnection: NewWorksForYouRail_artworkConnection$key
-  isRailVisible?: boolean
+  isRailVisible: boolean
 }
 
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
@@ -33,7 +33,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     const listRef = useRef<FlatList<any>>(null)
 
     const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-      isRailVisible: !!isRailVisible,
+      isRailVisible,
       contextModule: ContextModule.newWorksForYouRail,
     })
 
