@@ -8,7 +8,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
 
-    var cursor : FocusSquare?
+    var cursor = FocusSquare()
 
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
@@ -42,6 +42,61 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         self.sceneView.session.delegate = self
         self.sceneView.session.run(config)
 
+        // Set up scene content.
+        self.sceneView.scene.rootNode.addChildNode(cursor)
+
+        setupUI()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        // TODO: analytics
+        super.viewDidAppear(animated)
+
+        // Prevent the screen from being dimmed to avoid interuppting the AR experience.
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        // Allow screen to be dimmed again
+        UIApplication.shared.isIdleTimerDisabled = false
+        sceneView.session.pause()
+    }
+
+
+    @objc func placeArtwork() {
+        print("Here is where I should place the artwork")
+    }
+
+    @objc func dismissInformationalViewAnimated() {
+        self.dismissInformationalView(animated: true)
+    }
+
+    private func dismissInformationalView(animated: Bool) {
+        guard let informationView = self.informationView else {
+            return
+        }
+
+        UIView.animateIf(animated, duration: ARAnimationQuickDuration, options: .curveEaseOut) {
+            self.informationViewBottomConstraint?.constant = 40
+            informationView.alpha = 0
+            // TODO:
+            // self.resetButton.alpha = 1
+            informationView.setNeedsUpdateConstraints()
+            informationView.layoutIfNeeded()
+        }
+    }
+
+
+
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+
+    }
+
+    // MARK: Noise
+
+    func setupUI() {
         let backButton = setupBackButton()
         self.view.addSubview(backButton)
 
@@ -58,22 +113,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         self.informationViewBottomConstraint = informationView.alignBottomEdge(withView: view, predicate: "0")
         self.informationViewBottomConstraint?.constant = 40
         self.informationView = informationView
-
-        // TODO: Should I still do the idle timer thing?
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        // TODO: analytics
-        super.viewDidAppear(animated)
-
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//            self.presentInformationalInterface(animated: true)
-//        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        sceneView.session.pause()
     }
 
     private func presentInformationalInterface(animated: Bool) {
@@ -94,6 +133,21 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
             self.view.layoutIfNeeded()
             informationView.layoutIfNeeded()
         }
+    }
+
+    @objc func exitARContext() {
+        // TODO: do I need the time tracking or idle timer thing
+
+        // Ensure we jump past the SetupVC
+        var presentingVC : UIViewController? = nil
+        if let initialPresentingVC = self.presentingViewController {
+            presentingVC = initialPresentingVC
+            if (initialPresentingVC.isKind(of: ARAugmentedVIRSetupViewController.self)) {
+                presentingVC = initialPresentingVC.presentingViewController
+            }
+        }
+
+        presentingVC?.dismiss(animated: true)
     }
 
     private func backButtonConstraints(backButton: UIButton) -> [NSLayoutConstraint] {
@@ -143,86 +197,5 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         congratsArtworkViewState.contents = doneArtworkButton
 
         return [positionArtworkViewState, congratsArtworkViewState]
-    }
-
-    @objc func placeArtwork() {
-        print("Here is where I should place the artwork")
-    }
-
-    @objc func dismissInformationalViewAnimated() {
-        self.dismissInformationalView(animated: true)
-    }
-
-    private func dismissInformationalView(animated: Bool) {
-        guard let informationView = self.informationView else {
-            return
-        }
-
-        UIView.animateIf(animated, duration: ARAnimationQuickDuration, options: .curveEaseOut) {
-            self.informationViewBottomConstraint?.constant = 40
-            informationView.alpha = 0
-            // TODO:
-            // self.resetButton.alpha = 1
-            informationView.setNeedsUpdateConstraints()
-            informationView.layoutIfNeeded()
-        }
-    }
-
-    @objc func exitARContext() {
-        // TODO: do I need the time tracking or idle timer thing
-
-        // Ensure we jump past the SetupVC
-        var presentingVC : UIViewController? = nil
-        if let initialPresentingVC = self.presentingViewController {
-            presentingVC = initialPresentingVC
-            if (initialPresentingVC.isKind(of: ARAugmentedVIRSetupViewController.self)) {
-                presentingVC = initialPresentingVC.presentingViewController
-            }
-        }
-
-        presentingVC?.dismiss(animated: true)
-    }
-
-    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
-
-        guard let informationView = self.informationView else {
-            return
-        }
-
-        let planeNode = createPlaneNode(for: planeAnchor)
-        node.addChildNode(planeNode)
-    }
-
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
-
-        if let planeNode = node.childNodes.first, let plane = planeNode.geometry as? SCNPlane {
-            updatePlaneNode(planeNode, with: plane, for: planeAnchor)
-        }
-    }
-
-    func createPlaneNode(for planeAnchor: ARPlaneAnchor) -> SCNNode {
-        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
-        plane.firstMaterial?.diffuse.contents = UIColor.blue.withAlphaComponent(0.5)
-
-        let planeNode = SCNNode(geometry: plane)
-        planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
-        planeNode.eulerAngles.x = -.pi / 2
-
-        return planeNode
-    }
-
-    func updatePlaneNode(_ planeNode: SCNNode, with plane: SCNPlane, for planeAnchor: ARPlaneAnchor) {
-        plane.width = CGFloat(planeAnchor.extent.x)
-        plane.height = CGFloat(planeAnchor.extent.z)
-
-        planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
-    }
-
-    // MARK: ARSessionDelegate
-
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print("Did update frame")
     }
 }
