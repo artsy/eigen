@@ -8,36 +8,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
 
-    // walls identified
-    var foundWalls: [SCNNode] = []
-
-    // The selected wall which you fire an artwork at
-    var selectedWall : SCNNode?
-
-    // The WIP version of the artwork placed on the `wall` above
-    var ghostArtwork : SCNNode?
-
-    var pointOnScreenForWallProjection : CGPoint!
-    var pointOnScreenForArtworkProjection : CGPoint!
-
-
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
         self.sceneView = ARSCNView()
-
-        self.ghostArtwork?.removeFromParentNode()
-        self.ghostArtwork = nil
-
-        self.selectedWall?.removeFromParentNode()
-        self.selectedWall = nil
-
-        self.foundWalls = []
-
-        let bounds = UIScreen.main.bounds;
-        self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
-
-        // Use a subset of the screen for centering, the 221 comes from the height of the UI in the ARAugmentedVIRVC
-        self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, (bounds.size.height - 221)/2);
     }
 
     override func viewDidLoad() {
@@ -91,9 +64,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         // TODO: analytics
         super.viewDidAppear(animated)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.presentInformationalInterface(animated: true)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//            self.presentInformationalInterface(animated: true)
+//        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -148,29 +121,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     }
 
     private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
-
-        let pointAtWallViewState = InformationalViewState()
-        pointAtWallViewState.xOutOfYMessage = "Step 1 of 3"
-        pointAtWallViewState.bodyString = "Point your device at a wall nearby."
-        let spinner = ARSpinner()
-        spinner.spinnerColor = UIColor.white
-        spinner.constrainHeight("40")
-        pointAtWallViewState.contents = spinner
-        pointAtWallViewState.onStart = { (customView: UIView) in
-            spinner.startAnimating()
-        }
-
-        let selectWallViewState = InformationalViewState()
-        selectWallViewState.xOutOfYMessage = "Step 2 of 3"
-        selectWallViewState.bodyString = "Tap to select a wall."
-        let selectWallButton = ARWhiteFlatButton()
-        selectWallButton.setTitle("Select Wall", for: .normal)
-        selectWallButton.constrainHeight("50")
-        selectWallButton.addTarget(self, action: #selector(placeWall), for: .touchUpInside)
-        selectWallViewState.contents = selectWallButton
-
         let positionArtworkViewState = InformationalViewState()
-        positionArtworkViewState.xOutOfYMessage = "Step 3 of 3"
+        positionArtworkViewState.xOutOfYMessage = " "
         positionArtworkViewState.bodyString = "Position the work on the wall and tap to place."
         let placeArtworkButton = ARWhiteFlatButton()
         placeArtworkButton.setTitle("Place Work", for: .normal)
@@ -188,7 +140,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         doneArtworkButton.addTarget(self, action: #selector(dismissInformationalViewAnimated), for: .touchUpInside)
         congratsArtworkViewState.contents = doneArtworkButton
 
-        return [pointAtWallViewState, selectWallViewState, positionArtworkViewState, congratsArtworkViewState]
+        return [positionArtworkViewState, congratsArtworkViewState]
     }
 
     @objc func placeArtwork() {
@@ -236,17 +188,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
             return
         }
 
-        let currentState = informationView.currentState()
-
-        // TODO: better check
-        if (currentState.xOutOfYMessage == "Step 1 of 3") {
-            DispatchQueue.main.async {
-                informationView.next()
-            }
-        }
-
         let planeNode = createPlaneNode(for: planeAnchor)
-        self.foundWalls = self.foundWalls + [planeNode]
         node.addChildNode(planeNode)
     }
 
@@ -276,105 +218,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
     }
 
-    // MARK: User interaction
-
-    @objc func placeWall() {
-        if foundWalls.isEmpty {
-            return
-        }
-
-        let options: [SCNHitTestOption: Any] = [
-            .ignoreHiddenNodes: false,
-            .firstFoundOnly: true,
-            .searchMode: SCNHitTestSearchMode.all.rawValue
-        ]
-
-        let results = sceneView.hitTest(pointOnScreenForWallProjection, options: options)
-        for result in results {
-            // When you want to place the invisible wall, based on the current ghostWall
-            if selectedWall == nil, foundWalls.contains(result.node) {
-                print("Found a result in foundWalls")
-//                let wallNode = ARSCNWallNode.full()
-//                let userWall = SCNNode(geometry: foundWall.geometry)
-//                result.node.addChildNode(userWall)
-
-//                userWall.position = result.localCoordinates
-//                userWall.eulerAngles = SCNVector3(x: -Float.pi / 2, y: 0, z: 0)
-//
-//                let userPosition = sceneView.pointOfView!.position
-//                let bottomPosition = SCNVector3(x: userPosition.x, y: result.worldCoordinates.y, z: userPosition.z)
-//                userWall.look(at: bottomPosition)
-//
-//                userWall.position = SCNVector3(x: userWall.position.x, y: userWall.position.y, z: userWall.position.z + Float(ARSCNWallNode.wallHeight() / 2))
-
-                //self.selectedWall = userWall
-
-                // self.state = .createdWall
-                return
-            }
-        }
-    }
-
-    // MARK: Rendering
-
-    func renderWhenPlacingArtwork(frame: ARFrame) {
-        let options : [SCNHitTestOption : Any] = [
-            SCNHitTestOption.ignoreHiddenNodes : false,
-            SCNHitTestOption.firstFoundOnly : true,
-            SCNHitTestOption.searchMode : SCNHitTestSearchMode.all.rawValue,
-            SCNHitTestOption.backFaceCulling : false
-        ]
-
-        let results = self.sceneView.hitTest(self.pointOnScreenForArtworkProjection, options: options)
-
-        for result in results {
-            if self.foundWalls.contains(result.node) {
-                print("Node: \(result.node), Distance: \(result.localCoordinates)")
-                if self.ghostArtwork == nil {
-                    // Artwork + Outline live inside this node
-                    let rootNode = SCNNode()
-                    rootNode.position = result.localCoordinates
-                    rootNode.eulerAngles = SCNVector3(x: 0, y: 0, z: -Float.pi)
-
-                    let box = SCNArtworkNode(config: config)
-                    let artwork = SCNNode(geometry: box)
-                    artwork.opacity = 0.5
-
-                    let outline = SCNArtworkNode.ghostOutlineNode(with: config)
-
-                    guard
-                        let outline = outline
-                    else {
-                        break
-                    }
-
-                    rootNode.addChildNode(outline)
-                    rootNode.addChildNode(artwork)
-                    result.node.addChildNode(rootNode)
-
-                    self.ghostArtwork = rootNode
-                }
-                self.ghostArtwork?.position = result.localCoordinates
-                // TODO: something around notifying if we want delegate separate
-                 // [self.delegate isShowingGhostWork:YES];
-                return
-            }
-
-        }
-
-        if (self.ghostArtwork != nil) {
-            // [self.delegate isShowingGhostWork:NO];
-            self.ghostArtwork?.removeFromParentNode()
-            self.ghostArtwork = nil;
-        }
-    }
-
     // MARK: ARSessionDelegate
 
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if foundWalls.isEmpty {
-            return
-        }
-        self.renderWhenPlacingArtwork(frame: frame)
+        print("Did update frame")
     }
 }
