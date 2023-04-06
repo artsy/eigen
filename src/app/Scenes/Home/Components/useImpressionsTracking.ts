@@ -26,7 +26,7 @@ export const useItemsImpressionsTracking = ({
     itemVisiblePercentThreshold: 60,
     // @ts-expect-error
     viewAreaCoveragePercentThreshold: null,
-    minimumViewTime: 3000,
+    minimumViewTime: 2000,
     waitForInteraction: false,
   }).current
 

@@ -249,7 +249,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableSkeletonAnimation",
   },
   ARImpressionsTrackingHomeItemViews: {
-    description: "Enable Tracking Items on Home Screen",
+    description: "Enable Tracking Items views on Home Screen",
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
