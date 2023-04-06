@@ -3,7 +3,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { Select } from "palette/elements/Select"
+import { Select } from "app/Components/Select"
 import React, { useState } from "react"
 
 type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"

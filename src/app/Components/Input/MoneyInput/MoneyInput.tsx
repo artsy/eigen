@@ -19,7 +19,7 @@ import {
   formatMoney,
 } from "app/Components/Input/MoneyInput/moneyInputHelpers"
 import { Touchable } from "@artsy/palette-mobile"
-import { SelectOption } from "palette/elements/Select"
+import { SelectOption } from "app/Components/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 
 export const MoneyInput = forwardRef<

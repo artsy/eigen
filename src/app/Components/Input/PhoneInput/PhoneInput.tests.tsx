@@ -2,7 +2,7 @@ import { Text } from "@artsy/palette-mobile"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Input } from "@artsy/palette-mobile"
-import { Select } from "palette/elements/Select"
+import { Select } from "app/Components/Select"
 import { act } from "react-test-renderer"
 import { PhoneInput } from "./PhoneInput"
 

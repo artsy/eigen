@@ -1,7 +1,7 @@
 import { Box } from "@artsy/palette-mobile"
+import { Tab, TabsProps } from "app/Components/Tabs"
 import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
-import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

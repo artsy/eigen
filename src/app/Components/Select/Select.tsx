@@ -9,10 +9,10 @@ import {
   Separator,
   INPUT_HEIGHT,
   InputTitle,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 

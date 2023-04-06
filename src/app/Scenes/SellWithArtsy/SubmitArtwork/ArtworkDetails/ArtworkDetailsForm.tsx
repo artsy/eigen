@@ -16,7 +16,7 @@ import { artworkRarityClassifications } from "app/utils/artworkRarityClassificat
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFormikContext } from "formik"
 import { LinkButton } from "palette"
-import { Select, SelectOption } from "palette/elements/Select"
+import { Select, SelectOption } from "app/Components/Select"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {

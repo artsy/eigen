@@ -14,7 +14,7 @@ import {
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
 import { Touchable } from "@artsy/palette-mobile"
-import { SelectOption } from "palette/elements/Select"
+import { SelectOption } from "app/Components/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"

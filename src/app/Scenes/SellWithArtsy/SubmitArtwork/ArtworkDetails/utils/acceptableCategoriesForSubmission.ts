@@ -1,7 +1,7 @@
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignSubmissionMutation.graphql"
+import { SelectOption } from "app/Components/Select"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact } from "lodash"
-import { SelectOption } from "palette/elements/Select"
 
 type AcceptableValuesMapKey = Exclude<
   ConsignmentSubmissionCategoryAggregation,

@@ -1,4 +1,4 @@
-import { NavigationalTabs } from "palette/elements/Tabs"
+import { NavigationalTabs } from "app/Components/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

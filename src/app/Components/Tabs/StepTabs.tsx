@@ -1,5 +1,5 @@
 import { Box, CheckIcon, ChevronIcon } from "@artsy/palette-mobile"
-import { Tab, TabsProps } from "palette/elements/Tabs"
+import { Tab, TabsProps } from "app/Components/Tabs"
 import { useState } from "react"
 import { TouchableOpacity, LayoutRectangle } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
