@@ -85,14 +85,16 @@ describe("WirePaymentSection", () => {
 
   it("renders Artsy EUR bank account details when order currency is EUR", async () => {
     const artsyBankAccountEUR = {
+      accountNo: "88005419",
       iban: "GB73PNBP16567188005419",
-      bic: "PNBPGB2LXXX",
+      swift: "PNBPGB2L",
       addressLine: "30 Fenchurch Street",
     }
     const { getByText } = renderWithRelay({ CommerceOrder: () => orderInEUR })
 
+    expect(getByText(artsyBankAccountEUR.accountNo)).toBeTruthy()
     expect(getByText(artsyBankAccountEUR.iban)).toBeTruthy()
-    expect(getByText(artsyBankAccountEUR.bic)).toBeTruthy()
+    expect(getByText(artsyBankAccountEUR.swift)).toBeTruthy()
     expect(getByText(artsyBankAccountEUR.addressLine)).toBeTruthy()
   })
 
