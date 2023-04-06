@@ -13,7 +13,7 @@ build_status=$(curl -s -u ${EIGEN_CHECK_STATUS}: https://circleci.com/api/v1.1/p
 # Check if the build status is "running"
 if [ "$build_status" = "running" ]; then
     echo "Another Android Build is running"
-    read -p "There is a build currently running? Are you sure you want to overwrite it? " -n 1 -r
+    read -p "There is a build currently running? Are you sure you want to overwrite it? (y/n) " -n 1 -r
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
       echo "Proceeding with creating the beta..."
