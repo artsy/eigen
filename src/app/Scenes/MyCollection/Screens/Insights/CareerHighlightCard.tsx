@@ -8,7 +8,8 @@ import {
   Flex,
   Text,
 } from "@artsy/palette-mobile"
-import { Button, Touchable } from "palette"
+import { Button } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 

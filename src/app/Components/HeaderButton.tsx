@@ -1,4 +1,4 @@
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
 import { useScreenDimensions } from "shared/hooks"

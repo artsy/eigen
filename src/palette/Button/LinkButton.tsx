@@ -1,5 +1,4 @@
-import { Text, TextProps } from "@artsy/palette-mobile"
-import { Touchable } from ".."
+import { Text, TextProps, Touchable } from "@artsy/palette-mobile"
 
 export const LinkButton = (props: TextProps) => (
   <Touchable onPress={props.onPress}>

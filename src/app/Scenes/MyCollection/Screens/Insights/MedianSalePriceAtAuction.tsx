@@ -10,7 +10,7 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"

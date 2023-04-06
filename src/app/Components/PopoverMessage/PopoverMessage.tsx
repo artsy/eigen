@@ -1,5 +1,5 @@
 import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Animated, StyleProp, ViewStyle } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { usePopoverMessage } from "./popoverMessageHooks"

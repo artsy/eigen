@@ -1,7 +1,7 @@
 import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"

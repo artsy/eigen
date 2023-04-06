@@ -1,5 +1,5 @@
 import { FacebookIcon, EnvelopeIcon, TwitterIcon, Box, BoxProps } from "@artsy/palette-mobile"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Linking } from "react-native"
 
 interface FairEditorialShareProps extends BoxProps {

@@ -7,7 +7,7 @@ import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizR
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { Screen } from "palette"
+import { Screen } from "app/Components/Screen"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {

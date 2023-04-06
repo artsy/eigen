@@ -5,7 +5,7 @@ import {
   LocationWithDetails,
   SimpleLocation,
 } from "app/utils/googleMaps"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

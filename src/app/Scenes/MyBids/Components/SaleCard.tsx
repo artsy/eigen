@@ -13,7 +13,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

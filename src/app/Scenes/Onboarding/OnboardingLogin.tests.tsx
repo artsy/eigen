@@ -1,6 +1,6 @@
 import { Input } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
 
 const navigateMock = jest.fn()

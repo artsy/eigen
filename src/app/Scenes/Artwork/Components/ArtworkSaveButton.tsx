@@ -13,7 +13,7 @@ import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_a
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"

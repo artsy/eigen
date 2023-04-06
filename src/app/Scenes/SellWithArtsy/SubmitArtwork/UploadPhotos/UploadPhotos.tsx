@@ -1,4 +1,4 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { BulletedItem, Spacer, Flex } from "@artsy/palette-mobile"
 import {
   Photo,
   PhotosFormModel,
@@ -6,7 +6,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
-import { CTAButton, BulletedItem } from "palette"
+import { CTAButton } from "palette"
 import { useRef } from "react"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"

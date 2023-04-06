@@ -1,10 +1,10 @@
-import { CloseIcon, Flex, Text, useColor } from "@artsy/palette-mobile"
+import { CloseIcon, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { FollowButton, Touchable } from "palette"
+import { FollowButton } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 

@@ -6,8 +6,8 @@ import {
   Text,
   BackButton,
   BackButtonWithBackground,
+  Touchable,
 } from "@artsy/palette-mobile"
-import { Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,

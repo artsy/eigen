@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Checkbox } from "@artsy/palette-mobile"
 
 interface EmailSubscriptionCheckboxProps {

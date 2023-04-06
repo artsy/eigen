@@ -18,7 +18,7 @@ import {
   deformatMoney,
   formatMoney,
 } from "app/Components/Input/MoneyInput/moneyInputHelpers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { SelectOption } from "palette/elements/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 

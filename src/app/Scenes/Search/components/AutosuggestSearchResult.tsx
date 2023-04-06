@@ -11,7 +11,7 @@ import {
   SlugType,
 } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"

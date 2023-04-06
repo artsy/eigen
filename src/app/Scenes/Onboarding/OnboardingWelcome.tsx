@@ -5,7 +5,8 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { Button, Screen } from "palette"
+import { Button } from "palette"
+import { Screen } from "app/Components/Screen"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"

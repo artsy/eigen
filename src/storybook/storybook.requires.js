@@ -33,15 +33,12 @@ const getStories = () => {
     require("../app/Components/Pill/Pill.stories.tsx"),
     require("../app/Components/PopoverMessage/PopoverMessage.stories.tsx"),
     require("../app/Components/ReadMore.stories.tsx"),
+    require("../app/Components/Screen/Screen.stories.tsx"),
     require("../app/utils/placeholders.stories.tsx"),
-    require("../palette/elements/Input/Input.stories.tsx"),
-    require("../palette/elements/List/List.stories.tsx"),
-    require("../palette/elements/ProgressBar/ProgressBar.stories.tsx"),
     require("../palette/elements/Select/Select.stories.tsx"),
     require("../palette/elements/Tabs/Tabs.stories.tsx"),
     require("../palette/elements/ToolTip/ToolTip.stories.tsx"),
     require("../palette/elements/VisualClue/VisualClue.stories.tsx"),
-    require("../palette/organisms/screenStructure/Screen.stories.tsx"),
   ];
 };
 
