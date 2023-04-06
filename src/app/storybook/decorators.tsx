@@ -1,8 +1,8 @@
+import { Theme } from "@artsy/palette-mobile"
 import { DecoratorFunction } from "@storybook/addons"
+import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { TrackingProvider } from "app/utils/tests/renderWithWrappers"
-import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
-import { ProvideScreenDimensions } from "shared/hooks"
 
 export const withTheme: DecoratorFunction<React.ReactNode> = (story) => <Theme>{story()}</Theme>
 

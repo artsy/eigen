@@ -15,7 +15,7 @@ import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import diff from "snapshot-diff"
 
 /**
@@ -554,7 +554,7 @@ beforeEach(() => {
 // it here, tests will unexpectedly fail.
 require("palette")
 
-jest.mock("shared/hooks", () => {
+jest.mock("app/utils/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,

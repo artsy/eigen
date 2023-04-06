@@ -15,7 +15,7 @@ import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components
 import { TouchableRow } from "app/Components/TouchableRow"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type YearOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen">
 

@@ -11,7 +11,7 @@ import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
   FeatureHeaderFragmentContainer,

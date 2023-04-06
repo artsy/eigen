@@ -4,11 +4,11 @@ import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMark
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Screen } from "app/Components/Screen"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useBackHandler } from "shared/hooks/useBackHandler"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { images, MarketingCollectionHeader } from "./Components/MarketingCollectionHeader"
 
 export type OnboardingMarketingCollectionSlug =

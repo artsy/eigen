@@ -11,7 +11,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useEffect } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { OnboardingNavigationStack } from "./Onboarding"

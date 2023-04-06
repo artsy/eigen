@@ -7,11 +7,11 @@ import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/Search
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { sortBy } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Touchable } from "@artsy/palette-mobile"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
-import { normalizeText } from "shared/utils"
+import { normalizeText } from "app/utils/normalizeText"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void

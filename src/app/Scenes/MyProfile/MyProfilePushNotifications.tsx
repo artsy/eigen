@@ -13,7 +13,7 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,

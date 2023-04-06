@@ -1,6 +1,6 @@
 import { Flex, Input, Text } from "@artsy/palette-mobile"
 import { ComponentMeta, ComponentStory } from "@storybook/react-native"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Screen } from "./Screen"
 
 const ScreenMeta: ComponentMeta<typeof Screen> = {

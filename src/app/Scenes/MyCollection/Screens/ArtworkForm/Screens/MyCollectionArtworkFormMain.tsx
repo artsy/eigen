@@ -27,11 +27,11 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Input } from "@artsy/palette-mobile"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 

@@ -8,7 +8,7 @@ import {
 import { Touchable } from "@artsy/palette-mobile"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   floating?: boolean

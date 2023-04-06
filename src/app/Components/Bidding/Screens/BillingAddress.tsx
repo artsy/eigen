@@ -7,12 +7,12 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Input } from "@artsy/palette-mobile"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { ScreenDimensionsContext } from "shared/hooks"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { ScreenDimensionsContext } from "app/utils/hooks"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 
 interface BillingAddressProps {
   onSubmit: (values: Address) => void

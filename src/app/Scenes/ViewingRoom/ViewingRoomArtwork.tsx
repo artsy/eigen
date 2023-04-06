@@ -10,7 +10,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -21,7 +21,7 @@ import {
   useQueryLoader,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 

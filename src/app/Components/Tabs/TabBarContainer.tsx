@@ -2,7 +2,7 @@ import { Box, useColor } from "@artsy/palette-mobile"
 import { compact } from "lodash"
 import React, { useEffect, useRef } from "react"
 import { Animated, LayoutRectangle, ScrollView, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export interface TabBarContainerProps {
   activeTabIndex: number

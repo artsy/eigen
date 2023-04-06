@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Spacer, Flex, Text, Join } from "@artsy/palette-mobile"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 
 const STEPS = [
   {

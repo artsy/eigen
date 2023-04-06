@@ -4,11 +4,11 @@ import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__gen
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses$data

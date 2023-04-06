@@ -5,7 +5,7 @@ import {
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Screen } from "app/Components/Screen"
 import { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"

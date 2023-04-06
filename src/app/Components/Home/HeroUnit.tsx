@@ -6,7 +6,7 @@ import { Touchable } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type UnitType = NonNullable<NonNullable<Trove_trove$data["heroUnits"]>[0]>
 

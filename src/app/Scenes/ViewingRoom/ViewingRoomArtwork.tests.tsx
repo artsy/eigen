@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
 describe("ViewingRoomArtwork", () => {

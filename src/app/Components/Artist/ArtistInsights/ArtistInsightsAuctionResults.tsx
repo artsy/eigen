@@ -26,7 +26,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data

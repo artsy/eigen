@@ -5,7 +5,7 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Screen } from "app/Components/Screen"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
@@ -17,7 +17,7 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">

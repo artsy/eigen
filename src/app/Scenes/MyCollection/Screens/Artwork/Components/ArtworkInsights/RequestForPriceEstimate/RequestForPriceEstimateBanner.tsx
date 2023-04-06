@@ -6,7 +6,7 @@ import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPr
 import { Toast } from "app/Components/Toast/Toast"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 interface RequestForPriceEstimateProps {

@@ -4,7 +4,7 @@ import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { TabBarContainer } from "./TabBarContainer"
 
 /**

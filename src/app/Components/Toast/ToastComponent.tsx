@@ -5,7 +5,7 @@ import { Touchable } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)

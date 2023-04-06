@@ -7,7 +7,7 @@ import {
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes, InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

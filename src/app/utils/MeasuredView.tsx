@@ -1,7 +1,7 @@
 import { Box } from "@artsy/palette-mobile"
 import { useCallback } from "react"
 import { LayoutChangeEvent } from "react-native"
-import { useOffscreenStyle } from "shared/hooks"
+import { useOffscreenStyle } from "app/utils/hooks"
 
 export interface ViewMeasurements {
   width: number

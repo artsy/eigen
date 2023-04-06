@@ -24,7 +24,7 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Checkbox } from "@artsy/palette-mobile"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"

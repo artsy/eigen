@@ -4,10 +4,10 @@ import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artwork: ArtworkMedium_artwork$data

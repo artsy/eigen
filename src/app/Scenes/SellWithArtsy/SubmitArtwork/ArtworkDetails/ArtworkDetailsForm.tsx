@@ -9,14 +9,14 @@ import {
   InputTitle,
 } from "@artsy/palette-mobile"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
+import { LinkButton } from "app/Components/Button/LinkButton"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFormikContext } from "formik"
-import { LinkButton } from "palette"
-import { Select, SelectOption } from "app/Components/Select"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {

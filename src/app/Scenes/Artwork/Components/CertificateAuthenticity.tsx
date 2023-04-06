@@ -1,8 +1,8 @@
 import { Spacer, Box, Text, Join } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export const CertificateOfAuthenticity: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()

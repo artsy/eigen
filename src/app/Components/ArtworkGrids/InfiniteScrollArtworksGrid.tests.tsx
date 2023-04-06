@@ -1,7 +1,7 @@
 import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

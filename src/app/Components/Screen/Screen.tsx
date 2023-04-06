@@ -8,6 +8,8 @@ import {
   BackButtonWithBackground,
   Touchable,
 } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { Wrap } from "app/utils/Wrap"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -18,7 +20,6 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
   handleTopSafeArea: boolean

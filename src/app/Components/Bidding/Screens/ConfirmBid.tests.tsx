@@ -19,7 +19,7 @@ import NavigatorIOS, {
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"

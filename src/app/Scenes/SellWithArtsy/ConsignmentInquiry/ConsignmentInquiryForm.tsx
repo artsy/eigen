@@ -3,10 +3,10 @@ import { useNavigation } from "@react-navigation/native"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 
 export const ConsignmentInquiryForm: React.FC<{

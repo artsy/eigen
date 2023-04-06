@@ -7,7 +7,7 @@ import { Schema } from "app/utils/track"
 import { filter } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ContextGridCTA } from "./ContextGridCTA"
 
 type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>

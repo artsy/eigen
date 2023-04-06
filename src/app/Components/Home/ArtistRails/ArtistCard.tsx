@@ -4,7 +4,7 @@ import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { FollowButton } from "palette"
+import { FollowButton } from "app/Components/Button/FollowButton"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 

@@ -3,7 +3,7 @@ import { isPad } from "app/utils/hardware"
 import { TouchableHighlightColor } from "@artsy/palette-mobile"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export interface FilterProps {
   total: number

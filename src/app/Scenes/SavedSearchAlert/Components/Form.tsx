@@ -8,7 +8,7 @@ import {
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {

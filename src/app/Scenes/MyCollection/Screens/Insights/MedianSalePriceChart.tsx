@@ -1,7 +1,7 @@
 import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { LineGraph } from "app/Components/LineGraph"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import {
   MedianSalePriceChartDuration,
   useMedianSalePriceChartDataContext,

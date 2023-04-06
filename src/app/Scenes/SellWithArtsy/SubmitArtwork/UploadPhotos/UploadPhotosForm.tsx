@@ -12,7 +12,7 @@ import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/re
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"

@@ -1,7 +1,7 @@
 import { SavedAddressesFormTestsQuery } from "__generated__/SavedAddressesFormTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Input } from "@artsy/palette-mobile"
 import { Checkbox } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"

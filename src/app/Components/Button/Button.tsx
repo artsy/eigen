@@ -10,13 +10,13 @@ import {
   useTextStyleForPalette,
 } from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3" // TODO: remove palette-tokens when this file (Button.tsx) is removed.
+import { MeasuredView, ViewMeasurements } from "app/utils/MeasuredView"
 import { useState } from "react"
 import { PressableProps, TextStyle, GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
-import { MeasuredView, ViewMeasurements } from "shared/utils"
 import styled from "styled-components/native"
 
 export interface ButtonProps extends BoxProps {

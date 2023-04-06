@@ -1,12 +1,11 @@
 import { Theme, Spinner } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Theme as LegacyTheme } from "palette"
+import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { ProvideScreenDimensions } from "shared/hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
@@ -27,7 +26,6 @@ export const Providers = ({
   skipWebsocket = false,
   skipRetryErrorBoundary = false,
   skipRelay = false,
-  simpleTheme = false,
 }: {
   children?: React.ReactNode
   skipGestureHandler?: boolean
@@ -51,8 +49,7 @@ export const Providers = ({
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       !skipRelay && RelayDefaultEnvProvider,
-      simpleTheme ? LegacyTheme : LegacyThemeProvider, // uses: GlobalStoreProvider
-      simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
+      ThemeProvider, // uses: GlobalStoreProvider
       !skipRetryErrorBoundary && RetryErrorBoundary,
       !skipSuspense && SuspenseProvider,
       !skipActionSheet && ActionSheetProvider,
@@ -88,18 +85,6 @@ class PureWrapper extends Component {
   render() {
     return this.props.children
   }
-}
-
-// theme with dark mode support
-function LegacyThemeProvider({ children }: { children?: React.ReactNode }) {
-  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-  return (
-    <LegacyTheme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
-      {children}
-    </LegacyTheme>
-  )
 }
 
 // theme with dark mode support
