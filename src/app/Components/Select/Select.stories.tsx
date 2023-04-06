@@ -1,7 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { withScreenDimensions } from "storybook/decorators"
-import { List } from "storybook/helpers"
+import { withScreenDimensions } from "app/storybook/decorators"
+import { List } from "app/storybook/helpers"
 import { Select } from "./Select"
 
 const options = [

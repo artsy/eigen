@@ -1,7 +1,7 @@
 import { Spacer } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
-import { List } from "storybook/helpers"
+import { List } from "app/storybook/helpers"
 
 const phoneNumber = "124343434"
 

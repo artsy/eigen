@@ -25,7 +25,7 @@ import "react-native-url-polyfill/auto"
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
-  require("./src/storybook")
+  require("./src/app/storybook")
 } else {
   const appName = require("./app.json").appName
   require("react-native-gesture-handler")

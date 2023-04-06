@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { Button } from "app/Components/Button"
-import { DataList, List } from "storybook/helpers"
+import { DataList, List } from "app/storybook/helpers"
 import { PopoverMessageItem, PopoverMessageType } from "./PopoverMessage"
 import { usePopoverMessage } from "./popoverMessageHooks"
 
