@@ -1,8 +1,7 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, RadioDot } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { RadioDot } from "palette"
 
 export interface SortOption {
   value: string

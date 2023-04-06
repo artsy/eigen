@@ -44,7 +44,6 @@ const getStories = () => {
     require("../palette/elements/Message/Message.stories.tsx"),
     require("../palette/elements/Pill/Pill.stories.tsx"),
     require("../palette/elements/ProgressBar/ProgressBar.stories.tsx"),
-    require("../palette/elements/Radio/RadioButton.stories.tsx"),
     require("../palette/elements/Select/Select.stories.tsx"),
     require("../palette/elements/Tabs/Tabs.stories.tsx"),
     require("../palette/elements/ToolTip/ToolTip.stories.tsx"),
