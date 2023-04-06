@@ -125,6 +125,10 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
+project.ext.react = [
+  enableHermes: true
+]
+
 def enableHermes = project.ext.react.get("enableHermes", false)
 
 /**
@@ -253,9 +257,10 @@ dependencies {
 
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/"
-        debugImplementation files(hermesPath + "hermes-debug.aar")
-        releaseImplementation files(hermesPath + "hermes-release.aar")
+        //noinspection GradleDynamicVersion
+        implementation("com.facebook.react:hermes-engine:+") { // From node_modules
+            exclude group:'com.facebook.fbjni'
+        }
     } else {
         implementation jscFlavor
     }
