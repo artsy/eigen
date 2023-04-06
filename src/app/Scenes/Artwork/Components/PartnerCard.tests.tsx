@@ -31,11 +31,12 @@ describe("PartnerCard", () => {
   })
 
   it("renders partner image", () => {
-    const { getByLabelText } = renderWithRelay({
+    const { queryByLabelText } = renderWithRelay({
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(getByLabelText("Avatar")).toBeTruthy()
+    expect(queryByLabelText("AvatarImage")).toBeOnTheScreen()
+    expect(queryByLabelText("Avatar")).not.toBeOnTheScreen()
   })
 
   it("renders partner type", () => {
@@ -91,7 +92,8 @@ describe("PartnerCard", () => {
     })
 
     expect(getByText("TG")).toBeTruthy()
-    expect(queryByLabelText("Avatar")).toBeFalsy()
+    expect(queryByLabelText("AvatarImage")).not.toBeOnTheScreen()
+    expect(queryByLabelText("Avatar")).toBeOnTheScreen()
   })
 
   it("truncates partner locations correctly", () => {
