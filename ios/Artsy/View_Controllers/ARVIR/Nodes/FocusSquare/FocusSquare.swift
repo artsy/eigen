@@ -14,7 +14,7 @@ import ARKit
  */
 class FocusSquare: SCNNode {
     // MARK: - Types
-    
+
     enum State: Equatable {
         case initializing
         case detecting(raycastResult: ARRaycastResult, camera: ARCamera?)
@@ -48,7 +48,7 @@ class FocusSquare: SCNNode {
     var lastPosition: SIMD3<Float>? {
         switch state {
         case .initializing: return nil
-        case .detecting(let raycastResult, _): return raycastResult.worldTransform.translation
+        case .detecting(let raycastResult, _): return  raycastResult.worldTransform.translation
         }
     }
     

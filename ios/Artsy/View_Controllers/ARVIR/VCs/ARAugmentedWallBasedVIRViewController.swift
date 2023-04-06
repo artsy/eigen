@@ -8,6 +8,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
 
+    var cursor : FocusSquare?
+
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
         self.sceneView = ARSCNView()
