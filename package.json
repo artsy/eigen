@@ -33,7 +33,8 @@
     "init-metaflags": "jq -Rn '{ startStorybook: false }' | sponge metaflags.json",
     "install:all": "./scripts/install",
     "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
-    "link-local-palette": "./scripts/yalc-link-local-palette",
+    "local-palette-dev": "./scripts/yalc-link-local-palette",
+    "local-palette-dev:stop": "./scripts/yalc-unlink-local-palette",
     "lint": "eslint --cache --cache-location '.cache/eslint/' --ext .ts,.tsx --fix",
     "lint:all": "yarn lint .",
     "open-sim": "open -a Simulator",
@@ -71,7 +72,6 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
     "type-check": "yarn relay; yarn tsc",
-    "unlink-local-palette": "./scripts/yalc-unlink-local-palette",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
