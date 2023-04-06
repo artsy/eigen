@@ -6,6 +6,7 @@ import { ViewToken, ViewabilityConfig } from "react-native"
 import { useTracking } from "react-tracking"
 
 type TrackableItem = { id: string; index: number }
+
 export const useItemsImpressionsTracking = ({
   isRailVisible = true,
   contextModule,
