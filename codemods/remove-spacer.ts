@@ -7,7 +7,7 @@
 
 import { Transform } from "jscodeshift"
 
-const toRemove = "SimpleMessage"
+const toRemove = "Color"
 
 const transform: Transform = (file, { jscodeshift: j }, options) => {
   const source = j(file.source)
