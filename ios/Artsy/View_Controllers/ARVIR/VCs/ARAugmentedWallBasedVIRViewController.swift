@@ -96,10 +96,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         }
     }
 
-
-
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         // TODO: handle this cases
         // Understand frustum, achieve immortality
 //        let isAnyObjectInView = virtualObjectLoader.loadedObjects.contains { object in
