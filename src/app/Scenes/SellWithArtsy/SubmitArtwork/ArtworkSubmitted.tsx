@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, ArtsyLogoHeader } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   submitAnotherArtworkEvent,
@@ -10,7 +10,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Button } from "palette"
-import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtwork"

@@ -37,7 +37,6 @@ const getStories = () => {
     require("../palette/elements/Checkbox/Checkbox.stories.tsx"),
     require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories.tsx"),
     require("../palette/elements/Dialog/Dialog.stories.tsx"),
-    require("../palette/elements/Header/Header.stories.tsx"),
     require("../palette/elements/Input/Input.stories.tsx"),
     require("../palette/elements/LineGraph/LineGraph.stories.tsx"),
     require("../palette/elements/List/List.stories.tsx"),
