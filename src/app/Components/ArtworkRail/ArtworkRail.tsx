@@ -8,7 +8,7 @@ import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import React, { ReactElement } from "react"
-import { FlatList } from "react-native"
+import { FlatList, ViewabilityConfig } from "react-native"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
 
@@ -25,6 +25,8 @@ interface CommonArtworkRailProps {
   showSaveIcon?: boolean
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
   onMorePress?: () => void
+  viewabilityConfig?: ViewabilityConfig | undefined
+  onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps {
@@ -49,6 +51,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   artworks,
   showSaveIcon = false,
   trackingContextScreenOwnerType,
+  viewabilityConfig,
+  onViewableItemsChanged,
   onMorePress,
 }) => {
   const isTablet = isPad()
@@ -90,6 +94,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}
+      viewabilityConfig={viewabilityConfig}
+      onViewableItemsChanged={onViewableItemsChanged}
     />
   )
 }

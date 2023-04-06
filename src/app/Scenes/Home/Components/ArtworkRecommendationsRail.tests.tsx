@@ -30,6 +30,7 @@ describe("ArtworkRecommendationsRail", () => {
         scrollRef={null}
         title="Recommended Artworks"
         me={queryData.me!}
+        isRailVisible
       />
     )
   }

@@ -248,6 +248,12 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableSkeletonAnimation",
   },
+  ARImpressionsTrackingHomeItemViews: {
+    description: "Enable Tracking Items views on Home Screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARImpressionsTrackingHomeItemViews",
+  },
 })
 
 export interface DevToggleDescriptor {
