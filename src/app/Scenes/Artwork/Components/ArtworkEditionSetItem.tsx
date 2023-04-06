@@ -1,7 +1,6 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, RadioButton } from "@artsy/palette-mobile"
 import { ArtworkEditionSetItem_item$data } from "__generated__/ArtworkEditionSetItem_item.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { RadioButton } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
