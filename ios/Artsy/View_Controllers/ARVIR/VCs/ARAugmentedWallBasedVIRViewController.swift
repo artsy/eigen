@@ -95,6 +95,21 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
 
+        // TODO: handle this cases
+        // Understand frustum, achieve immortality
+//        let isAnyObjectInView = virtualObjectLoader.loadedObjects.contains { object in
+//            return sceneView.isNode(object, insideFrustumOf: sceneView.pointOfView!)
+//        }
+
+        DispatchQueue.main.async {
+            self.updateCursor(isObjectVisible: false)
+
+            // If the object selection menu is open, update availability of items
+//            if self.objectsViewController?.viewIfLoaded?.window != nil {
+//                self.objectsViewController?.updateObjectAvailability()
+//            }
+        }
+
     }
 
     // MARK: Cursor
