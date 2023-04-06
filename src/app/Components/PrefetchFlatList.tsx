@@ -34,7 +34,7 @@ export function PrefetchFlatList<ItemType>({
 
   const viewabilityConfigRef = useRef({
     waitForInteraction: true,
-    viewAreaCoveragePercentThreshold: 0,
+    itemVisiblePercentThreshold: 0,
     ...viewabilityConfig,
   })
 
