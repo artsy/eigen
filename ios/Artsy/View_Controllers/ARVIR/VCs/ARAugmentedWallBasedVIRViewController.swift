@@ -10,6 +10,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     var cursor = FocusSquare()
 
+    /// A serial queue used to coordinate adding or removing nodes from the scene.
+    let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
+
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
         self.sceneView = ARSCNView()
@@ -94,20 +97,59 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     }
 
+    // MARK: Cursor
+
+    func updateCursor(isObjectVisible: Bool) {
+        // TODO: Handle commented out scenarios
+        if isObjectVisible { //} || coachingOverlay.isActive {
+           cursor.hide()
+        } else {
+            cursor.unhide()
+//            statusViewController.scheduleMessage("TRY MOVING LEFT OR RIGHT", inSeconds: 5.0, messageType: .focusSquare)
+        }
+
+        // Perform ray casting only when ARKit tracking is in a good state.
+        if let camera = sceneView.session.currentFrame?.camera, case .normal = camera.trackingState,
+            let query = sceneView.getRaycastQuery(),
+            let result = sceneView.castRay(for: query).first {
+
+            updateQueue.async {
+                self.sceneView.scene.rootNode.addChildNode(self.cursor)
+                self.cursor.state = .detecting(raycastResult: result, camera: camera)
+            }
+//            if !coachingOverlay.isActive {
+//                addObjectButton.isHidden = false
+//            }
+//            statusViewController.cancelScheduledMessage(for: .focusSquare)
+        } else {
+            updateQueue.async {
+                self.cursor.state = .initializing
+                self.sceneView.pointOfView?.addChildNode(self.cursor)
+            }
+//            addObjectButton.isHidden = true
+//            objectsViewController?.dismiss(animated: false, completion: nil)
+        }
+    }
+
     // MARK: Noise
 
     func setupUI() {
+
+        guard let view = self.view else {
+            return
+        }
+
         let backButton = setupBackButton()
-        self.view.addSubview(backButton)
+        view.addSubview(backButton)
 
         let backButtonConstraints = self.backButtonConstraints(backButton: backButton)
-        self.view.addConstraints(backButtonConstraints)
+        view.addConstraints(backButtonConstraints)
 
         let informationView = ARInformationView()
         let informationViewStates = self.viewStates(forInformationView: informationView)
         informationView.setup(with: informationViewStates)
         informationView.alpha = 0
-        self.view.addSubview(informationView)
+        view.addSubview(informationView)
         informationView.alignLeading("0", trailing: "0", toView: view)
         informationView.constrainHeight("221")
         self.informationViewBottomConstraint = informationView.alignBottomEdge(withView: view, predicate: "0")

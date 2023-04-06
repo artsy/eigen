@@ -1687,7 +1687,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CB18283F29DEFA40006A0805 /* FocusSquare */ = {
+		CB18283F29DEFA40006A0805 /* AppleARCode */ = {
 			isa = PBXGroup;
 			children = (
 				CB18284229DEFA6D006A0805 /* LICENSE */,
@@ -1695,7 +1695,7 @@
 				CB18284029DEFA5A006A0805 /* FocusSquareSegment.swift */,
 				CB18284729DF3F75006A0805 /* Utilities.swift */,
 			);
-			path = FocusSquare;
+			path = AppleARCode;
 			sourceTree = "<group>";
 		};
 		CB18284229DEFA6D006A0805 /* LICENSE */ = {
@@ -2536,7 +2536,7 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
-		CB762B2E2911A5E100881194 /* New Group */ = {
+		CB762B2E2911A5E100881194 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
 				CB762B2F2911A5E100881194 /* ARVIRModalClose.png */,
@@ -2548,7 +2548,7 @@
 				CB762B352911A5E100881194 /* ARVIRShadow.png */,
 				CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */,
 			);
-			path = "New Group";
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		CB8672711C005915043C63E8 /* Pods */ = {
@@ -2968,7 +2968,7 @@
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
-				CB762B2E2911A5E100881194 /* New Group */,
+				CB762B2E2911A5E100881194 /* Assets */,
 				CBE3253227E275A100395A93 /* Nodes */,
 				CBE3253727E275A100395A93 /* ARAugmentedRealityConfig.h */,
 				CBE3253827E275A100395A93 /* VCs */,
@@ -2982,7 +2982,7 @@
 		CBE3253227E275A100395A93 /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				CB18283F29DEFA40006A0805 /* FocusSquare */,
+				CB18283F29DEFA40006A0805 /* AppleARCode */,
 				CBE3253327E275A100395A93 /* ARSCNWallNode.m */,
 				CBE3253427E275A100395A93 /* SCNArtworkNode.m */,
 				CBE3253527E275A100395A93 /* ARSCNWallNode.h */,
