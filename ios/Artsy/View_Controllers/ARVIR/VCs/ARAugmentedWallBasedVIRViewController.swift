@@ -10,6 +10,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     var cursor = FocusSquare()
 
+    let coachingOverlay = ARCoachingOverlayView()
+
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
 
@@ -47,6 +49,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
         // Set up scene content.
         self.sceneView.scene.rootNode.addChildNode(cursor)
+
+        // Set up coaching overlay.
+        setupCoachingOverlay()
 
         setupUI()
     }
@@ -116,7 +121,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     func updateCursor(isObjectVisible: Bool) {
         // TODO: Handle commented out scenarios
-        if isObjectVisible { //} || coachingOverlay.isActive {
+        if isObjectVisible || coachingOverlay.isActive {
            cursor.hide()
         } else {
             cursor.unhide()
@@ -132,9 +137,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
                 self.sceneView.scene.rootNode.addChildNode(self.cursor)
                 self.cursor.state = .detecting(raycastResult: result, camera: camera)
             }
-//            if !coachingOverlay.isActive {
-//                addObjectButton.isHidden = false
-//            }
+            if !coachingOverlay.isActive {
+            //    addObjectButton.isHidden = false
+            }
 //            statusViewController.cancelScheduledMessage(for: .focusSquare)
         } else {
             updateQueue.async {
@@ -254,5 +259,57 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         congratsArtworkViewState.contents = doneArtworkButton
 
         return [positionArtworkViewState, congratsArtworkViewState]
+    }
+}
+
+
+/// - Tag: CoachingOverlayViewDelegate
+extension ARAugmentedWallBasedVIRViewController: ARCoachingOverlayViewDelegate {
+
+    /// - Tag: HideUI
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        // upperControlsView.isHidden = true
+    }
+
+    /// - Tag: PresentUI
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        // upperControlsView.isHidden = false
+    }
+
+    /// - Tag: StartOver
+    func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+        // restartExperience()
+    }
+
+    func setupCoachingOverlay() {
+        // Set up coaching view
+        coachingOverlay.session = sceneView.session
+        coachingOverlay.delegate = self
+
+        coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
+        sceneView.addSubview(coachingOverlay)
+
+        NSLayoutConstraint.activate([
+            coachingOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            coachingOverlay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            coachingOverlay.widthAnchor.constraint(equalTo: view.widthAnchor),
+            coachingOverlay.heightAnchor.constraint(equalTo: view.heightAnchor)
+        ])
+
+        setActivatesAutomatically()
+
+        // Most of the virtual objects in this sample require a horizontal surface,
+        // therefore coach the user to find a horizontal plane.
+        setGoal()
+    }
+
+    /// - Tag: CoachingActivatesAutomatically
+    func setActivatesAutomatically() {
+        coachingOverlay.activatesAutomatically = true
+    }
+
+    /// - Tag: CoachingGoal
+    func setGoal() {
+        coachingOverlay.goal = .verticalPlane
     }
 }
