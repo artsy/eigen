@@ -15,7 +15,7 @@ import {
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { debounce, sortBy } from "lodash"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import { useMemo, useRef, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { useTracking } from "react-tracking"

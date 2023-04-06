@@ -7,7 +7,7 @@ import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   LayoutAnimation,

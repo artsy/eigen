@@ -1,4 +1,4 @@
-import { Input, InputProps, InputRef } from "palette"
+import { Input, InputProps, InputRef } from "@artsy/palette-mobile"
 import { Select } from "palette/elements/Select"
 import { SelectProps } from "palette/elements/Select/Select"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"

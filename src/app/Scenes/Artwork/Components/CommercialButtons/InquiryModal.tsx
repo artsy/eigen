@@ -9,7 +9,7 @@ import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import { Checkbox } from "@artsy/palette-mobile"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"

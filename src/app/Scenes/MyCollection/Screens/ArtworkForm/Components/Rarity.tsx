@@ -1,9 +1,8 @@
-import { Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, Text, Separator, Input, INPUT_HEIGHT, InputTitle } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { Input, INPUT_HEIGHT, InputTitle } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 

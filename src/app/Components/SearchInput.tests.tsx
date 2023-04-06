@@ -1,6 +1,6 @@
+import { InputRef } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { InputRef } from "palette/elements/Input/Input"
 import { useRef } from "react"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 

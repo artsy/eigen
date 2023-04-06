@@ -1,9 +1,8 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Input } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { useFormikContext } from "formik"
-import { Input } from "palette"
 import React, { useEffect, useState } from "react"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 

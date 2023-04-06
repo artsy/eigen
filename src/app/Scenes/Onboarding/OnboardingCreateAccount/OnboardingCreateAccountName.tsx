@@ -1,7 +1,7 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"
 import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"

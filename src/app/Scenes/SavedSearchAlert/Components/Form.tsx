@@ -1,4 +1,4 @@
-import { CloseIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { CloseIcon, Input, InputTitle, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Pill } from "app/Components/Pill"
 import {
@@ -8,7 +8,7 @@ import {
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Button, Input, InputTitle } from "palette"
+import { Button } from "palette"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {

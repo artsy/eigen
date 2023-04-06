@@ -4,6 +4,8 @@ import {
   CloseIcon,
   CheckIcon,
   TriangleDown,
+  INPUT_HEIGHT,
+  InputTitle,
   Flex,
   useColor,
   Text,
@@ -12,8 +14,7 @@ import {
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
-import { InputTitle, Touchable } from "palette"
-import { INPUT_HEIGHT } from "palette/elements/Input"
+import { Touchable } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 

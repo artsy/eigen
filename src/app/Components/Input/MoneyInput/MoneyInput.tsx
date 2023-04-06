@@ -1,16 +1,24 @@
-import { Spacer, TriangleDown, Flex, useColor, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  TriangleDown,
+  Flex,
+  useColor,
+  Text,
+  InputProps,
+  InputRef,
+  computeBorderColor,
+} from "@artsy/palette-mobile"
 import { ThemeV3 } from "@artsy/palette-tokens"
-import { InputProps, InputRef, Touchable } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
-} from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
-import { computeBorderColor } from "palette/elements/Input/Input"
+} from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
 import {
   concatDigitsAndCents,
   deformatMoney,
   formatMoney,
-} from "palette/elements/Input/MoneyInput/moneyInputHelpers"
+} from "app/Components/Input/MoneyInput/moneyInputHelpers"
+import { Touchable } from "palette"
 import { SelectOption } from "palette/elements/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 

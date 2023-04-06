@@ -1,4 +1,4 @@
-import { InputRef } from "palette"
+import { InputRef } from "@artsy/palette-mobile"
 import { createContext, Ref, RefObject, useRef } from "react"
 
 export const SearchContext = createContext<{

@@ -1,7 +1,7 @@
 import { Flex, Separator } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import React, { useEffect, useState } from "react"
 import { Alert } from "react-native"
 import {

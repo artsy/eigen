@@ -1,6 +1,6 @@
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import { Dimensions } from "./Dimensions"
 
 jest.mock("formik")

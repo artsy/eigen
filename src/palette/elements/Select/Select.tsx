@@ -7,11 +7,12 @@ import {
   Text,
   useTextStyleForPalette,
   Separator,
+  INPUT_HEIGHT,
+  InputTitle,
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
 import { Touchable } from "palette"
-import { INPUT_HEIGHT, InputTitle } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 

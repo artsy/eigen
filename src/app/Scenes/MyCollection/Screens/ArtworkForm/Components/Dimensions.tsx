@@ -3,7 +3,7 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { throttle } from "lodash"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 
 export const Dimensions: React.FC = () => {

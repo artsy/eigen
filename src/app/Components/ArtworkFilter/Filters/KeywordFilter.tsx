@@ -7,7 +7,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
-import { Input } from "palette"
+import { Input } from "@artsy/palette-mobile"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
