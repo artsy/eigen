@@ -4,9 +4,9 @@ import { Flex } from "@artsy/palette-mobile"
 import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
 import { Button } from "app/Components/Button"
-import { Input } from "@artsy/palette-mobile"
-import { ScrollView } from "react-native"
+import { Input } from "app/Components/Input"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { ScrollView } from "react-native"
 
 storiesOf("ArtsyKeyboardAvoidingView", module).add("ArtsyKeyboardAvoidingView", () => (
   <ArtsyKeyboardAvoidingView>

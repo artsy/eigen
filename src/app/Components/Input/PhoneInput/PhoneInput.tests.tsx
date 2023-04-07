@@ -1,8 +1,8 @@
 import { Text } from "@artsy/palette-mobile"
+import { Input } from "app/Components/Input"
+import { Select } from "app/Components/Select"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Input } from "@artsy/palette-mobile"
-import { Select } from "app/Components/Select"
 import { act } from "react-test-renderer"
 import { PhoneInput } from "./PhoneInput"
 

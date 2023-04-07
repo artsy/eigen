@@ -4,12 +4,12 @@ import {
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { Input } from "app/Components/Input"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
-import { Input } from "@artsy/palette-mobile"
 import { Text } from "react-native"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
 import { getEssentialProps } from "./helper"

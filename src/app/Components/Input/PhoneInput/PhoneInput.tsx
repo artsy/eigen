@@ -1,20 +1,12 @@
-import {
-  Spacer,
-  TriangleDown,
-  Flex,
-  useColor,
-  Text,
-  InputProps,
-  InputRef,
-} from "@artsy/palette-mobile"
+import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
+import { InputProps, InputRef } from "app/Components/Input/Input"
+import { SelectOption } from "app/Components/Select"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Touchable } from "@artsy/palette-mobile"
-import { SelectOption } from "app/Components/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"

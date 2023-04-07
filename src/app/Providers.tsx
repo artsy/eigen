@@ -1,4 +1,4 @@
-import { Theme, Spinner } from "@artsy/palette-mobile"
+import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -26,6 +26,9 @@ export const Providers: React.FC = ({ children }) =>
       UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
+      // FIXME: Only use one from palette-mobile
+      // @ts-ignore
+      ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
       ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
       RetryErrorBoundary,
@@ -49,6 +52,9 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       GlobalStoreProvider,
       SafeAreaProvider,
       ProvideScreenDimensions,
+      // FIXME: Only use one from palette-mobile
+      // @ts-ignore
+      ScreenDimensionsProvider,
       !skipRelay && RelayDefaultEnvProvider,
       Theme,
       PopoverMessageProvider,

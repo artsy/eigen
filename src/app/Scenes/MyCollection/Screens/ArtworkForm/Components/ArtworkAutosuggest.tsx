@@ -1,7 +1,7 @@
-import { Flex, Text, Input } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
 

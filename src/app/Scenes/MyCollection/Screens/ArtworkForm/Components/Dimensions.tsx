@@ -1,9 +1,9 @@
 import { Spacer, Flex, Text, RadioButton } from "@artsy/palette-mobile"
+import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { throttle } from "lodash"
-import { Input } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 
 export const Dimensions: React.FC = () => {

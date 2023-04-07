@@ -1,6 +1,6 @@
-import { Input, InputTitle } from "@artsy/palette-mobile"
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
+import { Input, InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"

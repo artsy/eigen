@@ -1,3 +1,4 @@
+import { waitFor } from "@testing-library/react-native"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
@@ -10,7 +11,7 @@ describe("ArtistAutosuggestRow", () => {
     displayLabel: "Caspar David Friedrich",
   }
 
-  it("renders displayLabel of result artist", () => {
+  it("renders displayLabel of result artist", async () => {
     const { findByText } = renderWithWrappers(
       <ArtistAutosuggestRow
         highlight="caspar david"
@@ -18,7 +19,10 @@ describe("ArtistAutosuggestRow", () => {
         onResultPress={onResultPress}
       />
     )
-    const artistName = findByText(result.displayLabel)
-    expect(artistName).toBeTruthy()
+
+    await waitFor(() => {
+      const artistName = findByText(result.displayLabel)
+      expect(artistName).toBeTruthy()
+    })
   })
 })

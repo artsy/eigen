@@ -2,12 +2,12 @@ import { Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { Input } from "app/Components/Input"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { Input } from "@artsy/palette-mobile"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   LayoutAnimation,

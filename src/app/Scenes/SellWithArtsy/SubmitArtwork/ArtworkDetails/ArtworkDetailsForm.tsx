@@ -1,15 +1,7 @@
-import {
-  BulletedItem,
-  Spacer,
-  Flex,
-  Box,
-  Text,
-  RadioButton,
-  Input,
-  InputTitle,
-} from "@artsy/palette-mobile"
+import { BulletedItem, Spacer, Flex, Box, Text, RadioButton } from "@artsy/palette-mobile"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { LinkButton } from "app/Components/Button/LinkButton"
+import { Input, InputTitle } from "app/Components/Input"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { Select, SelectOption } from "app/Components/Select"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"

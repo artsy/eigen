@@ -1,5 +1,6 @@
-import { Input, InputProps, InputRef } from "@artsy/palette-mobile"
-import { Select, SelectProps } from "app/Components/Select"
+import { Input, InputProps, InputRef } from "app/Components/Input/Input"
+import { Select } from "app/Components/Select"
+import { SelectProps } from "app/Components/Select/Select"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 
 // Mark the props that should pass to Select Component with ForSelect suffix

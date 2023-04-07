@@ -10,8 +10,8 @@ import {
   Text,
   Join,
   Message,
-  Input,
- Touchable } from "@artsy/palette-mobile"
+  Touchable,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
@@ -20,6 +20,7 @@ import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.gra
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Input } from "app/Components/Input"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"

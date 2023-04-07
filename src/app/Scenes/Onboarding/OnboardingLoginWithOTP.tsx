@@ -1,22 +1,14 @@
-import {
-  Spacer,
-  Flex,
-  Box,
-  useColor,
-  Text,
-  LinkText,
-  SimpleMessage,
-  Input,
-} from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useColor, Text, LinkText, SimpleMessage } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Button } from "app/Components/Button"
+import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 

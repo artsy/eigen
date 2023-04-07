@@ -1,12 +1,12 @@
 import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { Button } from "app/Components/Button"
+import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
-import { useFormikContext } from "formik"
-import { Button } from "app/Components/Button"
-import { Input } from "@artsy/palette-mobile"
-import { Platform, ScrollView } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useFormikContext } from "formik"
+import { Platform, ScrollView } from "react-native"
 import { RequestForPriceEstimateFormikSchema } from "./RequestForPriceEstimateScreen"
 
 export const RequestForPriceEstimateForm = () => {

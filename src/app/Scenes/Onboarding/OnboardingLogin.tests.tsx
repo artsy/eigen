@@ -1,4 +1,4 @@
-import { Input } from "@artsy/palette-mobile"
+import { Input } from "app/Components/Input"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "@artsy/palette-mobile"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
