@@ -53,6 +53,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         // Set up coaching overlay.
         setupCoachingOverlay()
 
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(placeArtwork))
+        sceneView.addGestureRecognizer(tapGesture)
+
         setupUI()
     }
 
@@ -75,6 +78,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     @objc func placeArtwork() {
         print("Here is where I should place the artwork")
+        return
     }
 
     @objc func dismissInformationalViewAnimated() {
