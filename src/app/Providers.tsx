@@ -16,50 +16,47 @@ import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
-export const Providers = ({
-  children,
-  skipGestureHandler = false,
-  skipUnleash = false,
-  skipFancyModal = false,
-  skipActionSheet = false,
-  skipSuspense = false,
-  skipWebsocket = false,
-  skipRetryErrorBoundary = false,
-  skipRelay = false,
-}: {
-  children?: React.ReactNode
-  skipGestureHandler?: boolean
-  skipUnleash?: boolean
-  skipFancyModal?: boolean
-  skipActionSheet?: boolean
-  skipSuspense?: boolean
-  skipWebsocket?: boolean
-  skipRetryErrorBoundary?: boolean
-  skipRelay?: boolean
-  simpleTheme?: boolean
-}) =>
+export const Providers: React.FC = ({ children }) =>
   combineProviders(
     [
-      // order matters here, be careful!
-      // if Provider A is using another Provider B, then A needs to appear below B.
-      !skipGestureHandler && GestureHandlerProvider,
+      // If Provider A is using another Provider B, then A needs to appear below B.
+      GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      !skipUnleash && UnleashProvider, // uses: GlobalStoreProvider
+      UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
-      !skipRelay && RelayDefaultEnvProvider,
-      ThemeProvider, // uses: GlobalStoreProvider
-      !skipRetryErrorBoundary && RetryErrorBoundary,
-      !skipSuspense && SuspenseProvider,
-      !skipActionSheet && ActionSheetProvider,
+      RelayDefaultEnvProvider,
+      ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
+      RetryErrorBoundary,
+      SuspenseProvider,
+      ActionSheetProvider,
       PopoverMessageProvider,
-      !skipFancyModal && _FancyModalPageWrapper,
+      _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
-      !skipWebsocket && GravityWebsocketContextProvider, // uses GlobalStoreProvider
+      GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
     children
   )
+
+export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
+  children,
+  skipRelay = false,
+}) => {
+  return combineProviders(
+    [
+      TrackingProvider,
+      GlobalStoreProvider,
+      SafeAreaProvider,
+      ProvideScreenDimensions,
+      !skipRelay && RelayDefaultEnvProvider,
+      Theme,
+      PopoverMessageProvider,
+      ToastProvider,
+    ],
+    children
+  )
+}
 
 // Providers with preset props
 
@@ -88,7 +85,7 @@ class PureWrapper extends Component {
 }
 
 // theme with dark mode support
-function ThemeProvider({ children }: { children?: React.ReactNode }) {
+function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
