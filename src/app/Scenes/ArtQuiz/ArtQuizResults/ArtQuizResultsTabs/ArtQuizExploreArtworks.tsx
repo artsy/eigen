@@ -4,7 +4,7 @@ import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { graphql, useFragment } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export const ArtQuizExploreArtworks = ({
   recommendedArtworks,

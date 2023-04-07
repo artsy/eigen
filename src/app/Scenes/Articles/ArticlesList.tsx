@@ -13,7 +13,7 @@ import { screen } from "app/utils/track/helpers"
 import _ from "lodash"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 interface ArticlesListProps {
   articles: ArticleCard_article$data[]
   isLoading: () => boolean

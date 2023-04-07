@@ -5,8 +5,8 @@ import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeig
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
 import { View } from "react-native"
-import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
-import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/hooks"
+import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { BackButton } from "./BackButton"
 
 const Stack = createNativeStackNavigator()

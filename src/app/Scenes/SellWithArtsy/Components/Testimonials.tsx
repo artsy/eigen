@@ -10,7 +10,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from "react-native-reanimated"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export const Testimonials: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)

@@ -46,7 +46,7 @@
     "postinstall": "yarn init-metaflags; prettier --write package.json; ./scripts/update-echo",
     "prepare": "patch-package && husky install",
     "prestart": "./scripts/set-storybook-environment.js",
-    "prestart-storybook": "yarn sb-rn-get-stories --config-path ./src/storybook",
+    "prestart-storybook": "yarn sb-rn-get-stories --config-path ./src/app/storybook",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
     "relay": "[ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && relay-compiler",
@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.120.0",
-    "@artsy/palette-mobile": "11.0.7",
+    "@artsy/palette-mobile": "11.0.10",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",

@@ -13,7 +13,7 @@ import _ from "lodash"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 

@@ -11,7 +11,7 @@ import { isPad } from "app/utils/hardware"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {

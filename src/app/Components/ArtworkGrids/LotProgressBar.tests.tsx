@@ -1,8 +1,8 @@
+import { ProgressBar } from "@artsy/palette-mobile"
 import { DurationProvider } from "app/Components/Countdown"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import moment from "moment"
-import { ProgressBar } from "palette"
 import { LotProgressBar, LotProgressBarProps } from "./LotProgressBar"
 
 describe("LotProgressBar", () => {

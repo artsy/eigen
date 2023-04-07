@@ -16,7 +16,7 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useState } from "react"
 import {
   ActivityIndicator,

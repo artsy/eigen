@@ -7,9 +7,9 @@ import {
 } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Image } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void

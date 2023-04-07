@@ -16,7 +16,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { compact, isEmpty } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

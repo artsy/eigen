@@ -11,7 +11,7 @@ import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMe
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

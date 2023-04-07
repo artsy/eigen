@@ -33,7 +33,7 @@ import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-na
 import FastImage from "react-native-fast-image"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { AuctionResultHelperData, auctionResultText } from "./helpers"
 

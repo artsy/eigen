@@ -1,12 +1,11 @@
-import { Theme, Spinner } from "@artsy/palette-mobile"
+import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Theme as LegacyTheme } from "palette"
+import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { ProvideScreenDimensions } from "shared/hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
@@ -17,52 +16,53 @@ import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
-export const Providers = ({
-  children,
-  skipGestureHandler = false,
-  skipUnleash = false,
-  skipFancyModal = false,
-  skipActionSheet = false,
-  skipSuspense = false,
-  skipWebsocket = false,
-  skipRetryErrorBoundary = false,
-  skipRelay = false,
-  simpleTheme = false,
-}: {
-  children?: React.ReactNode
-  skipGestureHandler?: boolean
-  skipUnleash?: boolean
-  skipFancyModal?: boolean
-  skipActionSheet?: boolean
-  skipSuspense?: boolean
-  skipWebsocket?: boolean
-  skipRetryErrorBoundary?: boolean
-  skipRelay?: boolean
-  simpleTheme?: boolean
-}) =>
+export const Providers: React.FC = ({ children }) =>
   combineProviders(
     [
-      // order matters here, be careful!
-      // if Provider A is using another Provider B, then A needs to appear below B.
-      !skipGestureHandler && GestureHandlerProvider,
+      // If Provider A is using another Provider B, then A needs to appear below B.
+      GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      !skipUnleash && UnleashProvider, // uses: GlobalStoreProvider
+      UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
-      !skipRelay && RelayDefaultEnvProvider,
-      simpleTheme ? LegacyTheme : LegacyThemeProvider, // uses: GlobalStoreProvider
-      simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
-      !skipRetryErrorBoundary && RetryErrorBoundary,
-      !skipSuspense && SuspenseProvider,
-      !skipActionSheet && ActionSheetProvider,
+      // FIXME: Only use one from palette-mobile
+      // @ts-ignore
+      ScreenDimensionsProvider,
+      RelayDefaultEnvProvider,
+      ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
+      RetryErrorBoundary,
+      SuspenseProvider,
+      ActionSheetProvider,
       PopoverMessageProvider,
-      !skipFancyModal && _FancyModalPageWrapper,
+      _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
-      !skipWebsocket && GravityWebsocketContextProvider, // uses GlobalStoreProvider
+      GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
     children
   )
+
+export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
+  children,
+  skipRelay = false,
+}) => {
+  return combineProviders(
+    [
+      TrackingProvider,
+      GlobalStoreProvider,
+      SafeAreaProvider,
+      ProvideScreenDimensions,
+      // FIXME: Only use one from palette-mobile
+      // @ts-ignore
+      ScreenDimensionsProvider,
+      !skipRelay && RelayDefaultEnvProvider,
+      Theme,
+      PopoverMessageProvider,
+      ToastProvider,
+    ],
+    children
+  )
+}
 
 // Providers with preset props
 
@@ -91,19 +91,7 @@ class PureWrapper extends Component {
 }
 
 // theme with dark mode support
-function LegacyThemeProvider({ children }: { children?: React.ReactNode }) {
-  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-  return (
-    <LegacyTheme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
-      {children}
-    </LegacyTheme>
-  )
-}
-
-// theme with dark mode support
-function ThemeProvider({ children }: { children?: React.ReactNode }) {
+function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 

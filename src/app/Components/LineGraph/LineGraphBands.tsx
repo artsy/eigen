@@ -1,5 +1,5 @@
 import { Flex, useColor, Text } from "@artsy/palette-mobile"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { ColoredDot } from "./ColoredDot"
 
 export interface LineGraphBandProps {

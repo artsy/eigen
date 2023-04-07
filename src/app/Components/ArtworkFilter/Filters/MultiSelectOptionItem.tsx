@@ -2,7 +2,7 @@ import { Check, CHECK_SIZE, Flex, Box, useSpace, Text } from "@artsy/palette-mob
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "app/Components/TouchableRow"
 import React, { memo } from "react"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 
 const OPTIONS_MARGIN_LEFT = 0.5

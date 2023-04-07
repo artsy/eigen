@@ -1,7 +1,7 @@
 import { AuctionIcon, ArtworkIcon, CloseIcon, CheckIcon } from "@artsy/palette-mobile"
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { List } from "storybook/helpers"
+import { List } from "app/storybook/helpers"
 import { Pill } from "./Pill"
 
 storiesOf("Pill", module)

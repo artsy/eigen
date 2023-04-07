@@ -23,7 +23,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import {

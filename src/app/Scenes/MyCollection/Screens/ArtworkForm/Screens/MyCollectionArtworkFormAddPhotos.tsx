@@ -10,7 +10,7 @@ import { PlaceholderBox } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 const MARGIN = 2
 export const DELAY_TIME_MS = 500

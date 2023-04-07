@@ -5,7 +5,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
 

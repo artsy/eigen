@@ -5,7 +5,7 @@ import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.gra
 import { navigate } from "app/system/navigation/navigate"
 import { promptForReview } from "app/utils/promptForReview"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql, useFragment, useRelayEnvironment } from "react-relay"

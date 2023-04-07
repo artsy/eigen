@@ -9,7 +9,7 @@ import { guardFactory } from "app/utils/types/guardFactory"
 import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
 import {

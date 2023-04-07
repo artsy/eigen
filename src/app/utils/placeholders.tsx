@@ -4,7 +4,7 @@ import { useSkeletonAnimation } from "app/utils/animations/useSkeletonAnimation"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type PlaceholderContextValue = {}
 

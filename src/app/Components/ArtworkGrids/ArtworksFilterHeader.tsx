@@ -1,5 +1,5 @@
 import { bullet, FilterIcon, Flex, Text, Separator } from "@artsy/palette-mobile"
-import { TouchableHighlightColor } from "palette"
+import { TouchableHighlightColor } from "@artsy/palette-mobile"
 
 interface FilterHeaderProps {
   children?: React.ReactNode

@@ -9,7 +9,7 @@ import { groupBy } from "lodash"
 import moment from "moment"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
 

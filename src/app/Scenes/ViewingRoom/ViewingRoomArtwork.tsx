@@ -1,4 +1,4 @@
-import { Spacer, EyeOpenedIcon, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, EyeOpenedIcon, Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -10,7 +10,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Button, Touchable } from "palette"
+import { Button } from "app/Components/Button"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -21,7 +21,7 @@ import {
   useQueryLoader,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 

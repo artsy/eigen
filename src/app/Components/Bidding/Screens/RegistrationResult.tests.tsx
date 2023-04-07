@@ -3,7 +3,7 @@ import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 
 import { Linking } from "react-native"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"

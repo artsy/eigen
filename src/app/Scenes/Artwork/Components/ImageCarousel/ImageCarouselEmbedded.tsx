@@ -11,7 +11,7 @@ import {
   Platform,
   View,
 } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"

@@ -3,7 +3,7 @@ import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchas
 import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql } from "react-relay"

@@ -3,7 +3,7 @@ import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { withHooks } from "storybook/decorators"
+import { withHooks } from "app/storybook/decorators"
 import { ArtworksFilterHeader } from "./ArtworksFilterHeader"
 
 export const withFilterProvider: DecoratorFunction<React.ReactNode> = (story) => (

@@ -4,7 +4,7 @@ import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Alert, ScrollView } from "react-native"
 
 interface MyProfileSettingsProps {

@@ -1,11 +1,13 @@
 import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
+import { Button } from "app/Components/Button"
+import { Input } from "app/Components/Input"
+import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useFormikContext } from "formik"
-import { Button, Input, PhoneInput } from "palette"
 import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 
 export const ConsignmentInquiryForm: React.FC<{

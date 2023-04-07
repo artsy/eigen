@@ -13,7 +13,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomView } from "./ImageZoomView"
 import { IndexIndicator } from "./IndexIndicator"

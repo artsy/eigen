@@ -1,16 +1,17 @@
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
+import { Button } from "app/Components/Button"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { normalizeText } from "app/utils/normalizeText"
 import { sortBy } from "lodash"
-import { Button, Input, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
-import { normalizeText } from "shared/utils"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
