@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Text } from "@artsy/palette-mobile"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { graphql } from "react-relay"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 

@@ -15,7 +15,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, isEmpty } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

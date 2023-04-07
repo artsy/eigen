@@ -1,4 +1,4 @@
-import { Pill, PillProps } from "palette"
+import { Pill, PillProps } from "app/Components/Pill"
 import Animated, { FadeInUp, FadeOutDown, Layout } from "react-native-reanimated"
 
 interface FadingPillProps extends PillProps {

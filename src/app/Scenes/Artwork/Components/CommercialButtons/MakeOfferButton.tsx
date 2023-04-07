@@ -4,7 +4,7 @@ import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrder
 import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 
 import React from "react"
 import { Alert } from "react-native"

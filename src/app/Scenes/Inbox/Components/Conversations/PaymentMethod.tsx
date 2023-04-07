@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Separator } from "@artsy/palette-mobile"
 import { PaymentMethod_order$data } from "__generated__/PaymentMethod_order.graphql"
-import { Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface PaymentMethodProps {

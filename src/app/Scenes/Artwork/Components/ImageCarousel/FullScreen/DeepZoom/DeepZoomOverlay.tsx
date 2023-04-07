@@ -3,7 +3,7 @@ import { ImageDescriptor } from "app/Scenes/Artwork/Components/ImageCarousel/Ima
 import { fitInside, Rect } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { DeepZoomLevel } from "./DeepZoomLevel"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import {

@@ -1,6 +1,5 @@
-import { Box, BoxProps } from "@artsy/palette-mobile"
+import { Box, BoxProps, SimpleMessage } from "@artsy/palette-mobile"
 import { ShowArtworksEmptyState_show$data } from "__generated__/ShowArtworksEmptyState_show.graphql"
-import { SimpleMessage } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowArtworksEmptyStateProps extends BoxProps {

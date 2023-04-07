@@ -3,7 +3,7 @@ import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPric
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Select, SelectOption } from "palette/elements/Select"
+import { Select, SelectOption } from "app/Components/Select"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import {

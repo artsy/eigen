@@ -4,7 +4,7 @@ import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackB
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
 import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "app/Scenes/ReverseImage/types"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Image } from "react-native"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "ArtworkNotFound">

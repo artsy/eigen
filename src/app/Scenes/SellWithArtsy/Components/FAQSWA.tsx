@@ -1,9 +1,9 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Image } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export const FAQSWA: React.FC = () => {
   const supportUrl = "https://support.artsy.net/hc/en-us/categories/360003689533-Sell"

@@ -1,6 +1,6 @@
+import { Separator, Join } from "@artsy/palette-mobile"
 import { ArtworkEditionSets_artwork$data } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { compact } from "lodash"
-import { Join, Separator } from "palette"
 import { useEffect, useState } from "react"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"

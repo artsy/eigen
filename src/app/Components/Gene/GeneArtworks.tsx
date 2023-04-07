@@ -1,4 +1,4 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Text, SimpleMessage } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -12,7 +12,6 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { SimpleMessage } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

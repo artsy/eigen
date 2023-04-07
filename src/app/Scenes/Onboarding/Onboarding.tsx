@@ -10,7 +10,7 @@ import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/utils/DevMenu"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"
-import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { ForgotPassword } from "./ForgotPassword"
 import {
   OnboardingCreateAccount,

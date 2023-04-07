@@ -1,6 +1,6 @@
 import { CloseIcon, Spacer, Box, Text } from "@artsy/palette-mobile"
 import { popToRoot } from "app/system/navigation/navigate"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 

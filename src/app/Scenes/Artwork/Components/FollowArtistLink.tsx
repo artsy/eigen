@@ -3,7 +3,7 @@ import { captureMessage } from "@sentry/react-native"
 import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { FollowArtistLink_artist$data } from "__generated__/FollowArtistLink_artist.graphql"
 import { Schema, track } from "app/utils/track"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 

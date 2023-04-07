@@ -3,9 +3,10 @@ import { Spacer } from "@artsy/palette-mobile"
 import { Flex } from "@artsy/palette-mobile"
 import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Input } from "palette"
+import { Button } from "app/Components/Button"
+import { Input } from "app/Components/Input"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { ScrollView } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
 
 storiesOf("ArtsyKeyboardAvoidingView", module).add("ArtsyKeyboardAvoidingView", () => (
   <ArtsyKeyboardAvoidingView>

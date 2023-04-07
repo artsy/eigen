@@ -6,7 +6,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 

@@ -1,5 +1,4 @@
-import { Color } from "@artsy/palette-mobile"
-import { Spinner as PaletteSpinner } from "palette"
+import { Color, Spinner as PaletteSpinner } from "@artsy/palette-mobile"
 import { StyleSheet, View, ViewProps } from "react-native"
 
 interface Props extends ViewProps {

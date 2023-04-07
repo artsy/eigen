@@ -1,8 +1,8 @@
-import { Spacer, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Join } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
-import { Button, Join } from "palette"
+import { Button } from "app/Components/Button"
 import { ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
 export const UnlistedArtworksFAQScreen = () => {
   const { safeAreaInsets } = useScreenDimensions()

@@ -2,7 +2,7 @@ import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArtQuizResultsTabsHeaderTriggerCampaignMutation } from "__generated__/ArtQuizResultsTabsHeaderTriggerCampaignMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { graphql, useMutation } from "react-relay"
 
 interface ArtQuizResultsTabsHeaderProps {

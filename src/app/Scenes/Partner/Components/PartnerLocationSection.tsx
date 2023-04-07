@@ -2,7 +2,7 @@ import { Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { get } from "app/utils/get"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

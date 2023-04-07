@@ -1,7 +1,7 @@
 import { useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+import { Input } from "app/Components/Input"
 import { useFormikContext } from "formik"
-import { Input } from "palette"
 import {
   OnboardingCreateAccountNavigationStack,
   OnboardingCreateAccountScreenWrapper,

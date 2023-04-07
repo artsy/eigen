@@ -11,7 +11,7 @@ import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useEffect, useState } from "react"
 import {
   Alert,
@@ -24,7 +24,7 @@ import {
 
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"

@@ -3,8 +3,8 @@ import { useNavigation, NavigationProp } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "palette"
-import { useBackHandler } from "shared/hooks/useBackHandler"
+import { Button } from "app/Components/Button"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 
 export const ArtQuizWelcome = () => {
   // prevents Android users from going back with hardware button

@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Image } from "react-native"
 
 export const SpeakToTheTeam: React.FC<{

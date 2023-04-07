@@ -3,7 +3,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "app/system/navigation/navigate"
 import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 
 interface InquirySuccessNotificationProps {

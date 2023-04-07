@@ -7,7 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { Box, Flex } from "@artsy/palette-mobile"
+import { Box, Flex, Spinner } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
@@ -16,7 +16,7 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import { Button, Spinner } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useState } from "react"
 import {
   ActivityIndicator,

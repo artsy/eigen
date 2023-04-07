@@ -1,8 +1,21 @@
-import { Spacer, Flex, Box, useSpace, useColor, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Flex,
+  Box,
+  useSpace,
+  useColor,
+  Text,
+  Separator,
+  Join,
+  Message,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
+import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Input } from "app/Components/Input"
+import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
@@ -13,13 +26,12 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Button, Input, Join, Message, MoneyInput, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 

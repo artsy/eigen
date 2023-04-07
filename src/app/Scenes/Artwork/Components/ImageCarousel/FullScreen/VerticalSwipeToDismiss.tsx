@@ -2,7 +2,7 @@ import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarouse
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 /**
  * Wraps the content in a scroll view which provides a 'vertical swipe' facility.

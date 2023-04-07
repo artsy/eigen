@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { InputRef } from "app/Components/Input"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { InputRef } from "palette/elements/Input/Input"
 import { useRef } from "react"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 

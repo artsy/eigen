@@ -5,7 +5,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Image, Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

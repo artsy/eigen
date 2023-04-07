@@ -5,13 +5,13 @@ import {
   OwnerType,
   unfollowedArtist,
 } from "@artsy/cohesion"
-import { Spacer, Text } from "@artsy/palette-mobile"
+import { Spacer, Text, EntityHeader } from "@artsy/palette-mobile"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { EntityHeader, Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

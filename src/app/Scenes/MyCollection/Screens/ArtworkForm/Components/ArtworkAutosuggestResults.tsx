@@ -8,10 +8,10 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { trim } from "lodash"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer$data
