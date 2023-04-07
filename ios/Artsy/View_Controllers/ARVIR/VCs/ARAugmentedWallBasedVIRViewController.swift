@@ -12,6 +12,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     let coachingOverlay = ARCoachingOverlayView()
 
+    var artwork : SCNNode?
+
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
 
@@ -53,6 +55,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         // Set up coaching overlay.
         setupCoachingOverlay()
 
+        self.artwork?.removeFromParentNode()
+        self.artwork = nil
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(placeArtwork))
         sceneView.addGestureRecognizer(tapGesture)
 
@@ -77,7 +82,29 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
 
     @objc func placeArtwork() {
-        print("Here is where I should place the artwork")
+        let cursorWorldTransform = cursor.simdWorldTransform
+        print("Here is where I should place the artwork \(cursorWorldTransform)")
+
+
+        let shadowBox = SCNArtworkNode.shadowNode(with: self.config)
+        let shadow = SCNNode(geometry: shadowBox)
+
+        // Offset the shadow back a bit (behind the work)
+        // and down a bit to imply a higher light source
+        // TODO: don't force unwrap
+        shadow.simdPosition = cursor.simdPosition + SIMD3<Float>(0, 0, Float(shadowBox!.length) / 2)
+        shadow.opacity = 0.4
+        shadow.eulerAngles = SCNVector3(0, 0, -Float.pi)
+        sceneView.scene.rootNode.addChildNode(shadow)
+
+        let box = SCNArtworkNode(config: self.config)
+        let artwork = SCNNode(geometry: box)
+        artwork.simdPosition = cursor.simdPosition
+        artwork.eulerAngles = SCNVector3(0, 0, -Float.pi)
+        sceneView.scene.rootNode.addChildNode(artwork)
+
+        self.artwork = artwork
+
         return
     }
 
