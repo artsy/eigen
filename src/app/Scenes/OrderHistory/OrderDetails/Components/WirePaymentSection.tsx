@@ -119,7 +119,7 @@ const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
           </Text>
           <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
-          <Text>1 Planation Place</Text>
+          <Text>1 Plantation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
           <Spacer y={2} />
@@ -152,7 +152,7 @@ const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
           </Text>
           <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
-          <Text>1 Planation Place</Text>
+          <Text>1 Plantation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
           <Spacer y={2} />

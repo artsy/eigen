@@ -72,7 +72,8 @@ describe("WirePaymentSection", () => {
       iban: "GB30PNBP16567188005417",
       swift: "PNBPGB2L",
       sortCode: "16-56-71",
-      addressLine: "30 Fenchurch Street",
+      addressLine: "1 Plantation Place",
+      addressLine2: "30 Fenchurch Street",
     }
     const { getByText } = renderWithRelay({ CommerceOrder: () => orderInGBP })
 
@@ -81,6 +82,7 @@ describe("WirePaymentSection", () => {
     expect(getByText(artsyBankAccountGBP.swift)).toBeTruthy()
     expect(getByText(artsyBankAccountGBP.sortCode)).toBeTruthy()
     expect(getByText(artsyBankAccountGBP.addressLine)).toBeTruthy()
+    expect(getByText(artsyBankAccountGBP.addressLine2)).toBeTruthy()
   })
 
   it("renders Artsy EUR bank account details when order currency is EUR", async () => {
@@ -88,7 +90,8 @@ describe("WirePaymentSection", () => {
       accountNo: "88005419",
       iban: "GB73PNBP16567188005419",
       swift: "PNBPGB2L",
-      addressLine: "30 Fenchurch Street",
+      addressLine: "1 Plantation Place",
+      addressLine2: "30 Fenchurch Street",
     }
     const { getByText } = renderWithRelay({ CommerceOrder: () => orderInEUR })
 
@@ -96,6 +99,7 @@ describe("WirePaymentSection", () => {
     expect(getByText(artsyBankAccountEUR.iban)).toBeTruthy()
     expect(getByText(artsyBankAccountEUR.swift)).toBeTruthy()
     expect(getByText(artsyBankAccountEUR.addressLine)).toBeTruthy()
+    expect(getByText(artsyBankAccountEUR.addressLine2)).toBeTruthy()
   })
 
   it("renders correct email address to send payment receipt for private sale orders", async () => {
