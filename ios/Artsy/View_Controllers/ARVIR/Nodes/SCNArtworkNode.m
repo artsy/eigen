@@ -3,7 +3,7 @@
 
 @implementation SCNArtworkNode
 
-+ (instancetype)boxWithConfig:(ARAugmentedRealityConfig *)config API_AVAILABLE(ios(11.3))
++ (instancetype)boxWithConfig:(ARAugmentedRealityConfig *)config
 {
     CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.width
                                                             unit:NSUnitLength.inches]

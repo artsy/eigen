@@ -82,30 +82,19 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
 
     @objc func placeArtwork() {
-        let cursorWorldTransform = cursor.simdWorldTransform
-        print("Here is where I should place the artwork \(cursorWorldTransform)")
+        guard let artwork = VirtualArtwork(config: config) else {
+            return
+        }
 
+        DispatchQueue.main.async {
+//            self.placeArtworkButton.isHidden = true
+//            self.restartExperienceButton.isHidden = false
+            self.placeVirtualArtwork(artwork)
+        }
+    }
 
-        let shadowBox = SCNArtworkNode.shadowNode(with: self.config)
-        let shadow = SCNNode(geometry: shadowBox)
-
-        // Offset the shadow back a bit (behind the work)
-        // and down a bit to imply a higher light source
-        // TODO: don't force unwrap
-        shadow.simdPosition = cursor.simdPosition + SIMD3<Float>(0, 0, Float(shadowBox!.length) / 2)
-        shadow.opacity = 0.4
-        shadow.eulerAngles = SCNVector3(0, 0, -Float.pi)
-        sceneView.scene.rootNode.addChildNode(shadow)
-
-        let box = SCNArtworkNode(config: self.config)
-        let artwork = SCNNode(geometry: box)
-        artwork.simdPosition = cursor.simdPosition
-        artwork.eulerAngles = SCNVector3(0, 0, -Float.pi)
-        sceneView.scene.rootNode.addChildNode(artwork)
-
-        self.artwork = artwork
-
-        return
+    func placeVirtualArtwork(_ artwork: VirtualArtwork) {
+        print("Here is where I should place the virtual artwork")
     }
 
     @objc func dismissInformationalViewAnimated() {
@@ -128,28 +117,18 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     }
 
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        // TODO: handle this cases
-        // Understand frustum, achieve immortality
-//        let isAnyObjectInView = virtualObjectLoader.loadedObjects.contains { object in
-//            return sceneView.isNode(object, insideFrustumOf: sceneView.pointOfView!)
-//        }
-
         DispatchQueue.main.async {
-            self.updateCursor(isObjectVisible: false)
-
-            // If the object selection menu is open, update availability of items
-//            if self.objectsViewController?.viewIfLoaded?.window != nil {
-//                self.objectsViewController?.updateObjectAvailability()
-//            }
+            // TODO: Check if artwork is placed here
+            self.updateCursor(isArtworkVisible: false)
         }
 
     }
 
     // MARK: Cursor
 
-    func updateCursor(isObjectVisible: Bool) {
+    func updateCursor(isArtworkVisible: Bool) {
         // TODO: Handle commented out scenarios
-        if isObjectVisible || coachingOverlay.isActive {
+        if isArtworkVisible || coachingOverlay.isActive {
            cursor.hide()
         } else {
             cursor.unhide()
