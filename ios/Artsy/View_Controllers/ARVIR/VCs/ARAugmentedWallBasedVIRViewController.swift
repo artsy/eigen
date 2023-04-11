@@ -90,12 +90,14 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
         let artwork = VirtualArtwork(config: config)
 
-
         DispatchQueue.main.async {
-//            self.placeArtworkButton.isHidden = true
-//            self.restartExperienceButton.isHidden = false
             self.placeVirtualArtwork(artwork)
             self.artwork = artwork
+
+            if  let informationView = self.informationView, informationView.currentState().stateTag == "positionArtwork"
+            {
+                self.informationView?.next()
+            }
         }
     }
 
@@ -289,6 +291,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
         let positionArtworkViewState = InformationalViewState()
         positionArtworkViewState.xOutOfYMessage = " "
+        positionArtworkViewState.stateTag = "positionArtwork"
         positionArtworkViewState.bodyString = "Position the work on the wall and tap to place."
         let placeArtworkButton = ARWhiteFlatButton()
         placeArtworkButton.setTitle("Place Work", for: .normal)
@@ -298,6 +301,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
         let congratsArtworkViewState = InformationalViewState()
         congratsArtworkViewState.xOutOfYMessage = " "
+        congratsArtworkViewState.stateTag = "placedArtwork"
         congratsArtworkViewState.bodyString = "The work has been placed. Walk around the work to view it in your space."
 
         let doneArtworkButton = ARClearFlatButton()
