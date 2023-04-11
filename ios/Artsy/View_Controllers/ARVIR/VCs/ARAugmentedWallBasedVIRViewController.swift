@@ -70,6 +70,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
         // Prevent the screen from being dimmed to avoid interuppting the AR experience.
         UIApplication.shared.isIdleTimerDisabled = true
+
+        presentInformationalInterface(animated: true)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
