@@ -53,10 +53,6 @@
 - [Certificates & Code Signing](certs.md)
 - [release candidate code freeze](release_candidate_code_freeze.md)
 
-### Palette
-
-- [palette v3 migration guide](palette_v3_migration_guide.md)
-
 #### Thanks to our [contributors](thanks.md) 🎉
 
 ### Can these be removed?
