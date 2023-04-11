@@ -165,9 +165,9 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     // MARK: Cursor
 
-    func updateCursor(isArtworkVisible: Bool) {
+    func updateCursor() {
         // TODO: Handle commented out scenarios
-        if isArtworkVisible || coachingOverlay.isActive {
+        if coachingOverlay.isActive {
            cursor.hide()
         } else {
             cursor.unhide()
@@ -244,7 +244,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func exitARContext() {
-        // TODO: do I need the time tracking or idle timer thing
+        // TODO: do I need the time tracking
 
         // Ensure we jump past the SetupVC
         var presentingVC : UIViewController? = nil
@@ -364,7 +364,7 @@ extension ARAugmentedWallBasedVIRViewController: ARCoachingOverlayViewDelegate {
 extension ARAugmentedWallBasedVIRViewController: ARSCNViewDelegate, ARSessionDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         DispatchQueue.main.async {
-            self.updateCursor(isArtworkVisible: self.artwork != nil)
+            self.updateCursor()
         }
     }
 }
