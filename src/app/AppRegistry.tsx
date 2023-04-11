@@ -429,7 +429,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  PriceDatabase: reactModule(PriceDatabase),
+  PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
   ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,

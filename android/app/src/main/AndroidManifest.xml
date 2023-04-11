@@ -114,6 +114,7 @@
                 <data android:pathPrefix="/new-for-you" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
+                <data android:pathPrefix="/price-database" />
                 <data android:pathPrefix="/privacy-request" />
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
