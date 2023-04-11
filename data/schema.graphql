@@ -3591,7 +3591,10 @@ type Collection {
   ): ArtworkConnection
 
   # Number of artworks associated with this collection.
-  artworksCount: Int!
+  artworksCount(
+    # Only count visible artworks
+    onlyVisible: Boolean = false
+  ): Int!
 
   # True if this is the default collection for this user, i.e. the default Saved Artwork collection.
   default: Boolean!
