@@ -98,10 +98,6 @@ However, if we have a `Button` folder which exports only one button component, w
 
 We try to avoid the use of `index.ts` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
 
-Some cases where we still use `index.ts` files for shorter and easier imports are:
-
-- `src/palette`
-
 #### When committing code
 
 - Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
@@ -116,11 +112,11 @@ When developing new components you are strongly encouraged to add them to [Story
 
 #### Styling
 
-[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood.
+[@artsy/palette-mobile](https://github.com/artsy/palette-mobile) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood.
 [Here](palette.artsy.net) you can see palette in action.
 Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
 
-We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with **@pvinis** first.
+We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette.
 
 ### TypeScript
 
