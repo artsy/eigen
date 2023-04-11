@@ -1,7 +1,6 @@
 import { useIsStaging } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import Config from "react-native-config"
-import SiftReactNative from "sift-react-native"
 
 export function useSiftConfig() {
   const isStaging = useIsStaging()
@@ -13,7 +12,7 @@ export function useSiftConfig() {
 
   useEffect(() => {
     if (!!accountId && !!beaconKey) {
-      SiftReactNative.setSiftConfig(accountId, beaconKey, true, "")
+      // SiftReactNative.setSiftConfig(accountId, beaconKey, true, "")
     }
   }, [accountId, beaconKey])
 }

@@ -7,7 +7,11 @@ import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
-export const ArtistAutosuggest: React.FC = () => {
+interface ArtistAutosuggestProps {
+  title?: string | null
+}
+
+export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({ title = "Artist" }) => {
   const {
     values: { artist, artistId },
     setFieldValue,
@@ -41,7 +45,7 @@ export const ArtistAutosuggest: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Input
-        title="Artist"
+        title={title || undefined}
         placeholder="Enter full name"
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}

@@ -7,7 +7,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as RelayCache from "app/system/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
-import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
+import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Platform } from "react-native"
@@ -19,9 +19,8 @@ import {
   LoginManager,
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
-import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
-import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
+import { GlobalStore, getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 export type OAuthProvider = "email" | "facebook" | "apple" | "google"
@@ -905,7 +904,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
-    SiftReactNative.unsetUserId()
+    // SiftReactNative.unsetUserId()
 
     await Promise.all([
       Platform.OS === "ios"
