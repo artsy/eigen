@@ -1,7 +1,7 @@
 import UIKit
 import ARKit
 
-class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     var config : ARAugmentedRealityConfig!
     var sceneView : ARSCNView!
@@ -12,7 +12,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     let coachingOverlay = ARCoachingOverlayView()
 
-    var artwork : SCNNode?
+    var artwork : VirtualArtwork?
 
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
@@ -43,7 +43,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
         let config = ARWorldTrackingConfiguration()
         config
-            .planeDetection = .vertical
+            .planeDetection = [.vertical, .horizontal]
         self.sceneView.delegate = self
         self.sceneView.scene = scene
         self.sceneView.session.delegate = self
@@ -82,9 +82,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
 
     @objc func placeArtwork() {
-        guard let artwork = VirtualArtwork(config: config) else {
-            return
-        }
+        let artwork = VirtualArtwork(config: config)
 
         DispatchQueue.main.async {
 //            self.placeArtworkButton.isHidden = true
@@ -94,7 +92,52 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
     }
 
     func placeVirtualArtwork(_ artwork: VirtualArtwork) {
-        print("Here is where I should place the virtual artwork")
+        if
+            let query = self.sceneView.getRaycastQuery(for: .vertical),
+            let result = sceneView.castRay(for: query).first
+        {
+            artwork.mostRecentInitialPlacementResult = result
+            artwork.raycastQuery = query
+        } else {
+            artwork.mostRecentInitialPlacementResult = nil
+            artwork.raycastQuery = nil
+        }
+
+        guard cursor.state != .initializing, let query = artwork.raycastQuery else {
+            print("CANNOT PLACE OBJECT\nTry moving left or right.")
+            return
+        }
+
+        let trackedRaycast = createTrackedRaycastAndSet3DPosition(of: artwork, from: query, withInitialResult: artwork.mostRecentInitialPlacementResult)
+
+        artwork.raycast = trackedRaycast
+        artwork.isHidden = false
+
+        self.artwork = artwork
+    }
+
+    func createTrackedRaycastAndSet3DPosition(of artwork: VirtualArtwork, from query: ARRaycastQuery, withInitialResult initialResult: ARRaycastResult? = nil) -> ARTrackedRaycast? {
+        if let initialResult = initialResult {
+            artwork.simdWorldTransform = initialResult.worldTransform
+        }
+
+        return self.sceneView.session.trackedRaycast(query) { (results) in
+            self.setVirtualArtwork3DPosition(results, with: artwork)
+        }
+    }
+
+    private func setVirtualArtwork3DPosition(_ results: [ARRaycastResult], with artwork: VirtualArtwork) {
+
+        guard let result = results.first else {
+            fatalError("Unexpected case: the update handler is always supposed to return at least one result.")
+        }
+
+        artwork.simdWorldTransform = result.worldTransform
+
+        // If the virtual object is not yet in the scene, add it.
+        if artwork.parent == nil {
+            self.sceneView.scene.rootNode.addChildNode(artwork)
+        }
     }
 
     @objc func dismissInformationalViewAnimated() {
@@ -114,14 +157,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
             informationView.setNeedsUpdateConstraints()
             informationView.layoutIfNeeded()
         }
-    }
-
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        DispatchQueue.main.async {
-            // TODO: Check if artwork is placed here
-            self.updateCursor(isArtworkVisible: false)
-        }
-
     }
 
     // MARK: Cursor
@@ -318,5 +353,14 @@ extension ARAugmentedWallBasedVIRViewController: ARCoachingOverlayViewDelegate {
     /// - Tag: CoachingGoal
     func setGoal() {
         coachingOverlay.goal = .verticalPlane
+    }
+}
+
+
+extension ARAugmentedWallBasedVIRViewController: ARSCNViewDelegate, ARSessionDelegate {
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        DispatchQueue.main.async {
+            self.updateCursor(isArtworkVisible: self.artwork != nil)
+        }
     }
 }
