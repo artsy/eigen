@@ -1,7 +1,4 @@
 PODS:
-  - Adjust (4.29.7):
-    - Adjust/Core (= 4.29.7)
-  - Adjust/Core (4.29.7)
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -576,11 +573,6 @@ PODS:
   - RNAnalytics (1.5.2):
     - Analytics
     - React-Core
-  - RNAnalyticsIntegration-Adjust (1.5.0):
-    - Analytics
-    - React-Core
-    - RNAnalytics
-    - Segment-Adjust (~> 3.1.1)
   - RNAnalyticsIntegration-Appboy (1.5.0):
     - Analytics
     - React-Core
@@ -665,9 +657,6 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Segment-Adjust (3.1.4):
-    - Adjust (~> 4.29.3)
-    - Analytics
   - Segment-Appboy (4.5.0):
     - Analytics
     - Segment-Appboy/Full-SDK (= 4.5.0)
@@ -813,7 +802,6 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
-  - "RNAnalyticsIntegration-Adjust (from `../node_modules/@segment/analytics-react-native-adjust`)"
   - "RNAnalyticsIntegration-Appboy (from `../node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
@@ -834,7 +822,6 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.11.1)
-  - Segment-Adjust
   - Segment-Appboy
   - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
@@ -852,7 +839,6 @@ SPEC REPOS:
   https://github.com/artsy/Specs.git:
     - Aerodramus
   trunk:
-    - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
     - Analytics
@@ -915,7 +901,6 @@ SPEC REPOS:
     - Quick
     - SDWebImage
     - SDWebImageWebPCoder
-    - Segment-Adjust
     - Segment-Appboy
     - Sentry
     - Sift
@@ -1043,8 +1028,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
-  RNAnalyticsIntegration-Adjust:
-    :path: "../node_modules/@segment/analytics-react-native-adjust"
   RNAnalyticsIntegration-Appboy:
     :path: "../node_modules/@segment/analytics-react-native-appboy"
   RNAppleAuthentication:
@@ -1113,7 +1096,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
-  Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
@@ -1229,7 +1211,6 @@ SPEC CHECKSUMS:
   ReactCommon: a30c2448e5a88bae6fcb0e3da124c14ae493dac1
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAnalytics: fcf308eeac6d34a74c158ec74d733c877f26fb96
-  RNAnalyticsIntegration-Adjust: fcd3a1e9e653ea81528cfd21d947d8fa2d865d2a
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
@@ -1251,7 +1232,6 @@ SPEC CHECKSUMS:
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Sift: 8cd26419e0a9b0d94bd733b296353b68c44192aa
@@ -1270,6 +1250,6 @@ SPEC CHECKSUMS:
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: f14651ef8bb8b60952b404c123561606c49d8c33
+PODFILE CHECKSUM: d161c5b4d028b1b4d7302b4b69d5e8d945a22a97
 
 COCOAPODS: 1.11.3
