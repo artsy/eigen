@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mkdir -p bundle/android && NODE_OPTIONS=--max_old_space_size=8192 react-native bundle --platform android --dev false --entry-file index.android.js --assets-dest bundle/android --bundle-output bundle/android/App.text.js --sourcemap-output bundle/android/App.text.js.map && ./node_modules/hermes-engine/osx-bin/hermesc -emit-binary -O -out android/app/src/main/assets/index.android.bundle bundle/android/App.text.js -output-source-map
