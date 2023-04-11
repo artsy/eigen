@@ -120,7 +120,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
 project.ext.react = [
-  entryFile: "index.android.js"
+  entryFile: "index.android.js",
   enableHermes: true
 ]
 
