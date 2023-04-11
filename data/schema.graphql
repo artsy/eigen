@@ -11271,7 +11271,7 @@ type Me implements Node {
   paddleNumber: String
 
   # A list of the current user’s managed partners
-  partners: [Partner]
+  partners(size: Int): [Partner]
 
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
