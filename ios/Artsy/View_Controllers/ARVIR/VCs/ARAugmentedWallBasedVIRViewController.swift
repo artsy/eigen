@@ -7,6 +7,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     var sceneView : ARSCNView!
     var informationView : ARInformationView?
     var informationViewBottomConstraint : NSLayoutConstraint?
+    var resetButton : UIButton?
 
     var cursor = FocusSquare()
 
@@ -149,6 +150,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func dismissInformationalViewAnimated() {
+        self.resetButton?.alpha = 1.0
         self.dismissInformationalView(animated: true)
     }
 
@@ -215,6 +217,14 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         let backButtonConstraints = self.backButtonConstraints(backButton: backButton)
         view.addConstraints(backButtonConstraints)
 
+        let resetButton = setupResetButton()
+        resetButton.alpha = 0
+        view.addSubview(resetButton)
+        self.resetButton = resetButton
+
+        let resetButtonConstraints = self.resetButtonConstraints(resetButton: resetButton)
+        view.addConstraints(resetButtonConstraints)
+
         let informationView = ARInformationView()
         let informationViewStates = self.viewStates(forInformationView: informationView)
         informationView.setup(with: informationViewStates)
@@ -247,7 +257,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         }
     }
 
-    @objc func exitARContext() {
+    @objc func resetExperience() {
+
+    }
+
+    @objc func exit() {
         // TODO: do I need the time tracking
 
         // Ensure we jump past the SetupVC
@@ -278,7 +292,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         let backImage = UIImage(named: "ARVIRBack")
         backButton.setImage(backImage, for: .normal)
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.addTarget(self, action: #selector(exitARContext), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(exit), for: .touchUpInside)
         backButton.imageEdgeInsets = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
 
         backButton.layer.masksToBounds = false
@@ -286,6 +300,21 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         backButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         backButton.layer.shadowOpacity = 0.4
         return backButton
+    }
+
+    private func setupResetButton() -> UIButton {
+        let resetButton = ARClearFlatButton()
+        resetButton.setTitle("Reset", for: .normal)
+        resetButton.translatesAutoresizingMaskIntoConstraints = false
+        resetButton.addTarget(self, action: #selector(resetExperience), for: .touchUpInside)
+        return resetButton
+    }
+
+    private func resetButtonConstraints(resetButton: UIButton) -> [NSLayoutConstraint] {
+        let centerXConstraint = resetButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0)
+        let bottomConstraint = resetButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
+        let widthConstraint = resetButton.widthAnchor.constraint(equalToConstant: 92)
+        return [centerXConstraint, bottomConstraint, widthConstraint]
     }
 
     private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
@@ -302,7 +331,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         let congratsArtworkViewState = InformationalViewState()
         congratsArtworkViewState.xOutOfYMessage = " "
         congratsArtworkViewState.stateTag = "placedArtwork"
-        congratsArtworkViewState.bodyString = "The work has been placed. Walk around the work to view it in your space."
+        congratsArtworkViewState.bodyString = "The work has been placed. Tap anywhere to move it or tap 'Done' to view it in your space."
 
         let doneArtworkButton = ARClearFlatButton()
         doneArtworkButton.setTitle("Done", for: .normal)
