@@ -13,6 +13,7 @@ import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
+import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
   RecentlyViewedScreen,
   RecentlyViewedScreenQuery,
@@ -428,6 +429,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
+  PriceDatabase: reactModule(PriceDatabase),
   ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
