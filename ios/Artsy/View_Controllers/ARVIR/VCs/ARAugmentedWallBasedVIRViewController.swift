@@ -82,12 +82,18 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
 
     @objc func placeArtwork() {
+        self.artwork?.removeFromParentNode()
+        self.artwork?.stopTrackedRaycast()
+        self.artwork = nil
+
         let artwork = VirtualArtwork(config: config)
+
 
         DispatchQueue.main.async {
 //            self.placeArtworkButton.isHidden = true
 //            self.restartExperienceButton.isHidden = false
             self.placeVirtualArtwork(artwork)
+            self.artwork = artwork
         }
     }
 
@@ -112,8 +118,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
         artwork.raycast = trackedRaycast
         artwork.isHidden = false
-
-        self.artwork = artwork
     }
 
     func createTrackedRaycastAndSet3DPosition(of artwork: VirtualArtwork, from query: ARRaycastQuery, withInitialResult initialResult: ARRaycastResult? = nil) -> ARTrackedRaycast? {

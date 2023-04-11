@@ -42,13 +42,15 @@ class VirtualArtwork: SCNNode {
         let blackMaterial = coloredMaterial(withColor: .black)
 
         // Front
-        let whiteMaterial =  coloredMaterial(withColor: .white)
-        whiteMaterial.lightingModel = .physicallyBased
+        let imageMaterial = SCNMaterial()
+        imageMaterial.diffuse.contents = config.image
+        imageMaterial.locksAmbientWithDiffuse = true
+        imageMaterial.lightingModel = .physicallyBased
         /**
          A bit confusing but SCNBox assumes an orientation similar to a box on the ground and for our placement code we want an orientation similar to an artwork placed on a wall, therefore we switch length and height
          **/
         let box = SCNBox(width: widthMeters, height: lengthMeters, length: heightMeters, chamferRadius: 0.0);
-        box.materials =  [blackMaterial, blackMaterial, blackMaterial, blackMaterial, whiteMaterial, blackMaterial]
+        box.materials =  [blackMaterial, blackMaterial, blackMaterial, blackMaterial, imageMaterial, blackMaterial]
         box.name = "Artwork"
         return box
     }
