@@ -1,13 +1,13 @@
-import { Text } from "@artsy/palette"
+import { Text } from "@artsy/palette-mobile"
 import {
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
   ProgressiveOnboardingCountsQueryRenderer,
   WithProgressiveOnboardingCountsProps,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
-import { ProgressiveOnboardingPopover } from "Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
+import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
 import { FC, useCallback, useEffect } from "react"
 
 type ProgressiveOnboardingSaveArtworkProps = WithProgressiveOnboardingCountsProps

@@ -1,6 +1,6 @@
-import { Box } from "@artsy/palette"
+import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { useProgressiveOnboardingTracking } from "Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { FC } from "react"
 import styled, { keyframes } from "styled-components"
 

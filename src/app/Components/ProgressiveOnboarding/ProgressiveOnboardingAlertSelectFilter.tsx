@@ -1,18 +1,18 @@
-import { Text } from "@artsy/palette"
-import { useArtworkFilterContext } from "Components/ArtworkFilter/ArtworkFilterContext"
+import { Text } from "@artsy/palette-mobile"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
   PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTER,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
-import { ProgressiveOnboardingPopover } from "Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
 import { FC, useEffect, useRef } from "react"
 
 export const ProgressiveOnboardingAlertSelectFilter: FC = ({ children }) => {
   const { dismiss, isDismissed, isEnabledFor } = useProgressiveOnboarding()
 
-  const { currentlySelectedFilters } = useArtworkFilterContext()
-  const initialFilterState = useRef(JSON.stringify(currentlySelectedFilters?.()))
+  const appliedFilters = useRef(ArtworksFiltersStore.useStoreState((state) => state.appliedFilters))
+  const initialFilterState = useRef(JSON.stringify(appliedFilters.current))
 
   const isDisplayable =
     isEnabledFor("alerts") &&
@@ -29,7 +29,7 @@ export const ProgressiveOnboardingAlertSelectFilter: FC = ({ children }) => {
 
   useEffect(() => {
     const isFilterStateChanged =
-      initialFilterState.current !== JSON.stringify(currentlySelectedFilters?.())
+      initialFilterState.current !== JSON.stringify(appliedFilters.current)
 
     if (
       isEnabledFor("alerts") &&
@@ -38,7 +38,7 @@ export const ProgressiveOnboardingAlertSelectFilter: FC = ({ children }) => {
     ) {
       dismiss(PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTER)
     }
-  }, [dismiss, isEnabledFor, currentlySelectedFilters, isDismissed])
+  }, [dismiss, isEnabledFor, appliedFilters.current, isDismissed])
 
   if (!isDisplayable) {
     return <>{children}</>

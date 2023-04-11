@@ -1,15 +1,15 @@
-import { Text } from "@artsy/palette"
+import { Text } from "@artsy/palette-mobile"
 import { Z } from "Apps/Components/constants"
 import {
   PROGRESSIVE_ONBOARDING_FOLLOW_FIND,
   PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
   ProgressiveOnboardingCountsQueryRenderer,
   WithProgressiveOnboardingCountsProps,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
-import { ProgressiveOnboardingPopover } from "Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
+import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
 import { FC } from "react"
 
 type ProgressiveOnboardingFollowFindProps = WithProgressiveOnboardingCountsProps

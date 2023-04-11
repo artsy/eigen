@@ -1,11 +1,11 @@
-import { Text } from "@artsy/palette"
+import { Text } from "@artsy/palette-mobile"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
   PROGRESSIVE_ONBOARDING_ALERT_READY,
   PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTER,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
-import { ProgressiveOnboardingPopover } from "Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
 import { FC, ReactNode } from "react"
 
 interface ProgressiveOnboardingAlertReadyProps {

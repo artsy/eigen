@@ -2,11 +2,11 @@ import {
   PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT,
   PROGRESSIVE_ONBOARDING_FOLLOW_FIND,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
   ProgressiveOnboardingHighlight,
   ProgressiveOnboardingHighlightPosition,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingHighlight"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingHighlight"
 import { FC, useEffect } from "react"
 
 interface ProgressiveOnboardingFollowHighlightProps {
