@@ -15268,6 +15268,11 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
+sift-react-native@0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/sift-react-native/-/sift-react-native-0.1.8.tgz#85242b3a92b96b703e2e26bef086486243d75dff"
+  integrity sha512-+szVQmzmVY1qx3TB94kYjgASxVXffJ/bj14y1weYvggYNIIRgNUnqMmJyrGvXDqQTebGvQNQho/Z/hCGj/Rvag==
+
 signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
