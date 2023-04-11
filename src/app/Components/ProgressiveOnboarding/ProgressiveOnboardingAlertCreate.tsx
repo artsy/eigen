@@ -1,12 +1,13 @@
-import { Box, Button, Flex, Image, ResponsiveBox, Spacer, Text } from "@artsy/palette"
+import { Box, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
   PROGRESSIVE_ONBOARDING_ALERT_READY,
   PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTER,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
-import { ProgressiveOnboardingPopover } from "Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
-import { resized } from "Utils/resized"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
+
 import { FC, ReactNode } from "react"
 
 interface ProgressiveOnboardingAlertCreateProps {
@@ -17,10 +18,7 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
   children,
 }) => {
   const { dismiss, isDismissed, isEnabledFor } = useProgressiveOnboarding()
-
   const isDisplayable = isEnabledFor("alerts") && !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_CREATE)
-
-  const image = resized(IMAGE.src, { width: 230 })
 
   const handleDismiss = () => {
     dismiss(PROGRESSIVE_ONBOARDING_ALERT_CREATE)
@@ -46,7 +44,7 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
       ignoreClickOutside
       onClose={handleClose}
       variant="defaultLight"
-      popover={({ onHide }) => {
+      popover={({ onHide }: { onHide: () => void }) => {
         return (
           <Box py={1}>
             <Text variant="xs" fontWeight="bold">
@@ -55,14 +53,11 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
 
             <Spacer y={1} />
 
-            <ResponsiveBox
-              bg="black10"
-              aspectWidth={IMAGE.width}
-              aspectHeight={IMAGE.height}
-              maxWidth="100%"
-            >
-              <Image {...image} width="100%" height="100%" lazyLoad alt="" />
-            </ResponsiveBox>
+            <OpaqueImageView
+              imageURL="https://files.artsy.net/images/ProgOnboard.jpg"
+              width={230}
+              height={167}
+            />
 
             <Spacer y={2} />
 
@@ -76,9 +71,9 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
             <Flex>
               <Button
                 size="small"
-                variant="secondaryBlack"
+                variant="fillDark"
                 flex={1}
-                onClick={() => {
+                onPress={() => {
                   onHide()
                   handleNext()
                 }}
@@ -90,9 +85,9 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
 
               <Button
                 size="small"
-                variant="primaryBlack"
+                variant="fillDark"
                 flex={1}
-                onClick={() => {
+                onPress={() => {
                   onHide()
                   handleDismiss()
                 }}
@@ -107,10 +102,4 @@ export const ProgressiveOnboardingAlertCreate: FC<ProgressiveOnboardingAlertCrea
       {children({ onSkip: handleDismiss })}
     </ProgressiveOnboardingPopover>
   )
-}
-
-const IMAGE = {
-  src: "https://files.artsy.net/images/ProgOnboard.jpg",
-  width: 2880,
-  height: 1960,
 }
