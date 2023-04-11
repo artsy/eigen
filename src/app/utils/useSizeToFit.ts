@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Size {
   width: number

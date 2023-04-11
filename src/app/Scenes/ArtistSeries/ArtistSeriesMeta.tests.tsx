@@ -1,3 +1,4 @@
+import { EntityHeader } from "@artsy/palette-mobile"
 import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import {
   ArtistSeriesMeta,
@@ -6,7 +7,6 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { EntityHeader } from "palette"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

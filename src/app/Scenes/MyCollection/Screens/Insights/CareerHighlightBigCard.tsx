@@ -1,4 +1,4 @@
-import { IconProps, Flex, useSpace, Text } from "@artsy/palette-mobile"
+import { IconProps, Flex, useSpace, Text, EntityHeader } from "@artsy/palette-mobile"
 import {
   CareerHighlightBigCardBiennial_myCollectionInfo$data,
   CareerHighlightBigCardBiennial_myCollectionInfo$key,
@@ -20,12 +20,11 @@ import {
   CareerHighlightBigCardSoloShow_myCollectionInfo$key,
 } from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
-import { EntityHeader } from "palette"
 import { useState } from "react"
 import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { CareerHighlightKind, getCareerHiglight } from "./CareerHighlightCard"
 
 const CardHeader: React.FC<{

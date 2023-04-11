@@ -3,7 +3,7 @@ import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { ScrollViewProps, View } from "react-native"
 import Animated from "react-native-reanimated"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type OmittedScrollViewProps = Omit<
   ScrollViewProps,

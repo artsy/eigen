@@ -6829,8 +6829,12 @@ type Conversation implements Node {
   from: ConversationInitiator!
   fromLastViewedMessageID: String
 
+  # The collector profile of the user who initiated the conversation
+  fromProfile: CollectorProfileType
+
   # The user who initiated the conversation
   fromUser: User
+    @deprecated(reason: "Will be inaccessible to partners in future versions. Prefer fromProfile.")
 
   # A globally unique ID.
   id: ID!

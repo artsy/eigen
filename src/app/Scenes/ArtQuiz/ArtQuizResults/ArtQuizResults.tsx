@@ -5,7 +5,7 @@ import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizRes
 import { GlobalStore } from "app/store/GlobalStore"
 import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useBackHandler } from "shared/hooks/useBackHandler"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 
 const ResultsScreen = () => {
   // prevents Android users from going back with hardware button

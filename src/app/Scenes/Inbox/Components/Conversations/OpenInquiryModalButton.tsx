@@ -4,7 +4,7 @@ import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryMo
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"

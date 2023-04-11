@@ -9,7 +9,7 @@ import { ArrowRightIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {

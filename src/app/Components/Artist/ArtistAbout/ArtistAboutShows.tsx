@@ -3,10 +3,10 @@ import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_art
 import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artist: ArtistAboutShows_artist$data

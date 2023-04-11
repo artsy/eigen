@@ -7,10 +7,13 @@ import {
   useColor,
   Text,
   useSpace,
+  Separator,
+  Touchable,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
+import { CollapseMenu } from "app/Components/CollapseMenu"
 import { MenuItem } from "app/Components/MenuItem"
 import { SearchInput } from "app/Components/SearchInput"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -23,8 +26,6 @@ import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
 import { capitalize, compact, sortBy } from "lodash"
-import { Separator, Touchable } from "palette"
-import { CollapseMenu } from "palette/elements/CollapseMenu"
 import { useCallback, useEffect, useState } from "react"
 import {
   Alert,

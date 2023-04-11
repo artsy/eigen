@@ -1,10 +1,10 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Separator } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
+import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { Input, INPUT_HEIGHT, InputTitle, Separator } from "palette"
-import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 
 type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"

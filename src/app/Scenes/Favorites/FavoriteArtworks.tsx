@@ -12,11 +12,11 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   me: FavoriteArtworks_me$data

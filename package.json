@@ -33,7 +33,8 @@
     "init-metaflags": "jq -Rn '{ startStorybook: false }' | sponge metaflags.json",
     "install:all": "./scripts/install",
     "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
-    "link-local-palette": "./scripts/yalc-link-local-palette",
+    "local-palette-dev": "./scripts/yalc-link-local-palette",
+    "local-palette-dev:stop": "./scripts/yalc-unlink-local-palette",
     "lint": "eslint --cache --cache-location '.cache/eslint/' --ext .ts,.tsx --fix",
     "lint:all": "yarn lint .",
     "open-sim": "open -a Simulator",
@@ -45,7 +46,7 @@
     "postinstall": "yarn init-metaflags; prettier --write package.json; ./scripts/update-echo",
     "prepare": "patch-package && husky install",
     "prestart": "./scripts/set-storybook-environment.js",
-    "prestart-storybook": "yarn sb-rn-get-stories --config-path ./src/storybook",
+    "prestart-storybook": "yarn sb-rn-get-stories --config-path ./src/app/storybook",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
     "relay": "[ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && relay-compiler",
@@ -71,7 +72,6 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
     "type-check": "yarn relay; yarn tsc",
-    "unlink-local-palette": "./scripts/yalc-unlink-local-palette",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.121.0",
-    "@artsy/palette-mobile": "11.0.7",
+    "@artsy/palette-mobile": "11.0.10",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",
@@ -200,6 +200,7 @@
     "rxjs": "7.5.6",
     "search-insights": "2.0.3",
     "semver": "7.3.8",
+    "sift-react-native": "0.1.8",
     "simple-markdown": "0.7.3",
     "styled-components": "5.3.6",
     "styled-system": "5.1.5",
@@ -327,7 +328,7 @@
     "sponge": "0.1.0",
     "tmp": "0.2.1",
     "ts-node": "8.4.1",
-    "typescript": "5.0.3",
+    "typescript": "5.0.4",
     "vscode-apollo-relay": "1.5.2"
   },
   "resolutions": {

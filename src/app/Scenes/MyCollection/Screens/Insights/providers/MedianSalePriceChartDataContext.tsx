@@ -6,10 +6,10 @@ import {
   MedianSalePriceChartDataContextProvider_query$data,
   MedianSalePriceChartDataContextProvider_query$key,
 } from "__generated__/MedianSalePriceChartDataContextProvider_query.graphql"
+import { LineChartData } from "app/Components/LineGraph/types"
 import { computeCategoriesForChart } from "app/utils/marketPriceInsightHelpers"
 import { compact, noop } from "lodash"
 import { DateTime } from "luxon"
-import { LineChartData } from "palette/elements/LineGraph/types"
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { graphql, useRefetchableFragment } from "react-relay"
 

@@ -1,11 +1,11 @@
-import { Spacer, Flex, Box, useSpace, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useSpace, Text, Join } from "@artsy/palette-mobile"
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
-import { Join, Pill } from "palette"
+import { Pill } from "app/Components/Pill"
 import { useRef } from "react"
 import { Platform, ScrollView, TouchableOpacity } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"

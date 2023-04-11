@@ -17,7 +17,7 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

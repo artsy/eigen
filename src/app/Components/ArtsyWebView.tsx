@@ -18,7 +18,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {

@@ -4,7 +4,7 @@ import { ConversationSnippet_conversation$data } from "__generated__/Conversatio
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

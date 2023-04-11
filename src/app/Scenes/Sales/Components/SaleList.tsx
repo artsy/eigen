@@ -4,7 +4,7 @@ import { isEmpty } from "lodash"
 import { View } from "react-native"
 
 import { FragmentRef } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import SaleListItem from "./SaleListItem"
 
 export const SaleList: React.FC<{

@@ -1,4 +1,13 @@
-import { Spacer, AuctionIcon, ArtworkIcon, CloseIcon, Flex, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  AuctionIcon,
+  ArtworkIcon,
+  CloseIcon,
+  Flex,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { Pill } from "app/Components/Pill"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -10,7 +19,6 @@ import {
   SlugType,
 } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Pill, Touchable } from "palette"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"

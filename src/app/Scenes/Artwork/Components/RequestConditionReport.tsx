@@ -6,7 +6,7 @@ import { RequestConditionReport_me$data } from "__generated__/RequestConditionRe
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
-import { Button } from "palette"
+import { Button } from "app/Components/Button"
 import { Component } from "react"
 import { View } from "react-native"
 import {

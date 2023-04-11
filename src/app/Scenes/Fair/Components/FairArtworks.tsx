@@ -15,7 +15,7 @@ import { Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface FairArtworksProps {
   fair: FairArtworks_fair$data

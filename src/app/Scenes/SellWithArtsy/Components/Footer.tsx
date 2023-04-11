@@ -1,8 +1,8 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Separator } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
-import { Button, Separator } from "palette"
+import { Button } from "app/Components/Button"
 
 export const Footer: React.FC<{
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void

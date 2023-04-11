@@ -229,10 +229,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.7":
-  version "11.0.7"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.7.tgz#45eebb0295faf51700e29a1fba68ceece85915c5"
-  integrity sha512-6T578xiGQBVop0QFPuiLxQTdfQYr6ORT+KMqzYdpVDc5uSIHx5iHg2ylHkwLeI7kInO8AoYreR5jtTzoM8qtKg==
+"@artsy/palette-mobile@11.0.10":
+  version "11.0.10"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.10.tgz#ef7bfbc9d3bb28dd4f887d556e5e2b25af8acaf3"
+  integrity sha512-OMXXIIsG4M7MiQozfVP2RVKzTOj5JSxS6njrMZz1x3PW441fn4VKqDFxV08fDHX0WStCf3wvit2DyszhcyHwiQ==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -15268,6 +15268,11 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
+sift-react-native@0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/sift-react-native/-/sift-react-native-0.1.8.tgz#85242b3a92b96b703e2e26bef086486243d75dff"
+  integrity sha512-+szVQmzmVY1qx3TB94kYjgASxVXffJ/bj14y1weYvggYNIIRgNUnqMmJyrGvXDqQTebGvQNQho/Z/hCGj/Rvag==
+
 signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
@@ -16397,10 +16402,10 @@ typescript-memoize@^1.0.0-alpha.3:
   dependencies:
     core-js "2.4.1"
 
-typescript@5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.3.tgz#fe976f0c826a88d0a382007681cbb2da44afdedf"
-  integrity sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==
+typescript@5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
+  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
 
 typical@^4.0.0:
   version "4.0.0"

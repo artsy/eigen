@@ -94,20 +94,13 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code, currencyCode, sour
         <Text fontWeight="bold" color="black100">
           Send wire transfer to
         </Text>
-
-        {wireTransferArtsyBankDetails(currencyCode)}
-
-        <Text>
-          <Text fontStyle="italic">Add order number #</Text>
-          <CopySection value={code} />
-          <Text fontStyle="italic"> to the notes section in your wire transfer.</Text>
-        </Text>
+        {wireTransferArtsyBankDetails(code, currencyCode)}
       </Flex>
     </Flex>
   )
 }
 
-const wireTransferArtsyBankDetails = (currencyCode: string) => {
+const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
   switch (currencyCode) {
     case "GBP":
       return (
@@ -116,7 +109,7 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
           <PaymentInfoItem label="Account name" value="Art.sy Inc." />
           <PaymentInfoItem label="Account number" value="88005417" />
           <PaymentInfoItem label="IBAN" value="GB30PNBP16567188005417" />
-          <PaymentInfoItem label="SWIFT" value="PNBPGB2L" />
+          <PaymentInfoItem label="International SWIFT" value="PNBPGB2L" />
           <PaymentInfoItem label="Sort Code" value="16-56-71" />
 
           <Spacer y={2} />
@@ -126,10 +119,21 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
           </Text>
           <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
-          <Text>1 Planation Place</Text>
+          <Text>1 Plantation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
           <Spacer y={2} />
+          <Text>
+            <Text fontStyle="italic">Add order number #</Text>
+            <CopySection value={code} />
+            <Text fontStyle="italic">
+              {" "}
+              to the notes section in your wire transfer. If your bank account is not in GBP, please
+              reference Artsy's intermediary bank ING Brussels (Intermediary Bank BIC/SWIFT:
+              NWBKGB2LXXX) along with Artsy's international SWIFT (PNBPGB2L) when making payment.
+              Ask your bank for further instructions.
+            </Text>
+          </Text>
         </>
       )
     case "EUR":
@@ -137,8 +141,9 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
         <>
           <Spacer y={1} />
           <PaymentInfoItem label="Account name" value="Art.sy Inc." />
+          <PaymentInfoItem label="Account numbe" value="88005419" />
           <PaymentInfoItem label="IBAN" value="GB73PNBP16567188005419" />
-          <PaymentInfoItem label="BIC" value="PNBPGB2LXXX" />
+          <PaymentInfoItem label="International SWIFT" value="PNBPGB2L" />
 
           <Spacer y={2} />
 
@@ -147,10 +152,21 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
           </Text>
           <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
-          <Text>1 Planation Place</Text>
+          <Text>1 Plantation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
           <Spacer y={2} />
+          <Text>
+            <Text fontStyle="italic">Add order number #</Text>
+            <CopySection value={code} />
+            <Text fontStyle="italic">
+              {" "}
+              to the notes section in your wire transfer. If your bank account is not in EUR, please
+              reference Artsy's intermediary bank ING Brussels (Intermediary Bank BIC/SWIFT:
+              BBRUBEBB010) along with Artsy's international SWIFT (PNBPGB2L) when making payment.
+              Ask your bank for further instructions.
+            </Text>
+          </Text>
         </>
       )
     default:
@@ -172,6 +188,17 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
           <Text>420 Montgomery Street</Text>
           <Text>San Francisco, CA 94104</Text>
           <Spacer y={2} />
+          <Text>
+            <Text fontStyle="italic">Add order number #</Text>
+            <CopySection value={code} />
+            <Text fontStyle="italic">
+              {" "}
+              to the notes section in your wire transfer. If your bank account is not in USD, please
+              reference Artsy's intermediary bank ING Brussels (Intermediary Bank BIC/SWIFT:
+              PNBPUS3NNYC) along with Artsy's international SWIFT (WFBIUS6S) when making payment.
+              Ask your bank for further instructions.
+            </Text>
+          </Text>
         </>
       )
   }

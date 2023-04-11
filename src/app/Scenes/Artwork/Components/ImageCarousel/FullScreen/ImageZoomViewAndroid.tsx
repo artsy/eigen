@@ -1,15 +1,14 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, useColor, Spinner } from "@artsy/palette-mobile"
 import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
-import { Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"
 import usePrevious from "react-use/lib/usePrevious"
-import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 
 export interface ImageZoomViewAndroidProps {
   image: ImageDescriptor

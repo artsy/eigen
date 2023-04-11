@@ -1,11 +1,12 @@
 import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Touchable } from "palette"
+import { Button } from "app/Components/Button"
+import { Touchable } from "@artsy/palette-mobile"
 import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PaginationDots } from "./PaginationDots"
 
 interface CardProps {

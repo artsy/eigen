@@ -3,6 +3,7 @@ import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommendationsRail_me.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
@@ -14,20 +15,26 @@ import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
 interface ArtworkRecommendationsRailProps {
-  title: string
-  me: ArtworkRecommendationsRail_me$key
+  isRailVisible: boolean
   mb?: SpacingUnit
+  me: ArtworkRecommendationsRail_me$key
+  title: string
 }
 
 export const ArtworkRecommendationsRail: React.FC<
   ArtworkRecommendationsRailProps & RailScrollProps
-> = memo(({ title, me, scrollRef, mb }) => {
+> = memo(({ isRailVisible, mb, me, scrollRef, title }) => {
   const { trackEvent } = useTracking()
 
   const { artworkRecommendations } = useFragment(artworksFragment, me)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
+
+  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+    isRailVisible,
+    contextModule: ContextModule.artworkRecommendationsRail,
+  })
 
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -59,6 +66,8 @@ export const ArtworkRecommendationsRail: React.FC<
             navigateToPageableRoute(artwork.href!)
           }}
           onMorePress={() => handleMorePress("viewAll")}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
         />
       </View>
     </Flex>

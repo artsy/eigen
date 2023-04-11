@@ -6,10 +6,10 @@ import {
   Flex,
   useTheme,
   Text,
+  Separator,
 } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
-import { Separator } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 

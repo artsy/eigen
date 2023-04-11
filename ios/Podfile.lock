@@ -677,6 +677,10 @@ PODS:
   - Sentry (7.9.0):
     - Sentry/Core (= 7.9.0)
   - Sentry/Core (7.9.0)
+  - Sift (2.1.1)
+  - sift-react-native (0.1.8):
+    - React
+    - Sift
   - Specta (1.0.7)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
@@ -832,6 +836,7 @@ DEPENDENCIES:
   - SDWebImage (= 5.11.1)
   - Segment-Adjust
   - Segment-Appboy
+  - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
   - Starscream (= 3.0.4)
   - SwiftyJSON (= 4.0.0)
@@ -913,6 +918,7 @@ SPEC REPOS:
     - Segment-Adjust
     - Segment-Appboy
     - Sentry
+    - Sift
     - Specta
     - Starscream
     - Stripe
@@ -1077,6 +1083,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  sift-react-native:
+    :path: "../node_modules/sift-react-native"
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
   VisionCamera:
@@ -1246,6 +1254,8 @@ SPEC CHECKSUMS:
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
+  Sift: 8cd26419e0a9b0d94bd733b296353b68c44192aa
+  sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0

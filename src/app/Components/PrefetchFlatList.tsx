@@ -2,6 +2,11 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { Ref, useCallback, useReducer, useRef } from "react"
 import { FlatList, FlatListProps, ViewToken } from "react-native"
 
+const DEFAULT_VIEWABILITY_CONFIG = {
+  waitForInteraction: true,
+  itemVisiblePercentThreshold: 0,
+}
+
 export type PrefetchFlatListProps<ItemType> = {
   prefetchUrlExtractor?: (item?: ItemType) => string | undefined
   prefetchVariablesExtractor?: (item?: ItemType) => object | undefined
@@ -32,11 +37,7 @@ export function PrefetchFlatList<ItemType>({
     {}
   )
 
-  const viewabilityConfigRef = useRef({
-    waitForInteraction: true,
-    itemVisiblePercentThreshold: 0,
-    ...viewabilityConfig,
-  })
+  const viewabilityConfigRef = useRef(viewabilityConfig || DEFAULT_VIEWABILITY_CONFIG)
 
   const handleOnViewableItemsChanged = useCallback(
     ({ changed, viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {

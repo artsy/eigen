@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import {
+  Avatar,
   Spacer,
   CheckCircleIcon,
   CheckCircleFillIcon,
@@ -7,6 +8,9 @@ import {
   Box,
   useColor,
   Text,
+  Join,
+  Message,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -14,25 +18,26 @@ import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.gra
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
+import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Input } from "app/Components/Input"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { navigate } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { storeLocalImage, useLocalImageStorage } from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
-import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
+import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
-import { Button, Avatar, Input, Join, Message, Touchable } from "palette"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 

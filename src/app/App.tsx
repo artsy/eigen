@@ -13,6 +13,7 @@ import {
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
@@ -100,6 +101,7 @@ const Main = () => {
 
   useErrorReporting()
   useStripeConfig()
+  useSiftConfig()
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()

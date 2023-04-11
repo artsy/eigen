@@ -5,7 +5,7 @@ import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/nav
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"

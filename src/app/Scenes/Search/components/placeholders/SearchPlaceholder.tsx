@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Join } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
@@ -12,7 +12,6 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Join } from "palette"
 
 const RecentSearchesPlaceholder = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)

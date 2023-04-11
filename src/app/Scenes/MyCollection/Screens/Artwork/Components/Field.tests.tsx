@@ -1,4 +1,4 @@
-import { act, fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Field } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -37,11 +37,9 @@ describe("Field", () => {
     expect(queryByText(longText)).toBeNull()
 
     const button = await findByTestId("ReadMoreButton")
-    act(() => {
-      fireEvent(button, "onPress")
-    })
 
     waitFor(() => {
+      fireEvent.press(button)
       expect(queryByText(longText)).not.toBeNull()
     })
   })

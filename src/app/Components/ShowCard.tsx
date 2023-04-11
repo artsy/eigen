@@ -2,7 +2,7 @@ import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

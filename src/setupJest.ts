@@ -6,6 +6,7 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
@@ -15,7 +16,6 @@ import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 import diff from "snapshot-diff"
 
 /**
@@ -106,6 +106,10 @@ jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
+}))
+
+jest.mock("sift-react-native", () => ({
+  unsetUserId: jest.fn(),
 }))
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
@@ -544,12 +548,7 @@ beforeEach(() => {
   resetMockEnvironment()
 })
 
-// FIXME: As we're migrating code to @artsy/palette-mobile, this folder needs to be
-// added to our tests, due to some unknown interdependencies from this folder. Without
-// it here, tests will unexpectedly fail.
-require("palette")
-
-jest.mock("shared/hooks", () => {
+jest.mock("app/utils/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,

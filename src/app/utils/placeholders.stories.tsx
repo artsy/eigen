@@ -1,8 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Join } from "@artsy/palette-mobile"
 import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
-import { Join } from "palette"
-import { withHooks, withScreenDimensions } from "storybook/decorators"
+import { withHooks, withScreenDimensions } from "app/storybook/decorators"
 import { PlaceholderBox, ProvidePlaceholderContext } from "./placeholders"
 
 export const withPlaceholders: DecoratorFunction<React.ReactNode> = (story) => (

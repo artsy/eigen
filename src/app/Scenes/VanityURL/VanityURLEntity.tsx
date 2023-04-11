@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spinner } from "@artsy/palette-mobile"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
@@ -6,10 +6,9 @@ import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/S
 import { PartnerContainer } from "app/Scenes/Partner/Partner"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Spinner } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {
@@ -22,11 +21,11 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
   // https://github.com/facebook/relay/commit/ed53bb095ddd494092819884cb4f46df94b45b79#diff-4e3d961b12253787bd61506608bc366be34ab276c09690de7df17203de7581e8
   const isFair = fairOrPartner.__typename === "Fair" || "slug" in fairOrPartner
   const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
+  const { safeAreaInsets } = useScreenDimensions()
 
   if (isFair) {
     return <FairFragmentContainer fair={fairOrPartner} />
   } else if (isPartner) {
-    const { safeAreaInsets } = useScreenDimensions()
     return (
       <View style={{ flex: 1, paddingTop: safeAreaInsets.top ?? 0 }}>
         <PartnerContainer partner={fairOrPartner} />
@@ -60,10 +59,10 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
+  const { safeAreaInsets } = useScreenDimensions()
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
-    const { safeAreaInsets } = useScreenDimensions()
     return (
       <QueryRenderer<VanityURLEntityQuery>
         environment={defaultEnvironment}

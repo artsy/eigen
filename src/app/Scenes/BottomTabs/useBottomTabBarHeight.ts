@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 const BOTTOM_TAB_SEPARATOR_HEIGHT = 1
