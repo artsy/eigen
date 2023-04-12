@@ -33,9 +33,9 @@ describe(MyProfileSettings, () => {
     expect(extractText(tree.root)).toContain("Edit Profile")
   })
 
-  it("renders Account", () => {
+  it("renders Account Settings", () => {
     const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Account")
+    expect(extractText(tree.root)).toContain("Account Settings")
   })
 
   it("renders Saved Alerts", () => {

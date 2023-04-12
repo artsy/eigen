@@ -11,7 +11,9 @@
   "scripts": {
     "android": "react-native run-android",
     "bundle:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output dist/main.jsbundle  --sourcemap-output dist/main.jsbundle.map --assets-dest dist",
-    "bundle:android": "NODE_OPTIONS=--max_old_space_size=8192 react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.bundle.map --assets-dest android/app/src/main/res",
+    "bundle:android": "NODE_OPTIONS=--max_old_space_size=8192 react-native bundle --platform android --dev false --entry-file index.android.js --minify false --reset-cache --assets-dest android/app/src/main/res --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.bundle.packager.map",
+    "bundle:android:hermes": "yarn bundle:android && yarn bundle:hermes && yarn sourcemap-merge:android",
+    "bundle:hermes": "NODE_OPTIONS=--max_old_space_size=8192 ./node_modules/hermes-engine/`node -e \"const platform=require('os').platform();console.log(platform === 'darwin' ? 'osx-bin' : (platform === 'linux' ? 'linux64-bin' : (platform === 'win32' ? 'win64-bin' : 'unsupported-os')));\"`/hermesc -O -emit-binary -output-source-map -out=android/app/src/main/assets/index.android.bundle.hbc android/app/src/main/assets/index.android.bundle && rm -f android/app/src/main/assets/index.android.bundle && mv android/app/src/main/assets/index.android.bundle.hbc android/app/src/main/assets/index.android.bundle",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "ci:lint": "yarn lint --format json --out eslint-errors.json",
@@ -60,6 +62,7 @@
     "setup:artsy:update!": "scripts/update-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
     "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-distribute-macos",
+    "sourcemap-merge:android": "NODE_OPTIONS=--max_old_space_size=8192 node ./node_modules/react-native/scripts/compose-source-maps.js android/app/src/main/assets/index.android.bundle.packager.map android/app/src/main/assets/index.android.bundle.hbc.map -o android/app/src/main/assets/index.android.bundle.map",
     "start": "concurrently --kill-others -n relay,metro 'yarn relay --watch' 'yarn react-native start'",
     "start-storybook": "STORYBOOK=1 yarn start",
     "start:reset-cache": "concurrently --kill-others -n relay,metro 'yarn relay --watch' 'yarn react-native start --reset-cache'",
@@ -101,7 +104,7 @@
     "react-spring": "Try removing this! We have reanimated now."
   },
   "dependencies": {
-    "@artsy/cohesion": "4.120.0",
+    "@artsy/cohesion": "4.122.0",
     "@artsy/palette-mobile": "11.0.10",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
@@ -123,7 +126,6 @@
     "@react-navigation/native-stack": "6.7.0",
     "@react-navigation/stack": "6.2.2",
     "@segment/analytics-react-native": "1.5.2",
-    "@segment/analytics-react-native-adjust": "1.5.0",
     "@segment/analytics-react-native-appboy": "1.5.0",
     "@sentry/cli": "2.12.0",
     "@sentry/react-native": "3.2.13",

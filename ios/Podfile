@@ -106,7 +106,6 @@ target 'Artsy' do
 
   # Analytics
   pod 'Segment-Appboy'
-  pod 'Segment-Adjust'
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'

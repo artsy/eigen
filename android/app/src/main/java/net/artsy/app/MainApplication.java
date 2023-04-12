@@ -7,7 +7,6 @@ import android.util.Log;
 import com.braze.Braze;
 import com.braze.support.BrazeLogger;
 import com.appboy.AppboyLifecycleCallbackListener;
-import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
 import com.segment.analytics.Analytics;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
