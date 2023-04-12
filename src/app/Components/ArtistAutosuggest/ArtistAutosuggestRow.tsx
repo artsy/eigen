@@ -1,7 +1,8 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
+import { TouchableWithoutFeedback } from "react-native"
 
 const IMAGE_SIZE = 40
 
@@ -12,7 +13,7 @@ interface Props {
 }
 
 export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onResultPress }) => (
-  <Box onTouchStart={() => onResultPress(result)}>
+  <TouchableWithoutFeedback onPress={() => onResultPress(result)}>
     <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
       <OpaqueImageView
         imageURL={result.imageUrl}
@@ -27,5 +28,5 @@ export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onRes
         <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
       </Flex>
     </Flex>
-  </Box>
+  </TouchableWithoutFeedback>
 )
