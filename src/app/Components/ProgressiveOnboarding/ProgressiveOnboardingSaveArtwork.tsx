@@ -4,7 +4,7 @@ import {
   useProgressiveOnboarding,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
-  ProgressiveOnboardingCountsQueryRenderer,
+  ProgressiveOnboardingCounts,
   WithProgressiveOnboardingCountsProps,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
 import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
@@ -58,8 +58,8 @@ export const ProgressiveOnboardingSaveArtwork: FC<ProgressiveOnboardingSaveArtwo
 
 export const ProgressiveOnboardingSaveArtworkQueryRenderer: FC = ({ children }) => {
   return (
-    <ProgressiveOnboardingCountsQueryRenderer Component={ProgressiveOnboardingSaveArtwork}>
+    <ProgressiveOnboardingCounts Component={ProgressiveOnboardingSaveArtwork}>
       {children}
-    </ProgressiveOnboardingCountsQueryRenderer>
+    </ProgressiveOnboardingCounts>
   )
 }

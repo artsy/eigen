@@ -1,5 +1,4 @@
 import { Box, Popover, PopoverProps } from "@artsy/palette-mobile"
-import { Z } from "Apps/Components/constants"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { FC } from "react"
 
@@ -23,7 +22,6 @@ export const ProgressiveOnboardingPopover: FC<ProgressiveOnboardingPopoverProps>
       pointer
       visible
       ignoreClickOutside
-      zIndex={Z.popover}
       manageFocus={false}
       {...rest}
     >

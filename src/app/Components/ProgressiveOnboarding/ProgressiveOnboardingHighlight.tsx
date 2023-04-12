@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
+// import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { FC } from "react"
 import styled, { keyframes } from "styled-components"
 
@@ -16,7 +16,7 @@ export const ProgressiveOnboardingHighlight: FC<ProgressiveOnboardingHighlightPr
   name,
   position,
 }) => {
-  useProgressiveOnboardingTracking({ name })
+  // useProgressiveOnboardingTracking({ name })
 
   return (
     <Box position="relative" width="100%">

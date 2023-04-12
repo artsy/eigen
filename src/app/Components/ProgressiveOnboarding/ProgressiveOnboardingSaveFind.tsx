@@ -1,12 +1,11 @@
 import { Text } from "@artsy/palette-mobile"
-import { Z } from "Apps/Components/constants"
 import {
   PROGRESSIVE_ONBOARDING_SAVE_FIND,
   PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT,
   useProgressiveOnboarding,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
-  ProgressiveOnboardingCountsQueryRenderer,
+  ProgressiveOnboardingCounts,
   WithProgressiveOnboardingCountsProps,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
 import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
@@ -45,7 +44,6 @@ const ProgressiveOnboardingSaveFind: FC<ProgressiveOnboardingSaveFindProps> = ({
       onClose={handleClose}
       onDismiss={handleDismiss}
       ignoreClickOutside={false}
-      zIndex={Z.dropdown}
       popover={<Text variant="xs">Find and edit all your Saves here.</Text>}
     >
       {children}
@@ -55,8 +53,8 @@ const ProgressiveOnboardingSaveFind: FC<ProgressiveOnboardingSaveFindProps> = ({
 
 export const ProgressiveOnboardingSaveFindQueryRenderer: FC = ({ children }) => {
   return (
-    <ProgressiveOnboardingCountsQueryRenderer Component={ProgressiveOnboardingSaveFind}>
+    <ProgressiveOnboardingCounts Component={ProgressiveOnboardingSaveFind}>
       {children}
-    </ProgressiveOnboardingCountsQueryRenderer>
+    </ProgressiveOnboardingCounts>
   )
 }
