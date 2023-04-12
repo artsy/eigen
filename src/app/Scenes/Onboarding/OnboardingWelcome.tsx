@@ -1,12 +1,12 @@
-import { Spacer, useTheme, ArtsyLogoWhiteIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, useTheme, ArtsyLogoWhiteIcon, Flex, Text, Button } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+import { Screen } from "app/Components/Screen"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
+import { useScreenDimensions } from "app/utils/hooks"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { Button } from "app/Components/Button"
-import { Screen } from "app/Components/Screen"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -17,7 +17,6 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated"
-import { useScreenDimensions } from "app/utils/hooks"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">

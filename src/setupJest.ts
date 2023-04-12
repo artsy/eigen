@@ -1,7 +1,5 @@
 import { format } from "util"
-// @ts-expect-error
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
-// @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -13,9 +11,9 @@ import chalk from "chalk"
 import expect from "expect"
 import "jest-extended"
 import { NativeModules } from "react-native"
-// @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
+// @ts-expect-error
 import diff from "snapshot-diff"
 
 /**
@@ -240,7 +238,23 @@ require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
 
 // @ts-expect-error
 global.__reanimatedWorkletInit = () => {}
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
+jest.mock("react-native-reanimated", () => {
+  const animationMock = {
+    duration: () => {
+      return jest.fn()
+    },
+  }
+
+  return {
+    ...require("react-native-reanimated/mock"),
+    FadeInRight: animationMock,
+    FadeInLeft: animationMock,
+    FadeIn: animationMock,
+    FadeOut: animationMock,
+    FadeOutRight: animationMock,
+  }
+})
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
