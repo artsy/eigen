@@ -1,5 +1,7 @@
 import { format } from "util"
+// @ts-expect-error
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
+// @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -11,9 +13,9 @@ import chalk from "chalk"
 import expect from "expect"
 import "jest-extended"
 import { NativeModules } from "react-native"
+// @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
-// @ts-expect-error
 import diff from "snapshot-diff"
 
 /**
