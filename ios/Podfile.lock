@@ -46,6 +46,16 @@ PODS:
   - ARGenericTableViewController (1.0.2)
   - boost (1.76.0)
   - boost-for-react-native (1.63.0)
+  - braze-react-native-sdk (4.1.0):
+    - BrazeKit (~> 5.13.0)
+    - BrazeLocation (~> 5.13.0)
+    - BrazeUI (~> 5.13.0)
+    - React-Core
+  - BrazeKit (5.13.0)
+  - BrazeLocation (5.13.0):
+    - BrazeKit (= 5.13.0)
+  - BrazeUI (5.13.0):
+    - BrazeKit (= 5.13.0)
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
@@ -694,6 +704,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -835,6 +846,9 @@ SPEC REPOS:
     - AppAuth
     - Appboy-iOS-SDK
     - boost-for-react-native
+    - BrazeKit
+    - BrazeLocation
+    - BrazeUI
     - CocoaAsyncSocket
     - CocoaLumberjack
     - EDColor
@@ -913,6 +927,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/ARGenericTableViewController.git
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  braze-react-native-sdk:
+    :path: "../node_modules/@braze/react-native-sdk"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
@@ -1092,6 +1108,10 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  braze-react-native-sdk: 686da10a997500422984bd4b39c78fc19fcd701a
+  BrazeKit: 97f6875bf05920a46a2f0c9d0e452b6b840c5f99
+  BrazeLocation: 571ee6bf6b2f5c1aba20d9a75e4da190f8db7e5b
+  BrazeUI: 31dd9f0235149f05d6f7e37f273be7293e000587
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
