@@ -1,4 +1,4 @@
-import { Flex, HeartFillIcon, HeartIcon, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -12,7 +12,6 @@ import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
-import { Touchable } from "@artsy/palette-mobile"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -75,14 +74,26 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, id, image, internalID, isSaved, partner, slug, title } = artwork
+  const {
+    artistNames,
+    date,
+    id,
+    image,
+    internalID,
+    isSaved,
+    partner,
+    slug,
+    title,
+    sale,
+    saleArtwork,
+  } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
-  const urgencyTag =
-    artwork?.sale?.isAuction && !artwork?.sale?.isClosed
-      ? getUrgencyTag(artwork?.sale?.endAt)
-      : null
+  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
+  const lotEndAt = saleArtwork?.endAt
+  const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
+  const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
   const primaryTextColor = dark ? "white100" : "black100"
   const secondaryTextColor = dark ? "black15" : "black60"
@@ -414,6 +425,8 @@ const artworkFragment = graphql`
       currentBid {
         display
       }
+      endAt
+      extendedBiddingEndAt
     }
     partner {
       name
