@@ -10,6 +10,7 @@ import {
   useEnvironment,
 } from "app/store/GlobalStore"
 import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { parse as parseQueryString } from "query-string"
@@ -18,7 +19,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
@@ -185,7 +185,13 @@ export const ArtsyWebView = forwardRef<
           const result = matchRoute(targetURL)
 
           // if it's a route that we know we don't have a native view for, keep it in the webview
-          if (result.type === "match" && result.module === "ReactWebView") {
+          // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
+          // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
+          // to a different vanityURL that we can handle inapp, such as Fair & Partner.
+          if (
+            result.type === "match" &&
+            (result.module === "ReactWebView" || result.module === "VanityURLEntity")
+          ) {
             innerRef.current!.shareTitleUrl = targetURL
             return
           }
