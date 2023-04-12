@@ -2,6 +2,7 @@ import { act, fireEvent } from "@testing-library/react-native"
 import { ArtistAutosuggestResultsPaginationQuery } from "__generated__/ArtistAutosuggestResultsPaginationQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { PriceDatabase } from "./PriceDatabase"
@@ -36,6 +37,18 @@ describe(PriceDatabase, () => {
     expect(navigate).toHaveBeenCalledWith(
       "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true"
     )
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "searchedPriceDatabase",
+      context_module: "priceDatabaseLanding",
+      context_owner_type: "priceDatabase",
+      destination_owner_id: "4dd1584de0091e000100207c",
+      destination_owner_type: "artistAuctionResults",
+      destination_path:
+        "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true",
+      filters: '{"categories":[],"sizes":[]}',
+      query: "",
+    })
   })
 
   it("searches for artist's auction results with filters", async () => {
@@ -75,6 +88,18 @@ describe(PriceDatabase, () => {
     expect(navigate).toHaveBeenCalledWith(
       "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
     )
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "searchedPriceDatabase",
+      context_module: "priceDatabaseLanding",
+      context_owner_type: "priceDatabase",
+      destination_owner_id: "4dd1584de0091e000100207c",
+      destination_owner_type: "artistAuctionResults",
+      destination_path:
+        "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+      filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
+      query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
+    })
   })
   describe("when no artist is selected", () => {
     it("disables the search button", async () => {
