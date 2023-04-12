@@ -1,5 +1,4 @@
 import { stringify } from "querystring"
-import { OwnerType } from "@artsy/cohesion"
 import { ArtsyKeyboardAvoidingView, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
@@ -9,8 +8,6 @@ import { ArtworkFilterOptionItem } from "app/Components/ArtworkFilter/components
 import { Button } from "app/Components/Button"
 import { PriceDatabaseFormModel } from "app/Scenes/PriceDatabase/validation"
 import { navigate } from "app/system/navigation/navigate"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useFormikContext } from "formik"
 import { snakeCase } from "lodash"
 
@@ -28,7 +25,7 @@ export const paramsToSnakeCase = (params: object) => {
   }, {})
 }
 
-const ALLOWED_FILTERS = ["artistId", "categories", "sizes"]
+const ALLOWED_FILTERS = ["categories", "sizes"]
 
 export const filterSearchFilters = (filters: PriceDatabaseFormModel, allowedFilters: string[]) =>
   Object.keys(filters)
@@ -45,6 +42,11 @@ export const PriceDatabaseForm: React.FC<StackScreenProps<ArtworkFilterNavigatio
   const { values, isValid } = useFormikContext<PriceDatabaseFormModel>()
 
   const handleSearch = () => {
+    if (!values.artistId) {
+      console.error("No Artist selected.")
+      return
+    }
+
     const pathName = `/artist/${values.artistId}/auction-results`
     const searchFilters = filterSearchFilters(values, ALLOWED_FILTERS)
     const queryString = stringify(paramsToSnakeCase(searchFilters))
@@ -52,17 +54,14 @@ export const PriceDatabaseForm: React.FC<StackScreenProps<ArtworkFilterNavigatio
 
     const url = queryString ? `${pathName}?${queryString}&${paramFlag}` : `${pathName}?${paramFlag}`
 
+    console.log(url)
     navigate(url)
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.consignmentFlow,
-      })}
-    >
-      <ArtsyKeyboardAvoidingView>
-        <Flex m={2}>
+    <ArtsyKeyboardAvoidingView>
+      <Flex my={2}>
+        <Flex mx={2} mb={2}>
           <Text variant="xl">Artsy Price</Text>
           <Text variant="xl" mb={0.5}>
             Database
@@ -72,32 +71,41 @@ export const PriceDatabaseForm: React.FC<StackScreenProps<ArtworkFilterNavigatio
             Unlimited access to millions of auction results and art market data — for free.
           </Text>
 
-          <Spacer y={2} />
+          <Spacer y={4} />
 
-          <Flex>
-            <ArtistAutosuggest title={null} />
-
-            <Spacer y={2} />
-
-            <ArtworkFilterOptionItem
-              item={{
-                displayText: FilterDisplayName.additionalGeneIDs,
-                filterType: "additionalGeneIDs",
-                ScreenComponent: "AdditionalGeneIDsOptionsScreen",
-              }}
-              onPress={() => {
-                navigation.navigate("MediumOptionsScreen")
-              }}
-            />
-
-            <Spacer y={2} />
-
-            <Button disabled={!isValid} width="100%" maxWidth="440px" onPress={handleSearch} block>
-              Search
-            </Button>
-          </Flex>
+          <ArtistAutosuggest title={null} placeholder="Search by artist name" />
         </Flex>
-      </ArtsyKeyboardAvoidingView>
-    </ProvideScreenTrackingWithCohesionSchema>
+
+        <ArtworkFilterOptionItem
+          item={{
+            displayText: FilterDisplayName.medium,
+            filterType: "medium",
+            ScreenComponent: "MediumOptionsScreen",
+          }}
+          onPress={() => {
+            navigation.navigate("MediumOptionsScreen")
+          }}
+        />
+
+        <ArtworkFilterOptionItem
+          item={{
+            displayText: FilterDisplayName.sizes,
+            filterType: "sizes",
+            ScreenComponent: "SizesOptionsScreen",
+          }}
+          onPress={() => {
+            navigation.navigate("SizesOptionsScreen")
+          }}
+        />
+
+        <Spacer y={2} />
+
+        <Flex mx={2}>
+          <Button disabled={!isValid} width="100%" maxWidth="440px" onPress={handleSearch} block>
+            Search
+          </Button>
+        </Flex>
+      </Flex>
+    </ArtsyKeyboardAvoidingView>
   )
 }

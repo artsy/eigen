@@ -8,10 +8,14 @@ import React, { useEffect, useState } from "react"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 interface ArtistAutosuggestProps {
+  placeholder?: string
   title?: string | null
 }
 
-export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({ title = "Artist" }) => {
+export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
+  placeholder = "Enter full name",
+  title = "Artist",
+}) => {
   const {
     values: { artist, artistId },
     setFieldValue,
@@ -46,7 +50,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({ title = "A
     <SearchContext.Provider value={searchProviderValues}>
       <Input
         title={title || undefined}
-        placeholder="Enter full name"
+        placeholder={placeholder}
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}
         value={artist}
