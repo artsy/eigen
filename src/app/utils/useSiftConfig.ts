@@ -12,7 +12,7 @@ export function useSiftConfig() {
 
   useEffect(() => {
     if (!!accountId && !!beaconKey) {
-      // SiftReactNative.setSiftConfig(accountId, beaconKey, true, "")
+      SiftReactNative.setSiftConfig(accountId, beaconKey, true, "")
     }
   }, [accountId, beaconKey])
 }

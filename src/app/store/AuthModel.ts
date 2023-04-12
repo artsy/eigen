@@ -904,7 +904,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
-    // SiftReactNative.unsetUserId()
+    SiftReactNative.unsetUserId()
 
     await Promise.all([
       Platform.OS === "ios"

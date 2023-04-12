@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
-import { MediumOptions } from "app/Scenes/PriceDatabase/MediumOptions"
-import { PriceDatabaseSearch } from "app/Scenes/PriceDatabase/PriceDatabaseSearch"
-import { SizesOptions } from "app/Scenes/PriceDatabase/SizesOptions"
+import { MediumOptions } from "app/Scenes/PriceDatabase/components/MediumOptions"
+import { PriceDatabaseSearch } from "app/Scenes/PriceDatabase/components/PriceDatabaseSearch"
+import { SizesOptions } from "app/Scenes/PriceDatabase/components/SizesOptions"
 import {
   PriceDatabaseSearchModel,
   PriceDatabaseSearchInitialValues,
@@ -16,7 +16,7 @@ import { FormikProvider, useFormik } from "formik"
 export type PriceDatabaseNavigationStack = {
   PriceDatabaseSearch: undefined
   MediumOptionsScreen: undefined
-  SizesOptionsScreen: undefined
+  SizeOptionsScreen: undefined
 }
 
 const Stack = createStackNavigator<PriceDatabaseNavigationStack>()

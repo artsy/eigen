@@ -17,10 +17,10 @@ export function useIdentifyUser() {
     if (userId) {
       Sentry.setUser({ id: userId })
       ReactAppboy.changeUser(userId)
-      // SiftReactNative.setUserId(userId)
+      SiftReactNative.setUserId(userId)
       // This is here becuase Sift's RN wrapper does not currently automatically collect or
       // upload events for Android devices. If they update the package, we can remove it.
-      // SiftReactNative.upload()
+      SiftReactNative.upload()
     }
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
 
