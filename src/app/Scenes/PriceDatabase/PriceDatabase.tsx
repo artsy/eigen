@@ -16,7 +16,7 @@ import { FormikProvider, useFormik } from "formik"
 export type PriceDatabaseNavigationStack = {
   PriceDatabaseSearch: undefined
   MediumOptionsScreen: undefined
-  SizeOptionsScreen: undefined
+  SizesOptionsScreen: undefined
 }
 
 const Stack = createStackNavigator<PriceDatabaseNavigationStack>()
