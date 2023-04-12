@@ -3,10 +3,11 @@
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
-#import <Appboy.h>
-#import "AppboyReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
-#import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
+// TODO: Handle segment braze integration
+ // #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
+#import <BrazeKit/BrazeKit-Swift.h>
+#import "BrazeReactBridge.h"
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
@@ -51,6 +52,7 @@
 #import <React/RCTRootView.h>
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
+
 
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
 #import <FlipperKit/FlipperClient.h>
@@ -124,11 +126,11 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupForAppLaunch:nil];
 }
 
-- (void)setupForAppLaunch:(NSDictionary *)launchOptions
+- (RCTBridge *)setupForAppLaunch:(NSDictionary *)launchOptions
 {
     // In case everything's already set up
     if (self.window) {
-        return;
+        return nil;
     }
 
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
@@ -169,6 +171,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
+
+    return bridge;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -179,6 +183,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupForAppLaunch:launchOptions];
 
+    // TODO: Do I need the bridge setup described in docs?
+    // https://www.braze.com/docs/developer_guide/platform_integration_guides/react_native/react_sdk_setup/#step-2-complete-native-setup
     [self setupAnalytics:application withLaunchOptions:launchOptions];
 
     FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
@@ -192,7 +198,7 @@ static ARAppDelegate *_sharedInstance = nil;
     return YES;
 }
 
-- (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
+- (void)setupAnalytics:(UIApplication *)application      withLaunchOptions:(NSDictionary *)launchOptions
 {
     NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
@@ -200,12 +206,14 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-    NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
-    appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
-    [Appboy startWithApiKey:brazeAppKey
-              inApplication:application
-          withLaunchOptions:launchOptions
-          withAppboyOptions:appboyOptions];
+
+    // Setup Braze
+    BRZConfiguration *brazeConfig = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
+    // - Enable logging and customize the configuration here
+    brazeConfig.logger.level = BRZLoggerLevelInfo;
+    Braze *braze = [BrazeReactBridge initBraze:brazeConfig];
+    ARAppDelegate.braze = braze;
+
 
     NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
     if (![ARAppStatus isDev]) {
@@ -217,9 +225,12 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
     [SEGAnalytics setupWithConfiguration:configuration];
-    [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
-    [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+    // TODO: Handle braze segment integration
+   //  [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
+    // TODO: Whatever this is doing
+    // [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
+
 
 - (void)registerNewSessionOpened
 {
@@ -231,11 +242,11 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     [self registerNewSessionOpened];
-
-    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-    if (currentUserId) {
-        [[Appboy sharedInstance] changeUser: currentUserId];
-    }
+    // TODO: Handle changing user
+//    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
+//    if (currentUserId) {
+//        [[Appboy sharedInstance] changeUser: currentUserId];
+//    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -349,6 +360,19 @@ static ARAppDelegate *_sharedInstance = nil;
         [ARCocoaConstantsModule new],
     ];
 }
+
+#pragma mark - AppDelegate.braze
+
+static Braze *_braze = nil;
+
++ (Braze *)braze {
+  return _braze;
+}
+
++ (void)setBraze:(Braze *)braze {
+  _braze = braze;
+}
+
 
 @end
 
