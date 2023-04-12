@@ -150,11 +150,7 @@ static ARAppDelegate *_sharedInstance = nil;
                                                      moduleName:@"eigen"
                                               initialProperties:nil];
 
-    if (@available(iOS 13.0, *)) {
-        rootView.backgroundColor = [UIColor systemBackgroundColor];
-    } else {
-        rootView.backgroundColor = [UIColor whiteColor];
-    }
+    rootView.backgroundColor = [UIColor systemBackgroundColor];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *rootViewController = [UIViewController new];
@@ -162,10 +158,8 @@ static ARAppDelegate *_sharedInstance = nil;
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
 
-    if (@available(iOS 13.0, *)) {
-        // prevent dark mode
-        self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-    }
+    // prevent dark mode
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];

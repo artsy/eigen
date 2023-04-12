@@ -153,9 +153,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         pageViewScrollView?.isScrollEnabled = (view.window?.traitCollection.horizontalSizeClass == .compact)
 
         // iPhone X support
-        if #available(iOS 11.0, *) {
-            currentLotCTAPositionManager.safeBottomMargin = view.safeAreaInsets.bottom
-        }
+        currentLotCTAPositionManager.safeBottomMargin = view.safeAreaInsets.bottom
     }
 
     func setupView() {

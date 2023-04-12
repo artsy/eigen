@@ -41,9 +41,7 @@
 }
 @end
 
-API_AVAILABLE(ios(11.0))
 @interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController>
-NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARInformationView *informationView;
@@ -445,7 +443,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Currently unused, might be useful for either debugging, or showing the state of "connection" for AR to the world.
 
-- (void)session:(ARSession *)session cameraDidChangeTrackingState:(ARCamera *)camera  API_AVAILABLE(ios(11.0))
+- (void)session:(ARSession *)session cameraDidChangeTrackingState:(ARCamera *)camera
 {
     switch (camera.trackingState) {
         case ARTrackingStateNotAvailable:
@@ -458,21 +456,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Delegate calls passed through to the interaction controller
 
-- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
+- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
 {
     [self.interactionController renderer:renderer didUpdateNode:node forAnchor:anchor];
 }
 
 // Delegate calls passed through to the interaction controller
 
-- (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
+- (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
 {
     [self.interactionController renderer:renderer didAddNode:node forAnchor:anchor];
 }
 
 // Delegate calls passed through to the interaction controller
 
-- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0))
+- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame
 {
     [self.interactionController session:session didUpdateFrame:frame];
 }
@@ -494,14 +492,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)shouldAutorotate;
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;
 {
     return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
-
-NS_ASSUME_NONNULL_END
 
 @end
