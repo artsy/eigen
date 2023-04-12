@@ -2,7 +2,6 @@ import { act, fireEvent } from "@testing-library/react-native"
 import { ArtistAutosuggestResultsPaginationQuery } from "__generated__/ArtistAutosuggestResultsPaginationQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL, renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { PriceDatabase } from "./PriceDatabase"
@@ -19,14 +18,27 @@ describe(PriceDatabase, () => {
     expect(
       getByText("Unlimited access to millions of auction results and art market data — for free.")
     ).toBeTruthy()
-
-    // expect(mockTrackEvent).toHaveBeenCalledWith({
-    //   action: "screen",
-    //   context_screen_owner_type: "priceDatabase",
-    // })
   })
 
   it("searches for artist's auction results without filters", async () => {
+    const { getByText, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
+
+    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "banksy")
+
+    act(() =>
+      mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
+    )
+
+    fireEvent.press(getByText("Banksy"))
+
+    fireEvent.press(getByText("Search"))
+
+    expect(navigate).toHaveBeenCalledWith(
+      "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true"
+    )
+  })
+
+  it("searches for artist's auction results with filters", async () => {
     const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(<PriceDatabase />)
 
     fireEvent.changeText(getByPlaceholderText("Search by artist name"), "banksy")
@@ -35,42 +47,43 @@ describe(PriceDatabase, () => {
       mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
     )
 
-    await flushPromiseQueue()
+    // Select artist
 
     fireEvent.press(getByText("Banksy"))
 
-    await flushPromiseQueue()
+    // Select medium
+
+    fireEvent.press(getByText("Medium"))
+
+    fireEvent.press(getByText("Painting"))
+    fireEvent.press(getByText("Work on paper"))
+
+    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+
+    // Select sizes
+
+    fireEvent.press(getByText("Size"))
+
+    fireEvent.press(getByText("Small (under 16in)"))
+    fireEvent.press(getByText("Medium (16 – 40in)"))
+    fireEvent.press(getByText("Large (over 40in)"))
+
+    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
 
     fireEvent.press(getByText("Search"))
 
     expect(navigate).toHaveBeenCalledWith(
-      "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true"
+      "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
     )
-    // getByText("Search").props.onPress()
+  })
+  describe("when no artist is selected", () => {
+    it("disables the search button", async () => {
+      const { getByText } = renderWithWrappers(<PriceDatabase />)
 
-    // wrapper
-    //   .find(PriceDatabaseArtistAutosuggest)
-    //   .props()
-    //   .onChange("gerhard-richter")
-    // wrapper.find(Button).simulate("click")
+      fireEvent.press(getByText("Search"))
 
-    // expect(mockRouterPush).toHaveBeenCalledWith(
-    //   "/artist/gerhard-richter/auction-results?scroll_to_market_signals=true"
-    // )
-
-    // expect(trackEvent).toHaveBeenCalledTimes(1)
-    // expect(trackEvent.mock.calls[0][0]).toMatchInlineSnapshot(`
-    //   Object {
-    //     "action": "searchedPriceDatabase",
-    //     "context_module": "priceDatabaseLanding",
-    //     "context_owner_type": "priceDatabase",
-    //     "destination_owner_slug": "gerhard-richter",
-    //     "destination_owner_type": "artistAuctionResults",
-    //     "destination_path": "/artist/gerhard-richter/auction-results",
-    //     "filters": "{\\"categories\\":[],\\"sizes\\":[]}",
-    //     "query": "",
-    //   }
-    // `)
+      expect(navigate).not.toHaveBeenCalled()
+    })
   })
 })
 

@@ -6,44 +6,30 @@ import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { FilterDisplayName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterOptionItem } from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
 import { Button } from "app/Components/Button"
-import { PriceDatabaseFormModel } from "app/Scenes/PriceDatabase/validation"
+import { useToast } from "app/Components/Toast/toastHook"
+import {
+  ALLOWED_FILTERS,
+  filterSearchFilters,
+  paramsToSnakeCase,
+} from "app/Scenes/PriceDatabase/utils/helpers"
+import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { snakeCase } from "lodash"
 
-// Utility method to convert keys of a hash into snake case.
-export const paramsToSnakeCase = (params: object) => {
-  return Object.entries(params).reduce((acc, [field, value]) => {
-    let snakeCased = snakeCase(field)
-    if (snakeCased.endsWith("i_ds")) {
-      snakeCased = snakeCased.replace("i_ds", "ids")
-    } else if (snakeCased.endsWith("i_d")) {
-      snakeCased = snakeCased.replace("i_d", "ids")
-    }
-
-    return { ...acc, [snakeCased]: value }
-  }, {})
-}
-
-const ALLOWED_FILTERS = ["categories", "sizes"]
-
-export const filterSearchFilters = (filters: PriceDatabaseFormModel, allowedFilters: string[]) =>
-  Object.keys(filters)
-    .filter((key) => allowedFilters.includes(key))
-    .reduce((obj, key) => {
-      // @ts-ignore
-      obj[key] = filters[key]
-      return obj
-    }, {})
-
-export const PriceDatabaseForm: React.FC<StackScreenProps<ArtworkFilterNavigationStack>> = ({
+export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigationStack>> = ({
   navigation,
 }) => {
-  const { values, isValid } = useFormikContext<PriceDatabaseFormModel>()
+  const toast = useToast()
+
+  const { values, isValid } = useFormikContext<PriceDatabaseSearchModel>()
 
   const handleSearch = () => {
     if (!values.artistId) {
       console.error("No Artist selected.")
+      toast.show("Please select an artist.", "top", {
+        backgroundColor: "red100",
+      })
+
       return
     }
 
@@ -54,7 +40,6 @@ export const PriceDatabaseForm: React.FC<StackScreenProps<ArtworkFilterNavigatio
 
     const url = queryString ? `${pathName}?${queryString}&${paramFlag}` : `${pathName}?${paramFlag}`
 
-    console.log(url)
     navigate(url)
   }
 

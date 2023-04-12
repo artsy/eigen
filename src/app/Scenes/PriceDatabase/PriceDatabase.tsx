@@ -2,11 +2,11 @@ import { OwnerType } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { MediumOptions } from "app/Scenes/PriceDatabase/MediumOptions"
-import { PriceDatabaseForm } from "app/Scenes/PriceDatabase/PriceDatabaseForm"
+import { PriceDatabaseSearch } from "app/Scenes/PriceDatabase/PriceDatabaseSearch"
 import { SizesOptions } from "app/Scenes/PriceDatabase/SizesOptions"
 import {
-  PriceDatabaseFormModel,
-  priceDatabaseFormInitialValues,
+  PriceDatabaseSearchModel,
+  PriceDatabaseSearchInitialValues,
   priceDatabaseValidationSchema,
 } from "app/Scenes/PriceDatabase/validation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -14,7 +14,7 @@ import { screen } from "app/utils/track/helpers"
 import { FormikProvider, useFormik } from "formik"
 
 export type PriceDatabaseNavigationStack = {
-  PriceDatabaseForm: undefined
+  PriceDatabaseSearch: undefined
   MediumOptionsScreen: undefined
   SizesOptionsScreen: undefined
 }
@@ -24,8 +24,8 @@ const Stack = createStackNavigator<PriceDatabaseNavigationStack>()
 export const PriceDatabase = () => {
   const handleSubmit = () => {}
 
-  const formik = useFormik<PriceDatabaseFormModel>({
-    initialValues: priceDatabaseFormInitialValues,
+  const formik = useFormik<PriceDatabaseSearchModel>({
+    initialValues: PriceDatabaseSearchInitialValues,
     initialErrors: {},
     onSubmit: handleSubmit,
     validationSchema: () => priceDatabaseValidationSchema,
@@ -48,7 +48,7 @@ export const PriceDatabase = () => {
               cardStyle: { backgroundColor: "white" },
             }}
           >
-            <Stack.Screen name="PriceDatabaseForm" component={PriceDatabaseForm} />
+            <Stack.Screen name="PriceDatabaseSearch" component={PriceDatabaseSearch} />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptions} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptions} />
           </Stack.Navigator>

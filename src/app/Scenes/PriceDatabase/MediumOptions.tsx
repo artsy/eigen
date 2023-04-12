@@ -6,7 +6,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "app/Components/ArtworkFilter/Filters/MultiSelectOption"
-import { PriceDatabaseFormModel } from "app/Scenes/PriceDatabase/validation"
+import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { useFormikContext } from "formik"
 
 type MediumOptionsScreenProps = StackScreenProps<
@@ -15,7 +15,7 @@ type MediumOptionsScreenProps = StackScreenProps<
 >
 
 export const MediumOptions: React.FC<MediumOptionsScreenProps> = ({ navigation }) => {
-  const { values, setFieldValue } = useFormikContext<PriceDatabaseFormModel>()
+  const { values, setFieldValue } = useFormikContext<PriceDatabaseSearchModel>()
 
   const selectOption = (option: FilterData) => {
     if (!values.categories.includes(option.paramValue as string)) {

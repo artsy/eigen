@@ -6,7 +6,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "app/Components/ArtworkFilter/Filters/MultiSelectOption"
-import { PriceDatabaseFormModel } from "app/Scenes/PriceDatabase/validation"
+import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFormikContext } from "formik"
 
@@ -17,7 +17,7 @@ export const SizesOptions: React.FC<OptionsScreenProps> = ({ navigation }) => {
 
   const options = preferredMetric === "in" ? sizesInInches : sizesInCm
 
-  const { values, setFieldValue } = useFormikContext<PriceDatabaseFormModel>()
+  const { values, setFieldValue } = useFormikContext<PriceDatabaseSearchModel>()
 
   const selectOption = (option: FilterData) => {
     if (!values.sizes.includes(option.paramValue as string)) {

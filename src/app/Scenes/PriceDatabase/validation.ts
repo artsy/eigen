@@ -1,13 +1,13 @@
 import * as Yup from "yup"
 
-export interface PriceDatabaseFormModel {
+export interface PriceDatabaseSearchModel {
   artist: string
   artistId: string
   categories: string[]
   sizes: string[]
 }
 
-export const priceDatabaseFormInitialValues: PriceDatabaseFormModel = {
+export const PriceDatabaseSearchInitialValues: PriceDatabaseSearchModel = {
   artist: "",
   artistId: "",
   categories: [],
@@ -15,8 +15,8 @@ export const priceDatabaseFormInitialValues: PriceDatabaseFormModel = {
 }
 
 export const priceDatabaseValidationSchema = Yup.object().shape({
-  // artist: Yup.string().trim(),
-  // artistId: Yup.string().required(
-  //   "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
-  // ),
+  artist: Yup.string().trim(),
+  artistId: Yup.string().required(
+    "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
+  ),
 })
