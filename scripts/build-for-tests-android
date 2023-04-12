@@ -7,7 +7,7 @@ yarn jetifier
 
 cd android
 mkdir -p android/app/src/main/assets
-touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
+touch android/app/src/main/assets/index.android.bundle && yarn bundle:android:hermes
 ./gradlew clean
 ./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
 cd -

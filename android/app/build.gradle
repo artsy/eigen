@@ -84,12 +84,6 @@ import com.android.build.OutputFile
  * ]
  */
 
-project.ext.react = [
-    enableHermes: true,  // clean and rebuild if changing
-]
-
-apply from: "../../node_modules/react-native/react.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -125,6 +119,15 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
+
+//  order matters here, this must be set before the react.gradle apply
+project.ext.react = [
+  entryFile: "index.android.js",
+  enableHermes: true
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
+
 def enableHermes = project.ext.react.get("enableHermes", false)
 
 /**
