@@ -1,4 +1,9 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
+import { HomeFeedModalCarousel } from "app/Scenes/Home/Components/HomeFeedModalCarousel/HomeFeedModalCarousel"
+import { navigate, switchTab } from "app/system/navigation/navigate"
+import { useState } from "react"
+import { useTracking } from "react-tracking"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface MeetYourNewAdvisorRailProps {
@@ -11,6 +16,8 @@ interface OnboardingDataItem {
 
 export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (props) => {
   const { title } = props
+  const { trackEvent } = useTracking()
+  const [isMyCollectionModalVisible, setIsMyCollectionModalVisible] = useState(false)
 
   const onboardingCardsData: OnboardingDataItem[] = [
     {
@@ -18,11 +25,11 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Get the art you want"
           subtitle="All the world’s in-demand art, and tools to get exactly what you’re looking for."
-          image={require("images/homefeed-my-collection-inboarding-1.jpg")}
-          //          image={require("images/meet-your-new-art-advisor-0.png")}
+          image={require("images/meet-your-new-art-advisor-0.png")}
           buttonText="Explore Works"
           onPress={() => {
-            return
+            navigate("https://staging.artsy.net/find-the-art-you-want")
+            trackEvent(tracks.tappedProductCapabilities(ContextModule.findTheArtYouWant))
           }}
           testID="meet-your-new-advisor-card-0"
         />
@@ -36,7 +43,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
           image={require("images/meet-your-new-art-advisor-1.png")}
           buttonText="Start Searching"
           onPress={() => {
-            return
+            trackEvent(tracks.tappedProductCapabilities(ContextModule.priceDatabase))
           }}
           testID="meet-your-new-advisor-card-1"
         />
@@ -44,16 +51,23 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
     },
     {
       jsx: (
-        <HomeFeedOnboardingCard
-          title="Know your collection better"
-          subtitle="See all the artworks you own, on your phone—and keep up with artists’ markets."
-          image={require("images/meet-your-new-art-advisor-2.png")}
-          buttonText="View My Collection"
-          onPress={() => {
-            return
-          }}
-          testID="meet-your-new-advisor-card-2"
-        />
+        <>
+          <HomeFeedModalCarousel
+            isVisible={isMyCollectionModalVisible}
+            toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
+          />
+          <HomeFeedOnboardingCard
+            title="Know your collection better"
+            subtitle="See all the artworks you own, on your phone—and keep up with artists’ markets."
+            image={require("images/meet-your-new-art-advisor-2.png")}
+            buttonText="View My Collection"
+            onPress={() => {
+              setIsMyCollectionModalVisible(true)
+              trackEvent(tracks.tappedProductCapabilities(ContextModule.myCollection))
+            }}
+            testID="meet-your-new-advisor-card-2"
+          />
+        </>
       ),
     },
     {
@@ -64,7 +78,8 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
           image={require("images/meet-your-new-art-advisor-3.png")}
           buttonText="Learn more"
           onPress={() => {
-            return
+            switchTab("sell")
+            trackEvent(tracks.tappedProductCapabilities(ContextModule.sell))
           }}
           testID="meet-your-new-advisor-card-3"
         />
@@ -84,4 +99,13 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
       />
     </>
   )
+}
+
+const tracks = {
+  tappedProductCapabilities: (contextModule: ContextModule) => ({
+    action: ActionType.tappedProductCapabilitiesGroup,
+    context_screen: OwnerType.home,
+    context_screen_owner_type: OwnerType.home,
+    context_module: contextModule,
+  }),
 }
