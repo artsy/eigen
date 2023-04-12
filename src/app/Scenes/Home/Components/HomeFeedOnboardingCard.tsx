@@ -1,11 +1,11 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { Button } from "app/Components/Button"
-import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { Image, ImageSourcePropType } from "react-native"
 
 const CARD_BORDER_RADIUS = 4
 const CARD_WIDTH = 295
+const IMAGE_HEIGHT = 160
 
 export interface HomeFeedOnboardingCardProps {
   title: string
@@ -28,7 +28,8 @@ export const HomeFeedOnboardingCard: React.FC<HomeFeedOnboardingCardProps> = ({
     <Touchable haptic="impactMedium" onPress={onPress}>
       <Flex width={CARD_WIDTH} testID={testID}>
         <Image
-          style={{ width: CARD_WIDTH }}
+          resizeMode="cover"
+          style={{ width: CARD_WIDTH, height: IMAGE_HEIGHT, alignSelf: "center", flex: 1 }}
           source={image}
           borderTopLeftRadius={CARD_BORDER_RADIUS}
           borderTopRightRadius={CARD_BORDER_RADIUS}

@@ -11,6 +11,8 @@ import ReactAppboy from "react-native-appboy-sdk"
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
+  const enableDoMoreOnArtsyRaul = useFeatureFlag("AREnableDoMoreOnArtsyRail")
+  const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
 
   return useMemo(() => {
     const allModules: Array<HomeModule> = [
@@ -58,6 +60,14 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         title: "Auctions",
         type: "sales",
       },
+      {
+        data: true, // displays static data
+        hidden: !enableMeetYourNewAdvisoryRail,
+        isEmpty: false, // cannot be empty
+        key: "meetYourNewAdvisor",
+        title: "Meet your new art advisor",
+        type: "meetYourNewAdvisor",
+      },
       // Below-The-Fold Modules
       {
         contextModule: ContextModule.upcomingAuctionsRail,
@@ -90,7 +100,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule,
+        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRaul,
         isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
         key: "onboardingRail",
         title: "Do More on Artsy",

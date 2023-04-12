@@ -37,6 +37,7 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
+import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAdvisorRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
@@ -227,6 +228,8 @@ const Home = memo((props: HomeProps) => {
               onboardingModule={item.data}
             />
           )
+        case "meetYourNewAdvisor":
+          return <MeetYourNewAdvisorRail title={item.title} />
         case "contentCards":
           return <ContentCards cards={item.data} />
         case "articles":
