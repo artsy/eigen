@@ -19,6 +19,7 @@ import {
   LoginManager,
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
+import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
 import { GlobalStore, getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"

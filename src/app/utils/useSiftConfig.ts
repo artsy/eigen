@@ -1,6 +1,7 @@
 import { useIsStaging } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import Config from "react-native-config"
+import SiftReactNative from "sift-react-native"
 
 export function useSiftConfig() {
   const isStaging = useIsStaging()
