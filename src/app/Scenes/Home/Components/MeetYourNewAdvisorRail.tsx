@@ -25,7 +25,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Get the art you want"
           subtitle="All the world’s in-demand art, and tools to get exactly what you’re looking for."
-          image={require("images/meet-your-new-art-advisor-0.png")}
+          image={require("images/meet-your-new-art-advisor-0.jpg")}
           buttonText="Explore Works"
           onPress={() => {
             navigate("https://staging.artsy.net/find-the-art-you-want")
@@ -40,7 +40,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Free auction results"
           subtitle="Wondering what to bid? Check the Artsy Price Database for free art market data."
-          image={require("images/meet-your-new-art-advisor-1.png")}
+          image={require("images/meet-your-new-art-advisor-1.jpg")}
           buttonText="Start Searching"
           onPress={() => {
             navigate("/price-database")
@@ -60,7 +60,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
           <HomeFeedOnboardingCard
             title="Know your collection better"
             subtitle="See all the artworks you own, on your phone—and keep up with artists’ markets."
-            image={require("images/meet-your-new-art-advisor-2.png")}
+            image={require("images/meet-your-new-art-advisor-2.jpg")}
             buttonText="View My Collection"
             onPress={() => {
               setIsMyCollectionModalVisible(true)
@@ -76,7 +76,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Sell from your collection"
           subtitle="When you’re ready to sell, earn more and worry less with our expert help."
-          image={require("images/meet-your-new-art-advisor-3.png")}
+          image={require("images/meet-your-new-art-advisor-3.jpg")}
           buttonText="Learn more"
           onPress={() => {
             switchTab("sell")
