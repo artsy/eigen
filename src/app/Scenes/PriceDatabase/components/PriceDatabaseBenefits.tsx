@@ -1,4 +1,13 @@
-import { Avatar, Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  Avatar,
+  Flex,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
 import { chunk } from "lodash"
 import { Image } from "react-native"
 
@@ -71,16 +80,18 @@ const Artists: React.FC = () => {
 
 const Artist: React.FC<{ artist: ArtistElement }> = ({ artist }) => {
   return (
-    <Flex alignItems="center">
-      <Flex mb={0.5}>
-        <Avatar size="sm" src={artist?.artistThumbnail} />
-      </Flex>
+    <Touchable onPress={() => navigate(`/artist/${artist.slug}`)}>
+      <Flex alignItems="center">
+        <Flex mb={0.5}>
+          <Avatar size="sm" src={artist?.artistThumbnail} />
+        </Flex>
 
-      <Text variant="xs">{artist?.artistName}</Text>
-      <Text variant="xs" color="black60">
-        {artist?.artistNationality}, {artist?.artistBirthday}
-      </Text>
-    </Flex>
+        <Text variant="xs">{artist?.artistName}</Text>
+        <Text variant="xs" color="black60">
+          {artist?.artistNationality}, {artist?.artistBirthday}
+        </Text>
+      </Flex>
+    </Touchable>
   )
 }
 
@@ -89,59 +100,69 @@ type ArtistElement = {
   artistName: string
   artistNationality: string
   artistThumbnail: string
+  slug: string
 }
 
 const ARTISTS: ArtistElement[] = [
   {
     artistName: "Banksy",
+    slug: "banksy",
     artistNationality: "British",
     artistBirthday: "b. 1973",
     artistThumbnail: "https://files.artsy.net/images/banksy.png",
   },
   {
     artistName: "David Shrigley",
+    slug: "david-shrigley",
     artistNationality: "British",
     artistBirthday: "b. 1968",
     artistThumbnail: "https://files.artsy.net/images/david_shrigley.png",
   },
   {
     artistName: "KAWS",
+    slug: "kaws",
     artistNationality: "American",
     artistBirthday: "b. 1974",
     artistThumbnail: "https://files.artsy.net/images/kaws.png",
   },
   {
     artistName: "Eddie Martinez",
+    slug: "eddie-martinez",
     artistNationality: "American",
     artistBirthday: "b. 1977",
     artistThumbnail: "https://files.artsy.net/images/eddie_martinez.png",
   },
   {
     artistName: "Salman Toor",
+    slug: "salman-toor",
     artistNationality: "Pakistani",
     artistBirthday: "b. 1983",
     artistThumbnail: "https://files.artsy.net/images/salman_toor.png",
   },
   {
     artistName: "Oh de Laval",
+    slug: "oh-de-laval",
     artistNationality: "Polish",
     artistBirthday: "b. 1990",
     artistThumbnail: "https://files.artsy.net/images/oh_de_laval.png",
   },
   {
     artistName: "David Hockney",
+    slug: "david-hockney",
     artistNationality: "British",
     artistBirthday: "b. 1968",
     artistThumbnail: "https://files.artsy.net/images/david_hockney.png",
   },
   {
     artistName: "Erik Parker",
+    slug: "erik-parker",
     artistNationality: "German",
     artistBirthday: "b. 1968",
     artistThumbnail: "https://files.artsy.net/images/erik_parker.png",
   },
   {
     artistName: "Kehinde Wiley",
+    slug: "kehinde-wiley",
     artistNationality: "American",
     artistBirthday: "b. 1977",
     artistThumbnail: "https://files.artsy.net/images/kehinde_wiley.png",
