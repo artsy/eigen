@@ -99,7 +99,7 @@ static CGFloat exitButtonDimension = 40;
         [self.view addSubview:exitButton];
 
         // Top and trailing constraint constants were determined experimentally, constraints differ on iPad
-        if (UIApplication.sharedApplication.keyWindow.traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
             UILayoutGuide *safeAreaLayoutGuide = self.view.safeAreaLayoutGuide;
             [NSLayoutConstraint activateConstraints:@[
                 [exitButton.topAnchor constraintEqualToAnchor:safeAreaLayoutGuide.topAnchor constant:16],

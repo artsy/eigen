@@ -15,11 +15,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport;
 {
-    BOOL isAREnabled = NO;
-
-    if (@available(iOS 11.3, *)) {
-        isAREnabled = [ARWorldTrackingConfiguration isSupported];
-    }
+    BOOL isAREnabled = [ARWorldTrackingConfiguration isSupported];
 
     return @{
         @"UIApplicationOpenSettingsURLString": UIApplicationOpenSettingsURLString,
