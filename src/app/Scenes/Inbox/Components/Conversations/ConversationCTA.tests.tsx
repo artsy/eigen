@@ -149,7 +149,7 @@ describe("ConversationCTA", () => {
         },
       })
       expectReviewOfferButton(wrapper, {
-        bg: "copper100",
+        bg: "orange150",
         strings: ["Offer Received"],
         Icon: AlertCircleFillIcon,
       })

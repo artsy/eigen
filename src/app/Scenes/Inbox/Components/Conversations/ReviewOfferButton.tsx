@@ -73,7 +73,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
     }
     case "OFFER_RECEIVED": {
       ctaAttributes = {
-        backgroundColor: "copper100",
+        backgroundColor: "orange150",
         message: `${offerType} Received`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
