@@ -8,6 +8,10 @@ export const PriceDatabaseBenefits: React.FC = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
+  const imageAspectRatio = 1.27
+  const imageWidth = width - space(4)
+  const imageHeight = imageWidth / imageAspectRatio
+
   return (
     <Flex m={2}>
       <Text variant="lg">Get in-depth art market data</Text>
@@ -26,15 +30,13 @@ export const PriceDatabaseBenefits: React.FC = () => {
         researching, buying, or selling.
       </Text>
 
-      {/* "https://d7hftxdivxxvm.cloudfront.net?height=660&quality=80&resize_to=fill&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fkehinde_wiley_portrait_of_nelly_moudime_ii.png&width=800" */}
-
       <Image
-        source={require("images/swa-landing-page-header.png")}
-        style={{ width: "100%", height: isTablet ? 480 : 200 }}
-        resizeMode="cover"
+        source={require("images/price-database-1.png")}
+        style={{ width: imageWidth, height: imageHeight }}
+        resizeMode="contain"
       />
 
-      <Spacer y={2} />
+      <Spacer y={4} />
 
       <Text variant="lg">Search for free</Text>
       <Text variant="xs" mb={2}>
@@ -42,12 +44,10 @@ export const PriceDatabaseBenefits: React.FC = () => {
         no obligations. A more open art world starts here.
       </Text>
 
-      {/* "https://d7hftxdivxxvm.cloudfront.net?height=660&quality=80&resize_to=fill&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fkehinde_wiley_portrait_of_nelly_moudime_ii.png&width=800" */}
-
       <Image
-        source={require("images/swa-landing-page-header.png")}
-        style={{ width: "100%", height: isTablet ? 480 : 200 }}
-        resizeMode="cover"
+        source={require("images/price-database-2.png")}
+        style={{ width: imageWidth, height: imageHeight }}
+        resizeMode="contain"
       />
 
       <Spacer y={2} />
