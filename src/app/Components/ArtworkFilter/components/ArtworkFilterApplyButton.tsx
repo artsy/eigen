@@ -1,14 +1,25 @@
-import { BellIcon, Box, useColor, Text, Separator } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  Box,
+  useColor,
+  Text,
+  Separator,
+  SpacingUnit,
+  SpacingUnitsTheme,
+} from "@artsy/palette-mobile"
 import { Button } from "app/Components/Button"
 import { useState } from "react"
 import { Pressable } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { ResponsiveValue } from "styled-system"
 
 export interface ArtworkFilterApplyButtonProps {
+  buttonText?: string
   disabled: boolean
   onCreateAlertPress?: () => void
   onPress: () => void
   shouldShowCreateAlertButton?: boolean
+  pb?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
 }
 
 interface Button {
@@ -46,7 +57,14 @@ const InnerButton: React.FC<Button> = (props) => {
 }
 
 export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> = (props) => {
-  const { disabled, shouldShowCreateAlertButton, onCreateAlertPress, onPress } = props
+  const {
+    buttonText,
+    disabled,
+    shouldShowCreateAlertButton,
+    onCreateAlertPress,
+    onPress,
+    pb = 4,
+  } = props
   const color = useColor()
 
   if (onCreateAlertPress) {
@@ -97,7 +115,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
   return (
     <>
       <Separator my={0} />
-      <Box p={2} pb={4}>
+      <Box p={2} pb={pb}>
         <Button
           disabled={disabled}
           onPress={onPress}
@@ -107,7 +125,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           size="large"
           testID="artwork-filter-apply-button"
         >
-          Show results
+          {buttonText ?? "Show results"}
         </Button>
       </Box>
     </>
