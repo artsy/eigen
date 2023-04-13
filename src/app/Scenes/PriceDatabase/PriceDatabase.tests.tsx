@@ -50,8 +50,7 @@ describe(PriceDatabase, () => {
     it("searches for artist's auction results without filters", async () => {
       const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
 
-    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
-
+      fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
 
       act(() =>
         mockEnvironment.mock.resolveMostRecentOperation({
@@ -60,67 +59,45 @@ describe(PriceDatabase, () => {
         })
       )
 
-    // Select artist
+      // Select artist
 
-    fireEvent.press(getByText("Andy Warhol"))
+      fireEvent.press(getByText("Andy Warhol"))
 
-    // Select medium
+      // Select medium
 
-    fireEvent.press(getByText("Medium"))
+      fireEvent.press(getByText("Medium"))
 
-    fireEvent.press(getByText("Painting"))
-    fireEvent.press(getByText("Work on paper"))
+      fireEvent.press(getByText("Painting"))
+      fireEvent.press(getByText("Work on paper"))
 
-    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
 
-    // Select sizes
+      // Select sizes
 
-    fireEvent.press(getByText("Size"))
+      fireEvent.press(getByText("Size"))
 
-    fireEvent.press(getByText("Small (under 16in)"))
-    fireEvent.press(getByText("Medium (16 – 40in)"))
-    fireEvent.press(getByText("Large (over 40in)"))
+      fireEvent.press(getByText("Small (under 16in)"))
+      fireEvent.press(getByText("Medium (16 – 40in)"))
+      fireEvent.press(getByText("Large (over 40in)"))
 
-    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
-
-    fireEvent.press(getByText("Search"))
-
-    expect(navigate).toHaveBeenCalledWith(
-      "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
-    )
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "searchedPriceDatabase",
-      context_module: "priceDatabaseLanding",
-      context_owner_type: "priceDatabase",
-      destination_owner_slug: "andy-warhol",
-      destination_owner_type: "artistAuctionResults",
-      destination_path:
-        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
-      filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
-      query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
-    })
-  })
-  describe("when no artist is selected", () => {
-    it("disables the search button", async () => {
-      const { getByText } = renderWithWrappers(<PriceDatabase />)
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
 
       fireEvent.press(getByText("Search"))
 
       expect(navigate).toHaveBeenCalledWith(
-        "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true"
+        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
       )
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "searchedPriceDatabase",
         context_module: "priceDatabaseLanding",
         context_owner_type: "priceDatabase",
-        destination_owner_id: "4dd1584de0091e000100207c",
+        destination_owner_slug: "andy-warhol",
         destination_owner_type: "artistAuctionResults",
         destination_path:
-          "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true",
-        filters: '{"categories":[],"sizes":[]}',
-        query: "",
+          "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+        filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
+        query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
       })
     })
 
@@ -162,17 +139,17 @@ describe(PriceDatabase, () => {
       fireEvent.press(getByText("Search"))
 
       expect(navigate).toHaveBeenCalledWith(
-        "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
+        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
       )
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "searchedPriceDatabase",
         context_module: "priceDatabaseLanding",
         context_owner_type: "priceDatabase",
-        destination_owner_id: "4dd1584de0091e000100207c",
+        destination_owner_slug: "andy-warhol",
         destination_owner_type: "artistAuctionResults",
         destination_path:
-          "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+          "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
         filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
         query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
       })
