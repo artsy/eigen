@@ -67,7 +67,6 @@ public class MainApplication extends Application implements ReactApplication {
 
     Analytics analytics = new Analytics.Builder(this,
         ReactNativeConfigUtils.decode(segmentWriteKey, BuildConfig.GRAVITY_API_KEY))
-        .use(AdjustIntegration.FACTORY)
         .build();
 
     Analytics.setSingletonInstance(analytics);
