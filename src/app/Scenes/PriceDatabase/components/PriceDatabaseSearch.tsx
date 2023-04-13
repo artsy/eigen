@@ -64,7 +64,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
               Unlimited access to millions of auction results and art market data — for free.
             </Text>
 
-            <Spacer y={4} />
+            <Spacer y={2} />
 
             <ArtistAutosuggest title={null} placeholder="Search by artist name" useSlugAsId />
           </Flex>
