@@ -1,4 +1,4 @@
-import { Avatar, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Avatar, Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { Image } from "react-native"
@@ -6,6 +6,7 @@ import { Image } from "react-native"
 export const PriceDatabaseBenefits: React.FC = () => {
   const isTablet = isPad()
   const { width } = useScreenDimensions()
+  const space = useSpace()
 
   return (
     <Flex m={2}>
@@ -25,10 +26,12 @@ export const PriceDatabaseBenefits: React.FC = () => {
         researching, buying, or selling.
       </Text>
 
+      {/* "https://d7hftxdivxxvm.cloudfront.net?height=660&quality=80&resize_to=fill&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fkehinde_wiley_portrait_of_nelly_moudime_ii.png&width=800" */}
+
       <Image
-        source={require("images/price-database-1.png")}
-        style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
-        resizeMode={isTablet ? "contain" : "cover"}
+        source={require("images/swa-landing-page-header.png")}
+        style={{ width: "100%", height: isTablet ? 480 : 200 }}
+        resizeMode="cover"
       />
 
       <Spacer y={2} />
@@ -39,10 +42,12 @@ export const PriceDatabaseBenefits: React.FC = () => {
         no obligations. A more open art world starts here.
       </Text>
 
+      {/* "https://d7hftxdivxxvm.cloudfront.net?height=660&quality=80&resize_to=fill&src=https%3A%2F%2Ffiles.artsy.net%2Fimages%2Fkehinde_wiley_portrait_of_nelly_moudime_ii.png&width=800" */}
+
       <Image
-        source={require("images/price-database-2.png")}
-        style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
-        resizeMode={isTablet ? "contain" : "cover"}
+        source={require("images/swa-landing-page-header.png")}
+        style={{ width: "100%", height: isTablet ? 480 : 200 }}
+        resizeMode="cover"
       />
 
       <Spacer y={2} />
