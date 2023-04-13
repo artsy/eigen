@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -6,6 +7,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "app/Components/ArtworkFilter/Filters/MultiSelectOption"
+import { ArtworkFilterApplyButton } from "app/Components/ArtworkFilter/components/ArtworkFilterApplyButton"
 import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { useFormikContext } from "formik"
 
@@ -31,13 +33,22 @@ export const MediumOptions: React.FC<MediumOptionsScreenProps> = ({ navigation }
   }
 
   return (
-    <MultiSelectOptionScreen
-      onSelect={selectOption}
-      filterHeaderText={FilterDisplayName.categories}
-      filterOptions={options}
-      isSelected={(item) => values.categories.includes(item.paramValue as string)}
-      navigation={navigation}
-    />
+    <Flex flex={1}>
+      <MultiSelectOptionScreen
+        onSelect={selectOption}
+        filterHeaderText={FilterDisplayName.categories}
+        filterOptions={options}
+        isSelected={(item) => values.categories.includes(item.paramValue as string)}
+        navigation={navigation}
+      />
+
+      <ArtworkFilterApplyButton
+        disabled={false}
+        onPress={navigation.goBack}
+        buttonText="Apply"
+        pb={2}
+      />
+    </Flex>
   )
 }
 
