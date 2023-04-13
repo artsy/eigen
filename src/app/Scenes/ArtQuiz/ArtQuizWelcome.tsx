@@ -1,9 +1,8 @@
-import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
+import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon, Button } from "@artsy/palette-mobile"
 import { useNavigation, NavigationProp } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "app/Components/Button"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 
 export const ArtQuizWelcome = () => {

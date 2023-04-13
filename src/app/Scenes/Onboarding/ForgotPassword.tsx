@@ -1,6 +1,5 @@
-import { Text, Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { Text, Spacer, Flex, useColor, Button } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Button } from "app/Components/Button"
 import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"

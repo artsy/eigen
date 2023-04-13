@@ -1,4 +1,13 @@
-import { Spacer, Box, useSpace, Text, Join, SimpleMessage } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Box,
+  useSpace,
+  Text,
+  Join,
+  SimpleMessage,
+  Button,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -7,8 +16,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Button } from "app/Components/Button"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"

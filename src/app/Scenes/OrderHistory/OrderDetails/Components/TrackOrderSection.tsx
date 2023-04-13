@@ -1,10 +1,9 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Button } from "@artsy/palette-mobile"
 import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import { DateTime } from "luxon"
-import { Button } from "app/Components/Button"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

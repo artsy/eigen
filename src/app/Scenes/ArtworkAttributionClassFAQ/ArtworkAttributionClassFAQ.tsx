@@ -1,14 +1,13 @@
-import { Spacer, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses$data

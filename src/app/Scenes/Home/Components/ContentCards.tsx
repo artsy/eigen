@@ -1,5 +1,4 @@
-import { Box, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Box, Flex, Spacer, Text, Button, Touchable } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"

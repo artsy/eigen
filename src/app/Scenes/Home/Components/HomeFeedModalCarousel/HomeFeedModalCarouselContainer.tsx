@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, useSpace, BackButton } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Flex, useSpace, BackButton, Button } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"

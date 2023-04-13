@@ -1,8 +1,8 @@
-import { ArtsyLogoBlackIcon, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Button, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button } from "app/Components/Button"
+import { useScreenDimensions } from "app/utils/hooks"
 import { Suspense, useEffect } from "react"
 import { Image } from "react-native"
 import Animated, {
@@ -16,7 +16,6 @@ import Animated, {
 } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)

@@ -1,12 +1,19 @@
-import { Spacer, CheckCircleFillIcon, Flex, Box, ProgressBar, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  CheckCircleFillIcon,
+  Flex,
+  Box,
+  ProgressBar,
+  Text,
+  Button,
+} from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import { Screen } from "app/Components/Screen"
 import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { Button } from "app/Components/Button"
-import { Screen } from "app/Components/Screen"
 import { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
