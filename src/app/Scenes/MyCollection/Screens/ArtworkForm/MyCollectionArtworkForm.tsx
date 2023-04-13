@@ -442,6 +442,8 @@ const tracks = {
     context_module: ContextModule.myCollectionHome,
     context_owner_type: OwnerType.myCollection,
     artist_id: artistId,
+    // TODO: Get data from artist.
+    is_p1_artist: false,
     platform: "mobile",
   }),
 }
