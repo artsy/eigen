@@ -150,7 +150,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func dismissInformationalViewAnimated() {
-        self.resetButton?.alpha = 1.0
         self.dismissInformationalView(animated: true)
     }
 
@@ -162,8 +161,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         UIView.animateIf(animated, duration: ARAnimationQuickDuration, options: .curveEaseOut) {
             self.informationViewBottomConstraint?.constant = 40
             informationView.alpha = 0
-            // TODO:
-            // self.resetButton.alpha = 1
+            self.resetButton?.alpha = 1
             informationView.setNeedsUpdateConstraints()
             informationView.layoutIfNeeded()
         }
@@ -199,7 +197,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
                 self.sceneView.pointOfView?.addChildNode(self.cursor)
             }
 //            addObjectButton.isHidden = true
-//            objectsViewController?.dismiss(animated: false, completion: nil)
         }
     }
 
@@ -249,8 +246,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         UIView.animateIf(animated, duration: ARAnimationDuration, options: .curveEaseOut) {
             self.informationViewBottomConstraint?.constant = 0
             informationView.alpha = 1
-            // TODO:
-            // self.resetButton.alpha = 0
+            self.resetButton?.alpha = 0
             informationView.setNeedsUpdateConstraints()
             self.view.layoutIfNeeded()
             informationView.layoutIfNeeded()
