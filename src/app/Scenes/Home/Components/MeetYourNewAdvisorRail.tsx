@@ -43,6 +43,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
           image={require("images/meet-your-new-art-advisor-1.png")}
           buttonText="Start Searching"
           onPress={() => {
+            navigate("/price-database")
             trackEvent(tracks.tappedProductCapabilities(ContextModule.priceDatabase))
           }}
           testID="meet-your-new-advisor-card-1"
