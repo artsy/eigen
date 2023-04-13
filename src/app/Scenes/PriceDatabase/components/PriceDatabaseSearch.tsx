@@ -94,7 +94,14 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
           <Spacer y={2} />
 
           <Flex mx={2}>
-            <Button disabled={!isValid} width="100%" maxWidth="440px" onPress={handleSearch} block>
+            <Button
+              mx="auto"
+              disabled={!isValid}
+              width="100%"
+              maxWidth="440px"
+              onPress={handleSearch}
+              block
+            >
               Search
             </Button>
           </Flex>
