@@ -63,7 +63,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
 
           <Spacer y={4} />
 
-          <ArtistAutosuggest title={null} placeholder="Search by artist name" />
+          <ArtistAutosuggest title={null} placeholder="Search by artist name" useSlugAsId />
         </Flex>
 
         <ArtworkFilterOptionItem
@@ -111,7 +111,7 @@ const tracks = {
     context_module: ContextModule.priceDatabaseLanding,
     context_owner_type: OwnerType.priceDatabase,
     destination_owner_type: OwnerType.artistAuctionResults,
-    destination_owner_id: values.artistId,
+    destination_owner_slug: values.artistId,
     destination_path: pathName,
     filters: JSON.stringify(searchFilters),
     query: queryString,

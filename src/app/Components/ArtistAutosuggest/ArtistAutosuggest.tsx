@@ -10,11 +10,13 @@ import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutos
 interface ArtistAutosuggestProps {
   placeholder?: string
   title?: string | null
+  useSlugAsId?: boolean
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   placeholder = "Enter full name",
   title = "Artist",
+  useSlugAsId,
 }) => {
   const {
     values: { artist, artistId },
@@ -41,7 +43,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 
   const onArtistSelect = (result: ArtistAutosuggestResult) => {
     setFieldValue("artist", result.displayLabel)
-    setFieldValue("artistId", result.internalID)
+    setFieldValue("artistId", useSlugAsId ? result.slug : result.internalID)
     setIsArtistSelected(true)
     setFocused(false)
   }

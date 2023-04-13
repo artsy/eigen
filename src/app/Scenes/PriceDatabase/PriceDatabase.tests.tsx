@@ -24,28 +24,27 @@ describe(PriceDatabase, () => {
   it("searches for artist's auction results without filters", async () => {
     const { getByText, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
 
-    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "banksy")
+    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
 
     act(() =>
       mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
     )
 
-    fireEvent.press(getByText("Banksy"))
+    fireEvent.press(getByText("Andy Warhol"))
 
     fireEvent.press(getByText("Search"))
 
     expect(navigate).toHaveBeenCalledWith(
-      "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true"
+      "/artist/andy-warhol/auction-results?scroll_to_market_signals=true"
     )
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "searchedPriceDatabase",
       context_module: "priceDatabaseLanding",
       context_owner_type: "priceDatabase",
-      destination_owner_id: "4dd1584de0091e000100207c",
+      destination_owner_slug: "andy-warhol",
       destination_owner_type: "artistAuctionResults",
-      destination_path:
-        "/artist/4dd1584de0091e000100207c/auction-results?scroll_to_market_signals=true",
+      destination_path: "/artist/andy-warhol/auction-results?scroll_to_market_signals=true",
       filters: '{"categories":[],"sizes":[]}',
       query: "",
     })
@@ -54,7 +53,7 @@ describe(PriceDatabase, () => {
   it("searches for artist's auction results with filters", async () => {
     const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(<PriceDatabase />)
 
-    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "banksy")
+    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
 
     act(() =>
       mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
@@ -62,7 +61,7 @@ describe(PriceDatabase, () => {
 
     // Select artist
 
-    fireEvent.press(getByText("Banksy"))
+    fireEvent.press(getByText("Andy Warhol"))
 
     // Select medium
 
@@ -86,17 +85,17 @@ describe(PriceDatabase, () => {
     fireEvent.press(getByText("Search"))
 
     expect(navigate).toHaveBeenCalledWith(
-      "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
+      "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
     )
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "searchedPriceDatabase",
       context_module: "priceDatabaseLanding",
       context_owner_type: "priceDatabase",
-      destination_owner_id: "4dd1584de0091e000100207c",
+      destination_owner_slug: "andy-warhol",
       destination_owner_type: "artistAuctionResults",
       destination_path:
-        "/artist/4dd1584de0091e000100207c/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
       filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
       query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
     })
@@ -118,12 +117,12 @@ const mockArtistSearchResult: ArtistAutosuggestResultsPaginationQuery["rawRespon
       {
         node: {
           imageUrl: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-          href: "/artist/banksy",
-          displayLabel: "Banksy",
+          href: "/artist/andy-warhol",
+          displayLabel: "Andy Warhol",
           __typename: "Artist",
           internalID: "4dd1584de0091e000100207c",
           formattedNationalityAndBirthday: "British, b. 1974",
-          slug: "banksy",
+          slug: "andy-warhol",
           statuses: { artworks: true, auctionLots: true },
           __isNode: "Artist",
           id: "QXJ0aXN0OjRkZDE1ODRkZTAwOTFlMDAwMTAwMjA3Yw==",
