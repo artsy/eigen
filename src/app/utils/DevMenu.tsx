@@ -94,25 +94,22 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         <Text variant="xs" color="grey" mx={2}>
           {userEmail}
         </Text>
-        <FeatureFlagMenuItem
-          title="Open RN Dev Menu"
-          onPress={() => NativeModules.DevMenu.show()}
-        />
+        <DevMenuButtonItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
         {Platform.OS === "ios" && (
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Go to old Dev Menu"
             onPress={() => {
               navigate("/dev-menu-old", { modal: true })
             }}
           />
         )}
-        <FeatureFlagMenuItem
+        <DevMenuButtonItem
           title="Go to Storybook"
           onPress={() => {
             navigate("/storybook")
           }}
         />
-        <FeatureFlagMenuItem
+        <DevMenuButtonItem
           title="Navigate to..."
           onPress={() =>
             Alert.prompt("Navigate to...", "Where should we navigate to?", [
@@ -150,7 +147,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
             .map((flagKey) => {
               return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
             })}
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Revert all feature flags to default"
             titleColor="red100"
             onPress={() => {
@@ -191,40 +188,40 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               </Flex>
             }
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Open Art Quiz"
             onPress={() => {
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title={`Migration name: "${
               (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
             }"`}
             disabled
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Clear Keychain"
             onPress={() => {
               Keychain.resetInternetCredentials(server)
             }}
           />
 
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Clear AsyncStorage"
             onPress={() => {
               AsyncStorage.clear()
             }}
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Clear Relay Cache"
             onPress={() => {
               RelayCache.clearAll()
             }}
           />
-          <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
+          <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Throw Sentry Error"
             onPress={() => {
               if (!Config.SENTRY_DSN) {
@@ -237,7 +234,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               throw Error("Sentry test error")
             }}
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Trigger Sentry Native Crash"
             onPress={() => {
               if (!Config.SENTRY_DSN) {
@@ -250,15 +247,15 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               Sentry.nativeCrash()
             }}
           />
-          <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
+          <DevMenuButtonItem
             title={`Device ID: ${DeviceInfo.getUniqueIdSync()}`}
             onPress={() => {
               Clipboard.setString(DeviceInfo.getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
             }}
           />
-          <FeatureFlagMenuItem
+          <DevMenuButtonItem
             title="Log out"
             titleColor="red100"
             onPress={() => {
@@ -305,7 +302,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const description = features[flagKey].description ?? flagKey
 
   return (
-    <FeatureFlagMenuItem
+    <DevMenuButtonItem
       title={description}
       onPress={() => {
         Alert.alert(description, undefined, [
@@ -362,7 +359,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
   const toast = useToast()
 
   return (
-    <FeatureFlagMenuItem
+    <DevMenuButtonItem
       title={description}
       onPress={() => {
         Alert.alert(description, undefined, [
@@ -449,7 +446,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <>
-      <FeatureFlagMenuItem
+      <DevMenuButtonItem
         title="Environment"
         value={showCustomURLOptions ? `Custom (${capitalize(env)})` : capitalize(env)}
         onPress={() => {
@@ -521,7 +518,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   )
 }
 
-export const FeatureFlagMenuItem: React.FC<{
+export const DevMenuButtonItem: React.FC<{
   disabled?: boolean
   onPress?: () => void
   title: React.ReactNode
