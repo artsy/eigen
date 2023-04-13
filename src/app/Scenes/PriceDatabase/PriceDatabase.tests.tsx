@@ -21,92 +21,148 @@ describe(PriceDatabase, () => {
     ).toBeTruthy()
   })
 
-  it("searches for artist's auction results without filters", async () => {
-    const { getByText, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
+  it("renders the price database benefits", () => {
+    const { getByText } = renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
 
-    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
+    expect(getByText("Get in-depth art market data")).toBeTruthy()
+    expect(
+      getByText(
+        "Browse millions of current and historical results from leading auction houses across the globe."
+      )
+    ).toBeTruthy()
 
-    act(() =>
-      mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
-    )
+    expect(getByText("Research and validate prices")).toBeTruthy()
+    expect(
+      getByText(
+        "Access the data you need to make the right decisions for your collection, whether you’re researching, buying, or selling."
+      )
+    ).toBeTruthy()
 
-    fireEvent.press(getByText("Andy Warhol"))
-
-    fireEvent.press(getByText("Search"))
-
-    expect(navigate).toHaveBeenCalledWith(
-      "/artist/andy-warhol/auction-results?scroll_to_market_signals=true"
-    )
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "searchedPriceDatabase",
-      context_module: "priceDatabaseLanding",
-      context_owner_type: "priceDatabase",
-      destination_owner_slug: "andy-warhol",
-      destination_owner_type: "artistAuctionResults",
-      destination_path: "/artist/andy-warhol/auction-results?scroll_to_market_signals=true",
-      filters: '{"categories":[],"sizes":[]}',
-      query: "",
-    })
+    expect(getByText("Search for free")).toBeTruthy()
+    expect(
+      getByText(
+        "The Artsy Price Database is for every collector—with no search limits, no subscriptions, and no obligations. A more open art world starts here."
+      )
+    ).toBeTruthy()
   })
 
-  it("searches for artist's auction results with filters", async () => {
-    const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(<PriceDatabase />)
+  describe("Search", () => {
+    it("searches for artist's auction results without filters", async () => {
+      const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(<PriceDatabase />)
 
-    fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
+      fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
 
-    act(() =>
-      mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult })
-    )
+      act(() =>
+        mockEnvironment.mock.resolveMostRecentOperation({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
+      )
 
-    // Select artist
+      // Select artist
 
-    fireEvent.press(getByText("Andy Warhol"))
+      fireEvent.press(getByText("Andy Warhol"))
 
-    // Select medium
+      // Select medium
 
-    fireEvent.press(getByText("Medium"))
+      fireEvent.press(getByText("Medium"))
 
-    fireEvent.press(getByText("Painting"))
-    fireEvent.press(getByText("Work on paper"))
+      fireEvent.press(getByText("Painting"))
+      fireEvent.press(getByText("Work on paper"))
 
-    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
 
-    // Select sizes
+      // Select sizes
 
-    fireEvent.press(getByText("Size"))
+      fireEvent.press(getByText("Size"))
 
-    fireEvent.press(getByText("Small (under 16in)"))
-    fireEvent.press(getByText("Medium (16 – 40in)"))
-    fireEvent.press(getByText("Large (over 40in)"))
+      fireEvent.press(getByText("Small (under 16in)"))
+      fireEvent.press(getByText("Medium (16 – 40in)"))
+      fireEvent.press(getByText("Large (over 40in)"))
 
-    fireEvent.press(getByTestId("artwork-filter-header-back-button"))
-
-    fireEvent.press(getByText("Search"))
-
-    expect(navigate).toHaveBeenCalledWith(
-      "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
-    )
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "searchedPriceDatabase",
-      context_module: "priceDatabaseLanding",
-      context_owner_type: "priceDatabase",
-      destination_owner_slug: "andy-warhol",
-      destination_owner_type: "artistAuctionResults",
-      destination_path:
-        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
-      filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
-      query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
-    })
-  })
-  describe("when no artist is selected", () => {
-    it("disables the search button", async () => {
-      const { getByText } = renderWithWrappers(<PriceDatabase />)
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
 
       fireEvent.press(getByText("Search"))
 
-      expect(navigate).not.toHaveBeenCalled()
+      expect(navigate).toHaveBeenCalledWith(
+        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
+      )
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "searchedPriceDatabase",
+        context_module: "priceDatabaseLanding",
+        context_owner_type: "priceDatabase",
+        destination_owner_slug: "andy-warhol",
+        destination_owner_type: "artistAuctionResults",
+        destination_path:
+          "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+        filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
+        query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
+      })
+    })
+
+    it("searches for artist's auction results with filters", async () => {
+      const { getByText, getByPlaceholderText, getByTestId } = renderWithWrappers(<PriceDatabase />)
+
+      fireEvent.changeText(getByPlaceholderText("Search by artist name"), "andy-warhol")
+
+      act(() =>
+        mockEnvironment.mock.resolveMostRecentOperation({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
+      )
+
+      // Select artist
+
+      fireEvent.press(getByText("Andy Warhol"))
+
+      // Select medium
+
+      fireEvent.press(getByText("Medium"))
+
+      fireEvent.press(getByText("Painting"))
+      fireEvent.press(getByText("Work on paper"))
+
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+
+      // Select sizes
+
+      fireEvent.press(getByText("Size"))
+
+      fireEvent.press(getByText("Small (under 16in)"))
+      fireEvent.press(getByText("Medium (16 – 40in)"))
+      fireEvent.press(getByText("Large (over 40in)"))
+
+      fireEvent.press(getByTestId("artwork-filter-header-back-button"))
+
+      fireEvent.press(getByText("Search"))
+
+      expect(navigate).toHaveBeenCalledWith(
+        "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true"
+      )
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "searchedPriceDatabase",
+        context_module: "priceDatabaseLanding",
+        context_owner_type: "priceDatabase",
+        destination_owner_slug: "andy-warhol",
+        destination_owner_type: "artistAuctionResults",
+        destination_path:
+          "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=&scroll_to_market_signals=true",
+        filters: '{"categories":["Painting","Work on Paper"],"sizes":[null]}',
+        query: "categories=Painting&categories=Work%20on%20Paper&sizes=",
+      })
+    })
+
+    describe("when no artist is selected", () => {
+      it("disables the search button", async () => {
+        const { getByText } = renderWithWrappers(<PriceDatabase />)
+
+        fireEvent.press(getByText("Search"))
+
+        expect(navigate).not.toHaveBeenCalled()
+      })
     })
   })
 })
