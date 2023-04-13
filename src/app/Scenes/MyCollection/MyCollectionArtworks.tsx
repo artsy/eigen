@@ -4,14 +4,15 @@ import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { Button } from "app/Components/Button"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button } from "app/Components/Button"
 import { useEffect, useState } from "react"
 import {
   Alert,
@@ -24,7 +25,6 @@ import {
 
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
@@ -205,8 +205,8 @@ const MyCollectionZeroState: React.FC = () => {
 
   return (
     <ZeroState
-      bigTitle="Your Art Collection in Your Pocket"
-      subtitle="Access market insights and manage your collection online."
+      bigTitle="Know Your Collection Better"
+      subtitle="Manage your collection online and get free market insights."
       image={
         <Image
           source={image}
