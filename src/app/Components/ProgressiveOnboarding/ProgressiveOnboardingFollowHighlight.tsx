@@ -2,12 +2,12 @@ import {
   PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT,
   PROGRESSIVE_ONBOARDING_FOLLOW_FIND,
   useProgressiveOnboarding,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
   ProgressiveOnboardingHighlight,
   ProgressiveOnboardingHighlightPosition,
-} from "Components/ProgressiveOnboarding/ProgressiveOnboardingHighlight"
-import { FC, useEffect } from "react"
+} from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingHighlight"
+import { FC } from "react"
 
 interface ProgressiveOnboardingFollowHighlightProps {
   position: ProgressiveOnboardingHighlightPosition
@@ -26,26 +26,15 @@ export const ProgressiveOnboardingFollowHighlight: FC<
     // And you've previously dismissed the previous onboarding tip
     isDismissed(PROGRESSIVE_ONBOARDING_FOLLOW_FIND)
 
-  useEffect(() => {
-    if (!isDisplayable) return
-
-    const handleClick = () => {
-      dismiss(PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT)
-    }
-
-    document.addEventListener("click", handleClick, { once: true })
-
-    return () => {
-      document.removeEventListener("click", handleClick)
-    }
-  }, [dismiss, isDisplayable])
-
   if (!isDisplayable) {
     return <>{children}</>
   }
 
   return (
     <ProgressiveOnboardingHighlight
+      handlePress={() => {
+        dismiss(PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT)
+      }}
       position={position}
       name={PROGRESSIVE_ONBOARDING_FOLLOW_HIGHLIGHT}
     >

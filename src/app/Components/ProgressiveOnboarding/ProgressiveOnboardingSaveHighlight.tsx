@@ -7,7 +7,7 @@ import {
   ProgressiveOnboardingHighlight,
   ProgressiveOnboardingHighlightPosition,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingHighlight"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 
 interface ProgressiveOnboardingSaveHighlightProps {
   position: ProgressiveOnboardingHighlightPosition
@@ -27,26 +27,15 @@ export const ProgressiveOnboardingSaveHighlight: FC<ProgressiveOnboardingSaveHig
     // And you've previously dismissed the previous onboarding tip
     isDismissed(PROGRESSIVE_ONBOARDING_SAVE_FIND)
 
-  useEffect(() => {
-    if (!isDisplayable) return
-
-    const handleClick = () => {
-      dismiss(PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT)
-    }
-
-    document.addEventListener("click", handleClick, { once: true })
-
-    return () => {
-      document.removeEventListener("click", handleClick)
-    }
-  }, [dismiss, isDisplayable])
-
   if (!isDisplayable) {
     return <>{children}</>
   }
 
   return (
     <ProgressiveOnboardingHighlight
+      handlePress={() => {
+        dismiss(PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT)
+      }}
       position={position}
       name={PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT}
     >

@@ -1,41 +1,45 @@
 import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 // import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
-import { FC } from "react"
+import { FC, useRef } from "react"
+import { TouchableHighlight } from "react-native"
 import styled, { keyframes } from "styled-components"
 
 export type ProgressiveOnboardingHighlightPosition = "center" | { top: string; left: string }
 
 interface ProgressiveOnboardingHighlightProps {
+  handlePress: () => void
   name: string
   position: ProgressiveOnboardingHighlightPosition
 }
 
 export const ProgressiveOnboardingHighlight: FC<ProgressiveOnboardingHighlightProps> = ({
   children,
+  handlePress,
   name,
   position,
 }) => {
+  const style = useRef(
+    position === "center"
+      ? {
+          top: "50%",
+          left: "50%",
+          marginTop: -SIZE / 2,
+          marginLeft: -SIZE / 2,
+        }
+      : {
+          top: position.top,
+          left: position.left,
+        }
+  )
   // useProgressiveOnboardingTracking({ name })
 
   return (
-    <Box position="relative" width="100%">
-      <Highlight
-        {...(position === "center"
-          ? {
-              top: "50%",
-              left: "50%",
-              marginTop: -SIZE / 2,
-              marginLeft: -SIZE / 2,
-            }
-          : {
-              top: position.top,
-              left: position.left,
-            })}
-      />
+    <Wrapper onPress={handlePress}>
+      <Highlight style={style.current} />
 
       {children}
-    </Box>
+    </Wrapper>
   )
 }
 
@@ -55,4 +59,8 @@ export const Highlight = styled(Box)`
   border-radius: 50%;
   height: ${SIZE}px;
   width: ${SIZE}px;
+`
+const Wrapper = styled(TouchableHighlight)`
+  position: relative;
+  width: 100%;
 `
