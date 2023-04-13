@@ -1347,9 +1347,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
     # Filter auction results by organizations
     organizations: [String]
+    page: Int
 
     # When true, will only return records for allowed artists.
     recordsTrusted: Boolean = false
+    size: Int
 
     # Filter auction results by Artwork sizes
     sizes: [ArtworkSizes]
