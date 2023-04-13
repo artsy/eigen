@@ -1,10 +1,8 @@
 import { Avatar, Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { Image } from "react-native"
 
 export const PriceDatabaseBenefits: React.FC = () => {
-  const isTablet = isPad()
   const { width } = useScreenDimensions()
   const space = useSpace()
 
