@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { Button } from "app/Components/Button"

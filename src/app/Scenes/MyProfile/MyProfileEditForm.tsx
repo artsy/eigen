@@ -11,6 +11,7 @@ import {
   Join,
   Message,
   Touchable,
+  Button,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
@@ -18,7 +19,6 @@ import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.gra
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"

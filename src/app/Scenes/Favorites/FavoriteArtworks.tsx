@@ -1,4 +1,4 @@
-import { Spacer, useSpace } from "@artsy/palette-mobile"
+import { Spacer, useSpace, Button } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -10,13 +10,12 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button } from "app/Components/Button"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   me: FavoriteArtworks_me$data

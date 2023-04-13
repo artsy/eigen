@@ -1,5 +1,4 @@
-import { Spacer, Flex, useColor, Text, Separator } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Spacer, Flex, useColor, Text, Separator, Button } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"

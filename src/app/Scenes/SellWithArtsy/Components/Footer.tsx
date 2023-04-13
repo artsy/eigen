@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Flex, Spacer, Text, Separator } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Flex, Spacer, Text, Separator, Button } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
 

@@ -8,11 +8,11 @@ import {
   Separator,
   Join,
   Message,
+  Button,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { MoneyInput } from "app/Components/Input/MoneyInput"

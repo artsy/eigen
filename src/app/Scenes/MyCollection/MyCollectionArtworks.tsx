@@ -1,5 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, LockIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
+import { Spacer, LockIcon, Flex, useSpace, Text, Button } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"

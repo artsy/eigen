@@ -5,11 +5,10 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Button } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { Button } from "app/Components/Button"
-import { Image } from "react-native"
 import { useScreenDimensions } from "app/utils/hooks"
+import { Image } from "react-native"
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void

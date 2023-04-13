@@ -1,12 +1,11 @@
 import { stringify } from "querystring"
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtsyKeyboardAvoidingView, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Flex, Spacer, Text, Button } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { FilterDisplayName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterOptionItem } from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
-import { Button } from "app/Components/Button"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PriceDatabaseBenefits } from "app/Scenes/PriceDatabase/components/PriceDatabaseBenefits"
 import {

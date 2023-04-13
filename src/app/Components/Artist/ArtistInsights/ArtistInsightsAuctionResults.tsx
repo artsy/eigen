@@ -20,13 +20,13 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data

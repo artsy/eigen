@@ -1,13 +1,12 @@
-import { Spacer, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "app/Components/Button"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artwork: ArtworkMedium_artwork$data
