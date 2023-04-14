@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { Spacer, bullet, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
+  FilterArray,
   filterArtworksParams,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -32,14 +33,26 @@ interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
   relay: RelayPaginationProp
   scrollToTop: () => void
+  initialFilters?: FilterArray
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({
+  artist,
+  relay,
+  scrollToTop,
+  initialFilters,
+}) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setInitialFilterStateAction
+  )
+  const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.applyFiltersAction
+  )
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFilterTypeAction
   )
@@ -102,7 +115,15 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   })
 
   useEffect(() => {
+    let filters: FilterArray = []
+
+    if (Array.isArray(initialFilters)) {
+      filters = initialFilters
+    }
+
+    setInitialFilterStateAction(filters)
     setFilterTypeAction("auctionResult")
+    applyFiltersAction()
   }, [])
 
   const getSortDescription = useCallback(() => {

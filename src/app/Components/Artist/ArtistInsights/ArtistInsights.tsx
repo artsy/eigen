@@ -6,6 +6,7 @@ import {
   ArtworkFilterNavigator,
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
+import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
@@ -23,11 +24,12 @@ interface ArtistInsightsProps {
   artist: ArtistInsights_artist$data
   relay: RelayProp
   tabIndex: number
+  initialFilters?: FilterArray
 }
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay, tabIndex } = props
+  const { artist, relay, tabIndex, initialFilters } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -95,6 +97,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           <ArtistInsightsAuctionResultsPaginationContainer
             artist={artist}
             scrollToTop={scrollToTop}
+            initialFilters={initialFilters}
           />
         </View>
       </StickyTabPageScrollView>
