@@ -29,6 +29,7 @@ export const PriceDatabase = () => {
     initialErrors: {},
     onSubmit: handleSubmit,
     validationSchema: () => priceDatabaseValidationSchema,
+    validateOnMount: true,
   })
 
   return (
