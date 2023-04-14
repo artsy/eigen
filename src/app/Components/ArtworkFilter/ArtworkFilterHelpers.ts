@@ -1,4 +1,14 @@
-import { entries, filter, isArray, isEqual, isUndefined, pick, pickBy, unionBy } from "lodash"
+import {
+  compact,
+  entries,
+  filter,
+  isArray,
+  isEqual,
+  isUndefined,
+  pick,
+  pickBy,
+  unionBy,
+} from "lodash"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -551,16 +561,18 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
 export const getFilterArrayFromQueryParams = (queryParams: {
   [key: string]: string | number | boolean | string[]
 }) => {
-  return entries(queryParams).map(([key, value]) => {
-    if (value) {
-      const filterData: FilterData = {
-        // @ts-expect-error TODO: fix type error
-        displayText: FilterDisplayName[key],
-        paramName: key as FilterParamName,
-        paramValue: value,
-      }
+  return compact(
+    entries(queryParams).map(([key, value]) => {
+      if (value) {
+        const filterData: FilterData = {
+          // @ts-expect-error TODO: fix type error
+          displayText: FilterDisplayName[key],
+          paramName: key as FilterParamName,
+          paramValue: value,
+        }
 
-      return filterData
-    }
-  }) as FilterArray
+        return filterData
+      }
+    })
+  )
 }

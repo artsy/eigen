@@ -24,12 +24,12 @@ interface ArtistInsightsProps {
   artist: ArtistInsights_artist$data
   relay: RelayProp
   tabIndex: number
-  predefinedFilters?: FilterArray
+  initialFilters?: FilterArray
 }
 
 const FILTER_BUTTON_OFFSET = 50
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay, tabIndex, predefinedFilters } = props
+  const { artist, relay, tabIndex, initialFilters } = props
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -97,7 +97,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           <ArtistInsightsAuctionResultsPaginationContainer
             artist={artist}
             scrollToTop={scrollToTop}
-            predefinedFilters={predefinedFilters}
+            initialFilters={initialFilters}
           />
         </View>
       </StickyTabPageScrollView>

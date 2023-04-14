@@ -39,7 +39,7 @@ interface ArtistProps {
   searchCriteria: SearchCriteriaAttributes | null
   fetchCriteriaError: Error | null
   predefinedFilters?: FilterArray
-  auctionResultsPredefinedFilters?: FilterArray
+  auctionResultsInitialFilters?: FilterArray
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
@@ -50,7 +50,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     searchCriteria,
     fetchCriteriaError,
     predefinedFilters,
-    auctionResultsPredefinedFilters,
+    auctionResultsInitialFilters,
   } = props
 
   const popoverMessage = usePopoverMessage()
@@ -102,7 +102,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           <ArtistInsightsFragmentContainer
             tabIndex={tabIndex}
             artist={artistBelowTheFold}
-            predefinedFilters={auctionResultsPredefinedFilters}
+            initialFilters={auctionResultsInitialFilters}
           />
         )
       ) : (
@@ -249,7 +249,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
                       predefinedFilters={predefinedFilters}
-                      auctionResultsPredefinedFilters={getFilterArrayFromQueryParams({
+                      auctionResultsInitialFilters={getFilterArrayFromQueryParams({
                         categories: categories ?? [],
                         sizes: sizes ?? [],
                       })}

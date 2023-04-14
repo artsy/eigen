@@ -33,14 +33,14 @@ interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
   relay: RelayPaginationProp
   scrollToTop: () => void
-  predefinedFilters?: FilterArray
+  initialFilters?: FilterArray
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
   artist,
   relay,
   scrollToTop,
-  predefinedFilters,
+  initialFilters,
 }) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
@@ -117,8 +117,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   useEffect(() => {
     let filters: FilterArray = []
 
-    if (Array.isArray(predefinedFilters)) {
-      filters = predefinedFilters
+    if (Array.isArray(initialFilters)) {
+      filters = initialFilters
     }
 
     setInitialFilterStateAction(filters)
