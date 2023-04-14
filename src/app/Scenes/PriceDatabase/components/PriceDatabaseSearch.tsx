@@ -51,7 +51,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
 
   return (
     <ArtsyKeyboardAvoidingView>
-      <ScrollView keyboardShouldPersistTaps>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Flex my={2}>
           <Flex mx={2} my={2}>
             <Text variant="lg" mb={0.5}>
