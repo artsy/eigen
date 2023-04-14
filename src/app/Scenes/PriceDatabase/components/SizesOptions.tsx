@@ -61,7 +61,7 @@ export const sizesInCm = [
 ]
 
 export const sizesInInches = [
-  { displayText: "Small (under 16in)", name: "SMALL", paramName: FilterParamName.sizes },
-  { displayText: "Medium (16 – 40in)", name: "MEDIUM", paramName: FilterParamName.sizes },
-  { displayText: "Large (over 40in)", name: "LARGE", paramName: FilterParamName.sizes },
+  { displayText: "Small (under 16in)", paramValue: "SMALL", paramName: FilterParamName.sizes },
+  { displayText: "Medium (16 – 40in)", paramValue: "MEDIUM", paramName: FilterParamName.sizes },
+  { displayText: "Large (over 40in)", paramValue: "LARGE", paramName: FilterParamName.sizes },
 ]
