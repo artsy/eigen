@@ -12,7 +12,6 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
-import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
@@ -98,14 +97,11 @@ const ArtworkRailCardInner: React.FC<ArtworkRailCardInnerProps> = ({
     saleArtwork,
   } = artwork
 
-  const { currentBiddingEndAt } = useArtworkBidding({
-    lotID: saleArtwork?.lotID,
-    lotEndAt: saleArtwork?.endAt,
-    biddingEndAt: saleArtwork?.extendedBiddingEndAt,
-  })
-
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
-  const endAt = currentBiddingEndAt ?? sale?.endAt
+
+  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
+  const lotEndAt = saleArtwork?.endAt
+  const endAt = extendedBiddingEndAt ?? lotEndAt ?? sale?.endAt
   const urgencyTag = sale?.isAuction && !sale?.isClosed ? getUrgencyTag(endAt) : null
 
   const primaryTextColor = dark ? "white100" : "black100"
@@ -464,7 +460,6 @@ const artworkRailCardInnerFragment = graphql`
       currentBid {
         display
       }
-      lotID
       endAt
       extendedBiddingEndAt
     }
