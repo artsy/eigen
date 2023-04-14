@@ -137,7 +137,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     try {
       // Adding tracking after a successfully adding an artwork
       if (props.mode === "add") {
-        trackEvent(tracks.saveCollectedArtwork(values.artistIds[0]))
+        trackEvent(
+          tracks.saveCollectedArtwork(
+            values.artistIds[0],
+            values.artistSearchResult?.targetSupply?.isP1
+          )
+        )
       }
 
       setIsArtworkSaved(true)
@@ -437,13 +442,15 @@ const tracks = {
     context_owner_type: OwnerType.myCollectionArtwork,
     platform: "mobile",
   }),
-  saveCollectedArtwork: (artistId: string): SaveCollectedArtwork => ({
+  saveCollectedArtwork: (
+    artistId: string,
+    isP1Artist: boolean | null | undefined
+  ): SaveCollectedArtwork => ({
     action: ActionType.saveCollectedArtwork,
     context_module: ContextModule.myCollectionHome,
     context_owner_type: OwnerType.myCollection,
     artist_id: artistId,
-    // TODO: Get data from artist.
-    is_p1_artist: false,
+    is_p1_artist: isP1Artist ?? false,
     platform: "mobile",
   }),
 }

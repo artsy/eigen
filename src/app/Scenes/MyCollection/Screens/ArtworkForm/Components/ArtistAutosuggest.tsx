@@ -137,6 +137,9 @@ const ArtistAutosuggestScreenQuery = graphql`
               counts {
                 artworks
               }
+              targetSupply {
+                isP1
+              }
               displayLabel
               formattedNationalityAndBirthday
               imageUrl

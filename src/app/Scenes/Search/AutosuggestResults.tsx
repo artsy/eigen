@@ -238,6 +238,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
             node {
               imageUrl
               href
+
               displayLabel
               __typename
               ... on SearchableItem {
@@ -248,6 +249,9 @@ const AutosuggestResultsContainer = createPaginationContainer(
               ... on Artist {
                 counts {
                   artworks
+                }
+                targetSupply {
+                  isP1
                 }
                 formattedNationalityAndBirthday
                 internalID
