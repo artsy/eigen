@@ -53,10 +53,9 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
     <ArtsyKeyboardAvoidingView>
       <ScrollView>
         <Flex my={2}>
-          <Flex mx={2} mb={2}>
-            <Text variant="xl">Artsy Price</Text>
-            <Text variant="xl" mb={0.5}>
-              Database
+          <Flex mx={2} my={2}>
+            <Text variant="lg" mb={0.5}>
+              Artsy Price Database
             </Text>
 
             <Text variant="xs">
