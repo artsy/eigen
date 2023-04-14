@@ -1,6 +1,7 @@
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useCallback, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
@@ -10,7 +11,6 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from "react-native-reanimated"
-import { useScreenDimensions } from "app/utils/hooks"
 
 export const Testimonials: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -110,7 +110,11 @@ const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, 
   const inactiveColor = color("black15")
 
   const isActive = useDerivedValue(() => {
-    return withTiming(currentIndex === index ? 1 : 0)
+    if (currentIndex === index) {
+      return withTiming(1)
+    }
+
+    return withTiming(0)
   })
 
   const animatedStyle = useAnimatedStyle(() => {
