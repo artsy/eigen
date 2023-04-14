@@ -1,6 +1,4 @@
-import { ButtonProps } from "@artsy/palette-mobile"
-
-import { Button } from "app/Components/Button"
+import { ButtonProps, Button } from "@artsy/palette-mobile"
 
 interface Props {
   title: string

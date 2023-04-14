@@ -1,8 +1,7 @@
-import { useSpace } from "@artsy/palette-mobile"
+import { useSpace, Button } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
-import { Button } from "app/Components/Button"
 import { Image } from "react-native"
 
 export const MyCollectionInsightsEmptyState = () => {

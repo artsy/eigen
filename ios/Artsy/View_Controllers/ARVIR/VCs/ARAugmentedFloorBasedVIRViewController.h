@@ -26,7 +26,7 @@
  */
 @interface ARAugmentedFloorBasedVIRViewController : UIViewController <ARVIRDelegate>
 
-- (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config API_AVAILABLE(ios(11.3));
+- (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config;
 
 @property (readonly, nonatomic) ARAugmentedRealityConfig *config;
 

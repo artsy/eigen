@@ -1,7 +1,6 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Button } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMarkAllAsReadSectionMutation.graphql"
-import { Button } from "app/Components/Button"
 import { useMutation } from "react-relay"
 import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
 import { notificationTypes } from "./types"

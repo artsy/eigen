@@ -319,7 +319,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (BOOL)shouldAutorotate;
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations;

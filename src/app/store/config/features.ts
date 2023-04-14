@@ -254,6 +254,18 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
+  AREnableDoMoreOnArtsyRail: {
+    description: "Enable Do More on Artsy Rail",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableDoMoreOnArtsyRail",
+  },
+  AREnableMeetYourNewAdvisorRail: {
+    description: "Enable Meet your New Advisor Rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableMeetYourNewAdvisorRail",
+  },
 })
 
 export interface DevToggleDescriptor {

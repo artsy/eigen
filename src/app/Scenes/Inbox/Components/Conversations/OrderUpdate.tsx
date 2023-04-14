@@ -43,7 +43,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
         }
       }
     } else if (offer.fromParticipant === "SELLER") {
-      color = "copper100"
+      color = "orange150"
       Icon = AlertCircleFillIcon
       if (offer.offerAmountChanged) {
         message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${

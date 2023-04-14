@@ -1,8 +1,7 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Flex, Spacer, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Separator, Button } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
-import { Button } from "app/Components/Button"
 
 export const Footer: React.FC<{
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
@@ -12,7 +11,7 @@ export const Footer: React.FC<{
   return (
     <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
       <Text variant="lg-display" textAlign="center">
-        Meet your new advisor.{"\n"}It’s Artsy.
+        Meet your new art advisor.{"\n"}It’s Artsy.
       </Text>
       <Spacer y={2} />
       <Button

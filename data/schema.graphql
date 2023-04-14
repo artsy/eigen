@@ -1347,9 +1347,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
     # Filter auction results by organizations
     organizations: [String]
+    page: Int
 
     # When true, will only return records for allowed artists.
     recordsTrusted: Boolean = false
+    size: Int
 
     # Filter auction results by Artwork sizes
     sizes: [ArtworkSizes]
@@ -3591,7 +3593,10 @@ type Collection {
   ): ArtworkConnection
 
   # Number of artworks associated with this collection.
-  artworksCount: Int!
+  artworksCount(
+    # Only count visible artworks
+    onlyVisible: Boolean = false
+  ): Int!
 
   # True if this is the default collection for this user, i.e. the default Saved Artwork collection.
   default: Boolean!
@@ -10726,6 +10731,9 @@ type MarketingCollection {
   # Returns collections by the same artist if more than 4 exist, otherwise returns collections from the same category
   relatedCollections(size: Int = 10): [MarketingCollection!]!
 
+  # ID of an artwork with highest merchandis ability
+  representativeArtworkID: String
+
   # Show featured artists section in header. Defaults to true
   showFeaturedArtists: Boolean!
 
@@ -11268,7 +11276,7 @@ type Me implements Node {
   paddleNumber: String
 
   # A list of the current user’s managed partners
-  partners: [Partner]
+  partners(size: Int): [Partner]
 
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification

@@ -6,7 +6,6 @@
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
-#import <Adjust/Adjust.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
@@ -37,17 +36,7 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
-            NSURL *convertedUrl = [Adjust convertUniversalLink:decodedURL scheme:@"artsy"];
-            if (convertedUrl) {
-                [Adjust appWillOpenUrl:decodedURL];
-                
-                // ensure the path includes our quirk of needing three slashes
-                NSString *convertedPath = [convertedUrl absoluteString];
-                NSString *fixedPath = [convertedPath stringByReplacingOccurrencesOfString:@"artsy://" withString:@"artsy:///"];
-                [[AREmission sharedInstance] navigate:fixedPath];
-            } else {
-                [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
-            }
+           [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
         }
     });
     return YES;

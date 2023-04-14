@@ -240,7 +240,23 @@ require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
 
 // @ts-expect-error
 global.__reanimatedWorkletInit = () => {}
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
+jest.mock("react-native-reanimated", () => {
+  const animationMock = {
+    duration: () => {
+      return jest.fn()
+    },
+  }
+
+  return {
+    ...require("react-native-reanimated/mock"),
+    FadeInRight: animationMock,
+    FadeInLeft: animationMock,
+    FadeIn: animationMock,
+    FadeOut: animationMock,
+    FadeOutRight: animationMock,
+  }
+})
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),

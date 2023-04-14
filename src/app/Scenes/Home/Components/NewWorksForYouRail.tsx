@@ -70,7 +70,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               title={title}
               onPress={() => {
                 trackEvent(tracks.tappedHeader())
-                navigate("/new-for-you")
+                navigate("/price-database")
               }}
             />
           </Flex>

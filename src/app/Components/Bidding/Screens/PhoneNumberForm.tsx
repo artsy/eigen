@@ -1,5 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Box, Button } from "@artsy/palette-mobile"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"

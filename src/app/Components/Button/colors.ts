@@ -1,6 +1,5 @@
-import { useColor } from "@artsy/palette-mobile"
+import { useColor, ButtonProps } from "@artsy/palette-mobile"
 import { NoUndefined } from "@artsy/palette-mobile/dist/utils/types"
-import { ButtonProps } from "."
 
 type State = "disabled" | "pressed" | "active"
 

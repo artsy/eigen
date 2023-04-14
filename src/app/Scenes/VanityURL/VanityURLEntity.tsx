@@ -5,10 +5,10 @@ import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlacehold
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner/Partner"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {
@@ -53,7 +53,7 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
 })
 
 interface RendererProps {
-  entity: "fair" | "partner" | "unknown"
+  entity?: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
   slug: string
 }
@@ -62,6 +62,8 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
   const { safeAreaInsets } = useScreenDimensions()
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
+  } else if (!entity && !slugType) {
+    return <VanityURLPossibleRedirect slug={slug} />
   } else {
     return (
       <QueryRenderer<VanityURLEntityQuery>

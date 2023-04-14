@@ -1,7 +1,6 @@
-import { BulletedItem, Spacer, Flex, Text, Join } from "@artsy/palette-mobile"
+import { BulletedItem, Spacer, Flex, Text, Join, Button } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
-import { Button } from "app/Components/Button"
 
 export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = ({
   closeModal,

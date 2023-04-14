@@ -1,12 +1,11 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
 import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button } from "app/Components/Button"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artist: ArtistAboutShows_artist$data

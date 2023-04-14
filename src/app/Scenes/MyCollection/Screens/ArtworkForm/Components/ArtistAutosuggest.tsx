@@ -1,6 +1,5 @@
-import { Spacer, Flex, Box, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Touchable, Button } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
-import { Button } from "app/Components/Button"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"

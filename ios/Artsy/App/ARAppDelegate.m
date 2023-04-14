@@ -7,8 +7,6 @@
 #import "AppboyReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
-#import <Segment-Adjust/SEGAdjustIntegrationFactory.h>
-#import <Adjust/Adjust.h>
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
@@ -152,11 +150,7 @@ static ARAppDelegate *_sharedInstance = nil;
                                                      moduleName:@"eigen"
                                               initialProperties:nil];
 
-    if (@available(iOS 13.0, *)) {
-        rootView.backgroundColor = [UIColor systemBackgroundColor];
-    } else {
-        rootView.backgroundColor = [UIColor whiteColor];
-    }
+    rootView.backgroundColor = [UIColor systemBackgroundColor];
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *rootViewController = [UIViewController new];
@@ -164,10 +158,8 @@ static ARAppDelegate *_sharedInstance = nil;
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
 
-    if (@available(iOS 13.0, *)) {
-        // prevent dark mode
-        self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-    }
+    // prevent dark mode
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
@@ -218,7 +210,6 @@ static ARAppDelegate *_sharedInstance = nil;
     configuration.trackApplicationLifecycleEvents = YES;
     configuration.trackPushNotifications = YES;
     configuration.trackDeepLinks = YES;
-    [configuration use:[SEGAdjustIntegrationFactory instance]];
     [SEGAnalytics setupWithConfiguration:configuration];
     [[SEGAppboyIntegrationFactory instance] saveLaunchOptions:launchOptions];
     [[AppboyReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
