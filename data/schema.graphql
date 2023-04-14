@@ -10731,6 +10731,9 @@ type MarketingCollection {
   # Returns collections by the same artist if more than 4 exist, otherwise returns collections from the same category
   relatedCollections(size: Int = 10): [MarketingCollection!]!
 
+  # ID of an artwork with highest merchandis ability
+  representativeArtworkID: String
+
   # Show featured artists section in header. Defaults to true
   showFeaturedArtists: Boolean!
 
