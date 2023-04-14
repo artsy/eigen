@@ -25,7 +25,9 @@ export function matchRoute(
     parsed = parse(decodeUrl(url))
   }
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
-  const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
+  const queryParams: object = parsed.query
+    ? parseQueryString(parsed.query, { arrayFormat: "index" })
+    : {}
 
   const domain = (parsed.host || parse(unsafe__getEnvironment().webURL).host) ?? "artsy.net"
   const routes = getDomainMap()[domain as any]
