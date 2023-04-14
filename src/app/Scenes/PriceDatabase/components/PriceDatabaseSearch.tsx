@@ -40,7 +40,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
 
     const pathName = `/artist/${values.artistId}/auction-results`
     const searchFilters = filterSearchFilters(values, ALLOWED_FILTERS)
-    const queryString = stringify(paramsToSnakeCase(searchFilters))
+    const queryString = stringify(paramsToSnakeCase(searchFilters), { arrayFormat: "index" })
     const paramFlag = "scroll_to_market_signals=true"
 
     const url = queryString ? `${pathName}?${queryString}&${paramFlag}` : `${pathName}?${paramFlag}`

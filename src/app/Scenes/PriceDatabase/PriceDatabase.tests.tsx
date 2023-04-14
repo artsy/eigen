@@ -132,7 +132,7 @@ describe(PriceDatabase, () => {
           fireEvent.press(getByText("Search"))
 
           expect(navigate).toHaveBeenCalledWith(
-            "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE&scroll_to_market_signals=true"
+            "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true"
           )
 
           expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -142,11 +142,11 @@ describe(PriceDatabase, () => {
             destination_owner_slug: "andy-warhol",
             destination_owner_type: "artistAuctionResults",
             destination_path:
-              "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE&scroll_to_market_signals=true",
+              "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true",
             filters:
               '{"categories":["Painting","Work on Paper"],"sizes":["SMALL","MEDIUM","LARGE"]}',
             query:
-              "categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE",
+              "categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE",
           })
         })
       })
@@ -198,7 +198,7 @@ describe(PriceDatabase, () => {
           fireEvent.press(getByText("Search"))
 
           expect(navigate).toHaveBeenCalledWith(
-            "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE&scroll_to_market_signals=true"
+            "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true"
           )
 
           expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -208,11 +208,11 @@ describe(PriceDatabase, () => {
             destination_owner_slug: "andy-warhol",
             destination_owner_type: "artistAuctionResults",
             destination_path:
-              "/artist/andy-warhol/auction-results?categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE&scroll_to_market_signals=true",
+              "/artist/andy-warhol/auction-results?categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE&scroll_to_market_signals=true",
             filters:
               '{"categories":["Painting","Work on Paper"],"sizes":["SMALL","MEDIUM","LARGE"]}',
             query:
-              "categories=Painting&categories=Work%20on%20Paper&sizes=SMALL&sizes=MEDIUM&sizes=LARGE",
+              "categories[0]=Painting&categories[1]=Work%20on%20Paper&sizes[0]=SMALL&sizes[1]=MEDIUM&sizes[2]=LARGE",
           })
         })
       })
