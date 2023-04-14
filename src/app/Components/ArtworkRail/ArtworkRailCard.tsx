@@ -1,17 +1,12 @@
 import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
-  ArtworkRailCardInner_artwork$data,
-  ArtworkRailCardInner_artwork$key,
-} from "__generated__/ArtworkRailCardInner_artwork.graphql"
-import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
+  ArtworkRailCard_artwork$data,
+  ArtworkRailCard_artwork$key,
+} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import {
-  AuctionWebsocketChannelInfo,
-  AuctionWebsocketContextProvider,
-} from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
@@ -56,11 +51,7 @@ export interface ArtworkRailCardProps {
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
 }
 
-interface ArtworkRailCardInnerProps extends Omit<ArtworkRailCardProps, "artwork"> {
-  artwork: ArtworkRailCardInner_artwork$key
-}
-
-const ArtworkRailCardInner: React.FC<ArtworkRailCardInnerProps> = ({
+export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   showPartnerName = false,
   dark = false,
@@ -81,7 +72,7 @@ const ArtworkRailCardInner: React.FC<ArtworkRailCardInnerProps> = ({
 
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
-  const artwork = useFragment(artworkRailCardInnerFragment, restProps.artwork)
+  const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const {
     artistNames,
@@ -294,24 +285,8 @@ const ArtworkRailCardInner: React.FC<ArtworkRailCardInnerProps> = ({
   )
 }
 
-export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = (props) => {
-  const artwork = useFragment(artworkRailCardFragment, props.artwork)
-
-  const websocketEnabled = !!artwork.sale?.extendedBiddingIntervalMinutes
-  const socketChannelInfo: AuctionWebsocketChannelInfo = {
-    channel: "SalesChannel",
-    sale_id: artwork.sale?.internalID,
-  }
-
-  return (
-    <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
-      <ArtworkRailCardInner {...props} artwork={artwork} />
-    </AuctionWebsocketContextProvider>
-  )
-}
-
 export interface ArtworkRailCardImageProps {
-  image: ArtworkRailCardInner_artwork$data["image"]
+  image: ArtworkRailCard_artwork$data["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
   containerWidth?: number | null
@@ -419,18 +394,8 @@ const RecentlySoldCardSection: React.FC<
   )
 }
 
-const artworkRailCardFragment = graphql`
+const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
-    sale {
-      internalID
-      extendedBiddingIntervalMinutes
-    }
-    ...ArtworkRailCardInner_artwork @arguments(width: $width)
-  }
-`
-
-const artworkRailCardInnerFragment = graphql`
-  fragment ArtworkRailCardInner_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     id
     slug
     internalID
