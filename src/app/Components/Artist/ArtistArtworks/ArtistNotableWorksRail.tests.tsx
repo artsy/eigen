@@ -112,8 +112,6 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           saleMessage: null,
           saleArtwork: null,
           sale: {
-            internalID: "sale-internal-id2",
-            extendedBiddingIntervalMinutes: null,
             isAuction: true,
             isClosed: true,
             id: "sale-id2",
@@ -152,13 +150,8 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
               bidderPositions: 2,
             },
             id: "id-123",
-            lotID: "lot-id-3",
-            endAt: null,
-            extendedBiddingEndAt: null,
           },
           sale: {
-            internalID: "sale-internal-id-3",
-            extendedBiddingIntervalMinutes: null,
             isClosed: false,
             isAuction: true,
             endAt: "2020-01-01T00:00:00+00:00",
