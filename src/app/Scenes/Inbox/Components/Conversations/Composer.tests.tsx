@@ -1,7 +1,6 @@
 import { Flex, Button } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
-import { Button } from "app/Components/Button"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
