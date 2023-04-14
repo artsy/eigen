@@ -14,8 +14,7 @@ describe(PriceDatabase, () => {
   it("renders the price database", () => {
     const { getByText } = renderWithHookWrappersTL(<PriceDatabase />, mockEnvironment)
 
-    expect(getByText("Artsy Price")).toBeTruthy()
-    expect(getByText("Database")).toBeTruthy()
+    expect(getByText("Artsy Price Database")).toBeTruthy()
 
     expect(
       getByText("Unlimited access to millions of auction results and art market data — for free.")
