@@ -4,6 +4,7 @@ import { ArtworkStoreModel, ArtworkStoreProvider } from "app/Scenes/Artwork/Artw
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { DateTime } from "luxon"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkStickyBottomContent } from "./ArtworkStickyBottomContent"
@@ -87,6 +88,47 @@ describe("ArtworkStickyBottomContent", () => {
     expect(queryByLabelText("Sticky bottom commercial section")).toBeNull()
   })
 
+  it("should NOT be rendered when lot is ended", async () => {
+    const { queryByLabelText } = renderWithHookWrappersTL(
+      <TestRenderer initialData={{ auctionState: AuctionTimerState.CLOSING }} />,
+      mockEnvironment
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        ...artwork,
+        saleArtwork: {
+          ...artwork.saleArtwork,
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
+        },
+      }),
+    })
+    await flushPromiseQueue()
+
+    expect(queryByLabelText("Sticky bottom commercial section")).toBeNull()
+  })
+
+  it("should NOT be rendered when extended lot is ended", async () => {
+    const { queryByLabelText } = renderWithHookWrappersTL(
+      <TestRenderer initialData={{ auctionState: AuctionTimerState.CLOSING }} />,
+      mockEnvironment
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        ...artwork,
+        saleArtwork: {
+          ...artwork.saleArtwork,
+          endAt: DateTime.now().minus({ minutes: 20 }).toISO(),
+          extendedBiddingEndAt: DateTime.now().minus({ minutes: 5 }).toISO(),
+        },
+      }),
+    })
+    await flushPromiseQueue()
+
+    expect(queryByLabelText("Sticky bottom commercial section")).toBeNull()
+  })
+
   it("should be rendered", async () => {
     const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
@@ -102,4 +144,8 @@ describe("ArtworkStickyBottomContent", () => {
 const artwork = {
   isForSale: true,
   isSold: false,
+  saleArtwork: {
+    extendedBiddingEndAt: null,
+    endAt: null,
+  },
 }
