@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Text } from "@artsy/palette-mobile"
 import {
   NavigationContainer,
   NavigationProp,
@@ -8,8 +8,12 @@ import {
 } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import {
+  CreateNewListForm,
+  CreateResult,
+} from "app/Scenes/ArtworkLists/components/CreateNewListForm"
 import { ScrollableArtworkLists } from "app/Scenes/ArtworkLists/components/ScrollableArtworkLists"
-import { FC, useState } from "react"
+import { FC } from "react"
 
 type ArtworkListsNavigationProps = {
   onClose: () => void
@@ -88,14 +92,13 @@ const SelectListsForArtwork = () => {
 }
 
 const CreateNewList = () => {
-  const [name, setName] = useState("")
   const navigation = useNavigation<NavigationProp<ArtworkListsNavigationStack>>()
 
   const handleBackPressed = () => {
     navigation.goBack()
   }
 
-  const handleCreateListPressed = () => {
+  const handleCreateListPressed = ({ name }: CreateResult) => {
     // @ts-ignore
     navigation.navigate("SelectListsForArtwork", {
       list: {
@@ -105,20 +108,6 @@ const CreateNewList = () => {
   }
 
   return (
-    <Flex p={2}>
-      <Input value={name} placeholder="Name your list" onChangeText={setName} />
-
-      <Spacer y={2} />
-
-      <Button block width="100%" onPress={handleCreateListPressed} disabled={name.length === 0}>
-        Create List
-      </Button>
-
-      <Spacer y={1} />
-
-      <Button variant="outline" block width="100%" onPress={handleBackPressed}>
-        Back
-      </Button>
-    </Flex>
+    <CreateNewListForm onCreatePress={handleCreateListPressed} onBackPress={handleBackPressed} />
   )
 }
