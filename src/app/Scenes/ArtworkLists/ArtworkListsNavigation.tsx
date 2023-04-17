@@ -6,7 +6,11 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native"
-import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
+import {
+  StackNavigationOptions,
+  TransitionPresets,
+  createStackNavigator,
+} from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import {
   CreateNewListForm,
@@ -17,15 +21,17 @@ import {
   RecentlyCreatedArtworkListEntity,
 } from "app/Scenes/ArtworkLists/components/RecentlyCreatedArtworkList"
 import { ScrollableArtworkLists } from "app/Scenes/ArtworkLists/components/ScrollableArtworkLists"
-import { FC } from "react"
+import { FC, useMemo } from "react"
 
 type ArtworkListsNavigationProps = {
+  withHeader?: boolean
   onClose: () => void
 }
 
 type ArtworkListsNavigationStack = {
   SelectListsForArtwork: {
     list?: RecentlyCreatedArtworkListEntity
+    withHeader?: boolean
     onClose: () => void
   }
   CreateNewList: undefined
@@ -33,7 +39,23 @@ type ArtworkListsNavigationStack = {
 
 const StackNavigator = createStackNavigator<ArtworkListsNavigationStack>()
 
-export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({ onClose }) => {
+export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({
+  withHeader,
+  onClose,
+}) => {
+  const screenOptions = useMemo<StackNavigationOptions>(
+    () => ({
+      ...TransitionPresets.SlideFromRightIOS,
+      headerShown: false,
+      safeAreaInsets: { top: 0 },
+      cardStyle: {
+        backgroundColor: "white",
+        overflow: "visible",
+      },
+    }),
+    []
+  )
+
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
@@ -44,15 +66,11 @@ export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({ onClos
          * otherwise the camera will be "frozen" and it will be *impossible* to take a photo
          */
         detachInactiveScreens={false}
-        screenOptions={{
-          ...TransitionPresets.DefaultTransition,
-          headerShown: false,
-          headerMode: "screen",
-        }}
+        screenOptions={screenOptions}
       >
         <StackNavigator.Screen
           name="SelectListsForArtwork"
-          initialParams={{ onClose }}
+          initialParams={{ withHeader, onClose }}
           component={SelectListsForArtwork}
         />
         <StackNavigator.Screen name="CreateNewList" component={CreateNewList} />
@@ -71,9 +89,11 @@ const SelectListsForArtwork = () => {
 
   return (
     <Flex flex={1}>
-      <FancyModalHeader onLeftButtonPress={route.params?.onClose} useXButton>
-        Select lists for this artwork
-      </FancyModalHeader>
+      {route.params.withHeader && (
+        <FancyModalHeader onLeftButtonPress={route.params?.onClose} useXButton>
+          Select lists for this artwork
+        </FancyModalHeader>
+      )}
 
       {!!route.params?.list && <RecentlyCreatedArtworkList artworkList={route.params.list} />}
 

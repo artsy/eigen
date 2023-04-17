@@ -15,7 +15,7 @@ export const ArtworkListsFancyModal: FC<ArtworkListsFancyModalProps> = ({
 }) => {
   return (
     <FancyModal visible={visible} fullScreen={fullScreen} onBackgroundPressed={onClose}>
-      <ArtworkListsNavigation onClose={onClose} />
+      <ArtworkListsNavigation withHeader onClose={onClose} />
     </FancyModal>
   )
 }

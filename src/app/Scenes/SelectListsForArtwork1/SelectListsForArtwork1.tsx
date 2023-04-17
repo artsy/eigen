@@ -2,5 +2,5 @@ import { ArtworkListsNavigation } from "app/Scenes/ArtworkLists/ArtworkListsNavi
 import { dismissModal } from "app/system/navigation/navigate"
 
 export const SelectListsForArtwork1 = () => {
-  return <ArtworkListsNavigation onClose={() => dismissModal()} />
+  return <ArtworkListsNavigation withHeader onClose={() => dismissModal()} />
 }

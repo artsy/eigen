@@ -1,6 +1,7 @@
 import { Button, Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkListBottomSheet } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheet"
+import { ArtworkListBottomSheetNavigation } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheetNavigation"
 import { ArtworkListsFancyModal } from "app/Scenes/ArtworkLists/components/ArtworkListsFancyModal"
 import { navigate } from "app/system/navigation/navigate"
 import { FC, useCallback, useState } from "react"
@@ -9,6 +10,7 @@ export const ArtworkLists = () => {
   const [visibleFancyModal, setVisibleFancyModal] = useState(false)
   const [visibleFullScreenFancyModal, setVisibleFullScreenFancyModal] = useState(false)
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false)
+  const [visibleBottomSheetReactNavigation, setVisibleBottomSheetReactNavigation] = useState(false)
 
   const handleNavigateToScreen = () => {
     navigate("/artwork-lists/select-lists-for-artwork")
@@ -36,6 +38,14 @@ export const ArtworkLists = () => {
 
   const handleClosedBottomSheet = useCallback(() => {
     setVisibleBottomSheet(false)
+  }, [])
+
+  const handleOpenBottomSheetReactNavigation = () => {
+    setVisibleBottomSheetReactNavigation(true)
+  }
+
+  const handleCloseBottomSheetReactNavigation = useCallback(() => {
+    setVisibleBottomSheetReactNavigation(false)
   }, [])
 
   return (
@@ -70,6 +80,11 @@ export const ArtworkLists = () => {
             buttonText="Approach #4"
             onPress={handleOpenBottomSheet}
           />
+          <Desription
+            text="Use React Native Bottom Sheet with independent React Navigation"
+            buttonText="Approach #5"
+            onPress={handleOpenBottomSheetReactNavigation}
+          />
         </Join>
       </StickyTabPageScrollView>
 
@@ -80,6 +95,10 @@ export const ArtworkLists = () => {
         onClose={handleCloseFullScreenFancyModal}
       />
       <ArtworkListBottomSheet visible={visibleBottomSheet} onClose={handleClosedBottomSheet} />
+      <ArtworkListBottomSheetNavigation
+        visible={visibleBottomSheetReactNavigation}
+        onClose={handleCloseBottomSheetReactNavigation}
+      />
     </>
   )
 }
