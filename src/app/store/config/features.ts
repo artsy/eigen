@@ -266,6 +266,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
+  AREnableNativeArticleView: {
+    readyForRelease: false,
+    description: "Show native article view",
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
