@@ -35,7 +35,6 @@ export const ArtworkLists = () => {
   }
 
   const handleClosedBottomSheet = useCallback(() => {
-    console.log("[debug] closed")
     setVisibleBottomSheet(false)
   }, [])
 

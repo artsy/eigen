@@ -22,11 +22,6 @@ export const ArtworkListBottomSheet: FC<ArtworkListBottomSheetProps> = ({ visibl
   const [recentlyCreatedArtworkList, setRecentlyCreatedArtworkList] =
     useState<RecentlyCreatedArtworkListEntity | null>(null)
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index)
-  }, [])
-
   const openCreateListBottomSheet = () => {
     setVisibleCreateList(true)
   }
@@ -51,7 +46,6 @@ export const ArtworkListBottomSheet: FC<ArtworkListBottomSheetProps> = ({ visibl
         ref={bottomSheetRef}
         index={0}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
         onClose={onClose}
         enablePanDownToClose
         backdropComponent={ArtworkListsBottomSheetBackdrop}
