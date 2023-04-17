@@ -1,12 +1,14 @@
 import { Button, Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { ArtworkListBottomSheet } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheet"
 import { ArtworkListsFancyModal } from "app/Scenes/ArtworkLists/components/ArtworkListsFancyModal"
 import { navigate } from "app/system/navigation/navigate"
-import { FC, useState } from "react"
+import { FC, useCallback, useState } from "react"
 
 export const ArtworkLists = () => {
   const [visibleFancyModal, setVisibleFancyModal] = useState(false)
   const [visibleFullScreenFancyModal, setVisibleFullScreenFancyModal] = useState(false)
+  const [visibleBottomSheet, setVisibleBottomSheet] = useState(false)
 
   const handleNavigateToScreen = () => {
     navigate("/artwork-lists/select-lists-for-artwork")
@@ -27,6 +29,15 @@ export const ArtworkLists = () => {
   const handleCloseFullScreenFancyModal = () => {
     setVisibleFullScreenFancyModal(false)
   }
+
+  const handleOpenBottomSheet = () => {
+    setVisibleBottomSheet(true)
+  }
+
+  const handleClosedBottomSheet = useCallback(() => {
+    console.log("[debug] closed")
+    setVisibleBottomSheet(false)
+  }, [])
 
   return (
     <>
@@ -55,6 +66,11 @@ export const ArtworkLists = () => {
             buttonText="Approach #3"
             onPress={handleOpenFullScreenFancyModal}
           />
+          <Desription
+            text="Use React Native Bottom Sheet"
+            buttonText="Approach #4"
+            onPress={handleOpenBottomSheet}
+          />
         </Join>
       </StickyTabPageScrollView>
 
@@ -64,6 +80,7 @@ export const ArtworkLists = () => {
         visible={visibleFullScreenFancyModal}
         onClose={handleCloseFullScreenFancyModal}
       />
+      <ArtworkListBottomSheet visible={visibleBottomSheet} onClose={handleClosedBottomSheet} />
     </>
   )
 }
