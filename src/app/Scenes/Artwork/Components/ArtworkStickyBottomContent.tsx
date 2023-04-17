@@ -3,9 +3,10 @@ import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkSti
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
+import { useScreenDimensions } from "app/utils/hooks"
+import { DateTime } from "luxon"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
 
@@ -23,7 +24,22 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const meData = useFragment(meFragment, me)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
 
-  if (!artworkData.isForSale || artworkData.isSold || auctionState === AuctionTimerState.CLOSED) {
+  const checkIsLotEnded = () => {
+    const endAt = artworkData.saleArtwork?.extendedBiddingEndAt ?? artworkData.saleArtwork?.endAt
+
+    if (!endAt) {
+      return false
+    }
+
+    return DateTime.now() > DateTime.fromISO(endAt)
+  }
+
+  if (
+    !artworkData.isForSale ||
+    artworkData.isSold ||
+    auctionState === AuctionTimerState.CLOSED ||
+    checkIsLotEnded()
+  ) {
     return null
   }
 
@@ -46,6 +62,10 @@ const artworkFragment = graphql`
   fragment ArtworkStickyBottomContent_artwork on Artwork {
     isForSale
     isSold
+    saleArtwork {
+      endAt
+      extendedBiddingEndAt
+    }
     ...ArtworkPrice_artwork
     ...ArtworkCommercialButtons_artwork
   }
