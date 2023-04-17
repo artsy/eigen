@@ -17,6 +17,7 @@ import {
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -24,7 +25,6 @@ import { isEqual } from "lodash"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel } from "./ArtworkDetails/validation"
@@ -262,6 +262,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
               paddingHorizontal: 20,
               justifyContent: "center",
             }}
+            keyboardShouldPersistTaps="handled"
           >
             <Spacer y={4} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
