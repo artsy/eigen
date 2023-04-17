@@ -4,12 +4,17 @@ import { FC } from "react"
 
 type ArtworkListsFancyModalProps = {
   visible: boolean
+  fullScreen?: boolean
   onClose: () => void
 }
 
-export const ArtworkListsFancyModal: FC<ArtworkListsFancyModalProps> = ({ visible, onClose }) => {
+export const ArtworkListsFancyModal: FC<ArtworkListsFancyModalProps> = ({
+  visible,
+  fullScreen,
+  onClose,
+}) => {
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onClose}>
+    <FancyModal visible={visible} fullScreen={fullScreen} onBackgroundPressed={onClose}>
       <ArtworkListsNavigation onClose={onClose} />
     </FancyModal>
   )
