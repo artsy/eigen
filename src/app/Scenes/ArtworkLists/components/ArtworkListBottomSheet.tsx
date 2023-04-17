@@ -1,5 +1,6 @@
 import { Box, Button, useSpace } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { Portal } from "@gorhom/portal"
 import { ArtworkListsBottomSheetBackdrop } from "app/Scenes/ArtworkLists/components/ArtworkListsBottomSheetBackdrop"
 import { CreateNewListBottomSheet } from "app/Scenes/ArtworkLists/components/CreateNewListBottomSheet"
 import {
@@ -41,7 +42,7 @@ export const ArtworkListBottomSheet: FC<ArtworkListBottomSheetProps> = ({ visibl
 
   // renders
   return (
-    <>
+    <Portal>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -72,6 +73,6 @@ export const ArtworkListBottomSheet: FC<ArtworkListBottomSheetProps> = ({ visibl
           onClose={closeCreateListBottomSheet}
         />
       )}
-    </>
+    </Portal>
   )
 }

@@ -1,5 +1,6 @@
 import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { PortalProvider } from "@gorhom/portal"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { Component, Suspense } from "react"
@@ -34,6 +35,7 @@ export const Providers: React.FC = ({ children }) =>
       RetryErrorBoundary,
       SuspenseProvider,
       ActionSheetProvider,
+      PortalProvider,
       PopoverMessageProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
