@@ -17,7 +17,7 @@ type ArtworkListBottomSheetProps = {
 
 export const ArtworkListBottomSheet: FC<ArtworkListBottomSheetProps> = ({ visible, onClose }) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ["50%", "100%"], [])
+  const snapPoints = useMemo(() => ["50%", "95%"], [])
   const space = useSpace()
   const [visibleCreateList, setVisibleCreateList] = useState(false)
   const [recentlyCreatedArtworkList, setRecentlyCreatedArtworkList] =
