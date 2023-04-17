@@ -1,6 +1,8 @@
 import { Button, Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkListBottomSheet } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheet"
+import { ArtworkListBottomSheetModal } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheetModal"
+import { ArtworkListBottomSheetModalNavigation } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheetModalNavigation"
 import { ArtworkListBottomSheetNavigation } from "app/Scenes/ArtworkLists/components/ArtworkListBottomSheetNavigation"
 import { ArtworkListsFancyModal } from "app/Scenes/ArtworkLists/components/ArtworkListsFancyModal"
 import { navigate } from "app/system/navigation/navigate"
@@ -10,7 +12,10 @@ export const ArtworkLists = () => {
   const [visibleFancyModal, setVisibleFancyModal] = useState(false)
   const [visibleFullScreenFancyModal, setVisibleFullScreenFancyModal] = useState(false)
   const [visibleBottomSheet, setVisibleBottomSheet] = useState(false)
+  const [visibleBottomSheetModal, setVisibleBottomSheetModal] = useState(false)
   const [visibleBottomSheetReactNavigation, setVisibleBottomSheetReactNavigation] = useState(false)
+  const [visibleBottomSheetModalReactNavigation, setVisibleBottomSheetModalReactNavigation] =
+    useState(false)
 
   const handleNavigateToScreen = () => {
     navigate("/artwork-lists/select-lists-for-artwork")
@@ -46,6 +51,23 @@ export const ArtworkLists = () => {
 
   const handleCloseBottomSheetReactNavigation = useCallback(() => {
     setVisibleBottomSheetReactNavigation(false)
+  }, [])
+
+  // Modal mode
+  const handleOpenBottomSheetModal = () => {
+    setVisibleBottomSheetModal(true)
+  }
+
+  const handleClosedBottomSheetModal = useCallback(() => {
+    setVisibleBottomSheetModal(false)
+  }, [])
+
+  const handleOpenBottomSheetModalReactNavigation = () => {
+    setVisibleBottomSheetModalReactNavigation(true)
+  }
+
+  const handleCloseBottomSheetModalReactNavigation = useCallback(() => {
+    setVisibleBottomSheetModalReactNavigation(false)
   }, [])
 
   return (
@@ -85,6 +107,16 @@ export const ArtworkLists = () => {
             buttonText="Approach #5"
             onPress={handleOpenBottomSheetReactNavigation}
           />
+          <Desription
+            text="Use React Native Bottom Sheet (**Modal** Mode)"
+            buttonText="Approach #6"
+            onPress={handleOpenBottomSheetModal}
+          />
+          <Desription
+            text="Use React Native Bottom Sheet (**Modal** Mode) with independent React Navigation"
+            buttonText="Approach #7"
+            onPress={handleOpenBottomSheetModalReactNavigation}
+          />
         </Join>
       </StickyTabPageScrollView>
 
@@ -98,6 +130,18 @@ export const ArtworkLists = () => {
       <ArtworkListBottomSheetNavigation
         visible={visibleBottomSheetReactNavigation}
         onClose={handleCloseBottomSheetReactNavigation}
+      />
+
+      {/* Modal mode */}
+      <ArtworkListBottomSheetModal
+        visible={visibleBottomSheetModal}
+        onClose={handleClosedBottomSheetModal}
+      />
+
+      {/* Modal mode */}
+      <ArtworkListBottomSheetModalNavigation
+        visible={visibleBottomSheetModalReactNavigation}
+        onClose={handleCloseBottomSheetModalReactNavigation}
       />
     </>
   )

@@ -1,5 +1,6 @@
 import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { PortalProvider } from "@gorhom/portal"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -36,6 +37,7 @@ export const Providers: React.FC = ({ children }) =>
       SuspenseProvider,
       ActionSheetProvider,
       PortalProvider,
+      BottomSheetModalProvider,
       PopoverMessageProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
