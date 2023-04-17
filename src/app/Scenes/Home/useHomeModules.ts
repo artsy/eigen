@@ -11,7 +11,7 @@ import ReactAppboy from "react-native-appboy-sdk"
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
-  const enableDoMoreOnArtsyRaul = useFeatureFlag("AREnableDoMoreOnArtsyRail")
+  const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
 
   return useMemo(() => {
@@ -100,7 +100,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         data: props.homePageBelow?.onboardingModule,
-        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRaul,
+        hidden: !props.homePageBelow?.onboardingModule || !enableDoMoreOnArtsyRail,
         isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
         key: "onboardingRail",
         title: "Do More on Artsy",
@@ -229,5 +229,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.fairsModule,
     showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,
+    enableDoMoreOnArtsyRail,
+    enableMeetYourNewAdvisoryRail,
   ])
 }
