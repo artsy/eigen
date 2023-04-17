@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex } from "@artsy/palette-mobile"
 import {
   NavigationContainer,
   NavigationProp,
@@ -12,6 +12,10 @@ import {
   CreateNewListForm,
   CreateResult,
 } from "app/Scenes/ArtworkLists/components/CreateNewListForm"
+import {
+  RecentlyCreatedArtworkList,
+  RecentlyCreatedArtworkListEntity,
+} from "app/Scenes/ArtworkLists/components/RecentlyCreatedArtworkList"
 import { ScrollableArtworkLists } from "app/Scenes/ArtworkLists/components/ScrollableArtworkLists"
 import { FC } from "react"
 
@@ -21,9 +25,7 @@ type ArtworkListsNavigationProps = {
 
 type ArtworkListsNavigationStack = {
   SelectListsForArtwork: {
-    list?: {
-      name: string
-    }
+    list?: RecentlyCreatedArtworkListEntity
     onClose: () => void
   }
   CreateNewList: undefined
@@ -73,12 +75,7 @@ const SelectListsForArtwork = () => {
         Select lists for this artwork
       </FancyModalHeader>
 
-      {!!route.params?.list && (
-        <Box bg="green100" p={2}>
-          <Text color="white100">List Created</Text>
-          <Text color="white100">{route.params.list.name}</Text>
-        </Box>
-      )}
+      {!!route.params?.list && <RecentlyCreatedArtworkList artworkList={route.params.list} />}
 
       <Box m={2}>
         <Button block width="100%" onPress={handleCreateListPressed}>
