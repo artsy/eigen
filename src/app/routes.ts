@@ -126,6 +126,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/activity", "Activity"),
     addRoute("/articles", "Articles"),
+    // TODO: AREnableNativeArticleView: Rename /article2 to /article once we've removed the old /article route
+    addRoute("/article2/:articleID", "Article"),
     addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/article/:articleID", { showShareButton: true }),
     addRoute("/artist/:artistID", "Artist"),
