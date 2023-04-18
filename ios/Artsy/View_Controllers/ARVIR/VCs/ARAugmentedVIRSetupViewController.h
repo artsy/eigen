@@ -8,7 +8,7 @@
  */
 @interface ARAugmentedVIRSetupViewController : UIViewController 
 
-- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config;
+- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config enableInstantVIR:(BOOL)enableInstantVIR;
 
 /// Is AR even supported?
 + (BOOL)canOpenARView;

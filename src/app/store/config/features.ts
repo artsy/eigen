@@ -248,6 +248,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
+  AREnableInstantViewInRoom: {
+    description: "Enable Instant View In Room",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

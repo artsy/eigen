@@ -30,6 +30,8 @@
 @property (nonatomic, weak) AVPlayer *avPlayer;
 
 @property (nonatomic, assign) BOOL hasSentToSettings;
+@property (nonatomic, assign) BOOL enableInstantVIR;
+
 @end
 
 NSString *const arTitle = @"Art in your home";
@@ -43,12 +45,13 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 @implementation ARAugmentedVIRSetupViewController
 
-- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config
+- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config enableInstantVIR:(BOOL)enableInstantVIR
 {
     self = [super init];
     _movieURL = movieURL;
     _config = config;
     _defaults = [NSUserDefaults standardUserDefaults];
+    _enableInstantVIR = enableInstantVIR;
     return self;
 }
 
@@ -246,7 +249,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)showVIRVC
 {
     BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
-    if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
+    if (hasLidarEnabledDevice && _enableInstantVIR) { // Lidar device we can do instant vertical detection
         ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
         [viewInRoomWallVC initWithConfig:self.config];
         viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
