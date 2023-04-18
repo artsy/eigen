@@ -6909,9 +6909,16 @@ type Conversation implements Node {
 
   # The participant(s) responding to the conversation
   to: ConversationResponder!
+  toLastViewedMessageID: String
 
-  # True if there is an unread message by the user.
-  unread: Boolean
+  # True if there is an unread message by the Collector(from).
+  unread: Boolean @deprecated(reason: "Use `unreadByCollector` instead")
+
+  # True if there is an unread message by the Collector(from).
+  unreadByCollector: Boolean
+
+  # True if there is an unread message by the Partner(to).
+  unreadByPartner: Boolean
 }
 
 # A connection to a list of items.
