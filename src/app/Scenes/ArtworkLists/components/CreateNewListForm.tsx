@@ -1,4 +1,5 @@
 import { Button, Flex, Input, Spacer } from "@artsy/palette-mobile"
+import { BottomSheetTextInput } from "app/Scenes/ArtworkLists/components/BottomSheetTextInput"
 import { FC, useState } from "react"
 
 export type CreateResult = {
@@ -6,11 +7,16 @@ export type CreateResult = {
 }
 
 interface CreateNewListFormProps {
+  useBottomSheetInput?: boolean
   onCreatePress: (result: CreateResult) => void
   onBackPress: () => void
 }
 
-export const CreateNewListForm: FC<CreateNewListFormProps> = ({ onCreatePress, onBackPress }) => {
+export const CreateNewListForm: FC<CreateNewListFormProps> = ({
+  useBottomSheetInput,
+  onCreatePress,
+  onBackPress,
+}) => {
   const [name, setName] = useState("")
 
   const handleCreatePressed = () => {
@@ -19,9 +25,15 @@ export const CreateNewListForm: FC<CreateNewListFormProps> = ({ onCreatePress, o
     })
   }
 
+  const InputComponent = useBottomSheetInput ? BottomSheetTextInput : Input
+
   return (
     <Flex p={2}>
-      <Input value={name} placeholder="Name your list" onChangeText={setName} />
+      <InputComponent
+        value={name}
+        placeholder={`Name your list ${useBottomSheetInput ? "(Bottom Sheet)" : ""}`}
+        onChangeText={setName}
+      />
 
       <Spacer y={2} />
 

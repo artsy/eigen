@@ -25,6 +25,7 @@ import { FC, useMemo } from "react"
 
 type ArtworkListsNavigationProps = {
   withHeader?: boolean
+  useBottomSheetInput?: boolean
   onClose: () => void
 }
 
@@ -34,13 +35,16 @@ type ArtworkListsNavigationStack = {
     withHeader?: boolean
     onClose: () => void
   }
-  CreateNewList: undefined
+  CreateNewList?: {
+    useBottomSheetInput?: boolean
+  }
 }
 
 const StackNavigator = createStackNavigator<ArtworkListsNavigationStack>()
 
 export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({
   withHeader,
+  useBottomSheetInput,
   onClose,
 }) => {
   const screenOptions = useMemo<StackNavigationOptions>(
@@ -74,7 +78,11 @@ export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({
           initialParams={{ withHeader, onClose }}
           component={SelectListsForArtwork}
         />
-        <StackNavigator.Screen name="CreateNewList" component={CreateNewList} />
+        <StackNavigator.Screen
+          name="CreateNewList"
+          initialParams={{ useBottomSheetInput }}
+          component={CreateNewList}
+        />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )
@@ -111,6 +119,7 @@ const SelectListsForArtwork = () => {
 
 const CreateNewList = () => {
   const navigation = useNavigation<NavigationProp<ArtworkListsNavigationStack>>()
+  const route = useRoute<RouteProp<ArtworkListsNavigationStack, "CreateNewList">>()
 
   const handleBackPressed = () => {
     navigation.goBack()
@@ -126,6 +135,10 @@ const CreateNewList = () => {
   }
 
   return (
-    <CreateNewListForm onCreatePress={handleCreateListPressed} onBackPress={handleBackPressed} />
+    <CreateNewListForm
+      useBottomSheetInput={route.params?.useBottomSheetInput}
+      onCreatePress={handleCreateListPressed}
+      onBackPress={handleBackPressed}
+    />
   )
 }

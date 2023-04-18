@@ -33,7 +33,7 @@ export const ArtworkListBottomSheetModalNavigation: FC<
       enablePanDownToClose
       backdropComponent={ArtworkListsBottomSheetBackdrop}
     >
-      <ArtworkListsNavigation onClose={handleBottomSheetClose} />
+      <ArtworkListsNavigation useBottomSheetInput onClose={handleBottomSheetClose} />
     </BottomSheetModal>
   )
 }

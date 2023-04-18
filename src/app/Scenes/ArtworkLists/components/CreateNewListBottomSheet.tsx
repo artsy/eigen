@@ -45,9 +45,10 @@ export const CreateNewListBottomSheet: FC<CreateNewListBottomSheetProps> = ({
       onClose={onClose}
       enablePanDownToClose
       backdropComponent={ArtworkListsBottomSheetBackdrop}
+      keyboardBlurBehavior="restore"
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <CreateNewListForm onCreatePress={handleCreate} onBackPress={close} />
+        <CreateNewListForm useBottomSheetInput onCreatePress={handleCreate} onBackPress={close} />
       </BottomSheetView>
     </BottomSheet>
   )
