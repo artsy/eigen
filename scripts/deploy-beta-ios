@@ -3,11 +3,10 @@ set -euxo pipefail
 
 
 source ./scripts/source-for-bash-env
-source ./.env.shared &> /dev/null
 
 # Check if there is a build in progress
 echo "Checking if there is a build in progress..."
-build_status=$(curl -s -u ${EIGEN_CHECK_STATUS}: https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-ios | jq -r '.[0].status')
+build_status=$(curl https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-ios -s | jq -r '.[0].status')
 
 # Check if the build status is "running"
 if [ "$build_status" = "running" ]; then
