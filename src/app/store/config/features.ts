@@ -256,13 +256,13 @@ export const features = defineFeatures({
   },
   AREnableDoMoreOnArtsyRail: {
     description: "Enable Do More on Artsy Rail",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableDoMoreOnArtsyRail",
   },
   AREnableMeetYourNewAdvisorRail: {
     description: "Enable Meet your New Advisor Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
