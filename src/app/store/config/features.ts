@@ -256,7 +256,7 @@ export const features = defineFeatures({
   },
   AREnableDoMoreOnArtsyRail: {
     description: "Enable Do More on Artsy Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableDoMoreOnArtsyRail",
   },
