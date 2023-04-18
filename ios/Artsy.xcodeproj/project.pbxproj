@@ -3641,7 +3641,6 @@
 					};
 					CB43268127E8FA6900B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
-						DevelopmentTeam = 23KMWZ572J;
 					};
 					CB43271B27E8FE5400B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -4832,7 +4831,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
