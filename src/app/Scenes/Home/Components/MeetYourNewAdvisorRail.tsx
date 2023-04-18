@@ -28,7 +28,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
           image={require("images/meet-your-new-art-advisor-0.jpg")}
           buttonText="Explore Works"
           onPress={() => {
-            navigate("https://staging.artsy.net/find-the-art-you-want")
+            navigate("/find-the-art-you-love")
             trackEvent(tracks.tappedProductCapabilities(ContextModule.findTheArtYouWant))
           }}
           testID="meet-your-new-advisor-card-0"
