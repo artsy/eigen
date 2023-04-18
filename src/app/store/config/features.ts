@@ -262,7 +262,7 @@ export const features = defineFeatures({
   },
   AREnableMeetYourNewAdvisorRail: {
     description: "Enable Meet your New Advisor Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
