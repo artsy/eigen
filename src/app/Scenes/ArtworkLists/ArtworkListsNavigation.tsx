@@ -48,6 +48,7 @@ export const ArtworkListsNavigation: FC<ArtworkListsNavigationProps> = ({
       ...TransitionPresets.SlideFromRightIOS,
       headerShown: false,
       safeAreaInsets: { top: 0 },
+      gestureEnabled: false,
       cardStyle: {
         backgroundColor: "white",
         overflow: "visible",
