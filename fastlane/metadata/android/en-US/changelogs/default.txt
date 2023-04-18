@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-- New look for Artists on the home feed
+- The Artsy Price Database is now available on app for you to check auction results and art market data—for free.
+- Explore how Artsy acts as your personal art advisor in the "Meet your new art advisor" section.
 
 Have feedback? Email us at support@artsy.net
