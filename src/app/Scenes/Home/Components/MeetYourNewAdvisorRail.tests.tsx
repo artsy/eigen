@@ -16,7 +16,7 @@ describe("MeetYourNewAdvisorRail", () => {
 
     fireEvent(getByText("Explore Works"), "press")
 
-    expect(navigate).toHaveBeenCalledWith("https://staging.artsy.net/find-the-art-you-want")
+    expect(navigate).toHaveBeenCalledWith("/find-the-art-you-love")
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedProductCapabilitiesGroup",
       context_screen: "home",
