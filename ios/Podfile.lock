@@ -614,7 +614,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (2.13.0):
+  - RNReanimated (2.14.4):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -666,6 +666,10 @@ PODS:
   - Sentry (7.9.0):
     - Sentry/Core (= 7.9.0)
   - Sentry/Core (7.9.0)
+  - Sift (2.1.1)
+  - sift-react-native (0.1.8):
+    - React
+    - Sift
   - Specta (1.0.7)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
@@ -819,6 +823,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.11.1)
   - Segment-Appboy
+  - sift-react-native (from `../node_modules/sift-react-native`)
   - Specta
   - Starscream (= 3.0.4)
   - SwiftyJSON (= 4.0.0)
@@ -898,6 +903,7 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - Segment-Appboy
     - Sentry
+    - Sift
     - Specta
     - Starscream
     - Stripe
@@ -1060,6 +1066,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  sift-react-native:
+    :path: "../node_modules/sift-react-native"
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
   VisionCamera:
@@ -1217,7 +1225,7 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 42b5b57609de75e270722e27d2b94ade03c49931
+  RNReanimated: e0d473a3ffdcf1273f83cbc3e34cc47e2fff72ed
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
@@ -1226,6 +1234,8 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
+  Sift: 8cd26419e0a9b0d94bd733b296353b68c44192aa
+  sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
