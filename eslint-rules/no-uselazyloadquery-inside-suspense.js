@@ -44,7 +44,10 @@ module.exports = createRule({
 
         const returnStatement = body.find((node) => node.type === "ReturnStatement")
 
-        if (returnStatement.argument.type !== "JSXElement") {
+        if (
+          returnStatement.argument.type !== "JSXElement" &&
+          returnStatement.argument.type !== "JSXFragment"
+        ) {
           return
         }
 
@@ -66,8 +69,14 @@ module.exports = createRule({
 const amIsuspenseOrMyChildrenAreSuspense = (node) => {
   let result = node.type === "JSXElement" && node.openingElement.name.name === "Suspense"
 
-  if (!isSuspense) {
-    for (const child of jsxElement.children) {
+  if (!result && node.type === "JSXFragment") {
+    for (const child of node.children) {
+      result = result || amIsuspenseOrMyChildrenAreSuspense(child)
+    }
+  }
+
+  if (!result) {
+    for (const child of node.children || []) {
       result = result || amIsuspenseOrMyChildrenAreSuspense(child)
     }
   }
