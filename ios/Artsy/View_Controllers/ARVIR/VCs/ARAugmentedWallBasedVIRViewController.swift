@@ -15,6 +15,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     var artwork : VirtualArtwork?
 
+    var shouldHideCursor : Bool = false
+
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
 
@@ -150,6 +152,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func dismissInformationalViewAnimated() {
+        self.shouldHideCursor = true
         self.dismissInformationalView(animated: true)
     }
 
@@ -171,7 +174,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     func updateCursor() {
         // TODO: Handle commented out scenarios
-        if coachingOverlay.isActive {
+        if coachingOverlay.isActive || shouldHideCursor {
            cursor.hide()
         } else {
             cursor.unhide()
@@ -206,6 +209,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         guard let view = self.view else {
             return
         }
+
+        self.shouldHideCursor = false
 
         let backButton = setupBackButton()
         view.addSubview(backButton)
@@ -260,6 +265,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         self.informationView?.reset()
 
         self.resetButton?.alpha = 0
+
+        self.shouldHideCursor = false
 
         self.presentInformationalInterface(animated: true)
     }
