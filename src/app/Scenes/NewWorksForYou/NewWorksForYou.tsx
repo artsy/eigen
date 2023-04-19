@@ -162,7 +162,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     }
 
     // We would like to trigger the tracking only if the experiment is enabled
-    console.log("worksForYouRecommendationsModel =>", worksForYouRecommendationsModel)
     if (worksForYouRecommendationsModel.enabled) {
       maybeReportExperimentVariant({
         experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
