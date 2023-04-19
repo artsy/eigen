@@ -44,7 +44,7 @@ class FocusSquare: SCNNode {
 
     // Artsy blue10 - #E6E7F5
     // Color of the focus square fill.
-    static let fillColor = UIColor(red: 230.0 / 255.0, green: 231.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
+    static let fillColor = UIColor(red: 16.0 / 255.0, green: 35.0 / 255.0, blue: 215.0 / 255.0, alpha: 1.0)
     
     // MARK: - Properties
     
@@ -194,7 +194,8 @@ class FocusSquare: SCNNode {
         
     /// Called when a plane has been detected.
     private func displayAsClosed(for raycastResult: ARRaycastResult, planeAnchor: ARPlaneAnchor, camera: ARCamera?) {
-        performCloseAnimation(flash: !anchorsOfVisitedPlanes.contains(planeAnchor))
+        // TODO: the close animation causes a bug that changes the cursor color
+        // performCloseAnimation(flash: !anchorsOfVisitedPlanes.contains(planeAnchor))
         anchorsOfVisitedPlanes.insert(planeAnchor)
         setPosition(with: raycastResult, camera)
     }
