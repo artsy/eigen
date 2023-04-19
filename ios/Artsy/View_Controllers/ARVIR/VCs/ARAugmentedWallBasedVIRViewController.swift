@@ -15,7 +15,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     var artwork : VirtualArtwork?
 
-    var shouldHideCursor : Bool = false
+    // user is on final step, viewing artwork in their space
+    var viewingArtwork : Bool = false
 
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
@@ -87,6 +88,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
 
     @objc func placeArtwork() {
+        if (viewingArtwork) {
+            // Don't allow moving in the final step
+            return
+        }
+
         self.artwork?.removeFromParentNode()
         self.artwork?.stopTrackedRaycast()
         self.artwork = nil
@@ -152,7 +158,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func dismissInformationalViewAnimated() {
-        self.shouldHideCursor = true
+        viewingArtwork = true
         self.dismissInformationalView(animated: true)
     }
 
@@ -173,12 +179,10 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     // MARK: Cursor
 
     func updateCursor() {
-        // TODO: Handle commented out scenarios
-        if coachingOverlay.isActive || shouldHideCursor {
+        if coachingOverlay.isActive || viewingArtwork {
            cursor.hide()
         } else {
             cursor.unhide()
-//            statusViewController.scheduleMessage("TRY MOVING LEFT OR RIGHT", inSeconds: 5.0, messageType: .focusSquare)
         }
 
         // Perform ray casting only when ARKit tracking is in a good state.
@@ -190,16 +194,11 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
                 self.sceneView.scene.rootNode.addChildNode(self.cursor)
                 self.cursor.state = .detecting(raycastResult: result, camera: camera)
             }
-            if !coachingOverlay.isActive {
-            //    addObjectButton.isHidden = false
-            }
-//            statusViewController.cancelScheduledMessage(for: .focusSquare)
         } else {
             updateQueue.async {
                 self.cursor.state = .initializing
                 self.sceneView.pointOfView?.addChildNode(self.cursor)
             }
-//            addObjectButton.isHidden = true
         }
     }
 
@@ -210,7 +209,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
             return
         }
 
-        self.shouldHideCursor = false
+        self.viewingArtwork = false
 
         let backButton = setupBackButton()
         view.addSubview(backButton)
@@ -266,7 +265,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
         self.resetButton?.alpha = 0
 
-        self.shouldHideCursor = false
+        self.viewingArtwork = false
 
         self.presentInformationalInterface(animated: true)
     }
