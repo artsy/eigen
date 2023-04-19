@@ -81,9 +81,11 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
     id,
     internalID,
     isSaved: artworkData.isSaved,
-    onCompleted: () => {
+    onCompleted: (isArtworkSaved) => {
       trackEvent({
-        action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+        action_name: isArtworkSaved
+          ? Schema.ActionNames.ArtworkSave
+          : Schema.ActionNames.ArtworkUnsave,
         action_type: Schema.ActionTypes.Success,
         context_module: Schema.ContextModules.ArtworkActions,
       })
