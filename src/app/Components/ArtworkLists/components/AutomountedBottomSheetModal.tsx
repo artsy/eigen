@@ -1,4 +1,5 @@
 import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet"
+import { ArtworkListsBottomSheetBackdrop } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetBackdrop"
 import { FC, useEffect, useRef } from "react"
 
 interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
@@ -20,6 +21,12 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   }, [visible])
 
   return (
-    <BottomSheetModal ref={ref} enablePanDownToClose keyboardBlurBehavior="restore" {...rest} />
+    <BottomSheetModal
+      ref={ref}
+      enablePanDownToClose
+      keyboardBlurBehavior="restore"
+      backdropComponent={ArtworkListsBottomSheetBackdrop}
+      {...rest}
+    />
   )
 }
