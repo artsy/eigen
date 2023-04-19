@@ -6,12 +6,10 @@ const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "top"
 export const useArtworkListToast = () => {
   const toast = useToast()
 
-  const savedToDefaultArtworkList = () => {
+  const savedToDefaultArtworkList = (onToastPress: () => void) => {
     toast.show("Artwork saved", DEFAULT_TOAST_PLACEMENT, {
       backgroundColor: "green100",
-      onPress: () => {
-        // TODO: Display "Select lists for artwork" scene
-      },
+      onPress: onToastPress,
     })
   }
 

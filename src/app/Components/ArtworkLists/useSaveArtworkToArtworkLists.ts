@@ -33,7 +33,7 @@ export const useSaveArtworkToArtworkLists = (
         return
       }
 
-      toast.savedToDefaultArtworkList()
+      toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
     },
   })
 
