@@ -21,6 +21,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     /// A serial queue used to coordinate adding or removing nodes from the scene.
     let updateQueue = DispatchQueue(label: "net.artsy.artsy.verticalVIR.serialSceneKitQueue")
 
+    var dateOpenedAR : Date?
+
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
         self.sceneView = ARSCNView()
@@ -28,6 +30,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        dateOpenedAR = Date()
 
         guard let view = self.view else {
             return
@@ -69,7 +73,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        // TODO: analytics
+        AREmission.sharedInstance() .sendScreenEvent("AR View in Room Instant", traits: [:])
+
         super.viewDidAppear(animated)
 
         // Prevent the screen from being dimmed to avoid interuppting the AR experience.
@@ -92,6 +97,14 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
             // Don't allow moving in the final step
             return
         }
+
+        let eventDict = [
+            "action_name": "arInstantPlacedArtwork",
+            "owner_type" : "artwork",
+            "owner_id" : self.config.artworkID,
+            "owner_slug": self.config.artworkSlug
+        ]
+        AREmission.sharedInstance().sendEvent("success", traits: eventDict)
 
         self.artwork?.removeFromParentNode()
         self.artwork?.stopTrackedRaycast()
@@ -270,8 +283,18 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         self.presentInformationalInterface(animated: true)
     }
 
+    func timeInAR() -> TimeInterval? {
+        guard let dateOpenedAR = self.dateOpenedAR else {
+            return nil
+        }
+
+        return dateOpenedAR.timeIntervalSinceNow * -1
+    }
+
     @objc func exit() {
-        // TODO: do I need the time tracking
+        AREmission.sharedInstance().sendEvent("ar_view_in_room_instant_time", traits: [
+            "length" : self.timeInAR() ?? "unknown"
+        ])
 
         // Ensure we jump past the SetupVC
         var presentingVC : UIViewController? = nil
