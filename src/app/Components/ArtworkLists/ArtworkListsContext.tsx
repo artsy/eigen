@@ -1,10 +1,7 @@
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
+import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
-
-export enum ArtworkListViewKey {
-  SelectListsForArtwork,
-  CreateNewList,
-}
 
 export enum ResultAction {
   SavedToDefaultArtworkList,
@@ -18,7 +15,7 @@ export interface RecentlyAddedArtworkList {
 }
 
 type State = {
-  currentViewKey: ArtworkListViewKey
+  createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
@@ -31,7 +28,7 @@ export enum Mode {
 }
 
 type Action =
-  | { type: "SET_VIEW_KEY"; payload: ArtworkListViewKey }
+  | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
   | { type: "RESET" }
@@ -85,7 +82,7 @@ interface ArtworkListsProviderProps {
 }
 
 export const INITIAL_STATE: State = {
-  currentViewKey: ArtworkListViewKey.SelectListsForArtwork,
+  createNewArtworkListViewVisible: false,
   artwork: null,
   addingArtworkListIDs: [],
   removingArtworkListIDs: [],
@@ -156,30 +153,26 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     onSave,
   }
 
-  const renderViewByKey = () => {
-    if (state.currentViewKey === ArtworkListViewKey.CreateNewList) {
-      console.log("[debug] render CreateNewList view")
-
-      return
-    }
-
-    console.log("[debug] render SelectListsForArtwork view")
-  }
-
   return (
     <ArtworkListsContext.Provider value={value}>
       {children}
-      {!!state.artwork && renderViewByKey()}
+
+      {!!state.artwork && (
+        <>
+          <SelectArtworkListsForArtworkView />
+          {state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+        </>
+      )}
     </ArtworkListsContext.Provider>
   )
 }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "SET_VIEW_KEY":
+    case "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE":
       return {
         ...state,
-        currentViewKey: action.payload,
+        createNewArtworkListViewVisible: action.payload,
       }
     case "ADD_OR_REMOVE_ARTWORK_LIST_ID":
       // eslint-disable-next-line no-case-declarations

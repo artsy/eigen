@@ -38,7 +38,7 @@ export const useSaveArtworkToArtworkLists = (
     },
   })
 
-  const openSelectListsForArtworkScene = () => {
+  const openSelectArtworkListsForArtworkView = () => {
     dispatch({
       type: "SET_ARTWORK",
       payload: {
@@ -55,7 +55,7 @@ export const useSaveArtworkToArtworkLists = (
   const saveArtworkToLists = () => {
     if (artworkListId || isSavedToCustomArtworkLists) {
       console.log("[debug] step 1")
-      openSelectListsForArtworkScene()
+      openSelectArtworkListsForArtworkView()
       return
     }
 
