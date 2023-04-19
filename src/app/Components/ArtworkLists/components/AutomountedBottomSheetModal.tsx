@@ -6,8 +6,6 @@ interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
 }
 
-// TODO: Pass custom backgrdrop
-// TODO: Pass and call `onDismiss`
 export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> = ({
   visible,
   ...rest
