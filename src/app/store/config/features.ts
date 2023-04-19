@@ -271,6 +271,11 @@ export const features = defineFeatures({
     description: "Show native article view",
     showInDevMenu: true,
   },
+  AREnableArtworkLists: {
+    readyForRelease: false,
+    description: "Enable Artwork Lists",
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
