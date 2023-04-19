@@ -23,11 +23,20 @@ interface ArticleCardProps extends ViewProps {
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
+  const enableNativeArticleView = useFeatureFlag("AREnableNativeArticleView")
+
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
-    navigate(article.href!)
+
+    // TODO: We need to switch on the type of article here, as we'll want to redirect
+    // feature articles into the webview and standard articles to native.
+    if (enableNativeArticleView) {
+      navigate(`/article2/${article.internalID}}`)
+    } else {
+      navigate(article.href!)
+    }
   }
 
   const { space } = useTheme()

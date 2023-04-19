@@ -262,9 +262,19 @@ export const features = defineFeatures({
   },
   AREnableMeetYourNewAdvisorRail: {
     description: "Enable Meet your New Advisor Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
+  },
+  AREnableNativeArticleView: {
+    readyForRelease: false,
+    description: "Show native article view",
+    showInDevMenu: true,
+  },
+  AREnableArtworkLists: {
+    readyForRelease: false,
+    description: "Enable Artwork Lists",
+    showInDevMenu: true,
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
