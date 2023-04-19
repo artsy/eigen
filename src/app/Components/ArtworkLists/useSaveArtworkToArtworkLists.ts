@@ -1,12 +1,15 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import {
+  ResultAction,
+  useArtworkListsContext,
+} from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
 export const useSaveArtworkToArtworkLists = (
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
 ) => {
-  const { artworkListId, isSavedToArtworkList, dispatch } = useArtworkListsContext()
+  const { artworkListId, isSavedToArtworkList, onSave, dispatch } = useArtworkListsContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
@@ -24,6 +27,14 @@ export const useSaveArtworkToArtworkLists = (
     isSaved: artwork.isSaved,
     onCompleted: () => {
       // TODO: Track event
+
+      const action = artwork.isSaved
+        ? ResultAction.RemovedFromDefaultArtworkList
+        : ResultAction.SavedToDefaultArtworkList
+
+      onSave({
+        action,
+      })
     },
   })
 

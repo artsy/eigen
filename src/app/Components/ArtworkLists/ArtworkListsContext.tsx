@@ -1,8 +1,15 @@
+import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
 
 export enum SceneKey {
   SelectListsForArtwork,
   CreateNewList,
+}
+
+export enum ResultAction {
+  SavedToDefaultArtworkList,
+  RemovedFromDefaultArtworkList,
+  ModifiedCustomArtworkLists,
 }
 
 export interface RecentlyAddedArtworkList {
@@ -47,11 +54,20 @@ export interface ResultArtworkListEntity {
   name: string
 }
 
-export interface OnSaveResultData {
-  selectedArtworkLists: ResultArtworkListEntity[]
-  removedArtworkLists: ResultArtworkListEntity[]
-  addedArtworkLists: ResultArtworkListEntity[]
+export type DefaultArtworkListSaveResult = {
+  action: ResultAction.SavedToDefaultArtworkList | ResultAction.RemovedFromDefaultArtworkList
 }
+
+export type CustomArtworkListsSaveResult = {
+  action: ResultAction.ModifiedCustomArtworkLists
+  artworkLists: {
+    selected: ResultArtworkListEntity[]
+    added: ResultArtworkListEntity[]
+    removed: ResultArtworkListEntity[]
+  }
+}
+
+export type SaveResult = DefaultArtworkListSaveResult | CustomArtworkListsSaveResult
 
 export interface ArtworkListsContextState {
   state: State
@@ -59,7 +75,7 @@ export interface ArtworkListsContextState {
   isSavedToArtworkList: boolean
   dispatch: Dispatch<Action>
   reset: () => void
-  onSave: (result: OnSaveResultData) => void
+  onSave: (result: SaveResult) => void
 }
 
 interface ArtworkListsProviderProps {
@@ -99,16 +115,29 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     ...INITIAL_STATE,
     artwork: artwork ?? null,
   })
+  const toast = useArtworkListToast()
 
-  const onSave = (result: OnSaveResultData) => {
+  const onSave = (result: SaveResult) => {
     console.log("[debug] save result", result)
 
     if (artworkListId) {
-      const isSaved = result.selectedArtworkLists.find((list) => list.id === artworkListId)
+      if (result.action !== ResultAction.ModifiedCustomArtworkLists) {
+        throw new Error("You should pass `ModifiedCustomArtworkLists` action")
+      }
+
+      const { selected } = result.artworkLists
+      const isSaved = selected.find((list) => list.id === artworkListId)
 
       setIsSavedToArtworkList(!!isSaved)
+      toast.changesSaved()
 
       return
+    }
+
+    if (result.action === ResultAction.SavedToDefaultArtworkList) {
+      toast.savedToDefaultArtworkList()
+    } else if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
+      toast.removedFromDefaultArtworkList()
     }
   }
 
