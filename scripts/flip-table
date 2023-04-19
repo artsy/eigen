@@ -34,6 +34,7 @@ echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
 rm -rf .cache
 rm -rf "$TMPDIR"/metro*
+rm -rf src/__generated__/*.graphql.ts
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 rm -rf dist

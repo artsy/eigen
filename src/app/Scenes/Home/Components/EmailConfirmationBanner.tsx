@@ -1,7 +1,6 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Spinner } from "@artsy/palette-mobile"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
-import { Spinner } from "palette"
 import { useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"

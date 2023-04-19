@@ -1,7 +1,7 @@
 import { Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 

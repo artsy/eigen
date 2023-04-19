@@ -18,7 +18,6 @@ typedef NS_ENUM(NSInteger, ARHorizontalVIRMode) {
     ARHorizontalVIRModePlacedOnWall
 };
 
-API_AVAILABLE(ios(11.0))
 @interface ARVIRHorizontalPlaneInteractionController()
 @property (nonatomic, weak) ARSession *session;
 @property (nonatomic, weak) ARSCNView *sceneView;
@@ -65,7 +64,7 @@ NSInteger attempt = 0;
     return self;
 }
 
-- (void)restart API_AVAILABLE(ios(11.0));
+- (void)restart;
 {
     self.hasShownGhostWallLineOnce = NO;
     self.state = ARHorizontalVIRModeLaunching;
@@ -238,7 +237,7 @@ NSInteger attempt = 0;
     }];
 }
 
-- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.3));
+- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame;
 {
     switch (self.state) {
         case ARHorizontalVIRModeLaunching:
@@ -261,7 +260,7 @@ NSInteger attempt = 0;
     }
 }
 
-- (void)renderWhileFindingFloor:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+- (void)renderWhileFindingFloor:(ARFrame *)frame;
 {
     NSInteger pointCount = frame.rawFeaturePoints.count;
     if (pointCount) {
@@ -312,7 +311,7 @@ NSInteger attempt = 0;
     }
 }
 
-- (void)renderWhenPlacingWall:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+- (void)renderWhenPlacingWall:(ARFrame *)frame;
 {
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
@@ -373,7 +372,7 @@ NSInteger attempt = 0;
 }
 
 
-- (void)renderWhenPlacingArtwork:(ARFrame *)frame API_AVAILABLE(ios(11.3));
+- (void)renderWhenPlacingArtwork:(ARFrame *)frame;
 {
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
@@ -420,7 +419,7 @@ NSInteger attempt = 0;
 }
 
 
-- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
+- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
 {
     // Used to update and re-align vertical planes as ARKit sends new updates for the positioning
     if (!anchor) { return; }
@@ -445,7 +444,7 @@ NSInteger attempt = 0;
     }
 }
 
-- (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0));
+- (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor;
 {
     // Only handle adding plane nodes
     if (!anchor) { return; }
@@ -469,7 +468,7 @@ NSInteger attempt = 0;
     self.invisibleFloors = [self.invisibleFloors arrayByAddingObject:wallNode];
 }
 
-- (SCNNode *)invisibleWallNodeForPlaneAnchor:(ARPlaneAnchor *)planeAnchor API_AVAILABLE(ios(11.0))
+- (SCNNode *)invisibleWallNodeForPlaneAnchor:(ARPlaneAnchor *)planeAnchor
 {
     SCNPlane *hiddenPlane = [SCNPlane planeWithWidth:64 height:64];
 

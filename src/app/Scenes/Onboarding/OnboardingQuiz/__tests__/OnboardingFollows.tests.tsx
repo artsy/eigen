@@ -19,7 +19,7 @@ jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext", () 
   }
 })
 
-jest.mock("shared/hooks/useDebouncedValue", () => {
+jest.mock("app/utils/hooks/useDebouncedValue", () => {
   return {
     useDebouncedValue: ({ value }: { value: string }) => ({ debouncedValue: value }),
   }

@@ -11,7 +11,7 @@ import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
-import { normalizeText } from "shared/utils"
+import { normalizeText } from "app/utils/normalizeText"
 import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
 import { artistsQueryVariables } from "./MedianSalePriceAtAuction"
 

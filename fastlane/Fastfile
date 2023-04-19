@@ -369,9 +369,9 @@ lane :upload_sentry_artifacts do |options|
   bundle_path = ''
   outfile = ''
   if platform == "ios"
-    source_map_path = 'dist/jsbundle.js.map'
-    bundle_path = 'dist/jsbundle.js'
-    outfile = '~/jsbundle.js'
+    source_map_path = 'dist/main.jsbundle.map'
+    bundle_path = 'dist/main.jsbundle'
+    outfile = '~/main.jsbundle'
   else
     # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
     source_map_path = 'android/app/src/main/assets/index.android.bundle.map'

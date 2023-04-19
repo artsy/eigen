@@ -1,5 +1,5 @@
+import { SimpleMessage } from "@artsy/palette-mobile"
 import { FairEmptyState_fair$data } from "__generated__/FairEmptyState_fair.graphql"
-import { SimpleMessage } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface FairEmptyStateProps {

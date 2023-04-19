@@ -1,8 +1,10 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { useSkeletonAnimation } from "app/utils/animations/useSkeletonAnimation"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import Animated from "react-native-reanimated"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type PlaceholderContextValue = {}
 
@@ -25,9 +27,14 @@ export const ProvidePlaceholderContext: React.FC = ({ children }) => (
 
 export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
   const color = useColor()
+  const animatedStyle = useSkeletonAnimation({})
 
   return (
-    <View style={[{ borderRadius: 2, backgroundColor: color("black10") }, styles]}>{children}</View>
+    <Animated.View
+      style={[{ borderRadius: 2, backgroundColor: color("black10") }, animatedStyle, styles]}
+    >
+      {children}
+    </Animated.View>
   )
 }
 

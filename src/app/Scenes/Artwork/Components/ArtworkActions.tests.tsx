@@ -147,7 +147,7 @@ describe("ArtworkActions", () => {
       fireEvent.press(screen.getByLabelText("Save artwork"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "ArtworkSaveButtonMutation"
+        "useSaveArtworkMutation"
       )
     })
 

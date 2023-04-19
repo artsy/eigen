@@ -12,6 +12,7 @@ import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistIns
 import {
   FilterArray,
   filterArtworksParams,
+  getFilterArrayFromQueryParams,
   prepareFilterArtworksParamsForInput,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
@@ -38,6 +39,7 @@ interface ArtistProps {
   searchCriteria: SearchCriteriaAttributes | null
   fetchCriteriaError: Error | null
   predefinedFilters?: FilterArray
+  auctionResultsInitialFilters?: FilterArray
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
@@ -48,7 +50,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     searchCriteria,
     fetchCriteriaError,
     predefinedFilters,
+    auctionResultsInitialFilters,
   } = props
+
   const popoverMessage = usePopoverMessage()
 
   const tabs: TabProps[] = []
@@ -95,7 +99,11 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       title: "Insights",
       content: artistBelowTheFold ? (
         (tabIndex: number) => (
-          <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+          <ArtistInsightsFragmentContainer
+            tabIndex={tabIndex}
+            artist={artistBelowTheFold}
+            initialFilters={auctionResultsInitialFilters}
+          />
         )
       ) : (
         <LoadingPage />
@@ -138,6 +146,8 @@ interface ArtistQueryRendererProps {
   search_criteria_id?: string
   artistID: string
   predefinedFilters?: FilterArray
+  categories?: string[]
+  sizes?: string[]
 }
 
 export const ArtistScreenQuery = graphql`
@@ -175,6 +185,8 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     searchCriteriaID,
     search_criteria_id,
     predefinedFilters,
+    categories,
+    sizes,
   } = props
 
   return (
@@ -237,6 +249,10 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
                       predefinedFilters={predefinedFilters}
+                      auctionResultsInitialFilters={getFilterArrayFromQueryParams({
+                        categories: categories ?? [],
+                        sizes: sizes ?? [],
+                      })}
                     />
                   )
                 },

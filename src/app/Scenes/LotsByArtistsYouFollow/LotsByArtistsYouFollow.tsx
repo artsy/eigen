@@ -1,4 +1,4 @@
-import { Spacer, Box } from "@artsy/palette-mobile"
+import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -6,7 +6,6 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { SimpleMessage } from "palette"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "Auction Lots for You"

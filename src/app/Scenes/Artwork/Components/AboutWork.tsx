@@ -1,9 +1,8 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Join } from "@artsy/palette-mobile"
 import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutWorkProps {

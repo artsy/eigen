@@ -195,12 +195,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
   },
-  AREnableNewSWALandingPage: {
-    description: "Enable New SWA Landing Page",
-    showInDevMenu: true,
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewSWALandingPage",
-  },
   AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
     showInDevMenu: true,
@@ -251,6 +245,40 @@ export const features = defineFeatures({
   AREnableInstantViewInRoom: {
     description: "Enable Instant View In Room",
     readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableSkeletonAnimation: {
+    description: "Enable Skeleton Animation",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSkeletonAnimation",
+  },
+  ARImpressionsTrackingHomeItemViews: {
+    description: "Enable Tracking Items views on Home Screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARImpressionsTrackingHomeItemViews",
+  },
+  AREnableDoMoreOnArtsyRail: {
+    description: "Enable Do More on Artsy Rail",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableDoMoreOnArtsyRail",
+  },
+  AREnableMeetYourNewAdvisorRail: {
+    description: "Enable Meet your New Advisor Rail",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableMeetYourNewAdvisorRail",
+  },
+  AREnableNativeArticleView: {
+    readyForRelease: false,
+    description: "Show native article view",
+    showInDevMenu: true,
+  },
+  AREnableArtworkLists: {
+    readyForRelease: false,
+    description: "Enable Artwork Lists",
     showInDevMenu: true,
   },
 })

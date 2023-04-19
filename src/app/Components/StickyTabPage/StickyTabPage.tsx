@@ -9,7 +9,7 @@ import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "rea
 import { FlatList, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StaticHeaderContainer } from "./StaticHeaderContainer"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"

@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Separator } from "@artsy/palette-mobile"
 import { PlaceholderButton, PlaceholderGrid } from "app/utils/placeholders"
-import { Separator } from "palette"
 
 export const SearchArtworksGridPlaceholder: React.FC = () => (
   <Flex accessibilityLabel="Artwork results are loading">

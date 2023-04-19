@@ -15,7 +15,7 @@ import {
 } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import {
   CareerHighlightBigCardBiennial,
   CareerHighlightBigCardCollected,

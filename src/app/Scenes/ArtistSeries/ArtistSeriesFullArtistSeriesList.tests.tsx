@@ -4,7 +4,7 @@ import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListIt
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"

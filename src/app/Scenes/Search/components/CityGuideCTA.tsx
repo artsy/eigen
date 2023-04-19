@@ -1,6 +1,5 @@
 import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"
 import { Image, TouchableOpacity } from "react-native"
 
@@ -28,7 +27,6 @@ export const CityGuideCTA: React.FC = () => {
               Browse fairs and shows in different cities
             </Text>
             <Spacer y={1} />
-            <BMWSponsorship logoText="Presented in partnership with BMW" pressable={false} />
           </Flex>
         </Flex>
       </TouchableOpacity>

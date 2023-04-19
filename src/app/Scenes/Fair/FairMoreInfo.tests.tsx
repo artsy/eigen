@@ -64,10 +64,6 @@ describe("FairMoreInfo", () => {
           __typename: "OpeningHoursText",
           text: null,
         },
-        sponsoredContent: {
-          activationText: "Some activation text",
-          pressReleaseUrl: "Some press release text",
-        },
         tagline: "Buy lots of art",
         fairLinks: "Google it",
         fairContact: "Art Basel Hong Kong",
@@ -85,7 +81,6 @@ describe("FairMoreInfo", () => {
     expect(rootText).toContain("Art Basel Hong Kong")
     expect(rootText).toContain("Buy Tickets")
     expect(rootText).toContain("Google it")
-    expect(rootText).toContain("View BMW art activations")
     expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(1)
   })
 
@@ -101,7 +96,6 @@ describe("FairMoreInfo", () => {
         fairTickets: "",
         fairContact: "",
         summary: "",
-        sponsoredContent: null,
       }),
     })
     const rootText = getText(wrapper)
@@ -111,7 +105,6 @@ describe("FairMoreInfo", () => {
     expect(rootText).not.toContain("Links")
     expect(rootText).not.toContain("Tickets")
     expect(rootText).not.toContain("Contact")
-    expect(rootText).not.toContain("View BMW art activations")
     expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(0)
   })
 })

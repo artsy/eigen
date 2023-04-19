@@ -1,4 +1,4 @@
-import { Flex, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { Flex, Box, Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import {
   RegistrationCreateBidderMutation,
@@ -23,8 +23,6 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Button } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import {
@@ -457,10 +455,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           />
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
             <Text variant="xs" fontSize="2">
-              Agree to{" "}
+              I agree to the{" "}
               <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>
                 Conditions of Sale
               </LinkText>
+              . I understand that all bids are binding and may not be retracted.
             </Text>
           </Checkbox>
         </Flex>

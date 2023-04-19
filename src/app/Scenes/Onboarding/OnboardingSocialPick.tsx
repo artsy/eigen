@@ -1,7 +1,8 @@
-import { EnvelopeIcon, Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { EnvelopeIcon, Spacer, Flex, Text, Join, Button } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
+import { Screen } from "app/Components/Screen"
 import {
   AuthPromiseRejectType,
   AuthPromiseResolveType,
@@ -10,7 +11,6 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
-import { Button, Join, Screen } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { OnboardingNavigationStack } from "./Onboarding"

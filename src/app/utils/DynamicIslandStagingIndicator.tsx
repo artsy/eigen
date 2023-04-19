@@ -11,15 +11,15 @@ export const DynamicIslandStagingIndicator = () => {
 
   let rect: { top: number; left: number } | undefined
 
-  switch (DeviceInfo.getDeviceNameSync()) {
-    case "iPhone 14 Pro":
+  switch (DeviceInfo.getDeviceId()) {
+    case "iPhone15,2":
       rect = { top: 9.5, left: 132 }
       break
-    case "iPhone 14 Pro Max":
+    case "iPhone15,3":
       rect = { top: 9.5, left: 150.5 }
       break
     default:
-      console.warn("No rect for this device")
+      console.warn("No rect for this device: ", DeviceInfo.getDeviceId())
   }
 
   if (rect === undefined) {

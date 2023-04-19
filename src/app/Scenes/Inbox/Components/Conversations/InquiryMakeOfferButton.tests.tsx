@@ -1,7 +1,7 @@
+import { Button } from "@artsy/palette-mobile"
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

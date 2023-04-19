@@ -3,7 +3,6 @@ import { themeGet } from "@styled-system/theme-get"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import PinSavedOff from "app/Components/Icons/PinSavedOff"
 import PinSavedOn from "app/Components/Icons/PinSavedOn"
-import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Component } from "react"
@@ -13,7 +12,6 @@ import styled from "styled-components/native"
 export interface Props {
   data: any
   citySlug: string
-  sponsoredContentUrl: string
 }
 
 const track: Track<Props, {}> = _track as any
@@ -26,7 +24,7 @@ export class SavedEventSection extends Component<any> {
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
-    const { data, sponsoredContentUrl } = this.props
+    const { data } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
       <TouchableWithoutFeedback onPress={this.handleTap}>
@@ -60,10 +58,7 @@ export class SavedEventSection extends Component<any> {
 
     return (
       <>
-        <Box mx={2} py={2}>
-          <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in partnership with BMW" />
-        </Box>
-        <Box mx={2} mb={2}>
+        <Box m={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
         </Box>
       </>

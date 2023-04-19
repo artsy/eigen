@@ -43,23 +43,10 @@ class SaleStatusView: UIView {
 
     class func barButtonItem(adjustedLeftMarginBy leftMargin: CGFloat = 0) -> UIBarButtonItem {
         let saleStatusView = SaleStatusView()
-
-        // So there's a bug in iOS 9 (fixed in iOS 10) that we need to work around.
-        // The bug is that UIBarButtonItems with custom views don't respect autolayout.
-        // So on iOS 10+, we use a standard view + AL, but on older devices we use ContainerView() as a workaround.
         let containerView: UIView
-        if #available(iOS 10, *) {
-            containerView = UIView()
-            containerView.addSubview(saleStatusView)
-            containerView.alignTop("0", leading: "\(-leftMargin)", bottom: "0", trailing: "0", toView: saleStatusView)
-        } else {
-            containerView = ContainerView().then {
-                $0.offset = leftMargin
-                $0.frame.size.height = height
-                $0.frame.size.width = 150 // 150 should be big enough of "Sale on Hold"
-            }
-            containerView.addSubview(saleStatusView)
-        }
+        containerView = UIView()
+        containerView.addSubview(saleStatusView)
+        containerView.alignTop("0", leading: "\(-leftMargin)", bottom: "0", trailing: "0", toView: saleStatusView)
         return UIBarButtonItem(customView: containerView)
     }
 }

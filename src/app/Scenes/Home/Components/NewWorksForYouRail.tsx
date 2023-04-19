@@ -3,6 +3,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { useItemsImpressionsTracking } from "app/Scenes/Home/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -18,10 +19,11 @@ import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
   artworkConnection: NewWorksForYouRail_artworkConnection$key
+  isRailVisible: boolean
 }
 
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
-  ({ title, artworkConnection, scrollRef }) => {
+  ({ title, artworkConnection, isRailVisible, scrollRef }) => {
     const { trackEvent } = useTracking()
     const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
@@ -29,6 +31,11 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
     const railRef = useRef<View>(null)
     const listRef = useRef<FlatList<any>>(null)
+
+    const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+      isRailVisible,
+      contextModule: ContextModule.newWorksForYouRail,
+    })
 
     useImperativeHandle(scrollRef, () => ({
       scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -76,6 +83,8 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               trackEvent(tracks.tappedMoreCard())
               navigate("/new-for-you")
             }}
+            onViewableItemsChanged={onViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
           />
         </View>
       </Flex>

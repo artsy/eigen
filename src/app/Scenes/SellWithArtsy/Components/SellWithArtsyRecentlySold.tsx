@@ -2,7 +2,6 @@ import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } fr
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFragment } from "react-relay"
@@ -29,7 +28,6 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
     recentlySoldArtworks
   )
 
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
   const recentlySoldArtworksNodes = extractNodes(recentlySoldArtworksData)
 
   return (
@@ -52,8 +50,8 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
           )
           navigate(recentlySoldArtwork?.artwork?.href!)
         }}
-        size={enableNewSWALandingPage ? "extraLarge" : "large"}
-        showPartnerName={!enableNewSWALandingPage}
+        size="extraLarge"
+        showPartnerName={false}
       />
     </Flex>
   )

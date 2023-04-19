@@ -1,4 +1,4 @@
-import { Select, SelectOption } from "palette/elements/Select"
+import { Select, SelectOption } from "app/Components/Select"
 
 interface ArtworkCategoryPickerProps<T> {
   handleChange: (v: T) => void

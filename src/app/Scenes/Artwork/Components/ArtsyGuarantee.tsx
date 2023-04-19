@@ -8,9 +8,9 @@ import {
   Box,
   Text,
   LinkText,
+  Join,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Join } from "palette"
 
 export const ArtsyGuarantee: React.FC = () => {
   const iconProps: IconProps = {

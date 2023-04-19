@@ -15,9 +15,10 @@ export const PageableScreensContext = createContext(null as unknown as PageableS
 export const usePageableScreensContext = () => {
   const context = useContext<PageableScreensContextValue>(PageableScreensContext)
 
-  if (!context) {
-    throw new Error("usePageableScreensContext must be inside PageableScreensContext.Provider")
-  }
+  // FIXME: Uncomment once we launch pageable screens view
+  // if (!context) {
+  //   throw new Error("usePageableScreensContext must be inside PageableScreensContext.Provider")
+  // }
 
   return context
 }

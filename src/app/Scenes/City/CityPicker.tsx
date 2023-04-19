@@ -1,19 +1,16 @@
-import { Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
+import { Flex, Box, Text, TextProps, Separator } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 interface Props {
   selectedCity: string
-  sponsoredContentUrl?: string
 }
 
 const cityList = cities.map((city) => city.name)
@@ -40,7 +37,6 @@ export const CityPicker: React.FC<Props> = (props) => {
   }, [selectedCity])
 
   const { height: screenHeight } = useScreenDimensions()
-  const { sponsoredContentUrl } = props
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   return (
@@ -78,12 +74,6 @@ export const CityPicker: React.FC<Props> = (props) => {
               <Separator />
             </Box>
           ))}
-          <LogoContainer>
-            <BMWSponsorship
-              url={sponsoredContentUrl}
-              logoText="Presented in partnership with BMW"
-            />
-          </LogoContainer>
         </Box>
       </Overlay>
     </ProvideScreenTracking>
@@ -97,11 +87,6 @@ const Overlay = styled.ScrollView`
   margin-left: ${themeGet("space.2")};
   margin-right: ${themeGet("space.2")};
   flex-direction: column;
-`
-const LogoContainer = styled(Flex)`
-  width: 100%;
-  flex: 1;
-  margin-top: 25px;
 `
 
 const dimensions = (

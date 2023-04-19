@@ -1,4 +1,4 @@
-import { range, CheckIcon, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
+import { range, CheckIcon, Flex, Box, useColor, Text, Separator } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -13,10 +13,9 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Separator } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 type YearOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen">
 

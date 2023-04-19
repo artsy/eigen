@@ -1,6 +1,6 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 export const useExtraLargeWidth = () => {
   const isTablet = isPad()

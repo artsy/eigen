@@ -1,6 +1,5 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Join } from "@artsy/palette-mobile"
 import { FadeIn } from "app/Components/FadeIn"
-import { Join } from "palette"
 import React from "react"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 

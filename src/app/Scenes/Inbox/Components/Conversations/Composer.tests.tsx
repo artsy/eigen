@@ -1,9 +1,8 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Button } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -176,7 +175,7 @@ describe("inquiry offer", () => {
       expect(cta).not.toBeDefined()
     })
 
-    it("renders a copper offer CTA if there is a pending offer from the seller", () => {
+    it("renders a orange offer CTA if there is a pending offer from the seller", () => {
       const tree = getWrapper({
         Conversation: () => ({
           items: [
@@ -214,7 +213,7 @@ describe("inquiry offer", () => {
       expect(cta).toBeDefined()
       expect(cta.children.length).toBe(1)
       expect(extractText(cta)).toContain("Counteroffer Received")
-      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "copper100" }))
+      expect(cta.findAllByType(Flex)[0].props).toEqual(expect.objectContaining({ bg: "orange150" }))
     })
 
     it("renders a green cta if the seller has approved the buyer's offer", () => {

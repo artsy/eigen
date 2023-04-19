@@ -1,13 +1,23 @@
 import { Box } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { Input } from "app/Components/Input"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { useFormikContext } from "formik"
-import { Input } from "palette"
 import React, { useEffect, useState } from "react"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
-export const ArtistAutosuggest: React.FC = () => {
+interface ArtistAutosuggestProps {
+  placeholder?: string
+  title?: string | null
+  useSlugAsId?: boolean
+}
+
+export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
+  placeholder = "Enter full name",
+  title = "Artist",
+  useSlugAsId,
+}) => {
   const {
     values: { artist, artistId },
     setFieldValue,
@@ -33,7 +43,7 @@ export const ArtistAutosuggest: React.FC = () => {
 
   const onArtistSelect = (result: ArtistAutosuggestResult) => {
     setFieldValue("artist", result.displayLabel)
-    setFieldValue("artistId", result.internalID)
+    setFieldValue("artistId", useSlugAsId ? result.slug : result.internalID)
     setIsArtistSelected(true)
     setFocused(false)
   }
@@ -41,8 +51,8 @@ export const ArtistAutosuggest: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Input
-        title="Artist"
-        placeholder="Enter full name"
+        title={title || undefined}
+        placeholder={placeholder}
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}
         value={artist}

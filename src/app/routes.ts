@@ -25,7 +25,9 @@ export function matchRoute(
     parsed = parse(decodeUrl(url))
   }
   const pathParts = parsed.pathname?.split(/\/+/).filter(Boolean) ?? []
-  const queryParams: object = parsed.query ? parseQueryString(parsed.query) : {}
+  const queryParams: object = parsed.query
+    ? parseQueryString(parsed.query, { arrayFormat: "index" })
+    : {}
 
   const domain = (parsed.host || parse(unsafe__getEnvironment().webURL).host) ?? "artsy.net"
   const routes = getDomainMap()[domain as any]
@@ -124,6 +126,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/activity", "Activity"),
     addRoute("/articles", "Articles"),
+    // TODO: AREnableNativeArticleView: Rename /article2 to /article once we've removed the old /article route
+    addRoute("/article2/:articleID", "Article"),
     addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/article/:articleID", { showShareButton: true }),
     addRoute("/artist/:artistID", "Artist"),
@@ -191,6 +195,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-profile/settings", "MyProfileSettings"),
     addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/local-discovery", "LocalDiscovery"),
+    addRoute("/price-database", "PriceDatabase"),
     addRoute("/privacy-request", "PrivacyRequest"),
     addWebViewRoute("/price-database"),
 
@@ -222,6 +227,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
+
     addWebViewRoute("/meet-the-specialists"),
 
     addRoute("/partner/:partnerID", "Partner"),
@@ -243,7 +249,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/fair/:fairID/info", "FairMoreInfo"),
     addRoute("/fair/:fairID/articles", "FairArticles"),
     addRoute("/fair/:fairID/followedArtists", "FairAllFollowedArtists"),
-    addRoute("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 
     addRoute("/city/:citySlug/:section", "CitySectionList"),
     addRoute("/city-fair/:citySlug", "CityFairList"),
@@ -261,8 +266,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/unsubscribe"),
-
-    addRoute("/city-bmw-list/:citySlug", "CityBMWList"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),
     addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/user/purchases/:orderID", "OrderDetails"),

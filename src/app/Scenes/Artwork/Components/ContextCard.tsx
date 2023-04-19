@@ -1,7 +1,6 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Avatar, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ContextCard_artwork$data } from "__generated__/ContextCard_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Avatar } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 

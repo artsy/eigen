@@ -10,7 +10,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
-import { FollowButton } from "palette"
+import { FollowButton } from "app/Components/Button/FollowButton"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 

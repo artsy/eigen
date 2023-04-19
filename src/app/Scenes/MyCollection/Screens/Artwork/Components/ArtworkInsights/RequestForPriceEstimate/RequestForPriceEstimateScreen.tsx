@@ -9,7 +9,7 @@ import { FormikProvider, useFormik } from "formik"
 import { Environment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { commitMutation, graphql } from "relay-runtime"
-import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 

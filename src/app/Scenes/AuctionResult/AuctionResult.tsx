@@ -8,7 +8,9 @@ import {
   Text,
   useSpace,
   useTheme,
+  Separator,
 } from "@artsy/palette-mobile"
+import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$key } from "__generated__/AuctionResult_artist.graphql"
 import {
@@ -26,12 +28,12 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Separator } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
 import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
+import FastImage from "react-native-fast-image"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { AuctionResultHelperData, auctionResultText } from "./helpers"
 
@@ -164,7 +166,6 @@ export const AuctionResult: React.FC<Props> = (props) => {
               modalContent={renderRealizedPriceModal()}
             />
           </Flex>
-
           {auctionResult.priceRealized?.display ? (
             <Flex mb={0.5}>
               <Text variant="md">
@@ -172,9 +173,9 @@ export const AuctionResult: React.FC<Props> = (props) => {
                 {!!auctionResult?.performance?.mid && (
                   <Text color={ratioColor(auctionResult.performance.mid)}>
                     {"    "}
-                    {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
+                    {auctionResult.performance.mid[0] === "-" ? "-" : "+"}
                     {new Intl.NumberFormat().format(
-                      Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
+                      Number(auctionResult.performance.mid.replace(/%|-/gm, ""))
                     )}
                     % est
                   </Text>
@@ -275,6 +276,7 @@ const AuctionResultImage = ({
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
 
   const { width } = useScreenDimensions()
   const space = useSpace()
@@ -283,27 +285,41 @@ const AuctionResultImage = ({
 
   useEffect(() => {
     if (image.url) {
-      Image.getSize(image.url, (width, height) => {
-        const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
-        setImageHeight(imageDimensions.height)
-        setImageWidth(imageDimensions.width)
-        setIsLoading(false)
-      })
+      Image.getSize(
+        image.url,
+        (width, height) => {
+          const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
+          setImageHeight(imageDimensions.height)
+          setImageWidth(imageDimensions.width)
+          setIsLoading(false)
+        },
+        () => {
+          setIsLoading(false)
+        }
+      )
     } else {
       setIsLoading(false)
     }
   }, [])
 
-  if (!!image.url && !!imageHeight && !!imageWidth) {
+  if (!!image.url && !!imageHeight && !!imageWidth && !couldNotLoadImage) {
     return (
       <Flex width="100%" height={CONTAINER_HEIGHT} justifyContent="center" alignItems="center">
-        <Image
+        <FastImage
           style={{ height: imageHeight, width: imageWidth, overflow: "hidden" }}
           source={{ uri: image.url }}
+          onError={() => {
+            addBreadcrumb({
+              message: `Failed to load auction result image`,
+              level: Severity.Info,
+            })
+            setCouldNotLoadImage(true)
+          }}
         />
       </Flex>
     )
   }
+
   return (
     <Box
       style={{ height: containerLength, width: "100%" }}
@@ -311,7 +327,7 @@ const AuctionResultImage = ({
       alignItems="center"
       justifyContent="center"
     >
-      {!image.url && !isLoading && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
+      {!isLoading && <NoArtworkIcon width={30} height={30} fill="black60" />}
     </Box>
   )
 }

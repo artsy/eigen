@@ -1,5 +1,5 @@
+import { Avatar } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Avatar } from "palette"
 
 export const IMAGE_SIZE = 40
 
@@ -12,7 +12,7 @@ export const SearchResultImage: React.FC<{
   const round = resultType === "Artist"
 
   if (!imageURL && initials) {
-    return <Avatar size="xs" initials={initials} diameter={IMAGE_SIZE} />
+    return <Avatar size="xs" initials={initials} />
   }
 
   return (

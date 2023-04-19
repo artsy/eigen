@@ -26,7 +26,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { useDoublePressCallback } from "./useDoublePressCallback"

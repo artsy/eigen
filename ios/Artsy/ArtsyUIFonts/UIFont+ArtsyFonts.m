@@ -1,15 +1,10 @@
 // NOTE: This file should be a copy and paste of
 //       https://github.com/artsy/Artsy-OSSUIFonts/blob/master/Pod/Classes/UIFont+ArtsyFonts.m
-//       but with useClosedFonts = YES;
 
 #import "UIFont+ArtsyFonts.h"
 #import <CoreText/CoreText.h>
 
 // Based on https://github.com/CocoaPods-Fonts/OpenSans/blob/874e65bc21abe54284e195484d2259b2fe858680/UIFont%2BOpenSans.m
-
-// This is changed by the pre-install hook
-
-static BOOL useClosedFonts = YES;
 
 @interface ARFontLoader: NSObject
 
@@ -40,6 +35,7 @@ static BOOL useClosedFonts = YES;
 
         CFRelease(font);
     }
+
     if (provider) {
         CFRelease(provider);
     }
@@ -66,37 +62,24 @@ static BOOL useClosedFonts = YES;
 + (UIFont *)serifSemiBoldFontWithSize:(CGFloat)size
 {
     static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
 + (UIFont *)serifFontWithSize:(CGFloat)size
 {
   static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Regular" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Regular"];
 }
 
 + (UIFont *)serifItalicFontWithSize:(CGFloat)size
 {
   static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
   return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
 }
 
 + (UIFont *)sansSerifFontWithSize:(CGFloat)size
 {
-    static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
-
+  static dispatch_once_t onceToken;
   return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
@@ -104,10 +87,6 @@ static BOOL useClosedFonts = YES;
 + (UIFont *)displayMediumSansSerifFontWithSize:(CGFloat)size
 {
     static dispatch_once_t onceToken;
-    if (!useClosedFonts) {
-        return [UIFont fontWithName:@"Helvetica" size:size];
-    }
-
     return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 

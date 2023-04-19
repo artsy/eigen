@@ -6,7 +6,6 @@ gem 'cocoapods', '1.11.3'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
-gem 'psych' # So our Podfile.lock is consistent
 gem 'down'
 gem 'dotenv'
 gem 'json'

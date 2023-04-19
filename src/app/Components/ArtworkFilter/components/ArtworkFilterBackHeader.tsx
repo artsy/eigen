@@ -1,5 +1,4 @@
-import { ArrowLeftIcon, Box, useTheme, Text } from "@artsy/palette-mobile"
-import { Separator } from "palette"
+import { ArrowLeftIcon, Box, useTheme, Text, Separator } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 
 export interface ArtworkFilterBackHeaderProps {
@@ -31,6 +30,7 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
       >
         <TouchableOpacity
           onPress={onLeftButtonPress}
+          testID="artwork-filter-header-back-button"
           hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           accessibilityLabel="Header back button"
           style={{ paddingRight: space(0.5) }}

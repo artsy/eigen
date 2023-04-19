@@ -1,7 +1,7 @@
 import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Animated, StyleProp, ViewStyle } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { usePopoverMessage } from "./popoverMessageHooks"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -32,7 +32,7 @@ export interface PopoverMessageProps {
   onUndoPress?: () => void
 }
 
-export const getColorsByType = (type?: PopoverMessageType) => {
+export const useColorsByType = (type?: PopoverMessageType) => {
   const color = useColor()
 
   if (type === "success") {
@@ -78,7 +78,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   } = props
   const { safeAreaInsets } = useScreenDimensions()
   const { hide } = usePopoverMessage()
-  const colors = getColorsByType(type)
+  const colors = useColorsByType(type)
 
   const handlePopoverMessagePress = () => {
     hide()

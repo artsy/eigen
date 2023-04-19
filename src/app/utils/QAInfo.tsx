@@ -2,7 +2,7 @@ import { Flex, FlexProps, useColor, Text } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useDevToggle } from "app/store/GlobalStore"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 
 export const QAInfoPanel: React.FC<
   Omit<FlexProps, "children"> & { info: Array<[string, string]> }

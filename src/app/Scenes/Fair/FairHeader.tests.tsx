@@ -148,7 +148,6 @@ describe("FairHeader", () => {
         summary: "",
         tagline: "",
         ticketsLink: "",
-        sponsoredContent: null,
       }),
     })
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)

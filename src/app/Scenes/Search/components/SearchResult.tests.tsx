@@ -3,7 +3,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import * as navigation from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { SearchHighlight } from "./SearchHighlight"
 import { SearchResult } from "./SearchResult"
 

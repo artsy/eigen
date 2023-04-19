@@ -2,7 +2,7 @@ import { useSpace } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
 import { findRelayRecord, findRelayRecordByDataID } from "app/utils/relayHelpers"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
-import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "shared/hooks"
+import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "app/utils/hooks"
 import { getMeasurements } from "./Components/ImageCarousel/geometry"
 
 export const getDefaultImageDimensions = (

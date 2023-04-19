@@ -1,9 +1,9 @@
+import { RecentlyViewedTestsQuery } from "__generated__/RecentlyViewedTestsQuery.graphql"
 import { RecentlyViewed } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Suspense } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { RecentlyViewedTestsQuery } from "__generated__/RecentlyViewedTestsQuery.graphql"
 
 describe("RecentlyViewed", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -17,10 +17,10 @@ describe("RecentlyViewed", () => {
           }
         }
       `}
-      render={({ props }) => {
+      render={() => {
         return (
           <Suspense fallback={null}>
-            <RecentlyViewed {...props} />
+            <RecentlyViewed />
           </Suspense>
         )
       }}

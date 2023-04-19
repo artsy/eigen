@@ -3,7 +3,7 @@ import { Box, BoxProps, useColor, Text } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

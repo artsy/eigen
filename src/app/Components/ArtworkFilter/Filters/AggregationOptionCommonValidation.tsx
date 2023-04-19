@@ -1,3 +1,4 @@
+import { RadioDot } from "@artsy/palette-mobile"
 import {
   aggregationForFilter,
   Aggregations,
@@ -10,7 +11,6 @@ import {
 import { TouchableRow } from "app/Components/TouchableRow"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { RadioDot } from "palette"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 import { InnerOptionListItem, OptionListItem } from "./SingleSelectOption"

@@ -1,7 +1,7 @@
 import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
 import React, { useContext } from "react"
 import { Animated, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { useSpringValue } from "./useSpringValue"
 

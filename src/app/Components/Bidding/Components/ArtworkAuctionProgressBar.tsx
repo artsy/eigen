@@ -1,5 +1,5 @@
 import { useTimer } from "app/utils/useTimer"
-import { ProgressBar } from "palette"
+import { ProgressBar } from "@artsy/palette-mobile"
 
 export interface ArtworkAuctionProgressBarProps {
   startAt?: string | null

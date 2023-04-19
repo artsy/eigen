@@ -5,7 +5,7 @@ import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQui
 import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { Screen } from "palette"
+import { Screen } from "app/Components/Screen"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 enum Tab {

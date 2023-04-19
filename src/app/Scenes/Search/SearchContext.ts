@@ -1,4 +1,4 @@
-import { InputRef } from "palette"
+import { InputRef } from "app/Components/Input"
 import { createContext, Ref, RefObject, useRef } from "react"
 
 export const SearchContext = createContext<{

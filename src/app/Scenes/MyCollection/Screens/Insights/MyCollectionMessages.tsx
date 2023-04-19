@@ -1,4 +1,4 @@
-import { Message, MessageProps } from "palette"
+import { Message, MessageProps } from "@artsy/palette-mobile"
 
 export const PurchasedArtworkAddedMessage: React.FC<Partial<MessageProps>> = (props) => {
   return (

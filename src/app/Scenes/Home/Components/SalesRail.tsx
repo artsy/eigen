@@ -17,7 +17,7 @@ import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { RailScrollProps } from "./types"
 
 interface Props {

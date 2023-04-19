@@ -5,6 +5,7 @@ import {
   TappedEntityGroup,
   tappedEntityGroup,
   RailViewed,
+  ItemViewed,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 
@@ -297,6 +298,27 @@ export default class HomeAnalytics {
       context_module: contextModule,
       context_screen: OwnerType.home,
       position_y: positionY,
+    }
+  }
+
+  static trackItemViewed({
+    artworkId,
+    contextModule,
+    position,
+    type,
+  }: {
+    artworkId: string
+    contextModule: ContextModule
+    position: number
+    type: "artwork"
+  }): ItemViewed {
+    return {
+      action: ActionType.itemViewed,
+      context_module: contextModule,
+      context_screen: OwnerType.home,
+      item_type: type,
+      item_id: artworkId,
+      position,
     }
   }
 }

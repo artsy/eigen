@@ -1,5 +1,3 @@
-import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
-import { GlobalStore } from "app/store/GlobalStore"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
@@ -12,6 +10,9 @@ jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
 }))
 
 describe("OnboardingSocialPick", () => {
+  const { OnboardingSocialPick } = require("app/Scenes/Onboarding/OnboardingSocialPick")
+  const { GlobalStore } = require("app/store/GlobalStore")
+
   describe("login", () => {
     afterAll(() => {
       jest.clearAllMocks()
@@ -92,6 +93,8 @@ describe("OnboardingSocialPick", () => {
 })
 
 describe("webView links ", () => {
+  const { OnboardingSocialPick } = require("app/Scenes/Onboarding/OnboardingSocialPick")
+
   it("opens terms webView", () => {
     const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
     tree.root.findByProps({ testID: "openTerms" }).props.onPress()

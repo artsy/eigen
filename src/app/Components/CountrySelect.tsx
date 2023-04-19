@@ -1,4 +1,4 @@
-import { Select, SelectOption } from "palette/elements/Select"
+import { Select, SelectOption } from "app/Components/Select"
 
 // This data was copied over from force & the populations (searchImportance) was extracted mostly from this
 // wikipedia article https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population

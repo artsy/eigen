@@ -11,7 +11,7 @@ import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridIte
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

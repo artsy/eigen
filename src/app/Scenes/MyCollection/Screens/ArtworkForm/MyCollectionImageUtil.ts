@@ -2,7 +2,7 @@ import { MyCollectionArtworkHeader_artwork$data } from "__generated__/MyCollecti
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { ArtworkFormValues, Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 
 /**
  * Upload photos to s3 bucket

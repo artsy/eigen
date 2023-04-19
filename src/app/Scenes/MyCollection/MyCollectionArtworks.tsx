@@ -1,5 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, LockIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
+import { Spacer, LockIcon, Flex, useSpace, Text, Button } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -10,8 +10,8 @@ import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button } from "palette"
 import { useEffect, useState } from "react"
 import {
   Alert,
@@ -24,7 +24,6 @@ import {
 
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
@@ -205,8 +204,8 @@ const MyCollectionZeroState: React.FC = () => {
 
   return (
     <ZeroState
-      bigTitle="Your Art Collection in Your Pocket"
-      subtitle="Access market insights and manage your collection online."
+      bigTitle="Know Your Collection Better"
+      subtitle="Manage your collection online and get free market insights."
       image={
         <Image
           source={image}

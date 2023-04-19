@@ -100,24 +100,22 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
     }
 
     func provideHapticFeedbackForEvents(events: [LiveAuctionEventViewModel]) {
-        if #available(iOS 10.0, *) {
-            var feedbackWeight: UIImpactFeedbackGenerator.FeedbackStyle? = nil
-            events.forEach { event in
-                if event.isBid && feedbackWeight == nil {
-                    feedbackWeight = .light
-                }
-                if event.isFairWarning {
-                    feedbackWeight = .medium
-                }
-                if event.isFinalCall {
-                    feedbackWeight = .heavy
-                }
+        var feedbackWeight: UIImpactFeedbackGenerator.FeedbackStyle? = nil
+        events.forEach { event in
+            if event.isBid && feedbackWeight == nil {
+                feedbackWeight = .light
             }
-
-            guard let feedbackStyle = feedbackWeight else { return }
-            let feedback = UIImpactFeedbackGenerator(style: feedbackStyle)
-            feedback.impactOccurred()
+            if event.isFairWarning {
+                feedbackWeight = .medium
+            }
+            if event.isFinalCall {
+                feedbackWeight = .heavy
+            }
         }
+
+        guard let feedbackStyle = feedbackWeight else { return }
+        let feedback = UIImpactFeedbackGenerator(style: feedbackStyle)
+        feedback.impactOccurred()
     }
 }
 

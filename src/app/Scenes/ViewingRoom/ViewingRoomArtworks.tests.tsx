@@ -3,7 +3,7 @@ import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworks
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"

@@ -5,7 +5,7 @@ import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureHeaderProps extends FlexProps {

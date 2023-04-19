@@ -1,6 +1,6 @@
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
 import { AnimatedFlex, PopoverMessage, PopoverMessageItem } from "./PopoverMessage"

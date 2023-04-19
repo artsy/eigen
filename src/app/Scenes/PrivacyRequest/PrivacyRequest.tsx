@@ -1,7 +1,6 @@
-import { Spacer, Flex, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, LinkText, Separator, Join, Button } from "@artsy/palette-mobile"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Join, Separator } from "palette"
 import React from "react"
 import { View } from "react-native"
 

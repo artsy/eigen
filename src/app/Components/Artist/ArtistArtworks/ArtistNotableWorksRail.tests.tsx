@@ -150,6 +150,8 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
               bidderPositions: 2,
             },
             id: "id-123",
+            endAt: null,
+            extendedBiddingEndAt: null,
           },
           sale: {
             isClosed: false,

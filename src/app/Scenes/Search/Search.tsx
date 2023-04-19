@@ -17,7 +17,7 @@ import {
   useRelayEnvironment,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"

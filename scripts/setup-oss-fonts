@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+ANDROID_FONT_DIR="android/app/src/main/assets/fonts/"
+IOS_FONT_DIR="ios/Artsy/fonts/"
+
+declare -a fonts=("Unica77LL-Regular" "Unica77LL-Italic" "Unica77LL-MediumItalic" "Unica77LL-Medium")
+
+mkdir -p ./fonts
+
+for i in "${fonts[@]}"
+do
+   aws s3 cp "s3://artsy-webfonts-production/$i.otf" "./fonts/$i.otf"
+   cp "./fonts/$i.otf" "$ANDROID_FONT_DIR"
+   cp "./fonts/$i.otf" "$IOS_FONT_DIR"
+done
+
+rm -rf ./fonts

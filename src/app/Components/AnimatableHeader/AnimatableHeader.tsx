@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { FadeInLeft } from "app/utils/animations"
 import { useEffect } from "react"
-import { TouchableOpacity } from "react-native"
-import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
+import { TouchableOpacity, View } from "react-native"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export interface AnimatableHeaderProps {
@@ -22,7 +22,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
   }, [title])
 
   return (
-    <Animated.View
+    <View
       style={{
         flexDirection: "row",
         paddingHorizontal: space(2),
@@ -45,13 +45,11 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         justifyContent="center"
         ml={`${space(0.5) + space(1)}px`}
       >
-        {!!titleShown && (
-          <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
-            <Text testID="animated-header-title" variant="sm" numberOfLines={2}>
-              {title}
-            </Text>
-          </Animated.View>
-        )}
+        <FadeInLeft show={titleShown}>
+          <Text testID="animated-header-title" variant="sm" numberOfLines={2}>
+            {title}
+          </Text>
+        </FadeInLeft>
       </Flex>
 
       {!!onRightButtonPress && !!rightButtonText && (
@@ -69,6 +67,6 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
           </Text>
         </TouchableOpacity>
       )}
-    </Animated.View>
+    </View>
   )
 }

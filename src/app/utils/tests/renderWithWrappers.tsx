@@ -1,5 +1,5 @@
 import { render, RenderOptions } from "@testing-library/react-native"
-import { Providers } from "app/Providers"
+import { TestProviders } from "app/Providers"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { track } from "app/utils/track"
 import { Component, Suspense } from "react"
@@ -12,19 +12,7 @@ interface WrappersProps {
 }
 
 const Wrappers: React.FC<WrappersProps> = ({ skipRelay, children }) => (
-  <Providers
-    skipGestureHandler
-    skipUnleash
-    skipFancyModal
-    skipActionSheet
-    simpleTheme
-    skipSuspense
-    skipWebsocket
-    skipRetryErrorBoundary
-    skipRelay={skipRelay}
-  >
-    {children}
-  </Providers>
+  <TestProviders skipRelay={skipRelay}>{children}</TestProviders>
 )
 
 /**

@@ -73,7 +73,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
     }
     case "OFFER_RECEIVED": {
       ctaAttributes = {
-        backgroundColor: "copper100",
+        backgroundColor: "orange150",
         message: `${offerType} Received`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
@@ -95,7 +95,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
     }
     case "OFFER_ACCEPTED_CONFIRM_NEEDED": {
       ctaAttributes = {
-        backgroundColor: "copper100",
+        backgroundColor: "orange150",
         message: `Offer Accepted - Confirm total`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,
@@ -106,7 +106,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
     }
     case "OFFER_RECEIVED_CONFIRM_NEEDED": {
       ctaAttributes = {
-        backgroundColor: "copper100",
+        backgroundColor: "orange150",
         message: `Counteroffer Received - Confirm Total`,
         subMessage: `The offer expires in ${expiresIn}`,
         Icon: AlertCircleFillIcon,

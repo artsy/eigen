@@ -5,6 +5,7 @@ import {
   Flex,
   Spacer,
   SpacingUnitDSValueNumber,
+  Join,
 } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
@@ -36,6 +37,7 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
+import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAdvisorRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
@@ -61,14 +63,14 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import { Join } from "palette"
 import React, {
-  RefObject,
   createRef,
   memo,
+  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -77,14 +79,14 @@ import React, {
 } from "react"
 import {
   Alert,
-  FlatListProps,
   ListRenderItem,
   RefreshControl,
   View,
   ViewProps,
   ViewToken,
+  ViewabilityConfig,
 } from "react-native"
-import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { useTracking } from "react-tracking"
 import { useContentCards } from "./Components/ContentCards"
@@ -93,7 +95,7 @@ import { useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
-interface HomeModule {
+export interface HomeModule {
   // Used for tracking rail views
   contextModule?: ContextModule
   data: any
@@ -101,6 +103,7 @@ interface HomeModule {
   isEmpty: boolean
   prefetchUrl?: string
   prefetchVariables?: object
+  key: string
   subtitle?: string
   title: string
   type: string
@@ -122,6 +125,8 @@ export interface HomeProps extends ViewProps {
 
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
+
+  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
@@ -129,10 +134,9 @@ const Home = memo((props: HomeProps) => {
 
   const { cards } = useContentCards()
 
-  const viewabilityConfig = useRef<FlatListProps<HomeModule>["viewabilityConfig"]>({
+  const viewabilityConfig = useRef<ViewabilityConfig>({
     // Percent of of the item that is visible for a partially occluded item to count as "viewable"
     itemVisiblePercentThreshold: 60,
-    viewAreaCoveragePercentThreshold: null,
     minimumViewTime: 2000,
     waitForInteraction: false,
   }).current
@@ -150,24 +154,38 @@ const Home = memo((props: HomeProps) => {
 
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
+  const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
+
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
   )
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const modules: HomeModule[] = useHomeModules(props, cards)
+  const { modules, allModulesKeys } = useHomeModules(props, cards)
 
-  const onViewableItemsChanged = React.useRef(
+  const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      const newVisibleRails = new Set<string>()
+
+      // Track currently visible rails // needed to enabe tracking artwork views
+      if (enableItemViewsTracking) {
+        viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
+          newVisibleRails.add(title)
+        })
+
+        seVisibleRails(newVisibleRails)
+      }
+
+      // Track all viewed rails
       if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
-        viewableItems.forEach(({ item: { title, contextModule } }: { item: HomeModule }) => {
-          if (contextModule && !viewedRails.has(title)) {
-            viewedRails.add(title)
+        viewableItems.forEach(({ item: { key, contextModule } }: { item: HomeModule }) => {
+          if (contextModule && !viewedRails.has(key)) {
+            viewedRails.add(key)
             tracking.trackEvent(
               HomeAnalytics.trackRailViewed({
                 contextModule: contextModule,
-                positionY: modules.findIndex((module) => module.title === title),
+                positionY: allModulesKeys.findIndex((moduleKey) => moduleKey === key),
               })
             )
           }
@@ -177,6 +195,14 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
+
+  useEffect(() => {
+    RefreshEvents.addListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
+
+    return () => {
+      RefreshEvents.removeListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
+    }
+  }, [])
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }) => {
@@ -188,6 +214,7 @@ const Home = memo((props: HomeProps) => {
         case "marketingCollection":
           return (
             <MarketingCollectionRail
+              contextScreenOwnerType={Schema.OwnerEntityTypes.Home}
               contextModuleKey="curators-picks-emerging"
               home={props.homePageAbove}
               marketingCollection={item.data}
@@ -201,6 +228,8 @@ const Home = memo((props: HomeProps) => {
               onboardingModule={item.data}
             />
           )
+        case "meetYourNewAdvisor":
+          return <MeetYourNewAdvisorRail title={item.title} />
         case "contentCards":
           return <ContentCards cards={item.data} />
         case "articles":
@@ -234,6 +263,7 @@ const Home = memo((props: HomeProps) => {
             <ArtworkRecommendationsRail
               title={item.title}
               me={item.data || null}
+              isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
             />
           )
@@ -265,9 +295,10 @@ const Home = memo((props: HomeProps) => {
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
-              title={item.title}
               artworkConnection={item.data}
+              isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
+              title={item.title}
             />
           )
         case "recommended-artists":
@@ -302,7 +333,7 @@ const Home = memo((props: HomeProps) => {
           return null
       }
     },
-    []
+    [visibleRails]
   )
 
   return (
@@ -465,6 +496,7 @@ export const HomeFragmentContainer = memo(
           auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
             first: 12
             state: UPCOMING
+            sort: DATE_ASC
           ) {
             totalCount
             ...AuctionResultsRail_auctionResults

@@ -1,9 +1,8 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
-import { Button } from "palette"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 
 export const NetworkAwareProvider: React.FC<{}> = () => {
   const [isDismissed, setIsDismissed] = useState(false)

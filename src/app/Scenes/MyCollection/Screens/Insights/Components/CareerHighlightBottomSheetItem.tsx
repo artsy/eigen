@@ -13,7 +13,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { uniq } from "lodash"
 import { useMemo } from "react"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface CareerHighlightBottomSheetItemProps {
   year: string | number

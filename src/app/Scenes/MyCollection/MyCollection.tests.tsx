@@ -59,9 +59,9 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(tree.getByText("Your Art Collection in Your Pocket")).toBeTruthy()
+      expect(tree.getByText("Know Your Collection Better")).toBeTruthy()
       expect(
-        tree.getByText("Access market insights and manage your collection online.")
+        tree.getByText("Manage your collection online and get free market insights.")
       ).toBeTruthy()
     })
 

@@ -1,6 +1,6 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { PillType } from "app/Scenes/Search/types"
-import { Pill } from "palette"
+import { Pill } from "app/Components/Pill"
 import React from "react"
 import { ScrollView } from "react-native"
 

@@ -4,7 +4,7 @@ import {
   TappedPickImageFromLibrary,
   TappedToggleCameraFlash,
 } from "@artsy/cohesion"
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, useColor, Spinner } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
@@ -22,7 +22,6 @@ import {
 import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { Spinner } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Linking, StyleSheet } from "react-native"
 import {

@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
-  queue: eddiewebb/queue@1.12.0
+  queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
 
 commands:
@@ -73,22 +73,22 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v9-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v7-metro-{{ checksum ".manifests/js_transform" }}
+            - v8-metro-{{ checksum ".manifests/js_transform" }}
       - run:
-          name: Bundle emission
-          command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
+          name: Bundle javascript
+          command: ls dist/main.jsbundle || yarn bundle:ios
       - save_cache:
-          key: v7-metro-{{ checksum ".manifests/js_transform" }}
+          key: v8-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .cache/metro
       - save_cache:
-          key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v9-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - dist/jsbundle.js
-            - dist/jsbundle.js.map
+            - dist/main.jsbundle
+            - dist/main.jsbundle.map
             - dist/assets
   install-gems:
     steps:
@@ -124,7 +124,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v9-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -132,7 +132,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v9-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -152,7 +152,7 @@ commands:
       - setup-env-file
       - restore_cache:
           keys:
-            - v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v7-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -168,7 +168,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v1-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v2-app_build_android-{{ checksum ".manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -177,7 +177,7 @@ commands:
           name: Build App
           command: ./scripts/ci-android
       - save_cache:
-          key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v2-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -198,6 +198,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
@@ -271,6 +272,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
@@ -287,6 +289,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
@@ -336,6 +339,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - attach_workspace:
@@ -418,7 +422,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v7-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
@@ -444,6 +448,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
     steps:
       - checkout
       - install-gems

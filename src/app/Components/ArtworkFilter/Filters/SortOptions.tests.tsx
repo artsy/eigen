@@ -1,3 +1,4 @@
+import { RadioDot } from "@artsy/palette-mobile"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersStoreProvider,
@@ -5,7 +6,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { RadioDot } from "palette"
 import { ReactTestRenderer } from "react-test-renderer"
 import { InnerOptionListItem, OptionListItem } from "./SingleSelectOption"
 import { SortOptionsScreen } from "./SortOptions"

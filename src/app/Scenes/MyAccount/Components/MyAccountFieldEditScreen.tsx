@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void

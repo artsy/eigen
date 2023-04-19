@@ -1,4 +1,5 @@
 import {
+  Avatar,
   MapPinIcon,
   BriefcaseIcon,
   SettingsIcon,
@@ -12,7 +13,7 @@ import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImageStorage } from "app/utils/LocalImageStore"
 import { useRefetch } from "app/utils/relayHelpers"
-import { Avatar, Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"

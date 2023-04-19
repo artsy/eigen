@@ -1,6 +1,6 @@
 import { ClassTheme } from "@artsy/palette-mobile"
 import { AttachmentPreview_attachment$data } from "__generated__/AttachmentPreview_attachment.graphql"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

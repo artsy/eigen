@@ -61,7 +61,7 @@
         UIActivityTypePostToTencentWeibo
     ];
 
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         [[ARTNativeScreenPresenterModule currentlyPresentedVC] presentViewController:activityVC animated:YES completion:nil];
     } else {
         activityVC.modalPresentationStyle = UIModalPresentationPopover;

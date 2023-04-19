@@ -1,4 +1,4 @@
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import React, { useEffect, useMemo } from "react"
 import { Animated, StyleProp, ViewStyle } from "react-native"
 import styled from "styled-components/native"

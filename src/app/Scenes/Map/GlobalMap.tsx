@@ -21,7 +21,7 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs" // TODO: get rid of this, and then remove `react-spring` from eigen.
-import { SafeAreaInsets } from "shared/hooks"
+import { SafeAreaInsets } from "app/utils/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -286,7 +286,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const filter = cityTabs[this.state.activeIndex]
     const {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      city: { name: cityName, slug: citySlug, sponsoredContent },
+      city: { name: cityName, slug: citySlug },
     } = this.props.viewer
 
     EventEmitter.dispatch("map:change", {
@@ -294,7 +294,6 @@ export class GlobalMap extends React.Component<Props, State> {
       buckets: this.state.bucketResults,
       cityName,
       citySlug,
-      sponsoredContent,
       relay: this.props.relay,
     })
   }
@@ -584,11 +583,6 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={4}>
                   <CitySwitcherButton
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    sponsoredContentUrl={
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl
-                    }
                     city={city}
                     isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                     onPress={this.onPressCitySwitcherButton}
@@ -796,42 +790,6 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
         coordinates {
           lat
           lng
-        }
-        sponsoredContent {
-          introText
-          artGuideUrl
-          featuredShows {
-            slug
-            internalID
-            id
-            name
-            status
-            isStubShow
-            href
-            is_followed: isFollowed
-            exhibition_period: exhibitionPeriod(format: SHORT)
-            cover_image: coverImage {
-              url
-            }
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-            type
-            start_at: startAt
-            end_at: endAt
-            partner {
-              ... on Partner {
-                name
-                type
-              }
-            }
-          }
-          shows: showsConnection(first: 1, sort: START_AT_ASC) {
-            totalCount
-          }
         }
         upcomingShows: showsConnection(
           includeStubShows: true

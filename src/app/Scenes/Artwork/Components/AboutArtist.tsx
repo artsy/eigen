@@ -1,10 +1,9 @@
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
 import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {

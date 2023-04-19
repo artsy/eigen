@@ -1,6 +1,6 @@
+import { SimpleMessage } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
-import { SimpleMessage } from "palette"
 import { LayoutAnimation } from "react-native"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"

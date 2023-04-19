@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box } from "@artsy/palette-mobile"
+import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -11,14 +11,13 @@ import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholde
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { SimpleMessage } from "palette"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
 export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
-export const DEFAULT_RECS_MODEL_VERSION = "B"
+export const DEFAULT_RECS_MODEL_VERSION = "C"
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp

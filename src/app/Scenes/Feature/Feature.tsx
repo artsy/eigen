@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -10,9 +10,8 @@ import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
-import { Separator } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
   FeatureHeaderFragmentContainer,

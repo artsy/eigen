@@ -8,7 +8,7 @@ import { compact } from "lodash"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
 import { useMedianSalePriceChartDataContext } from "./providers/MedianSalePriceChartDataContext"
 

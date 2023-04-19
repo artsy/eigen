@@ -1,4 +1,4 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -6,7 +6,6 @@ import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hook
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
-import { Join } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"

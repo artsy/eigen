@@ -13,7 +13,7 @@ export const AuctionResultsUpcomingQueryRenderer = () => {
 export const AuctionResultsUpcomingPrefetchQuery = graphql`
   query AuctionResultsUpcomingPrefetchQuery {
     me {
-      ...AuctionResultsScreenWrapper_me @arguments(state: UPCOMING)
+      ...AuctionResultsScreenWrapper_me @arguments(state: UPCOMING, sort: DATE_ASC)
     }
   }
 `

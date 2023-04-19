@@ -8,7 +8,7 @@ describe("Search page empty state", () => {
   it(`renders correctly`, async () => {
     const tree = renderWithWrappersLEGACY(<CityGuideCTA />)
     expect(extractText(tree.root)).toContain("Explore Art on View")
-    expect(tree.root.findAllByType(Image)).toHaveLength(2)
+    expect(tree.root.findAllByType(Image)).toHaveLength(1)
   })
 
   it(`navigates to cityGuide link`, () => {

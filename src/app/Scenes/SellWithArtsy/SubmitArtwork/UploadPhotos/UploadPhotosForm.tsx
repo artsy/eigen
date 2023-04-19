@@ -1,8 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
+import { PhotoRow } from "app/Components/PhotoRow/PhotoRow"
 import {
   Photo,
   PhotosFormModel,
@@ -11,8 +12,6 @@ import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/re
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
-import { Button } from "palette"
-import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"

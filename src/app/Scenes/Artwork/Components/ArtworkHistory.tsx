@@ -1,9 +1,8 @@
-import { Spacer, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Join } from "@artsy/palette-mobile"
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkHistoryProps {

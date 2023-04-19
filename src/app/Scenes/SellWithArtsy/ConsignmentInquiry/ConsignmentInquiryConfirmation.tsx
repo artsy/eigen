@@ -1,6 +1,5 @@
-import { ArtsyLogoBlackIcon, Flex, Box, Text } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { popToRoot } from "app/system/navigation/navigate"
-import { Button } from "palette"
 
 export const ConsignmentInquiryConfirmation: React.FC<{}> = () => {
   return (

@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useColor, Text, Button } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
@@ -7,12 +7,11 @@ import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Button } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import {
   OnboardingCreateAccountEmail,

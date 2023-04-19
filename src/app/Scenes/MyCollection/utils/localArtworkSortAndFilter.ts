@@ -10,7 +10,7 @@ import { MyCollectionArtworkEdge } from "app/Scenes/MyCollection/MyCollection"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
-import { normalizeText } from "shared/utils"
+import { normalizeText } from "app/utils/normalizeText"
 
 export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)

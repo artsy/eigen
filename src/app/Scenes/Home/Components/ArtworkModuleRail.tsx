@@ -5,6 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -126,6 +127,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
           navigateToPageableRoute(artwork.href!)
         }}
         onMorePress={handlePressMore}
+        trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
       />
     </Flex>
   )

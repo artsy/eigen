@@ -1,7 +1,7 @@
+import { Button } from "@artsy/palette-mobile"
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"

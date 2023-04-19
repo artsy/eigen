@@ -12,7 +12,7 @@ import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/Sort
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
-import { OpaqueImageView } from "palette"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"

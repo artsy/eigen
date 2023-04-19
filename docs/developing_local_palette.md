@@ -16,14 +16,14 @@ yarn global add yalc
 
 ```sh
 cd palette-mobile
-yarn sync-after-change
+yarn local-palette-dev
 ```
 
 - Navigate back to Eigen and link:
 
 ```sh
 cd eigen
-yarn link-local-palette
+yarn local-palette-dev
 yarn start
 ```
 
@@ -32,5 +32,5 @@ This will update `package.json` to point at the yalc-published version of palett
 - When done developing your local palette feature, be sure to unlink:
 
 ```sh
-yarn unlink-local-palette
+yarn local-palette-dev:stop
 ```

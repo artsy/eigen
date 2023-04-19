@@ -10,15 +10,16 @@ import {
   useEnvironment,
 } from "app/store/GlobalStore"
 import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
+import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
@@ -63,6 +64,7 @@ export const ArtsyWebViewPage = ({
   const ref = useRef<WebViewWithShareTitleUrl>(null)
 
   const tracking = useTracking()
+
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
     /*
@@ -70,6 +72,7 @@ export const ArtsyWebViewPage = ({
      */
     const shareUrl = ref.current?.shareTitleUrl || uri
     tracking.trackEvent(tracks.share(shareUrl))
+
     try {
       await Share.open({ url: shareUrl })
     } catch (error) {
@@ -79,29 +82,40 @@ export const ArtsyWebViewPage = ({
     }
   }
 
-  const handleGoBack = () => (backAction ? backAction() : goBack(backProps))
+  const handleGoBack = () => {
+    if (backAction) {
+      backAction()
+    } else {
+      goBack(backProps)
+    }
+  }
 
-  const onRightButtonPress = () =>
-    showShareButton ? handleArticleShare() : useRightCloseButton ? handleGoBack() : null
+  const onRightButtonPress = () => {
+    if (showShareButton) {
+      handleArticleShare()
+    } else if (useRightCloseButton) {
+      handleGoBack()
+    }
+  }
 
   return (
     <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
-          onLeftButtonPress={
-            useRightCloseButton && !canGoBack
-              ? undefined
-              : () => {
-                  if (isPresentedModally && !canGoBack) {
-                    dismissModal()
-                  } else if (!canGoBack) {
-                    handleGoBack()
-                  } else {
-                    ref.current?.goBack()
-                  }
-                }
-          }
+          onLeftButtonPress={() => {
+            if (useRightCloseButton && !canGoBack) {
+              return null
+            }
+
+            if (isPresentedModally && !canGoBack) {
+              dismissModal()
+            } else if (!canGoBack) {
+              handleGoBack()
+            } else {
+              ref.current?.goBack()
+            }
+          }}
           useShareButton={showShareButton}
           rightCloseButton={useRightCloseButton}
           onRightButtonPress={
@@ -146,6 +160,12 @@ export const ArtsyWebView = forwardRef<
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
+  // Debounce calls just in case multiple stopLoading calls are made in a row
+  const stopLoading = debounce(() => {
+    innerRef.current?.stopLoading()
+    innerRef.current?.goBack()
+  }, 500)
+
   return (
     <Flex flex={1}>
       <WebView
@@ -185,9 +205,17 @@ export const ArtsyWebView = forwardRef<
           const result = matchRoute(targetURL)
 
           // if it's a route that we know we don't have a native view for, keep it in the webview
-          if (result.type === "match" && result.module === "ReactWebView") {
+          // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
+          // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
+          // to a different vanityURL that we can handle inapp, such as Fair & Partner.
+          if (
+            result.type === "match" &&
+            (result.module === "ReactWebView" || result.module === "VanityURLEntity")
+          ) {
             innerRef.current!.shareTitleUrl = targetURL
             return
+          } else {
+            stopLoading()
           }
 
           // In case of a webview presented modally, if the targetURL is a tab View,

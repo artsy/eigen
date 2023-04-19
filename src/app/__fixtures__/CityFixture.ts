@@ -2233,55 +2233,6 @@ export const CityFixture = {
     ],
   },
   slug: "new-york-ny-usa",
-  sponsoredContent: {
-    artGuideUrl: "https//example.com",
-    featuredShows: null,
-    introText:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.",
-    shows: {
-      edges: [
-        {
-          node: {
-            internalID: "123456780",
-            cover_image: {
-              url: "https://d32dm0rphc51dk.cloudfront.net/soeXloE-03_lq3RfP7Kcvg/larger.jpg",
-            },
-            end_at: "2002-03-31T22:00:00+00:00",
-            exhibition_period: "Mar 21 – May 25",
-            href: "https://wwww.show.com",
-            gravityID:
-              "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
-            id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
-            is_followed: true,
-            isStubShow: false,
-            location: {
-              coordinates: {
-                lat: 48.862757,
-                lng: 2.364645,
-              },
-              id: "TG9jYXRpb246NGUzYzcyNGNkZTUyYzgwMDA1MDA1NmFl",
-            },
-            name: 'Gianni Motti: "Cadeaux diplomatiques" at Kunstmuseum Thun Thun',
-            partner: {
-              id: "UGFydG5lcjpwZXJyb3Rpbg==",
-              name: "Gallerie RR",
-              profile: {
-                image: {
-                  id: "23419014jfdsof",
-                  url: "http://djdjdjd.png",
-                },
-              },
-              type: "Gallery",
-            },
-            start_at: "2002-02-09T23:00:00+00:00",
-            status: "running",
-            type: "Show",
-          },
-        },
-      ],
-      totalCount: 1,
-    },
-  },
   upcomingShows: {
     edges: [
       {

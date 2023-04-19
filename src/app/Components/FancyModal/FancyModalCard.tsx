@@ -1,7 +1,7 @@
 import { compact } from "lodash"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 // The width of the black gutters either side of the first-from-the-front card
 const CARD_GUTTER_WIDTH = 20

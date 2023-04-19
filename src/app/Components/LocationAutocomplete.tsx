@@ -1,14 +1,14 @@
-import { MapPinIcon, Flex, Text } from "@artsy/palette-mobile"
+import { MapPinIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Input, InputProps } from "app/Components/Input"
 import {
   getLocationDetails,
   getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
 } from "app/utils/googleMaps"
-import { Input, InputProps, Touchable } from "palette"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 
 interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   floating?: boolean

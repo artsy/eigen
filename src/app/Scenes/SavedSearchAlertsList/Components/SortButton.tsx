@@ -1,5 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
-import { Touchable, TouchableProps } from "palette"
+import { Text, Touchable, TouchableProps } from "@artsy/palette-mobile"
 import { FC } from "react"
 
 export const SortButton: FC<TouchableProps> = (props) => {

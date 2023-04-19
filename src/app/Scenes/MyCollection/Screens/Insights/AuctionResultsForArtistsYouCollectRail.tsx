@@ -12,7 +12,7 @@ import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { useScreenDimensions } from "app/utils/hooks"
 
 interface AuctionResultsForArtistsYouCollectRailProps {
   me: AuctionResultsForArtistsYouCollectRail_me$key

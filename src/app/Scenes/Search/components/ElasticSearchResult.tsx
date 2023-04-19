@@ -9,7 +9,7 @@ import {
 } from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "palette"
+import { Touchable } from "@artsy/palette-mobile"
 import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 

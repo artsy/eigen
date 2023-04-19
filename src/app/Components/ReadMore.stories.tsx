@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
-import { withTracking } from "storybook/decorators"
-import { List } from "storybook/helpers"
+import { withTracking } from "app/storybook/decorators"
+import { List } from "app/storybook/helpers"
 import { ReadMore } from "./ReadMore"
 
 storiesOf("ReadMore", module)

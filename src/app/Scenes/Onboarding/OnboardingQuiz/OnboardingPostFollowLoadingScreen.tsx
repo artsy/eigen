@@ -1,7 +1,7 @@
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { Screen } from "palette"
+import { Screen } from "app/Components/Screen"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useBackHandler } from "shared/hooks/useBackHandler"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 const NAVIGATE_TO_NEXT_SCREEN_DELAY = 2000
