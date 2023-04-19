@@ -203,7 +203,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     // MARK: Noise
 
     func setupUI() {
-
         guard let view = self.view else {
             return
         }
@@ -254,7 +253,15 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
     }
 
     @objc func resetExperience() {
+        self.artwork?.removeFromParentNode()
+        self.artwork?.stopTrackedRaycast()
+        self.artwork = nil
 
+        self.informationView?.reset()
+
+        self.resetButton?.alpha = 0
+
+        self.presentInformationalInterface(animated: true)
     }
 
     @objc func exit() {
@@ -355,7 +362,7 @@ extension ARAugmentedWallBasedVIRViewController: ARCoachingOverlayViewDelegate {
 
     /// - Tag: StartOver
     func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
-        // restartExperience()
+        resetExperience()
     }
 
     func setupCoachingOverlay() {
