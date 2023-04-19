@@ -2,14 +2,18 @@ import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveA
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { Schema } from "app/utils/track"
 import { graphql, useFragment } from "react-relay"
 
-export const useSaveArtworkToArtworkLists = (
+interface Options {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
-) => {
+  contextScreen?: Schema.OwnerEntityTypes
+}
+
+export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkListId, isSavedToArtworkList, dispatch } = useArtworkListsContext()
   const toast = useArtworkListToast()
-  const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
+  const artwork = useFragment(ArtworkFragment, options.artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -24,6 +28,7 @@ export const useSaveArtworkToArtworkLists = (
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
+    contextScreen: options.contextScreen,
     onCompleted: () => {
       // TODO: Track event
 

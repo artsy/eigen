@@ -69,8 +69,9 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
   const { trackEvent } = useTracking()
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   const artworkData = useFragment(ArtworkSaveButtonFragment, artwork)
-  const { isSaved: isSavedToArtworkLists, saveArtworkToLists } =
-    useSaveArtworkToArtworkLists(artworkData)
+  const { isSaved: isSavedToArtworkLists, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artworkData,
+  })
   const { internalID, id, sale } = artworkData
   const isSaved = isArtworkListsEnabled ? isSavedToArtworkLists : artworkData.isSaved
 
