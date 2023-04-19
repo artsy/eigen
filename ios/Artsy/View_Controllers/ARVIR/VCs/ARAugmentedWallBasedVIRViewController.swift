@@ -341,7 +341,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         let congratsArtworkViewState = InformationalViewState()
         congratsArtworkViewState.xOutOfYMessage = " "
         congratsArtworkViewState.stateTag = "placedArtwork"
-        congratsArtworkViewState.bodyString = "The work has been placed. Tap anywhere to move it or tap 'Done' to view it in your space."
+        congratsArtworkViewState.bodyString = "The work has been placed. Tap anywhere to move it."
 
         let doneArtworkButton = ARClearFlatButton()
         doneArtworkButton.setTitle("Done", for: .normal)
