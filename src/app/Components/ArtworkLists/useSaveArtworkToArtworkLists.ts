@@ -1,44 +1,52 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
-import { Schema } from "app/utils/track"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
-interface Options {
+interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError" | "contextScreen"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
-  contextScreen?: Schema.OwnerEntityTypes
 }
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
+  const { artworkFragmentRef, onCompleted, ...restOptions } = options
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   const { artworkListId, isSavedToArtworkList, dispatch } = useArtworkListsContext()
   const toast = useArtworkListToast()
-  const artwork = useFragment(ArtworkFragment, options.artworkFragmentRef)
+  const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
-  let isSaved = artwork.isSaved ?? isSavedToCustomArtworkLists
+  let isSaved = artwork.isSaved
 
-  // TODO: Add comment about this
-  if (typeof artworkListId !== "undefined") {
-    isSaved = isSavedToArtworkList
+  if (isArtworkListsEnabled) {
+    // TODO: Add comment about this
+    if (typeof artworkListId !== "undefined") {
+      isSaved = isSavedToArtworkList
+    } else {
+      isSaved = artwork.isSaved ?? isSavedToCustomArtworkLists
+    }
   }
 
   const saveArtworkToDefaultArtworkList = useSaveArtwork({
+    ...restOptions,
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    contextScreen: options.contextScreen,
-    onCompleted: () => {
-      // TODO: Track event
+    onCompleted: (isArtworkSaved) => {
+      // TODO: Maybe rename it
+      onCompleted?.(isArtworkSaved)
 
-      // Artwork was unsaved
-      if (artwork.isSaved) {
-        toast.removedFromDefaultArtworkList()
-        return
+      if (isArtworkListsEnabled) {
+        // Artwork was unsaved
+        if (artwork.isSaved) {
+          toast.removedFromDefaultArtworkList()
+          return
+        }
+
+        toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
       }
-
-      toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
     },
   })
 
@@ -57,13 +65,19 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
 
   const saveArtworkToLists = () => {
-    if (artworkListId || isSavedToCustomArtworkLists) {
+    if (!isArtworkListsEnabled) {
       console.log("[debug] step 1")
+      saveArtworkToDefaultArtworkList()
+      return
+    }
+
+    if (artworkListId || isSavedToCustomArtworkLists) {
+      console.log("[debug] step 2")
       openSelectArtworkListsForArtworkView()
       return
     }
 
-    console.log("[debug] step 2")
+    console.log("[debug] step 3")
     saveArtworkToDefaultArtworkList()
   }
 
