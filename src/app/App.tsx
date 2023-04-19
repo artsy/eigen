@@ -2,11 +2,11 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { setupFlipper } from "app/system/devTools/flipper"
+import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
-import { useRageShakeDevMenu } from "app/utils/hooks/useRageShakeDevMenu"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
