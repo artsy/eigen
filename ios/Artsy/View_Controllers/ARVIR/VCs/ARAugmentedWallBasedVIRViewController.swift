@@ -57,10 +57,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController {
         self.sceneView.session.delegate = self
         self.sceneView.session.run(config)
 
-        // Set up scene content.
         self.sceneView.scene.rootNode.addChildNode(cursor)
 
-        // Set up coaching overlay.
         setupCoachingOverlay()
 
         self.artwork?.removeFromParentNode()
@@ -381,12 +379,14 @@ extension ARAugmentedWallBasedVIRViewController: ARCoachingOverlayViewDelegate {
 
     /// - Tag: HideUI
     func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        // upperControlsView.isHidden = true
+        self.resetButton?.isHidden = true
+        self.informationView?.isHidden = true
     }
 
     /// - Tag: PresentUI
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        // upperControlsView.isHidden = false
+        self.resetButton?.isHidden = false
+        self.informationView?.isHidden = false
     }
 
     /// - Tag: StartOver
