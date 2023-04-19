@@ -4,7 +4,7 @@ import { UnleashContext } from "./UnleashProvider"
 import { getUnleashClient } from "./unleashClient"
 
 export function useExperimentFlag(name: string) {
-  const client = getUnleashClient()
+  const client = getUnleashClient({})
   const [enabled, setEnabled] = useState(client.isEnabled(name))
 
   const { lastUpdate } = useContext(UnleashContext)
@@ -20,7 +20,7 @@ export function useExperimentVariant(name: string): {
   variant: string
   payload?: string
 } {
-  const client = getUnleashClient()
+  const client = getUnleashClient({})
   const [enabled, setEnabled] = useState(client.isEnabled(name))
   const [variant, setVariant] = useState(client.getVariant(name))
 

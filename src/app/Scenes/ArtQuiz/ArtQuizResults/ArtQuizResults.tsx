@@ -3,9 +3,9 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs"
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useBackHandler } from "app/utils/hooks/useBackHandler"
 
 const ResultsScreen = () => {
   // prevents Android users from going back with hardware button

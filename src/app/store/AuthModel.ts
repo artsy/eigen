@@ -2,15 +2,19 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { captureMessage } from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as RelayCache from "app/system/relay/RelayCache"
+import { updateExperimentsContext } from "app/utils/experiments/helpers"
 import { isArtsyEmail } from "app/utils/general"
+import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
+
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Platform } from "react-native"
+import ReactAppboy from "react-native-appboy-sdk"
 import Config from "react-native-config"
 import {
   AccessToken,
@@ -43,12 +47,12 @@ const showError = (
         `you will first need to sign up with ${providerName}. ` +
         `You will then have the option to link the two accounts.
         `
-      captureMessage("AUTH_FAILURE: " + message)
+      Sentry.captureMessage("AUTH_FAILURE: " + message)
       reject(new AuthError(message))
       return
     } else {
       const message = "Login attempt failed"
-      captureMessage("AUTH_FAILURE: " + message)
+      Sentry.captureMessage("AUTH_FAILURE: " + message)
       reject(new AuthError(message))
       return
     }
@@ -96,7 +100,7 @@ const handleSignUpError = ({
     message = "Failed to sign up"
   }
 
-  captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
+  Sentry.captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
 
   return {
     message,
@@ -116,7 +120,7 @@ export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
       {
         text: "OK",
         onPress: () => {
-          captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
+          Sentry.captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
         },
       },
     ]
@@ -171,11 +175,14 @@ export interface AuthPromiseRejectType {
   }
 }
 
+type SessionState = {
+  isLoading: boolean
+  isUserIdentified: boolean
+}
+
 export interface AuthModel {
   // State
-  sessionState: {
-    isLoading: boolean
-  }
+  sessionState: SessionState
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -190,6 +197,7 @@ export interface AuthModel {
 
   // Actions
   setState: Action<this, Partial<StateMapper<this, "1">>>
+  setSessionState: Action<this, Partial<SessionState>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
   signIn: Thunk<
@@ -243,6 +251,7 @@ export interface AuthModel {
     ReturnType<typeof fetch>
   >
   setArtQuizState: Action<this, OnboardingArtQuizState>
+  identifyUser: Action<this>
   signOut: Thunk<this>
 }
 
@@ -254,6 +263,7 @@ const clientSecret = __DEV__
 export const getAuthModel = (): AuthModel => ({
   sessionState: {
     isLoading: false,
+    isUserIdentified: false,
   },
   userID: null,
   userAccessToken: null,
@@ -267,6 +277,9 @@ export const getAuthModel = (): AuthModel => ({
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
+  setSessionState: action((state, payload) => {
+    state.sessionState = { ...state.sessionState, ...payload }
+  }),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
     if (xAppToken) {
@@ -383,6 +396,10 @@ export const getAuthModel = (): AuthModel => ({
       const { expires_in, access_token: userAccessToken } = await result.json()
       const user = await actions.getUser({ accessToken: userAccessToken })
 
+      actions.setSessionState({
+        isUserIdentified: false,
+      })
+
       actions.setState({
         userAccessToken,
         userAccessTokenExpiresIn: expires_in,
@@ -398,6 +415,8 @@ export const getAuthModel = (): AuthModel => ({
           args.password
         )
       }
+
+      actions.identifyUser()
 
       if (user.id !== store.getState().previousSessionUserID) {
         const storeActions = store.getStoreActions()
@@ -784,7 +803,7 @@ export const getAuthModel = (): AuthModel => ({
         })
         .catch(() => {
           // Use canceled apple auth
-          actions.setState({ sessionState: { isLoading: false } })
+          actions.setSessionState({ isLoading: false })
         })
 
       if (!userInfo) {
@@ -891,7 +910,24 @@ export const getAuthModel = (): AuthModel => ({
   setArtQuizState: action((state, artQuizState) => {
     state.onboardingArtQuizState = artQuizState
   }),
-  signOut: thunk(async () => {
+  identifyUser: action((state) => {
+    const { userID: userId } = state
+
+    if (userId) {
+      Sentry.setUser({ id: userId })
+      ReactAppboy.changeUser(userId)
+      SiftReactNative.setUserId(userId)
+      // This is here becuase Sift's RN wrapper does not currently automatically collect or
+      // upload events for Android devices. If they update the package, we can remove it.
+      SiftReactNative.upload()
+      SegmentTrackingProvider.identify?.(userId, { is_temporary_user: 0 })
+      updateExperimentsContext({ userId })
+    }
+
+    state.sessionState.isUserIdentified = true
+  }),
+
+  signOut: thunk(async (actions, _) => {
     const signOutGoogle = async () => {
       try {
         const isSignedIn = await GoogleSignin.isSignedIn()
@@ -906,6 +942,8 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     SiftReactNative.unsetUserId()
+    SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 })
+    updateExperimentsContext({ userId: undefined })
 
     await Promise.all([
       Platform.OS === "ios"
@@ -916,6 +954,8 @@ export const getAuthModel = (): AuthModel => ({
       CookieManager.clearAll(),
       RelayCache.clearAll(),
     ])
+
+    actions.setSessionState({ isUserIdentified: true })
   }),
 })
 

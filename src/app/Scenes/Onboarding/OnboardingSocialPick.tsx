@@ -93,7 +93,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       handleErrorWithAlternativeProviders(error.meta)
       return
     }
-    GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
+    GlobalStore.actions.auth.setSessionState({ isLoading: false })
 
     InteractionManager.runAfterInteractions(() => {
       const errorMode = error.message === "Attempt blocked" ? "attempt blocked" : "no account"
@@ -128,11 +128,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
-    GlobalStore.actions.auth.setState({ sessionState: { isLoading: true } })
+    GlobalStore.actions.auth.setSessionState({ isLoading: true })
     InteractionManager.runAfterInteractions(() => {
       callback().catch((error: AuthPromiseRejectType) => {
         InteractionManager.runAfterInteractions(() => {
-          GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
+          GlobalStore.actions.auth.setSessionState({ isLoading: false })
           InteractionManager.runAfterInteractions(() => {
             handleError(error)
           })

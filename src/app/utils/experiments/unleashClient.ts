@@ -21,10 +21,13 @@ export type PublicUnleashClient = PublicType<UnleashClient>
  * If a specific env is asked, then it will either use the current one if it's right,
  * or create a new one in the requested env.
  */
-export function getUnleashClient(
-  env?: "production" | "staging",
+export function getUnleashClient({
+  env,
+  userId,
+}: {
+  env?: "production" | "staging"
   userId?: string | null
-): PublicUnleashClient {
+}): PublicUnleashClient {
   if (Config.OSS === "true") {
     return fakeUnleashClient
   }
