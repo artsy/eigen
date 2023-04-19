@@ -1,8 +1,8 @@
 import { BulletedItem, Spacer, Flex, LinkText } from "@artsy/palette-mobile"
+import { CTAButton } from "app/Components/Button/CTAButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
-import { CTAButton } from "app/Components/Button/CTAButton"
 import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
@@ -20,7 +20,7 @@ export const ArtworkDetails: React.FC<{
         <LinkText
           onPress={() =>
             navigate(
-              "https://support.artsy.net/hc/en-us/articles/360046646374-I-m-an-artist-Can-I-submit-my-own-work-to-sell-"
+              "https://support.artsy.net/s/article/Im-an-artist-Can-I-submit-my-own-work-to-sell"
             )
           }
         >

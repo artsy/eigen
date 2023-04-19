@@ -28,7 +28,7 @@ export const CertificateOfAuthenticity: React.FC = () => {
               underline
               onPress={() =>
                 navigate(
-                  "https://support.artsy.net/hc/en-us/articles/360058123933-What-Counts-as-an-Artwork-s-Proof-of-Authenticity-"
+                  "https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
                 )
               }
             >
