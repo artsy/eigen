@@ -39,13 +39,12 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       onCompleted?.(isArtworkSaved)
 
       if (isArtworkListsEnabled) {
-        // Artwork was unsaved
-        if (artwork.isSaved) {
-          toast.removedFromDefaultArtworkList()
+        if (isArtworkSaved) {
+          toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
           return
         }
 
-        toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+        toast.removedFromDefaultArtworkList()
       }
     },
   })
