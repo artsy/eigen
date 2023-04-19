@@ -266,6 +266,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
+  AREnableNewAuctionsRailCard: {
+    description: "Enable New Auctions Home Rail Card",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
