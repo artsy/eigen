@@ -8,12 +8,14 @@ import {
   Spacer,
   Text,
   useSpace,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import { Touchable } from "@artsy/palette-mobile"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -65,14 +67,19 @@ const getA11yLabel = (isSaved: boolean, isOpenSale: boolean) => {
 export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork }) => {
   const space = useSpace()
   const { trackEvent } = useTracking()
-  const { isSaved, internalID, id, sale } = useFragment(ArtworkSaveButtonFragment, artwork)
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
+  const artworkData = useFragment(ArtworkSaveButtonFragment, artwork)
+  const { isSaved: isSavedToArtworkLists, saveArtworkToLists } =
+    useSaveArtworkToArtworkLists(artworkData)
+  const { internalID, id, sale } = artworkData
+  const isSaved = isArtworkListsEnabled ? isSavedToArtworkLists : artworkData.isSaved
 
   const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 
-  const handleArtworkSave = useSaveArtwork({
+  const saveArtwork = useSaveArtwork({
     id,
     internalID,
-    isSaved,
+    isSaved: artworkData.isSaved,
     onCompleted: () => {
       trackEvent({
         action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
@@ -85,6 +92,15 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
   const a11yLabel = getA11yLabel(!!isSaved, !!isOpenSale)
   const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
 
+  const handleArtworkSavePressed = () => {
+    if (isArtworkListsEnabled) {
+      saveArtworkToLists()
+      return
+    }
+
+    saveArtwork()
+  }
+
   return (
     <Touchable
       hitSlop={{
@@ -94,7 +110,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
       }}
       accessibilityRole="button"
       accessibilityLabel={a11yLabel}
-      onPress={handleArtworkSave}
+      onPress={handleArtworkSavePressed}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
         {isOpenSale ? <WatchLotIcon isSaved={!!isSaved} /> : <SaveButtonIcon isSaved={!!isSaved} />}
@@ -127,5 +143,6 @@ const ArtworkSaveButtonFragment = graphql`
       isAuction
       isClosed
     }
+    ...useSaveArtworkToArtworkLists_artwork
   }
 `
