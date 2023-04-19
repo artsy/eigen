@@ -1,7 +1,7 @@
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
 
-export enum SceneKey {
+export enum ArtworkListViewKey {
   SelectListsForArtwork,
   CreateNewList,
 }
@@ -18,7 +18,7 @@ export interface RecentlyAddedArtworkList {
 }
 
 type State = {
-  currentSceneKey: SceneKey
+  currentViewKey: ArtworkListViewKey
   artwork: ArtworkEntity | null
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
@@ -31,7 +31,7 @@ export enum Mode {
 }
 
 type Action =
-  | { type: "SET_SCENE_KEY"; payload: SceneKey }
+  | { type: "SET_VIEW_KEY"; payload: ArtworkListViewKey }
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
   | { type: "RESET" }
@@ -85,7 +85,7 @@ interface ArtworkListsProviderProps {
 }
 
 export const INITIAL_STATE: State = {
-  currentSceneKey: SceneKey.SelectListsForArtwork,
+  currentViewKey: ArtworkListViewKey.SelectListsForArtwork,
   artwork: null,
   addingArtworkListIDs: [],
   removingArtworkListIDs: [],
@@ -156,30 +156,30 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     onSave,
   }
 
-  const renderSceneByKey = () => {
-    if (state.currentSceneKey === SceneKey.CreateNewList) {
-      console.log("[debug] render CreateNewList scene")
+  const renderViewByKey = () => {
+    if (state.currentViewKey === ArtworkListViewKey.CreateNewList) {
+      console.log("[debug] render CreateNewList view")
 
       return
     }
 
-    console.log("[debug] render SelectListsForArtwork scene")
+    console.log("[debug] render SelectListsForArtwork view")
   }
 
   return (
     <ArtworkListsContext.Provider value={value}>
       {children}
-      {!!state.artwork && renderSceneByKey()}
+      {!!state.artwork && renderViewByKey()}
     </ArtworkListsContext.Provider>
   )
 }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "SET_SCENE_KEY":
+    case "SET_VIEW_KEY":
       return {
         ...state,
-        currentSceneKey: action.payload,
+        currentViewKey: action.payload,
       }
     case "ADD_OR_REMOVE_ARTWORK_LIST_ID":
       // eslint-disable-next-line no-case-declarations
