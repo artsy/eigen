@@ -130,12 +130,6 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
       return
     }
-
-    if (result.action === ResultAction.SavedToDefaultArtworkList) {
-      toast.savedToDefaultArtworkList()
-    } else if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
-      toast.removedFromDefaultArtworkList()
-    }
   }
 
   const reset = () => {
