@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useEffect, useState } from "react"
 
-interface SpecialistsData {
+export interface SpecialistsData {
   specialty: string
   image: string
   name: string
