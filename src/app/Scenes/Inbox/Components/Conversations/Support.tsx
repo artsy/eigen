@@ -1,6 +1,5 @@
-import { QuestionCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { QuestionCircleIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "@artsy/palette-mobile"
 
 export const Support = () => {
   return (
@@ -10,7 +9,7 @@ export const Support = () => {
       </Text>
       <Touchable
         onPress={() => {
-          navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", {
+          navigate("https://support.artsy.net/s/topic/0TO3b000000UevEGAS/contacting-a-gallery", {
             modal: true,
           })
         }}

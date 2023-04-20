@@ -5,8 +5,7 @@ import { sendEmailWithMailTo } from "app/utils/sendEmail"
 export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = ({
   closeModal,
 }) => {
-  const article =
-    "https://support.artsy.net/hc/en-us/articles/360046646494-What-items-do-you-accept-"
+  const article = "https://support.artsy.net/s/article/What-items-do-you-accept"
 
   return (
     <Flex p={2}>

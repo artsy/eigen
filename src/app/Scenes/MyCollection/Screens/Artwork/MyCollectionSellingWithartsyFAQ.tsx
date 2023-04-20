@@ -1,12 +1,12 @@
 import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { ScrollView } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 
 export const MyCollectionSellingWithArtsyFAQ = () => {
   const { safeAreaInsets } = useScreenDimensions()
-  const article = "https://support.artsy.net/hc/en-us/sections/360008311913-Sell-with-Artsy"
+  const article = "https://support.artsy.net/s/topic/0TO3b000000UevOGAS/sell-with-artsy"
 
   return (
     <ScrollView>
