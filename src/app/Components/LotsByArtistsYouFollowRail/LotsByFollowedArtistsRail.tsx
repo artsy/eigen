@@ -18,7 +18,7 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
-  cardSize: "large" | "small"
+  cardSize?: "large" | "small"
 }
 
 export const LotsByFollowedArtistsRail: React.FC<Props> = ({
