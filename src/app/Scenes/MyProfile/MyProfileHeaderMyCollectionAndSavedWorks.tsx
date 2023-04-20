@@ -10,6 +10,7 @@ import {
   MyCollectionQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -24,12 +25,14 @@ export enum Tab {
   collection = "My Collection",
   savedWorks = "Saves",
   insights = "Insights",
-  saves = "Saves (2)",
+  saves = "New Saves",
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
+
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -59,10 +62,12 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           title: Tab.savedWorks,
           content: <FavoriteArtworksQueryRenderer />,
         },
-        {
-          title: Tab.saves,
-          content: <ArtworkLists />,
-        },
+        isArtworkListsEnabled
+          ? {
+              title: Tab.saves,
+              content: <ArtworkLists />,
+            }
+          : null,
       ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
     />
