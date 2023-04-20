@@ -9,12 +9,9 @@ export const Support = () => {
       </Text>
       <Touchable
         onPress={() => {
-          navigate(
-            "https://support.artsy.net/s/topic/s/topic/0TO3b000000UevEGAS/contacting-a-gallery",
-            {
-              modal: true,
-            }
-          )
+          navigate("https://support.artsy.net/s/topic/0TO3b000000UevEGAS/contacting-a-gallery", {
+            modal: true,
+          })
         }}
       >
         <Flex mb={1} alignItems="center" flexDirection="row">

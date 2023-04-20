@@ -6,7 +6,7 @@ import { ScrollView } from "react-native"
 
 export const MyCollectionSellingWithArtsyFAQ = () => {
   const { safeAreaInsets } = useScreenDimensions()
-  const article = "https://support.artsy.net/s/topic/s/topic/0TO3b000000UevOGAS/sell-with-artsy"
+  const article = "https://support.artsy.net/s/topic/0TO3b000000UevOGAS/sell-with-artsy"
 
   return (
     <ScrollView>
