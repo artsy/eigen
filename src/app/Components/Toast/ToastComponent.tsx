@@ -1,11 +1,10 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Touchable } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -108,7 +107,8 @@ export const ToastComponent = ({
       position="absolute"
       left="1"
       right="1"
-      height={EDGE_TOAST_HEIGHT}
+      minHeight={EDGE_TOAST_HEIGHT}
+      py={1}
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
