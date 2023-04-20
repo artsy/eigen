@@ -14,7 +14,7 @@ module.exports = createRule({
     hasSuggestions: true,
     docs: {
       description:
-        "In jsx, something like `{someString && <View />}` could produce the empty string (`\"\"`) which is falsy but still produces a value, and that make React Native crash, because it doesn't know how to handle a string that's not inside a `Text`.",
+        "When we use `useLazyLoadQuery` inside a component that has `<Suspense />` in react-native it causes a crash, this rule is for preventing that"
       recommended: "error",
     },
     messages: {
