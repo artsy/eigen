@@ -41,11 +41,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
       type: "SET_SELECTED_ARTWORK_LIST_IDS",
       payload: selectedArtworkListIds,
     })
-
-    console.log("[debug] changed", selectedArtworkListIds.length)
   }, [selectedArtworkListIds, dispatch])
-
-  console.log("[debug] selectedArtworkListIDs", state.selectedArtworkListIDs.length)
 
   const handleRefresh = () => {
     setRefreshing(true)

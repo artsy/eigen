@@ -65,22 +65,17 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const saveArtworkToLists = () => {
     if (!isArtworkListsEnabled) {
-      console.log("[debug] step 1")
       saveArtworkToDefaultArtworkList()
       return
     }
 
     if (artworkListId || isSavedToCustomArtworkLists) {
-      console.log("[debug] step 2")
       openSelectArtworkListsForArtworkView()
       return
     }
 
-    console.log("[debug] step 3")
     saveArtworkToDefaultArtworkList()
   }
-
-  console.log("[debug] isSaved", isSaved)
 
   return {
     isSaved,

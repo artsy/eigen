@@ -119,8 +119,6 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   const toast = useArtworkListToast()
 
   const onSave = (result: SaveResult) => {
-    console.log("[debug] save result", result)
-
     if (artworkListId) {
       if (result.action !== ResultAction.ModifiedCustomArtworkLists) {
         throw new Error("You should pass `ModifiedCustomArtworkLists` action")
