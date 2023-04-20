@@ -1,6 +1,7 @@
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
-import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView"
+import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
 
 export enum ResultAction {
@@ -149,14 +150,16 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   return (
     <ArtworkListsContext.Provider value={value}>
-      {children}
+      <BottomSheetModalProvider>
+        {children}
 
-      {!!state.artwork && (
-        <>
-          <SelectArtworkListsForArtworkView />
-          {state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
-        </>
-      )}
+        {!!state.artwork && (
+          <>
+            <SelectArtworkListsForArtworkView />
+            {state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+          </>
+        )}
+      </BottomSheetModalProvider>
     </ArtworkListsContext.Provider>
   )
 }
