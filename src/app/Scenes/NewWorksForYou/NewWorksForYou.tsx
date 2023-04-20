@@ -161,16 +161,19 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       return
     }
 
-    maybeReportExperimentVariant({
-      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-      enabled: worksForYouRecommendationsModel.enabled,
-      variantName: worksForYouRecommendationsModel.variant,
-      payload: worksForYouRecommendationsModel.payload,
-      context_owner_type: OwnerType.newWorksForYou,
-      context_owner_screen: OwnerType.newWorksForYou,
-      storeContext: true,
-    })
-  }, [])
+    // We would like to trigger the tracking only if the experiment is enabled
+    if (worksForYouRecommendationsModel.enabled) {
+      maybeReportExperimentVariant({
+        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+        enabled: worksForYouRecommendationsModel.enabled,
+        variantName: worksForYouRecommendationsModel.variant,
+        payload: worksForYouRecommendationsModel.payload,
+        context_owner_type: OwnerType.newWorksForYou,
+        context_owner_screen: OwnerType.newWorksForYou,
+        storeContext: true,
+      })
+    }
+  }, [worksForYouRecommendationsModel.enabled])
 
   return (
     <QueryRenderer<NewWorksForYouQuery>

@@ -2,9 +2,9 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { setupFlipper } from "app/system/devTools/flipper"
+import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { navigate } from "app/system/navigation/navigate"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
 import { addTrackingProvider } from "app/utils/track"
@@ -13,6 +13,7 @@ import {
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
@@ -20,21 +21,19 @@ import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
-import RNShake from "react-native-shake"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
 import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
 import { Providers } from "./Providers"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
-import { Onboarding, __unsafe__onboardingNavigationRef } from "./Scenes/Onboarding/Onboarding"
+import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useDebugging } from "./utils/useDebugging"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
-import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
@@ -54,30 +53,6 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
-const useRageShakeDevMenu = () => {
-  const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-
-  useEffect(() => {
-    const subscription = RNShake.addListener(() => {
-      if (!userIsDev || !isHydrated) {
-        return
-      }
-
-      if (!isLoggedIn) {
-        __unsafe__onboardingNavigationRef.current?.navigate("DevMenu")
-      } else {
-        navigate("/dev-menu", { modal: true })
-      }
-    })
-
-    return () => {
-      subscription.remove()
-    }
-  }, [userIsDev, isHydrated, isLoggedIn])
-}
-
 const Main = () => {
   useRageShakeDevMenu()
   useDebugging()
@@ -91,6 +66,10 @@ const Main = () => {
     Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isUserIdentified = GlobalStore.useAppState(
+    (state) => state.auth.sessionState.isUserIdentified
+  )
+
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState(
@@ -145,7 +124,7 @@ const Main = () => {
     }
   }, [isLoggedIn])
 
-  if (!isHydrated) {
+  if (!isHydrated || !isUserIdentified) {
     return <View />
   }
 

@@ -692,17 +692,20 @@ export const HomeQueryRenderer: React.FC = () => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   useEffect(() => {
-    maybeReportExperimentVariant({
-      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-      enabled: worksForYouRecommendationsModel.enabled,
-      variantName: worksForYouRecommendationsModel.variant,
-      payload: worksForYouRecommendationsModel.payload,
-      context_module: ContextModule.newWorksForYouRail,
-      context_owner_type: OwnerType.home,
-      context_owner_screen: OwnerType.home,
-      storeContext: true,
-    })
-  }, [])
+    // We would like to trigger the tracking only if the experiment is enabled
+    if (worksForYouRecommendationsModel.enabled) {
+      maybeReportExperimentVariant({
+        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+        enabled: worksForYouRecommendationsModel.enabled,
+        variantName: worksForYouRecommendationsModel.variant,
+        payload: worksForYouRecommendationsModel.payload,
+        context_module: ContextModule.newWorksForYouRail,
+        context_owner_type: OwnerType.home,
+        context_owner_screen: OwnerType.home,
+        storeContext: true,
+      })
+    }
+  }, [worksForYouRecommendationsModel.enabled])
 
   useEffect(() => {
     if (flash_message) {
