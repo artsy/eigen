@@ -1,4 +1,5 @@
-import { Text } from "@artsy/palette-mobile"
+import { ArticleScreenQuery } from "__generated__/ArticleScreenQuery.graphql"
+import { ArticleBody } from "app/Scenes/Article/Components/ArticleBody"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -16,17 +17,21 @@ export const ArticleScreen: React.FC<ArticleScreenProps> = (props) => {
 }
 
 const Article: React.FC<ArticleScreenProps> = () => {
-  const data = useLazyLoadQuery(ArticleScreenQuery, {
+  const data = useLazyLoadQuery<ArticleScreenQuery>(articleScreenQuery, {
     slug: "artsy-editorial-data-spotlight-artists-demand-2023",
   })
-  console.log(data)
-  return <Text>Hi Article</Text>
+
+  if (!data.article) {
+    return null
+  }
+
+  return <ArticleBody article={data.article} />
 }
 
-export const ArticleScreenQuery = graphql`
+export const articleScreenQuery = graphql`
   query ArticleScreenQuery($slug: String!) {
     article(id: $slug) {
-      internalID
+      ...ArticleBody_article
     }
   }
 `
