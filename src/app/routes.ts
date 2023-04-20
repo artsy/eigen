@@ -276,6 +276,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       useRightCloseButton: true,
     }),
     addRoute("/storybook", "Storybook"),
+    addRoute("/artwork-lists/select-lists-for-artwork", "SelectListsForArtwork1"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

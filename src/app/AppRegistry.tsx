@@ -22,6 +22,7 @@ import {
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
+import { SelectListsForArtwork1 } from "app/Scenes/SelectListsForArtwork1/SelectListsForArtwork1"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -525,6 +526,11 @@ export const modules = defineModules({
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
+  SelectListsForArtwork1: reactModule(SelectListsForArtwork1, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
 })
 
 // Register react modules with the app registry
