@@ -14053,6 +14053,11 @@ react-native-codegen@^0.0.8:
   version "1.4.11"
   resolved "https://github.com/artsy/react-native-config.git#278cbdc5f71d792f30c7474b0a0a5caab5c95551"
 
+react-native-context-menu-view@1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-context-menu-view/-/react-native-context-menu-view-1.9.1.tgz#7feb5321839adf85ae7c7a8510682df3399e89d4"
+  integrity sha512-mkRzC0RpGw1xPNh9tNLejpfEyGwSGI+2SCgxgfa+1YRBXxA7RfRvHJOAakItKnDH8zMqDj5CxZybIks+qhxT5A==
+
 react-native-credit-card-input@0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/react-native-credit-card-input/-/react-native-credit-card-input-0.4.1.tgz#e62dd1a9beeab6787e5373ba23b93831cbf5f3de"
