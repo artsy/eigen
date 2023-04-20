@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-// import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
+
 import { FC, useRef } from "react"
 import { TouchableHighlight } from "react-native"
 import styled, { keyframes } from "styled-components"
@@ -32,7 +32,6 @@ export const ProgressiveOnboardingHighlight: FC<ProgressiveOnboardingHighlightPr
           left: position.left,
         }
   )
-  // useProgressiveOnboardingTracking({ name })
 
   return (
     <Wrapper onPress={handlePress}>

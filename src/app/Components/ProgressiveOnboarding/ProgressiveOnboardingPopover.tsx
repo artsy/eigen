@@ -1,5 +1,5 @@
 import { Box, Popover, PopoverProps } from "@artsy/palette-mobile"
-import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
+
 import { FC } from "react"
 
 interface ProgressiveOnboardingPopoverProps extends Omit<PopoverProps, "children"> {
@@ -12,8 +12,6 @@ export const ProgressiveOnboardingPopover: FC<ProgressiveOnboardingPopoverProps>
   name,
   ...rest
 }) => {
-  useProgressiveOnboardingTracking({ name })
-
   return (
     <Popover
       popover={popover}

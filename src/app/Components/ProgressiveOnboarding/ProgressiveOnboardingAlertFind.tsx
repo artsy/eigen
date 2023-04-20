@@ -1,11 +1,10 @@
 import { Text } from "@artsy/palette-mobile"
-import { Z } from "Apps/Components/constants"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_FIND,
   useProgressiveOnboarding,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingContext"
 import {
-  ProgressiveOnboardingCountsQueryRenderer,
+  ProgressiveOnboardingCounts,
   WithProgressiveOnboardingCountsProps,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingCounts"
 import { ProgressiveOnboardingPopover } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPopover"
@@ -13,7 +12,7 @@ import { FC } from "react"
 
 type ProgressiveOnboardingAlertFindProps = WithProgressiveOnboardingCountsProps
 
-const ProgressiveOnboardingAlertFind: FC<ProgressiveOnboardingAlertFindProps> = ({
+const ProgressiveOnboardingAlertFindChild: FC<ProgressiveOnboardingAlertFindProps> = ({
   children,
   counts,
 }) => {
@@ -43,7 +42,6 @@ const ProgressiveOnboardingAlertFind: FC<ProgressiveOnboardingAlertFindProps> = 
       onClose={handleClose}
       onDismiss={handleDismiss}
       ignoreClickOutside={false}
-      zIndex={Z.dropdown}
       popover={<Text variant="xs">Find and edit all your Alerts here.</Text>}
     >
       {children}
@@ -51,10 +49,10 @@ const ProgressiveOnboardingAlertFind: FC<ProgressiveOnboardingAlertFindProps> = 
   )
 }
 
-export const ProgressiveOnboardingAlertFindQueryRenderer: FC = ({ children }) => {
+export const ProgressiveOnboardingAlertFind: FC = ({ children }) => {
   return (
-    <ProgressiveOnboardingCountsQueryRenderer Component={ProgressiveOnboardingAlertFind}>
+    <ProgressiveOnboardingCounts Component={ProgressiveOnboardingAlertFindChild}>
       {children}
-    </ProgressiveOnboardingCountsQueryRenderer>
+    </ProgressiveOnboardingCounts>
   )
 }
