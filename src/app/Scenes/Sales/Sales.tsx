@@ -29,6 +29,7 @@ export const SalesScreenQuery = graphql`
     }
   }
 `
+
 export const Sales: React.FC = () => {
   const data = useLazyLoadQuery<SalesQuery>(
     SalesScreenQuery,
