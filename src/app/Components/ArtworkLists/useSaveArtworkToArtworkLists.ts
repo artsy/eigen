@@ -21,7 +21,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   let isSaved = artwork.isSaved
 
   if (isArtworkListsEnabled) {
-    // TODO: Add comment about this
     if (typeof artworkListId !== "undefined") {
       isSaved = isSavedToArtworkList
     } else {
@@ -35,7 +34,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
     onCompleted: (isArtworkSaved) => {
-      // TODO: Maybe rename it
       onCompleted?.(isArtworkSaved)
 
       if (isArtworkListsEnabled) {

@@ -40,7 +40,6 @@ export const useSaveArtwork = ({
         },
       },
       onCompleted: () => {
-        // TODO: Clarify this moment
         refreshOnArtworkSave(contextScreen)
         onCompleted?.(nextSavedState)
       },
