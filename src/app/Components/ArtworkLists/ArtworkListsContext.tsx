@@ -18,12 +18,13 @@ export interface RecentlyAddedArtworkList {
 type State = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
+  selectedArtworkListIDs: string[]
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
 }
 
-export enum Mode {
+export enum ArtworkListMode {
   AddingArtworkListIDs = "addingArtworkListIDs",
   RemovingArtworkListIDs = "removingArtworkListIDs",
 }
@@ -35,8 +36,9 @@ type Action =
   | { type: "RESET" }
   | {
       type: "ADD_OR_REMOVE_ARTWORK_LIST_ID"
-      payload: { mode: Mode; artworkListID: string }
+      payload: { mode: ArtworkListMode; artworkListID: string }
     }
+  | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
 
 export interface ArtworkEntity {
   id: string
@@ -85,6 +87,7 @@ interface ArtworkListsProviderProps {
 export const INITIAL_STATE: State = {
   createNewArtworkListViewVisible: false,
   artwork: null,
+  selectedArtworkListIDs: [],
   addingArtworkListIDs: [],
   removingArtworkListIDs: [],
   recentlyAddedArtworkList: null,
@@ -200,6 +203,11 @@ const reducer = (state: State, action: Action): State => {
       }
     case "RESET":
       return INITIAL_STATE
+    case "SET_SELECTED_ARTWORK_LIST_IDS":
+      return {
+        ...state,
+        selectedArtworkListIDs: action.payload,
+      }
     default:
       return state
   }
