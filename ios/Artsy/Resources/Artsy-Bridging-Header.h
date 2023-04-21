@@ -89,7 +89,6 @@
 #import "UIView+ARDrawing.h"
 #import "ARButtonSubclasses.h"
 #import "UIColor+ArtsyColors.h"
-#import <EDColor/EDColor.h>
 #import "ARSpinner.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <FXBlurView/FXBlurView.h>
