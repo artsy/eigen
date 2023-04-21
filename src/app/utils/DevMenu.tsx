@@ -34,7 +34,6 @@ import {
   Button as RNButton,
   DevSettings,
   NativeModules,
-  Platform,
   ScrollView,
   TouchableHighlight,
   TouchableOpacity,
@@ -256,15 +255,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               toast.show("Copied to clipboard", "middle")
             }}
           />
-          {Platform.OS === "ios" && (
-            <FeatureFlagMenuItem
-              title="Go to old Dev Menu"
-              onPress={() => {
-                navigate("/dev-menu-old", { modal: true })
-              }}
-            />
-          )}
-
           <FeatureFlagMenuItem
             title="Log out"
             titleColor="red100"
