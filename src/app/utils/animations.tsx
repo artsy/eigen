@@ -37,6 +37,8 @@ export const AnimateHeight: React.FC<AnimateHeightProps> = ({
   animate = {},
   transition = {
     type: "spring",
+    damping: 16,
+    mass: 1.2,
   },
   initialHeight = 100,
 }) => {
