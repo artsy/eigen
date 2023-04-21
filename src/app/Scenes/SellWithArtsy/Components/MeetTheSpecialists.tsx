@@ -1,17 +1,19 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Spacer, Text, useColor, useSpace, Button, LinkText } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Pill } from "app/Components/Pill"
+import { ReadMore } from "app/Components/ReadMore"
 import {
   SpecialistsData,
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations"
+import { truncatedTextLimit } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
-import { times, uniqBy } from "lodash"
+import { uniqBy } from "lodash"
+import { MotiView } from "moti"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 
 type InqueryPress = (
@@ -137,14 +139,15 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-
-  const [expand, setExpand] = useState(false)
-  const toggleExpand = () => setExpand(!expand)
+  const bioTextLimit = truncatedTextLimit()
 
   const buttonText = `Contact ${specialist.firstName}`
 
   const imgHeightToWidthRatio = 1.511 // based on designs
   const imgWidth = useExtraLargeWidth()
+  const imgHeight = imgWidth * imgHeightToWidthRatio
+
+  const [isBioExpanded, setIsBioExpanded] = useState(false)
 
   return (
     <ImageBackground
@@ -152,53 +155,66 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
       resizeMode="cover"
       style={{
         width: imgWidth,
-        height: imgWidth * imgHeightToWidthRatio,
+        height: imgHeight,
         marginRight: space(1),
       }}
     >
-      <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+      <MotiView
         style={{
           position: "absolute",
+          height: imgHeight,
           width: "100%",
-          height: "100%",
+          bottom: 0,
+          alignItems: "flex-end",
+          flexDirection: "row",
         }}
-      />
-      <Flex position="absolute" bottom={0} mx={1} pb={2}>
+        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
+        transition={{
+          type: "timing",
+          duration: 250,
+        }}
+      >
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      </MotiView>
+      <Flex position="absolute" bottom={0} pb={2}>
         <AnimateHeight>
-          <TouchableWithoutFeedback onPress={() => toggleExpand()}>
-            <Text variant="lg-display" color={color("white100")} mt={1}>
-              {specialist.name}
-            </Text>
-            <Text variant="xs" color={color("white100")}>
-              {specialist.jobTitle}
-            </Text>
-            {expand ? (
-              <Flex>
-                <Text variant="xs" color={color("white100")}>
-                  {/* TODO: Display expanded bio */}
-                  {times(5, () => specialist.bio).join(" ")}
-                </Text>
-
-                <LinkText mt={0.5} mb={1} variant="xs" color={color("white100")}>
-                  Read Less
-                </LinkText>
-              </Flex>
-            ) : (
-              <Flex>
-                <Text variant="xs" color={color("white100")}>
-                  {specialist.bio}
-                  {".. "}
-                  <LinkText mt={0.5} mb={1} variant="xs" color={color("white100")}>
-                    Read More
-                  </LinkText>
-                </Text>
-              </Flex>
-            )}
-          </TouchableWithoutFeedback>
+          {/* <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+            style={{
+              position: "absolute",
+              width: imgWidth,
+              height: "100%",
+              bottom: -60,
+            }}
+          /> */}
+          <Text variant="lg-display" color={color("white100")} mt={1} mx={1}>
+            {specialist.name}
+          </Text>
+          <Text variant="xs" color={color("white100")} mx={1}>
+            {specialist.jobTitle}
+          </Text>
+          <Flex mx={1}>
+            <ReadMore
+              content={specialist.bio}
+              maxChars={30 ?? bioTextLimit}
+              textStyle="new"
+              textVariant="xs"
+              linkTextVariant="xs"
+              color={color("white100")}
+              showReadLessButton
+              onExpand={(isExpanded) => setIsBioExpanded(isExpanded)}
+            />
+          </Flex>
         </AnimateHeight>
         <Button
           size="small"
+          mx={1}
           mt={1}
           variant="outlineLight"
           onPress={() => {
