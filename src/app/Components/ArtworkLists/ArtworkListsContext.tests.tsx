@@ -75,27 +75,139 @@ describe("ArtworkListsProvider", () => {
 
       expect(getByText("Create a new list")).toBeTruthy()
     })
+
+    describe("Selected/unselected artwork lists state", () => {
+      it("all artwork lists should be unselected", async () => {
+        const { queryAllByA11yState } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const selected = queryAllByA11yState({ selected: true })
+        expect(selected).toHaveLength(0)
+      })
+
+      it("recently selected artwork lists should be preselected by default", async () => {
+        const { queryAllByA11yState } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList: {
+              ...savedArtworksArtworkList,
+              isSavedArtwork: true,
+            },
+            customArtworkLists: {
+              edges: [
+                {
+                  node: {
+                    ...customArtworkListOne,
+                    isSavedArtwork: true,
+                  },
+                },
+                {
+                  node: customArtworkListTwo,
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const selected = queryAllByA11yState({ selected: true })
+        expect(selected).toHaveLength(2)
+      })
+
+      it("add selected state when artwork list is pressed", async () => {
+        const { queryAllByA11yState, getByText } = renderWithHookWrappersTL(
+          <TestRenderer />,
+          mockEnvironment
+        )
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const selectedBefore = queryAllByA11yState({ selected: true })
+        expect(selectedBefore).toHaveLength(0)
+
+        fireEvent.press(getByText("Custom Artwork List 2"))
+
+        const selectedAfter = queryAllByA11yState({ selected: true })
+        expect(selectedAfter).toHaveLength(1)
+      })
+
+      it("unselect recently selected artwork lists", async () => {
+        const { queryAllByA11yState, getByText } = renderWithHookWrappersTL(
+          <TestRenderer />,
+          mockEnvironment
+        )
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList: {
+              ...savedArtworksArtworkList,
+              isSavedArtwork: true,
+            },
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        // Select some custom artwork list
+        fireEvent.press(getByText("Custom Artwork List 2"))
+
+        const selectedBefore = queryAllByA11yState({ selected: true })
+        expect(selectedBefore).toHaveLength(2)
+
+        // Unselect all
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 2"))
+
+        const selectedAfter = queryAllByA11yState({ selected: true })
+        expect(selectedAfter).toHaveLength(0)
+      })
+    })
   })
 })
 
 const savedArtworksArtworkList = {
   internalID: "saved-artworks",
   name: "Saved Artworks",
+  isSavedArtwork: false,
+}
+
+const customArtworkListOne = {
+  internalID: "custom-artwork-list-one",
+  name: "Custom Artwork List 1",
+  isSavedArtwork: false,
+}
+
+const customArtworkListTwo = {
+  internalID: "custom-artwork-list-two",
+  name: "Custom Artwork List 2",
+  isSavedArtwork: false,
 }
 
 const customArtworkLists = {
   edges: [
     {
-      node: {
-        internalID: "custom-artwork-list-one",
-        name: "Custom Artwork List 1",
-      },
+      node: customArtworkListOne,
     },
     {
-      node: {
-        internalID: "custom-artwork-list-two",
-        name: "Custom Artwork List 2",
-      },
+      node: customArtworkListTwo,
     },
   ],
 }

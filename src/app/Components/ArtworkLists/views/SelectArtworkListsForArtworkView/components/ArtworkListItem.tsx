@@ -60,7 +60,13 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
     <TouchableOpacity onPress={handleArtworkListPress}>
       <Flex p={1} flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text>{artworkList.name}</Text>
-        {isSelected && <CheckCircleIcon width={ICON_SIZE} height={ICON_SIZE} />}
+        {isSelected && (
+          <CheckCircleIcon
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            accessibilityState={{ selected: isSelected }}
+          />
+        )}
       </Flex>
     </TouchableOpacity>
   )
