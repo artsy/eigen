@@ -1,7 +1,8 @@
-import { Box, Button, Text } from "@artsy/palette-mobile"
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
+import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
-import { StyleSheet } from "react-native"
 
 export enum ResultAction {
   SavedToDefaultArtworkList,
@@ -10,10 +11,14 @@ export enum ResultAction {
 }
 
 type State = {
+  createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
 }
 
-type Action = { type: "SET_ARTWORK"; payload: ArtworkEntity | null } | { type: "RESET" }
+type Action =
+  | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
+  | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
+  | { type: "RESET" }
 
 export interface ArtworkEntity {
   id: string
@@ -58,6 +63,7 @@ interface ArtworkListsProviderProps {
 }
 
 export const INITIAL_STATE: State = {
+  createNewArtworkListViewVisible: false,
   artwork: null,
 }
 
@@ -115,20 +121,27 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   return (
     <ArtworkListsContext.Provider value={value}>
-      {children}
+      <BottomSheetModalProvider>
+        {children}
 
-      {!!state.artwork && (
-        <Box bg="red" {...StyleSheet.absoluteFillObject}>
-          <Text>{JSON.stringify(state.artwork, null, 2)}</Text>
-          <Button onPress={reset}>Close</Button>
-        </Box>
-      )}
+        {!!state.artwork && (
+          <>
+            <SelectArtworkListsForArtworkView />
+            {state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+          </>
+        )}
+      </BottomSheetModalProvider>
     </ArtworkListsContext.Provider>
   )
 }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE":
+      return {
+        ...state,
+        createNewArtworkListViewVisible: action.payload,
+      }
     case "SET_ARTWORK":
       return {
         ...state,
