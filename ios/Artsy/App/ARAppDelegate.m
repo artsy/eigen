@@ -19,7 +19,6 @@
 #import "AROptions.h"
 
 #import "UIViewController+InnermostTopViewController.h"
-#import "ARAdminSettingsViewController.h"
 #import "ARRouter.h"
 #import "ARNetworkConstants.h"
 #import "ArtsyAPI+Private.h"
