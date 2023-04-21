@@ -121,7 +121,7 @@ lane :set_build_version_android do |options|
     version_code = current_version_code + 1
   end
 
-  next_version_code = version_code
+  next_version_code = "800"
 
   contents = File.read(build_gradle)
 
