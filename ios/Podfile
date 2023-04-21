@@ -79,7 +79,6 @@ target 'Artsy' do
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
-  pod 'EDColor', '1.0.1'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
