@@ -1,14 +1,55 @@
 # Debugging
 
-There are multiple tools available to help you debug your app. This document will cover our preferred tools and how to use them:
+There are multiple tools available to help you debug your app. This document will cover our preferred tools and how to use them.
 
-- [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
+Our debugging tool of choice for mostly everything is [Flipper](https://fbflipper.com/) but we also use the following:
+
 - [Flipper](https://fbflipper.com/)
+- [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
 - [VSCode](https://blog.logrocket.com/debugging-react-native-vs-code/)
+
+If you want to debug with breakpoints or open the inspector find out how to open the dev menu and what it does [here](./dev_menu.md).
+
+## Flipper
+
+Flipper is a platform for debugging iOS, Android and React Native apps. Visualize, inspect, and control your apps from a simple desktop interface. Use Flipper as is or extend it using the plugin API.
+
+[This article](https://blog.logrocket.com/debugging-react-native-apps-flipper/) is also a great resource for learning how to debug with Flipper.
+
+### Installation
+
+1. Install [Flipper](https://fbflipper.com/): `$ brew update && brew install --cask flipper`.
+2. Now when you spawn an emulator/simulator it will automatically connect to it.
+
+### Plugins that we use
+
+- [Advanced Async Storage](https://github.com/lbaldy/flipper-plugin-async-storage-advanced) - Inspect and modify AsyncStorage values.
+- [Relay Dev Tools](https://github.com/th3rdwave/flipper-plugin-relay-devtools) - Visualize Relay data store.
+- [Redux Debugger](https://github.com/jk-gan/redux-flipper) - Inspect Redux state.
+
+You can find more about how to install them on the next section.
+
+### Installing Flipper Plugins
+
+Flipper has a number of community-built plugins that you can use to enhance your debugging experience. To install a Flipper plugin, follow these steps:
+
+Open Flipper and click on the `Plugin Manager` button on the left toolbar.
+
+In the `Plugin Manager` window, you'll see a list of all the available Flipper plugins. Search and find the plugin you want to install and click the Install button next to it.
+
+Flipper will download and install the plugin for you. Once the installation is complete, you'll be prompted to restart Flipper to activate the plugin.
+
+You may also need to enable the plugin, open the disabled tab, find the plugin you installed and while hovering over it you're going to see a `+` button, click it to enable the plugin.
+
+After restarting Flipper, you should be able to see the plugin in the Plugins menu.
+
+Some plugins may require additional configuration or setup steps. Please consult the documentation or contact `#practice-mobile` with any questions.
 
 ## Breakpoints
 
 To enable breakpoints, you need to **Start Remote JS Debugging** from the **In-App Developer menu**
+
+You can either use VSCode debugging, Chrome debugging or RN Debugger for this.
 
 ### Dynamic
 
