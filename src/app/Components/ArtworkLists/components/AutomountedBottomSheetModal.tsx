@@ -15,6 +15,8 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   useEffect(() => {
     if (visible) {
       ref.current?.present()
+    } else {
+      ref.current?.dismiss()
     }
   }, [visible])
 
