@@ -625,16 +625,7 @@ jest.mock("app/utils/track/providers.tsx", () => ({
   _addTrackingProvider: jest.fn(),
 }))
 
-jest.mock("@gorhom/bottom-sheet", () => {
-  const RN = require("react-native")
-
-  return {
-    __esModule: true,
-    default: RN.View, // mocks the BottomSheet
-    BottomSheetScrollView: RN.ScrollView,
-    namedExport: {
-      ...require("react-native-reanimated/mock"),
-      ...jest.requireActual("@gorhom/bottom-sheet"),
-    },
-  }
-})
+jest.mock("@gorhom/bottom-sheet", () => ({
+  __esModule: true,
+  ...require("@gorhom/bottom-sheet/mock"),
+}))
