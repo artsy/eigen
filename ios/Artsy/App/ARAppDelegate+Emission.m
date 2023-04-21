@@ -16,7 +16,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARDefaults.h"
-#import "ARNavigationController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
 #import "AROptions.h"

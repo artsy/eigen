@@ -81,8 +81,6 @@
 #import "ORStackView+ArtsyViews.h"
 #import <CommonCrypto/CommonHMAC.h>
 
-#import "ARExternalWebBrowserViewController.h"
-
 // All these were previously Pod dynamic frameworks and now static libraries
 #import "ARFonts.h"
 #import "Artsy+UILabels.h"
