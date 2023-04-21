@@ -1,4 +1,4 @@
-import { propsStore } from "./PropsStore"
+import { propsStore } from "app/store/PropsStore"
 
 describe("propsStore", () => {
   describe(propsStore.setPendingProps, () => {

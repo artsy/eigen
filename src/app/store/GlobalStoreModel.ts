@@ -11,10 +11,10 @@ import {
   getSubmissionModel,
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
-import { unsafe__getEnvironment } from "./GlobalStore"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import {
   getPendingPushNotificationModel,

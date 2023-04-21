@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { useIsStaging } from "app/store/GlobalStore"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import DeviceInfo from "react-native-device-info"
 
 export const DynamicIslandStagingIndicator = () => {

@@ -1,4 +1,5 @@
-import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useContext, useEffect, useState } from "react"
 import { UnleashContext } from "./UnleashProvider"
 import { getUnleashClient } from "./unleashClient"

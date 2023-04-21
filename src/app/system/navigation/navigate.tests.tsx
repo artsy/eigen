@@ -10,6 +10,11 @@ function args(mock: jest.Mock) {
 
 jest.unmock("./navigate")
 
+jest.mock("app/utils/hooks/useVisualClue", () => ({
+  addClue: jest.fn(),
+  setVisualClueAsSeen: jest.fn(),
+}))
+
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 jest.mock("app/store/GlobalStore", () => ({

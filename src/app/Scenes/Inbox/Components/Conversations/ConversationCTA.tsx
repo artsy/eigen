@@ -1,6 +1,6 @@
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"

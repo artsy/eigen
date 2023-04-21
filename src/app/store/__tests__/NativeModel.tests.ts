@@ -1,7 +1,7 @@
 import { NotificationsManager } from "app/NativeModules/NotificationsManager"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { NativeEvent } from "app/store/NativeModel"
 import { navigate } from "app/system/navigation/navigate"
-import { __globalStoreTestUtils__ } from "./GlobalStore"
-import { NativeEvent } from "./NativeModel"
 
 beforeEach(() => {
   __globalStoreTestUtils__?.reset()

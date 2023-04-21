@@ -1,7 +1,7 @@
 import { Flex, useSpace, BackButton } from "@artsy/palette-mobile"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
-import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
