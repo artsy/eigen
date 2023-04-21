@@ -10,14 +10,21 @@ export enum ResultAction {
   ModifiedCustomArtworkLists,
 }
 
+export interface RecentlyAddedArtworkList {
+  internalID: string
+  name: string
+}
+
 type State = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
+  recentlyAddedArtworkList: RecentlyAddedArtworkList | null
 }
 
 type Action =
   | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
   | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
+  | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "RESET" }
 
 export interface ArtworkEntity {
@@ -65,6 +72,7 @@ interface ArtworkListsProviderProps {
 export const INITIAL_STATE: State = {
   createNewArtworkListViewVisible: false,
   artwork: null,
+  recentlyAddedArtworkList: null,
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -146,6 +154,11 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         artwork: action.payload,
+      }
+    case "SET_RECENTLY_ADDED_ARTWORK_LIST":
+      return {
+        ...state,
+        recentlyAddedArtworkList: action.payload,
       }
     case "RESET":
       return INITIAL_STATE
