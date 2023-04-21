@@ -14,7 +14,7 @@ module.exports = createRule({
     hasSuggestions: true,
     docs: {
       description:
-        "When we use `useLazyLoadQuery` inside a component that has `<Suspense />` in react-native it causes a crash, this rule is for preventing that"
+        "When we use useLazyLoadQuery inside a component that has <Suspense /> in react-native it causes a crash, this rule is for preventing that",
       recommended: "error",
     },
     messages: {
