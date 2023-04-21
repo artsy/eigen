@@ -6,6 +6,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
@@ -472,7 +473,9 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
             auctionState: getInitialAuctionTimerState(),
           }}
         >
-          <Artwork {...props} />
+          <ArtworkListsProvider>
+            <Artwork {...props} />
+          </ArtworkListsProvider>
         </ArtworkStoreProvider>
       </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
