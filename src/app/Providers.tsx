@@ -1,5 +1,6 @@
 import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { CustomShareSheetProvider } from "app/Components/CustomShareSheet/CustomShareSheetProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -17,7 +18,7 @@ import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
-export const Providers: React.FC = ({ children }) =>
+export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   combineProviders(
     [
       // If Provider A is using another Provider B, then A needs to appear below B.
@@ -36,6 +37,7 @@ export const Providers: React.FC = ({ children }) =>
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
+      CustomShareSheetProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
@@ -59,6 +61,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       !skipRelay && RelayDefaultEnvProvider,
       Theme,
       PopoverMessageProvider,
+      CustomShareSheetProvider,
       ToastProvider,
     ],
     children
