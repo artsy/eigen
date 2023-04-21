@@ -98,8 +98,6 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       >
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
-            {/* // TODO: Remove */}
-            {enableMeetTheSpecialist && <MeetTheSpecialists onInquiryPress={handleInquiryPress} />}
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
             <Spacer y={4} />
             <Join separator={<Spacer y={4} />}>
