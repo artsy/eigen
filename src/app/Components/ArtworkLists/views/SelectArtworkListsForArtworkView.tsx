@@ -1,11 +1,11 @@
-import { Button, Spacer } from "@artsy/palette-mobile"
+import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 
 const SNAP_POINTS = ["50%", "95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
-  const { dispatch, reset } = useArtworkListsContext()
+  const { state, dispatch, reset } = useArtworkListsContext()
 
   const openCreateNewArtworkListView = () => {
     dispatch({
@@ -16,6 +16,17 @@ export const SelectArtworkListsForArtworkView = () => {
 
   return (
     <AutomountedBottomSheetModal visible snapPoints={SNAP_POINTS} onDismiss={reset}>
+      {!!state.recentlyAddedArtworkList && (
+        <Box bg="green100">
+          <Text variant="xs" color="white100">
+            List Created
+          </Text>
+          <Text variant="xs" color="white100">
+            {state.recentlyAddedArtworkList.name}
+          </Text>
+        </Box>
+      )}
+
       <Button width="100%" block onPress={openCreateNewArtworkListView}>
         Create New List
       </Button>
