@@ -18,7 +18,7 @@ interface DismissedKeyStatus {
 
 const ProgressiveOnboardingContext = createContext<{
   dismissed: DismissedKey[]
-  dismiss: (key: ProgressiveOnboardingKey | readonly ProgressiveOnboardingKey[]) => void
+  dismiss: (key: ProgressiveOnboardingKey | ProgressiveOnboardingKey[]) => void
   isDismissed: (key: ProgressiveOnboardingKey) => DismissedKeyStatus
 }>({
   dismissed: [],
@@ -56,8 +56,14 @@ export const ProgressiveOnboardingProvider: FC = ({ children }) => {
   const mounted = useDidMount()
 
   const isDismissed = useCallback(
-    (key: DismissedKey) => {
-      return !mounted || dismissed.includes(key)
+    (key: ProgressiveOnboardingKey) => {
+      if (!mounted) return { status: false, timestamp: 0 }
+
+      const dismissedKey = dismissed.find((d) => d.key === key)
+
+      return dismissedKey
+        ? { status: true, timestamp: dismissedKey.timestamp }
+        : { status: false, timestamp: 0 }
     },
     [dismissed, mounted]
   )
@@ -167,7 +173,7 @@ export const __dismiss__ = async (
 ) => {
   const keys = Array.isArray(key) ? key : [key]
 
-  keys.forEach((key) => {
+  keys.forEach(async (key) => {
     const item = await AsyncStorage.getItem(localStorageKey(id))
     const dismissed = parse(item)
 
@@ -179,11 +185,16 @@ export const __dismiss__ = async (
 }
 
 export const get = async (id: string) => {
-  const item = await AsyncStorage.getItem(localStorageKey(id))
+  const item = await AsyncStorage.getItem(localStorageKey(id)).catch((e) => {
+    console.log("Error fetching onboarding state from local storage", e)
+    return JSON.stringify([{ status: false, timestamp: 0 }])
+  })
 
   return parse(item)
 }
 
 export const reset = async (id: string) => {
-  await AsyncStorage.removeItem(localStorageKey(id))
+  await AsyncStorage.removeItem(localStorageKey(id)).catch((e) =>
+    console.log("Error writing reset to local storage", e)
+  )
 }
