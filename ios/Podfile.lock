@@ -39,7 +39,6 @@ PODS:
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
     - Appboy-iOS-SDK/NewsFeed
-  - ARGenericTableViewController (1.0.2)
   - boost (1.76.0)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.6.2):
@@ -692,7 +691,6 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
-  - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
@@ -908,8 +906,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  ARGenericTableViewController:
-    :git: https://github.com/artsy/ARGenericTableViewController.git
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -1065,9 +1061,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  ARGenericTableViewController:
-    :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
-    :git: https://github.com/artsy/ARGenericTableViewController.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
@@ -1088,7 +1081,6 @@ SPEC CHECKSUMS:
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
   Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
-  ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
@@ -1235,6 +1227,6 @@ SPEC CHECKSUMS:
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 453eb4e600d4f5e6e4b34e265e79dcbc2dfc8dd2
+PODFILE CHECKSUM: e42ed183369bb920cb8c8659c37e83e2159157a1
 
 COCOAPODS: 1.11.3

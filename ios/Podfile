@@ -70,7 +70,6 @@ target 'Artsy' do
   pod 'INTUAnimationEngine'
 
   # Core
-  pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '3.7.2'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
