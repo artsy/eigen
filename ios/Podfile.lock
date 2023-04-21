@@ -692,9 +692,6 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
-  - AFNetworking/Reachability (= 2.7.0)
-  - AFNetworking/Security (= 2.7.0)
-  - AFNetworking/Serialization (= 2.7.0)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -1238,6 +1235,6 @@ SPEC CHECKSUMS:
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 06d815ca55ddac6aaea7c6403bb87d1ca4fb67b0
+PODFILE CHECKSUM: 453eb4e600d4f5e6e4b34e265e79dcbc2dfc8dd2
 
 COCOAPODS: 1.11.3

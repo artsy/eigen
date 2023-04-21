@@ -64,7 +64,7 @@ target 'Artsy' do
   )
 
   # Networking
-  pod 'AFNetworking', '2.7.0', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
+  pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.11.1'
   pod 'INTUAnimationEngine'
