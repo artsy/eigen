@@ -15,10 +15,6 @@ PODS:
   - AFNetworking/Reachability (2.7.0)
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
-  - AFOAuth1Client (0.4.0):
-    - AFNetworking/NSURLConnection (~> 2.5)
-    - AFNetworking/NSURLSession (~> 2.5)
-    - AFNetworking/Serialization (~> 2.5)
   - Analytics (4.1.6)
   - AppAuth (1.6.0):
     - AppAuth/Core (= 1.6.0)
@@ -699,7 +695,6 @@ DEPENDENCIES:
   - AFNetworking/Reachability (= 2.7.0)
   - AFNetworking/Security (= 2.7.0)
   - AFNetworking/Serialization (= 2.7.0)
-  - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -916,9 +911,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  AFOAuth1Client:
-    :git: https://github.com/artsy/AFOAuth1Client.git
-    :tag: 0.4.0-subspec-fix
   ARGenericTableViewController:
     :git: https://github.com/artsy/ARGenericTableViewController.git
   boost:
@@ -1076,9 +1068,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  AFOAuth1Client:
-    :git: https://github.com/artsy/AFOAuth1Client.git
-    :tag: 0.4.0-subspec-fix
   ARGenericTableViewController:
     :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
     :git: https://github.com/artsy/ARGenericTableViewController.git
@@ -1099,7 +1088,6 @@ SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
-  AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
   Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
@@ -1250,6 +1238,6 @@ SPEC CHECKSUMS:
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 16d628bfffb307722a6e0eed97273457f56988b6
+PODFILE CHECKSUM: 85ecb6d9973d0f596e195ba1d55bcec92d3c997d
 
 COCOAPODS: 1.11.3
