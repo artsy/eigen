@@ -8,7 +8,7 @@ import {
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations"
-import { truncatedTextLimit } from "app/utils/hardware"
+import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { uniqBy } from "lodash"
 import { MotiView } from "moti"
@@ -139,7 +139,7 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-  const bioTextLimit = truncatedTextLimit()
+  const bioTextLimit = isPad() ? 160 : 80
 
   const buttonText = `Contact ${specialist.firstName}`
 
@@ -162,47 +162,34 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
       <MotiView
         style={{
           position: "absolute",
-          height: imgHeight,
-          width: "100%",
-          bottom: 0,
-          alignItems: "flex-end",
+          height: "100%",
           flexDirection: "row",
         }}
         animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
         transition={{
           type: "timing",
-          duration: 250,
+          duration: 200,
         }}
       >
         <LinearGradient
           colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
           style={{
             width: "100%",
-            height: "100%",
           }}
         />
       </MotiView>
-      <Flex position="absolute" bottom={0} pb={2}>
+      <Flex position="absolute" bottom={0} pb={2} mt={1} mx={1}>
         <AnimateHeight>
-          {/* <LinearGradient
-            colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-            style={{
-              position: "absolute",
-              width: imgWidth,
-              height: "100%",
-              bottom: -60,
-            }}
-          /> */}
-          <Text variant="lg-display" color={color("white100")} mt={1} mx={1}>
+          <Text variant="lg-display" color={color("white100")}>
             {specialist.name}
           </Text>
-          <Text variant="xs" color={color("white100")} mx={1}>
+          <Text variant="xs" mb={0.5} color={color("white100")}>
             {specialist.jobTitle}
           </Text>
-          <Flex mx={1}>
+          <Flex mb={2}>
             <ReadMore
-              content={specialist.bio}
-              maxChars={30 ?? bioTextLimit}
+              content={specialist.bio + specialist.bio}
+              maxChars={bioTextLimit}
               textStyle="new"
               textVariant="xs"
               linkTextVariant="xs"
@@ -214,8 +201,6 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
         </AnimateHeight>
         <Button
           size="small"
-          mx={1}
-          mt={1}
           variant="outlineLight"
           onPress={() => {
             onInquiryPress(
