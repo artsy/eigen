@@ -45,7 +45,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         data: props.meAbove,
         isEmpty: !props.meAbove?.lotsByFollowedArtistsConnectionCount?.edges?.length,
         key: "lotsByFollowedArtistsRail",
-        prefetchUrl: "/lots-by-artists-you-follow",
+        prefetchUrl: "/auctions/lots-for-you-ending-soon",
         prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
         title: "Auction Lots for You Ending Soon",
         type: "lotsByFollowedArtists",
