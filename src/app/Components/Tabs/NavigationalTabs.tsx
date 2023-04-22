@@ -1,10 +1,10 @@
 import { Box } from "@artsy/palette-mobile"
 import { Tab, TabsProps } from "app/Components/Tabs"
-import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
+import { useScreenDimensions } from "app/utils/hooks"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { TabBarContainer } from "./TabBarContainer"
 
 /**
@@ -20,6 +20,7 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label, visualClues }, index) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const { showVisualClue } = useVisualClue()
 
         const { jsx } =

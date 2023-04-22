@@ -1,5 +1,5 @@
 import { Flex, Button } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface BrowseMoreRailCardProps {
   dark?: boolean

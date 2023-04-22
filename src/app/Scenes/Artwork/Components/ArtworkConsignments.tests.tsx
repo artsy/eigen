@@ -1,9 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkConsignments_artwork_TestQuery } from "__generated__/ArtworkConsignments_artwork_TestQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { useSelectedTab } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigate } from "app/system/navigation/navigate"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -13,8 +13,11 @@ import { ArtworkConsignments } from "./ArtworkConsignments"
 
 jest.mock("app/store/GlobalStore", () => ({
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
-  useSelectedTab: jest.fn(() => "home"),
   GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
+}))
+
+jest.mock("app/utils/hooks/useSelectedTab", () => ({
+  useSelectedTab: jest.fn(() => "home"),
 }))
 
 describe("ArtworkConsignments", () => {

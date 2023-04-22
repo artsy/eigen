@@ -6,11 +6,12 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
 import {

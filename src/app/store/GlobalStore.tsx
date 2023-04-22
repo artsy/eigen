@@ -1,19 +1,17 @@
-import { useNavigationState } from "@react-navigation/native"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { DevToggleName, FeatureName, features } from "app/store/config/features"
 import { switchTab } from "app/system/navigation/navigate"
 import { loadDevNavigationStateCache } from "app/system/navigation/useReloadedDevNavigationState"
 import { logAction } from "app/utils/loggers"
-import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { FeatureMap } from "./config/FeaturesModel"
-import { DevToggleName, FeatureName, features } from "./config/features"
-import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -97,25 +95,13 @@ const hooks = createTypedHooks<GlobalStoreModel>()
 
 export const GlobalStore = {
   useAppState: hooks.useStoreState,
-  get actions() {
+  get actions(): Actions<GlobalStoreModel> {
     return globalStoreInstance().getActions()
   },
 }
 
 export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
   return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
-}
-
-export function useSelectedTab(): BottomTabType {
-  const tabState = useNavigationState(
-    (state) => state.routes.find((r) => r.state?.type === "tab")?.state
-  )
-  if (!tabState) {
-    return "home"
-  } else {
-    const { index, routes } = tabState
-    return routes[index!].name as BottomTabType
-  }
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
@@ -126,12 +112,41 @@ const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
   return _globalStoreInstance
 }
 
-export function useFeatureFlag(key: FeatureName) {
-  return GlobalStore.useAppState((state) => state.artsyPrefs.features.flags[key])
+export function getCurrentEmissionState() {
+  const state = globalStoreInstance().getState() ?? null
+
+  // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
+  const userAgent = `${
+    __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
+  } Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
+
+  const data: GlobalStoreModel["native"]["sessionState"] = {
+    authenticationToken: state?.auth.userAccessToken || "",
+    launchCount: ArtsyNativeModule.launchCount,
+    userAgent,
+    userID: state?.auth.userID!,
+    userEmail: "user@example.com", // not used on android
+  }
+  return data
 }
 
-export function useDevToggle(key: DevToggleName) {
-  return GlobalStore.useAppState((state) => state.artsyPrefs.features.devToggles[key])
+// Unsafe calls. Must be colocated here:
+
+/**
+ * This is safe, but is marked unsafe because it should not be used within react components since it does not cause re-renders.
+ * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
+ * react components.
+ */
+export function unsafe__getSelectedTab(): BottomTabType {
+  const tabState = __unsafe_mainModalStackRef.current
+    ?.getRootState()
+    .routes.find((r) => r.state?.type === "tab")?.state
+  if (!tabState) {
+    return "home"
+  } else {
+    const { index, routes } = tabState
+    return routes[index!].name as BottomTabType
+  }
 }
 
 /**
@@ -176,28 +191,6 @@ export function unsafe_getDevToggle(key: DevToggleName) {
   return false
 }
 
-export const useVisualClue = () => {
-  const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
-  const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
-
-  const showVisualClue = (clueName?: VisualClueName | string): boolean => {
-    if (!clueName) {
-      return false
-    }
-
-    if (visualClueNames.includes(clueName)) {
-      return !seenVisualClues.includes(clueName)
-    }
-    return sessionVisualClues.includes(clueName)
-  }
-
-  return { seenVisualClues, showVisualClue }
-}
-
-export const addClue = GlobalStore.actions.visualClue.addClue
-
-export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
-
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -220,45 +213,6 @@ export function unsafe_getUserEmail() {
   return null
 }
 
-export function getCurrentEmissionState() {
-  const state = globalStoreInstance().getState() ?? null
-
-  // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
-  const userAgent = `${
-    __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
-  } Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
-
-  const data: GlobalStoreModel["native"]["sessionState"] = {
-    authenticationToken: state?.auth.userAccessToken || "",
-    launchCount: ArtsyNativeModule.launchCount,
-    userAgent,
-    userID: state?.auth.userID!,
-    userEmail: "user@example.com", // not used on android
-  }
-  return data
-}
-
-/**
- * This is safe, but is marked unsafe because it should not be used within react components since it does not cause re-renders.
- * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
- * react components.
- */
-export function unsafe__getSelectedTab(): BottomTabType {
-  const tabState = __unsafe_mainModalStackRef.current
-    ?.getRootState()
-    .routes.find((r) => r.state?.type === "tab")?.state
-  if (!tabState) {
-    return "home"
-  } else {
-    const { index, routes } = tabState
-    return routes[index!].name as BottomTabType
-  }
-}
-
-export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.devicePrefs.environment.env === "staging")
-}
-
 /**
  * This is marked as unsafe because it will not cause a re-render
  * if used during a react component's render. Use `useEnvironment` instead.
@@ -273,14 +227,4 @@ export function unsafe__getEnvironment() {
     environment: { env, strings },
   } = globalStoreInstance().getState().devicePrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
-}
-
-export function useEnvironment() {
-  const {
-    echo: { stripePublishableKey },
-  } = GlobalStore.useAppState((state) => state.artsyPrefs)
-  const {
-    environment: { env, strings },
-  } = GlobalStore.useAppState((state) => state.devicePrefs)
-  return { ...strings, stripePublishableKey, env }
 }

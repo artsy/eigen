@@ -5,7 +5,7 @@ import {
   AddedArtworkWithoutInsightsMessage,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 
 interface MyCollectionArtworkUploadMessagesProps {
   sourceTab: Tab

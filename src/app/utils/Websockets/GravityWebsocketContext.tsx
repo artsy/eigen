@@ -1,6 +1,6 @@
 // @ts-expect-error untyped package
 import { ActionCable, Cable } from "@kesha-antonov/react-native-action-cable"
-import { useIsStaging } from "app/store/GlobalStore"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import Config from "react-native-config"
 

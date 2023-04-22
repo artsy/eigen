@@ -1,6 +1,6 @@
 import { useColor, Text } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
-import { useDevToggle } from "app/store/GlobalStore"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import _ from "lodash"
 import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
@@ -99,6 +99,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     }
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const getActualDimensions = useCallback(() => {
     if (props.height && props.width) {
       return [props.width, props.height]
@@ -123,6 +124,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     return [layoutWidth, layoutHeight]
   }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const [fWidth, fHeight] = getActualDimensions()
     setFIHeight(fHeight)
@@ -170,6 +172,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     }
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const isDebugModeEnabled = useDevToggle("DTEnableNewImageLabel")
 
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]

@@ -1,7 +1,8 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
-import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigate } from "app/system/navigation/navigate"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -15,6 +16,9 @@ import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButt
 jest.mock("app/store/GlobalStore", () => ({
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
   GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
+}))
+
+jest.mock("app/utils/hooks/useSelectedTab", () => ({
   useSelectedTab: jest.fn(() => "home"),
 }))
 

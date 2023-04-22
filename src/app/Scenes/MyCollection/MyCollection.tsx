@@ -15,15 +15,12 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import {
-  GlobalStore,
-  setVisualClueAsSeen,
-  useDevToggle,
-  useVisualClue,
-} from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import {
   PlaceholderBox,
   PlaceholderGrid,

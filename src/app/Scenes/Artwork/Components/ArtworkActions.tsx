@@ -1,4 +1,13 @@
-import { EyeOpenedIcon, ShareIcon, Flex, Text, useSpace, Join, Spacer } from "@artsy/palette-mobile"
+import {
+  EyeOpenedIcon,
+  ShareIcon,
+  Flex,
+  Text,
+  useSpace,
+  Join,
+  Spacer,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -7,7 +16,6 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
-import { Touchable } from "@artsy/palette-mobile"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
