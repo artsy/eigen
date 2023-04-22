@@ -16,8 +16,6 @@
 
 #import "RCTScrollView+Artsy.h"
 
-#import <React/RCTScrollView.h>
-#import <React/RCTComponent.h>
 #import <React/UIView+React.h>
 #import <objc/runtime.h>
 
