@@ -1,11 +1,7 @@
 #import "ARSpinner.h"
 #import "UIView+ARSpinner.h"
-
-#if __has_include(<UIView+BooleanAnimations/UIView+BooleanAnimations.h>)
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#else
-@import UIView_BooleanAnimations;
-#endif
+
 
 @interface ARSpinner ()
 @property (nonatomic, strong) UIView *spinnerView;

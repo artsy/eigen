@@ -1,6 +1,4 @@
 #import "Artsy+UILabels.h"
-#import "UIView+ARDrawing.h"
-#import "UIColor+ArtsyColors.h"
 #import "UIFont+ArtsyFonts.h"
 
 
@@ -23,6 +21,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self setup];
 }
 
