@@ -7,6 +7,7 @@
 #import "Artsy+UILabels.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
+#import "UIView+HitTestExpansion.h"
 
 #define controllersRequiringHiddenNavBar @[@"ARSerifTestNavigationController"]
 

@@ -29,7 +29,9 @@
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
-#import "Artsy-Swift.h"
+#import "ARUserManager.h"
+#import "User.h"
+#import "ARAnalyticsConstants.h"
 
 @import Darwin.POSIX.sys.utsname;
 
