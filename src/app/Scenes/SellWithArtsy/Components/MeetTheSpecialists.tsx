@@ -7,7 +7,7 @@ import {
   SpecialistsData,
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
-import { AnimateHeight } from "app/utils/animations"
+import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { uniqBy } from "lodash"
@@ -188,7 +188,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           </Text>
           <Flex mb={2}>
             <ReadMore
-              content={specialist.bio}
+              content={specialist.bio + specialist.bio}
               maxChars={bioTextLimit}
               textStyle="new"
               textVariant="xs"

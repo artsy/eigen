@@ -14,6 +14,7 @@ import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import React, { useState } from "react"
 import { Text } from "react-native"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import { useTracking } from "react-tracking"
 import { ResponsiveValue } from "styled-system"
 
@@ -37,7 +38,7 @@ export const ReadMore = React.memo(
     content,
     maxChars,
     presentLinksModally,
-    color,
+    color = "black100",
     trackingFlow,
     contextModule,
     showReadLessButton = false,
@@ -133,6 +134,16 @@ export const ReadMore = React.memo(
     const plainTextVersion = plainTextFromTree(root)
     const isAlreadyExpanded = isExpanded || plainTextVersion.length <= maxChars
 
+    const onExpandPress = () => {
+      tracking.trackEvent({
+        action_name: Schema.ActionNames.ReadMore,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: contextModule ? contextModule : null,
+        flow: trackingFlow ? trackingFlow : null,
+      })
+      setIsExpanded(true)
+    }
+
     return isAlreadyExpanded ? (
       <Flex>
         {root}
@@ -149,23 +160,16 @@ export const ReadMore = React.memo(
         )}
       </Flex>
     ) : (
-      <Flex testID={testID}>
-        {truncate({
-          color,
-          linkTextVariant,
-          root,
-          maxChars,
-          onExpand: () => {
-            tracking.trackEvent({
-              action_name: Schema.ActionNames.ReadMore,
-              action_type: Schema.ActionTypes.Tap,
-              context_module: contextModule ? contextModule : null,
-              flow: trackingFlow ? trackingFlow : null,
-            })
-            setIsExpanded(true)
-          },
-        })}
-      </Flex>
+      <TouchableWithoutFeedback onPress={onExpandPress}>
+        <Flex testID={testID}>
+          {truncate({
+            color,
+            linkTextVariant,
+            root,
+            maxChars,
+          })}
+        </Flex>
+      </TouchableWithoutFeedback>
     )
   }
 )
@@ -179,14 +183,12 @@ function truncate({
   color = "white100",
   root,
   maxChars,
-  onExpand,
   linkTextVariant,
 }: {
   color?: ResponsiveValue<Color>
   linkTextVariant: PaletteTextProps["variant"]
   root: React.ReactNode
   maxChars: number
-  onExpand(): void
 }): React.ReactNode {
   // keep track of how many characters we have seen
   let offset = 0
@@ -226,7 +228,7 @@ function truncate({
           truncatedChildren.push(
             <>
               {"... "}
-              <LinkText onPress={onExpand} variant={linkTextVariant} color={color}>
+              <LinkText variant={linkTextVariant} color={color}>
                 {`Read${nbsp}more`}
               </LinkText>
             </>

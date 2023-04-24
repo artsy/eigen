@@ -1,30 +1,5 @@
-import { AnimatePresence, View, View as MotiView, useDynamicAnimation } from "moti"
-import React, { useState, useEffect, useRef } from "react"
-
-export const FadeInLeft: React.FC<{ show: boolean }> = ({ children, show }) => {
-  return (
-    <AnimatePresence>
-      {!!show && (
-        <View
-          from={{
-            translateX: -10,
-            opacity: 0,
-          }}
-          animate={{
-            translateX: 0,
-            opacity: 1,
-          }}
-          exit={{
-            translateX: -10,
-            opacity: 0,
-          }}
-        >
-          {children}
-        </View>
-      )}
-    </AnimatePresence>
-  )
-}
+import { MotiView, useDynamicAnimation } from "moti"
+import { useState, useRef, useEffect } from "react"
 
 type AnimateHeightProps = {
   children?: React.ReactNode
