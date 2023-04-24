@@ -115,15 +115,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   })
 
   useEffect(() => {
-    let filters: FilterArray = []
+    setFilterTypeAction("auctionResult")
 
     if (Array.isArray(initialFilters)) {
-      filters = initialFilters
+      setInitialFilterStateAction(initialFilters)
+      applyFiltersAction()
     }
-
-    setInitialFilterStateAction(filters)
-    setFilterTypeAction("auctionResult")
-    applyFiltersAction()
   }, [])
 
   const getSortDescription = useCallback(() => {
