@@ -35,7 +35,8 @@ import RNFetchBlob from "rn-fetch-blob"
 
 export const CustomShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useCustomShareSheet()
-  const showInstagramStoriesItem = useCanOpenURL("instagram://user?username=instagram")
+  const showInstagramStoriesItem =
+    useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const { height: screenHeight } = useScreenDimensions()
   const toast = useToast()
@@ -53,7 +54,7 @@ export const CustomShareSheet = () => {
   )
   const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
 
-  const shareArtworkOnInstagramStory = async () => {
+  const shareOnInstagramStory = async () => {
     const base64RawData = await shotRef.current!.capture!()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
@@ -68,7 +69,7 @@ export const CustomShareSheet = () => {
     hideShareSheet()
   }
 
-  const shareArtworkOnWhatsApp = async () => {
+  const shareOnWhatsApp = async () => {
     const details = shareContent(data)
 
     await Share.shareSingle({
@@ -81,19 +82,23 @@ export const CustomShareSheet = () => {
     hideShareSheet()
   }
 
-  const shareArtworkCopyLink = () => {
+  const handleCopyLink = () => {
     Clipboard.setString(`${unsafe__getEnvironment().webURL}${data.href}`)
     trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
     hideShareSheet()
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
 
-  const shareArtwork = async () => {
-    trackEvent({
-      action_name: Schema.ActionNames.Share,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkActions,
-    })
+  // User presses the more button and is presented with a native list of options
+  const handleMorePress = async () => {
+    // this is not getting called on sale, do we want to track this there?
+    if (data.type === "artwork") {
+      trackEvent({
+        action_name: Schema.ActionNames.Share,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: Schema.ContextModules.ArtworkActions,
+      })
+    }
 
     const details = shareContent(data)
 
@@ -128,7 +133,7 @@ export const CustomShareSheet = () => {
         Share
       </FancyModalHeader>
       <ScrollView>
-        {data.type === "artwork" && (
+        {data.type !== "sale" && (
           <InstagramStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}
@@ -141,29 +146,24 @@ export const CustomShareSheet = () => {
           <CustomShareSheetItem
             title="WhatsApp"
             Icon={<WhatsAppAppIcon />}
-            onPress={shareArtworkOnWhatsApp}
+            onPress={shareOnWhatsApp}
           />
         ) : null}
         {showInstagramStoriesItem ? (
           <CustomShareSheetItem
             title="Instagram Stories"
             Icon={<InstagramAppIcon />}
-            onPress={shareArtworkOnInstagramStory}
+            onPress={shareOnInstagramStory}
           />
         ) : null}
 
-        <CustomShareSheetItem
-          title="Copy link"
-          Icon={<LinkIcon />}
-          onPress={shareArtworkCopyLink}
-        />
-        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={shareArtwork} />
+        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
+        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
       </ScrollView>
     </FancyModal>
   )
 }
 
-// TODO: needs the other stuff, like sale and artist
 export const tracks = {
   customShare: (service: string, id: string, slug?: string): ShareType => ({
     action: ActionType.share,
