@@ -67,7 +67,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
                 artists: artwork.artists,
                 internalID: artwork.internalID,
                 currentImageIndex,
-                title: artwork.title,
+                title: artwork.title!,
                 href: artwork.href,
                 images: imageFigures,
               })
