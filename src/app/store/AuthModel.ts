@@ -197,7 +197,7 @@ export interface AuthModel {
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
   // Actions
-  setState: Action<this, Partial<StateMapper<this, "1">>>
+  setState: Action<this, Partial<StateMapper<this>>>
   setSessionState: Action<this, Partial<SessionState>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>

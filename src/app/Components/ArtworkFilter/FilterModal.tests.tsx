@@ -10,6 +10,7 @@ import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/Artw
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
@@ -86,7 +87,12 @@ const MockFilterModalNavigator = ({
   initialData?: ArtworkFiltersState
   shouldShowCreateAlertButton?: boolean
 }) => (
-  <ArtworkFiltersStoreProvider initialData={initialData}>
+  <ArtworkFiltersStoreProvider
+    runtimeModel={{
+      ...getArtworkFiltersModel(),
+      ...initialData,
+    }}
+  >
     <ArtworkFilterNavigator
       exitModal={exitModalMock}
       closeModal={closeModalMock}
@@ -177,7 +183,12 @@ describe("Filter modal navigation flow", () => {
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
     const { getByText } = renderWithWrappers(
-      <ArtworkFiltersStoreProvider initialData={initialState}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialState,
+        }}
+      >
         <ArtworkFilterOptionsScreen
           {...getEssentialProps({
             mode: FilterModalMode.Collection,
@@ -414,7 +425,12 @@ describe("Applying filters on Artworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <ArtworkFiltersStoreProvider initialData={initialData}>
+            <ArtworkFiltersStoreProvider
+              runtimeModel={{
+                ...getArtworkFiltersModel(),
+                ...initialData,
+              }}
+            >
               <CollectionArtworksFragmentContainer
                 collection={props.marketingCollection}
                 scrollToTop={jest.fn()}

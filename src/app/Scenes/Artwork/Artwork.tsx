@@ -33,7 +33,7 @@ import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
-import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -470,8 +470,9 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
     <ProvideScreenTracking info={trackingInfo}>
       <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
         <ArtworkStoreProvider
-          initialData={{
-            auctionState: getInitialAuctionTimerState(),
+          runtimeModel={{
+            ...artworkModel,
+            auctionState: getInitialAuctionTimerState()!,
           }}
         >
           <ArtworkListsProvider>

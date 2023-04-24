@@ -22,7 +22,7 @@ interface SavedSearchModel {
   >
 }
 
-const savedSearchModel: SavedSearchModel = {
+export const savedSearchModel: SavedSearchModel = {
   attributes: {},
   aggregations: [],
   dirty: false,
@@ -52,7 +52,7 @@ const savedSearchModel: SavedSearchModel = {
 }
 
 export const SavedSearchStore = createContextStore<SavedSearchModel>(
-  (initialData: SavedSearchModel) => ({
+  (initialData) => ({
     ...savedSearchModel,
     ...initialData,
   }),

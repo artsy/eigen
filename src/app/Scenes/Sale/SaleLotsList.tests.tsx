@@ -8,6 +8,7 @@ import {
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { extractText } from "app/utils/tests/extractText"
@@ -47,7 +48,12 @@ describe("SaleLotsListContainer", () => {
       render={({ props }) => {
         if (props) {
           return (
-            <ArtworkFiltersStoreProvider initialData={initialData}>
+            <ArtworkFiltersStoreProvider
+              runtimeModel={{
+                ...getArtworkFiltersModel(),
+                ...initialData,
+              }}
+            >
               <SaleLotsListContainer
                 saleArtworksConnection={props}
                 unfilteredSaleArtworksConnection={null as any}

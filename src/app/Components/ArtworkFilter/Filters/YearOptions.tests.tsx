@@ -5,6 +5,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -59,7 +60,12 @@ describe("Year Options Screen", () => {
   }: {
     initialData?: ArtworkFiltersState
   }) => (
-    <ArtworkFiltersStoreProvider initialData={initialData}>
+    <ArtworkFiltersStoreProvider
+      runtimeModel={{
+        ...getArtworkFiltersModel(),
+        ...initialData,
+      }}
+    >
       <YearOptionsScreen {...getEssentialProps()} />
       <ArtworkFiltersStoreConsumer />
     </ArtworkFiltersStoreProvider>

@@ -7,6 +7,7 @@ import {
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { extractText } from "app/utils/tests/extractText"
@@ -57,7 +58,12 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
     }: {
       initialData?: ArtworkFiltersState
     }) => (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <params.Screen />
       </ArtworkFiltersStoreProvider>
     )

@@ -3,6 +3,7 @@ import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsi
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { extractText } from "app/utils/tests/extractText"
@@ -51,7 +52,12 @@ describe("ArtistInsightsAuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           return (
-            <ArtworkFiltersStoreProvider initialData={initialData}>
+            <ArtworkFiltersStoreProvider
+              runtimeModel={{
+                ...getArtworkFiltersModel(),
+                ...initialData,
+              }}
+            >
               <ArtistInsightsAuctionResultsPaginationContainer
                 artist={props.artist}
                 scrollToTop={() => {

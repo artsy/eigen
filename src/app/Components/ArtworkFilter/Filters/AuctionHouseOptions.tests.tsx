@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
@@ -14,7 +15,12 @@ describe("AuctionHouse options screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <AuctionHouseOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )
