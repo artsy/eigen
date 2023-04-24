@@ -23,7 +23,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
@@ -47,11 +46,12 @@ export const CustomShareSheet = () => {
     return null
   }
 
-  const currentImage = (data.images ?? [])[data?.currentImageIndex ?? 0]
+  const currentImage = (data?.images ?? [])[data?.currentImageIndex ?? 0]
   const currentImageUrl = (data?.currentImage ?? currentImage?.url ?? "").replace(
     ":version",
     "normalized"
   )
+
   const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
 
   const shareOnInstagramStory = async () => {
@@ -91,15 +91,6 @@ export const CustomShareSheet = () => {
 
   // User presses the more button and is presented with a native list of options
   const handleMorePress = async () => {
-    // this is not getting called on sale, do we want to track this there?
-    if (data.type === "artwork") {
-      trackEvent({
-        action_name: Schema.ActionNames.Share,
-        action_type: Schema.ActionTypes.Tap,
-        context_module: Schema.ContextModules.ArtworkActions,
-      })
-    }
-
     const details = shareContent(data)
 
     const resp = await RNFetchBlob.config({
@@ -109,12 +100,14 @@ export const CustomShareSheet = () => {
     const base64RawData = await resp.base64()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
+    const shareOptions = {
+      title: details.title ?? "",
+      message: details.message + "\n" + details.url,
+      ...(data.type !== "sale" && { url: base64Data }),
+    }
+
     try {
-      const res = await Share.open({
-        title: details.title ?? "",
-        url: base64Data,
-        message: details.message + "\n" + details.url,
-      })
+      const res = await Share.open(shareOptions)
       trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
     } catch (err) {
       console.log({ err })
@@ -138,7 +131,7 @@ export const CustomShareSheet = () => {
             shotRef={shotRef}
             href={currentImageUrl}
             artist={data.artists![0]?.name!}
-            title={data.title!}
+            title={data?.title}
           />
         )}
 
