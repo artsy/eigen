@@ -2,25 +2,31 @@ import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "
 import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Pill } from "app/Components/Pill"
-import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
+import { ReadMore } from "app/Components/ReadMore"
+import {
+  SpecialistsData,
+  useSWALandingPageData,
+} from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
+import { AnimateHeight } from "app/utils/animations/AnimateHeight"
+import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { uniqBy } from "lodash"
+import { MotiView } from "moti"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
+type InqueryPress = (
+  trackingargs?: TappedConsignmentInquiry,
+  recipientEmail?: string,
+  recipientName?: string
+) => void
+
 export const MeetTheSpecialists: React.FC<{
-  onInquiryPress: (
-    trackingargs?: TappedConsignmentInquiry,
-    recipientEmail?: string,
-    recipientName?: string
-  ) => void
+  onInquiryPress: InqueryPress
 }> = ({ onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-
-  const imgHeightToWidthRatio = 1.511 // based on designs
-  const imgWidth = useExtraLargeWidth()
 
   const initialSpecialty = "auctions"
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>(initialSpecialty)
@@ -101,52 +107,7 @@ export const MeetTheSpecialists: React.FC<{
         showsHorizontalScrollIndicator={false}
         data={specialistsToDisplay}
         renderItem={({ item }) => {
-          const buttonText = `Contact ${item.firstName}`
-          return (
-            <ImageBackground
-              source={{ uri: item.image }}
-              resizeMode="cover"
-              style={{
-                width: imgWidth,
-                height: imgWidth * imgHeightToWidthRatio,
-                marginRight: space(1),
-              }}
-            >
-              <LinearGradient
-                colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-              <Flex position="absolute" bottom={0} mx={1} pb={2}>
-                <Text variant="lg-display" color={color("white100")} mt={1}>
-                  {item.name}
-                </Text>
-                <Text variant="xs" color={color("white100")}>
-                  {item.jobTitle}
-                </Text>
-                <Text variant="xs" color={color("white100")} mt={1}>
-                  {item.bio}
-                </Text>
-                <Button
-                  size="small"
-                  mt={1}
-                  variant="outlineLight"
-                  onPress={() => {
-                    onInquiryPress(
-                      tracks.consignmentInquiryTapped(buttonText),
-                      item.email,
-                      item.firstName
-                    )
-                  }}
-                >
-                  {buttonText}
-                </Button>
-              </Flex>
-            </ImageBackground>
-          )
+          return <Specialist specialist={item} onInquiryPress={onInquiryPress} />
         }}
         keyExtractor={(item) => item.name}
         ListFooterComponent={() => <Spacer x={4} />}
@@ -167,6 +128,92 @@ export const MeetTheSpecialists: React.FC<{
         </Button>
       </Flex>
     </Flex>
+  )
+}
+
+interface SpecialistProps {
+  specialist: SpecialistsData
+  onInquiryPress: InqueryPress
+}
+
+const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
+  const color = useColor()
+  const space = useSpace()
+  const bioTextLimit = isPad() ? 160 : 80
+
+  const buttonText = `Contact ${specialist.firstName}`
+
+  const imgHeightToWidthRatio = 1.511 // based on designs
+  const imgWidth = useExtraLargeWidth()
+  const imgHeight = imgWidth * imgHeightToWidthRatio
+
+  const [isBioExpanded, setIsBioExpanded] = useState(false)
+
+  return (
+    <ImageBackground
+      source={{ uri: specialist.image }}
+      resizeMode="cover"
+      style={{
+        width: imgWidth,
+        height: imgHeight,
+        marginRight: space(1),
+      }}
+    >
+      <MotiView
+        style={{
+          position: "absolute",
+          height: "100%",
+          flexDirection: "row",
+        }}
+        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
+        transition={{
+          type: "timing",
+          duration: 200,
+        }}
+      >
+        <LinearGradient
+          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+          style={{
+            width: "100%",
+          }}
+        />
+      </MotiView>
+      <Flex position="absolute" bottom={0} pb={2} mt={1} mx={1}>
+        <AnimateHeight>
+          <Text variant="lg-display" color={color("white100")}>
+            {specialist.name}
+          </Text>
+          <Text variant="xs" mb={0.5} color={color("white100")}>
+            {specialist.jobTitle}
+          </Text>
+          <Flex mb={2}>
+            <ReadMore
+              content={specialist.bio}
+              maxChars={bioTextLimit}
+              textStyle="new"
+              textVariant="xs"
+              linkTextVariant="xs"
+              color={color("white100")}
+              showReadLessButton
+              onExpand={(isExpanded) => setIsBioExpanded(isExpanded)}
+            />
+          </Flex>
+        </AnimateHeight>
+        <Button
+          size="small"
+          variant="outlineLight"
+          onPress={() => {
+            onInquiryPress(
+              tracks.consignmentInquiryTapped(buttonText),
+              specialist.email,
+              specialist.firstName
+            )
+          }}
+        >
+          {buttonText}
+        </Button>
+      </Flex>
+    </ImageBackground>
   )
 }
 

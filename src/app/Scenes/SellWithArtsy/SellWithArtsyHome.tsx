@@ -100,20 +100,15 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-
             <Spacer y={4} />
-
             <Join separator={<Spacer y={4} />}>
               <Highlights />
               <WaysWeSell />
             </Join>
-
             <Spacer y={6} />
-
             <HowItWorks onConsignPress={handleConsignPress} />
             <Spacer y={2} />
             <Spacer y={4} />
-
             <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
             {enableMeetTheSpecialist && <Spacer y={6} />}
             {enableMeetTheSpecialist && <MeetTheSpecialists onInquiryPress={handleInquiryPress} />}
@@ -121,16 +116,13 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <CollectorsNetwork />
             <Spacer y={6} />
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
-
             <Join separator={<Spacer y={6} />}>
               <></>
               {enableTestimonials && <Testimonials />}
               <FAQSWA />
             </Join>
-
             <Spacer y={4} />
             <Spacer y={2} />
-
             <Footer onConsignPress={handleConsignPress} />
             <Spacer y={4} />
           </Flex>

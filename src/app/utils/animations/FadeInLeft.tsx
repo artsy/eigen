@@ -1,10 +1,10 @@
-import { AnimatePresence, View } from "moti"
+import { AnimatePresence, MotiView } from "moti"
 
 export const FadeInLeft: React.FC<{ show: boolean }> = ({ children, show }) => {
   return (
     <AnimatePresence>
       {!!show && (
-        <View
+        <MotiView
           from={{
             translateX: -10,
             opacity: 0,
@@ -19,7 +19,7 @@ export const FadeInLeft: React.FC<{ show: boolean }> = ({ children, show }) => {
           }}
         >
           {children}
-        </View>
+        </MotiView>
       )}
     </AnimatePresence>
   )
