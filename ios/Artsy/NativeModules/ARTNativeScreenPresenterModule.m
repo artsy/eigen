@@ -29,9 +29,10 @@ RCT_EXPORT_MODULE()
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
+RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId enableInstantVIR:(BOOL)enableInstantVIR)
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
+    BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
     if (!supportsARVIR) {
         // we don't expect emission to call this when there's no AR support
         return;
@@ -48,12 +49,21 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             config.artworkID = artworkId;
             config.artworkSlug = artworkSlug;
             config.floorBasedVIR = YES;
-            config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
+            config.debugMode = [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (allowedAccess) {
-                ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
+                if (hasLidarEnabledDevice && enableInstantVIR) { // Lidar device we can do instant vertical detection
+                    ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
+                    [viewInRoomWallVC initWithConfig:config];
+                    viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    viewInRoomWallVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                    [[self.class currentlyPresentedVC] presentViewController:viewInRoomWallVC animated:YES completion:nil];
+                } else {
+                    ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
+                    viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    viewInRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                    [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
+                }
             } else {
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                 [echo setup];
@@ -61,8 +71,9 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 Message *setupURL = echo.messages[@"ARVIRVideo"];
 
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config enableInstantVIR:enableInstantVIR];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                setupVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [[self.class currentlyPresentedVC] presentViewController:setupVC animated:YES completion:nil];
             }
         };

@@ -116,3 +116,10 @@
 
 // Sentry Swift Access
 #import "ARSentryReporter.h"
+
+// AR
+#import "ARAugmentedRealityConfig.h"
+#import "ARAugmentedVIRSetupViewController.h"
+#import "ARInformationView.h"
+#import "ARSCNWallNode.h"
+#import "SCNArtworkNode.h"

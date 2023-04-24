@@ -14,6 +14,7 @@ import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoo
 import { LargeCard } from "app/Components/Cards"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -46,6 +47,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
+  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
+
   const { height: screenHeight } = useScreenDimensions()
 
   const { trackEvent } = useTracking()
@@ -58,7 +61,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       widthIn,
       heightIn,
       selectedArtwork.slug,
-      selectedArtwork.id
+      selectedArtwork.id,
+      enableInstantVIR
     )
   }
 
