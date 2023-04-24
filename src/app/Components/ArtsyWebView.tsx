@@ -100,19 +100,19 @@ export const ArtsyWebViewPage = ({
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
-          onLeftButtonPress={() => {
-            if (useRightCloseButton && !canGoBack) {
-              return null
-            }
-
-            if (isPresentedModally && !canGoBack) {
-              dismissModal()
-            } else if (!canGoBack) {
-              handleGoBack()
-            } else {
-              ref.current?.goBack()
-            }
-          }}
+          onLeftButtonPress={
+            useRightCloseButton && !canGoBack
+              ? undefined
+              : () => {
+                  if (isPresentedModally && !canGoBack) {
+                    dismissModal()
+                  } else if (!canGoBack) {
+                    handleGoBack()
+                  } else {
+                    ref.current?.goBack()
+                  }
+                }
+          }
           useShareButton={showShareButton}
           rightCloseButton={useRightCloseButton}
           onRightButtonPress={
