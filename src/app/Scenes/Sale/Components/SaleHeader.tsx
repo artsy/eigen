@@ -1,19 +1,13 @@
-import { MoreIcon, LinkIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
-import Clipboard from "@react-native-clipboard/clipboard"
+import { ShareIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { useToast } from "app/Components/Toast/toastHook"
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
-import { Touchable } from "@artsy/palette-mobile"
-import React, { useState } from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export const COVER_IMAGE_HEIGHT = 260
@@ -25,10 +19,8 @@ interface Props {
 }
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
-  const [shareSheetVisible, setShareSheetVisible] = useState(false)
+  const { showShareSheet } = useCustomShareSheet()
   const saInsets = useSafeAreaInsets()
-
-  const toast = useToast()
 
   const saleTimeDetails = saleTime(sale)
 
@@ -37,31 +29,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
   const cascadingEndTimeFeatureEnabled = sale.cascadingEndTimeIntervalMinutes
-
-  const handleCopyLinkPress = () => {
-    const clipboardLink = getShareURL(sale.href!)
-
-    setShareSheetVisible(false)
-    Clipboard.setString(clipboardLink)
-    toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
-  }
-
-  const handleMorePress = async () => {
-    try {
-      const url = getShareURL(sale.href!)
-      const message = sale.name + " on Artsy"
-      const shareOptions: ShareOptions = {
-        title: message,
-        message: message + "\n" + url,
-      }
-
-      await RNShare.open(shareOptions)
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setShareSheetVisible(false)
-    }
-  }
 
   return (
     <>
@@ -132,7 +99,10 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             <Flex flex={0.1}>
               <Touchable
                 onPress={() => {
-                  setShareSheetVisible(true)
+                  showShareSheet({
+                    type: "sale",
+                    slug: sale.slug,
+                  })
                 }}
                 style={{
                   width: 30,
@@ -185,11 +155,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           />
         </Flex>
       </View>
-
-      <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
-        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
-        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLinkPress} />
-      </CustomShareSheet>
     </>
   )
 }

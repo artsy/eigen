@@ -37,10 +37,10 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
-      CustomShareSheetProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
+      CustomShareSheetProvider,
     ],
     children
   )

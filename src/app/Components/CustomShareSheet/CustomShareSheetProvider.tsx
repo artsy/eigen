@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { CustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheet"
 import { ShareSheetItem } from "app/Components/CustomShareSheet/types"
 import { useState } from "react"
 import CustomShareSheetContext, { CustomShareSheetContextProps } from "./CustomShareSheetContext"
@@ -13,13 +13,18 @@ export const CustomShareSheetProvider: React.FC<CustomShareSheetProviderProps> =
 
   const showShareSheet = (i: ShareSheetItem) => {
     setItem(i)
+
     setIsVisible(true)
   }
 
-  const hideShareSheet = () => setIsVisible(false)
+  const hideShareSheet = () => {
+    setItem(null)
+    setIsVisible(false)
+  }
 
   const contextValue: CustomShareSheetContextProps = {
     isVisible,
+    item,
     showShareSheet,
     hideShareSheet,
   }
@@ -27,12 +32,7 @@ export const CustomShareSheetProvider: React.FC<CustomShareSheetProviderProps> =
   return (
     <CustomShareSheetContext.Provider value={contextValue}>
       {children}
-      {!!isVisible && (
-        <Flex position="absolute" top={10} height={200} width={200} backgroundColor="red10">
-          {/* TODO: to be changed with the new CustomShareSheet */}
-          <Text>{item?.slug}</Text>
-        </Flex>
-      )}
+      {!!isVisible && <CustomShareSheet />}
     </CustomShareSheetContext.Provider>
   )
 }
