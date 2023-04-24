@@ -68,7 +68,7 @@ export const ReadMore = React.memo(
           state: SimpleMarkdown.State
         ) => {
           return (
-            <TextComponent {...textProps} color={color || "black100"} key={state.key}>
+            <TextComponent {...textProps} color={color} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
               {output(node.content, state)}
             </TextComponent>
@@ -160,15 +160,13 @@ export const ReadMore = React.memo(
         )}
       </Flex>
     ) : (
-      <TouchableWithoutFeedback onPress={onExpandPress}>
-        <Flex testID={testID}>
-          {truncate({
-            color,
-            linkTextVariant,
-            root,
-            maxChars,
-          })}
-        </Flex>
+      <TouchableWithoutFeedback onPress={onExpandPress} testID={testID}>
+        {truncate({
+          color,
+          linkTextVariant,
+          root,
+          maxChars,
+        })}
       </TouchableWithoutFeedback>
     )
   }
