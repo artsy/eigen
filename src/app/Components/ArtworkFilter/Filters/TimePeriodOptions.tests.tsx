@@ -2,6 +2,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersStoreProvider,
   ArtworkFiltersState,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -50,7 +51,12 @@ describe("TimePeriodOptions Screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <TimePeriodOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

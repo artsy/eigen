@@ -8,19 +8,20 @@ import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
+  SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchStoreProvider } from "./SavedSearchStore"
+import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 interface EditSavedSearchAlertBaseProps {
   savedSearchAlertId: string
@@ -95,7 +96,14 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity }}>
+          <SavedSearchStoreProvider
+            runtimeModel={{
+              ...savedSearchModel,
+              attributes: attributes as SearchCriteriaAttributes,
+              aggregations,
+              entity,
+            }}
+          >
             <SavedSearchAlertForm
               initialValues={{
                 name: userAlertSettings?.name ?? "",

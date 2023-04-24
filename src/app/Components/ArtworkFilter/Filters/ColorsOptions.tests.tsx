@@ -6,6 +6,7 @@ import {
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -78,7 +79,12 @@ describe("Colors options screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <ColorsOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

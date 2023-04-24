@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { ViewDescriptor } from "app/system/navigation/navigate"
-import immer from "immer-peasy"
+import immer from "immer"
 import { last } from "lodash"
 import { NativeModules, StatusBar } from "react-native"
 /**

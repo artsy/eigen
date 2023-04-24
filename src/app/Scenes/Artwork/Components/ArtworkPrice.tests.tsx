@@ -1,6 +1,10 @@
 import { ArtworkPrice_Test_Query } from "__generated__/ArtworkPrice_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { ArtworkStoreModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
+import {
+  ArtworkStoreModel,
+  ArtworkStoreProvider,
+  artworkModel,
+} from "app/Scenes/Artwork/ArtworkStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -33,7 +37,12 @@ describe("ArtworkPrice", () => {
 
     if (data.artwork) {
       return (
-        <ArtworkStoreProvider initialData={props?.initialData}>
+        <ArtworkStoreProvider
+          runtimeModel={{
+            ...artworkModel,
+            ...props?.initialData,
+          }}
+        >
           <ArtworkPrice artwork={data.artwork} />
         </ArtworkStoreProvider>
       )

@@ -17,7 +17,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
+import { Action, action, computed, Computed, useLocalStore } from "easy-peasy"
 import { times } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
@@ -67,23 +67,6 @@ interface Store {
   allPresent: Computed<Store, boolean>
 }
 
-const useStore = createComponentStore<Store>({
-  fields: {
-    name: emptyFieldState(),
-    country: emptyFieldState(),
-    postalCode: emptyFieldState(),
-    addressLine1: emptyFieldState(),
-    addressLine2: { ...emptyFieldState(), required: false },
-    city: emptyFieldState(),
-    region: emptyFieldState(),
-  },
-  allPresent: computed((store) => {
-    return Boolean(
-      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent)
-    )
-  }),
-})
-
 export const SavedAddressesForm: React.FC<{
   me: SavedAddressesForm_me$data
   addressId?: string
@@ -91,7 +74,23 @@ export const SavedAddressesForm: React.FC<{
   const isEditForm = !!addressId
   const toast = useToast()
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
-  const [state, actions] = useStore()
+  const [state, actions] = useLocalStore<Store>(() => ({
+    fields: {
+      name: emptyFieldState(),
+      country: emptyFieldState(),
+      postalCode: emptyFieldState(),
+      addressLine1: emptyFieldState(),
+      addressLine2: { ...emptyFieldState(), required: false },
+      city: emptyFieldState(),
+      region: emptyFieldState(),
+    },
+    allPresent: computed((store) => {
+      return Boolean(
+        Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent)
+      )
+    }),
+  }))
+
   const [phoneNumber, setPhoneNumber] = useState("")
   const [isDefaultAddress, setIsDefaultAddress] = useState(false)
   const { height } = useScreenDimensions()

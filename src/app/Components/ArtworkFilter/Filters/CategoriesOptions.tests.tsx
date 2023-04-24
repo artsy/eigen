@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CategoriesOptionsScreen } from "./CategoriesOptions"
@@ -14,7 +15,12 @@ describe("Categories options screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <CategoriesOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )
