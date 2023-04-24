@@ -3,8 +3,7 @@ import { createContext, useContext } from "react"
 
 export interface CustomShareSheetContextProps {
   isVisible: boolean
-  // TODO: use correct type
-  item: any
+  item: ShareSheetItem | null
   showShareSheet: (item: ShareSheetItem) => void
   hideShareSheet: () => void
 }

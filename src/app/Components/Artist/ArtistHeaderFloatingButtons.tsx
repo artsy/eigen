@@ -44,7 +44,7 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
       type: "artist",
       internalID: artist.internalID,
       slug: artist.slug,
-      artistNames: [artist.name!],
+      artists: [{ name: artist.name }],
       href: artist.href!,
       currentImageUrl: artist.image?.url ?? undefined,
     })
