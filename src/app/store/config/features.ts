@@ -250,7 +250,7 @@ export const features = defineFeatures({
   },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
