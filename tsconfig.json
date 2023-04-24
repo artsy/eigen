@@ -5,22 +5,12 @@
     "incremental": true, // improved build speeds.
     "baseUrl": "src", // for imports like `"app/Components"` to resolve correctly.
     "experimentalDecorators": true, // used for class decorators. it would be cool to remove this if we ever get rid of classes.
+    "isolatedModules": false,
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true, // avoid accidental fallthrough.
     "noUnusedLocals": true, // what it says.
     "noUnusedParameters": true, // what it says.
     "skipLibCheck": true // temporary disable typechecking node_modules to use Charts lib. Victory is actively migrating to TS and the types for now are a mess.
   },
-  "include": [
-    // all files must match at least one of these rules. required by `composite`.
-    "src/**/*.tsx",
-    "src/**/*.ts",
-    "typings/*.d.ts",
-    "app.json",
-    "metaflags.json",
-    "ios/Artsy/App/EchoNew.json",
-    "data/*.json",
-    "src/storybook/*.js",
-    "scripts/**/*.ts",
-    "scripts/**/*.js"
-  ]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "typings/*.d.ts", "scripts/**/*.ts", "scripts/**/*.js"]
 }

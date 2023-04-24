@@ -254,7 +254,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/city-fair/:citySlug", "CityFairList"),
     addRoute("/city-save/:citySlug", "CitySavedList"),
     addRoute("/auctions", "Auctions"),
-    addRoute("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
+    addRoute("/auctions/lots-for-you-ending-soon", "LotsByArtistsYouFollow"),
     addRoute("/works-for-you", "WorksForYou"),
     addRoute("/new-for-you", "NewWorksForYou"),
     addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),

@@ -3,7 +3,7 @@ import DarkNavigationButton from "app/Components/Buttons/DarkNavigationButton"
 
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "app/Components/StickyTabPage/StickyTabPageTabBar"
-import { useIsStaging } from "app/store/GlobalStore"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact } from "lodash"
 import { View, ViewProps } from "react-native"

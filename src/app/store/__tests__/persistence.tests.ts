@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { migrate } from "./migration"
+import { migrate } from "app/store/migration"
 import {
   assignDeep,
   LEGACY_SEARCH_STORAGE_KEY,
@@ -7,9 +7,9 @@ import {
   sanitize,
   STORAGE_KEY,
   unpersist,
-} from "./persistence"
+} from "app/store/persistence"
 
-jest.mock("./migration", () => ({ migrate: jest.fn((a) => a.state) }))
+jest.mock("../migration", () => ({ migrate: jest.fn((a) => a.state) }))
 
 describe("sanitize", () => {
   const fixture = {

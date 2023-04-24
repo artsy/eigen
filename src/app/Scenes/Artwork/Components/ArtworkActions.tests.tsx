@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkActionsTestQuery } from "__generated__/ArtworkActionsTestQuery.graphql"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -14,7 +15,9 @@ jest.unmock("app/NativeModules/LegacyNativeModules")
 describe("ArtworkActions", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkActionsTestQuery>({
     Component: ({ artwork }) => (
-      <ArtworkActionsFragmentContainer artwork={artwork!} shareOnPress={() => jest.fn()} />
+      <ArtworkListsProvider>
+        <ArtworkActionsFragmentContainer artwork={artwork!} shareOnPress={() => jest.fn()} />
+      </ArtworkListsProvider>
     ),
     query: graphql`
       query ArtworkActionsTestQuery @relay_test_operation @raw_response_type {

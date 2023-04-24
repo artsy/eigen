@@ -17,6 +17,7 @@
 - [Testing](testing.md)
 - [Feature Flags](developing_a_feature.md)
 - [Debugging](debugging.md)
+- [Developer menu](dev_menu.md)
 - [Navigation & adding a new route](adding_a_new_route.md)
 - [Add a new component](adding_new_components.md)
 - [State Migrations](adding_state_migrations.md)

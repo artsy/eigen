@@ -1,6 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { getCurrentEmissionState } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
 import _ from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"

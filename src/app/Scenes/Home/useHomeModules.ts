@@ -3,7 +3,7 @@ import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
@@ -45,7 +45,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         data: props.meAbove,
         isEmpty: !props.meAbove?.lotsByFollowedArtistsConnectionCount?.edges?.length,
         key: "lotsByFollowedArtistsRail",
-        prefetchUrl: "/lots-by-artists-you-follow",
+        prefetchUrl: "/auctions/lots-for-you-ending-soon",
         prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
         title: "Auction Lots for You Ending Soon",
         type: "lotsByFollowedArtists",

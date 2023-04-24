@@ -49,12 +49,13 @@ import {
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
   PlaceholderText,

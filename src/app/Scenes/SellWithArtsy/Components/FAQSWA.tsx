@@ -5,7 +5,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { Image } from "react-native"
 
 export const FAQSWA: React.FC = () => {
-  const supportUrl = "https://support.artsy.net/hc/en-us/categories/360003689533-Sell"
+  const supportUrl = "https://support.artsy.net/s/topic/0TO3b000000UesxGAC/sell"
   const isTablet = isPad()
   const { width: deviceWidth } = useScreenDimensions()
   return (

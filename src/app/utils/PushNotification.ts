@@ -1,12 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import {
-  getCurrentEmissionState,
-  unsafe__getEnvironment,
-  GlobalStore,
-  unsafe_getUserAccessToken,
-} from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
+import { unsafe__getEnvironment, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Alert, Linking, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"

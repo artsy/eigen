@@ -2,11 +2,11 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import Cookies from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { AuthError } from "app/store/AuthError"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockPostEventToProviders } from "app/utils/tests/globallyMockedStuff"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
-import { AuthError } from "./AuthError"
-import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
@@ -93,8 +93,8 @@ describe("AuthModel", () => {
 
       const result = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
-        email: "user@example.com",
-        password: "hunter2",
+        email: "user@example.com", // pragma: allowlist secret
+        password: "hunter2", // pragma: allowlist secret
       })
 
       expect(result).toBe("success")
@@ -103,17 +103,15 @@ describe("AuthModel", () => {
       expect(mockFetch.mock.calls[0][0]).toMatchInlineSnapshot(
         `"https://stagingapi.artsy.net/oauth2/access_token"`
       )
-      expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toMatchInlineSnapshot(`
-        {
-          "client_id": "artsy_api_client_key",
-          "client_secret": "artsy_api_client_secret",
-          "email": "user@example.com",
-          "grant_type": "credentials",
-          "oauth_provider": "email",
-          "password": "hunter2",
-          "scope": "offline_access",
-        }
-      `)
+      expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toEqual({
+        client_id: "artsy_api_client_key",
+        client_secret: "artsy_api_client_secret", // pragma: allowlist secret
+        email: "user@example.com", // pragma: allowlist secret
+        grant_type: "credentials",
+        oauth_provider: "email",
+        password: "hunter2", // pragma: allowlist secret
+        scope: "offline_access",
+      })
     })
 
     it("fetches the user ID, then saves the token and expiry date in the store", async () => {
@@ -130,7 +128,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
 
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(
@@ -149,7 +147,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
@@ -168,7 +166,7 @@ describe("AuthModel", () => {
       const result = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
       expect(result).toBe("failure")
     })
@@ -188,7 +186,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
       expect(clearRecentSearchesSpy).not.toHaveBeenCalled()
     })
@@ -208,7 +206,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
       expect(clearRecentSearchesSpy).toHaveBeenCalled()
     })
@@ -219,7 +217,7 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "hunter2",
+        password: "hunter2", // pragma: allowlist secret
       })
       expect(Keychain.setInternetCredentials).toHaveBeenCalled()
     })
@@ -243,7 +241,7 @@ describe("AuthModel", () => {
         await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           email: "user@example.com",
-          password: "hunter2",
+          password: "hunter2", // pragma: allowlist secret
         })
         expect(clearAllPriceRangesSpy).not.toHaveBeenCalled()
       })
@@ -266,7 +264,7 @@ describe("AuthModel", () => {
         await GlobalStore.actions.auth.signIn({
           oauthProvider: "email",
           email: "user@example.com",
-          password: "hunter2",
+          password: "hunter2", // pragma: allowlist secret
         })
         expect(clearAllPriceRangesSpy).toHaveBeenCalled()
       })
@@ -298,7 +296,7 @@ describe("AuthModel", () => {
       const result = await GlobalStore.actions.auth.signUp({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "validpassword",
+        password: "validpassword", // pragma: allowlist secret
         name: "full name",
         agreedToReceiveEmails: false,
       })
@@ -319,7 +317,7 @@ describe("AuthModel", () => {
       const result = await GlobalStore.actions.auth.signUp({
         oauthProvider: "email",
         email: "user@example.com",
-        password: "validpassword",
+        password: "validpassword", // pragma: allowlist secret
         name: "full name",
         agreedToReceiveEmails: false,
       })

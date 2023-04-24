@@ -12,7 +12,8 @@ import {
   OPTION_TOP_AUCTION_LOTS,
   OPTION_THE_ART_TASTE_QUIZ,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"

@@ -54,7 +54,10 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
+        <SectionTitle
+          title={title}
+          onPress={() => navigate("/auctions/lots-for-you-ending-soon")}
+        />
       </Flex>
       <CardRailFlatList
         data={artworks}

@@ -3,6 +3,15 @@ import { Schema } from "app/utils/track"
 import { useMutation } from "react-relay"
 import { graphql } from "relay-runtime"
 
+export interface SaveArtworkOptions {
+  id: string
+  internalID: string
+  isSaved: boolean | null
+  onCompleted?: (isSaved: boolean) => void
+  onError?: () => void
+  contextScreen?: Schema.OwnerEntityTypes
+}
+
 export const useSaveArtwork = ({
   id,
   internalID,
@@ -10,15 +19,9 @@ export const useSaveArtwork = ({
   onCompleted,
   onError,
   contextScreen,
-}: {
-  id: string
-  internalID: string
-  isSaved: boolean | null
-  onCompleted?: () => void
-  onError?: () => void
-  contextScreen?: Schema.OwnerEntityTypes
-}) => {
+}: SaveArtworkOptions) => {
   const [commit] = useMutation(SaveArtworkMutation)
+  const nextSavedState = !isSaved
 
   return () => {
     commit({
@@ -32,13 +35,13 @@ export const useSaveArtwork = ({
         saveArtwork: {
           artwork: {
             id,
-            isSaved: !isSaved,
+            isSaved: nextSavedState,
           },
         },
       },
       onCompleted: () => {
         refreshOnArtworkSave(contextScreen)
-        onCompleted?.()
+        onCompleted?.(nextSavedState)
       },
       onError: () => {
         onError?.()

@@ -1,7 +1,7 @@
 import { ArrowRightIcon, BorderBox, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
-import { useSelectedTab } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Schema } from "app/utils/track"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"

@@ -26,6 +26,7 @@ import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewe
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -142,7 +143,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"

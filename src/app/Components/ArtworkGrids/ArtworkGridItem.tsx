@@ -1,5 +1,14 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Box, Flex, HeartFillIcon, HeartIcon, Spacer, Text, TextProps } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Spacer,
+  Text,
+  TextProps,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -7,17 +16,17 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

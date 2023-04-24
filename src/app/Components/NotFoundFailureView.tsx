@@ -1,7 +1,7 @@
 import { Flex, Text, Button } from "@artsy/palette-mobile"
-import { useDevToggle } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 
 interface NotFoundFailureViewProps {
   error?: Error

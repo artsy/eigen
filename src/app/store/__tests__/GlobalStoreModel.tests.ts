@@ -1,5 +1,5 @@
-import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
-import { CURRENT_APP_VERSION } from "./migration"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { CURRENT_APP_VERSION } from "app/store/migration"
 
 describe("GlobalStoreModel", () => {
   it("has latest version on install", () => {

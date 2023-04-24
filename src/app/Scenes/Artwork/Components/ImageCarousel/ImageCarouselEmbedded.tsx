@@ -1,7 +1,9 @@
 import * as Sentry from "@sentry/react-native"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useCallback, useContext } from "react"
 import {
   Animated,
@@ -11,7 +13,6 @@ import {
   Platform,
   View,
 } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"

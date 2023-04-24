@@ -6,6 +6,7 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
@@ -13,7 +14,7 @@ import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -22,6 +23,7 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -472,7 +474,9 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
             auctionState: getInitialAuctionTimerState(),
           }}
         >
-          <Artwork {...props} />
+          <ArtworkListsProvider>
+            <Artwork {...props} />
+          </ArtworkListsProvider>
         </ArtworkStoreProvider>
       </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
