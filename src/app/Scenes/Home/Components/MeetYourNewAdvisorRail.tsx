@@ -23,8 +23,8 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
     {
       jsx: (
         <HomeFeedOnboardingCard
-          title="Get the art you want"
-          subtitle="All the world’s in-demand art, and tools to get exactly what you’re looking for."
+          title="Find the art you love"
+          subtitle="Discover the tools you need to collect artworks that fit your taste."
           image={require("images/meet-your-new-art-advisor-0.jpg")}
           buttonText="Explore Works"
           onPress={() => {
