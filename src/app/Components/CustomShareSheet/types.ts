@@ -22,7 +22,7 @@ export type ShareSheetArtworkItem = {
         readonly __typename: "%other"
       }
   >
-  title: string | null
+  title: string
   href: string | null
 }
 

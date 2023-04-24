@@ -17,7 +17,7 @@ import {
 import Clipboard from "@react-native-clipboard/clipboard"
 import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/CustomShareSheet/CustomShareSheetItem"
-import { ShareSheetArtworkItem } from "app/Components/CustomShareSheet/types"
+import { shareContent } from "app/Components/CustomShareSheet/helpers"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -25,7 +25,6 @@ import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramS
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import { take } from "lodash"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
 import Config from "react-native-config"
@@ -162,24 +161,6 @@ export const CustomShareSheet = () => {
       </ScrollView>
     </FancyModal>
   )
-}
-
-export const shareContent = (artwork: ShareSheetArtworkItem) => {
-  const { title, href, artists } = artwork
-  let computedTitle = ""
-
-  if (artists && artists.length) {
-    const names = take(artists, 3).map((artist) => artist?.name ?? "")
-    computedTitle = `${title} by ${names.join(", ")} on Artsy`
-  } else if (title) {
-    computedTitle = `${title} on Artsy`
-  }
-
-  return {
-    title: computedTitle,
-    message: computedTitle,
-    url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
-  }
 }
 
 // TODO: needs the other stuff, like sale and artist
