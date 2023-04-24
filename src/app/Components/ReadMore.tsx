@@ -160,13 +160,15 @@ export const ReadMore = React.memo(
         )}
       </Flex>
     ) : (
-      <TouchableWithoutFeedback onPress={onExpandPress} testID={testID}>
-        {truncate({
-          color,
-          linkTextVariant,
-          root,
-          maxChars,
-        })}
+      <TouchableWithoutFeedback onPress={onExpandPress}>
+        <Flex testID={testID}>
+          {truncate({
+            color,
+            linkTextVariant,
+            root,
+            maxChars,
+          })}
+        </Flex>
       </TouchableWithoutFeedback>
     )
   }
