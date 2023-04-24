@@ -2,24 +2,22 @@ import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterM
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
+import { CURRENT_APP_VERSION, artsyAppMigrations } from "app/store/migration"
+import { sanitize } from "app/store/persistence/sanitize"
+import { storageAdapter } from "app/store/persistence/storageAdaptor"
 import { switchTab } from "app/system/navigation/navigate"
 import { loadDevNavigationStateCache } from "app/system/navigation/useReloadedDevNavigationState"
 import { logAction } from "app/utils/loggers"
-import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
+import { Actions, createStore, createTypedHooks, persist, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { FeatureMap } from "./config/FeaturesModel"
-import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
   const middleware: Middleware[] = []
-
-  if (!__TEST__) {
-    middleware.push(persistenceMiddleware)
-  }
 
   if (__DEV__ && !__TEST__) {
     const reduxInFlipper = require("redux-flipper").default
@@ -46,16 +44,34 @@ function createGlobalStore() {
     })
   }
 
-  const store = createStore(getGlobalStoreModel(), {
-    middleware,
-  })
+  // const store = createStore(getGlobalStoreModel(), {
+  //   middleware,
+  // })
 
-  if (!__TEST__) {
-    unpersist().then(async (state) => {
-      await loadDevNavigationStateCache(switchTab)
-      store.getActions().rehydrate(state)
-    })
-  }
+  const STORE_VERSION = 1
+
+  const store = createStore<GlobalStoreModel>(
+    persist(getGlobalStoreModel(), {
+      storage: storageAdapter,
+      transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
+      migrations: {
+        migrationVersion: CURRENT_APP_VERSION,
+        ...artsyAppMigrations,
+      },
+    }),
+    {
+      name: "GlobalStore",
+      version: STORE_VERSION,
+      devTools: __DEV__,
+      middleware,
+    }
+  )
+
+  // TODO: Is this still necessary?
+  ;(async () => {
+    await loadDevNavigationStateCache(switchTab)
+    store.getActions().rehydrate(store.getState())
+  })()
 
   return store
 }
