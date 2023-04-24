@@ -102,6 +102,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   showShareSheet({
                     type: "sale",
                     slug: sale.slug,
+                    internalID: sale.internalID,
                   })
                 }}
                 style={{
@@ -162,6 +163,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
   sale: graphql`
     fragment SaleHeader_sale on Sale {
+      internalID
       href
       name
       slug

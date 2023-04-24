@@ -1,7 +1,4 @@
-export type ShareSheetItem =
-  | ShareSheetArtworkItem
-  | { type: "sale"; slug: string }
-  | ShareSheetArtistItem
+export type ShareSheetItem = ShareSheetArtworkItem | ShareSheetSaleItem | ShareSheetArtistItem
 
 export type ShareSheetArtworkItem = {
   type: "artwork"
@@ -33,4 +30,10 @@ export type ShareSheetArtistItem = {
   artistNames: string[]
   href: string
   currentImageUrl?: string
+}
+
+export type ShareSheetSaleItem = {
+  type: "sale"
+  slug: string
+  internalID: string
 }
