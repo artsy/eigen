@@ -7,6 +7,7 @@ import {
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -72,7 +73,12 @@ describe("SizesOptionsScreen", () => {
     initialData = INITIAL_DATA,
   }: { initialData?: ArtworkFiltersState } = {}) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <MockSizesOptionsScreen />
       </ArtworkFiltersStoreProvider>
     )

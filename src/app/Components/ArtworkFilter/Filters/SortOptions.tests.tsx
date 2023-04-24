@@ -3,6 +3,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersStoreProvider,
   ArtworkFiltersState,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -31,7 +32,12 @@ describe("Sort Options Screen", () => {
   }: {
     initialData?: ArtworkFiltersState
   }) => (
-    <ArtworkFiltersStoreProvider initialData={initialData}>
+    <ArtworkFiltersStoreProvider
+      runtimeModel={{
+        ...getArtworkFiltersModel(),
+        ...initialData,
+      }}
+    >
       <SortOptionsScreen {...getEssentialProps()} />
     </ArtworkFiltersStoreProvider>
   )

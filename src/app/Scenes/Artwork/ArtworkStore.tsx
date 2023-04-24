@@ -7,7 +7,7 @@ export interface ArtworkStoreModel {
   setSelectedEditionId: Action<this, string | null>
 }
 
-const artworkModel: ArtworkStoreModel = {
+export const artworkModel: ArtworkStoreModel = {
   auctionState: null,
   selectedEditionId: null,
   setAuctionState: action((state, payload) => {
@@ -19,7 +19,7 @@ const artworkModel: ArtworkStoreModel = {
 }
 
 export const ArtworkStore = createContextStore<ArtworkStoreModel>(
-  (initialData: ArtworkStoreModel) => ({
+  (initialData) => ({
     ...artworkModel,
     ...initialData,
   }),

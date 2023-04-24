@@ -3,6 +3,7 @@ import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/Artw
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
@@ -54,7 +55,12 @@ describe("Artist options screen", () => {
 
   const MockArtistScreen = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <ArtistIDsArtworksOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

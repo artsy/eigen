@@ -2,6 +2,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -15,7 +16,12 @@ describe("AttributionClassOptions Screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <AttributionClassOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )
