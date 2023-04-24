@@ -38,7 +38,7 @@ describe("shareContent should return correct content for", () => {
     const expectedOutput = {
       title: "Mona Lisa on Artsy",
       message: "Mona Lisa on Artsy",
-      url: "https://artsy.net/artwork/mona-lisa?utm_content=artwork-share",
+      url: "https://staging.artsy.net/artwork/mona-lisa?utm_content=artwork-share",
     }
 
     expect(shareContent(artwork)).toEqual(expectedOutput)
@@ -53,7 +53,7 @@ describe("shareContent should return correct content for", () => {
     const expectedOutput = {
       title: "The Starry Night by Vincent van Gogh, Paul Gauguin on Artsy",
       message: "The Starry Night by Vincent van Gogh, Paul Gauguin on Artsy",
-      url: "https://artsy.net/artwork/the-starry-night?utm_content=artwork-share",
+      url: "https://staging.artsy.net/artwork/the-starry-night?utm_content=artwork-share",
     }
 
     expect(shareContent(artwork)).toEqual(expectedOutput)
@@ -73,7 +73,7 @@ describe("shareContent should return correct content for", () => {
     const expectedOutput = {
       title: "The Persistence of Memory by Salvador Dali, John Doe, Jane Smith on Artsy",
       message: "The Persistence of Memory by Salvador Dali, John Doe, Jane Smith on Artsy",
-      url: "https://artsy.net/artwork/the-persistence-of-memory?utm_content=artwork-share",
+      url: "https://staging.artsy.net/artwork/the-persistence-of-memory?utm_content=artwork-share",
     }
 
     expect(shareContent(artwork)).toEqual(expectedOutput)
