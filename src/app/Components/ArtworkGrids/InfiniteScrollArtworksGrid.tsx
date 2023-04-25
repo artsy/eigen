@@ -14,9 +14,9 @@ import { InfiniteScrollArtworksFeed } from "app/Components/ArtworkGrids/Infinite
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import React, { useState } from "react"
 import {
