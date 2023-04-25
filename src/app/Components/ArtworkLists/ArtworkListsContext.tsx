@@ -1,7 +1,7 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
-import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView"
+import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
 
 export enum ResultAction {
@@ -19,6 +19,14 @@ type State = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
+  selectedArtworkListIDs: string[]
+  addingArtworkListIDs: string[]
+  removingArtworkListIDs: string[]
+}
+
+export enum ArtworkListMode {
+  AddingArtworkListIDs = "addingArtworkListIDs",
+  RemovingArtworkListIDs = "removingArtworkListIDs",
 }
 
 type Action =
@@ -26,6 +34,11 @@ type Action =
   | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "RESET" }
+  | {
+      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID"
+      payload: { mode: ArtworkListMode; artworkListID: string }
+    }
+  | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
 
 export interface ArtworkEntity {
   id: string
@@ -65,14 +78,19 @@ export interface ArtworkListsContextState {
   onSave: (result: SaveResult) => void
 }
 
-interface ArtworkListsProviderProps {
+export interface ArtworkListsProviderProps {
   artworkListId?: string
+  // Needs for tests
+  artwork?: ArtworkEntity
 }
 
 export const INITIAL_STATE: State = {
   createNewArtworkListViewVisible: false,
   artwork: null,
   recentlyAddedArtworkList: null,
+  selectedArtworkListIDs: [],
+  addingArtworkListIDs: [],
+  removingArtworkListIDs: [],
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -91,9 +109,13 @@ export const useArtworkListsContext = () => {
 export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   children,
   artworkListId,
+  artwork,
 }) => {
   const [isSavedToArtworkList, setIsSavedToArtworkList] = useState(!!artworkListId)
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(reducer, {
+    ...INITIAL_STATE,
+    artwork: artwork ?? null,
+  })
   const toast = useArtworkListToast()
 
   const onSave = (result: SaveResult) => {
@@ -159,6 +181,28 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         recentlyAddedArtworkList: action.payload,
+      }
+    case "ADD_OR_REMOVE_ARTWORK_LIST_ID":
+      // eslint-disable-next-line no-case-declarations
+      const { artworkListID, mode } = action.payload
+      // eslint-disable-next-line no-case-declarations
+      const ids = state[mode]
+
+      if (ids.includes(artworkListID)) {
+        return {
+          ...state,
+          [mode]: ids.filter((id) => id !== artworkListID),
+        }
+      }
+
+      return {
+        ...state,
+        [mode]: [...ids, artworkListID],
+      }
+    case "SET_SELECTED_ARTWORK_LIST_IDS":
+      return {
+        ...state,
+        selectedArtworkListIDs: action.payload,
       }
     case "RESET":
       return INITIAL_STATE
