@@ -1,7 +1,7 @@
 import { Spacer, ShareIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
-import { getShareURL } from "app/Components/CustomShareSheet/helpers"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"

@@ -1,8 +1,8 @@
 import { ShareIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
-  const { showShareSheet } = useCustomShareSheet()
+  const { showShareSheet } = useShareSheet()
   const saInsets = useSafeAreaInsets()
 
   const saleTimeDetails = saleTime(sale)

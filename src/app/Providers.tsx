@@ -1,6 +1,6 @@
 import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { CustomShareSheetProvider } from "app/Components/CustomShareSheet/CustomShareSheetProvider"
+import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -40,7 +40,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
-      CustomShareSheetProvider,
+      ShareSheetProvider, // uses _FancyModalPageWrapper
     ],
     children
   )
@@ -61,7 +61,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       !skipRelay && RelayDefaultEnvProvider,
       Theme,
       PopoverMessageProvider,
-      CustomShareSheetProvider,
+      ShareSheetProvider,
       ToastProvider,
     ],
     children

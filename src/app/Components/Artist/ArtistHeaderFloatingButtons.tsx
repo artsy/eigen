@@ -1,7 +1,7 @@
 import { ShareIcon, ChevronIcon } from "@artsy/palette-mobile"
 import { ArtistHeaderFloatingButtons_artist$data } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
-import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
 import { HeaderButton } from "app/Components/HeaderButton"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { goBack } from "app/system/navigation/navigate"
 import { useRef, useState } from "react"
@@ -18,7 +18,7 @@ const SHARE_ICON_SIZE = 23
 export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsProps> = ({
   artist,
 }) => {
-  const { showShareSheet } = useCustomShareSheet()
+  const { showShareSheet } = useShareSheet()
   const [hideButton, setHideButton] = useState(false)
   const { headerOffsetY } = useStickyTabPageContext()
 
