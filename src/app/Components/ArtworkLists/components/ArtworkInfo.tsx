@@ -1,5 +1,6 @@
 import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkEntity } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { FC } from "react"
 
 const ARTWORK_IMAGE_SIZE = 50
@@ -12,7 +13,15 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
       {/* TODO: Use reusable artwork list image component */}
-      <Box width={ARTWORK_IMAGE_SIZE} height={ARTWORK_IMAGE_SIZE} bg="black15" />
+      {artwork.imageURL ? (
+        <OpaqueImageView
+          width={ARTWORK_IMAGE_SIZE}
+          height={ARTWORK_IMAGE_SIZE}
+          imageURL={artwork.imageURL}
+        />
+      ) : (
+        <Box width={ARTWORK_IMAGE_SIZE} height={ARTWORK_IMAGE_SIZE} bg="black15" />
+      )}
 
       <Spacer x={1} />
 
