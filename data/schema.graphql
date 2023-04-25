@@ -17063,7 +17063,7 @@ input UpdateConversationMutationInput {
   # Mark the conversation as dismissed
   dismissed: Boolean
 
-  # The message id to mark as read.
+  # The message id to mark as read as a collector (from).
   fromLastViewedMessageId: String
 
   # The seller outcome for the conversation. Options include `already_contacted`, `dont_trust`, `other`, `work_unavailable`.
@@ -17071,6 +17071,9 @@ input UpdateConversationMutationInput {
 
   # The seller outcome comment for the conversation.
   sellerOutcomeComment: String
+
+  # The message id to mark as read as a partner (to).
+  toLastViewedMessageId: String
 }
 
 type UpdateConversationMutationPayload {
