@@ -166,7 +166,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
   sale: graphql`
     fragment SaleHeader_sale on Sale {
-      __typename
       internalID
       href
       name
