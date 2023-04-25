@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import {
   ArtworkListMode,
@@ -32,6 +32,14 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
     })
   }
 
+  const getArtworksCountText = () => {
+    if (artworkList.artworksCount === 1) {
+      return `1 Artwork`
+    }
+
+    return `${artworkList.artworksCount} Artworks`
+  }
+
   const checkIsArtworkListSelected = () => {
     /**
      * User added artwork to the previously unselected artwork list
@@ -56,9 +64,17 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
 
   return (
     <TouchableOpacity onPress={handleArtworkListPress}>
-      <Flex p={1} flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Text>{artworkList.name}</Text>
-        <ArtworkListItemSelectedIcon selected={isSelected} />
+      <Flex py={1} px={2} flexDirection="row" alignItems="center">
+        <Join separator={<Spacer x={1} />}>
+          <Flex flex={1}>
+            <Text variant="xs">{artworkList.name}</Text>
+            <Text variant="xs" color="black60">
+              {getArtworksCountText()}
+            </Text>
+          </Flex>
+
+          <ArtworkListItemSelectedIcon selected={isSelected} />
+        </Join>
       </Flex>
     </TouchableOpacity>
   )
@@ -69,5 +85,6 @@ const ArtworkListItemFragment = graphql`
     name
     internalID
     isSavedArtwork(artworkID: $artworkID)
+    artworksCount(onlyVisible: true)
   }
 `
