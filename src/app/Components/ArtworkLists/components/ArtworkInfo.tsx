@@ -9,21 +9,13 @@ interface ArtworkInfoProps {
 }
 
 export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
-  const getArtistNames = () => {
-    if (!artwork.artistNames) {
-      return "Artist Unavailable"
-    }
-
-    return artwork.artistNames
-  }
-
   return (
     <Flex flexDirection="row" alignItems="center">
       <Box width={ARTWORK_IMAGE_SIZE} height={ARTWORK_IMAGE_SIZE} bg="black15" />
       <Spacer x={1} />
       <Box>
         <Text variant="sm-display" numberOfLines={1}>
-          {getArtistNames()}
+          {getArtistNames(artwork)}
         </Text>
         <Text variant="sm" color="black60" numberOfLines={2}>
           <Text variant="sm" color="black60" italic>
@@ -34,4 +26,12 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
       </Box>
     </Flex>
   )
+}
+
+const getArtistNames = (artwork: ArtworkEntity) => {
+  if (!artwork.artistNames) {
+    return "Artist Unavailable"
+  }
+
+  return artwork.artistNames
 }
