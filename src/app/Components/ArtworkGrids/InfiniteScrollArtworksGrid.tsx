@@ -155,7 +155,8 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   isNewFeedEnabled = false,
   ...otherProps
 }) => {
-  const isNewSimpleFeedEnabled = useFeatureFlag("AREnableArtworkFeed")
+  const isAndroid = Platform.OS === "android"
+  const isNewSimpleFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
   const theConnectionProp = !!connection ? connection : myCollectionConnection
   type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
     ? InfiniteScrollArtworksGrid_connection$data

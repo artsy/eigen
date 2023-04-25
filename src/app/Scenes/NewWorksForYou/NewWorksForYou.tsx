@@ -13,6 +13,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useEffect } from "react"
+import { Platform } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
@@ -149,7 +150,8 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
-  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed")
+  const isAndroid = Platform.OS === "android"
+  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   const isReferredFromEmail = utm_medium === "email"

@@ -12,6 +12,7 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
+import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "New Works from Galleries You Follow"
@@ -86,7 +87,8 @@ const artworkConnectionFragment = graphql`
 `
 
 export const NewWorksFromGalleriesYouFollowScreen: React.FC = () => {
-  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed")
+  const isAndroid = Platform.OS === "android"
+  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
   return (
     <Suspense fallback={isNewFeedEnabled ? <FeedPlaceholder /> : <Placeholder />}>
       <NewWorksFromGalleriesYouFollow />
