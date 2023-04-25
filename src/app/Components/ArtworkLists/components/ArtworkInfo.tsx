@@ -13,11 +13,14 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
     <Flex flexDirection="row" alignItems="center">
       {/* TODO: Use reusable artwork list image component */}
       <Box width={ARTWORK_IMAGE_SIZE} height={ARTWORK_IMAGE_SIZE} bg="black15" />
+
       <Spacer x={1} />
+
       <Box>
         <Text variant="sm-display" numberOfLines={1}>
           {getArtistNames(artwork)}
         </Text>
+
         <Text variant="sm" color="black60" numberOfLines={2}>
           <Text variant="sm" color="black60" italic>
             {artwork.title}
