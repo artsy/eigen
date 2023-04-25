@@ -101,7 +101,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHeader, {
   artwork: graphql`
     fragment ArtworkHeader_artwork on Artwork {
-      __typename
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
 
