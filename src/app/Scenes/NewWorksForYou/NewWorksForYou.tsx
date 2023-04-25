@@ -7,13 +7,12 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { PlaceholderFeed, PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useEffect } from "react"
-import { Platform } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
@@ -35,7 +34,6 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
         <Box>
           {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
-              isNewFeedEnabled
               connection={viewer.artworks!}
               loadMore={() => null}
               hasMore={() => false}
@@ -150,8 +148,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
-  const isAndroid = Platform.OS === "android"
-  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
+  const isNewFeedEnabled = useNewFeedEnabled()
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   const isReferredFromEmail = utm_medium === "email"

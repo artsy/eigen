@@ -6,13 +6,12 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { PlaceholderFeed, PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
-import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "New Works from Galleries You Follow"
@@ -38,7 +37,6 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
-            isNewFeedEnabled
             connection={data?.newWorksFromGalleriesYouFollowConnection}
             loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}
@@ -87,8 +85,7 @@ const artworkConnectionFragment = graphql`
 `
 
 export const NewWorksFromGalleriesYouFollowScreen: React.FC = () => {
-  const isAndroid = Platform.OS === "android"
-  const isNewFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
+  const isNewFeedEnabled = useNewFeedEnabled()
   return (
     <Suspense fallback={isNewFeedEnabled ? <FeedPlaceholder /> : <Placeholder />}>
       <NewWorksFromGalleriesYouFollow />

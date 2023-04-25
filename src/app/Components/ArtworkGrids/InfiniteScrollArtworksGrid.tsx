@@ -16,7 +16,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import React, { useState } from "react"
 import {
@@ -144,7 +144,6 @@ export interface PrivateProps {
 interface MapperProps extends Omit<PrivateProps, "connection"> {
   connection?: InfiniteScrollArtworksGrid_connection$data | null
   myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
-  isNewFeedEnabled?: boolean
 }
 
 const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
@@ -152,11 +151,9 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   myCollectionConnection,
   loadMore,
   hasMore,
-  isNewFeedEnabled = false,
   ...otherProps
 }) => {
-  const isAndroid = Platform.OS === "android"
-  const isNewSimpleFeedEnabled = useFeatureFlag("AREnableArtworkFeed") && isAndroid
+  const { isNewFeedEnabled } = useNewFeedEnabled()
   const theConnectionProp = !!connection ? connection : myCollectionConnection
   type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
     ? InfiniteScrollArtworksGrid_connection$data
@@ -167,7 +164,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
     throw new Error("No connection prop supplied to InfiniteScrollArtworksGrid")
   }
 
-  if (isNewSimpleFeedEnabled && isNewFeedEnabled) {
+  if (isNewFeedEnabled) {
     return (
       <InfiniteScrollArtworksFeed
         loadMore={loadMore}
