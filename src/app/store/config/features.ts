@@ -281,6 +281,11 @@ export const features = defineFeatures({
     description: "Enable Artwork Lists",
     showInDevMenu: true,
   },
+  AREnableNewAuctionsRailCard: {
+    description: "Enable New Auctions Home Rail Card",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

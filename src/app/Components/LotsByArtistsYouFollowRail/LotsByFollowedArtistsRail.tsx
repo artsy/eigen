@@ -18,9 +18,15 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
+  cardSize?: "large" | "small"
 }
 
-export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay }) => {
+export const LotsByFollowedArtistsRail: React.FC<Props> = ({
+  title,
+  me,
+  relay,
+  cardSize = "small",
+}) => {
   const [isLoading, setIsLoading] = useState(false)
   const isTablet = isPad()
 
@@ -72,6 +78,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
             useSquareAspectRatio
             useCustomSaleMessage
             contextScreenOwnerType={OwnerType.sale}
+            cardSize={cardSize}
           />
         )}
         keyExtractor={(item) => item.id}

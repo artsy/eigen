@@ -156,6 +156,7 @@ const Home = memo((props: HomeProps) => {
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
+  const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
 
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
@@ -292,7 +293,13 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "lotsByFollowedArtists":
-          return <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} />
+          return (
+            <LotsByFollowedArtistsRailContainer
+              title={item.title}
+              me={item.data}
+              cardSize={enableNewSaleArtworkTileRailCard ? "large" : "small"}
+            />
+          )
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
