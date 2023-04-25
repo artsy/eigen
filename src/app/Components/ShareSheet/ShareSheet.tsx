@@ -23,7 +23,7 @@ import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
 import { getBase64Data, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
@@ -42,6 +42,7 @@ export const ShareSheet = () => {
   const toast = useToast()
   const shotRef = useRef<ViewShot>(null)
   const { trackEvent } = useTracking()
+  const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
 
   if (!data) {
     return null
@@ -77,7 +78,7 @@ export const ShareSheet = () => {
   }
 
   const handleCopyLink = () => {
-    Clipboard.setString(`${unsafe__getEnvironment().webURL}${data.href}`)
+    Clipboard.setString(`${webURL}${data.href}`)
     trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
     hideShareSheet()
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
