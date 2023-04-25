@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
   return (
     <Flex>
       <Image
-        source={require("images/swa-landing-page-header.png")}
+        source={require("images/swa-landing-page-header.webp")}
         style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
         resizeMode={isTablet ? "contain" : "cover"}
       />

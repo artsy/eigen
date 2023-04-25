@@ -157,7 +157,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image
-                  source={require("images/info.png")}
+                  source={require("images/info.webp")}
                   style={{ tintColor: color("black100") }}
                 />
               )}

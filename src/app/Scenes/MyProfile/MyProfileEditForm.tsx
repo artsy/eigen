@@ -244,7 +244,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 {!!localImage || values.photo ? (
                   <Avatar src={localImage?.path || values.photo} size="md" />
                 ) : (
-                  <Image source={require("images/profile_placeholder_avatar.png")} />
+                  <Image source={require("images/profile_placeholder_avatar.webp")} />
                 )}
               </Box>
             </Touchable>

@@ -31,7 +31,7 @@ interface Props extends AttachmentProps {
 export const PDFPreview: React.FC<Props> = ({ attachment, onSelected }) => (
   <AttachmentPreview attachment={attachment} onSelected={onSelected}>
     <AttachmentContainer>
-      <Icon source={require("images/pdf.png")} />
+      <Icon source={require("images/pdf.webp")} />
       <AttachmentTextContainer>
         <Text>{attachment.fileName}</Text>
       </AttachmentTextContainer>

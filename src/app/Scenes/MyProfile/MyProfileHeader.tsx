@@ -8,12 +8,12 @@ import {
   Box,
   useColor,
   Text,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImageStorage } from "app/utils/LocalImageStore"
 import { useRefetch } from "app/utils/relayHelpers"
-import { Touchable } from "@artsy/palette-mobile"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -57,7 +57,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
             {!!userProfileImagePath ? (
               <Avatar src={userProfileImagePath} size="xs" />
             ) : (
-              <Image source={require("images/profile_placeholder_avatar.png")} />
+              <Image source={require("images/profile_placeholder_avatar.webp")} />
             )}
           </TouchableOpacity>
         </Box>
