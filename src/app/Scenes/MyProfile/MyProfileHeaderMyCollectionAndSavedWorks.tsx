@@ -3,13 +3,13 @@ import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import {
   MyCollectionPlaceholder,
   MyCollectionQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
-import { SavedArtworksList } from "app/Scenes/SavedArtworks/SavedArtworksList"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -57,11 +57,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         },
         {
           title: Tab.savedWorks,
-          content: isArtworkListsEnabled ? (
-            <SavedArtworksList />
-          ) : (
-            <FavoriteArtworksQueryRenderer />
-          ),
+          content: isArtworkListsEnabled ? <ArtworkLists /> : <FavoriteArtworksQueryRenderer />,
         },
       ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
