@@ -12,7 +12,7 @@ import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridIte
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
