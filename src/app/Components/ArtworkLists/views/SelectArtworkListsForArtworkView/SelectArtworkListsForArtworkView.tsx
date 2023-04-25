@@ -32,6 +32,18 @@ export const SelectArtworkListsForArtworkView = () => {
 
       <Box m={2}>
         <ArtworkInfo artwork={state.artwork!} />
+
+        <Spacer y={2} />
+
+        <Button
+          variant="outline"
+          size="small"
+          width="100%"
+          block
+          onPress={openCreateNewArtworkListView}
+        >
+          Create New List
+        </Button>
       </Box>
 
       {!!state.recentlyAddedArtworkList && (
@@ -44,12 +56,6 @@ export const SelectArtworkListsForArtworkView = () => {
           </Text>
         </Box>
       )}
-
-      <Button width="100%" block onPress={openCreateNewArtworkListView}>
-        Create New List
-      </Button>
-
-      <Spacer y={2} />
 
       <SelectArtworkListsForArtwork />
 
