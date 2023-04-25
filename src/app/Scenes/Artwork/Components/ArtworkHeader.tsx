@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
-import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { guardFactory } from "app/utils/types/guardFactory"
@@ -26,7 +26,7 @@ export enum VisibilityLevels {
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
-  const { showShareSheet } = useCustomShareSheet()
+  const { showShareSheet } = useShareSheet()
   const { artwork, refetchArtwork } = props
   const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -68,7 +68,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
                 internalID: artwork.internalID,
                 currentImageIndex,
                 title: artwork.title!,
-                href: artwork.href,
+                href: artwork.href!,
                 images: imageFigures,
               })
             }}

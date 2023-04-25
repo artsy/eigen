@@ -15,11 +15,11 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { useCustomShareSheet } from "app/Components/CustomShareSheet/CustomShareSheetContext"
-import { CustomShareSheetItem } from "app/Components/CustomShareSheet/CustomShareSheetItem"
-import { shareContent } from "app/Components/CustomShareSheet/helpers"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
+import { shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -32,8 +32,8 @@ import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 
-export const CustomShareSheet = () => {
-  const { isVisible, item: data, hideShareSheet } = useCustomShareSheet()
+export const ShareSheet = () => {
+  const { isVisible, item: data, hideShareSheet } = useShareSheet()
   const showInstagramStoriesItem =
     useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
@@ -135,20 +135,20 @@ export const CustomShareSheet = () => {
           />
         )}
 
-        {showWhatsAppItem ? (
+        {!!showWhatsAppItem && (
           <CustomShareSheetItem
             title="WhatsApp"
             Icon={<WhatsAppAppIcon />}
             onPress={shareOnWhatsApp}
           />
-        ) : null}
-        {showInstagramStoriesItem ? (
+        )}
+        {!!showInstagramStoriesItem && (
           <CustomShareSheetItem
             title="Instagram Stories"
             Icon={<InstagramAppIcon />}
             onPress={shareOnInstagramStory}
           />
-        ) : null}
+        )}
 
         <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
         <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
