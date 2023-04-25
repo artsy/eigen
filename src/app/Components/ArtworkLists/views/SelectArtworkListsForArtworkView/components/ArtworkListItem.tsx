@@ -1,9 +1,11 @@
-import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import {
   ArtworkListMode,
   useArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
+import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
@@ -17,6 +19,8 @@ interface ArtworkListItemProps {
 export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
   const { state, dispatch } = useArtworkListsContext()
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
+  const nodes = extractNodes(artworkList.artworksConnection)
+  const imageURL = nodes[0]?.image?.url ?? null
 
   const handleArtworkListPress = () => {
     const mode = artworkList.isSavedArtwork
@@ -66,6 +70,8 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
     <TouchableOpacity onPress={handleArtworkListPress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
+          <EntityPreview imageURL={imageURL} />
+
           <Flex flex={1}>
             <Text variant="xs">{artworkList.name}</Text>
             <Text variant="xs" color="black60">
@@ -86,5 +92,14 @@ const ArtworkListItemFragment = graphql`
     internalID
     isSavedArtwork(artworkID: $artworkID)
     artworksCount(onlyVisible: true)
+    artworksConnection(first: 1, sort: SAVED_AT_DESC) {
+      edges {
+        node {
+          image {
+            url(version: "square")
+          }
+        }
+      }
+    }
   }
 `
