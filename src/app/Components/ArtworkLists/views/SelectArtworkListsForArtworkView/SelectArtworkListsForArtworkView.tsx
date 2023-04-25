@@ -4,6 +4,7 @@ import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { SelectArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"
+import { SelectArtworkListsForArtworkFooter } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtworkFooter"
 import { useState } from "react"
 
 const SNAP_POINTS = ["50%", "95%"]
@@ -58,12 +59,7 @@ export const SelectArtworkListsForArtworkView = () => {
       )}
 
       <SelectArtworkListsForArtwork />
-
-      <Spacer y={2} />
-
-      <Button width="100%" block onPress={handleSave}>
-        Save
-      </Button>
+      <SelectArtworkListsForArtworkFooter onSavePress={handleSave} />
     </AutomountedBottomSheetModal>
   )
 }
