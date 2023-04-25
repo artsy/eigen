@@ -1,4 +1,4 @@
-import { CheckCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import {
   ArtworkListMode,
@@ -8,12 +8,11 @@ import { FC } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
 interface ArtworkListItemProps {
   item: ArtworkListItem_item$key
 }
-
-const ICON_SIZE = 24
 
 export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
   const { state, dispatch } = useArtworkListsContext()
@@ -55,18 +54,11 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
 
   const isSelected = checkIsArtworkListSelected()
 
-  // TODO: Add icon for unselected state
   return (
     <TouchableOpacity onPress={handleArtworkListPress}>
       <Flex p={1} flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text>{artworkList.name}</Text>
-        {isSelected && (
-          <CheckCircleIcon
-            width={ICON_SIZE}
-            height={ICON_SIZE}
-            accessibilityState={{ selected: isSelected }}
-          />
-        )}
+        <ArtworkListItemSelectedIcon selected={isSelected} />
       </Flex>
     </TouchableOpacity>
   )
