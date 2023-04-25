@@ -25,6 +25,7 @@ export type ShareSheetArtworkItem = {
 
 export type ShareSheetArtistItem = {
   type: "artist"
+  title: string
   internalID: string
   slug: string
   artists: ReadonlyArray<{
@@ -39,4 +40,5 @@ export type ShareSheetSaleItem = {
   slug: string
   internalID: string
   href: string
+  title: string
 }

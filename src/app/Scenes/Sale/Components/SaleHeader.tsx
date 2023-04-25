@@ -104,6 +104,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                     slug: sale.slug,
                     internalID: sale.internalID,
                     href: sale.href!,
+                    title: sale.name!,
                   })
                 }}
                 style={{
