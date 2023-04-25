@@ -188,6 +188,37 @@ describe("ArtworkListsProvider", () => {
         expect(selectedAfter).toHaveLength(0)
       })
     })
+
+    describe("Artworks count", () => {
+      it("should render `x Artwork` when one artwork was saved", async () => {
+        const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList: {
+              ...savedArtworksArtworkList,
+              artworksCount: 1,
+            },
+            customArtworkLists: { edges: [] },
+          }),
+        })
+
+        expect(queryByText("1 Artwork")).toBeNull()
+      })
+
+      it("should render `x Artworks` when multiple artwork were saved", async () => {
+        const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists: { edges: [] },
+          }),
+        })
+
+        expect(queryByText("5 Artworks")).toBeNull()
+      })
+    })
   })
 })
 
@@ -195,18 +226,21 @@ const savedArtworksArtworkList = {
   internalID: "saved-artworks",
   name: "Saved Artworks",
   isSavedArtwork: false,
+  artworksCount: 5,
 }
 
 const customArtworkListOne = {
   internalID: "custom-artwork-list-one",
   name: "Custom Artwork List 1",
   isSavedArtwork: false,
+  artworksCount: 1,
 }
 
 const customArtworkListTwo = {
   internalID: "custom-artwork-list-two",
   name: "Custom Artwork List 2",
   isSavedArtwork: false,
+  artworksCount: 2,
 }
 
 const customArtworkLists = {
