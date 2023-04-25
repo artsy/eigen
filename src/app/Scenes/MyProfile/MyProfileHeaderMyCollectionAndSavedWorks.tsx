@@ -9,12 +9,13 @@ import {
   MyCollectionQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { SavedArtworksList } from "app/Scenes/SavedArtworks/SavedArtworksList"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
-import React from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileHeader } from "./MyProfileHeader"
@@ -28,6 +29,7 @@ export enum Tab {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -55,7 +57,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         },
         {
           title: Tab.savedWorks,
-          content: <FavoriteArtworksQueryRenderer />,
+          content: isArtworkListsEnabled ? (
+            <SavedArtworksList />
+          ) : (
+            <FavoriteArtworksQueryRenderer />
+          ),
         },
       ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
