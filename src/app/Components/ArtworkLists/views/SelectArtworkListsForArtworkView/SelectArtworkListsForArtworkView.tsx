@@ -1,4 +1,4 @@
-import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Message, Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
@@ -47,14 +47,14 @@ export const SelectArtworkListsForArtworkView = () => {
       </Box>
 
       {!!state.recentlyAddedArtworkList && (
-        <Box bg="green100">
-          <Text variant="xs" color="white100">
-            List Created
-          </Text>
-          <Text variant="xs" color="white100">
-            {state.recentlyAddedArtworkList.name}
-          </Text>
-        </Box>
+        <>
+          <Message
+            variant="success"
+            title="List Created"
+            text={`Artwork will be added to ${quoteLeft}${state.recentlyAddedArtworkList.name}${quoteRight}`}
+          />
+          <Spacer y={1} />
+        </>
       )}
 
       <SelectArtworkListsForArtwork />
