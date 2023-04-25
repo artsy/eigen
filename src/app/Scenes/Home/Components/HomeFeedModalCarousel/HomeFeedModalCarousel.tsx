@@ -20,17 +20,17 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
         <HomeFeedModalCarouselScreenWrapper
           title="Create a private record of your artworks"
           description="Manage your collection online easily and securely in one place."
-          imgSrc={require("images/my-collection-onboarding-image-1.png")}
+          imgSrc={require("images/my-collection-onboarding-image-1.webp")}
         />
         <HomeFeedModalCarouselScreenWrapper
           title="Get insights on your collection"
           description="Track market demand and get insights into the market value of artworks in your collection."
-          imgSrc={require("images/my-collection-onboarding-image-2.png")}
+          imgSrc={require("images/my-collection-onboarding-image-2.webp")}
         />
         <HomeFeedModalCarouselScreenWrapper
           title="Keep track of artists you collect"
           description="Discover more about the artists you collect, with latest career news and auction results."
-          imgSrc={require("images/my-collection-onboarding-image-3.png")}
+          imgSrc={require("images/my-collection-onboarding-image-3.webp")}
         />
         <HomeFeedModalCarouselScreenWrapper
           title="How it works"

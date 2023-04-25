@@ -38,7 +38,7 @@ export const PriceDatabaseBenefits: React.FC = () => {
       </Text>
 
       <Image
-        source={require("images/price-database-1.png")}
+        source={require("images/price-database-1.webp")}
         style={{ width: imageWidth, height: imageHeight }}
         resizeMode="contain"
       />
@@ -52,7 +52,7 @@ export const PriceDatabaseBenefits: React.FC = () => {
       </Text>
 
       <Image
-        source={require("images/price-database-2.png")}
+        source={require("images/price-database-2.webp")}
         style={{ width: imageWidth, height: imageHeight }}
         resizeMode="contain"
       />

@@ -36,8 +36,8 @@ const messageForPollingTimeout = {
 }
 
 const Icons: Record<string, ImageRequireSource> = {
-  WINNING: require("images/circle-check-green.png"),
-  PENDING: require("images/circle-exclamation.png"),
+  WINNING: require("images/circle-check-green.webp"),
+  PENDING: require("images/circle-exclamation.webp"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -99,7 +99,7 @@ export class BidResult extends React.Component<BidResultProps> {
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20 source={Icons[status] || require("images/circle-x-red.png")} />
+              <Icon20 source={Icons[status] || require("images/circle-x-red.webp")} />
               <Title mt={2} mb={6}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title
