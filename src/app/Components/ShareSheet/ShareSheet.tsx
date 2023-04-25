@@ -19,7 +19,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
-import { shareContent } from "app/Components/ShareSheet/helpers"
+import { getBase64Data, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -55,8 +55,7 @@ export const ShareSheet = () => {
   const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
 
   const shareOnInstagramStory = async () => {
-    const base64RawData = await shotRef.current!.capture!()
-    const base64Data = `data:image/png;base64,${base64RawData}`
+    const base64Data = await getBase64Data(shotRef.current!)
 
     await Share.shareSingle({
       appId: Config.ARTSY_FACEBOOK_APP_ID,
