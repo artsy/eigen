@@ -219,6 +219,251 @@ describe("ArtworkListsProvider", () => {
         expect(queryByText("5 Artworks")).toBeNull()
       })
     })
+
+    describe("Selected artwork lists counter", () => {
+      describe("without selected artwork lists by default", () => {
+        it("default state", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList,
+              customArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          expect(getByText("0 lists selected")).toBeTruthy()
+        })
+
+        it("selected one artwork list", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList,
+              customArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+
+          expect(getByText("1 list selected")).toBeTruthy()
+        })
+
+        it("selected multiple artwork lists", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList,
+              customArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+
+          expect(getByText("2 lists selected")).toBeTruthy()
+        })
+
+        it("selected multiple artwork lists (select and unselect action)", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList,
+              customArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+          expect(getByText("2 lists selected")).toBeTruthy()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          expect(getByText("1 list selected")).toBeTruthy()
+        })
+      })
+
+      describe("with selected artwork lists by default", () => {
+        it("default state", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          expect(getByText("3 lists selected")).toBeTruthy()
+        })
+
+        it("unselect preselected artwork lists", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+
+          expect(getByText("1 list selected")).toBeTruthy()
+        })
+
+        it("unselect preselected and select again the same artwork lists", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+          expect(getByText("1 list selected")).toBeTruthy()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+          expect(getByText("3 lists selected")).toBeTruthy()
+        })
+
+        it("unselect preselected and select other artwork lists", async () => {
+          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+            }),
+          })
+
+          await flushPromiseQueue()
+
+          fireEvent.press(getByText("Saved Artworks"))
+          fireEvent.press(getByText("Custom Artwork List 1"))
+          expect(getByText("1 list selected")).toBeTruthy()
+
+          fireEvent.press(getByText("Custom Artwork List 3"))
+          expect(getByText("2 lists selected")).toBeTruthy()
+        })
+      })
+    })
+
+    describe("Save button", () => {
+      it("disabled by default", async () => {
+        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(getByText("Save")).toBeDisabled()
+      })
+
+      it("disabled when select and unselect the same artwork lists", async () => {
+        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 1"))
+        expect(getByText("Save")).toBeEnabled()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 1"))
+        expect(getByText("Save")).toBeDisabled()
+      })
+
+      it("disabled when select and unselect the same preselected artwork lists", async () => {
+        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+            customArtworkLists: preselectedCustomArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 1"))
+        expect(getByText("Save")).toBeEnabled()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 1"))
+        expect(getByText("Save")).toBeDisabled()
+      })
+
+      it("enabled when select some new artwork lists", async () => {
+        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList,
+            customArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 2"))
+
+        expect(getByText("Save")).toBeEnabled()
+      })
+
+      it("enabled when unselect preselected artwork lists", async () => {
+        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+            customArtworkLists: preselectedCustomArtworkLists,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByText("Saved Artworks"))
+        fireEvent.press(getByText("Custom Artwork List 1"))
+
+        expect(getByText("Save")).toBeEnabled()
+      })
+    })
   })
 })
 
@@ -250,6 +495,36 @@ const customArtworkLists = {
     },
     {
       node: customArtworkListTwo,
+    },
+  ],
+}
+
+const preselectedSavedArtworksArtworkList = {
+  ...savedArtworksArtworkList,
+  isSavedArtwork: true,
+}
+
+const preselectedCustomArtworkLists = {
+  edges: [
+    {
+      node: {
+        ...customArtworkListOne,
+        isSavedArtwork: true,
+      },
+    },
+    {
+      node: {
+        ...customArtworkListTwo,
+        isSavedArtwork: true,
+      },
+    },
+    {
+      node: {
+        internalID: "custom-artwork-list-three",
+        name: "Custom Artwork List 3",
+        isSavedArtwork: false,
+        artworksCount: 3,
+      },
     },
   ],
 }
