@@ -31,7 +31,7 @@ export const SelectArtworkListsForArtworkView = () => {
       </ArtworkListsBottomSheetSectionTitle>
 
       <Box m={2}>
-        <ArtworkInfo />
+        <ArtworkInfo artwork={state.artwork!} />
       </Box>
 
       {!!state.recentlyAddedArtworkList && (

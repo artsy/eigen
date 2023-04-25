@@ -1,12 +1,14 @@
 import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkEntity } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { FC } from "react"
 
 const ARTWORK_IMAGE_SIZE = 50
 
-export const ArtworkInfo = () => {
-  const { state } = useArtworkListsContext()
-  const artwork = state.artwork!
+interface ArtworkInfoProps {
+  artwork: ArtworkEntity
+}
 
+export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
   const getArtistNames = () => {
     if (!artwork.artistNames) {
       return "Artist Unavailable"
