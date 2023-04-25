@@ -11,6 +11,7 @@ interface ArtworkInfoProps {
 export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
+      {/* TODO: Use reusable artwork list image component */}
       <Box width={ARTWORK_IMAGE_SIZE} height={ARTWORK_IMAGE_SIZE} bg="black15" />
       <Spacer x={1} />
       <Box>
