@@ -79,6 +79,7 @@ export const ArtistHeaderFloatingButtonsFragmentContainer = createFragmentContai
   {
     artist: graphql`
       fragment ArtistHeaderFloatingButtons_artist on Artist {
+        __typename
         internalID
         slug
         href

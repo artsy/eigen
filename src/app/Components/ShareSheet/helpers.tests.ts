@@ -1,3 +1,4 @@
+import { ShareSheetItem } from "app/Components/ShareSheet/types"
 import { getShareMessage, getShareURL, shareContent } from "./helpers"
 
 describe("getShareURL", () => {
@@ -34,7 +35,7 @@ describe("shareContent should return correct content for", () => {
       title: "Mona Lisa",
       href: "/artwork/mona-lisa",
       artists: [],
-    }
+    } as unknown as ShareSheetItem
     const expectedOutput = {
       title: "Mona Lisa on Artsy",
       message: "Mona Lisa on Artsy",
@@ -49,7 +50,7 @@ describe("shareContent should return correct content for", () => {
       title: "The Starry Night",
       href: "/artwork/the-starry-night",
       artists: [{ name: "Vincent van Gogh" }, { name: "Paul Gauguin" }],
-    }
+    } as unknown as ShareSheetItem
     const expectedOutput = {
       title: "The Starry Night by Vincent van Gogh, Paul Gauguin on Artsy",
       message: "The Starry Night by Vincent van Gogh, Paul Gauguin on Artsy",
@@ -69,7 +70,7 @@ describe("shareContent should return correct content for", () => {
         { name: "Jane Smith" },
         { name: "Bob Johnson" },
       ],
-    }
+    } as unknown as ShareSheetItem
     const expectedOutput = {
       title: "The Persistence of Memory by Salvador Dali, John Doe, Jane Smith on Artsy",
       message: "The Persistence of Memory by Salvador Dali, John Doe, Jane Smith on Artsy",

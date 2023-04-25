@@ -15,11 +15,12 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
+import * as Sentry from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
-import { getBase64Data, shareContent } from "app/Components/ShareSheet/helpers"
+import { getBase64Data, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -46,13 +47,7 @@ export const ShareSheet = () => {
     return null
   }
 
-  const currentImage = (data?.images ?? [])[data?.currentImageIndex ?? 0]
-  const currentImageUrl = (data?.currentImage ?? currentImage?.url ?? "").replace(
-    ":version",
-    "normalized"
-  )
-
-  const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
+  const { smallImageURL, currentImageUrl } = getShareImages(data)
 
   const shareOnInstagramStory = async () => {
     const base64Data = await getBase64Data(shotRef.current!)
@@ -109,7 +104,7 @@ export const ShareSheet = () => {
       const res = await Share.open(shareOptions)
       trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
     } catch (err) {
-      console.log({ err })
+      Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
     } finally {
       hideShareSheet()
     }

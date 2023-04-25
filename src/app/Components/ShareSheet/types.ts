@@ -4,21 +4,14 @@ export type ShareSheetArtworkItem = {
   type: "artwork"
   slug: string
   currentImageIndex?: number
-  artists: ReadonlyArray<{
+  artists?: ReadonlyArray<{
     readonly name: string | null
   } | null> | null
   internalID: string
-  images: ReadonlyArray<
-    | {
-        readonly __typename: "Image"
-        readonly url: string | null
-      }
-    | {
-        // This will never be '%other', but we need some
-        // value in case none of the concrete values match.
-        readonly __typename: "%other"
-      }
-  >
+  images: ReadonlyArray<{
+    readonly __typename: "Image"
+    readonly url: string | null
+  }>
   title: string
   href: string
 }
@@ -28,7 +21,7 @@ export type ShareSheetArtistItem = {
   title: string
   internalID: string
   slug: string
-  artists: ReadonlyArray<{
+  artists?: ReadonlyArray<{
     readonly name: string | null
   } | null> | null
   href: string
@@ -41,4 +34,7 @@ export type ShareSheetSaleItem = {
   internalID: string
   href: string
   title: string
+  artists: ReadonlyArray<{
+    readonly name: string | null
+  } | null> | null
 }
