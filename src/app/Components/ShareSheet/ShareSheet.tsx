@@ -16,39 +16,85 @@ import {
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
+import { ShareSheet_ArtistQuery } from "__generated__/ShareSheet_ArtistQuery.graphql"
+import {
+  ShareSheet_ArtworkQuery,
+  ShareSheet_ArtworkQuery$data,
+} from "__generated__/ShareSheet_ArtworkQuery.graphql"
+import { ShareSheet_SaleQuery } from "__generated__/ShareSheet_SaleQuery.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
 import { getBase64Data, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
+import {ShareSheetItemData, ShareableType} from "app/Components/ShareSheet/types"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
+import { useClientQuery } from "app/utils/useClientQuery"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
 import Config from "react-native-config"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
+import { graphql, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 
+const getData = (data: ShareSheetItemData, type: ShareableType) => {
+  if (type === "artwork" && Object.prototype.hasOwnProperty.call(data, "artwork")) {
+    return data as ShareSheet_ArtworkQuery$data
+  }
+
+  if (type === "artist" && Object.prototype.hasOwnProperty.call(data, "artist")) {
+    return data as ShareSheet_ArtistQuery
+  }
+
+  if (type === "sale" && Object.prototype.hasOwnProperty.call(data, "sale")) {
+    return data as ShareSheet_SaleQuery
+  }
+
+  return null
+}
+
 export const ShareSheet = () => {
-  const { isVisible, item: data, hideShareSheet } = useShareSheet()
+  const relayEnvironment = useRelayEnvironment()
+  const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
+
+  const { isVisible, item, hideShareSheet } = useShareSheet()
+  const type = item?.type ?? "artwork"
+  // TODO: fix this
+  const query = getQuery(type)
+
+  const { data } = useClientQuery<
+    ShareSheet_ArtworkQuery | ShareSheet_ArtistQuery | ShareSheet_SaleQuery
+  >({
+    environment: relayEnvironment,
+    query,
+    variables: { slug: item?.slug!, skip: !item?.slug },
+    cacheConfig: { fetchPolicy: "store-or-network" },
+  })
+
+  const newData = getData(data!, item?.type ?? "artwork")
+
   const showInstagramStoriesItem =
-    useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
+    useCanOpenURL("instagram://user?username=instagram") && item?.type !== "sale"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const { height: screenHeight } = useScreenDimensions()
   const toast = useToast()
   const shotRef = useRef<ViewShot>(null)
   const { trackEvent } = useTracking()
 
-  if (!data) {
+  if (!newData) {
     return null
   }
 
-  const { smallImageURL, currentImageUrl } = getShareImages(data)
 
+
+
+
+  const { smallImageURL, currentImageUrl } = getShareImages(data, type)
   const shareOnInstagramStory = async () => {
     const base64Data = await getBase64Data(shotRef.current!)
 
@@ -58,7 +104,7 @@ export const ShareSheet = () => {
       backgroundImage: base64Data,
     })
     trackEvent(
-      share(tracks.customShare(CustomService.instagram_stories, data!.internalID, data?.slug))
+      share(tracks.customShare(CustomService.instagram_stories, data?.[type].in, data?.slug))
     )
     hideShareSheet()
   }
@@ -66,48 +112,48 @@ export const ShareSheet = () => {
   const shareOnWhatsApp = async () => {
     const details = shareContent(data)
 
-    await Share.shareSingle({
-      social: Share.Social.WHATSAPP,
-      message: details.message ?? "",
-      url: details.url,
-    })
-    trackEvent(share(tracks.customShare(CustomService.whatsapp, data.internalID, data.slug)))
+    // await Share.shareSingle({
+    //   social: Share.Social.WHATSAPP,
+    //   message: details.message ?? "",
+    //   url: details.url,
+    // })
+    // trackEvent(share(tracks.customShare(CustomService.whatsapp, data.internalID, data.slug)))
 
     hideShareSheet()
   }
 
   const handleCopyLink = () => {
-    Clipboard.setString(`${unsafe__getEnvironment().webURL}${data.href}`)
-    trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
+    // Clipboard.setString(`${webURL}${data.href}`)
+    // trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
     hideShareSheet()
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
 
   // User presses the more button and is presented with a native list of options
   const handleMorePress = async () => {
-    const details = shareContent(data)
+    // const details = shareContent(data)
 
-    const resp = await RNFetchBlob.config({
-      fileCache: true,
-    }).fetch("GET", smallImageURL)
+    // const resp = await RNFetchBlob.config({
+    //   fileCache: true,
+    // }).fetch("GET", smallImageURL)
 
-    const base64RawData = await resp.base64()
-    const base64Data = `data:image/png;base64,${base64RawData}`
+    // const base64RawData = await resp.base64()
+    // const base64Data = `data:image/png;base64,${base64RawData}`
 
-    const shareOptions = {
-      title: details.title ?? "",
-      message: details.message + "\n" + details.url,
-      ...(data.type !== "sale" && { url: base64Data }),
-    }
+    // const shareOptions = {
+    //   title: details.title ?? "",
+    //   message: details.message + "\n" + details.url,
+    //   ...(data.type !== "sale" && { url: base64Data }),
+    // }
 
-    try {
-      const res = await Share.open(shareOptions)
-      trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
-    } catch (err) {
-      Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
-    } finally {
-      hideShareSheet()
-    }
+    // try {
+    //   const res = await Share.open(shareOptions)
+    //   trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+    // } catch (err) {
+    //   Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
+    // } finally {
+    hideShareSheet()
+    // }
   }
 
   return (
@@ -120,14 +166,14 @@ export const ShareSheet = () => {
         Share
       </FancyModalHeader>
       <ScrollView>
-        {data.type !== "sale" && (
+        {/* {item?.type !== "sale" && (
           <InstagramStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}
             artist={data.artists![0]?.name!}
             title={data?.title}
           />
-        )}
+        )} */}
 
         {!!showWhatsAppItem && (
           <CustomShareSheetItem
@@ -169,3 +215,55 @@ export const tracks = {
     service: app,
   }),
 }
+
+const getQuery = (type: ShareableType) => {
+  switch (type) {
+    case "artwork":
+      return artworkQuery
+    case "artist":
+      return artistQuery
+    case "sale":
+      return saleQuery
+    default:
+      return artworkQuery
+  }
+}
+
+const artworkQuery = graphql`
+  query ShareSheet_ArtworkQuery($slug: String!, $skip: Boolean!) {
+    artwork(id: $slug) @skip(if: $skip) {
+      slug
+      internalID
+      href
+      images {
+        url: imageURL
+      }
+      title
+      artists {
+        name
+      }
+    }
+  }
+`
+
+const saleQuery = graphql`
+  query ShareSheet_SaleQuery($slug: String!, $skip: Boolean!) {
+    sale(id: $slug) @skip(if: $skip) {
+      ...SaleHeader_sale
+    }
+  }
+`
+
+const artistQuery = graphql`
+  query ShareSheet_ArtistQuery($slug: String!, $skip: Boolean!) {
+    artist(id: $slug) @skip(if: $skip) {
+      internalID
+      slug
+      href
+      name
+      image {
+        url(version: "large")
+      }
+    }
+  }
+`

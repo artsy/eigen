@@ -102,10 +102,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   showShareSheet({
                     type: "sale",
                     slug: sale.slug,
-                    internalID: sale.internalID,
-                    href: sale.href!,
-                    title: sale.name!,
-                    artists: [],
                   })
                 }}
                 style={{

@@ -1,4 +1,7 @@
-import { ShareSheetItem } from "app/Components/ShareSheet/types"
+import { ShareSheet_ArtistQuery$data } from "__generated__/ShareSheet_ArtistQuery.graphql"
+import { ShareSheet_ArtworkQuery$data } from "__generated__/ShareSheet_ArtworkQuery.graphql"
+import { ShareSheet_SaleQuery$data } from "__generated__/ShareSheet_SaleQuery.graphql"
+import { ShareSheetItem, ShareSheetItemData, ShareableType } from "app/Components/ShareSheet/types"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { take } from "lodash"
 import ViewShot from "react-native-view-shot"
@@ -24,7 +27,7 @@ export const getBase64Data = async (viewShot: ViewShot) => {
   return base64Data
 }
 
-export const shareContent = (shareSheetItem: ShareSheetItem) => {
+export const shareContent = (shareSheetItem: ShareSheetItemData, ty) => {
   const { title, href, artists } = shareSheetItem
   let computedTitle = ""
 
@@ -42,15 +45,19 @@ export const shareContent = (shareSheetItem: ShareSheetItem) => {
   }
 }
 
-export const getShareImages = (shareSheetItem: ShareSheetItem) => {
-  if (shareSheetItem.type === "sale") {
+export const getShareImages = (
+  shareSheetItem: ShareSheetItemData,
+  type: ShareableType
+) => {
+  shareSheetItem
+  if (type === "sale") {
     return {
       smallImageURL: "",
       currentImageUrl: "",
     }
   }
 
-  if (shareSheetItem.type === "artist") {
+  if (type === "artist") {
     const currentImageUrl = (shareSheetItem.currentImageUrl ?? "").replace(":version", "normalized")
     const smallImageURL = (shareSheetItem.currentImageUrl ?? "").replace(":version", "small")
 

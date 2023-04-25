@@ -42,12 +42,7 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
   const handleSharePress = () => {
     showShareSheet({
       type: "artist",
-      internalID: artist.internalID,
       slug: artist.slug,
-      artists: [{ name: artist.name }],
-      title: artist.name!,
-      href: artist.href!,
-      currentImageUrl: artist.image?.url ?? undefined,
     })
   }
 

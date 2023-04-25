@@ -64,12 +64,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
               showShareSheet({
                 type: "artwork",
                 slug: artwork.slug,
-                artists: artwork.artists,
-                internalID: artwork.internalID,
                 currentImageIndex,
-                title: artwork.title!,
-                href: artwork.href!,
-                images: imageFigures,
               })
             }}
           />
