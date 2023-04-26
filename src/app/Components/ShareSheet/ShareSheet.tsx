@@ -1,189 +1,176 @@
-import { ActionType, ContextModule, CustomService, OwnerType, Share, share } from "@artsy/cohesion"
 import {
-  LinkIcon,
+  ActionType,
+  ContextModule,
+  CustomService,
+  OwnerType,
+  share,
+  Share as ShareType,
+} from "@artsy/cohesion"
+import {
   InstagramAppIcon,
-  ShareIcon,
-  WhatsAppAppIcon,
+  LinkIcon,
   MoreIcon,
+  ShareIcon,
+  useScreenDimensions,
+  WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import * as Sentry from "@sentry/react-native"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
+import { getBase64Data, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
-import { Schema } from "app/utils/track"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { ScrollView } from "react-native"
 import Config from "react-native-config"
-import RNShare, { ShareOptions } from "react-native-share"
+import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
-import { getBase64Data, getShareMessage, getShareURL } from "./helpers"
+import RNFetchBlob from "rn-fetch-blob"
 
-interface ShareEntry {
-  internalID: string
-  slug: string
-  href: string
-  artistNames: string[]
-  title?: string
-  imageURL?: string
-}
-
-export interface ShareSheetProps {
-  visible: boolean
-  entry: ShareEntry
-  showWhatsapp?: boolean
-  showInstagram?: boolean
-  contextModule: ContextModule
-  componentContextModule?: ContextModule
-  ownerType: OwnerType
-  setVisible: (isVisible: boolean) => void
-}
-
-export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
-  const {
-    visible,
-    entry,
-    contextModule,
-    componentContextModule,
-    ownerType,
-    showWhatsapp = true,
-    showInstagram = true,
-    setVisible,
-  } = props
+export const ShareSheet = () => {
+  const { isVisible, item: data, hideShareSheet } = useShareSheet()
+  const isArtwork = data?.type === "artwork"
+  const showInstagramStoriesItem =
+    useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
+  const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
+  const { height: screenHeight } = useScreenDimensions()
   const toast = useToast()
-  const { trackEvent } = useTracking()
   const shotRef = useRef<ViewShot>(null)
-  const canOpenWhatsapp = useCanOpenURL("whatsapp://send?phone=+491898")
-  const canOpenInstagram = useCanOpenURL("instagram://user?username=instagram")
+  const { trackEvent } = useTracking()
+  const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
 
-  const handleShareOnWhatsAppPress = async () => {
-    try {
-      const url = getShareURL(entry.href)
-      const message = getShareMessage(entry.artistNames, entry.title)
-      const event = tracks.share(contextModule, ownerType, entry, CustomService.whatsapp)
-
-      await RNShare.shareSingle({
-        social: RNShare.Social.WHATSAPP,
-        message,
-        url,
-      })
-
-      trackEvent(share(event))
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setVisible(false)
-    }
+  if (!data) {
+    return null
   }
 
-  const handleShareOnInstagramStoryPress = async () => {
-    try {
-      const base64Data = await getBase64Data(shotRef.current!)
-      const event = tracks.share(contextModule, ownerType, entry, CustomService.instagram_stories)
+  const { smallImageURL, currentImageUrl } = getShareImages(data)
 
-      await RNShare.shareSingle({
-        appId: Config.ARTSY_FACEBOOK_APP_ID,
-        social: RNShare.Social.INSTAGRAM_STORIES,
-        backgroundImage: base64Data,
-      })
-      trackEvent(share(event))
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setVisible(false)
-    }
-  }
+  const shareOnInstagramStory = async () => {
+    const base64Data = await getBase64Data(shotRef.current!)
 
-  const handleMorePress = async () => {
-    trackEvent({
-      action_name: Schema.ActionNames.Share,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: componentContextModule ?? contextModule,
+    await Share.shareSingle({
+      appId: Config.ARTSY_FACEBOOK_APP_ID,
+      social: Share.Social.INSTAGRAM_STORIES,
+      backgroundImage: base64Data,
     })
-
-    try {
-      const url = getShareURL(entry.href)
-      const message = getShareMessage(entry.artistNames, entry.title)
-      const shareOptions: ShareOptions = {
-        title: message,
-        message: message + "\n" + url,
-      }
-
-      if (entry.imageURL && shotRef.current) {
-        const base64Data = await getBase64Data(shotRef.current)
-
-        shareOptions.url = base64Data
-      }
-
-      const res = await RNShare.open(shareOptions)
-      const event = tracks.share(contextModule, ownerType, entry, res.message)
-
-      trackEvent(share(event))
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setVisible(false)
-    }
+    isArtwork &&
+      trackEvent(
+        share(tracks.customShare(CustomService.instagram_stories, data!.internalID, data?.slug))
+      )
+    hideShareSheet()
   }
 
-  const handleCopyLinkPress = () => {
-    const clipboardLink = getShareURL(entry.href)
-    const event = tracks.share(contextModule, ownerType, entry, CustomService.copy_link)
+  const shareOnWhatsApp = async () => {
+    const details = shareContent(data)
 
-    setVisible(false)
-    Clipboard.setString(clipboardLink)
+    await Share.shareSingle({
+      social: Share.Social.WHATSAPP,
+      message: details.message ?? "",
+      url: details.url,
+    })
+    isArtwork &&
+      trackEvent(share(tracks.customShare(CustomService.whatsapp, data.internalID, data.slug)))
+
+    hideShareSheet()
+  }
+
+  const handleCopyLink = () => {
+    Clipboard.setString(`${webURL}${data.href}`)
+    isArtwork &&
+      trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
+    hideShareSheet()
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
-    trackEvent(share(event))
+  }
+
+  // User presses the more button and is presented with a native list of options
+  const handleMorePress = async () => {
+    const details = shareContent(data)
+
+    const resp = await RNFetchBlob.config({
+      fileCache: true,
+    }).fetch("GET", smallImageURL)
+
+    const base64RawData = await resp.base64()
+    const base64Data = `data:image/png;base64,${base64RawData}`
+
+    const shareOptions = {
+      title: details.title ?? "",
+      message: details.message + "\n" + details.url,
+      ...(data.type !== "sale" && { url: base64Data }),
+    }
+
+    try {
+      const res = await Share.open(shareOptions)
+      isArtwork && trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+    } catch (err) {
+      Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
+    } finally {
+      hideShareSheet()
+    }
   }
 
   return (
-    <CustomShareSheet visible={visible} setVisible={setVisible}>
+    <FancyModal
+      maxHeight={screenHeight / 2}
+      visible={isVisible}
+      onBackgroundPressed={() => hideShareSheet()}
+    >
+      <FancyModalHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
+        Share
+      </FancyModalHeader>
       <ScrollView>
-        {entry.imageURL ? (
+        {data.type !== "sale" && (
           <InstagramStoryViewShot
             shotRef={shotRef}
-            href={entry.imageURL}
-            artist={entry.artistNames.join(", ")}
-            title={entry.title}
+            href={currentImageUrl}
+            artist={data.artists![0]?.name!}
+            title={data?.title}
           />
-        ) : null}
+        )}
 
-        {showWhatsapp && canOpenWhatsapp ? (
+        {!!showWhatsAppItem && (
           <CustomShareSheetItem
             title="WhatsApp"
             Icon={<WhatsAppAppIcon />}
-            onPress={handleShareOnWhatsAppPress}
+            onPress={shareOnWhatsApp}
           />
-        ) : null}
-
-        {entry.imageURL && showInstagram && canOpenInstagram ? (
+        )}
+        {!!showInstagramStoriesItem && (
           <CustomShareSheetItem
             title="Instagram Stories"
             Icon={<InstagramAppIcon />}
-            onPress={handleShareOnInstagramStoryPress}
+            onPress={shareOnInstagramStory}
           />
-        ) : null}
+        )}
 
-        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLinkPress} />
+        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
         <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
       </ScrollView>
-    </CustomShareSheet>
+    </FancyModal>
   )
 }
 
 export const tracks = {
-  share: (
-    contextModule: ContextModule,
-    ownerType: OwnerType,
-    entry: ShareEntry,
-    service: string
-  ): Share => ({
+  customShare: (service: string, id: string, slug?: string): ShareType => ({
     action: ActionType.share,
-    context_module: contextModule,
-    context_owner_type: ownerType,
-    context_owner_id: entry.internalID,
-    context_owner_slug: entry.slug,
+    context_module: ContextModule.artworkImage,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: id,
+    context_owner_slug: slug,
     service,
+  }),
+  iosShare: (app: string, id: string, slug?: string): ShareType => ({
+    action: ActionType.share,
+    context_module: ContextModule.artworkImage,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: id,
+    context_owner_slug: slug,
+    service: app,
   }),
 }
