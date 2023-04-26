@@ -35,6 +35,7 @@ import RNFetchBlob from "rn-fetch-blob"
 
 export const ShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useShareSheet()
+  const isArtwork = data?.type === "artwork"
   const showInstagramStoriesItem =
     useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
@@ -58,9 +59,10 @@ export const ShareSheet = () => {
       social: Share.Social.INSTAGRAM_STORIES,
       backgroundImage: base64Data,
     })
-    trackEvent(
-      share(tracks.customShare(CustomService.instagram_stories, data!.internalID, data?.slug))
-    )
+    isArtwork &&
+      trackEvent(
+        share(tracks.customShare(CustomService.instagram_stories, data!.internalID, data?.slug))
+      )
     hideShareSheet()
   }
 
@@ -72,14 +74,16 @@ export const ShareSheet = () => {
       message: details.message ?? "",
       url: details.url,
     })
-    trackEvent(share(tracks.customShare(CustomService.whatsapp, data.internalID, data.slug)))
+    isArtwork &&
+      trackEvent(share(tracks.customShare(CustomService.whatsapp, data.internalID, data.slug)))
 
     hideShareSheet()
   }
 
   const handleCopyLink = () => {
     Clipboard.setString(`${webURL}${data.href}`)
-    trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
+    isArtwork &&
+      trackEvent(share(tracks.customShare(CustomService.copy_link, data.internalID, data.slug)))
     hideShareSheet()
     toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
   }
@@ -103,7 +107,7 @@ export const ShareSheet = () => {
 
     try {
       const res = await Share.open(shareOptions)
-      trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+      isArtwork && trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
     } catch (err) {
       Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
     } finally {

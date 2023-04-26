@@ -4,10 +4,12 @@ import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { Schema } from "app/utils/track"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { useState } from "react"
 import { Button, Modal } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
@@ -26,6 +28,7 @@ export enum VisibilityLevels {
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
+  const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const { artwork, refetchArtwork } = props
   const screenDimensions = useScreenDimensions()
@@ -61,6 +64,11 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           <ArtworkActions
             artwork={artwork}
             shareOnPress={() => {
+              trackEvent({
+                action_name: Schema.ActionNames.Share,
+                action_type: Schema.ActionTypes.Tap,
+                context_module: Schema.ContextModules.ArtworkActions,
+              })
               showShareSheet({
                 type: "artwork",
                 slug: artwork.slug,
