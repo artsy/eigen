@@ -1,4 +1,3 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
@@ -11,7 +10,10 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
-import { tracks as artworkActionTracks } from "app/utils/track/ArtworkActions"
+import {
+  ArtworkActionTrackingProps,
+  tracks as artworkActionTracks,
+} from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo } from "react"
@@ -35,7 +37,7 @@ const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 export type ArtworkCardSize = "small" | "large" | "extraLarge"
 
-export interface ArtworkRailCardProps {
+export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
   dark?: boolean
   hideArtistName?: boolean
@@ -51,11 +53,6 @@ export interface ArtworkRailCardProps {
   size: ArtworkCardSize
   testID?: string
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
-  contextModule?: string
-  contextScreenOwnerType?: ScreenOwnerType
-  contextScreenOwnerId?: string
-  contextScreenOwnerSlug?: string
-  contextScreen?: string
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
