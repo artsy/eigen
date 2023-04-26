@@ -28,37 +28,73 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   showNewWorksMessage,
   filtersCount,
 }) => {
-  const { trackEvent } = useTracking()
   const { showVisualClue } = useVisualClue()
 
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
 
   return (
     <Flex>
-      <ArtworksFilterHeader
-        selectedFiltersCount={filtersCount}
-        onFilterPress={showModal}
-        showSeparator={showSeparator}
+      <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
+
+      <Messages
+        showNewWorksMessage={showNewWorksMessage}
+        showSubmissionMessage={showSubmissionMessage}
+        hasMarketSignals={hasMarketSignals}
+      />
+    </Flex>
+  )
+}
+
+const Filters = ({
+  filtersCount,
+  showModal,
+  showSeparator,
+}: {
+  filtersCount: number
+  showModal: () => void
+  showSeparator: boolean
+}) => {
+  const { trackEvent } = useTracking()
+
+  return (
+    <ArtworksFilterHeader
+      selectedFiltersCount={filtersCount}
+      onFilterPress={showModal}
+      showSeparator={showSeparator}
+    >
+      <Button
+        data-test-id="add-artwork-button-non-zero-state"
+        size="small"
+        variant="fillDark"
+        onPress={async () => {
+          navigate("my-collection/artworks/new", {
+            passProps: {
+              mode: "add",
+              source: Tab.collection,
+              onSuccess: popToRoot,
+            },
+          })
+          trackEvent(tracks.addCollectedArtwork())
+        }}
+        haptic
       >
-        <Button
-          data-test-id="add-artwork-button-non-zero-state"
-          size="small"
-          variant="fillDark"
-          onPress={async () => {
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                mode: "add",
-                source: Tab.collection,
-                onSuccess: popToRoot,
-              },
-            })
-            trackEvent(tracks.addCollectedArtwork())
-          }}
-          haptic
-        >
-          Upload Artwork
-        </Button>
-      </ArtworksFilterHeader>
+        Upload Artwork
+      </Button>
+    </ArtworksFilterHeader>
+  )
+}
+
+const Messages = ({
+  showNewWorksMessage,
+  showSubmissionMessage,
+  hasMarketSignals,
+}: {
+  showNewWorksMessage: boolean
+  showSubmissionMessage: boolean
+  hasMarketSignals: boolean
+}) => {
+  return (
+    <>
       {!!showNewWorksMessage && (
         <PurchasedArtworkAddedMessage
           onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
@@ -73,7 +109,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
         sourceTab={Tab.collection}
         hasMarketSignals={hasMarketSignals}
       />
-    </Flex>
+    </>
   )
 }
 
