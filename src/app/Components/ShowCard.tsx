@@ -30,6 +30,10 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
     externalPartnerCity: show.partner?.city,
   })
 
+  const formattedDate = `${show.formattedStartAt}-${show.formattedEndAt}`
+
+  const formattedCityAndDate = compact([showCity, formattedDate]).join(" • ")
+
   return (
     <Flex width={WIDTH}>
       <Touchable haptic onPress={onTap}>
@@ -40,9 +44,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
             {show.name}
           </Text>
           <Text color="black60">{show.partner?.name}</Text>
-          <Text>
-            {compact([showCity, `${show.formattedStartAt}-${show.formattedEndAt}`]).join(" • ")}
-          </Text>
+          <Text>{formattedCityAndDate}</Text>
         </Flex>
       </Touchable>
     </Flex>
