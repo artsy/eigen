@@ -12,9 +12,15 @@ const LOADING_PLACEHOLDER_COUNT = 10
 const SelectArtworkListsForArtworkContent = () => {
   const { state } = useArtworkListsContext()
   const artwork = state.artwork!
-  const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(Query, {
-    artworkID: artwork.internalID,
-  })
+  const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(
+    Query,
+    {
+      artworkID: artwork.internalID,
+    },
+    {
+      fetchPolicy: "network-only",
+    }
+  )
 
   return <ArtworkLists me={queryData.me} />
 }
