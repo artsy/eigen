@@ -1,9 +1,8 @@
 import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
-import { SelectArtworkListsForArtworkFooterMutation } from "__generated__/SelectArtworkListsForArtworkFooterMutation.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
-import { graphql, useMutation } from "react-relay"
 
 export const SelectArtworkListsForArtworkFooter = () => {
   const { state } = useArtworkListsContext()
@@ -12,8 +11,7 @@ export const SelectArtworkListsForArtworkFooter = () => {
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
 
-  const [commit, mutationInProgress] =
-    useMutation<SelectArtworkListsForArtworkFooterMutation>(SaveArtworkListsMutation)
+  const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork()
 
   const handleSave = () => {
     commit({
@@ -63,32 +61,3 @@ const getSelectedListsCountText = (count: number) => {
 
   return `${count} lists selected`
 }
-
-const SaveArtworkListsMutation = graphql`
-  mutation SelectArtworkListsForArtworkFooterMutation(
-    $artworkID: String!
-    $input: ArtworksCollectionsBatchUpdateInput!
-  ) {
-    artworksCollectionsBatchUpdate(input: $input) {
-      responseOrError {
-        ... on ArtworksCollectionsBatchUpdateSuccess {
-          addedToArtworkLists: addedToCollections {
-            internalID
-            default
-            ...ArtworkListItem_item @arguments(artworkID: $artworkID)
-          }
-          removedFromArtworkLists: removedFromCollections {
-            internalID
-            default
-            ...ArtworkListItem_item @arguments(artworkID: $artworkID)
-          }
-        }
-        ... on ArtworksCollectionsBatchUpdateFailure {
-          mutationError {
-            statusCode
-          }
-        }
-      }
-    }
-  }
-`
