@@ -28,11 +28,14 @@ function createGlobalStore() {
 
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
-    middleware.push((_api) => (next) => (_action) => {
+    middleware.push((_api) => (next) => async (action) => {
       if (logAction) {
-        console.log(`ACTION ${_action.type}`, _action)
+        console.log(`ACTION ${action.type}`, action)
       }
-      next(_action)
+      // For actions that don't contain a type, we know that its an async
+      // thunk that returns a promise. We can await that promise and return that.
+      const result = action?.type ? next(action) : await action(next)
+      return result
     })
   }
 
@@ -40,9 +43,14 @@ function createGlobalStore() {
   // has been dispatched
   if (__TEST__ && __globalStoreTestUtils__) {
     __globalStoreTestUtils__.dispatchedActions = []
-    middleware.push((_api) => (next) => (_action) => {
-      __globalStoreTestUtils__.dispatchedActions.push(_action)
-      next(_action)
+
+    middleware.push((_api) => (next) => async (action) => {
+      __globalStoreTestUtils__.dispatchedActions.push(action)
+
+      // For actions that don't contain a type, we know that its an async
+      // thunk that returns a promise. We can await that promise and return that.
+      const result = action?.type ? next(action) : await action(next)
+      return result
     })
   }
 
