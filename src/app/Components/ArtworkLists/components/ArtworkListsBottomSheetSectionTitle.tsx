@@ -1,9 +1,9 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, TextProps } from "@artsy/palette-mobile"
 import { FC } from "react"
 
-export const ArtworkListsBottomSheetSectionTitle: FC = ({ children }) => {
+export const ArtworkListsBottomSheetSectionTitle: FC<TextProps> = ({ children, ...rest }) => {
   return (
-    <Text variant="sm-display" textAlign="center" mt={1}>
+    <Text variant="sm-display" textAlign="center" {...rest}>
       {children}
     </Text>
   )

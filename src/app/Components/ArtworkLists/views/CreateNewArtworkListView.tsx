@@ -48,7 +48,9 @@ export const CreateNewArtworkListView = () => {
       onDismiss={closeCurrentView}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <ArtworkListsBottomSheetSectionTitle>Create a new list</ArtworkListsBottomSheetSectionTitle>
+        <ArtworkListsBottomSheetSectionTitle mt={1}>
+          Create a new list
+        </ArtworkListsBottomSheetSectionTitle>
 
         <Box m={2}>
           <ArtworkInfo artwork={state.artwork!} />

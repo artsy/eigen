@@ -26,7 +26,7 @@ export const SelectArtworkListsForArtworkView = () => {
 
   return (
     <AutomountedBottomSheetModal visible={visible} snapPoints={SNAP_POINTS} onDismiss={reset}>
-      <ArtworkListsBottomSheetSectionTitle>
+      <ArtworkListsBottomSheetSectionTitle mt={1}>
         Select lists for this artwork
       </ArtworkListsBottomSheetSectionTitle>
 
