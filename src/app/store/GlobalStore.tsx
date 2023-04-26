@@ -9,6 +9,7 @@ import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peas
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
+import logger from "redux-logger"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { FeatureMap } from "./config/FeaturesModel"
@@ -19,24 +20,15 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     middleware.push(persistenceMiddleware)
-  }
 
-  if (__DEV__ && !__TEST__) {
-    const reduxInFlipper = require("redux-flipper").default
-    middleware.push(reduxInFlipper())
-  }
+    if (__DEV__) {
+      const reduxInFlipper = require("redux-flipper").default
+      middleware.push(reduxInFlipper())
 
-  // At dev time but not test time, let's log out each action that is dispatched
-  if (__DEV__ && !__TEST__) {
-    middleware.push((_api) => (next) => async (action) => {
       if (logAction) {
-        console.log(`ACTION ${action.type}`, action)
+        middleware.push(logger)
       }
-      // For actions that don't contain a type, we know that its an async
-      // thunk that returns a promise. We can await that promise and return that.
-      const result = action?.type ? next(action) : await action(next)
-      return result
-    })
+    }
   }
 
   // At test time let's keep a log of all dispatched actions so that tests can make assertions based on what
@@ -45,7 +37,9 @@ function createGlobalStore() {
     __globalStoreTestUtils__.dispatchedActions = []
 
     middleware.push((_api) => (next) => async (action) => {
-      __globalStoreTestUtils__.dispatchedActions.push(action)
+      if (action.type) {
+        __globalStoreTestUtils__.dispatchedActions.push(action)
+      }
 
       // For actions that don't contain a type, we know that its an async
       // thunk that returns a promise. We can await that promise and return that.

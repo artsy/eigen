@@ -36,10 +36,10 @@ describe(checkAuthenticationMiddleware, () => {
     await middleware(next)(request)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
-      "@thunk.auth.signOut"
+      "@thunk.auth.signOut(success)"
     )
     expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
-      "@thunkOn.resetAfterSignOut"
+      "@thunkOn.resetAfterSignOut(success)"
     )
   })
 
