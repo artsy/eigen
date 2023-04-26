@@ -286,6 +286,11 @@ export const features = defineFeatures({
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableMyCollectionCollectedArtists: {
+    description: "Enable Collected Artists in My Collection",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
