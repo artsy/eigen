@@ -35,6 +35,7 @@ export const CreateNewArtworkListView = () => {
 
   const handleSave = () => {
     // TODO: Run save mutation
+    // TODO: Preselect recently create artwork list
     setRecentlyAddedArtworkList()
     closeCurrentView()
   }
