@@ -26,9 +26,11 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
       <Spacer x={1} />
 
       <Box>
-        <Text variant="sm-display" numberOfLines={1}>
-          {getArtistNames(artwork)}
-        </Text>
+        {!!artwork.artistNames && (
+          <Text variant="sm-display" numberOfLines={1}>
+            {artwork.artistNames}
+          </Text>
+        )}
 
         <Text variant="sm" color="black60" numberOfLines={2}>
           <Text variant="sm" color="black60" italic>
@@ -39,12 +41,4 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
       </Box>
     </Flex>
   )
-}
-
-const getArtistNames = (artwork: ArtworkEntity) => {
-  if (!artwork.artistNames) {
-    return "Artist Unavailable"
-  }
-
-  return artwork.artistNames
 }

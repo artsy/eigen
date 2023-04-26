@@ -58,24 +58,6 @@ describe("ArtworkInfo", () => {
 
     expect(queryByText(/Artwork Title/)).toBeTruthy()
   })
-
-  describe("Artists", () => {
-    it("should render `Artist Unavailable` when `artistNames` value is null", () => {
-      const { queryByText } = renderWithHookWrappersTL(
-        <ArtworkInfo artwork={{ ...artworkEntity, artistNames: null }} />
-      )
-
-      expect(queryByText(/Artist Unavailable/)).toBeTruthy()
-    })
-
-    it("should render `Artist Unavailable` when `artistNames` value is empty string", () => {
-      const { queryByText } = renderWithHookWrappersTL(
-        <ArtworkInfo artwork={{ ...artworkEntity, artistNames: "" }} />
-      )
-
-      expect(queryByText(/Artist Unavailable/)).toBeTruthy()
-    })
-  })
 })
 
 const artworkEntity: ArtworkEntity = {
