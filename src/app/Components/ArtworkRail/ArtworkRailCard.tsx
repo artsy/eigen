@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
@@ -10,6 +11,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
+import { tracks as artworkActionTracks } from "app/utils/track/ArtworkActions"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo } from "react"
@@ -49,6 +51,11 @@ export interface ArtworkRailCardProps {
   size: ArtworkCardSize
   testID?: string
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
+  contextModule?: string
+  contextScreenOwnerType?: ScreenOwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
+  contextScreen?: string
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -74,19 +81,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const {
-    artistNames,
-    date,
-    id,
-    image,
-    internalID,
-    isSaved,
-    partner,
-    slug,
-    title,
-    sale,
-    saleArtwork,
-  } = artwork
+  const { artistNames, date, id, image, internalID, isSaved, partner, title, sale, saleArtwork } =
+    artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -148,13 +144,35 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     }
   }, [image?.resized?.height, image?.resized?.width])
 
+  const onArtworkSavedOrUnSaved = (saved: boolean) => {
+    const {
+      contextModule,
+      contextScreenOwnerType,
+      contextScreenOwnerId,
+      contextScreenOwnerSlug,
+      contextScreen,
+    } = restProps
+    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+    const params = {
+      acquireable: isAcquireable,
+      availability,
+      biddable: isBiddable,
+      context_module: contextModule,
+      context_screen: contextScreen,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      context_screen_owner_type: contextScreenOwnerType,
+      inquireable: isInquireable,
+      offerable: isOfferable,
+    }
+    trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+  }
+
   const handleArtworkSave = useSaveArtwork({
     id,
     internalID,
     isSaved,
-    onCompleted: () => {
-      trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
-    },
+    onCompleted: onArtworkSavedOrUnSaved,
     contextScreen: trackingContextScreenOwnerType,
   })
 
@@ -396,9 +414,14 @@ const RecentlySoldCardSection: React.FC<
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
+    availability
     id
     slug
     internalID
+    isAcquireable
+    isBiddable
+    isInquireable
+    isOfferable
     href
     artistNames
     date
@@ -440,18 +463,3 @@ const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 }))``
-
-const tracks = {
-  saveOrUnsave: (
-    isSaved?: boolean | null,
-    internalID?: string,
-    slug?: string,
-    contextScreenOwnerType: Schema.OwnerEntityTypes | undefined = Schema.OwnerEntityTypes.Artwork
-  ) => ({
-    action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
-    context_screen_owner_type: contextScreenOwnerType,
-    context_module: Schema.ContextModules.ArtworkActions,
-    context_screen_owner_id: internalID,
-    context_screen_owner_slug: slug,
-  }),
-}

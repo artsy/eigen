@@ -27,13 +27,13 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import { tracks as artworkActionTracks } from "app/utils/track/ArtworkActions"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
-
 const SAVE_ICON_SIZE = 22
 
 export interface ArtworkProps extends Partial<PageableRouteProps> {
@@ -79,6 +79,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   itemIndex,
   height,
+  contextModule,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -140,10 +141,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const { id, internalID, isSaved } = artwork
 
+  const onArtworkSavedOrUnSaved = (saved: boolean) => {
+    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+    const params = {
+      acquireable: isAcquireable,
+      availability,
+      biddable: isBiddable,
+      context_module: contextModule,
+      context_screen: contextScreen,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      context_screen_owner_type: contextScreenOwnerType,
+      inquireable: isInquireable,
+      offerable: isOfferable,
+    }
+    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+  }
+
   const handleArtworkSave = useSaveArtwork({
     id,
     internalID,
     isSaved,
+    onCompleted: onArtworkSavedOrUnSaved,
   })
 
   const handleTap = () => {
@@ -399,12 +418,17 @@ export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
+      availability
       title
       date
       saleMessage
       slug
       id
       internalID
+      isAcquireable
+      isBiddable
+      isInquireable
+      isOfferable
       isSaved
       artistNames
       href
