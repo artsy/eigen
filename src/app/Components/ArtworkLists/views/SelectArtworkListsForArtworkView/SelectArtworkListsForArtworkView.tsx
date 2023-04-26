@@ -5,13 +5,12 @@ import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { SelectArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"
 import { SelectArtworkListsForArtworkFooter } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtworkFooter"
-import { useState } from "react"
+import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 const SNAP_POINTS = ["50%", "95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
   const { state, dispatch, reset } = useArtworkListsContext()
-  const [visible, setVisible] = useState(true)
 
   const openCreateNewArtworkListView = () => {
     dispatch({
@@ -20,14 +19,14 @@ export const SelectArtworkListsForArtworkView = () => {
     })
   }
 
-  const handleSave = () => {
-    // TODO: Save mutation
-    setVisible(false)
-  }
-
   return (
-    <AutomountedBottomSheetModal visible={visible} snapPoints={SNAP_POINTS} onDismiss={reset}>
-      <ArtworkListsBottomSheetSectionTitle mt={1}>
+    <AutomountedBottomSheetModal
+      visible
+      name={ArtworkListsViewName.SelectArtworkListsForArtwork}
+      snapPoints={SNAP_POINTS}
+      onDismiss={reset}
+    >
+      <ArtworkListsBottomSheetSectionTitle>
         Select lists for this artwork
       </ArtworkListsBottomSheetSectionTitle>
 
@@ -59,7 +58,7 @@ export const SelectArtworkListsForArtworkView = () => {
       )}
 
       <SelectArtworkListsForArtwork />
-      <SelectArtworkListsForArtworkFooter onSavePress={handleSave} />
+      <SelectArtworkListsForArtworkFooter />
     </AutomountedBottomSheetModal>
   )
 }

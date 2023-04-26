@@ -1,17 +1,18 @@
 import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
+import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { FC } from "react"
+import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
-interface SelectArtworkListsForArtworkFooterProps {
-  onSavePress: () => void
-}
-
-export const SelectArtworkListsForArtworkFooter: FC<SelectArtworkListsForArtworkFooterProps> = ({
-  onSavePress,
-}) => {
+export const SelectArtworkListsForArtworkFooter = () => {
   const { state } = useArtworkListsContext()
+  const { dismiss } = useBottomSheetModal()
   const { addingArtworkListIDs, removingArtworkListIDs, selectedArtworkListIDs } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
+
+  const handleSave = () => {
+    // TODO: Save mutation
+    dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
+  }
 
   return (
     <Box p={2}>
@@ -21,7 +22,7 @@ export const SelectArtworkListsForArtworkFooter: FC<SelectArtworkListsForArtwork
 
       <Spacer y={1} />
 
-      <Button width="100%" block disabled={!hasChanges} onPress={onSavePress}>
+      <Button width="100%" block disabled={!hasChanges} onPress={handleSave}>
         Save
       </Button>
     </Box>
