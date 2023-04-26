@@ -276,28 +276,14 @@ jobs:
 
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - generate-checksums
       - install-node
       - install-gems
       - run:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
-
-  check-if-app-has-been-approved-for-release:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: 14.1.0
-      resource_class: macos.x86.medium.gen2
-
-    steps:
-      - checkout
-      - generate-checksums
-      - install-gems
-      - run:
-          name: Check flags
-          command: ./scripts/check-if-app-has-been-approved-for-release.sh
 
   build-test-js:
     executor:
