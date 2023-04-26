@@ -1,7 +1,10 @@
 import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import {
+  updateArtworkListsForArtworkUpdater,
+  useUpdateArtworkListsForArtwork,
+} from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 export const SelectArtworkListsForArtworkFooter = () => {
@@ -12,6 +15,7 @@ export const SelectArtworkListsForArtworkFooter = () => {
   const artwork = state.artwork!
 
   const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork()
+  const updater = updateArtworkListsForArtworkUpdater(artwork.id)
 
   const handleSave = () => {
     commit({
@@ -30,6 +34,7 @@ export const SelectArtworkListsForArtworkFooter = () => {
         // TODO: Log error
         console.log("[debug] error", error)
       },
+      updater,
     })
   }
 
