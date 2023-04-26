@@ -1,6 +1,7 @@
-import { Button, Spacer } from "@artsy/palette-mobile"
+import { Box, Button, Spacer } from "@artsy/palette-mobile"
 import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -8,7 +9,7 @@ import { useMemo, useState } from "react"
 
 export const CreateNewArtworkListView = () => {
   const [name, setName] = useState("")
-  const { dispatch } = useArtworkListsContext()
+  const { state, dispatch } = useArtworkListsContext()
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
 
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
@@ -47,7 +48,13 @@ export const CreateNewArtworkListView = () => {
       onDismiss={closeCurrentView}
     >
       <BottomSheetView onLayout={handleContentLayout}>
-        <ArtworkListsBottomSheetSectionTitle>Create a new list</ArtworkListsBottomSheetSectionTitle>
+        <ArtworkListsBottomSheetSectionTitle mt={1}>
+          Create a new list
+        </ArtworkListsBottomSheetSectionTitle>
+
+        <Box m={2}>
+          <ArtworkInfo artwork={state.artwork!} />
+        </Box>
 
         <BottomSheetInput placeholder="Placeholder" value={name} onChangeText={setName} />
 

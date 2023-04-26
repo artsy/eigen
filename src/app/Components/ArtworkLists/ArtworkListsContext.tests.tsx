@@ -30,6 +30,14 @@ describe("ArtworkListsProvider", () => {
   })
 
   describe("Select lists for artwork", () => {
+    it("should display artwork info", () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      expect(getByText(/Banksy/)).toBeTruthy()
+      expect(getByText(/Artwork Title/)).toBeTruthy()
+      expect(getByText(/2023/)).toBeTruthy()
+    })
+
     it("should not be displayed by default", () => {
       const { queryByText } = renderWithHookWrappersTL(
         <TestRenderer artwork={undefined} />,

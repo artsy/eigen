@@ -1,5 +1,6 @@
 import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { SelectArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"
@@ -25,9 +26,13 @@ export const SelectArtworkListsForArtworkView = () => {
 
   return (
     <AutomountedBottomSheetModal visible={visible} snapPoints={SNAP_POINTS} onDismiss={reset}>
-      <ArtworkListsBottomSheetSectionTitle>
+      <ArtworkListsBottomSheetSectionTitle mt={1}>
         Select lists for this artwork
       </ArtworkListsBottomSheetSectionTitle>
+
+      <Box m={2}>
+        <ArtworkInfo artwork={state.artwork!} />
+      </Box>
 
       {!!state.recentlyAddedArtworkList && (
         <Box bg="green100">
