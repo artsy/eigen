@@ -18,7 +18,7 @@ export const SelectArtworkListsForArtworkView = () => {
       snapPoints={SNAP_POINTS}
       onDismiss={reset}
     >
-      <ArtworkListsBottomSheetSectionTitle>
+      <ArtworkListsBottomSheetSectionTitle mt={1}>
         Select lists for this artwork
       </ArtworkListsBottomSheetSectionTitle>
 
