@@ -2,8 +2,8 @@ import {
   useUpdateArtworkListsForArtworkMutation,
   useUpdateArtworkListsForArtworkMutation$data,
 } from "__generated__/useUpdateArtworkListsForArtworkMutation.graphql"
-import { graphql, useMutation } from "react-relay"
-import { RecordSourceSelectorProxy } from "relay-runtime"
+import { UseMutationConfig, graphql, useMutation } from "react-relay"
+import { Disposable, RecordSourceSelectorProxy } from "relay-runtime"
 
 interface Counts {
   custom: number
@@ -16,12 +16,26 @@ type Response = NonNullable<
   >["responseOrError"]
 >
 type ListEntity = Response["addedToArtworkLists"] | Response["removedFromArtworkLists"]
+type MutationResult = [
+  (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => Disposable,
+  boolean
+]
 
-export const useUpdateArtworkListsForArtwork = () => {
-  return useMutation<useUpdateArtworkListsForArtworkMutation>(SaveArtworkListsMutation)
+export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResult => {
+  const [initialCommit, isInProgress] =
+    useMutation<useUpdateArtworkListsForArtworkMutation>(SaveArtworkListsMutation)
+
+  const commit = (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => {
+    return initialCommit({
+      ...config,
+      updater: updater(artworkID),
+    })
+  }
+
+  return [commit, isInProgress]
 }
 
-export const updateArtworkListsForArtworkUpdater =
+const updater =
   (artworkID: string) =>
   (
     store: RecordSourceSelectorProxy<useUpdateArtworkListsForArtworkMutation$data>,
