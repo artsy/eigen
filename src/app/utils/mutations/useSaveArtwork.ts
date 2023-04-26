@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { useMutation } from "react-relay"
@@ -9,7 +10,7 @@ export interface SaveArtworkOptions {
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
   onError?: () => void
-  contextScreen?: Schema.OwnerEntityTypes
+  contextScreen?: Schema.OwnerEntityTypes | ScreenOwnerType
 }
 
 export const useSaveArtwork = ({

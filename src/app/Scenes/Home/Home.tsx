@@ -66,6 +66,10 @@ import {
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, {
@@ -96,9 +100,7 @@ import { useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
-export interface HomeModule {
-  // Used for tracking rail views
-  contextModule?: ContextModule
+export interface HomeModule extends ArtworkActionTrackingProps {
   data: any
   hidden?: boolean
   isEmpty: boolean
@@ -207,7 +209,9 @@ const Home = memo((props: HomeProps) => {
   }, [])
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: HomeModule; index: number }) => {
+      const trackingProps = extractArtworkActionTrackingProps(item)
+
       if (!item.data) {
         return <></>
       }
@@ -216,7 +220,7 @@ const Home = memo((props: HomeProps) => {
         case "marketingCollection":
           return (
             <MarketingCollectionRail
-              contextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+              {...trackingProps}
               contextModuleKey="curators-picks-emerging"
               home={props.homePageAbove}
               marketingCollection={item.data}
@@ -247,6 +251,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -255,6 +260,7 @@ const Home = memo((props: HomeProps) => {
         case "worksByArtistsYouFollow":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -263,6 +269,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork-recommendations":
           return (
             <ArtworkRecommendationsRail
+              {...trackingProps}
               title={item.title}
               me={item.data || null}
               isRailVisible={visibleRails.has(item.title)}
@@ -303,6 +310,7 @@ const Home = memo((props: HomeProps) => {
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
+              {...trackingProps}
               artworkConnection={item.data}
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
@@ -331,7 +339,7 @@ const Home = memo((props: HomeProps) => {
           return (
             <AuctionResultsRail
               title={item.title}
-              contextModule={item.contextModule}
+              contextModule={item.contextModule!}
               auctionResults={item.data}
             />
           )

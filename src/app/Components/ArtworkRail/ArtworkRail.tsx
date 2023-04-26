@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
@@ -7,6 +8,10 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 
@@ -23,13 +28,13 @@ interface CommonArtworkRailProps {
   onEndReachedThreshold?: number
   size: ArtworkCardSize
   showSaveIcon?: boolean
-  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
+  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes | ScreenOwnerType
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
 }
 
-export interface ArtworkRailProps extends CommonArtworkRailProps {
+export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionTrackingProps {
   artworks: LargeArtworkRail_artworks$data | SmallArtworkRail_artworks$data
   onPress?: (
     artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
@@ -54,8 +59,10 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   viewabilityConfig,
   onViewableItemsChanged,
   onMorePress,
+  ...otherProps
 }) => {
   const isTablet = isPad()
+  const trackingProps = extractArtworkActionTrackingProps(otherProps)
 
   return (
     <PrefetchFlatList
@@ -81,6 +88,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
+          {...trackingProps}
           artwork={item}
           showPartnerName={showPartnerName}
           hideArtistName={hideArtistName}

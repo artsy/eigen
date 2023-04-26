@@ -1,3 +1,4 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
@@ -52,7 +53,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
-  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
+  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes | ScreenOwnerType
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({

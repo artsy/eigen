@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
@@ -19,6 +19,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       // Above-The-Fold Modules
       {
         contextModule: ContextModule.newWorksForYouRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.newWorksForYou,
         isEmpty: isEmpty(props.newWorksForYou),
         key: "newWorksForYouRail",
@@ -108,6 +110,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.curatorsPicksEmergingRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.emergingPicks,
         hidden: !enableCuratorsPickRail,
         isEmpty: isEmpty(props.emergingPicks),
@@ -127,6 +131,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.artworkRecommendationsRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.meBelow,
         isEmpty: !props.meBelow?.artworkRecommendationsCounts?.totalCount,
         title: "Artwork Recommendations",
@@ -135,6 +141,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule?.results),
         title: "New Works from Galleries You Follow",
@@ -159,6 +167,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.recentlyViewedRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.recentlyViewedWorksArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.recentlyViewedWorksArtworkModule?.results),
         key: "recentlyViewedRail",
@@ -167,6 +177,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.similarToWorksYouViewedRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.similarToRecentlyViewedArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.similarToRecentlyViewedArtworkModule?.results),
         key: "similarToWorksYouViewedRail",

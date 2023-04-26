@@ -1,5 +1,6 @@
 import EventEmitter from "events"
 import { PAGE_SIZE } from "app/Components/constants"
+import { SaveArtworkOptions } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
@@ -12,7 +13,7 @@ export const MY_COLLECTION_REFRESH_KEY = "refreshMyCollection"
 export const MY_COLLECTION_INSIGHTS_REFRESH_KEY = "refreshMyCollectionInsights"
 export const HOME_SCREEN_REFRESH_KEY = "refreshHomeScreen"
 
-export const refreshOnArtworkSave = (contextScreen?: Schema.OwnerEntityTypes) => {
+export const refreshOnArtworkSave = (contextScreen: SaveArtworkOptions["contextScreen"]) => {
   refreshFavoriteArtworks()
 
   refreshHomeScreen(contextScreen)
@@ -22,7 +23,7 @@ export const refreshOnArtistFollow = (contextScreen?: Schema.OwnerEntityTypes) =
   refreshHomeScreen(contextScreen)
 }
 
-export const refreshHomeScreen = (contextScreen?: Schema.OwnerEntityTypes) => {
+export const refreshHomeScreen = (contextScreen: SaveArtworkOptions["contextScreen"]) => {
   // Only refresh home screen if we are not on the home screen
   if (contextScreen === Schema.OwnerEntityTypes.Home) return
 

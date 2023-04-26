@@ -1,14 +1,24 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Schema } from "app/utils/track"
 import lodash from "lodash"
 
-export interface ArtworkActionTrackingProps {
-  contextModule?: string
-  contextScreenOwnerType?: ScreenOwnerType
-  contextScreenOwnerId?: string
-  contextScreenOwnerSlug?: string
-  contextScreen?: string
-  contextScreenQuery?: string
+class ArtworkActionTracking {
+  constructor(
+    readonly contextModule?: ContextModule,
+    readonly contextScreenOwnerType?: ScreenOwnerType,
+    readonly contextScreenOwnerId?: string,
+    readonly contextScreenOwnerSlug?: string,
+    readonly contextScreen?: string,
+    readonly contextScreenQuery?: string
+  ) {}
+}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ArtworkActionTrackingProps extends ArtworkActionTracking {}
+
+// given an object obj that contains some keys of ArtworkActionTrackingProps, extract only the key/value
+// of ArtworkActionTrackingProps partial
+export const extractArtworkActionTrackingProps = (obj: {} & ArtworkActionTrackingProps) => {
+  return lodash.pick(obj, Object.keys(new ArtworkActionTracking()))
 }
 
 export const tracks = {
