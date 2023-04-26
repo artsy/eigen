@@ -28,7 +28,7 @@ import {
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
 import { CURRENT_APP_VERSION } from "./migration"
-import { assignDeep, sanitize } from "./persistence"
+import { assignDeep, sanitize } from "./persistence/utils"
 
 interface GlobalStoreStateModel {
   version: number

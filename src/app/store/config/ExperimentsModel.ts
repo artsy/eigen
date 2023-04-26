@@ -1,4 +1,4 @@
-import { assignDeep } from "app/store/persistence"
+import { assignDeep } from "app/store/persistence/utils"
 import { action, Action } from "easy-peasy"
 
 export interface ExperimentsModel {

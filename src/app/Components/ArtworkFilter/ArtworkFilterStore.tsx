@@ -1,5 +1,5 @@
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { assignDeep } from "app/store/persistence"
+import { assignDeep } from "app/store/persistence/utils"
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { filter, find, isEqual, unionBy } from "lodash"
 import {
