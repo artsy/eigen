@@ -1,4 +1,5 @@
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { times } from "lodash"
 import {
@@ -93,7 +94,7 @@ describe("Recent Searches", () => {
 })
 
 describe(useRecentSearches, () => {
-  it("truncates the list of recent searches", () => {
+  it("truncates the list of recent searches", async () => {
     let localRecentSearches: SearchModel["recentSearches"] = []
     let globalRecentSearches: SearchModel["recentSearches"] = []
     const TestComponent: React.FC<{ numSearches: number }> = ({ numSearches }) => {
@@ -125,6 +126,8 @@ describe(useRecentSearches, () => {
       })
     })
 
+    await flushPromiseQueue()
+
     expect(localRecentSearches.length).toBe(5)
     expect(globalRecentSearches.length).toBe(10)
 
@@ -133,6 +136,8 @@ describe(useRecentSearches, () => {
         <TestComponent numSearches={8} />
       </GlobalStoreProvider>
     )
+
+    await flushPromiseQueue()
 
     expect(localRecentSearches.length).toBe(8)
     expect(globalRecentSearches.length).toBe(10)
