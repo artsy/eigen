@@ -274,8 +274,9 @@ export const features = defineFeatures({
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableNewAuctionsRailCard",
   },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
