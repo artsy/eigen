@@ -84,7 +84,7 @@ export interface ArtworkListsProviderProps {
   artwork?: ArtworkEntity
 }
 
-export const INITIAL_STATE: State = {
+export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: State = {
   createNewArtworkListViewVisible: false,
   artwork: null,
   recentlyAddedArtworkList: null,
@@ -113,7 +113,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 }) => {
   const [isSavedToArtworkList, setIsSavedToArtworkList] = useState(!!artworkListId)
   const [state, dispatch] = useReducer(reducer, {
-    ...INITIAL_STATE,
+    ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
   })
   const toast = useArtworkListToast()
@@ -205,7 +205,7 @@ const reducer = (state: State, action: Action): State => {
         selectedArtworkListIDs: action.payload,
       }
     case "RESET":
-      return INITIAL_STATE
+      return ARTWORK_LISTS_CONTEXT_INITIAL_STATE
     default:
       return state
   }
