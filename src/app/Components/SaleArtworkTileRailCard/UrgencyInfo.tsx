@@ -42,7 +42,7 @@ export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
   return null
 }
 
-const getInfo = (time: Time): { copy: string; color: "blue100" | "red100" } => {
+const getInfo = (time: Time): { text: string; textColor: "blue100" | "red100" } => {
   const { days, hours, minutes, seconds } = time
 
   const parsedDays = parseInt(days, 10)
@@ -51,15 +51,15 @@ const getInfo = (time: Time): { copy: string; color: "blue100" | "red100" } => {
   const parsedSeconds = parseInt(seconds, 10)
 
   if (parsedDays >= 1) {
-    return { copy: parsedDays + ` ${parsedDays > 1 ? " days " : " day"}`, color: "blue100" }
+    return { text: parsedDays + ` ${parsedDays > 1 ? " days " : " day"}`, textColor: "blue100" }
   } else if (parsedHours >= 1) {
-    return { copy: `${parsedHours}h` + ` ${parsedMinutes}m`, color: "blue100" }
+    return { text: `${parsedHours}h` + ` ${parsedMinutes}m`, textColor: "blue100" }
   } else if (parsedMinutes >= 1) {
-    return { copy: `${parsedMinutes}m` + ` ${parsedSeconds}s`, color: "red100" }
+    return { text: `${parsedMinutes}m` + ` ${parsedSeconds}s`, textColor: "red100" }
   } else if (parsedSeconds >= 1) {
-    return { copy: `${parsedSeconds}s`, color: "red100" }
+    return { text: `${parsedSeconds}s`, textColor: "red100" }
   }
-  return { copy: "", color: "blue100" }
+  return { text: "", textColor: "blue100" }
 }
 
 const useTimeText = (props: UrgencyInfoProps) => {
@@ -76,7 +76,7 @@ const useTimeText = (props: UrgencyInfoProps) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { time, hasEnded, hasStarted } = useTimer(endAt, startAt)
 
-    const { copy: text, color: textColor } = getInfo(time)
+    const { text, textColor } = getInfo(time)
 
     const startDateMoment = !!startAt
       ? moment.tz(startAt, moment.ISO_8601, saleTimeZone).tz(userTimeZone)
