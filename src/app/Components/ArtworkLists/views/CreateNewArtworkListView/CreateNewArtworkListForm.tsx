@@ -5,6 +5,7 @@ import {
   ArtworkListMode,
   useArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { InputRemainingCharactersLabel } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/InputRemainingCharactersLabel"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
@@ -117,6 +118,11 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
                 value={formik.values.name}
                 onChangeText={formik.handleChange("name")}
                 error={formik.errors.name}
+                maxLength={MAX_NAME_LENGTH}
+              />
+              <InputRemainingCharactersLabel
+                currentLength={formik.values.name.length}
+                maxLength={MAX_NAME_LENGTH}
               />
 
               <Spacer y={4} />
