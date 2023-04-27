@@ -45,6 +45,14 @@ export const CreateNewArtworkListForm = () => {
     })
   }
 
+  const captureError = (error: Error) => {
+    if (__DEV__) {
+      console.error(error)
+    } else {
+      captureMessage(error?.stack!)
+    }
+  }
+
   const handleSubmit = (
     values: CreateNewArtworkListFormValues,
     helpers: FormikHelpers<CreateNewArtworkListFormValues>
@@ -63,6 +71,10 @@ export const CreateNewArtworkListForm = () => {
 
         if (errorMessage) {
           console.log("[debug] error", errorMessage)
+
+          const error = new Error(errorMessage)
+          captureError(error)
+
           return
         }
 
@@ -76,13 +88,7 @@ export const CreateNewArtworkListForm = () => {
         setRecentlyAddedArtworkList(result)
         closeCurrentView()
       },
-      onError: (error) => {
-        if (__DEV__) {
-          console.error(error)
-        } else {
-          captureMessage(error?.stack!)
-        }
-      },
+      onError: captureError,
     })
 
     setTimeout(() => {
