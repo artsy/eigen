@@ -71,8 +71,6 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
         },
       },
       onCompleted: (data) => {
-        console.log("[debug] data", data)
-
         const response = data.createCollection?.responseOrError
         const artworkList = response?.collection!
         const result: Result = {
@@ -109,8 +107,6 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
         onSubmit={handleSubmit}
       >
         {(formik) => {
-          console.log("[debug] formik", JSON.stringify(formik, null, 2))
-
           return (
             <>
               <BottomSheetInput
