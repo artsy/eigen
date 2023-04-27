@@ -5,6 +5,7 @@ import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { CreateNewArtworkListForm } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListForm"
+import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useMemo } from "react"
 
 export const CreateNewArtworkListView = () => {
@@ -24,6 +25,7 @@ export const CreateNewArtworkListView = () => {
   return (
     <AutomountedBottomSheetModal
       visible
+      name={ArtworkListsViewName.CreateNewArtworkLists}
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
       contentHeight={animatedContentHeight}
