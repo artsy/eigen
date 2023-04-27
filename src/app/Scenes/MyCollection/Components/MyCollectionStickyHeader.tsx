@@ -27,6 +27,11 @@ import { MotiView } from "moti"
 import { useRef, useState } from "react"
 import { useTracking } from "react-tracking"
 
+// CONSTANTS
+const PILL_DIAMETER = 30
+const PILL_PADDING = 1
+const PILL_PADDING_IN_PX = 10
+
 interface MyCollectionStickyHeaderProps {
   filtersCount: number
   hasMarketSignals: boolean
@@ -38,20 +43,21 @@ interface MyCollectionStickyHeaderProps {
 type CollectedTab = "Artworks" | "Artists" | null
 
 export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> = ({
-  showModal,
-  showSeparator,
-  hasMarketSignals,
-  showNewWorksMessage,
   filtersCount,
+  hasMarketSignals,
+  showModal,
+  showNewWorksMessage,
+  showSeparator,
 }) => {
   const { showVisualClue } = useVisualClue()
   const [selectedTab, setSelectedTab] = useState<CollectedTab>(null)
+
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const showFilters = true
   return (
-    <Flex>
+    <>
       {enableCollectedArtists && (
         <Flex pb={showFilters ? 0 : 2}>
           <MainStickyHeader selectedTab={selectedTab} onTabChange={setSelectedTab} />
@@ -67,7 +73,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
         showSubmissionMessage={showSubmissionMessage}
         hasMarketSignals={hasMarketSignals}
       />
-    </Flex>
+    </>
   )
 }
 
@@ -75,11 +81,6 @@ interface MainStickyHeaderProps {
   selectedTab: CollectedTab
   onTabChange: (tab: CollectedTab) => void
 }
-
-const PILL_DIAMETER = 30
-
-const PILL_PADDING = 1
-const PILL_PADDING_IN_PX = 10
 
 const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabChange }) => {
   const space = useSpace()
@@ -93,28 +94,32 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
   return (
     <>
       <Flex
-        flexDirection="row"
-        style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
         alignItems="center"
+        flexDirection="row"
         justifyContent="space-between"
+        style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
       >
         {/* Pills */}
-
         <Flex flexDirection="row" justifyContent="center" alignItems="center">
           <AnimatedPill
-            tab="Artists"
-            selectedTab={selectedTab}
             handlePress={() => onTabChange("Artists")}
             originX={originX}
+            selectedTab={selectedTab}
+            tab="Artists"
           />
           <Spacer x={PILL_PADDING} />
           <AnimatedPill
-            tab="Artworks"
-            selectedTab={selectedTab}
             handlePress={() => onTabChange("Artworks")}
             originX={originX}
+            selectedTab={selectedTab}
+            tab="Artworks"
           />
         </Flex>
+        <AnimatedCloseIcon
+          closeIconRef={closeIconRef}
+          onTabChange={onTabChange}
+          selectedTab={selectedTab}
+        />
 
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
@@ -137,35 +142,29 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
           </Touchable>
         </Flex>
       </Flex>
-
-      <AnimatedCloseIcon
-        selectedTab={selectedTab}
-        closeIconRef={closeIconRef}
-        onTabChange={onTabChange}
-      />
     </>
   )
 }
 
 const AnimatedCloseIcon = ({
-  selectedTab,
   closeIconRef,
   onTabChange,
+  selectedTab,
 }: {
-  selectedTab: CollectedTab
   closeIconRef: React.RefObject<any>
   onTabChange: (tab: CollectedTab) => void
+  selectedTab: CollectedTab
 }) => {
   const space = useSpace()
 
   return (
     <Flex
-      position="absolute"
-      top={space(2)}
       left={space(2)}
+      position="absolute"
+      ref={closeIconRef}
+      top={space(2)}
       // Allow the first pill to capture touches when the X button is hidden
       zIndex={selectedTab !== null ? 1 : -1}
-      ref={closeIconRef}
     >
       <MotiView
         animate={{
@@ -180,14 +179,14 @@ const AnimatedCloseIcon = ({
           haptic="impactLight"
         >
           <Flex
-            height={PILL_DIAMETER}
-            borderWidth="1px"
-            borderColor="black30"
-            width={PILL_DIAMETER}
-            borderRadius={PILL_DIAMETER / 2}
-            px={2}
-            justifyContent="center"
             alignItems="center"
+            borderColor="black30"
+            borderRadius={PILL_DIAMETER / 2}
+            borderWidth="1px"
+            height={PILL_DIAMETER}
+            justifyContent="center"
+            px={2}
+            width={PILL_DIAMETER}
           >
             <CloseIcon />
           </Flex>
@@ -221,25 +220,29 @@ const AnimatedPill = ({
     return Number(originX) - xPositionInPage + space(2)
   }
 
+  const selected = selectedTab === tab
+  const disabled = !!selectedTab && selectedTab !== tab
+
   return (
     <MotiView
       animate={{
         translateX: getTranslateX(),
         opacity: selectedTab === tab || selectedTab === null ? 1 : 0,
       }}
+      ref={containerRef}
       transition={{
         type: "timing",
       }}
-      ref={containerRef}
     >
       <Pill
+        accessibilityState={{ selected, disabled }}
+        disabled={disabled}
         highlightEnabled
         onPress={() => {
           handlePress()
         }}
-        selected={selectedTab === tab}
         rounded
-        disabled={!!selectedTab && selectedTab !== tab}
+        selected={selected}
       >
         {tab}
       </Pill>
@@ -266,8 +269,7 @@ const Filters = ({
     >
       <Button
         data-test-id="add-artwork-button-non-zero-state"
-        size="small"
-        variant="fillDark"
+        haptic
         onPress={async () => {
           navigate("my-collection/artworks/new", {
             passProps: {
@@ -278,7 +280,8 @@ const Filters = ({
           })
           trackEvent(tracks.addCollectedArtwork())
         }}
-        haptic
+        size="small"
+        variant="fillDark"
       >
         Upload Artwork
       </Button>
@@ -287,13 +290,13 @@ const Filters = ({
 }
 
 const Messages = ({
+  hasMarketSignals,
   showNewWorksMessage,
   showSubmissionMessage,
-  hasMarketSignals,
 }: {
+  hasMarketSignals: boolean
   showNewWorksMessage: boolean
   showSubmissionMessage: boolean
-  hasMarketSignals: boolean
 }) => {
   return (
     <>
