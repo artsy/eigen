@@ -1,28 +1,34 @@
 import { Box } from "@artsy/palette-mobile"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ArtworkListImageBorder } from "app/Scenes/ArtworkLists/ArtworkListImageBorder"
-import { ArtworkListNoImage } from "app/Scenes/ArtworkLists/ArtworkListNoImage"
+import { ArtworkListNoImage } from "app/Scenes/ArtworkLists/components/ArtworkListNoImage"
 
 interface StackedImageLayoutProps {
   imageURLs: (string | null)[]
-  imageSize: number
+  cardWidth: number
 }
 
 interface StackImageProps {
   url: string | null
   index: number
-  imageSize: number
+  cardWidth: number
 }
 
-export const StackedImageLayout = ({ imageURLs, imageSize }: StackedImageLayoutProps) => {
-  const stackedImageURLs = imageURLs.slice(0, 4)
-  const imageOffset = stackedImageURLs.length * 4
+const IMAGE_OFFSET = 14
+
+export const StackedImageLayout = ({ imageURLs, cardWidth }: StackedImageLayoutProps) => {
+  // The length of stackedImageURLs will always be 4.
+  // If there are fewer than 4 imageURLs, the remaining elements will be filled with empty strings.
+  const stackedImageURLs = [
+    ...(imageURLs.slice(0, 4) || []),
+    ...(imageURLs.length > 0 ? Array(4 - Math.min(imageURLs.length, 4)).fill("") : []),
+  ]
   return (
     <Box>
-      {stackedImageURLs.map((imageURL, index) => (
+      {stackedImageURLs.reverse().map((imageURL, index) => (
         <StackImage
           key={`stacked-image-${index}`}
-          imageSize={imageSize - imageOffset}
+          cardWidth={cardWidth - IMAGE_OFFSET}
           url={imageURL}
           index={index}
         />
@@ -31,14 +37,14 @@ export const StackedImageLayout = ({ imageURLs, imageSize }: StackedImageLayoutP
   )
 }
 
-const StackImage = ({ imageSize, url, index }: StackImageProps) => {
+const StackImage = ({ cardWidth, url, index }: StackImageProps) => {
   const OFFSET_BY_INDEX = `${4 * index}px`
 
   if (!url) {
     return (
       <ArtworkListNoImage
-        width={imageSize}
-        height={imageSize}
+        width={cardWidth}
+        height={cardWidth}
         position="absolute"
         top={OFFSET_BY_INDEX}
         left={OFFSET_BY_INDEX}
@@ -48,7 +54,7 @@ const StackImage = ({ imageSize, url, index }: StackImageProps) => {
 
   return (
     <ArtworkListImageBorder position="absolute" top={OFFSET_BY_INDEX} left={OFFSET_BY_INDEX}>
-      <OpaqueImageView imageURL={url} width={imageSize} height={imageSize} />
+      <OpaqueImageView imageURL={url} width={cardWidth} height={cardWidth} />
     </ArtworkListImageBorder>
   )
 }

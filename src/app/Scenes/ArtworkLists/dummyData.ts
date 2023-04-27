@@ -1,7 +1,7 @@
 export const savedArtworksDummyData = [
   {
     id: "1",
-    type: "Saved",
+    type: "default",
     label: "Saved Artworks",
     imageUrls: [
       "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg",

@@ -1,22 +1,23 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { ArtworksListsItem } from "app/Scenes/ArtworkLists/ArtworkListsItem"
+import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { savedArtworksDummyData } from "app/Scenes/ArtworkLists/dummyData"
-import { isPad } from "app/utils/hardware"
+import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 
 export const ArtworkLists = () => {
   const space = useSpace()
-  const artworkSections = savedArtworksDummyData.map((artwork) => ({
-    key: artwork.id,
-    content: <ArtworksListsItem artwork={artwork} />,
+  const artworkListsColCount = useArtworkListsColCount()
+  const artworkSections = savedArtworksDummyData.map((artworkList) => ({
+    key: artworkList.id,
+    content: <ArtworkListItem artworkList={artworkList} />,
   }))
 
   return (
     <StickyTabPageFlatList
       style={{ paddingTop: space(2) }}
       data={artworkSections}
-      numColumns={isPad() ? 3 : 2}
-      keyExtractor={(item, index) => String(item?.artist?.internalID || index)}
+      numColumns={artworkListsColCount}
+      keyExtractor={(item, index) => String(item.id || index)}
     />
   )
 }
