@@ -12,10 +12,12 @@ import {
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ContextMenuTouchable } from "app/Components/ContextMenuTouchable/ContextMenuTouchable"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -97,6 +99,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
 }) => {
+  const { showShareSheet } = useShareSheet()
   const itemRef = useRef<any>()
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
@@ -189,7 +192,81 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
-    <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
+    <ContextMenuTouchable
+      onPress={handleTap}
+      testID={`artworkGridItem-${artwork.title}`}
+      onLongPress={[
+        // {
+        //   title: artwork.isSaved ? "Remove from saved" : "Save",
+        //   systemIcon: artwork.isSaved ? "heart.fill" : "heart",
+        //   onPress: () => {
+        //     commitMutation<ArtworkGridItemSaveMutation>(defaultEnvironment, {
+        //       mutation: graphql`
+        //         mutation ArtworkGridItemSaveMutation($input: SaveArtworkInput!) {
+        //           saveArtwork(input: $input) {
+        //             artwork {
+        //               id
+        //               isSaved
+        //             }
+        //           }
+        //         }
+        //       `,
+        //       variables: { input: { artworkID: artwork.internalID, remove: artwork.isSaved } },
+        //       // @ts-expect-error RELAY 12 MIGRATION
+        //       optimisticResponse: {
+        //         saveArtwork: {
+        //           artwork: {
+        //             id: artwork.id,
+        //             isSaved: !artwork.isSaved,
+        //           },
+        //         },
+        //       },
+        //       onCompleted: () =>
+        //         userHadMeaningfulInteraction({
+        //           contextModule: ContextModule.artworkMetadata,
+        //           contextOwnerType: OwnerType.artwork,
+        //           contextOwnerId: artwork.internalID,
+        //           contextOwnerSlug: artwork.slug,
+        //         }),
+        //     })
+        //   },
+        // },
+        {
+          title: "Share",
+          systemIcon: "square.and.arrow.up",
+          onPress: () => {
+            setTimeout(() => {
+              showShareSheet({
+                type: "artwork",
+                artists: artwork.artists,
+                slug: artwork.slug,
+                internalID: artwork.internalID,
+                title: artwork.title!,
+                href: artwork.href!,
+                images: [],
+              })
+            }, 0)
+          },
+        },
+        {
+          title: "Link",
+          systemIcon: "heart",
+          onPress: () => {
+            setTimeout(() => {
+              showShareSheet({
+                type: "artwork",
+                artists: artwork.artists,
+                slug: artwork.slug,
+                internalID: artwork.internalID,
+                title: artwork.title!,
+                href: artwork.href!,
+                images: [],
+              })
+            }, 0)
+          },
+        },
+      ]}
+    >
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
@@ -330,7 +407,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )}
         </Flex>
       </View>
-    </Touchable>
+    </ContextMenuTouchable>
   )
 }
 
@@ -403,6 +480,9 @@ export default createFragmentContainer(Artwork, {
       date
       saleMessage
       slug
+      artists(shallow: true) {
+        name
+      }
       id
       internalID
       isSaved
