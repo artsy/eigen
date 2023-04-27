@@ -4,9 +4,9 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
-import { CreateNewArtworkListForm } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListForm"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useMemo } from "react"
+import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
   const { state, dispatch } = useArtworkListsContext()

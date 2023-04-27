@@ -5,13 +5,13 @@ import {
   ArtworkListMode,
   useArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { InputRemainingCharactersLabel } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/InputRemainingCharactersLabel"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
 import { FC } from "react"
 import * as Yup from "yup"
+import { InputRemainingCharactersLabel } from "./InputRemainingCharactersLabel"
 
 export interface CreateNewArtworkListFormValues {
   name: string
