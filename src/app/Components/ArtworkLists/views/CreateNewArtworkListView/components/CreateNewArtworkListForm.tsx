@@ -87,14 +87,14 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
         })
       },
       onError: (error) => {
+        helpers.setFieldError("name", error.message)
+        helpers.setSubmitting(false)
+
         if (__DEV__) {
           console.error(error)
         } else {
           captureMessage(error?.stack!)
         }
-
-        helpers.setFieldError("name", error.message)
-        helpers.setSubmitting(false)
       },
     })
   }

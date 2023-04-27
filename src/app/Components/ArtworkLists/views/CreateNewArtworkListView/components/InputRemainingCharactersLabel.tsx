@@ -10,7 +10,7 @@ export const InputRemainingCharactersLabel = ({
   maxLength,
   ...rest
 }: InputRemainingCharactersLabelProps) => {
-  const remainingCount = maxLength - currentLength
+  const remainingCount = Math.max(maxLength - currentLength, 0)
 
   return (
     <Text variant="xs" color="black60" {...rest}>
