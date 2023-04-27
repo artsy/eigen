@@ -15,6 +15,7 @@ import { MotiView } from "moti"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import { Easing } from "react-native-reanimated"
 
 type InqueryPress = (
   trackingargs?: TappedConsignmentInquiry,
@@ -59,6 +60,8 @@ export const MeetTheSpecialists: React.FC<{
   )
 
   const specialistsToDisplay = specialists.filter((i) => i.specialty === selectedSpecialty)
+
+  console.log({ specialistsToDisplay })
 
   return (
     <Flex>
@@ -168,7 +171,8 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
         animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
         transition={{
           type: "timing",
-          duration: 200,
+          duration: 400,
+          easing: Easing.out(Easing.exp),
         }}
       >
         <LinearGradient
@@ -186,7 +190,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           <Text variant="xs" mb={0.5} color={color("white100")}>
             {specialist.jobTitle}
           </Text>
-          <Flex mb={2}>
+          <Flex>
             <ReadMore
               content={specialist.bio}
               maxChars={bioTextLimit}
@@ -199,6 +203,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
             />
           </Flex>
         </AnimateHeight>
+        <Spacer y={2} />
         <Button
           size="small"
           variant="outlineLight"

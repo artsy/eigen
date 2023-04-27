@@ -1,5 +1,6 @@
 import { MotiView, useDynamicAnimation } from "moti"
 import { useState, useRef, useEffect } from "react"
+import { Easing } from "react-native-reanimated"
 
 type AnimateHeightProps = {
   children?: React.ReactNode
@@ -11,9 +12,9 @@ export const AnimateHeight: React.FC<AnimateHeightProps> = ({
   children,
   animate = {},
   transition = {
-    type: "spring",
-    damping: 16,
-    mass: 1.2,
+    type: "timing",
+    duration: 400,
+    easing: Easing.out(Easing.exp),
   },
   initialHeight = 100,
 }) => {
@@ -43,7 +44,7 @@ export const AnimateHeight: React.FC<AnimateHeightProps> = ({
   }, [animation, height])
 
   return (
-    <MotiView state={animation} transition={transition}>
+    <MotiView state={animation} transition={transition} style={{ overflow: "hidden" }}>
       <MotiView
         animate={{ ...animate, opacity: !height ? 0 : 1 }}
         transition={transition}
