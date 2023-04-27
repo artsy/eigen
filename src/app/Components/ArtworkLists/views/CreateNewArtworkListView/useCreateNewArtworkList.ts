@@ -18,6 +18,19 @@ export const useCreateNewArtworkList = (): Response => {
   const commit = (config: CommitConfig) => {
     return initialCommit({
       ...config,
+      onCompleted: (data, errors) => {
+        const response = data.createCollection?.responseOrError
+        const errorMessage = response?.mutationError?.message
+
+        if (errorMessage) {
+          const error = new Error(errorMessage)
+          config.onError?.(error)
+
+          return
+        }
+
+        return config.onCompleted?.(data, errors)
+      },
       updater: (store, data) => {
         config.updater?.(store, data)
         updater(store, data)

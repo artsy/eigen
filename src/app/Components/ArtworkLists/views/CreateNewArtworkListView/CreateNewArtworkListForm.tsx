@@ -58,14 +58,6 @@ export const CreateNewArtworkListForm = () => {
     dismiss(ArtworkListsViewName.CreateNewArtworkLists)
   }
 
-  const captureError = (error: Error) => {
-    if (__DEV__) {
-      console.error(error)
-    } else {
-      captureMessage(error?.stack!)
-    }
-  }
-
   const handleSubmit = (
     values: CreateNewArtworkListFormValues,
     helpers: FormikHelpers<CreateNewArtworkListFormValues>
@@ -80,18 +72,6 @@ export const CreateNewArtworkListForm = () => {
         console.log("[debug] data", data)
 
         const response = data.createCollection?.responseOrError
-        const errorMessage = response?.mutationError?.message
-
-        if (errorMessage) {
-          console.log("[debug] error", errorMessage)
-
-          const error = new Error(errorMessage)
-          captureError(error)
-          helpers.setSubmitting(false)
-
-          return
-        }
-
         const artworkList = response?.collection!
         const result: Result = {
           name: artworkList.name,
@@ -106,7 +86,16 @@ export const CreateNewArtworkListForm = () => {
           helpers.setSubmitting(false)
         })
       },
-      onError: captureError,
+      onError: (error) => {
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error?.stack!)
+        }
+
+        helpers.setFieldError("name", error.message)
+        helpers.setSubmitting(false)
+      },
     })
   }
 
