@@ -1,5 +1,6 @@
 import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
@@ -27,8 +28,11 @@ export const SelectArtworkListsForArtworkFooter = () => {
         dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
       },
       onError: (error) => {
-        // TODO: Log error
-        console.log("[debug] error", error)
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error?.stack!)
+        }
       },
     })
   }
