@@ -3,14 +3,7 @@ import { FC } from "react"
 
 export const ArtworkListImageBorder: FC<FlexProps> = (props) => {
   return (
-    <Flex
-      bg="black5"
-      justifyContent="center"
-      alignItems="center"
-      borderWidth={1}
-      borderColor="black15"
-      {...props}
-    >
+    <Flex bg="black5" justifyContent="center" alignItems="center" borderColor="black15" {...props}>
       {props.children}
     </Flex>
   )

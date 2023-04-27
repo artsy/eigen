@@ -6,7 +6,7 @@ const NO_ICON_SIZE = 18
 
 export const ArtworkListNoImage: FC<FlexProps> = (props) => {
   return (
-    <ArtworkListImageBorder {...props}>
+    <ArtworkListImageBorder {...props} borderWidth={1}>
       <NoImageIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="black60" />
     </ArtworkListImageBorder>
   )

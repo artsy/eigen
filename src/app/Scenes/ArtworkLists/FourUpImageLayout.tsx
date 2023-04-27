@@ -4,7 +4,9 @@ import { ArtworkListImageBorder } from "app/Scenes/ArtworkLists/ArtworkListImage
 import { ArtworkListNoImage } from "app/Scenes/ArtworkLists/components/ArtworkListNoImage"
 import { FC } from "react"
 
-const BORDER_SIZE = 1
+const IMAGES_PER_ROW = 2
+const IMAGE_OFFSET = 2
+
 interface FourUpImageLayoutProps {
   imageURLs: string[]
   cardWidth: number
@@ -15,20 +17,21 @@ interface RowImageProps {
 }
 
 export const FourUpImageLayout = ({ imageURLs, cardWidth }: FourUpImageLayoutProps) => {
-  const rowImageWidth = cardWidth / 2 - BORDER_SIZE * 2
+  const allBorderOffsets = 2 * IMAGES_PER_ROW
+  const rowImageWidth = (cardWidth - allBorderOffsets - IMAGE_OFFSET) / IMAGES_PER_ROW
   return (
     <Box>
       <Flex flexDirection="row">
         <RowImage url={imageURLs[0]} rowImageWidth={rowImageWidth} />
-        <Spacer x={`${BORDER_SIZE}px`} />
+        <Spacer x={`${IMAGE_OFFSET}px`} />
         <RowImage url={imageURLs[1]} rowImageWidth={rowImageWidth} />
       </Flex>
 
-      <Spacer y={`${BORDER_SIZE}px`} />
+      <Spacer y={`${IMAGE_OFFSET}px`} />
 
       <Flex flexDirection="row">
         <RowImage url={imageURLs[2]} rowImageWidth={rowImageWidth} />
-        <Spacer x={`${BORDER_SIZE}px`} />
+        <Spacer x={`${IMAGE_OFFSET}px`} />
         <RowImage url={imageURLs[3]} rowImageWidth={rowImageWidth} />
       </Flex>
     </Box>

@@ -41,7 +41,7 @@ export const ArtworkListItem = ({ artworkList }: ArtworksListsItemProps) => {
         <Text variant="xs" numberOfLines={1}>
           {artworkList.label}
         </Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="black60" numberOfLines={1}>
           {artworkList.imageUrls.length}{" "}
           {artworkList.imageUrls.length === 1 ? "Artwork" : "Artworks"}
         </Text>
