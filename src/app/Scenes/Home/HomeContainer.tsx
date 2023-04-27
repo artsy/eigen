@@ -7,6 +7,9 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 export const HomeContainer = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+  const hasRequestedPermissionsThisSession = GlobalStore.useAppState(
+    (state) => state.auth.sessionState.requestedPushPermissionsThisSession
+  )
 
   const shouldShowArtQuiz = useFeatureFlag("ARShowArtQuizApp")
 
@@ -19,8 +22,12 @@ export const HomeContainer = () => {
     return null
   }
 
-  if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
+  if (
+    !hasRequestedPermissionsThisSession &&
+    (!onboardingState || onboardingState === "complete" || onboardingState === "none")
+  ) {
     requestPushNotificationsPermission()
+    GlobalStore.actions.auth.setSessionState({ requestedPushPermissionsThisSession: true })
   }
 
   return <HomeQueryRenderer />
