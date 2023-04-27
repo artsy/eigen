@@ -45,4 +45,27 @@ describe("UrgencyInfo", () => {
     jest.advanceTimersByTime(2000)
     expect(getByText("In progress")).toBeDefined()
   })
+
+  describe("text color", () => {
+    it("text color is red when time is less than 1 hour", () => {
+      const start = new Date(new Date().getTime() - 10).toISOString()
+      const end = new Date(new Date().getTime() + HR - MIN).toISOString()
+      const { getByText } = renderWithWrappers(
+        <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
+      )
+
+      jest.advanceTimersByTime(2000)
+      expect(getByText("58m 59s left")).toHaveStyle({ color: "#C82400" })
+    })
+    it("text color is blue when time is greater than 1 hour", () => {
+      const start = new Date(new Date().getTime() - 10).toISOString()
+      const end = new Date(new Date().getTime() + 2 * HR).toISOString()
+      const { getByText } = renderWithWrappers(
+        <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
+      )
+
+      jest.advanceTimersByTime(2000)
+      expect(getByText("1h 59m left")).toHaveStyle({ color: "#1023D7" })
+    })
+  })
 })
