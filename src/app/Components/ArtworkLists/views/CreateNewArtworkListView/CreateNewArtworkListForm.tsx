@@ -1,4 +1,4 @@
-import { Button, Spacer } from "@artsy/palette-mobile"
+import { Box, BoxProps, Button, Spacer } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import {
@@ -9,6 +9,7 @@ import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/Creat
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
+import { FC } from "react"
 import * as Yup from "yup"
 
 export interface CreateNewArtworkListFormValues {
@@ -29,7 +30,7 @@ export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required").max(MAX_NAME_LENGTH),
 })
 
-export const CreateNewArtworkListForm = () => {
+export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
   const { dispatch } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const [commitMutation] = useCreateNewArtworkList()
@@ -100,41 +101,45 @@ export const CreateNewArtworkListForm = () => {
   }
 
   return (
-    <Formik
-      initialValues={INITIAL_FORM_VALUES}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {(formik) => {
-        console.log("[debug] formik", JSON.stringify(formik, null, 2))
+    <Box {...props}>
+      <Formik
+        initialValues={INITIAL_FORM_VALUES}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {(formik) => {
+          console.log("[debug] formik", JSON.stringify(formik, null, 2))
 
-        return (
-          <>
-            <BottomSheetInput
-              placeholder="Name your list"
-              value={formik.values.name}
-              onChangeText={formik.handleChange("name")}
-              error={formik.errors.name}
-            />
+          return (
+            <>
+              <BottomSheetInput
+                placeholder="Name your list"
+                value={formik.values.name}
+                onChangeText={formik.handleChange("name")}
+                error={formik.errors.name}
+              />
 
-            <Button
-              width="100%"
-              block
-              disabled={!formik.isValid}
-              loading={formik.isSubmitting}
-              onPress={formik.handleSubmit}
-            >
-              Save
-            </Button>
+              <Spacer y={4} />
 
-            <Spacer y={2} />
+              <Button
+                width="100%"
+                block
+                disabled={!formik.isValid}
+                loading={formik.isSubmitting}
+                onPress={formik.handleSubmit}
+              >
+                Save
+              </Button>
 
-            <Button width="100%" block variant="outline" onPress={closeCurrentView}>
-              Back
-            </Button>
-          </>
-        )
-      }}
-    </Formik>
+              <Spacer y={1} />
+
+              <Button width="100%" block variant="outline" onPress={closeCurrentView}>
+                Back
+              </Button>
+            </>
+          )
+        }}
+      </Formik>
+    </Box>
   )
 }

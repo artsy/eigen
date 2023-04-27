@@ -40,7 +40,7 @@ export const CreateNewArtworkListView = () => {
           <ArtworkInfo artwork={state.artwork!} />
         </Box>
 
-        <CreateNewArtworkListForm />
+        <CreateNewArtworkListForm m={2} />
       </BottomSheetView>
     </AutomountedBottomSheetModal>
   )
