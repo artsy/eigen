@@ -24,7 +24,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     if (typeof artworkListId !== "undefined") {
       isSaved = isSavedToArtworkList
     } else {
-      isSaved = artwork.isSaved ?? isSavedToCustomArtworkLists
+      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
     }
   }
 
