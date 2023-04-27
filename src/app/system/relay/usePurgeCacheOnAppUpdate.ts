@@ -11,8 +11,15 @@ export const usePurgeCacheOnAppUpdate = () => {
     const currentVersion = DeviceInfo.getVersion()
     AsyncStorage.getItem(APP_CURRENT_VERSION_KEY).then((value) => {
       if (value !== currentVersion) {
+        let version = currentVersion
+
+        // In dev, with the debugger open, DeviceInfo is mocked out and returns undefined
+        if (__DEV__ && !version) {
+          version = value as string
+        }
+
         RelayCache.clearAll()
-        AsyncStorage.setItem(APP_CURRENT_VERSION_KEY, currentVersion)
+        AsyncStorage.setItem(APP_CURRENT_VERSION_KEY, version)
       }
     })
   }, [])

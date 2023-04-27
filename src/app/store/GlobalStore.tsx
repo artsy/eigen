@@ -41,9 +41,7 @@ function createGlobalStore() {
         __globalStoreTestUtils__.dispatchedActions.push(action)
       }
 
-      // For actions that don't contain a type, we know that its an async
-      // thunk that returns a promise. We can await that promise and return that.
-      const result = action?.type ? next(action) : await action(next)
+      const result = next(action)
       return result
     })
   }

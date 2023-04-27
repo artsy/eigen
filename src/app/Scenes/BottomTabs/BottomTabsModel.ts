@@ -79,7 +79,6 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversationsCount ?? 0)
       }
     } catch (e) {
-      fail(e)
       if (__DEV__) {
         console.warn(
           "[DEV] Couldn't fetch unreadConversationCount.\n\nThis happens from time to time in staging. If it's happening reliably for you, there's a problem and you should look into it."
