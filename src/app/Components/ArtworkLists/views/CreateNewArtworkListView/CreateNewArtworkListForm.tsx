@@ -1,5 +1,7 @@
 import { Button, Spacer } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
 import * as Yup from "yup"
@@ -13,20 +15,25 @@ const INITIAL_FORM_VALUES: CreateNewArtworkListFormValues = {
   name: "",
 }
 
+interface Result {
+  name: string
+  internalID: string
+}
+
 export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required").max(MAX_NAME_LENGTH),
 })
 
 export const CreateNewArtworkListForm = () => {
   const { dispatch } = useArtworkListsContext()
+  const [commitMutation] = useCreateNewArtworkList()
 
-  const setRecentlyAddedArtworkList = () => {
+  const setRecentlyAddedArtworkList = (result: Result) => {
     dispatch({
       type: "SET_RECENTLY_ADDED_ARTWORK_LIST",
       payload: {
-        // TODO: Use real data from mutation
-        internalID: "recently-created-artwork-list-id",
-        name: "name",
+        internalID: result.internalID,
+        name: result.name,
       },
     })
   }
@@ -38,18 +45,49 @@ export const CreateNewArtworkListForm = () => {
     })
   }
 
-  const handleSave = () => {
-    // TODO: Run save mutation
-    // TODO: Preselect recently create artwork list
-    setRecentlyAddedArtworkList()
-    closeCurrentView()
-  }
-
   const handleSubmit = (
     values: CreateNewArtworkListFormValues,
     helpers: FormikHelpers<CreateNewArtworkListFormValues>
   ) => {
-    console.log("[debug] submitted", values)
+    commitMutation({
+      variables: {
+        input: {
+          name: values.name,
+        },
+      },
+      onCompleted: (data) => {
+        console.log("[debug] data", data)
+
+        const response = data.createCollection?.responseOrError
+        const errorMessage = response?.mutationError?.message
+
+        if (errorMessage) {
+          console.log("[debug] error", errorMessage)
+          return
+        }
+
+        const artworkList = response?.collection!
+        const result: Result = {
+          name: artworkList.name,
+          internalID: artworkList.internalID,
+        }
+
+        // TODO: Preselect recently create artwork list
+        setRecentlyAddedArtworkList(result)
+        closeCurrentView()
+      },
+      onError: (error) => {
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error?.stack!)
+        }
+      },
+    })
+
+    setTimeout(() => {
+      helpers.setSubmitting(false)
+    }, 5000)
   }
 
   return (
