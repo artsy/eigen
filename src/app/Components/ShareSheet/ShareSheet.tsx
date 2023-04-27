@@ -15,7 +15,6 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import * as Sentry from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -109,7 +108,8 @@ export const ShareSheet = () => {
       const res = await Share.open(shareOptions)
       isArtwork && trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
     } catch (err) {
-      Sentry.captureMessage("HANDLE_SHARE_MORE_PRESS: " + err)
+      // User dismissed without sharing
+      console.log(err)
     } finally {
       hideShareSheet()
     }
