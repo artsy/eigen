@@ -25,7 +25,6 @@ export const ArtworkListItem = ({ artworkList }: ArtworksListsItemProps) => {
 
   return (
     <Flex
-      flexDirection="column"
       justifyContent="space-between"
       width={itemWidth}
       height={itemWidth + LABEL_HEIGHT}
