@@ -15,7 +15,9 @@ type Response = NonNullable<
     NonNullable<useUpdateArtworkListsForArtworkMutation$data>["artworksCollectionsBatchUpdate"]
   >["responseOrError"]
 >
-type ArtworkListEntity = Response["addedToArtworkLists"] | Response["removedFromArtworkLists"]
+export type ArtworkListEntity =
+  | Response["addedToArtworkLists"]
+  | Response["removedFromArtworkLists"]
 type MutationResult = [
   (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => Disposable,
   boolean
