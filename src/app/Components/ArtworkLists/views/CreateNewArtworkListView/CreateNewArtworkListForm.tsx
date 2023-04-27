@@ -107,6 +107,9 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
         onSubmit={handleSubmit}
       >
         {(formik) => {
+          const nameLength = formik.values.name.length
+          const isSaveButtonDisabled = !formik.isValid || nameLength === 0
+
           return (
             <>
               <BottomSheetInput
@@ -115,9 +118,10 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
                 onChangeText={formik.handleChange("name")}
                 error={formik.errors.name}
                 maxLength={MAX_NAME_LENGTH}
+                onBlur={formik.handleBlur("name")}
               />
               <InputRemainingCharactersLabel
-                currentLength={formik.values.name.length}
+                currentLength={nameLength}
                 maxLength={MAX_NAME_LENGTH}
               />
 
@@ -126,7 +130,7 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
               <Button
                 width="100%"
                 block
-                disabled={!formik.isValid}
+                disabled={isSaveButtonDisabled}
                 loading={formik.isSubmitting}
                 onPress={formik.handleSubmit}
               >
