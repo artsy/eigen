@@ -63,15 +63,6 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
   },
-  AREnableSavedAddresses: {
-    readyForRelease: false,
-    description: "Enable Saved Addresses",
-  },
-  AREnableExampleExperiments: {
-    // we can remove this as soon as we have a real experiment on Unleash
-    readyForRelease: false,
-    description: "Show example Unleash experiments",
-  },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
     description: "Enable query prefetching",
