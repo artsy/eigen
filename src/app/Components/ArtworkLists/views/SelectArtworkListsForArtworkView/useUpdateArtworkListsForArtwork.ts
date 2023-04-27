@@ -15,7 +15,7 @@ type Response = NonNullable<
     NonNullable<useUpdateArtworkListsForArtworkMutation$data>["artworksCollectionsBatchUpdate"]
   >["responseOrError"]
 >
-type ListEntity = Response["addedToArtworkLists"] | Response["removedFromArtworkLists"]
+type ArtworkListEntity = Response["addedToArtworkLists"] | Response["removedFromArtworkLists"]
 type MutationResult = [
   (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => Disposable,
   boolean
@@ -48,8 +48,8 @@ const updater =
     }
 
     const response = data.artworksCollectionsBatchUpdate?.responseOrError
-    const addedCounts = getCountsByLists(response?.addedToArtworkLists)
-    const removedCounts = getCountsByLists(response?.removedFromArtworkLists)
+    const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
+    const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 
     // Set `isSaved` field to `true` if artwork was saved in "Saved Artworks"
     if (addedCounts.default > 0) {
@@ -82,19 +82,19 @@ const updater =
     entity.setValue(newValue, "totalCount")
   }
 
-const getCountsByLists = (lists: ListEntity) => {
-  const listEntities = lists ?? []
+export const getArtworkListsCountByType = (artworkLists: ArtworkListEntity) => {
+  const artworkListsEntities = artworkLists ?? []
   const defaultCounts: Counts = {
     custom: 0,
     default: 0,
   }
 
-  return listEntities.reduce((acc, list) => {
-    if (!list) {
+  return artworkListsEntities.reduce((acc, artworkList) => {
+    if (!artworkList) {
       return acc
     }
 
-    const key: keyof Counts = list.default ? "default" : "custom"
+    const key: keyof Counts = artworkList.default ? "default" : "custom"
     const prevCount = acc[key]
 
     return {
