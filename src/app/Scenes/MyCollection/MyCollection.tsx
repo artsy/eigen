@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/MyCollectionStickyHeader"
+import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
