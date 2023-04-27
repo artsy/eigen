@@ -1,4 +1,5 @@
 import { GlobalStore } from "app/store/GlobalStore"
+import { useSystemIsDoneBooting } from "app/system/useSystemIsDoneBooting"
 import useAppState from "app/utils/useAppState"
 import { createContext, useCallback, useEffect, useState } from "react"
 import { forceFetchToggles } from "./helpers"
@@ -13,13 +14,13 @@ export const UnleashContext = createContext<UnleashContext>({ lastUpdate: null }
 
 export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   const [lastUpdate, setLastUpdate] = useState<UnleashContext["lastUpdate"]>(null)
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isBooted = useSystemIsDoneBooting()
 
   const { unleashEnv } = useUnleashEnvironment()
   const userId = GlobalStore.useAppState((store) => store.auth.userID)
 
   useEffect(() => {
-    if (isHydrated) {
+    if (isBooted) {
       const client = getUnleashClient({ env: unleashEnv, userId })
 
       client.on("initialized", () => {
@@ -51,7 +52,7 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
         client.stop()
       }
     }
-  }, [unleashEnv, isHydrated])
+  }, [unleashEnv, isBooted])
 
   const onForeground = useCallback(() => {
     forceFetchToggles(unleashEnv)

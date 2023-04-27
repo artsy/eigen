@@ -1,12 +1,13 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useSystemIsDoneBooting } from "app/system/useSystemIsDoneBooting"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
 import { useTracking } from "react-tracking"
 
 export function useDeepLinks() {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isBooted = useSystemIsDoneBooting()
   const launchURL = useRef<string | null>(null)
 
   const { trackEvent } = useTracking()
@@ -27,7 +28,7 @@ export function useDeepLinks() {
     return () => {
       Linking.removeAllListeners("url")
     }
-  }, [isHydrated, isLoggedIn])
+  }, [isBooted, isLoggedIn])
 
   const handleDeepLink = (url: string) => {
     // These will be redirected, avoided double tracking
@@ -37,7 +38,7 @@ export function useDeepLinks() {
 
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
-    if (isHydrated && isLoggedIn) {
+    if (isBooted && isLoggedIn) {
       navigate(url)
     }
 
@@ -58,7 +59,7 @@ export function useDeepLinks() {
       // Reset the launchURL
       launchURL.current = null
     }
-  }, [isLoggedIn, isHydrated, launchURL.current])
+  }, [isLoggedIn, isBooted, launchURL.current])
 }
 
 const tracks = {

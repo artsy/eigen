@@ -33,6 +33,8 @@ import { assignDeep, sanitize } from "./persistence/utils"
 interface GlobalStoreStateModel {
   version: number
   sessionState: {
+    // TODO: Rename this to something more appropriate, due to conflation of terms
+    // with easy-peasy's rehydrate behavior. See `useSystemIsDoneBooting.ts`
     isHydrated: boolean
   }
 

@@ -1,4 +1,5 @@
 import { GlobalStore } from "app/store/GlobalStore"
+import { useSystemIsDoneBooting } from "app/system/useSystemIsDoneBooting"
 import { useEffect } from "react"
 
 /**
@@ -6,14 +7,14 @@ import { useEffect } from "react"
  * Once the user logs in or logs out, we will have their user id, and that will update all services.
  */
 export function useIdentifyUser() {
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isBooted = useSystemIsDoneBooting()
 
   const userId = GlobalStore.useAppState((store) => store.auth.userID)
 
   useEffect(() => {
     // If the user id changed (after log in or log out for example), we will update all services.
-    if (isHydrated) {
+    if (isBooted) {
       GlobalStore.actions.auth.identifyUser()
     }
-  }, [isHydrated, userId])
+  }, [isBooted, userId])
 }

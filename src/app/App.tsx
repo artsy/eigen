@@ -6,6 +6,7 @@ import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
+import { useSystemIsDoneBooting } from "app/system/useSystemIsDoneBooting"
 import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { addTrackingProvider } from "app/utils/track"
@@ -66,7 +67,7 @@ const Main = () => {
     })
     Settings.initializeSDK()
   }, [])
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isBooted = useSystemIsDoneBooting()
   const isUserIdentified = GlobalStore.useAppState(
     (state) => state.auth.sessionState.isUserIdentified
   )
@@ -98,7 +99,7 @@ const Main = () => {
   usePurgeCacheOnAppUpdate()
 
   useEffect(() => {
-    if (isHydrated) {
+    if (isBooted) {
       // We wait a bit until the UI finishes drawing behind the splash screen
       setTimeout(() => {
         if (Platform.OS === "android") {
@@ -117,7 +118,7 @@ const Main = () => {
         }
       }, 500)
     }
-  }, [isHydrated])
+  }, [isBooted])
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -125,7 +126,7 @@ const Main = () => {
     }
   }, [isLoggedIn])
 
-  if (!isHydrated || !isUserIdentified) {
+  if (!isBooted || !isUserIdentified) {
     return <View />
   }
 

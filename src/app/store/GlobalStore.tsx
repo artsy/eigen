@@ -43,22 +43,22 @@ function createGlobalStore() {
         __globalStoreTestUtils__.dispatchedActions.push(action)
       }
 
-      // For actions that don't contain a type, we know that its an async
-      // thunk that returns a promise. We can await that promise and return that.
-      const result = action?.type ? next(action) : await action(next)
+      const result = next(action)
       return result
     })
   }
 
   const store = createStore(
-    persist(getGlobalStoreModel(), {
-      storage: storageAdapter,
-      transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
-      migrations: {
-        migrationVersion: CURRENT_APP_VERSION,
-        ...artsyAppMigrations,
-      },
-    }),
+    __TEST__
+      ? getGlobalStoreModel()
+      : persist(getGlobalStoreModel(), {
+          storage: storageAdapter,
+          transformers: [{ in: (data) => sanitize(data), out: (data) => sanitize(data) }],
+          migrations: {
+            migrationVersion: CURRENT_APP_VERSION,
+            ...artsyAppMigrations,
+          },
+        }),
     {
       name: "GlobalStore",
       version: STORE_VERSION,

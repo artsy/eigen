@@ -24,6 +24,7 @@ import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Searc
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
+import { useSystemIsDoneBooting } from "app/system/useSystemIsDoneBooting"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
@@ -143,7 +144,6 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
@@ -214,7 +214,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+  const isBooted = useSystemIsDoneBooting()
   // if we're in a modal, just pass isVisible through
 
   let isVisible = viewProps.isVisible
@@ -233,7 +233,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
       value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}
     >
       <View style={{ flex: 1, paddingTop, paddingBottom }}>
-        {isHydrated ? (
+        {isBooted ? (
           <FadeIn style={{ flex: 1 }} slide={false}>
             <ViewComponent {...{ ...viewProps, isVisible }} />
           </FadeIn>
