@@ -192,7 +192,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           </Text>
           <Flex>
             <ReadMore
-              content={specialist.bio.slice(0, 300)}
+              content={specialist.bio}
               maxChars={bioTextLimit}
               textStyle="new"
               textVariant="xs"
