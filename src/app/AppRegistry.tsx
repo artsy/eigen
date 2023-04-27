@@ -124,8 +124,6 @@ import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "./Scenes/Sales/Sales"
-import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
-import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
@@ -500,11 +498,6 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  SavedAddresses: reactModule(SavedAddressesQueryRenderer),
-  SavedAddressesForm: reactModule(SavedAddressesFormQueryRenderer, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: false,
-  }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   Search: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }, [
     SearchScreenQuery,
