@@ -178,6 +178,7 @@ export interface AuthPromiseRejectType {
 type SessionState = {
   isLoading: boolean
   isUserIdentified: boolean
+  requestedPushPermissionsThisSession: boolean
 }
 
 export interface AuthModel {
@@ -264,6 +265,7 @@ export const getAuthModel = (): AuthModel => ({
   sessionState: {
     isLoading: false,
     isUserIdentified: false,
+    requestedPushPermissionsThisSession: false,
   },
   userID: null,
   userAccessToken: null,
@@ -426,6 +428,9 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
+
+      // Make sure we try to get push permission and new tokens on new sessions
+      GlobalStore.actions.auth.setSessionState({ requestedPushPermissionsThisSession: false })
 
       onSignIn?.()
 
