@@ -1,10 +1,12 @@
 import { Button, Spacer } from "@artsy/palette-mobile"
+import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import {
   ArtworkListMode,
   useArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
+import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
 import * as Yup from "yup"
@@ -29,6 +31,7 @@ export const validationSchema = Yup.object().shape({
 
 export const CreateNewArtworkListForm = () => {
   const { dispatch } = useArtworkListsContext()
+  const { dismiss } = useBottomSheetModal()
   const [commitMutation] = useCreateNewArtworkList()
 
   const setRecentlyAddedArtworkList = (result: Result) => {
@@ -52,10 +55,7 @@ export const CreateNewArtworkListForm = () => {
   }
 
   const closeCurrentView = () => {
-    dispatch({
-      type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
-      payload: false,
-    })
+    dismiss(ArtworkListsViewName.CreateNewArtworkLists)
   }
 
   const captureError = (error: Error) => {
@@ -100,9 +100,11 @@ export const CreateNewArtworkListForm = () => {
 
         setRecentlyAddedArtworkList(result)
         preselectRecentlyAddedArtworkList(artworkList.internalID)
-        closeCurrentView()
 
-        helpers.setSubmitting(false)
+        requestAnimationFrame(() => {
+          closeCurrentView()
+          helpers.setSubmitting(false)
+        })
       },
       onError: captureError,
     })
