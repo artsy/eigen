@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Schema } from "app/utils/track"
 import lodash from "lodash"
 
@@ -22,9 +22,10 @@ export const extractArtworkActionTrackingProps = (obj: {} & ArtworkActionTrackin
 }
 
 export const tracks = {
-  saveOrUnsaveArtwork: (saved: boolean, params: any = {}) =>
+  saveOrUnsaveArtwork: (saved: boolean, params?: object) =>
     lodash.omitBy(
       {
+        action: saved ? ActionType.addCollectedArtwork : ActionType.deleteCollectedArtwork,
         action_name: saved ? Schema.ActionNames.ArtworkSave : Schema.ActionNames.ArtworkUnsave,
         action_type: Schema.ActionTypes.Success,
         ...params,
