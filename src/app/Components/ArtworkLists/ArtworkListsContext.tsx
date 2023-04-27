@@ -1,6 +1,6 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
-import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
+import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
 
