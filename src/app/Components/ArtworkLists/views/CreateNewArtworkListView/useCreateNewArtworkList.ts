@@ -1,8 +1,59 @@
-import { useCreateNewArtworkListMutation } from "__generated__/useCreateNewArtworkListMutation.graphql"
-import { graphql, useMutation } from "react-relay"
+import {
+  useCreateNewArtworkListMutation,
+  useCreateNewArtworkListMutation$data,
+} from "__generated__/useCreateNewArtworkListMutation.graphql"
+import { Disposable, UseMutationConfig, graphql, useMutation } from "react-relay"
+import { ConnectionHandler, RecordSourceSelectorProxy } from "relay-runtime"
 
-export const useCreateNewArtworkList = () => {
-  return useMutation<useCreateNewArtworkListMutation>(CreateNewArtworkListMutation)
+type CommitConfig = UseMutationConfig<useCreateNewArtworkListMutation>
+type Data = useCreateNewArtworkListMutation$data
+type Store = RecordSourceSelectorProxy<Data>
+type Response = [(config: CommitConfig) => Disposable, boolean]
+
+export const useCreateNewArtworkList = (): Response => {
+  const [initialCommit, inProgress] = useMutation<useCreateNewArtworkListMutation>(
+    CreateNewArtworkListMutation
+  )
+
+  const commit = (config: CommitConfig) => {
+    return initialCommit({
+      ...config,
+      updater: (store, data) => {
+        config.updater?.(store, data)
+        updater(store, data)
+      },
+    })
+  }
+
+  return [commit, inProgress]
+}
+
+const updater = (store: Store, data: Data) => {
+  const response = data.createCollection?.responseOrError
+  const me = store.getRoot().getLinkedRecord("me")
+
+  if (!response || !me) {
+    return
+  }
+
+  const key = "ArtworkLists_customArtworkLists"
+  const customArtworkListsConnection = ConnectionHandler.getConnection(me, key)
+  const mutationPayload = store.getRootField("createCollection")
+  const responseOrError = mutationPayload.getLinkedRecord("responseOrError")
+  const createdCollection = responseOrError.getLinkedRecord("collection")
+
+  if (!customArtworkListsConnection || !createdCollection) {
+    return
+  }
+
+  const createdCollectionEdge = ConnectionHandler.createEdge(
+    store,
+    customArtworkListsConnection,
+    createdCollection,
+    "Collection"
+  )
+
+  ConnectionHandler.insertEdgeBefore(customArtworkListsConnection, createdCollectionEdge)
 }
 
 const CreateNewArtworkListMutation = graphql`
