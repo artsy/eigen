@@ -1,6 +1,9 @@
 import { Button, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import {
+  ArtworkListMode,
+  useArtworkListsContext,
+} from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
@@ -34,6 +37,16 @@ export const CreateNewArtworkListForm = () => {
       payload: {
         internalID: result.internalID,
         name: result.name,
+      },
+    })
+  }
+
+  const preselectRecentlyAddedArtworkList = (artworkListID: string) => {
+    dispatch({
+      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID",
+      payload: {
+        mode: ArtworkListMode.AddingArtworkListIDs,
+        artworkListID,
       },
     })
   }
@@ -74,6 +87,7 @@ export const CreateNewArtworkListForm = () => {
 
           const error = new Error(errorMessage)
           captureError(error)
+          helpers.setSubmitting(false)
 
           return
         }
@@ -84,16 +98,14 @@ export const CreateNewArtworkListForm = () => {
           internalID: artworkList.internalID,
         }
 
-        // TODO: Preselect recently create artwork list
         setRecentlyAddedArtworkList(result)
+        preselectRecentlyAddedArtworkList(artworkList.internalID)
         closeCurrentView()
+
+        helpers.setSubmitting(false)
       },
       onError: captureError,
     })
-
-    setTimeout(() => {
-      helpers.setSubmitting(false)
-    }, 5000)
   }
 
   return (
