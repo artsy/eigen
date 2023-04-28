@@ -39,16 +39,9 @@ export type FeatureDescriptor = (
 ) &
   FeatureDescriptorCommonTypes
 
-// Helper function to get good typings and intellisense
-function defineFeatures<T extends string>(featureMap: {
-  readonly [featureName in T]: FeatureDescriptor
-}) {
-  return featureMap
-}
-
 export type FeatureName = keyof typeof features
 
-export const features = defineFeatures({
+export const features: { [key: string]: FeatureDescriptor } = {
   AROptionsPriceTransparency: {
     readyForRelease: true,
     echoFlagKey: "AROptionsPriceTransparency",
@@ -283,7 +276,7 @@ export const features = defineFeatures({
     readyForRelease: false,
     showInDevMenu: true,
   },
-})
+}
 
 export interface DevToggleDescriptor {
   /**
@@ -296,14 +289,9 @@ export interface DevToggleDescriptor {
   readonly onChange?: (value: boolean, { toast }: { toast: ReturnType<typeof useToast> }) => void
 }
 
-// Helper function to get good typings and intellisense
-const defineDevToggles = <T extends string>(devToggleMap: {
-  readonly [devToggleName in T]: DevToggleDescriptor
-}) => devToggleMap
-
 export type DevToggleName = keyof typeof devToggles
 
-export const devToggles = defineDevToggles({
+export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTShowQuickAccessInfo: {
     description: "Quick Access Info",
   },
@@ -352,13 +340,8 @@ export const devToggles = defineDevToggles({
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
   },
-})
-
-export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
-  return Object.keys(devToggles).includes(name)
 }
 
-type Assert<T, U extends T> = U
-// If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
-export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey =
-  Assert<never, keyof (typeof features | typeof devToggles)>
+export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
+  return Object.keys(devToggles).includes(name as string)
+}

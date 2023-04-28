@@ -1,11 +1,12 @@
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { Input } from "app/Components/Input"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
-import { Input } from "app/Components/Input"
 import { KeywordFilter } from "./KeywordFilter"
 
 jest.mock("lodash", () => ({
@@ -26,7 +27,12 @@ describe("KeywordFilter", () => {
 
   it.skip("renders and filters when input changes", () => {
     const selectedTree = renderWithWrappersLEGACY(
-      <ArtworkFiltersStoreProvider initialData={initialFilterData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialFilterData,
+        }}
+      >
         <KeywordFilter artistId="artist-id" artistSlug="artist-slug" />
       </ArtworkFiltersStoreProvider>
     )

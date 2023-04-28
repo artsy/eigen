@@ -2045,7 +2045,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.9.2":
+"@babel/runtime@^7.17.2", "@babel/runtime@^7.9.2":
   version "7.21.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
   integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
@@ -5140,6 +5140,13 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
+"@types/redux-logger@3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.9.tgz#9193b3d51bb6ab98d25514ba7764e4f98a64d3ec"
+  integrity sha512-cwYhVbYNgH01aepeMwhd0ABX6fhVB2rcQ9m80u8Fl50ZODhsZ8RhQArnLTkE7/Zrfq4Sz/taNoF7DQy9pCZSKg==
+  dependencies:
+    redux "^4.0.0"
+
 "@types/relay-runtime@*", "@types/relay-runtime@14.1.3":
   version "14.1.3"
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-14.1.3.tgz#7b0bf67d3392caef90548a14dcbd93a1b0c3f25e"
@@ -7520,6 +7527,11 @@ dedent@0.7.0, dedent@^0.7.0:
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=
 
+deep-diff@^0.3.5:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
+  integrity sha512-yVn6RZmHiGnxRKR9sJb3iVV2XTF1Ghh2DiWRZ3dMnGc43yUdWWF/kX6lQyk3+P84iprfWKU/8zFTrlkvtFm1ug==
+
 deep-equal@^1.0.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.1.1.tgz#b5c98c942ceffaf7cb051e24e1434a25a2e6076a"
@@ -7798,20 +7810,18 @@ duplexer3@^0.1.4:
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.5.tgz#0b5e4d7bad5de8901ea4440624c8e1d20099217e"
   integrity sha512-1A8za6ws41LQgv9HrE/66jyC5yuSjQ3L/KOpFtoBilsAK2iA2wuS5rTt1OCzIvtS2V7nVmedsUU+DGRcjBmOYA==
 
-easy-peasy@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/easy-peasy/-/easy-peasy-3.3.0.tgz#1ae7cbaa834dad5aa404f1437726fb8c0eed3cef"
-  integrity sha512-wkTDAG+nRy+4g8Z3/k1vuTyrhxet19oY5MCmuRgOObm8dtZ2m+g5Mk/sdf3UWPuyx/sKIYH5Fy/HXab8iNKjTQ==
+easy-peasy@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/easy-peasy/-/easy-peasy-6.0.0.tgz#5ae71f7cc52c77764f9bc5a8df8469fd7a5c20a8"
+  integrity sha512-thU1pJmeWcE7Zy14Wzfq8V5zpje4I39RSRYpqepXRKxDh4AfTMa/P6+ylA+iEdiMN4plhloVyzD0yGsHBPxofA==
   dependencies:
-    debounce "^1.2.0"
-    immer-peasy "3.1.3"
-    is-plain-object "^3.0.0"
-    memoizerific "^1.11.3"
-    prop-types "^15.6.2"
-    redux "^4.0.5"
-    redux-thunk "^2.3.0"
-    symbol-observable "^1.2.0"
-    ts-toolbelt "^6.1.6"
+    "@babel/runtime" "^7.17.2"
+    fast-deep-equal "^3.1.3"
+    immer "^9.0.12"
+    redux "^4.1.2"
+    redux-thunk "^2.4.1"
+    ts-toolbelt "^9.6.0"
+    use-sync-external-store "^1.2.0"
 
 ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
@@ -9830,10 +9840,10 @@ immediate@~3.0.5:
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha1-nbHb0Pr43m++D13V5Wu2BigN5ps=
 
-immer-peasy@3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/immer-peasy/-/immer-peasy-3.1.3.tgz#d0ea8d388f47ec6b15ab2ca19ffb9f0bf4310110"
-  integrity sha512-WzoZ96A93jOmcDOLNChMWAqy+ZU8vEYQx2DcKjgo7P5SToiJs+GL+5yQbWzH8X02Lhvv6xrGgVNa1xbki66Eow==
+immer@^9.0.12:
+  version "9.0.21"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.21.tgz#1e025ea31a40f24fb064f1fef23e931496330176"
+  integrity sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==
 
 import-cwd@^3.0.0:
   version "3.0.0"
@@ -14570,12 +14580,19 @@ redux-flipper@2.0.2:
     cycle "^1.0.3"
     dayjs "^1.8.29"
 
-redux-thunk@^2.3.0:
+redux-logger@3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/redux-logger/-/redux-logger-3.0.6.tgz#f7555966f3098f3c88604c449cf0baf5778274bf"
+  integrity sha512-JoCIok7bg/XpqA1JqCqXFypuqBbQzGQySrhFzewB7ThcnysTO30l4VCst86AuB9T9tuT03MAA56Jw2PNhRSNCg==
+  dependencies:
+    deep-diff "^0.3.5"
+
+redux-thunk@^2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.2.tgz#b9d05d11994b99f7a91ea223e8b04cf0afa5ef3b"
   integrity sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==
 
-redux@^4.0.5:
+redux@^4.0.0, redux@^4.1.2:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.1.tgz#c08f4306826c49b5e9dc901dee0452ea8fce6197"
   integrity sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==
@@ -15991,11 +16008,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-symbol-observable@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
-  integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
-
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
@@ -16293,10 +16305,10 @@ ts-node@8.4.1:
     source-map-support "^0.5.6"
     yn "^3.0.0"
 
-ts-toolbelt@^6.1.6:
-  version "6.15.5"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-6.15.5.tgz#cb3b43ed725cb63644782c64fbcad7d8f28c0a83"
-  integrity sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==
+ts-toolbelt@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
+  integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
 
 tsconfig-paths@^3.14.1:
   version "3.14.1"
@@ -16659,6 +16671,11 @@ use-subscription@^1.0.0:
   integrity sha512-7+IIwDG/4JICrWHL/Q/ZPK5yozEnvRm6vHImu0LKwQlmWGKeiF7mbAenLlK/cTNXrTtXHU/SFASQHzB6+oSJMQ==
   dependencies:
     object-assign "^4.1.1"
+
+use-sync-external-store@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 use@^3.1.0:
   version "3.1.1"

@@ -279,7 +279,7 @@ export function createArtworkFiltersStore() {
       assignDeep(state, injectedState)
     })
   }
-  const store = createContextStore<ArtworkFiltersModel>((initialData: ArtworkFiltersState) => ({
+  const store = createContextStore<ArtworkFiltersModel>((initialData) => ({
     ...getArtworkFiltersModel(),
     ...initialData,
   }))

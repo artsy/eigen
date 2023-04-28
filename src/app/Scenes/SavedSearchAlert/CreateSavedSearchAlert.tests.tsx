@@ -4,6 +4,7 @@ import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/Artwor
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
@@ -76,7 +77,12 @@ describe("CreateSavedSearchAlert", () => {
 
   const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <CreateSavedSearchAlert visible params={{ ...defaultParams, ...params }} />
       </ArtworkFiltersStoreProvider>
     )

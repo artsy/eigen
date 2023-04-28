@@ -4,6 +4,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import {
@@ -35,7 +36,12 @@ describe("ArtworkFilterOptionCheckboxItem", () => {
     filterStoreData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={filterStoreData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...filterStoreData,
+        }}
+      >
         <ArtworkFilterOptionCheckboxItem {...defaultProps} {...itemProps} />
         <MakeStore />
       </ArtworkFiltersStoreProvider>

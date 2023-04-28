@@ -1,6 +1,7 @@
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "app/utils/tests/extractText"
@@ -31,7 +32,12 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
   }) => {
     const animationValue = useAnimatedValue(0)
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <HeaderArtworksFilterWithTotalArtworks animationValue={animationValue} onPress={onPress} />
       </ArtworkFiltersStoreProvider>
     )

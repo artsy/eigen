@@ -5,7 +5,7 @@ import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
+import { Action, action, computed, Computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
 import { commitMutation, graphql } from "react-relay"
@@ -62,27 +62,26 @@ interface Store {
   allPresent: Computed<Store, boolean>
 }
 
-const useStore = createComponentStore<Store>({
-  fields: {
-    creditCard: emptyFieldState(),
-    fullName: emptyFieldState(),
-    addressLine1: emptyFieldState(),
-    addressLine2: { ...emptyFieldState(), required: false },
-    city: emptyFieldState(),
-    postCode: emptyFieldState(),
-    state: emptyFieldState(),
-    country: emptyFieldState(),
-  },
-  allPresent: computed((store) => {
-    return Boolean(
-      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
-        store.fields.creditCard.value?.valid
-    )
-  }),
-})
-
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
-  const [state, actions] = useStore()
+  const [state, actions] = useLocalStore<Store>(() => ({
+    fields: {
+      creditCard: emptyFieldState(),
+      fullName: emptyFieldState(),
+      addressLine1: emptyFieldState(),
+      addressLine2: { ...emptyFieldState(), required: false },
+      city: emptyFieldState(),
+      postCode: emptyFieldState(),
+      state: emptyFieldState(),
+      country: emptyFieldState(),
+    },
+    allPresent: computed((store) => {
+      return Boolean(
+        Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent) &&
+          store.fields.creditCard.value?.valid
+      )
+    }),
+  }))
+
   const paymentInfoRef = useRef<any>(null)
 
   const addressLine1Ref = useRef<Input>(null)
