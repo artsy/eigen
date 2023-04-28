@@ -5,13 +5,12 @@ import {
   ArtworkListMode,
   useArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
-import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
 import { FC } from "react"
 import * as Yup from "yup"
-import { RemainingCharactersLabel } from "./RemainingCharactersLabel"
 
 export interface CreateNewArtworkListFormValues {
   name: string
@@ -104,12 +103,11 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       onSubmit={handleSubmit}
     >
       {(formik) => {
-        const nameLength = formik.values.name.length
-        const isSaveButtonDisabled = !formik.isValid || nameLength === 0
+        const isSaveButtonDisabled = !formik.isValid || formik.values.name.length === 0
 
         return (
           <Flex {...props}>
-            <BottomSheetInput
+            <CreateNewArtworkListInput
               placeholder="Name your list"
               value={formik.values.name}
               onChangeText={formik.handleChange("name")}
@@ -117,7 +115,6 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
               maxLength={MAX_NAME_LENGTH}
               onBlur={formik.handleBlur("name")}
             />
-            <RemainingCharactersLabel currentLength={nameLength} maxLength={MAX_NAME_LENGTH} />
 
             <Spacer y={4} />
 
