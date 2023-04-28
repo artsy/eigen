@@ -55,18 +55,15 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
-  const showFilters = true
   return (
     <>
       {enableCollectedArtists && (
-        <Flex pb={showFilters ? 0 : 2}>
+        <Flex pb={0}>
           <MainStickyHeader selectedTab={selectedTab} onTabChange={setSelectedTab} />
         </Flex>
       )}
 
-      {showFilters && (
-        <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
-      )}
+      <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
 
       <Messages
         showNewWorksMessage={showNewWorksMessage}
@@ -99,6 +96,12 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
         justifyContent="space-between"
         style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
       >
+        <AnimatedCloseIcon
+          closeIconRef={closeIconRef}
+          onTabChange={onTabChange}
+          selectedTab={selectedTab}
+        />
+
         {/* Pills */}
         <Flex flexDirection="row" justifyContent="center" alignItems="center">
           <AnimatedPill
@@ -115,11 +118,6 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
             tab="Artworks"
           />
         </Flex>
-        <AnimatedCloseIcon
-          closeIconRef={closeIconRef}
-          onTabChange={onTabChange}
-          selectedTab={selectedTab}
-        />
 
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
@@ -146,15 +144,11 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
   )
 }
 
-const AnimatedCloseIcon = ({
-  closeIconRef,
-  onTabChange,
-  selectedTab,
-}: {
+const AnimatedCloseIcon: React.FC<{
   closeIconRef: React.RefObject<any>
   onTabChange: (tab: CollectedTab) => void
   selectedTab: CollectedTab
-}) => {
+}> = ({ closeIconRef, onTabChange, selectedTab }) => {
   const space = useSpace()
 
   return (
@@ -170,7 +164,7 @@ const AnimatedCloseIcon = ({
         animate={{
           opacity: selectedTab !== null ? 1 : 0,
         }}
-        delay={selectedTab !== null ? 200 : 0}
+        delay={selectedTab !== null ? 300 : 0}
       >
         <Touchable
           onPress={() => {
@@ -216,6 +210,9 @@ const AnimatedPill = ({
     if (selectedTab === null || xPositionInPage === undefined) {
       return 0
     }
+    if (selectedTab !== tab) {
+      return undefined
+    }
 
     return Number(originX) - xPositionInPage + space(2)
   }
@@ -232,6 +229,14 @@ const AnimatedPill = ({
       ref={containerRef}
       transition={{
         type: "timing",
+        translateX: {
+          // Only show the pill after they are nrro longer overlapping
+          delay: selectedTab === null ? 0 : 200,
+        },
+        opacity: {
+          // Only show the pill after they are no longer overlapping
+          delay: selectedTab === null ? 200 : 0,
+        },
       }}
     >
       <Pill
