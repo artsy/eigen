@@ -1,15 +1,15 @@
 import { Text, TextProps } from "@artsy/palette-mobile"
 
-interface InputRemainingCharactersLabelProps extends TextProps {
+interface RemainingCharactersLabelProps extends TextProps {
   currentLength: number
   maxLength: number
 }
 
-export const InputRemainingCharactersLabel = ({
+export const RemainingCharactersLabel = ({
   currentLength,
   maxLength,
   ...rest
-}: InputRemainingCharactersLabelProps) => {
+}: RemainingCharactersLabelProps) => {
   const remainingCount = Math.max(maxLength - currentLength, 0)
   const label = `${remainingCount} character${remainingCount === 1 ? "" : "s"} remaining`
 

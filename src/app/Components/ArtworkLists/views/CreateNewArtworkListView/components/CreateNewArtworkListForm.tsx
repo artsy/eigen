@@ -11,7 +11,7 @@ import { BottomSheetInput } from "app/Components/BottomSheetInput"
 import { Formik, FormikHelpers } from "formik"
 import { FC } from "react"
 import * as Yup from "yup"
-import { InputRemainingCharactersLabel } from "./InputRemainingCharactersLabel"
+import { RemainingCharactersLabel } from "./RemainingCharactersLabel"
 
 export interface CreateNewArtworkListFormValues {
   name: string
@@ -118,10 +118,7 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
                 maxLength={MAX_NAME_LENGTH}
                 onBlur={formik.handleBlur("name")}
               />
-              <InputRemainingCharactersLabel
-                currentLength={nameLength}
-                maxLength={MAX_NAME_LENGTH}
-              />
+              <RemainingCharactersLabel currentLength={nameLength} maxLength={MAX_NAME_LENGTH} />
 
               <Spacer y={4} />
 
