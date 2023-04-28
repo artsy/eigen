@@ -5,7 +5,7 @@ import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
@@ -15,12 +15,12 @@ export const CreateNewArtworkListView = () => {
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
     useBottomSheetDynamicSnapPoints(initialSnapPoints)
 
-  const closeCurrentView = () => {
+  const closeCurrentView = useCallback(() => {
     dispatch({
       type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
       payload: false,
     })
-  }
+  }, [dispatch])
 
   return (
     <AutomountedBottomSheetModal

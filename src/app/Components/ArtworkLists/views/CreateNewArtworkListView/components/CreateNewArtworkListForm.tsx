@@ -80,11 +80,9 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
 
         setRecentlyAddedArtworkList(result)
         preselectRecentlyAddedArtworkList(artworkList.internalID)
+        closeCurrentView()
 
-        requestAnimationFrame(() => {
-          closeCurrentView()
-          helpers.setSubmitting(false)
-        })
+        helpers.setSubmitting(false)
       },
       onError: (error) => {
         helpers.setFieldError("name", error.message)
