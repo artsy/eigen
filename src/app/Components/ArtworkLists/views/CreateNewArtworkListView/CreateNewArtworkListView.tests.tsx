@@ -57,6 +57,16 @@ describe("CreateNewArtworkListView", () => {
       expect(getByText(text)).toBeTruthy()
     })
 
+    it("when user entered 39 characters", () => {
+      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+
+      const longText = "a".repeat(39)
+      fireEvent.changeText(getByPlaceholderText(placeholder), longText)
+
+      const text = "1 character remaining"
+      expect(getByText(text)).toBeTruthy()
+    })
+
     it("when user entered something", () => {
       const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
 

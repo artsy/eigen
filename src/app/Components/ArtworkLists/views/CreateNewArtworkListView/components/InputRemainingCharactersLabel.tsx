@@ -11,18 +11,11 @@ export const InputRemainingCharactersLabel = ({
   ...rest
 }: InputRemainingCharactersLabelProps) => {
   const remainingCount = Math.max(maxLength - currentLength, 0)
+  const label = `${remainingCount} character${remainingCount === 1 ? "" : "s"} remaining`
 
   return (
     <Text variant="xs" color="black60" {...rest}>
-      {getLabel(remainingCount)}
+      {label}
     </Text>
   )
-}
-
-const getLabel = (count: number) => {
-  if (count === 1) {
-    return "1 character remaining"
-  }
-
-  return `${count} characters remaining`
 }
