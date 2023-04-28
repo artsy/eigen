@@ -1,13 +1,14 @@
-import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { PrivateProps, Props } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+import { PlaceholderFeed, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useState } from "react"
-import { Dimensions } from "react-native"
 
 // a rough estimation of each artwork size in pixels
 const ESTIMATED_ITEM_SIZE = 420
@@ -29,7 +30,7 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
   const artworks = extractNodes(connection)
   const [localIsLoading, setLocalIsLoading] = useState(false)
   const artworksToRender = (localSortAndFilterArtworks?.(artworks) as typeof artworks) ?? artworks
-  const { width, height } = Dimensions.get("screen")
+  const { width, height } = useScreenDimensions()
 
   const fetchNextPage = () => {
     if (!hasMore() || localIsLoading || isLoading?.()) {
@@ -92,5 +93,16 @@ export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
         }}
       />
     </Flex>
+  )
+}
+
+export const InfiniteScrollArtworksFeedPlaceholder: React.FC<{ title: string }> = ({ title }) => {
+  return (
+    <ProvidePlaceholderContext>
+      <PageWithSimpleHeader title={title}>
+        <Spacer y={2} />
+        <PlaceholderFeed />
+      </PageWithSimpleHeader>
+    </ProvidePlaceholderContext>
   )
 }

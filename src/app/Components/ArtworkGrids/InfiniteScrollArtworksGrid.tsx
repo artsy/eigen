@@ -133,6 +133,15 @@ export interface Props {
 }
 
 export interface PrivateProps {
+  /**
+   * If this artwork grid should have the new feed enabled
+   * (only on android, uses [useNewFeedEnabled](https://github.com/artsy/eigen/blob/e7a917843f75e14fb43ca6ff79407aecae87fac1/src/app/utils/hooks/useNewFeedEnabled.ts)
+   * under the hood)
+   *
+   * ⚠️ Note that if you enable this you might need to adjust the placeholders of the grids where it is used
+   *
+   */
+  enableAndroidNewFeed?: boolean
   connection:
     | InfiniteScrollArtworksGrid_connection$data
     | InfiniteScrollArtworksGrid_myCollectionConnection$data
@@ -147,6 +156,7 @@ interface MapperProps extends Omit<PrivateProps, "connection"> {
 }
 
 const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
+  enableAndroidNewFeed,
   connection,
   myCollectionConnection,
   loadMore,
@@ -164,7 +174,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
     throw new Error("No connection prop supplied to InfiniteScrollArtworksGrid")
   }
 
-  if (isNewFeedEnabled) {
+  if (!!enableAndroidNewFeed && isNewFeedEnabled) {
     return (
       <InfiniteScrollArtworksFeed
         loadMore={loadMore}
