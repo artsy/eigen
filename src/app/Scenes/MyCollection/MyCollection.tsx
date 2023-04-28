@@ -1,5 +1,5 @@
-import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Separator, Button } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -7,20 +7,17 @@ import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import {
   PlaceholderBox,
   PlaceholderGrid,
@@ -37,15 +34,9 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
+import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
-import {
-  PurchasedArtworkAddedMessage,
-  SubmittedArtworkAddedMessage,
-} from "./Screens/Insights/MyCollectionMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -56,8 +47,6 @@ const MyCollection: React.FC<{
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
   const toast = useToast()
-  const { trackEvent } = useTracking()
-  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
@@ -113,52 +102,18 @@ const MyCollection: React.FC<{
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const showMessages = async () => {
-    const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
     const showNewWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
     setJSX(
-      <Flex>
-        <ArtworksFilterHeader
-          selectedFiltersCount={filtersCount}
-          onFilterPress={() => setIsFilterModalVisible(true)}
-          showSeparator={!showSearchBar}
-        >
-          <Button
-            data-test-id="add-artwork-button-non-zero-state"
-            size="small"
-            variant="fillDark"
-            onPress={async () => {
-              navigate("my-collection/artworks/new", {
-                passProps: {
-                  mode: "add",
-                  source: Tab.collection,
-                  onSuccess: popToRoot,
-                },
-              })
-              trackEvent(tracks.addCollectedArtwork())
-            }}
-            haptic
-          >
-            Upload Artwork
-          </Button>
-        </ArtworksFilterHeader>
-        {!!showNewWorksMessage && (
-          <PurchasedArtworkAddedMessage
-            onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
-          />
-        )}
-        {!!showSubmissionMessage && (
-          <SubmittedArtworkAddedMessage
-            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
-          />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.collection}
-          hasMarketSignals={hasMarketSignals}
-        />
-      </Flex>
+      <MyCollectionStickyHeader
+        filtersCount={filtersCount}
+        hasMarketSignals={hasMarketSignals}
+        showModal={() => setIsFilterModalVisible(true)}
+        showNewWorksMessage={!!showNewWorksMessage}
+        showSeparator={!showSearchBar}
+      />
     )
   }
 
@@ -389,15 +344,6 @@ export const MyCollectionPlaceholder: React.FC = () => {
       )}
     </Flex>
   )
-}
-
-const tracks = {
-  addCollectedArtwork: (): AddCollectedArtwork => ({
-    action: ActionType.addCollectedArtwork,
-    context_module: ContextModule.myCollectionHome,
-    context_owner_type: OwnerType.myCollection,
-    platform: "mobile",
-  }),
 }
 
 export type MyCollectionArtworkEdge = NonNullable<
