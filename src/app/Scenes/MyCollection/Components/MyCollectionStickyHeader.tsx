@@ -34,6 +34,7 @@ const PILL_PADDING_IN_PX = 10
 
 interface MyCollectionStickyHeaderProps {
   filtersCount: number
+  hasArtworks: boolean
   hasMarketSignals: boolean
   showModal: () => void
   showNewWorksMessage: boolean
@@ -44,6 +45,7 @@ type CollectedTab = "Artworks" | "Artists" | null
 
 export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> = ({
   filtersCount,
+  hasArtworks,
   hasMarketSignals,
   showModal,
   showNewWorksMessage,
@@ -62,9 +64,9 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
           <MainStickyHeader selectedTab={selectedTab} onTabChange={setSelectedTab} />
         </Flex>
       )}
-
-      <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
-
+      {!!hasArtworks && (
+        <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
+      )}
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}

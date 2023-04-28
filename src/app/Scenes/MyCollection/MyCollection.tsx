@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer, useSpace } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -13,12 +13,17 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
+import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
-import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
+import {
+  MyCollectionZeroState,
+  MyCollectionZeroStateArtworks,
+} from "app/Scenes/MyCollection/Components/MyCollectionZeroStates"
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
   PlaceholderGrid,
@@ -48,6 +53,7 @@ const MyCollection: React.FC<{
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -61,6 +67,10 @@ const MyCollection: React.FC<{
   const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const toast = useToast()
+  const space = useSpace()
+
+  // TODO: Remove and replace with Number(me.myCollectionInfo?.artistsCount) > 0
+  const hasCollectedArtists = true
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
@@ -112,12 +122,15 @@ const MyCollection: React.FC<{
         showModal={() => setIsFilterModalVisible(true)}
         showNewWorksMessage={!!showNewWorksMessage}
         showSeparator={!showSearchBar}
+        hasArtworks={artworks.length > 0}
       />
     )
   }
 
   useEffect(() => {
-    if (artworks.length) {
+    const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
+
+    if (renderMessages) {
       showMessages()
     } else {
       // remove already set JSX
@@ -129,8 +142,18 @@ const MyCollection: React.FC<{
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  if (artworks.length === 0) {
+  if (!hasCollectedArtists) {
     return <MyCollectionZeroState />
+  }
+
+  if (artworks.length === 0 && hasCollectedArtists) {
+    return (
+      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space(2) }}>
+        <MyCollectionCollectedArtistsRail />
+        <Separator my={4} />
+        <MyCollectionZeroStateArtworks />
+      </StickyTabPageScrollView>
+    )
   }
 
   return (
@@ -180,6 +203,8 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
+          artistsCount
+          artworksCount
         }
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
