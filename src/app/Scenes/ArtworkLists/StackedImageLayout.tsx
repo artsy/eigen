@@ -1,6 +1,5 @@
 import { Box } from "@artsy/palette-mobile"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-import { ArtworkListImageBorder } from "app/Scenes/ArtworkLists/ArtworkListImageBorder"
+import { ArtworkListImage } from "app/Scenes/ArtworkLists/components/ArtworkListImage"
 import { ArtworkListNoImage } from "app/Scenes/ArtworkLists/components/ArtworkListNoImage"
 import { times } from "lodash"
 
@@ -15,7 +14,7 @@ interface StackImageProps {
   cardWidth: number
 }
 
-const IMAGE_OFFSET = 14
+const IMAGE_OFFSET = 9
 
 export const StackedImageLayout = ({ imageURLs, cardWidth }: StackedImageLayoutProps) => {
   const stackedImageURLs = times(4).map((index) => {
@@ -37,7 +36,7 @@ export const StackedImageLayout = ({ imageURLs, cardWidth }: StackedImageLayoutP
 }
 
 const StackImage = ({ cardWidth, url, index }: StackImageProps) => {
-  const OFFSET_BY_INDEX = `${3 * index}px`
+  const OFFSET_BY_INDEX = `${(IMAGE_OFFSET / 3) * index}px`
 
   if (!url) {
     return (
@@ -52,8 +51,12 @@ const StackImage = ({ cardWidth, url, index }: StackImageProps) => {
   }
 
   return (
-    <ArtworkListImageBorder position="absolute" top={OFFSET_BY_INDEX} left={OFFSET_BY_INDEX}>
-      <OpaqueImageView imageURL={url} width={cardWidth} height={cardWidth} />
-    </ArtworkListImageBorder>
+    <ArtworkListImage
+      imageURL={url}
+      imageWidth={cardWidth}
+      position="absolute"
+      top={OFFSET_BY_INDEX}
+      left={OFFSET_BY_INDEX}
+    />
   )
 }

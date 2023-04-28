@@ -1,6 +1,5 @@
 import { Box, Flex, Spacer } from "@artsy/palette-mobile"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-import { ArtworkListImageBorder } from "app/Scenes/ArtworkLists/ArtworkListImageBorder"
+import { ArtworkListImage } from "app/Scenes/ArtworkLists/components/ArtworkListImage"
 import { ArtworkListNoImage } from "app/Scenes/ArtworkLists/components/ArtworkListNoImage"
 import { FC } from "react"
 
@@ -17,8 +16,7 @@ interface RowImageProps {
 }
 
 export const FourUpImageLayout = ({ imageURLs, cardWidth }: FourUpImageLayoutProps) => {
-  const allBorderOffsets = 2 * IMAGES_PER_ROW
-  const rowImageWidth = (cardWidth - allBorderOffsets - IMAGE_OFFSET) / IMAGES_PER_ROW
+  const rowImageWidth = (cardWidth - IMAGE_OFFSET) / IMAGES_PER_ROW
   return (
     <Box>
       <Flex flexDirection="row">
@@ -43,9 +41,5 @@ const RowImage: FC<RowImageProps> = ({ url, rowImageWidth }) => {
     return <ArtworkListNoImage width={rowImageWidth} height={rowImageWidth} />
   }
 
-  return (
-    <ArtworkListImageBorder>
-      <OpaqueImageView imageURL={url} width={rowImageWidth} height={rowImageWidth} />
-    </ArtworkListImageBorder>
-  )
+  return <ArtworkListImage imageURL={url} imageWidth={rowImageWidth} />
 }
