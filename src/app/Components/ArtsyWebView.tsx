@@ -13,6 +13,7 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
@@ -96,7 +97,11 @@ export const ArtsyWebViewPage = ({
   }
 
   return (
-    <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
+    <Flex
+      flex={1}
+      pt={isPresentedModally && Platform.OS !== "android" ? 0 : `${saInsets.top}px`}
+      backgroundColor="white"
+    >
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
