@@ -92,6 +92,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         left: space(1),
         bottom: space(1),
       }}
+      haptic
       accessibilityRole="button"
       accessibilityLabel={a11yLabel}
       onPress={saveArtworkToLists}
