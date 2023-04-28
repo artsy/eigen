@@ -112,10 +112,10 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
             <CreateNewArtworkListInput
               placeholder="Name your list"
               value={formik.values.name}
-              onChangeText={formik.handleChange("name")}
               error={formik.errors.name}
               maxLength={MAX_NAME_LENGTH}
               onBlur={formik.handleBlur("name")}
+              onChangeText={formik.handleChange("name")}
             />
 
             <Spacer y={4} />
