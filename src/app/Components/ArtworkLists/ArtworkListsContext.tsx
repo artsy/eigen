@@ -1,8 +1,8 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
-import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView"
+import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
-import { createContext, Dispatch, FC, useContext, useReducer, useState } from "react"
+import { createContext, Dispatch, FC, useCallback, useContext, useReducer, useState } from "react"
 
 export enum ResultAction {
   SavedToDefaultArtworkList,
@@ -84,7 +84,7 @@ export interface ArtworkListsProviderProps {
   artwork?: ArtworkEntity
 }
 
-export const INITIAL_STATE: State = {
+export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: State = {
   createNewArtworkListViewVisible: false,
   artwork: null,
   recentlyAddedArtworkList: null,
@@ -113,7 +113,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 }) => {
   const [isSavedToArtworkList, setIsSavedToArtworkList] = useState(!!artworkListId)
   const [state, dispatch] = useReducer(reducer, {
-    ...INITIAL_STATE,
+    ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
   })
   const toast = useArtworkListToast()
@@ -134,11 +134,11 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
   }
 
-  const reset = () => {
+  const reset = useCallback(() => {
     dispatch({
       type: "RESET",
     })
-  }
+  }, [dispatch])
 
   const value: ArtworkListsContextState = {
     state,
@@ -205,7 +205,7 @@ const reducer = (state: State, action: Action): State => {
         selectedArtworkListIDs: action.payload,
       }
     case "RESET":
-      return INITIAL_STATE
+      return ARTWORK_LISTS_CONTEXT_INITIAL_STATE
     default:
       return state
   }
