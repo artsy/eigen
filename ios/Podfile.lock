@@ -594,7 +594,7 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFlashList (1.4.2):
+  - RNFlashList (1.4.3):
     - React-Core
   - RNGestureHandler (2.5.0):
     - React-Core
@@ -1224,7 +1224,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 6f1f0b4cf7c71b6e2aea7a3aa62969111084bbd1
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
-  RNFlashList: 7fbca4fc075484a9426f1610d648dbea2de94eb0
+  RNFlashList: ade81b4e928ebd585dd492014d40fb8d0e848aab
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
