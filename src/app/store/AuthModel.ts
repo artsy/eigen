@@ -178,7 +178,6 @@ export interface AuthPromiseRejectType {
 type SessionState = {
   isLoading: boolean
   isUserIdentified: boolean
-  requestedPushPermissionsThisSession: boolean
 }
 
 export interface AuthModel {
@@ -195,6 +194,7 @@ export interface AuthModel {
   previousSessionUserID: string | null
 
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
+  requestedPushPermissionsThisSession: boolean
 
   // Actions
   setState: Action<this, Partial<StateMapper<this>>>
@@ -265,7 +265,6 @@ export const getAuthModel = (): AuthModel => ({
   sessionState: {
     isLoading: false,
     isUserIdentified: false,
-    requestedPushPermissionsThisSession: false,
   },
   userID: null,
   userAccessToken: null,
@@ -277,6 +276,7 @@ export const getAuthModel = (): AuthModel => ({
   userEmail: null,
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
+  requestedPushPermissionsThisSession: false,
 
   setState: action((state, payload) => Object.assign(state, payload)),
   setSessionState: action((state, payload) => {
@@ -430,7 +430,7 @@ export const getAuthModel = (): AuthModel => ({
       postEventToProviders(tracks.loggedIn(oauthProvider))
 
       // Make sure we try to get push permission and new tokens on new sessions
-      GlobalStore.actions.auth.setSessionState({ requestedPushPermissionsThisSession: false })
+      GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: false })
 
       onSignIn?.()
 

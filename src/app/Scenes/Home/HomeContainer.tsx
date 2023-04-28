@@ -8,7 +8,7 @@ export const HomeContainer = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const hasRequestedPermissionsThisSession = GlobalStore.useAppState(
-    (state) => state.auth.sessionState.requestedPushPermissionsThisSession
+    (state) => state.auth.requestedPushPermissionsThisSession
   )
 
   const shouldShowArtQuiz = useFeatureFlag("ARShowArtQuizApp")
@@ -27,7 +27,7 @@ export const HomeContainer = () => {
     (!onboardingState || onboardingState === "complete" || onboardingState === "none")
   ) {
     requestPushNotificationsPermission()
-    GlobalStore.actions.auth.setSessionState({ requestedPushPermissionsThisSession: true })
+    GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: true })
   }
 
   return <HomeQueryRenderer />
