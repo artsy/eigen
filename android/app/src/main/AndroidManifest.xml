@@ -118,6 +118,7 @@
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
+                <data android:pathPrefix="/tag" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
                 <data android:pathPrefix="/upcoming-auction-results" />
