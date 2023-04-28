@@ -1,9 +1,11 @@
 import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { InfiniteScrollArtworksFeedPlaceholder } from "app/Components/ArtworkGrids/InfiniteScrollArtworksFeed"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -20,6 +22,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
       <Box>
         {!!me?.lotsByFollowedArtistsConnection?.edges?.length ? (
           <InfiniteScrollArtworksGridContainer
+            enableAndroidNewFeed
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
             connection={me.lotsByFollowedArtistsConnection}
@@ -83,14 +86,20 @@ export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
       variables={lotsByArtistsYouFollowDefaultVariables()}
       render={renderWithPlaceholder({
         Container: LotsByArtistsYouFollowFragmentContainer,
-        renderPlaceholder: Placeholder,
+        renderPlaceholder: () => <Placeholder />,
         renderFallback: () => null,
       })}
     />
   )
 }
 
-const Placeholder = () => {
+const Placeholder: React.FC = () => {
+  const isNewFeedEnabled = useNewFeedEnabled()
+
+  if (isNewFeedEnabled) {
+    return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
+  }
+
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>

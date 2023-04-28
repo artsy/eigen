@@ -2,17 +2,18 @@ import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
+import { InfiniteScrollArtworksFeedPlaceholder } from "app/Components/ArtworkGrids/InfiniteScrollArtworksFeed"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
-import { PlaceholderFeed, PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
@@ -34,6 +35,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
         <Box>
           {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
+              enableAndroidNewFeed
               connection={viewer.artworks!}
               loadMore={() => null}
               hasMore={() => false}
@@ -148,7 +150,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   maxWorksPerArtist = 3,
   version: versionProp,
 }) => {
-  const isNewFeedEnabled = useNewFeedEnabled()
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   const isReferredFromEmail = utm_medium === "email"
@@ -188,14 +189,20 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,
-        renderPlaceholder: isNewFeedEnabled ? FeedPlaceholder : Placeholder,
+        renderPlaceholder: () => <Placeholder />,
         renderFallback: () => null,
       })}
     />
   )
 }
 
-const Placeholder = () => {
+const Placeholder: React.FC = () => {
+  const isNewFeedEnabled = useNewFeedEnabled()
+
+  if (isNewFeedEnabled) {
+    return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
+  }
+
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
@@ -205,12 +212,3 @@ const Placeholder = () => {
     </ProvidePlaceholderContext>
   )
 }
-
-const FeedPlaceholder = () => (
-  <ProvidePlaceholderContext>
-    <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <Spacer y={2} />
-      <PlaceholderFeed />
-    </PageWithSimpleHeader>
-  </ProvidePlaceholderContext>
-)

@@ -2,10 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { RecentlyViewedQuery } from "__generated__/RecentlyViewedQuery.graphql"
 import { RecentlyViewed_artworksConnection$key } from "__generated__/RecentlyViewed_artworksConnection.graphql"
+import { InfiniteScrollArtworksFeedPlaceholder } from "app/Components/ArtworkGrids/InfiniteScrollArtworksFeed"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
+import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -36,6 +38,7 @@ export const RecentlyViewed: React.FC = () => {
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
+            enableAndroidNewFeed
             connection={data?.recentlyViewedArtworksConnection}
             loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}
@@ -91,7 +94,13 @@ export const RecentlyViewedScreen: React.FC = () => {
   )
 }
 
-const Placeholder = () => {
+const Placeholder: React.FC = () => {
+  const isNewFeedEnabled = useNewFeedEnabled()
+
+  if (isNewFeedEnabled) {
+    return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
+  }
+
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
