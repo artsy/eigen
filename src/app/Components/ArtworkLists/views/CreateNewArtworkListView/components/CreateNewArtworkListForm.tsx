@@ -63,10 +63,12 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
     values: CreateNewArtworkListFormValues,
     helpers: FormikHelpers<CreateNewArtworkListFormValues>
   ) => {
+    const formattedValue = values.name.trim()
+
     commitMutation({
       variables: {
         input: {
-          name: values.name,
+          name: formattedValue,
         },
       },
       onCompleted: (data) => {
