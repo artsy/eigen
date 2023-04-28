@@ -7,6 +7,7 @@ import {
 import {
   ArtworkFiltersStoreProvider,
   ArtworkFiltersState,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 
@@ -33,7 +34,12 @@ export const getEssentialProps = (params: {} = {}) =>
   } as unknown as StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">)
 
 export const MockFilterScreen = ({ initialState }: { initialState?: ArtworkFiltersState }) => (
-  <ArtworkFiltersStoreProvider initialData={initialState}>
+  <ArtworkFiltersStoreProvider
+    runtimeModel={{
+      ...getArtworkFiltersModel(),
+      ...initialState,
+    }}
+  >
     <ArtworkFilterOptionsScreen {...getEssentialProps()} />
   </ArtworkFiltersStoreProvider>
 )

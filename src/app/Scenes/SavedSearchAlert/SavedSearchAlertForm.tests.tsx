@@ -15,7 +15,7 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./SavedSearchAlertForm"
-import { SavedSearchStoreProvider } from "./SavedSearchStore"
+import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 const spyAlert = jest.spyOn(Alert, "alert")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -37,7 +37,14 @@ const withoutDuplicateAlert = async () => {
 
 const TestRenderer = (props: Partial<SavedSearchAlertFormProps>) => {
   return (
-    <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity: savedSearchEntity }}>
+    <SavedSearchStoreProvider
+      runtimeModel={{
+        ...savedSearchModel,
+        attributes: attributes as SearchCriteriaAttributes,
+        aggregations,
+        entity: savedSearchEntity,
+      }}
+    >
       <SavedSearchAlertForm {...baseProps} {...props} />
     </SavedSearchStoreProvider>
   )

@@ -1,7 +1,7 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { produce } from "immer-peasy"
+import { produce, setAutoFreeze } from "immer"
 import { Platform } from "react-native"
 
 /**
@@ -284,6 +284,8 @@ export function migrate<State extends { version: number }>({
 }): {
   version: number
 } {
+  setAutoFreeze(false)
+
   if (typeof state.version !== "number") {
     throw new Error("Bad state.version " + JSON.stringify(state))
   }
@@ -296,5 +298,7 @@ export function migrate<State extends { version: number }>({
     state = produce(state, migrator)
     state.version = nextVersion
   }
+
+  setAutoFreeze(true)
   return state
 }

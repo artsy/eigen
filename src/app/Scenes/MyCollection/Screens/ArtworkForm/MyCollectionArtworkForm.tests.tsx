@@ -47,7 +47,9 @@ describe("MyCollectionArtworkForm", () => {
         mockEnvironment
       )
 
-      act(() => GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any))
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any)
+
+      await flushPromiseQueue()
 
       expect(getByTestId("TitleInput").props.value).toBe("Morons")
       expect(getByTestId("DateInput").props.value).toBe("2007")
@@ -109,6 +111,8 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+        await flushPromiseQueue()
+
         fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()

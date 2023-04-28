@@ -312,7 +312,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
     <DevMenuButtonItem
       title={description}
       onPress={() => {
-        Alert.alert(description, undefined, [
+        Alert.alert(description as string, undefined, [
           {
             text: "Override with 'Yes'",
             onPress() {

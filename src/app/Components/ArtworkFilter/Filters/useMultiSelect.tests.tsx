@@ -2,6 +2,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
@@ -65,7 +66,12 @@ describe("useMultiSelect", () => {
 
   const MockComponent = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <MockScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

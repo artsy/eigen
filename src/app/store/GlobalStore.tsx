@@ -9,6 +9,7 @@ import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peas
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
+import logger from "redux-logger"
 import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { FeatureMap } from "./config/FeaturesModel"
@@ -19,30 +20,29 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     middleware.push(persistenceMiddleware)
-  }
 
-  if (__DEV__ && !__TEST__) {
-    const reduxInFlipper = require("redux-flipper").default
-    middleware.push(reduxInFlipper())
-  }
+    if (__DEV__) {
+      const reduxInFlipper = require("redux-flipper").default
+      middleware.push(reduxInFlipper())
 
-  // At dev time but not test time, let's log out each action that is dispatched
-  if (__DEV__ && !__TEST__) {
-    middleware.push((_api) => (next) => (_action) => {
       if (logAction) {
-        console.log(`ACTION ${_action.type}`, _action)
+        middleware.push(logger)
       }
-      next(_action)
-    })
+    }
   }
 
   // At test time let's keep a log of all dispatched actions so that tests can make assertions based on what
   // has been dispatched
   if (__TEST__ && __globalStoreTestUtils__) {
     __globalStoreTestUtils__.dispatchedActions = []
-    middleware.push((_api) => (next) => (_action) => {
-      __globalStoreTestUtils__.dispatchedActions.push(_action)
-      next(_action)
+
+    middleware.push((_api) => (next) => async (action) => {
+      if (action.type) {
+        __globalStoreTestUtils__.dispatchedActions.push(action)
+      }
+
+      const result = next(action)
+      return result
     })
   }
 
