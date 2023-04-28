@@ -59,6 +59,36 @@ export const MyCollectionZeroState: React.FC = () => {
   )
 }
 
+export const MyCollectionZeroStateArtworks: React.FC = () => {
+  const { trackEvent } = useTracking()
+
+  return (
+    <>
+      <Text variant="md">Add your artworks</Text>
+      <Text variant="xs" color="black60">
+        Access price and market insights and build an online record of your collection.
+      </Text>
+      <Button
+        onPress={() => {
+          trackEvent(tracks.addCollectedArtwork())
+          navigate("my-collection/artworks/new", {
+            passProps: {
+              mode: "add",
+              source: Tab.collection,
+              onSuccess: popToRoot,
+            },
+          })
+        }}
+        variant="outline"
+        size="small"
+        mt={2}
+      >
+        Add Artworks
+      </Button>
+    </>
+  )
+}
+
 const tracks = {
   addCollectedArtwork: (): AddCollectedArtwork => ({
     action: ActionType.addCollectedArtwork,
