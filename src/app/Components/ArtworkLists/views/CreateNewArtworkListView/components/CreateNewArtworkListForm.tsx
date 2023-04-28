@@ -1,4 +1,4 @@
-import { Box, BoxProps, Button, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, FlexProps, Spacer } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import {
@@ -31,7 +31,7 @@ export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required").max(MAX_NAME_LENGTH),
 })
 
-export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
+export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
   const { dispatch } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const [commitMutation] = useCreateNewArtworkList()
@@ -98,48 +98,46 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
   }
 
   return (
-    <Box {...props}>
-      <Formik
-        initialValues={INITIAL_FORM_VALUES}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {(formik) => {
-          const nameLength = formik.values.name.length
-          const isSaveButtonDisabled = !formik.isValid || nameLength === 0
+    <Formik
+      initialValues={INITIAL_FORM_VALUES}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {(formik) => {
+        const nameLength = formik.values.name.length
+        const isSaveButtonDisabled = !formik.isValid || nameLength === 0
 
-          return (
-            <>
-              <BottomSheetInput
-                placeholder="Name your list"
-                value={formik.values.name}
-                onChangeText={formik.handleChange("name")}
-                error={formik.errors.name}
-                maxLength={MAX_NAME_LENGTH}
-                onBlur={formik.handleBlur("name")}
-              />
-              <RemainingCharactersLabel currentLength={nameLength} maxLength={MAX_NAME_LENGTH} />
+        return (
+          <Flex {...props}>
+            <BottomSheetInput
+              placeholder="Name your list"
+              value={formik.values.name}
+              onChangeText={formik.handleChange("name")}
+              error={formik.errors.name}
+              maxLength={MAX_NAME_LENGTH}
+              onBlur={formik.handleBlur("name")}
+            />
+            <RemainingCharactersLabel currentLength={nameLength} maxLength={MAX_NAME_LENGTH} />
 
-              <Spacer y={4} />
+            <Spacer y={4} />
 
-              <Button
-                block
-                disabled={isSaveButtonDisabled}
-                loading={formik.isSubmitting}
-                onPress={formik.handleSubmit}
-              >
-                Save
-              </Button>
+            <Button
+              block
+              disabled={isSaveButtonDisabled}
+              loading={formik.isSubmitting}
+              onPress={formik.handleSubmit}
+            >
+              Save
+            </Button>
 
-              <Spacer y={1} />
+            <Spacer y={1} />
 
-              <Button block variant="outline" onPress={closeCurrentView}>
-                Back
-              </Button>
-            </>
-          )
-        }}
-      </Formik>
-    </Box>
+            <Button block variant="outline" onPress={closeCurrentView}>
+              Back
+            </Button>
+          </Flex>
+        )
+      }}
+    </Formik>
   )
 }
