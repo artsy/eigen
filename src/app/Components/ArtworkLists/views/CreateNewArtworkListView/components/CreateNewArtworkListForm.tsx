@@ -126,7 +126,6 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
               <Spacer y={4} />
 
               <Button
-                width="100%"
                 block
                 disabled={isSaveButtonDisabled}
                 loading={formik.isSubmitting}
@@ -137,7 +136,7 @@ export const CreateNewArtworkListForm: FC<BoxProps> = (props) => {
 
               <Spacer y={1} />
 
-              <Button width="100%" block variant="outline" onPress={closeCurrentView}>
+              <Button block variant="outline" onPress={closeCurrentView}>
                 Back
               </Button>
             </>
