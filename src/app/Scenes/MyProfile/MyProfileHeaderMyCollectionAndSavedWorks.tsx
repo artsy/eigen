@@ -3,7 +3,7 @@ import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
+import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import {
   MyCollectionPlaceholder,
@@ -59,7 +59,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           },
           {
             title: Tab.savedWorks,
-            content: isArtworkListsEnabled ? <ArtworkLists /> : <FavoriteArtworksQueryRenderer />,
+            content: isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />,
           },
         ])}
         staticHeaderContent={<MyProfileHeader me={me} />}
