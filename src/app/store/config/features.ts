@@ -281,7 +281,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-})
+}
 
 export interface DevToggleDescriptor {
   /**
