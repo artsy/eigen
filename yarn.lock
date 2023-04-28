@@ -4079,10 +4079,10 @@
     xcode "3.0.1"
     yargs "^16.2.0"
 
-"@shopify/flash-list@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.4.2.tgz#86c188f42fcb4bb2a569c0354978e9148a83d1f3"
-  integrity sha512-MX3vyiHdyCoveqrv+0LufQVlLpoWMZ/bpn+4v6RKfW6ZE0+z8S7WdZTU5Gdj7IFPlkulJAtdFn4Jl0V7tDvd6A==
+"@shopify/flash-list@1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.4.3.tgz#b7a4fe03d64f3c5ce9646859b49b9d95307f203d"
+  integrity sha512-jtIReAbwWzYBV0dQ6Io9wBX+pD0C4qQFMrb5/fkEvX8PYDgBl5KRYvpfr9WLLj8CV2Jsn1X0mYOsB+ysWrI/8g==
   dependencies:
     recyclerlistview "4.2.0"
     tslib "2.4.0"
