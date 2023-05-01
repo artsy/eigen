@@ -408,6 +408,8 @@ export const getAuthModel = (): AuthModel => ({
         userID: user.id,
         userEmail: email,
         onboardingState: onboardingState ?? "complete",
+        // Make sure we try to get push permission and new tokens on new sessions
+        requestedPushPermissionsThisSession: false,
       })
 
       if (oauthProvider === "email") {
@@ -428,9 +430,6 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
-
-      // Make sure we try to get push permission and new tokens on new sessions
-      GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: false })
 
       onSignIn?.()
 
