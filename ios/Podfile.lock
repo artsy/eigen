@@ -682,10 +682,6 @@ PODS:
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
-  - VisionCamera (2.15.2):
-    - React
-    - React-callinvoker
-    - React-Core
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (1.14.0)
@@ -832,7 +828,6 @@ DEPENDENCIES:
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
-  - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1071,8 +1066,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/sift-react-native"
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
-  VisionCamera:
-    :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1246,7 +1239,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
-  VisionCamera: 0a783d2174070dd3c62b19005c3df5e93eb55738
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 099a946cbf84c9b32ffdc4278d72db26710ecf92
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
