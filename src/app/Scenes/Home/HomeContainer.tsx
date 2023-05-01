@@ -3,6 +3,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useEffect } from "react"
 
 export const HomeContainer = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
@@ -17,17 +18,23 @@ export const HomeContainer = () => {
     await navigate("/art-quiz")
   }
 
-  if (shouldShowArtQuiz && artQuizState === "incomplete") {
-    navigateToArtQuiz()
-    return null
-  }
+  useEffect(() => {
+    if (shouldShowArtQuiz && artQuizState === "incomplete") {
+      navigateToArtQuiz()
+      return
+    }
 
-  if (
-    !hasRequestedPermissionsThisSession &&
-    (!onboardingState || onboardingState === "complete" || onboardingState === "none")
-  ) {
-    requestPushNotificationsPermission()
-    GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: true })
+    if (
+      !hasRequestedPermissionsThisSession &&
+      (!onboardingState || onboardingState === "complete" || onboardingState === "none")
+    ) {
+      requestPushNotificationsPermission()
+      GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: true })
+    }
+  }, [shouldShowArtQuiz, artQuizState, navigateToArtQuiz])
+
+  if (shouldShowArtQuiz && artQuizState === "incomplete") {
+    return null
   }
 
   return <HomeQueryRenderer />
