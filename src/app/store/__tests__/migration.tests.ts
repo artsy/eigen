@@ -836,7 +836,7 @@ describe("App version Versions.AddOnboardingArtQuizStateToAuthModel", () => {
 describe("App version Versions.AddPushPromptStateToAuthModel", () => {
   const migrationToTest = Versions.AddPushPromptStateToAuthModel
 
-  it("adds hasRequestedPushPermissions to the auth model", () => {
+  it("adds requestedPushPermissionsThisSession to the auth model", () => {
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
@@ -847,6 +847,6 @@ describe("App version Versions.AddPushPromptStateToAuthModel", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.auth.hasRequestedPushPermissions).toEqual(false)
+    expect(migratedState.auth.requestedPushPermissionsThisSession).toEqual(false)
   })
 })
