@@ -46,9 +46,10 @@ export const Versions = {
   MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
   AddCategoryToSubmissionArtworkDetails: 35,
   AddOnboardingArtQuizStateToAuthModel: 36,
+  AddPushPromptStateToAuthModel: 37,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddOnboardingArtQuizStateToAuthModel
+export const CURRENT_APP_VERSION = Versions.AddPushPromptStateToAuthModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -270,6 +271,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddOnboardingArtQuizStateToAuthModel]: (state) => {
     state.auth.onboardingArtQuizState = "none"
+  },
+  [Versions.AddPushPromptStateToAuthModel]: (state) => {
+    state.auth.requestedPushPermissionsThisSession = false
   },
 }
 
