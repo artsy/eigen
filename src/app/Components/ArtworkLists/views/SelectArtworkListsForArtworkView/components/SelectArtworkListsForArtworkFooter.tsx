@@ -6,9 +6,9 @@ import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/vie
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 export const SelectArtworkListsForArtworkFooter = () => {
-  const { state } = useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
-  const { addingArtworkListIDs, removingArtworkListIDs, selectedArtworkListIDs } = state
+  const { selectedArtworkListIDs } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
 
@@ -20,8 +20,8 @@ export const SelectArtworkListsForArtworkFooter = () => {
         artworkID: artwork.internalID,
         input: {
           artworkIDs: [artwork.internalID],
-          addToCollectionIDs: state.addingArtworkListIDs,
-          removeFromCollectionIDs: state.removingArtworkListIDs,
+          addToCollectionIDs: addingArtworkListIDs,
+          removeFromCollectionIDs: removingArtworkListIDs,
         },
       },
       onCompleted: () => {

@@ -48,8 +48,13 @@ type CustomArtworkListsSaveResult = {
 export type SaveResult = DefaultArtworkListSaveResult | CustomArtworkListsSaveResult
 
 export enum ArtworkListMode {
-  AddingArtworkListIDs = "addingArtworkListIDs",
-  RemovingArtworkListIDs = "removingArtworkListIDs",
+  AddingArtworkList = "addingArtworkLists",
+  RemovingArtworkList = "removingArtworkLists",
+}
+
+export interface ArtworkListEntity {
+  internalID: string
+  name: string
 }
 
 export type ArtworkListState = {
@@ -57,8 +62,8 @@ export type ArtworkListState = {
   artwork: ArtworkEntity | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
   selectedArtworkListIDs: string[]
-  addingArtworkListIDs: string[]
-  removingArtworkListIDs: string[]
+  addingArtworkLists: ArtworkListEntity[]
+  removingArtworkLists: ArtworkListEntity[]
 }
 
 export type ArtworkListAction =
@@ -67,8 +72,8 @@ export type ArtworkListAction =
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "RESET" }
   | {
-      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID"
-      payload: { mode: ArtworkListMode; artworkListID: string }
+      type: "ADD_OR_REMOVE_ARTWORK_LIST"
+      payload: { mode: ArtworkListMode; artworkList: ArtworkListEntity }
     }
   | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
 
@@ -76,6 +81,8 @@ export interface ArtworkListsContextState {
   state: ArtworkListState
   artworkListId?: string
   isSavedToArtworkList: boolean
+  addingArtworkListIDs: string[]
+  removingArtworkListIDs: string[]
   dispatch: Dispatch<ArtworkListAction>
   reset: () => void
   onSave: (result: SaveResult) => void

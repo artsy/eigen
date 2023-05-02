@@ -24,6 +24,8 @@ describe("CreateNewArtworkListView", () => {
         artwork: artworkEntity,
       },
       isSavedToArtworkList: false,
+      addingArtworkListIDs: [],
+      removingArtworkListIDs: [],
       dispatch: noop,
       reset: noop,
       onSave: noop,

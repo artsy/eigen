@@ -25,8 +25,8 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   artwork: null,
   recentlyAddedArtworkList: null,
   selectedArtworkListIDs: [],
-  addingArtworkListIDs: [],
-  removingArtworkListIDs: [],
+  addingArtworkLists: [],
+  removingArtworkLists: [],
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -141,10 +141,14 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     })
   }, [dispatch])
 
+  const addingArtworkListIDs = state.addingArtworkLists.map((entity) => entity.internalID)
+  const removingArtworkListIDs = state.removingArtworkLists.map((entity) => entity.internalID)
   const value: ArtworkListsContextState = {
     state,
     artworkListId,
     isSavedToArtworkList,
+    addingArtworkListIDs,
+    removingArtworkListIDs,
     dispatch,
     reset,
     onSave,
@@ -183,22 +187,24 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         recentlyAddedArtworkList: action.payload,
       }
-    case "ADD_OR_REMOVE_ARTWORK_LIST_ID":
+    case "ADD_OR_REMOVE_ARTWORK_LIST":
       // eslint-disable-next-line no-case-declarations
-      const { artworkListID, mode } = action.payload
+      const { artworkList, mode } = action.payload
       // eslint-disable-next-line no-case-declarations
-      const ids = state[mode]
+      const artworkLists = state[mode]
+      // eslint-disable-next-line no-case-declarations
+      const ids = artworkLists.map((artworkList) => artworkList.internalID)
 
-      if (ids.includes(artworkListID)) {
+      if (ids.includes(artworkList.internalID)) {
         return {
           ...state,
-          [mode]: ids.filter((id) => id !== artworkListID),
+          [mode]: artworkLists.filter((entity) => entity.internalID !== artworkList.internalID),
         }
       }
 
       return {
         ...state,
-        [mode]: [...ids, artworkListID],
+        [mode]: [...artworkLists, artworkList],
       }
     case "SET_SELECTED_ARTWORK_LIST_IDS":
       return {
