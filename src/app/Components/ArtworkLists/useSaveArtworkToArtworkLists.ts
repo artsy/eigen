@@ -1,9 +1,6 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
-import {
-  ArtworkEntity,
-  ResultAction,
-  useArtworkListsContext,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"

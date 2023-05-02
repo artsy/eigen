@@ -1,5 +1,5 @@
-import { ArtworkEntity } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
+import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtworkInfo", () => {

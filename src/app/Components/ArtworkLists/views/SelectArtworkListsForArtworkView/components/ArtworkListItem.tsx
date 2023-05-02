@@ -1,10 +1,8 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
-import {
-  ArtworkListMode,
-  useArtworkListsContext,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
+import { ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { TouchableOpacity } from "react-native"

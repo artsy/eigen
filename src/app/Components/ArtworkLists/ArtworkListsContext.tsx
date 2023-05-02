@@ -2,86 +2,15 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
-import { createContext, Dispatch, FC, useCallback, useContext, useReducer, useState } from "react"
-
-export enum ResultAction {
-  SavedToDefaultArtworkList,
-  RemovedFromDefaultArtworkList,
-  ModifiedCustomArtworkLists,
-}
-
-export interface RecentlyAddedArtworkList {
-  internalID: string
-  name: string
-}
-
-type State = {
-  createNewArtworkListViewVisible: boolean
-  artwork: ArtworkEntity | null
-  recentlyAddedArtworkList: RecentlyAddedArtworkList | null
-  selectedArtworkListIDs: string[]
-  addingArtworkListIDs: string[]
-  removingArtworkListIDs: string[]
-}
-
-export enum ArtworkListMode {
-  AddingArtworkListIDs = "addingArtworkListIDs",
-  RemovingArtworkListIDs = "removingArtworkListIDs",
-}
-
-type Action =
-  | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
-  | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
-  | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
-  | { type: "RESET" }
-  | {
-      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID"
-      payload: { mode: ArtworkListMode; artworkListID: string }
-    }
-  | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
-
-export interface ArtworkEntity {
-  id: string
-  internalID: string
-  title: string
-  year: string | null
-  artistNames: string | null
-  imageURL: string | null
-}
-
-export interface ResultArtworkListEntity {
-  id: string
-  name: string
-}
-
-export type DefaultArtworkListSaveResult =
-  | {
-      action: ResultAction.SavedToDefaultArtworkList
-      artwork: ArtworkEntity
-    }
-  | {
-      action: ResultAction.RemovedFromDefaultArtworkList
-    }
-
-export type CustomArtworkListsSaveResult = {
-  action: ResultAction.ModifiedCustomArtworkLists
-  artworkLists: {
-    selected: ResultArtworkListEntity[]
-    added: ResultArtworkListEntity[]
-    removed: ResultArtworkListEntity[]
-  }
-}
-
-export type SaveResult = DefaultArtworkListSaveResult | CustomArtworkListsSaveResult
-
-export interface ArtworkListsContextState {
-  state: State
-  artworkListId?: string
-  isSavedToArtworkList: boolean
-  dispatch: Dispatch<Action>
-  reset: () => void
-  onSave: (result: SaveResult) => void
-}
+import { createContext, FC, useCallback, useContext, useReducer, useState } from "react"
+import {
+  ArtworkEntity,
+  ArtworkListAction,
+  ArtworkListsContextState,
+  ArtworkListState,
+  ResultAction,
+  SaveResult,
+} from "./types"
 
 export interface ArtworkListsProviderProps {
   artworkListId?: string
@@ -89,7 +18,7 @@ export interface ArtworkListsProviderProps {
   artwork?: ArtworkEntity
 }
 
-export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: State = {
+export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   createNewArtworkListViewVisible: false,
   artwork: null,
   recentlyAddedArtworkList: null,
@@ -189,7 +118,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   )
 }
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkListState => {
   switch (action.type) {
     case "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE":
       return {
