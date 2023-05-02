@@ -39,7 +39,7 @@ export const ArtworkRecommendations: React.FC = () => {
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
-            enableAndroidNewFeed
+            isSingleColumnGridEnabled
             connection={data?.artworkRecommendations}
             loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}

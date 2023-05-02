@@ -38,7 +38,7 @@ export const RecentlyViewed: React.FC = () => {
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
-            enableAndroidNewFeed
+            isSingleColumnGridEnabled
             connection={data?.recentlyViewedArtworksConnection}
             loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}

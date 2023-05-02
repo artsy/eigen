@@ -22,7 +22,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
       <Box>
         {!!me?.lotsByFollowedArtistsConnection?.edges?.length ? (
           <InfiniteScrollArtworksGridContainer
-            enableAndroidNewFeed
+            isSingleColumnGridEnabled
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
             connection={me.lotsByFollowedArtistsConnection}

@@ -35,7 +35,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
         <Box>
           {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
-              enableAndroidNewFeed
+              isSingleColumnGridEnabled
               connection={viewer.artworks!}
               loadMore={() => null}
               hasMore={() => false}

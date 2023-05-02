@@ -142,7 +142,7 @@ export interface InfiniteScrollArtworksGridMapperProps {
    * ⚠️ Note that if you enable this you might need to adjust the placeholders of the grids where it is used
    *
    */
-  enableAndroidNewFeed?: boolean
+  isSingleColumnGridEnabled?: boolean
   connection:
     | InfiniteScrollArtworksGrid_connection$data
     | InfiniteScrollArtworksGrid_myCollectionConnection$data
@@ -159,7 +159,7 @@ interface MapperProps extends Omit<InfiniteScrollArtworksGridMapperProps, "conne
 const InfiniteScrollArtworksGridMapper: React.FC<
   MapperProps & Omit<InfiniteScrollArtworksGridProps, "isMyCollection">
 > = ({
-  enableAndroidNewFeed,
+  isSingleColumnGridEnabled,
   connection,
   myCollectionConnection,
   loadMore,
@@ -177,7 +177,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<
     throw new Error("No connection prop supplied to InfiniteScrollArtworksGrid")
   }
 
-  if (!!enableAndroidNewFeed && enableSingleColumnArtworkGrid) {
+  if (!!isSingleColumnGridEnabled && enableSingleColumnArtworkGrid) {
     return (
       <InfiniteScrollArtworksFeed
         loadMore={loadMore}
