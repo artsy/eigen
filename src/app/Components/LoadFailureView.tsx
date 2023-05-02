@@ -23,6 +23,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
   const userId = GlobalStore.useAppState((state) => state.auth.userID)
+  const activeTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
   const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
 
   const isStaging = useIsStaging()
@@ -30,16 +31,14 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
 
   const trackLoadFailureView = (error: Error | undefined) => {
-    const shouldTrackError = true //!__DEV__ && !isStaging
+    const shouldTrackError = !__DEV__ && !isStaging
     if (shouldTrackError) {
       Sentry.withScope((scope) => {
         scope.setExtra("user-id", userId)
-
         if (error) {
           scope.setExtra("error", error)
         }
-
-        Sentry.captureMessage("Unable to load")
+        Sentry.captureMessage("Unable to load in tab: " + activeTab)
       })
     }
   }

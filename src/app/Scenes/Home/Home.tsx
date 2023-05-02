@@ -24,7 +24,6 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
-import { LoadFailureView } from "app/Components/LoadFailureView"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
@@ -344,12 +343,6 @@ const Home = memo((props: HomeProps) => {
     },
     [visibleRails]
   )
-
-  const someError: Error = {
-    name: "SomeName",
-    message: "Some error message",
-  }
-  return <LoadFailureView error={someError} />
 
   return (
     <ProvideScreenTracking
