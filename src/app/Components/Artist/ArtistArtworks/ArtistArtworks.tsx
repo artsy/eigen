@@ -18,7 +18,7 @@ import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
-  Props as InfiniteScrollGridProps,
+  InfiniteScrollArtworksGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
@@ -28,7 +28,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
-interface ArtworksGridProps extends InfiniteScrollGridProps {
+interface ArtworksGridProps extends InfiniteScrollArtworksGridProps {
   artist: ArtistArtworks_artist$data
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp

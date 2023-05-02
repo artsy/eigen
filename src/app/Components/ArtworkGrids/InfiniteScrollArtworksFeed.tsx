@@ -1,7 +1,10 @@
 import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { PrivateProps, Props } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import {
+  InfiniteScrollArtworksGridMapperProps,
+  InfiniteScrollArtworksGridProps,
+} from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
@@ -15,7 +18,9 @@ const ESTIMATED_ITEM_SIZE = 420
 
 const HEADER_HEIGHT = 55
 
-export const InfiniteScrollArtworksFeed: React.FC<Props & PrivateProps> = ({
+export const InfiniteScrollArtworksFeed: React.FC<
+  InfiniteScrollArtworksGridProps & InfiniteScrollArtworksGridMapperProps
+> = ({
   connection,
   hasMore,
   loadMore,

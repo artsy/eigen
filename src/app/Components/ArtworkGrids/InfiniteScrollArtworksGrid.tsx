@@ -16,6 +16,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+
 import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import React, { useState } from "react"
@@ -45,7 +46,7 @@ import Artwork, { ArtworkProps } from "./ArtworkGridItem"
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-export interface Props {
+export interface InfiniteScrollArtworksGridProps {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection?: string
 
@@ -132,7 +133,7 @@ export interface Props {
   >
 }
 
-export interface PrivateProps {
+export interface InfiniteScrollArtworksGridMapperProps {
   /**
    * If this artwork grid should have the new feed enabled
    * (only on android, uses [useNewFeedEnabled](https://github.com/artsy/eigen/blob/e7a917843f75e14fb43ca6ff79407aecae87fac1/src/app/utils/hooks/useNewFeedEnabled.ts)
@@ -150,12 +151,14 @@ export interface PrivateProps {
   isLoading?: RelayPaginationProp["isLoading"]
 }
 
-interface MapperProps extends Omit<PrivateProps, "connection"> {
+interface MapperProps extends Omit<InfiniteScrollArtworksGridMapperProps, "connection"> {
   connection?: InfiniteScrollArtworksGrid_connection$data | null
   myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
-const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
+const InfiniteScrollArtworksGridMapper: React.FC<
+  MapperProps & Omit<InfiniteScrollArtworksGridProps, "isMyCollection">
+> = ({
   enableAndroidNewFeed,
   connection,
   myCollectionConnection,
@@ -200,7 +203,9 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
 export const DEFAULT_SECTION_MARGIN = 20
 export const DEFAULT_ITEM_MARGIN = 20
 
-const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
+const InfiniteScrollArtworksGrid: React.FC<
+  InfiniteScrollArtworksGridProps & InfiniteScrollArtworksGridMapperProps
+> = ({
   sectionCount = Dimensions.get("window").width > 700 ? 3 : 2,
   sectionMargin = DEFAULT_SECTION_MARGIN,
   itemMargin = DEFAULT_ITEM_MARGIN,
