@@ -2,11 +2,12 @@ import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ResultAction } from "app/Components/ArtworkLists/types"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
 export const SelectArtworkListsForArtworkFooter = () => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { selectedArtworkListIDs } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
@@ -26,6 +27,9 @@ export const SelectArtworkListsForArtworkFooter = () => {
       },
       onCompleted: () => {
         dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
+        onSave({
+          action: ResultAction.ModifiedArtworkLists,
+        })
       },
       onError: (error) => {
         if (__DEV__) {

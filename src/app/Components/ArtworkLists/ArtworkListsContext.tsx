@@ -108,9 +108,8 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         throw new Error("You should pass `ModifiedArtworkLists` action")
       }
 
-      const { addedArtworkLists, removedArtworkLists } = result
-      const isArtworkListAdded = isArtworkListsIncludes(artworkListId, addedArtworkLists)
-      const isArtworkListRemoved = isArtworkListsIncludes(artworkListId, removedArtworkLists)
+      const isArtworkListAdded = isArtworkListsIncludes(artworkListId, state.addingArtworkLists)
+      const isArtworkListRemoved = isArtworkListsIncludes(artworkListId, state.removingArtworkLists)
 
       if (isArtworkListAdded) {
         setIsSavedToArtworkList(true)
@@ -134,7 +133,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.ModifiedArtworkLists) {
-      modifiedArtworkLists(result.addedArtworkLists, result.removedArtworkLists)
+      modifiedArtworkLists(state.addingArtworkLists, state.removingArtworkLists)
       return
     }
 
