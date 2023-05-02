@@ -10,6 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
+import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -77,7 +78,9 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
       <Join separator={<Spacer x={2} />}>
-        <ArtworkSaveButton artwork={artwork} />
+        <ProgressiveOnboardingSaveArtwork>
+          <ArtworkSaveButton artwork={artwork} />
+        </ProgressiveOnboardingSaveArtwork>
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <Touchable
             hitSlop={{
