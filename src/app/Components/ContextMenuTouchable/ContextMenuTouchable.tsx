@@ -81,7 +81,6 @@ export const ContextMenuTouchable: React.FC<TouchableProps> = ({
       </TouchableWithoutFeedback>
     ) : (
       <TouchableHighlight
-        // style={{ backgroundColor: color("wh") }}
         underlayColor={color("white100")}
         activeOpacity={0.8}
         {...props}

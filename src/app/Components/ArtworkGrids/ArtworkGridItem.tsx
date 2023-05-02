@@ -18,10 +18,13 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { cm2in } from "app/utils/conversions"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useEnableContextMenu } from "app/utils/hooks/useEnableContextMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
@@ -29,8 +32,9 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import { Schema } from "app/utils/track"
 import React, { useRef } from "react"
-import { View } from "react-native"
+import { InteractionManager, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -102,8 +106,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const { showShareSheet } = useShareSheet()
   const itemRef = useRef<any>()
   const tracking = useTracking()
+  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
+  const enableContextMenu = useEnableContextMenu()
 
   let filterParams: any = undefined
 
@@ -149,6 +155,29 @@ export const Artwork: React.FC<ArtworkProps> = ({
     isSaved,
   })
 
+  const shouldDisplayViewInRoom =
+    LegacyNativeModules.ARCocoaConstantsModule.AREnabled && artwork.isHangable
+
+  const openViewInRoom = () => {
+    const heightIn = cm2in(artwork?.heightCm!)
+    const widthIn = cm2in(artwork?.widthCm!)
+
+    tracking.trackEvent({
+      action_name: Schema.ActionNames.ViewInRoom,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkActions,
+    })
+
+    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
+      artwork.image?.url!,
+      widthIn,
+      heightIn,
+      artwork.slug,
+      id,
+      enableInstantVIR
+    )
+  }
+
   const handleTap = () => {
     if (onPress) {
       return onPress(artwork.slug)
@@ -191,81 +220,52 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
+  const artworkQuickActions = [
+    {
+      title: artwork.isSaved ? "Remove from saved" : "Save",
+      systemIcon: artwork.isSaved ? "heart.fill" : "heart",
+      onPress: () => {
+        InteractionManager.runAfterInteractions(() => {
+          handleArtworkSave()
+        })
+      },
+    },
+    {
+      title: "Share",
+      systemIcon: "square.and.arrow.up",
+      onPress: () => {
+        InteractionManager.runAfterInteractions(() => {
+          showShareSheet({
+            type: "artwork",
+            artists: artwork.artists,
+            slug: artwork.slug,
+            internalID: artwork.internalID,
+            title: artwork.title!,
+            href: artwork.href!,
+            images: [],
+          })
+        })
+      },
+    },
+  ]
+
+  if (shouldDisplayViewInRoom) {
+    artworkQuickActions.push({
+      title: "View in room",
+      systemIcon: "eye",
+      onPress: () => {
+        InteractionManager.runAfterInteractions(() => {
+          openViewInRoom()
+        })
+      },
+    })
+  }
+
   return (
     <ContextMenuTouchable
       onPress={handleTap}
       testID={`artworkGridItem-${artwork.title}`}
-      onLongPress={[
-        // {
-        //   title: artwork.isSaved ? "Remove from saved" : "Save",
-        //   systemIcon: artwork.isSaved ? "heart.fill" : "heart",
-        //   onPress: () => {
-        //     commitMutation<ArtworkGridItemSaveMutation>(defaultEnvironment, {
-        //       mutation: graphql`
-        //         mutation ArtworkGridItemSaveMutation($input: SaveArtworkInput!) {
-        //           saveArtwork(input: $input) {
-        //             artwork {
-        //               id
-        //               isSaved
-        //             }
-        //           }
-        //         }
-        //       `,
-        //       variables: { input: { artworkID: artwork.internalID, remove: artwork.isSaved } },
-        //       // @ts-expect-error RELAY 12 MIGRATION
-        //       optimisticResponse: {
-        //         saveArtwork: {
-        //           artwork: {
-        //             id: artwork.id,
-        //             isSaved: !artwork.isSaved,
-        //           },
-        //         },
-        //       },
-        //       onCompleted: () =>
-        //         userHadMeaningfulInteraction({
-        //           contextModule: ContextModule.artworkMetadata,
-        //           contextOwnerType: OwnerType.artwork,
-        //           contextOwnerId: artwork.internalID,
-        //           contextOwnerSlug: artwork.slug,
-        //         }),
-        //     })
-        //   },
-        // },
-        {
-          title: "Share",
-          systemIcon: "square.and.arrow.up",
-          onPress: () => {
-            setTimeout(() => {
-              showShareSheet({
-                type: "artwork",
-                artists: artwork.artists,
-                slug: artwork.slug,
-                internalID: artwork.internalID,
-                title: artwork.title!,
-                href: artwork.href!,
-                images: [],
-              })
-            }, 0)
-          },
-        },
-        {
-          title: "Link",
-          systemIcon: "heart",
-          onPress: () => {
-            setTimeout(() => {
-              showShareSheet({
-                type: "artwork",
-                artists: artwork.artists,
-                slug: artwork.slug,
-                internalID: artwork.internalID,
-                title: artwork.title!,
-                href: artwork.href!,
-                images: [],
-              })
-            }, 0)
-          },
-        },
-      ]}
+      {...(enableContextMenu ? { onLongPress: artworkQuickActions } : {})}
     >
       <View ref={itemRef}>
         {!!artwork.image && (
@@ -483,6 +483,9 @@ export default createFragmentContainer(Artwork, {
       artists(shallow: true) {
         name
       }
+      widthCm
+      heightCm
+      isHangable
       id
       internalID
       isSaved
