@@ -8,7 +8,7 @@ export interface RecentlyAddedArtworkList {
 export enum ResultAction {
   SavedToDefaultArtworkList,
   RemovedFromDefaultArtworkList,
-  ModifiedCustomArtworkLists,
+  ModifiedArtworkLists,
 }
 
 export interface ArtworkEntity {
@@ -41,7 +41,7 @@ export interface ModifiedArtworkLists {
 }
 
 type CustomArtworkListsSaveResult = {
-  action: ResultAction.ModifiedCustomArtworkLists
+  action: ResultAction.ModifiedArtworkLists
   artworkLists: ModifiedArtworkLists
 }
 

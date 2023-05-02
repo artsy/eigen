@@ -54,8 +54,8 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   const onSave = (result: SaveResult) => {
     if (artworkListId) {
-      if (result.action !== ResultAction.ModifiedCustomArtworkLists) {
-        throw new Error("You should pass `ModifiedCustomArtworkLists` action")
+      if (result.action !== ResultAction.ModifiedArtworkLists) {
+        throw new Error("You should pass `ModifiedArtworkLists` action")
       }
 
       const { selected } = result.artworkLists

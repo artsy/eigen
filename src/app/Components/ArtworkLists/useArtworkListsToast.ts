@@ -23,9 +23,12 @@ export const useArtworkListToast = () => {
     })
   }
 
+  const modifiedArtworkLists = () => {}
+
   return {
     savedToDefaultArtworkList,
     removedFromDefaultArtworkList,
+    modifiedArtworkLists,
     changesSaved,
   }
 }
