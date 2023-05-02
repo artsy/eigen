@@ -59,8 +59,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
     ).start()
   }
 
-  trackLoadFailureView(error)
-
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg-display">Unable to load</Text>
