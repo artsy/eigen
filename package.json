@@ -97,7 +97,7 @@
     "react-spring": "Try removing this! We have reanimated now."
   },
   "dependencies": {
-    "@artsy/cohesion": "4.125.0",
+    "@artsy/cohesion": "4.125.1",
     "@artsy/palette-mobile": "11.0.20",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
