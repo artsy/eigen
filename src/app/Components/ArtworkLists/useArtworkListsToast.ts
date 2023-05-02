@@ -1,4 +1,4 @@
-import { ResultArtworkListEntity } from "app/Components/ArtworkLists/types"
+import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ToastPlacement } from "app/Components/Toast/types"
 import { navigate } from "app/system/navigation/navigate"
@@ -25,18 +25,18 @@ export const useArtworkListToast = () => {
     })
   }
 
-  const addedToSingleArtworkList = (artworkList: ResultArtworkListEntity) => {
+  const addedToSingleArtworkList = (artworkList: ArtworkListEntity) => {
     const message = `Added to ${artworkList.name} list`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
       backgroundColor: "green100",
       onPress: () => {
-        navigate(`/artwork-list/${artworkList.id}`)
+        navigate(`/artwork-list/${artworkList.internalID}`)
       },
     })
   }
 
-  const addedToMultipleArtworkLists = (artworkLists: ResultArtworkListEntity[]) => {
+  const addedToMultipleArtworkLists = (artworkLists: ArtworkListEntity[]) => {
     const message = `Added to ${artworkLists.length} lists`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
@@ -47,13 +47,13 @@ export const useArtworkListToast = () => {
     })
   }
 
-  const removedFromSingleArtworkList = (artworkList: ResultArtworkListEntity) => {
+  const removedFromSingleArtworkList = (artworkList: ArtworkListEntity) => {
     const message = `Removed from ${artworkList.name} list`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT)
   }
 
-  const removedFromMultipleArtworkLists = (artworkLists: ResultArtworkListEntity[]) => {
+  const removedFromMultipleArtworkLists = (artworkLists: ArtworkListEntity[]) => {
     const message = `Removed from ${artworkLists.length} lists`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT)

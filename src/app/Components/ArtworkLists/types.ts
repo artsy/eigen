@@ -20,11 +20,6 @@ export interface ArtworkEntity {
   imageURL: string | null
 }
 
-export interface ResultArtworkListEntity {
-  id: string
-  name: string
-}
-
 type DefaultArtworkListSaveResult =
   | {
       action: ResultAction.SavedToDefaultArtworkList
@@ -34,15 +29,10 @@ type DefaultArtworkListSaveResult =
       action: ResultAction.RemovedFromDefaultArtworkList
     }
 
-export interface ModifiedArtworkLists {
-  selected: ResultArtworkListEntity[]
-  added: ResultArtworkListEntity[]
-  removed: ResultArtworkListEntity[]
-}
-
 type CustomArtworkListsSaveResult = {
   action: ResultAction.ModifiedArtworkLists
-  artworkLists: ModifiedArtworkLists
+  addedArtworkLists: ArtworkListEntity[]
+  removedArtworkLists: ArtworkListEntity[]
 }
 
 export type SaveResult = DefaultArtworkListSaveResult | CustomArtworkListsSaveResult

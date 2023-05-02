@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { ModifiedArtworkLists } from "app/Components/ArtworkLists/types"
+import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
@@ -10,7 +10,6 @@ import {
   ArtworkListsContextState,
   ArtworkListState,
   ResultAction,
-  ResultArtworkListEntity,
   SaveResult,
 } from "./types"
 
@@ -54,7 +53,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   })
   const toast = useArtworkListToast()
 
-  const showToastForAddedLists = (artworkLists: ResultArtworkListEntity[]) => {
+  const showToastForAddedLists = (artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
       toast.addedToSingleArtworkList(artworkLists[0])
       return
@@ -63,7 +62,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     return toast.addedToMultipleArtworkLists(artworkLists)
   }
 
-  const showToastForRemovedLists = (artworkLists: ResultArtworkListEntity[]) => {
+  const showToastForRemovedLists = (artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
       toast.removedFromSingleArtworkList(artworkLists[0])
       return
@@ -72,21 +71,22 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     return toast.removedFromMultipleArtworkLists(artworkLists)
   }
 
-  const modifiedArtworkLists = (artworkLists: ModifiedArtworkLists) => {
-    const { added, removed } = artworkLists
-
-    if (added.length > 0 && removed.length > 0) {
+  const modifiedArtworkLists = (
+    addedArtworkLists: ArtworkListEntity[],
+    removedArtworkLists: ArtworkListEntity[]
+  ) => {
+    if (addedArtworkLists.length > 0 && removedArtworkLists.length > 0) {
       toast.changesSaved()
       return
     }
 
-    if (added.length > 0) {
-      showToastForAddedLists(added)
+    if (addedArtworkLists.length > 0) {
+      showToastForAddedLists(addedArtworkLists)
       return
     }
 
-    if (removed.length > 0) {
-      showToastForRemovedLists(removed)
+    if (removedArtworkLists.length > 0) {
+      showToastForRemovedLists(removedArtworkLists)
       return
     }
   }
@@ -108,10 +108,16 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         throw new Error("You should pass `ModifiedArtworkLists` action")
       }
 
-      const { selected } = result.artworkLists
-      const isSaved = selected.find((list) => list.id === artworkListId)
+      const { addedArtworkLists, removedArtworkLists } = result
+      const isArtworkListAdded = isArtworkListsIncludes(artworkListId, addedArtworkLists)
+      const isArtworkListRemoved = isArtworkListsIncludes(artworkListId, removedArtworkLists)
 
-      setIsSavedToArtworkList(!!isSaved)
+      if (isArtworkListAdded) {
+        setIsSavedToArtworkList(true)
+      } else if (isArtworkListRemoved) {
+        setIsSavedToArtworkList(false)
+      }
+
       toast.changesSaved()
 
       return
@@ -128,7 +134,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.ModifiedArtworkLists) {
-      modifiedArtworkLists(result.artworkLists)
+      modifiedArtworkLists(result.addedArtworkLists, result.removedArtworkLists)
       return
     }
 
@@ -216,4 +222,8 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
     default:
       return state
   }
+}
+
+const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkListEntity[]) => {
+  return artworkLists.find((artworkList) => artworkList.internalID === artworkListID)
 }
