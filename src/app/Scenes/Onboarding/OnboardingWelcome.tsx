@@ -6,7 +6,7 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/hooks"
-import backgroundImage from "images/WelcomeImage.jpg"
+import backgroundImage from "images/WelcomeImage.webp"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -97,7 +97,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           ]}
         >
           <Image
-            source={require("images/WelcomeImage.jpg")}
+            source={require("images/WelcomeImage.webp")}
             resizeMode="cover"
             style={{ height: screenHeight }}
           />
