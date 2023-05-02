@@ -34,13 +34,15 @@ type DefaultArtworkListSaveResult =
       action: ResultAction.RemovedFromDefaultArtworkList
     }
 
+export interface ModifiedArtworkLists {
+  selected: ResultArtworkListEntity[]
+  added: ResultArtworkListEntity[]
+  removed: ResultArtworkListEntity[]
+}
+
 type CustomArtworkListsSaveResult = {
   action: ResultAction.ModifiedCustomArtworkLists
-  artworkLists: {
-    selected: ResultArtworkListEntity[]
-    added: ResultArtworkListEntity[]
-    removed: ResultArtworkListEntity[]
-  }
+  artworkLists: ModifiedArtworkLists
 }
 
 export type SaveResult = DefaultArtworkListSaveResult | CustomArtworkListsSaveResult
