@@ -54,9 +54,14 @@ export interface ResultArtworkListEntity {
   name: string
 }
 
-export type DefaultArtworkListSaveResult = {
-  action: ResultAction.SavedToDefaultArtworkList | ResultAction.RemovedFromDefaultArtworkList
-}
+export type DefaultArtworkListSaveResult =
+  | {
+      action: ResultAction.SavedToDefaultArtworkList
+      artwork: ArtworkEntity
+    }
+  | {
+      action: ResultAction.RemovedFromDefaultArtworkList
+    }
 
 export type CustomArtworkListsSaveResult = {
   action: ResultAction.ModifiedCustomArtworkLists
@@ -132,6 +137,25 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
       return
     }
+
+    if (result.action === ResultAction.SavedToDefaultArtworkList) {
+      const openSelectArtworkListsForArtworkView = () => {
+        dispatch({
+          type: "SET_ARTWORK",
+          payload: result.artwork,
+        })
+      }
+
+      toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+      return
+    }
+
+    if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
+      toast.removedFromDefaultArtworkList()
+      return
+    }
+
+    throw new Error("Unexpected save result for artwork lists")
   }
 
   const reset = useCallback(() => {
