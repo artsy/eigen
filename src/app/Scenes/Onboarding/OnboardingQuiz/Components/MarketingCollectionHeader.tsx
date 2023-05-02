@@ -11,9 +11,9 @@ interface MarketingCollectionHeaderProps {
 }
 
 export const images: Record<OnboardingMarketingCollectionSlug, ImageSourcePropType> = {
-  "artists-on-the-rise": require("images/CohnMakeAMountain.jpg"),
-  "curators-picks-emerging": require("images/HirstTheWonder.jpg"),
-  "top-auction-lots": require("images/HirstTheWonder.jpg"),
+  "artists-on-the-rise": require("images/CohnMakeAMountain.webp"),
+  "curators-picks-emerging": require("images/HirstTheWonder.webp"),
+  "top-auction-lots": require("images/HirstTheWonder.webp"),
 }
 
 const SAVE_INSTRUCTIONS = "Love an artwork? Tap the heart to save it."

@@ -201,7 +201,7 @@ const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
   const space = useSpace()
 
-  const image = require("images/my-collection-empty-state.jpg")
+  const image = require("images/my-collection-empty-state.webp")
 
   return (
     <ZeroState
