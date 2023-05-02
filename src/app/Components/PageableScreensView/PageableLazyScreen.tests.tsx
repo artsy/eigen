@@ -4,7 +4,7 @@ import { PageableLazyScreen } from "app/Components/PageableScreensView/PageableL
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("PageableLazyScreen", () => {
-  const screen = { name: "screen1", Component: <Text>Screen 1</Text> }
+  const screen = { name: "screen1", Component: () => <Text>Screen 1</Text> }
 
   it("renders fallback on initial render", () => {
     const tree = renderWithWrappers(<PageableLazyScreen screen={screen} shouldRender={false} />)

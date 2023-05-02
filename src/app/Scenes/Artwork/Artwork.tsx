@@ -26,7 +26,7 @@ import {
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -677,16 +677,20 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
 
   const pageableSlugs = props.pageableSlugs ?? []
 
-  const screens = pageableSlugs.map((slug) => ({
-    name: slug,
-    Component: (
-      <ArtworkQueryRenderer
-        {...props}
-        artworkID={slug}
-        onLoad={(props) => setArtworkProps(props)}
-      />
-    ),
-  }))
+  const screens = useMemo(() => {
+    return pageableSlugs.map((slug) => ({
+      name: slug,
+      Component: () => (
+        <ArtworkQueryRenderer
+          {...props}
+          artworkID={slug}
+          onLoad={(props) => {
+            setArtworkProps(props)
+          }}
+        />
+      ),
+    }))
+  }, [JSON.stringify(pageableSlugs)])
 
   return (
     <>
