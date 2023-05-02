@@ -220,52 +220,56 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
-  const artworkQuickActions = [
-    {
-      title: artwork.isSaved ? "Remove from saved" : "Save",
-      systemIcon: artwork.isSaved ? "heart.fill" : "heart",
-      onPress: () => {
-        InteractionManager.runAfterInteractions(() => {
-          handleArtworkSave()
-        })
-      },
-    },
-    {
-      title: "Share",
-      systemIcon: "square.and.arrow.up",
-      onPress: () => {
-        InteractionManager.runAfterInteractions(() => {
-          showShareSheet({
-            type: "artwork",
-            artists: artwork.artists,
-            slug: artwork.slug,
-            internalID: artwork.internalID,
-            title: artwork.title!,
-            href: artwork.href!,
-            images: [],
+  const getArtworkQuickActions = () => {
+    const artworkQuickActions = [
+      {
+        title: artwork.isSaved ? "Remove from saved" : "Save",
+        systemIcon: artwork.isSaved ? "heart.fill" : "heart",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            handleArtworkSave()
           })
-        })
+        },
       },
-    },
-  ]
+      {
+        title: "Share",
+        systemIcon: "square.and.arrow.up",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            showShareSheet({
+              type: "artwork",
+              artists: artwork.artists,
+              slug: artwork.slug,
+              internalID: artwork.internalID,
+              title: artwork.title!,
+              href: artwork.href!,
+              images: [],
+            })
+          })
+        },
+      },
+    ]
 
-  if (shouldDisplayViewInRoom) {
-    artworkQuickActions.push({
-      title: "View in room",
-      systemIcon: "eye",
-      onPress: () => {
-        InteractionManager.runAfterInteractions(() => {
-          openViewInRoom()
-        })
-      },
-    })
+    if (shouldDisplayViewInRoom) {
+      artworkQuickActions.push({
+        title: "View in room",
+        systemIcon: "eye",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            openViewInRoom()
+          })
+        },
+      })
+    }
+
+    return artworkQuickActions
   }
 
   return (
     <ContextMenuTouchable
       onPress={handleTap}
       testID={`artworkGridItem-${artwork.title}`}
-      {...(enableContextMenu ? { onLongPress: artworkQuickActions } : {})}
+      {...(enableContextMenu ? { onLongPress: getArtworkQuickActions() } : {})}
     >
       <View ref={itemRef}>
         {!!artwork.image && (
