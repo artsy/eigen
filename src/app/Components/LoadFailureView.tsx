@@ -45,7 +45,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
 
   useEffect(() => {
     trackLoadFailureView(error)
-  }, [])
+  }, [error])
 
   const playAnimation = () => {
     setIsAnimating(true)
