@@ -1,8 +1,10 @@
 import { ReloadIcon, Flex, Box, BoxProps, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import * as Sentry from "@sentry/react-native"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { debounce } from "lodash"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
@@ -20,11 +22,30 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
+  const userId = GlobalStore.useAppState((state) => state.auth.userID)
+  const activeTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
   const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
 
   const isStaging = useIsStaging()
 
   const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
+
+  const trackLoadFailureView = (error: Error | undefined) => {
+    const shouldTrackError = !__DEV__ && !isStaging
+    if (shouldTrackError) {
+      Sentry.withScope((scope) => {
+        scope.setExtra("user-id", userId)
+        if (error) {
+          scope.setExtra("error", error)
+        }
+        Sentry.captureMessage("Unable to load in tab: " + activeTab)
+      })
+    }
+  }
+
+  useEffect(() => {
+    trackLoadFailureView(error)
+  }, [error])
 
   const playAnimation = () => {
     setIsAnimating(true)
