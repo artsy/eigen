@@ -5,7 +5,7 @@ import { InfiniteScrollArtworksFeedPlaceholder } from "app/Components/ArtworkGri
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
+import { useSingleColumnArtworkGrid } from "app/utils/hooks/useSingleColumnArtworkGrid"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -94,9 +94,9 @@ export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
 }
 
 const Placeholder: React.FC = () => {
-  const isNewFeedEnabled = useNewFeedEnabled()
+  const { enableSingleColumnArtworkGrid } = useSingleColumnArtworkGrid()
 
-  if (isNewFeedEnabled) {
+  if (enableSingleColumnArtworkGrid) {
     return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
   }
 

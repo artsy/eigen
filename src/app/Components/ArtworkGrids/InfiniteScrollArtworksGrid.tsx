@@ -17,7 +17,7 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 
-import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
+import { useSingleColumnArtworkGrid } from "app/utils/hooks/useSingleColumnArtworkGrid"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import React, { useState } from "react"
 import {
@@ -166,7 +166,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<
   hasMore,
   ...otherProps
 }) => {
-  const { isNewFeedEnabled } = useNewFeedEnabled()
+  const { enableSingleColumnArtworkGrid } = useSingleColumnArtworkGrid()
   const theConnectionProp = !!connection ? connection : myCollectionConnection
   type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
     ? InfiniteScrollArtworksGrid_connection$data
@@ -177,7 +177,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<
     throw new Error("No connection prop supplied to InfiniteScrollArtworksGrid")
   }
 
-  if (!!enableAndroidNewFeed && isNewFeedEnabled) {
+  if (!!enableAndroidNewFeed && enableSingleColumnArtworkGrid) {
     return (
       <InfiniteScrollArtworksFeed
         loadMore={loadMore}

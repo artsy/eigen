@@ -8,7 +8,7 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
+import { useSingleColumnArtworkGrid } from "app/utils/hooks/useSingleColumnArtworkGrid"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -197,9 +197,9 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 }
 
 const Placeholder: React.FC = () => {
-  const isNewFeedEnabled = useNewFeedEnabled()
+  const { enableSingleColumnArtworkGrid } = useSingleColumnArtworkGrid()
 
-  if (isNewFeedEnabled) {
+  if (enableSingleColumnArtworkGrid) {
     return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
   }
 

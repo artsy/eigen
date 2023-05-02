@@ -7,7 +7,7 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { useNewFeedEnabled } from "app/utils/hooks/useNewFeedEnabled"
+import { useSingleColumnArtworkGrid } from "app/utils/hooks/useSingleColumnArtworkGrid"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -95,9 +95,9 @@ export const RecentlyViewedScreen: React.FC = () => {
 }
 
 const Placeholder: React.FC = () => {
-  const isNewFeedEnabled = useNewFeedEnabled()
+  const { enableSingleColumnArtworkGrid } = useSingleColumnArtworkGrid()
 
-  if (isNewFeedEnabled) {
+  if (enableSingleColumnArtworkGrid) {
     return <InfiniteScrollArtworksFeedPlaceholder title={SCREEN_TITLE} />
   }
 

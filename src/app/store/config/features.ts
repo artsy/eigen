@@ -276,8 +276,8 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableArtworkFeed: {
-    description: "Enable Artwork Feed",
+  AREnableSingleColumnArtworkGrid: {
+    description: "Enable Single Column Artwork Grid",
     readyForRelease: false,
     showInDevMenu: true,
   },

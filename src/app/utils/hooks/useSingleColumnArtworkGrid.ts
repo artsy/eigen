@@ -5,13 +5,13 @@ import { Platform } from "react-native"
  * Hook to check if we should enable the new single feed.
  *
  */
-export function useNewFeedEnabled() {
+export function useSingleColumnArtworkGrid() {
   const isAndroid = Platform.OS === "android"
-  const enableArtworkFeed = useFeatureFlag("AREnableArtworkFeed")
+  const enableArtworkFeed = useFeatureFlag("AREnableSingleColumnArtworkGrid")
 
-  const isNewFeedEnabled = isAndroid && enableArtworkFeed
+  const enableSingleColumnArtworkGrid = isAndroid && enableArtworkFeed
 
   return {
-    isNewFeedEnabled,
+    enableSingleColumnArtworkGrid,
   }
 }
