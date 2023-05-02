@@ -1,6 +1,6 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import React from "react"
-import { TouchableHighlight, TouchableHighlightProps, TouchableWithoutFeedback } from "react-native"
+import { TouchableHighlight, TouchableHighlightProps } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
@@ -11,7 +11,6 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitletitle"> {
 interface ExtraTouchableProps {
   flex?: number
   haptic?: HapticFeedbackTypes | true
-  noFeedback?: boolean
   onLongPress?: ContextAction[] | TouchableHighlightProps["onLongPress"]
 }
 
@@ -27,7 +26,6 @@ export const ContextMenuTouchable: React.FC<TouchableProps> = ({
   children,
   flex,
   haptic,
-  noFeedback,
   onPress,
   onLongPress,
   ...props
@@ -70,16 +68,8 @@ export const ContextMenuTouchable: React.FC<TouchableProps> = ({
       }
     : undefined
 
-  const InnerTouchable = () =>
-    noFeedback ? (
-      <TouchableWithoutFeedback
-        {...props}
-        onPress={onPressWrapped}
-        onLongPress={onLongPressFnWrapped}
-      >
-        {inner}
-      </TouchableWithoutFeedback>
-    ) : (
+  return contextActions !== undefined ? (
+    <ContextMenu actions={contextActions} onPress={contextOnPress}>
       <TouchableHighlight
         underlayColor={color("white100")}
         activeOpacity={0.8}
@@ -89,14 +79,17 @@ export const ContextMenuTouchable: React.FC<TouchableProps> = ({
       >
         {inner}
       </TouchableHighlight>
-    )
-
-  return contextActions !== undefined ? (
-    <ContextMenu actions={contextActions} onPress={contextOnPress}>
-      <InnerTouchable />
     </ContextMenu>
   ) : (
-    <InnerTouchable />
+    <TouchableHighlight
+      underlayColor={color("white100")}
+      activeOpacity={0.8}
+      {...props}
+      onPress={onPressWrapped}
+      onLongPress={onLongPressFnWrapped}
+    >
+      {inner}
+    </TouchableHighlight>
   )
 }
 
