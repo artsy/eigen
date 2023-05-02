@@ -1,4 +1,5 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
+import { ModifiedArtworkLists } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
@@ -9,6 +10,7 @@ import {
   ArtworkListsContextState,
   ArtworkListState,
   ResultAction,
+  ResultArtworkListEntity,
   SaveResult,
 } from "./types"
 
@@ -52,6 +54,54 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   })
   const toast = useArtworkListToast()
 
+  const showToastForAddedLists = (artworkLists: ResultArtworkListEntity[]) => {
+    if (artworkLists.length === 1) {
+      toast.addedToSingleArtworkList(artworkLists[0])
+      return
+    }
+
+    return toast.addedToMultipleArtworkLists(artworkLists)
+  }
+
+  const showToastForRemovedLists = (artworkLists: ResultArtworkListEntity[]) => {
+    if (artworkLists.length === 1) {
+      toast.removedFromSingleArtworkList(artworkLists[0])
+      return
+    }
+
+    return toast.removedFromMultipleArtworkLists(artworkLists)
+  }
+
+  const modifiedArtworkLists = (artworkLists: ModifiedArtworkLists) => {
+    const { added, removed } = artworkLists
+
+    if (added.length > 0 && removed.length > 0) {
+      toast.changesSaved()
+      return
+    }
+
+    if (added.length > 0) {
+      showToastForAddedLists(added)
+      return
+    }
+
+    if (removed.length > 0) {
+      showToastForRemovedLists(removed)
+      return
+    }
+  }
+
+  const savedToDefaultArtworkList = (artwork: ArtworkEntity) => {
+    const openSelectArtworkListsForArtworkView = () => {
+      dispatch({
+        type: "SET_ARTWORK",
+        payload: artwork,
+      })
+    }
+
+    toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+  }
+
   const onSave = (result: SaveResult) => {
     if (artworkListId) {
       if (result.action !== ResultAction.ModifiedArtworkLists) {
@@ -68,19 +118,17 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.SavedToDefaultArtworkList) {
-      const openSelectArtworkListsForArtworkView = () => {
-        dispatch({
-          type: "SET_ARTWORK",
-          payload: result.artwork,
-        })
-      }
-
-      toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+      savedToDefaultArtworkList(result.artwork)
       return
     }
 
     if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
       toast.removedFromDefaultArtworkList()
+      return
+    }
+
+    if (result.action === ResultAction.ModifiedArtworkLists) {
+      modifiedArtworkLists(result.artworkLists)
       return
     }
 

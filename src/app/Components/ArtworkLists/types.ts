@@ -20,7 +20,7 @@ export interface ArtworkEntity {
   imageURL: string | null
 }
 
-interface ResultArtworkListEntity {
+export interface ResultArtworkListEntity {
   id: string
   name: string
 }
