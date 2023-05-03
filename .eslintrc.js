@@ -53,9 +53,11 @@ module.exports = {
     ],
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
+    "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
     "unused-imports/no-unused-imports": OFF, // look below
     "no-autofix/unused-imports/no-unused-imports": ERR,
+
     /**
      * Warnings
      */
@@ -119,7 +121,6 @@ module.exports = {
     "react/no-unescaped-entities": OFF,
     "react/react-in-jsx-scope": OFF,
     "react/prop-types": OFF,
-    "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce"] }],
     "react-native/no-inline-styles": OFF,
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
   },
