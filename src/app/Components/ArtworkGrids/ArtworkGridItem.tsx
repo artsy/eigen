@@ -17,14 +17,11 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
-import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
-import { cm2in } from "app/utils/conversions"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useEnableContextMenu } from "app/utils/hooks/useEnableContextMenu"
+import { useArtworkItemContextMenu } from "app/utils/hooks/useArtworkItemContextMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
@@ -32,9 +29,8 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Schema } from "app/utils/track"
 import React, { useRef } from "react"
-import { InteractionManager, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -103,13 +99,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
 }) => {
-  const { showShareSheet } = useShareSheet()
   const itemRef = useRef<any>()
   const tracking = useTracking()
-  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
-  const enableContextMenu = useEnableContextMenu()
+
+  const artworkQuickActions = useArtworkItemContextMenu({
+    artwork: {
+      title: artwork.title!,
+      artists: artwork.artists!,
+      image: {
+        url: artwork.image?.url!,
+      },
+      href: artwork.href!,
+      isSaved: artwork.isSaved!,
+      internalID: artwork.internalID!,
+      slug: artwork.slug!,
+      id: artwork.id!,
+      isHangable: artwork.isHangable!,
+      heightCm: artwork.heightCm!,
+      widthCm: artwork.widthCm!,
+    },
+  })
 
   let filterParams: any = undefined
 
@@ -155,29 +166,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     isSaved,
   })
 
-  const shouldDisplayViewInRoom =
-    LegacyNativeModules.ARCocoaConstantsModule.AREnabled && artwork.isHangable
-
-  const openViewInRoom = () => {
-    const heightIn = cm2in(artwork?.heightCm!)
-    const widthIn = cm2in(artwork?.widthCm!)
-
-    tracking.trackEvent({
-      action_name: Schema.ActionNames.ViewInRoom,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkActions,
-    })
-
-    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      artwork.image?.url!,
-      widthIn,
-      heightIn,
-      artwork.slug,
-      id,
-      enableInstantVIR
-    )
-  }
-
   const handleTap = () => {
     if (onPress) {
       return onPress(artwork.slug)
@@ -220,56 +208,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
-  const getArtworkQuickActions = () => {
-    const artworkQuickActions = [
-      {
-        title: artwork.isSaved ? "Remove from saved" : "Save",
-        systemIcon: artwork.isSaved ? "heart.fill" : "heart",
-        onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            handleArtworkSave()
-          })
-        },
-      },
-      {
-        title: "Share",
-        systemIcon: "square.and.arrow.up",
-        onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            showShareSheet({
-              type: "artwork",
-              artists: artwork.artists,
-              slug: artwork.slug,
-              internalID: artwork.internalID,
-              title: artwork.title!,
-              href: artwork.href!,
-              images: [],
-            })
-          })
-        },
-      },
-    ]
-
-    if (shouldDisplayViewInRoom) {
-      artworkQuickActions.push({
-        title: "View in room",
-        systemIcon: "eye",
-        onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            openViewInRoom()
-          })
-        },
-      })
-    }
-
-    return artworkQuickActions
-  }
-
   return (
     <ContextMenuTouchable
       onPress={handleTap}
       testID={`artworkGridItem-${artwork.title}`}
-      {...(enableContextMenu ? { onLongPress: getArtworkQuickActions() } : {})}
+      onLongPress={artworkQuickActions}
     >
       <View ref={itemRef}>
         {!!artwork.image && (

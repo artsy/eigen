@@ -127,7 +127,12 @@ describe("ArtworksInSeriesRail", () => {
                       internalID: "5a20271ccd530e50722ae2df",
                       href: "/artwork/alex-katz-departure-28",
                       artistNames: "Alex Katz",
+                      artists: [{ id: "", name: "Alex Katz" }],
+                      widthCm: 50,
+                      heightCm: 50,
+                      isHangable: false,
                       image: {
+                        url: "",
                         resized: {
                           src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
                           srcSet:
@@ -157,7 +162,12 @@ describe("ArtworksInSeriesRail", () => {
                       internalID: "594c3b40b202a34d4f9810fe",
                       href: "/artwork/alex-katz-departure-56",
                       artistNames: "Alex Katz",
+                      artists: [{ id: "", name: "Alex Katz" }],
+                      widthCm: 50,
+                      heightCm: 50,
+                      isHangable: false,
                       image: {
+                        url: "",
                         resized: {
                           src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
                           srcSet:
@@ -187,7 +197,12 @@ describe("ArtworksInSeriesRail", () => {
                       internalID: "5daa29db5f3f9d000e059e00",
                       href: "/artwork/alex-katz-departure-2-ada",
                       artistNames: "Alex Katz",
+                      artists: [{ id: "", name: "Alex Katz" }],
+                      widthCm: 50,
+                      heightCm: 50,
+                      isHangable: false,
                       image: {
+                        url: "",
                         resized: {
                           src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
                           srcSet:
@@ -217,7 +232,12 @@ describe("ArtworksInSeriesRail", () => {
                       internalID: "5e7123b39d099c0011959efd",
                       href: "/artwork/alex-katz-park-avenue-departure",
                       artistNames: "Alex Katz",
+                      artists: [{ id: "", name: "Alex Katz" }],
+                      widthCm: 50,
+                      heightCm: 50,
+                      isHangable: false,
                       image: {
+                        url: "",
                         resized: {
                           src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
                           srcSet:
@@ -247,7 +267,12 @@ describe("ArtworksInSeriesRail", () => {
                       internalID: "5959da15c9dc2404d231179f",
                       href: "/artwork/alex-katz-departure-cut-out-2",
                       artistNames: "Alex Katz",
+                      artists: [{ id: "", name: "Alex Katz" }],
+                      widthCm: 50,
+                      heightCm: 50,
+                      isHangable: false,
                       image: {
+                        url: "",
                         resized: {
                           src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
                           srcSet:
