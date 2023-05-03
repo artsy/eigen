@@ -3,7 +3,6 @@ import { BellIcon, Button } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$data } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateArtworkAlert } from "app/utils/hooks/useCreateArtworkAlert"
-import { isEmpty } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -16,9 +15,9 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
 }) => {
   const { isForSale } = artwork
   const { trackEvent } = useTracking()
-  const hasArtists = !isEmpty(artwork.artists) && artwork.artists!.length > 0
 
   const {
+    hasArtists,
     entity,
     attributes,
     aggregations,
@@ -69,23 +68,8 @@ export const ArtworkScreenHeaderCreateAlertFragmentContainer = createFragmentCon
   {
     artwork: graphql`
       fragment ArtworkScreenHeaderCreateAlert_artwork on Artwork {
-        title
-        internalID
-        slug
         isForSale
-        artists {
-          internalID
-          name
-        }
-        attributionClass {
-          internalID
-        }
-        mediumType {
-          filterGene {
-            slug
-            name
-          }
-        }
+        ...useCreateArtworkAlert_artwork
       }
     `,
   }

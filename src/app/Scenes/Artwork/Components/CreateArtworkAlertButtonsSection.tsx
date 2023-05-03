@@ -85,25 +85,10 @@ export const CreateArtworkAlertButtonsSectionFragmentContainer = createFragmentC
       fragment CreateArtworkAlertButtonsSection_artwork on Artwork {
         isInquireable
         isInAuction
-        internalID
-        slug
-        title
-        attributionClass {
-          internalID
-        }
-        mediumType {
-          filterGene {
-            slug
-            name
-          }
-        }
-        artists {
-          internalID
-          name
-        }
         sale {
           internalID
         }
+        ...useCreateArtworkAlert_artwork
         ...InquiryButtons_artwork
       }
     `,

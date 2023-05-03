@@ -1,22 +1,26 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtworkScreenHeaderCreateAlert_artwork$data } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
-import { CreateArtworkAlertButtonsSection_artwork$data } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
+import { useCreateArtworkAlert_artwork$key } from "__generated__/useCreateArtworkAlert_artwork.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { compact, isEmpty } from "lodash"
+import { compact } from "lodash"
 import { useState } from "react"
+import { graphql, useFragment } from "react-relay"
 
-type Artwork =
-  | ArtworkScreenHeaderCreateAlert_artwork$data
-  | CreateArtworkAlertButtonsSection_artwork$data
+type Artwork = useCreateArtworkAlert_artwork$key
 
-export const useCreateArtworkAlert = (artwork: Artwork) => {
+export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
+  const artwork = useFragment<useCreateArtworkAlert_artwork$key>(
+    ArtworkFragment,
+    artworkFragmentRef
+  )
+
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-  const hasArtists = !isEmpty(artwork.artists) && artwork.artists!.length > 0
+  const artistsArray = artwork.artists ?? []
+  const hasArtists = artistsArray.length > 0
 
   if (!hasArtists) {
     return {
@@ -90,3 +94,24 @@ export const useCreateArtworkAlert = (artwork: Artwork) => {
     isCreateAlertModalVisible,
   }
 }
+
+const ArtworkFragment = graphql`
+  fragment useCreateArtworkAlert_artwork on Artwork {
+    title
+    internalID
+    slug
+    artists {
+      internalID
+      name
+    }
+    attributionClass {
+      internalID
+    }
+    mediumType {
+      filterGene {
+        slug
+        name
+      }
+    }
+  }
+`
