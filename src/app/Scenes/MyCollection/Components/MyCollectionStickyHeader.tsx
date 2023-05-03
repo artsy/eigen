@@ -127,7 +127,7 @@ const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) =
             }}
             haptic
           >
-            <SearchIcon width={18} height={24} />
+            <SearchIcon width={24} height={24} />
           </Touchable>
           <Spacer x={PILL_PADDING} />
           <Touchable
@@ -136,7 +136,7 @@ const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) =
             }}
             haptic
           >
-            <AddIcon width={18} height={24} />
+            <AddIcon width={24} height={24} />
           </Touchable>
         </Flex>
       </Flex>
