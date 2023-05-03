@@ -61,8 +61,6 @@ export const MeetTheSpecialists: React.FC<{
 
   const specialistsToDisplay = specialists.filter((i) => i.specialty === selectedSpecialty)
 
-  console.log({ specialistsToDisplay })
-
   return (
     <Flex>
       <Text variant="lg-display" mx={2} mb={1}>
