@@ -5,7 +5,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtworkScreenHeaderFragmentContainer } from "./ArtworkScreenHeader"
+import { ArtworkScreenHeader } from "./ArtworkScreenHeader"
 
 describe("ArtworkScreenHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkScreenHeaderTestQuery>({
@@ -13,7 +13,7 @@ describe("ArtworkScreenHeader", () => {
       if (props?.artwork) {
         return (
           <ArtworkStoreProvider>
-            <ArtworkScreenHeaderFragmentContainer artwork={props.artwork} />
+            <ArtworkScreenHeader artwork={props.artwork} />
           </ArtworkStoreProvider>
         )
       }

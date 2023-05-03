@@ -12,7 +12,7 @@ import { usePageableScreensContext } from "app/Components/PageableScreensView/Pa
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
@@ -695,7 +695,7 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
   return (
     <>
       {artworkProps?.artworkAboveTheFold && (
-        <ArtworkScreenHeaderFragmentContainer artwork={artworkProps.artworkAboveTheFold} />
+        <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
       {/*
         Check to see if we're within the context of an artwork rail and show pager view.
