@@ -119,6 +119,7 @@ module.exports = {
     "react/no-unescaped-entities": OFF,
     "react/react-in-jsx-scope": OFF,
     "react/prop-types": OFF,
+    "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce"] }],
     "react-native/no-inline-styles": OFF,
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
   },
