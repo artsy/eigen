@@ -1,27 +1,59 @@
-import { Flex, Spinner, useSpace } from "@artsy/palette-mobile"
+import { useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
+import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
+import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { isPad } from "app/utils/hardware"
+import { Suspense, useState } from "react"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+
+const PAGE_SIZE = isPad() ? 20 : 10
 
 const ArtworkLists = () => {
   const space = useSpace()
   const artworkListsColCount = useArtworkListsColCount()
-
-  const data = useLazyLoadQuery<ArtworkListsQuery>(
+  const [refreshing, setRefreshing] = useState(false)
+  const queryData = useLazyLoadQuery<ArtworkListsQuery>(
     artworkListsQuery,
-    {},
+    { count: PAGE_SIZE },
     { fetchPolicy: "store-and-network" }
   )
+
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
+    ArtworkListsQuery,
+    ArtworkLists_collectionsConnection$key
+  >(artworkListsFragment, queryData)
 
   const savedArtworksArtworkList = data.me?.savedArtworksArtworkList!
   const customArtworkLists = extractNodes(data.me?.customArtworkLists)
 
   const artworksList = [savedArtworksArtworkList, ...customArtworkLists]
+
+  const handleLoadMore = () => {
+    if (!hasNext || isLoadingNext) {
+      return
+    }
+
+    loadNext(10)
+  }
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetch(
+      {},
+      {
+        fetchPolicy: "store-and-network",
+        onComplete: () => {
+          setRefreshing(false)
+        },
+      }
+    )
+  }
 
   const artworkSections = artworksList.map((artworkList) => {
     const isDefaultArtworkList = artworkList.internalID === savedArtworksArtworkList.internalID
@@ -42,6 +74,10 @@ const ArtworkLists = () => {
       data={artworkSections}
       numColumns={artworkListsColCount}
       keyExtractor={(item, index) => String(item.id || index)}
+      onEndReached={handleLoadMore}
+      refreshControl={
+        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+      }
     />
   )
 }
@@ -52,20 +88,19 @@ export const ArtworkListsQR = () => (
   </Suspense>
 )
 
-export const ArtworkListsPlaceHolder = () => (
-  <StickyTabPageScrollView
-    style={{ flex: 1 }}
-    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-    scrollEnabled={false}
-  >
-    <Flex alignItems="center">
-      <Spinner />
-    </Flex>
-  </StickyTabPageScrollView>
-)
+export const ArtworkListsPlaceHolder = () => {
+  const screen = useScreenDimensions()
+  return (
+    <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
+      <GenericGridPlaceholder width={screen.width - 40} />
+    </StickyTabPageScrollView>
+  )
+}
 
-export const artworkListsQuery = graphql`
-  query ArtworkListsQuery {
+const artworkListsFragment = graphql`
+  fragment ArtworkLists_collectionsConnection on Query
+  @refetchable(queryName: "ArtworkLists_collectionsConnectionRefetch")
+  @argumentDefinitions(count: { type: "Int" }, cursor: { type: "String" }) {
     me {
       savedArtworksArtworkList: collection(id: "saved-artwork") {
         internalID
@@ -73,11 +108,12 @@ export const artworkListsQuery = graphql`
       }
 
       customArtworkLists: collectionsConnection(
-        first: 30
+        first: $count
+        after: $cursor
         default: false
         saves: true
         sort: CREATED_AT_DESC
-      ) {
+      ) @connection(key: "ArtworkListItem_customArtworkLists") {
         edges {
           node {
             internalID
@@ -86,5 +122,11 @@ export const artworkListsQuery = graphql`
         }
       }
     }
+  }
+`
+
+const artworkListsQuery = graphql`
+  query ArtworkListsQuery($count: Int!, $cursor: String) {
+    ...ArtworkLists_collectionsConnection @arguments(count: $count, cursor: $cursor)
   }
 `
