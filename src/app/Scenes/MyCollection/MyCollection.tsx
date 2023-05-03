@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -19,6 +19,7 @@ import {
   MyCollectionZeroState,
   MyCollectionZeroStateArtworks,
 } from "app/Scenes/MyCollection/Components/MyCollectionZeroStates"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -64,13 +65,14 @@ const MyCollection: React.FC<{
 
   const artworks = extractNodes(me?.myCollectionConnection)
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
+
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
   const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const toast = useToast()
-  const space = useSpace()
 
-  // TODO: Remove and replace with Number(me.myCollectionInfo?.artistsCount) > 0
-  const hasCollectedArtists = true
+  const hasCollectedArtists = Number(me.myCollectionInfo?.artistsCount) > 0
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
@@ -142,16 +144,22 @@ const MyCollection: React.FC<{
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  if (!hasCollectedArtists) {
+  // User has no artworks and no collected artists
+  if (artworks.length === 0 && !hasCollectedArtists) {
     return <MyCollectionZeroState />
   }
 
+  // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
-      <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space(2) }}>
+      <StickyTabPageScrollView>
         <MyCollectionCollectedArtistsRail />
-        <Separator my={4} />
-        <MyCollectionZeroStateArtworks />
+        {selectedTab === null && (
+          <>
+            <Separator my={4} />
+            <MyCollectionZeroStateArtworks />
+          </>
+        )}
       </StickyTabPageScrollView>
     )
   }
@@ -172,12 +180,18 @@ const MyCollection: React.FC<{
         closeModal={() => setIsFilterModalVisible(false)}
         exitModal={() => setIsFilterModalVisible(false)}
       />
-      <MyCollectionArtworks
-        me={me}
-        relay={relay}
-        showSearchBar={showSearchBar}
-        setShowSearchBar={setShowSearchBar}
-      />
+      {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
+        <MyCollectionCollectedArtistsRail />
+      ) : null}
+
+      {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
+        <MyCollectionArtworks
+          me={me}
+          relay={relay}
+          showSearchBar={showSearchBar}
+          setShowSearchBar={setShowSearchBar}
+        />
+      ) : null}
       {!!showDevAddButton && (
         <Button
           onPress={async () => {

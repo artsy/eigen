@@ -1,9 +1,11 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ScrollView } from "react-native"
 
 export const MyCollectionCollectedArtistsRail = () => {
+  const space = useSpace()
+
   return (
-    <ScrollView horizontal>
+    <ScrollView horizontal contentContainerStyle={{ paddingTop: space(2) }}>
       <Artist />
       <Spacer x={2} />
       <Artist />
