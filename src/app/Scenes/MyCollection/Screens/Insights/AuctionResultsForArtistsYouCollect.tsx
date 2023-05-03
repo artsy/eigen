@@ -100,7 +100,7 @@ const auctionResultsForArtistsYouCollectFragment = graphql`
 
 const AuctionResultsForArtistsYouCollectScreenQuery = graphql`
   query AuctionResultsForArtistsYouCollectQuery($count: Int, $after: String) {
-    me {
+    me @optionalField {
       ...AuctionResultsForArtistsYouCollect_me @arguments(count: $count, after: $after)
     }
   }
