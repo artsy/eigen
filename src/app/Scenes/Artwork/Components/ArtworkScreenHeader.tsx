@@ -1,19 +1,21 @@
 import { Flex, useSpace, BackButton } from "@artsy/palette-mobile"
-import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
+import { ArtworkScreenHeader_artwork$key } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
-import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
+import { graphql, useFragment } from "react-relay"
+import { ArtworkScreenHeaderCreateAlert } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
 
 interface ArtworkScreenHeaderProps {
-  artwork: ArtworkScreenHeader_artwork$data
+  artwork: ArtworkScreenHeader_artwork$key
 }
 
-const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
+export const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
   const isStaging = useIsStaging()
   const space = useSpace()
+
+  const data = useFragment<ArtworkScreenHeader_artwork$key>(ArtworkScreenHeader_artwork, artwork)
 
   return (
     <Flex
@@ -41,17 +43,19 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
         />
       </Flex>
 
-      <Flex flexDirection="row" alignItems="center">
-        <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        accessibilityLabel="wtf this is the header container"
+      >
+        <ArtworkScreenHeaderCreateAlert artworkRef={data} />
       </Flex>
     </Flex>
   )
 }
 
-export const ArtworkScreenHeaderFragmentContainer = createFragmentContainer(ArtworkScreenHeader, {
-  artwork: graphql`
-    fragment ArtworkScreenHeader_artwork on Artwork {
-      ...ArtworkScreenHeaderCreateAlert_artwork
-    }
-  `,
-})
+const ArtworkScreenHeader_artwork = graphql`
+  fragment ArtworkScreenHeader_artwork on Artwork {
+    ...ArtworkScreenHeaderCreateAlert_artwork
+  }
+`
