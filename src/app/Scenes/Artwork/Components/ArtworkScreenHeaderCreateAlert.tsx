@@ -18,15 +18,21 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
   const { trackEvent } = useTracking()
   const hasArtists = !isEmpty(artwork.artists) && artwork.artists!.length > 0
 
-  const { entity, attributes, aggregations, showModal, closeModal, isCreateAlertModalVisible } =
-    useCreateArtworkAlert(artwork)
+  const {
+    entity,
+    attributes,
+    aggregations,
+    showCreateArtworkAlertModal,
+    closeCreateArtworkAlertModal,
+    isCreateAlertModalVisible,
+  } = useCreateArtworkAlert(artwork)
 
   if (!hasArtists) {
     return null
   }
 
   const handleCreateAlertPress = () => {
-    showModal()
+    showCreateArtworkAlertModal?.()
     const event = tracks.tappedCreateAlert({
       ownerId: entity?.owner.id!,
       ownerType: entity?.owner.type!,
@@ -52,7 +58,7 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         entity={entity!}
         attributes={attributes!}
         aggregations={aggregations!}
-        closeModal={() => closeModal()}
+        closeModal={() => closeCreateArtworkAlertModal()}
       />
     </>
   )

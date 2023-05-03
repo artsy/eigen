@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeaderCreateAlert_artwork$data } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
+import { CreateArtworkAlertButtonsSection_artwork$data } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -9,17 +10,22 @@ import {
 import { compact, isEmpty } from "lodash"
 import { useState } from "react"
 
-export const useCreateArtworkAlert = (artwork: ArtworkScreenHeaderCreateAlert_artwork$data) => {
+type Artwork =
+  | ArtworkScreenHeaderCreateAlert_artwork$data
+  | CreateArtworkAlertButtonsSection_artwork$data
+
+export const useCreateArtworkAlert = (artwork: Artwork) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
   const hasArtists = !isEmpty(artwork.artists) && artwork.artists!.length > 0
 
   if (!hasArtists) {
     return {
+      hasArtists,
       entity: null,
       attributes: null,
       aggregations: null,
-      showModal: () => null,
-      closeModal: () => null,
+      showCreateArtworkAlertModal: () => null,
+      closeCreateArtworkAlertModal: () => null,
       isCreateAlertModalVisible: false,
     }
   }
@@ -66,11 +72,11 @@ export const useCreateArtworkAlert = (artwork: ArtworkScreenHeaderCreateAlert_ar
     additionalGeneIDs,
   }
 
-  const handleCreateAlertPress = () => {
+  const showCreateArtworkAlertModal = () => {
     setIsCreateAlertModalVisible(true)
   }
 
-  const closeModal = () => {
+  const closeCreateArtworkAlertModal = () => {
     setIsCreateAlertModalVisible(false)
   }
 
@@ -78,8 +84,9 @@ export const useCreateArtworkAlert = (artwork: ArtworkScreenHeaderCreateAlert_ar
     entity,
     attributes,
     aggregations,
-    showModal: handleCreateAlertPress,
-    closeModal,
+    hasArtists,
+    showCreateArtworkAlertModal,
+    closeCreateArtworkAlertModal,
     isCreateAlertModalVisible,
   }
 }
