@@ -19,7 +19,7 @@ export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
   )
 
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-  const artistsArray = artwork.artists ?? []
+  const artistsArray = artwork.artistsArray ?? []
   const hasArtists = artistsArray.length > 0
 
   if (!hasArtists) {
@@ -37,7 +37,7 @@ export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
   let aggregations: Aggregations = []
   let additionalGeneIDs: string[] = []
 
-  const artists = compact(artwork?.artists)
+  const artists = compact(artwork?.artistsArray)
   const attributionClass = compact([artwork?.attributionClass?.internalID])
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
@@ -100,7 +100,7 @@ const ArtworkFragment = graphql`
     title
     internalID
     slug
-    artists {
+    artistsArray: artists {
       internalID
       name
     }

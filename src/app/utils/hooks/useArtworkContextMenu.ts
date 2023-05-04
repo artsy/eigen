@@ -3,6 +3,7 @@ import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artw
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
+import { useCreateArtworkAlert } from "app/utils/hooks/useCreateArtworkAlert"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
@@ -13,7 +14,6 @@ type Artwork = ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
 
 export const useArtworkContextMenu = (artwork: Artwork) => {
   const { title, isSaved, href, artists, slug, internalID, id, isHangable, image } = artwork
-
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
@@ -23,6 +23,16 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
   const shouldDisplayContextMenu = isIOS && enableContextMenu
 
   const shouldDisplayViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
+
+  const {
+    hasArtists,
+    showCreateArtworkAlertModal,
+    isCreateAlertModalVisible,
+    entity,
+    attributes,
+    aggregations,
+    closeCreateArtworkAlertModal,
+  } = useCreateArtworkAlert(artwork)
 
   const handleArtworkSave = useSaveArtwork({
     id,
@@ -55,7 +65,16 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
   }
 
   if (!shouldDisplayContextMenu) {
-    return undefined
+    return {
+      artworkQuickActions: undefined,
+      createAlertProperties: {
+        isCreateAlertModalVisible: hasArtists ? isCreateAlertModalVisible : false,
+        entity,
+        attributes,
+        aggregations,
+        closeCreateArtworkAlertModal,
+      },
+    }
   }
 
   const getArtworkQuickActions = () => {
@@ -100,7 +119,29 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
       })
     }
 
-    return artworkQuickActions
+    if (hasArtists) {
+      artworkQuickActions.push({
+        title: "Create alert",
+        systemIcon: "bell",
+        onPress: () => {
+          InteractionManager.runAfterInteractions(() => {
+            showCreateArtworkAlertModal?.()
+            console.warn("called")
+          })
+        },
+      })
+    }
+
+    return {
+      artworkQuickActions,
+      createAlertProperties: {
+        isCreateAlertModalVisible,
+        entity,
+        attributes,
+        aggregations,
+        closeCreateArtworkAlertModal,
+      },
+    }
   }
 
   const artworkQuickActions = getArtworkQuickActions()
