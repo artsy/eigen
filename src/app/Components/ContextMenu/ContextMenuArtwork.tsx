@@ -1,4 +1,5 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
+import { omit } from "lodash"
 import React from "react"
 import { TouchableHighlight, TouchableHighlightProps } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
@@ -14,7 +15,8 @@ interface ExtraTouchableProps {
   onLongPress?: ContextAction[] | TouchableHighlightProps["onLongPress"]
 }
 
-export type TouchableProps = Omit<TouchableHighlightProps, "onLongPress"> & ExtraTouchableProps
+export type ContextMenuArtworkProps = Omit<TouchableHighlightProps, "onLongPress"> &
+  ExtraTouchableProps
 
 /**
  * `haptic` can be used like:
@@ -22,7 +24,7 @@ export type TouchableProps = Omit<TouchableHighlightProps, "onLongPress"> & Extr
  * or
  * <Touchable haptic="impactHeavy" />
  */
-export const ContextMenuArtwork: React.FC<TouchableProps> = ({
+export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   children,
   flex,
   haptic,
@@ -34,64 +36,77 @@ export const ContextMenuArtwork: React.FC<TouchableProps> = ({
   const inner =
     React.Children.count(children) === 1 ? children : <Flex flex={flex}>{children}</Flex>
 
-  const runHaptic = (pressFn: any | undefined) => {
-    if (pressFn !== undefined && haptic !== undefined) {
-      Haptic.trigger(haptic === true ? "impactLight" : haptic)
-    }
+  const triggerHaptic = () => {
+    if (!haptic) return
+
+    Haptic.trigger(haptic === true ? "impactLight" : haptic)
   }
 
-  const onPressWrapped: TouchableHighlightProps["onPress"] = (e) => {
-    runHaptic(onPress)
-    onPress?.(e)
+  const handlePress: TouchableHighlightProps["onPress"] = (event) => {
+    triggerHaptic()
+    onPress?.(event)
   }
 
-  const onLongPressFnWrapped: TouchableHighlightProps["onLongPress"] = !isActions(onLongPress)
-    ? (e) => {
-        runHaptic(onLongPress)
-        onLongPress?.(e)
+  const handleLongPress: TouchableHighlightProps["onLongPress"] = (event) => {
+    if (isActions(onLongPress)) return
+
+    triggerHaptic()
+    onLongPress?.(event)
+  }
+
+  const getContextActions = () => {
+    if (!isActions(onLongPress)) return
+
+    const contextActions = onLongPress.map((action) => {
+      return {
+        ...omit(action, "onPress"),
+        subtitle: "",
       }
-    : undefined
+    })
 
-  const contextActions = isActions(onLongPress)
-    ? onLongPress.map((action) => {
-        const { onPress: ignored, ...rest } = action
-        return { subtitletitle: "", ...rest }
-      })
-    : undefined
+    return contextActions
+  }
 
-  const contextOnPress: ContextMenuProps["onPress"] = isActions(onLongPress)
-    ? (e) => {
-        const onPressToCall = onLongPress[e.nativeEvent.index].onPress
+  const handleContextOnPress: ContextMenuProps["onPress"] = (event) => {
+    if (!isActions(onLongPress)) return
 
-        runHaptic(onPressToCall)
-        onPressToCall?.()
-      }
-    : undefined
+    const onPressToCall = onLongPress[event.nativeEvent.index].onPress
 
-  return contextActions !== undefined ? (
-    <ContextMenu actions={contextActions} onPress={contextOnPress}>
-      <TouchableHighlight
-        underlayColor={color("white100")}
-        activeOpacity={0.8}
-        {...props}
-        onPress={onPressWrapped}
-        onLongPress={onLongPressFnWrapped}
-      >
-        {inner}
-      </TouchableHighlight>
-    </ContextMenu>
-  ) : (
+    triggerHaptic()
+    onPressToCall?.()
+  }
+
+  const contextActions = getContextActions()
+
+  if (contextActions !== undefined) {
+    return (
+      <ContextMenu actions={contextActions} onPress={handleContextOnPress}>
+        <TouchableHighlight
+          underlayColor={color("white100")}
+          activeOpacity={0.8}
+          {...props}
+          onPress={handlePress}
+          onLongPress={handleLongPress}
+        >
+          {inner}
+        </TouchableHighlight>
+      </ContextMenu>
+    )
+  }
+
+  return (
     <TouchableHighlight
       underlayColor={color("white100")}
       activeOpacity={0.8}
       {...props}
-      onPress={onPressWrapped}
-      onLongPress={onLongPressFnWrapped}
+      onPress={handlePress}
+      onLongPress={handleLongPress}
     >
       {inner}
     </TouchableHighlight>
   )
 }
 
-const isActions = (longPressFn: TouchableProps["onLongPress"]): longPressFn is ContextAction[] =>
-  Array.isArray(longPressFn)
+const isActions = (
+  longPressFn: ContextMenuArtworkProps["onLongPress"]
+): longPressFn is ContextAction[] => Array.isArray(longPressFn)
