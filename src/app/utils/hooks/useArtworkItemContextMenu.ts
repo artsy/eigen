@@ -3,21 +3,24 @@ import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artw
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
-import { useEnableContextMenu } from "app/utils/hooks/useEnableContextMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
-import { InteractionManager } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import { useTracking } from "react-tracking"
 
 type Artwork = ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
 
 export const useArtworkItemContextMenu = (artwork: Artwork) => {
   const { title, isSaved, href, artists, slug, internalID, id, isHangable, image } = artwork
-  const { showShareSheet } = useShareSheet()
+
   const { trackEvent } = useTracking()
+  const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
-  const enableContextMenu = useEnableContextMenu()
+  const enableContextMenu = useFeatureFlag("AREnableArtworkContextMenu")
+  const isIOS = Platform.OS === "ios"
+
+  const shouldDisplayContextMenu = isIOS && enableContextMenu
 
   const shouldDisplayViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
 
@@ -51,7 +54,7 @@ export const useArtworkItemContextMenu = (artwork: Artwork) => {
     )
   }
 
-  if (!enableContextMenu) {
+  if (!shouldDisplayContextMenu) {
     return undefined
   }
 
