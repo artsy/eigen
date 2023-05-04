@@ -59,12 +59,24 @@ const OnboardingWelcome = () => {
   const screenHeight = "100%"
 
   const fadeOutAnimationsArr = [
-    useAnimatedStyle(() => ({ opacity: opacity.value - 1 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 2 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 3 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 4 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 5 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 6 })),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 1 }
+    }),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 2 }
+    }),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 3 }
+    }),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 4 }
+    }),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 5 }
+    }),
+    useAnimatedStyle(() => {
+      return { opacity: opacity.value - 6 }
+    }),
   ]
 
   useEffect(() => {
