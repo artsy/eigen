@@ -10,6 +10,7 @@ import {
   MyCollectionQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -31,37 +32,39 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
 }> = ({ me }) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   return (
-    <StickyTabPage
-      disableBackButtonUpdate
-      tabs={compact([
-        {
-          title: Tab.collection,
-          content: <MyCollectionQueryRenderer />,
-          initial: true,
-        },
-        {
-          title: Tab.insights,
-          content: <MyCollectionInsightsQR />,
-          visualClues: [
-            {
-              jsx: (
-                <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
-              ),
-              visualClueName: "AddedArtworkWithInsightsVisualClueDot",
-            },
-            {
-              jsx: <VisualClueText />,
-              visualClueName: "MyCollectionInsights",
-            },
-          ],
-        },
-        {
-          title: Tab.savedWorks,
-          content: isArtworkListsEnabled ? <ArtworkLists /> : <FavoriteArtworksQueryRenderer />,
-        },
-      ])}
-      staticHeaderContent={<MyProfileHeader me={me} />}
-    />
+    <MyCollectionTabsStoreProvider>
+      <StickyTabPage
+        disableBackButtonUpdate
+        tabs={compact([
+          {
+            title: Tab.collection,
+            content: <MyCollectionQueryRenderer />,
+            initial: true,
+          },
+          {
+            title: Tab.insights,
+            content: <MyCollectionInsightsQR />,
+            visualClues: [
+              {
+                jsx: (
+                  <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
+                ),
+                visualClueName: "AddedArtworkWithInsightsVisualClueDot",
+              },
+              {
+                jsx: <VisualClueText />,
+                visualClueName: "MyCollectionInsights",
+              },
+            ],
+          },
+          {
+            title: Tab.savedWorks,
+            content: isArtworkListsEnabled ? <ArtworkLists /> : <FavoriteArtworksQueryRenderer />,
+          },
+        ])}
+        staticHeaderContent={<MyProfileHeader me={me} />}
+      />
+    </MyCollectionTabsStoreProvider>
   )
 }
 

@@ -13,11 +13,16 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
+import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
+import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
+import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
   PlaceholderGrid,
@@ -46,22 +51,26 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
-  const toast = useToast()
-
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
-
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [showSearchBar, setShowSearchBar] = useState(false)
+  const innerFlatListRef = useRef(null)
 
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
-  const hasMarketSignals = !!me?.auctionResults?.totalCount
-
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
+  const hasMarketSignals = !!me?.auctionResults?.totalCount
+
+  const toast = useToast()
+
+  const hasCollectedArtists = Number(me.myCollectionInfo?.artistsCount) > 0
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
@@ -113,12 +122,15 @@ const MyCollection: React.FC<{
         showModal={() => setIsFilterModalVisible(true)}
         showNewWorksMessage={!!showNewWorksMessage}
         showSeparator={!showSearchBar}
+        hasArtworks={artworks.length > 0}
       />
     )
   }
 
   useEffect(() => {
-    if (artworks.length) {
+    const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
+
+    if (renderMessages) {
       showMessages()
     } else {
       // remove already set JSX
@@ -130,13 +142,35 @@ const MyCollection: React.FC<{
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  const innerFlatListRef = useRef(null)
+  // User has no artworks and no collected artists
+  if (artworks.length === 0 && !hasCollectedArtists) {
+    return <MyCollectionZeroState />
+  }
+
+  // User has no artworks but has manually added collected artists
+  if (artworks.length === 0 && hasCollectedArtists) {
+    return (
+      <StickyTabPageScrollView>
+        <MyCollectionCollectedArtistsRail />
+        {selectedTab === null && (
+          <>
+            <Separator my={4} />
+            <MyCollectionZeroStateArtworks />
+          </>
+        )}
+      </StickyTabPageScrollView>
+    )
+  }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.myCollection,
-      })}
+    <StickyTabPageScrollView
+      contentContainerStyle={{
+        justifyContent: "flex-start",
+      }}
+      refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
+      innerRef={innerFlatListRef}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
     >
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
@@ -144,41 +178,31 @@ const MyCollection: React.FC<{
         closeModal={() => setIsFilterModalVisible(false)}
         exitModal={() => setIsFilterModalVisible(false)}
       />
+      {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
+        <MyCollectionCollectedArtistsRail />
+      ) : null}
 
-      <StickyTabPageScrollView
-        contentContainerStyle={{
-          // Extend the container flex when there are no artworks for accurate vertical centering
-          flexGrow: artworks.length ? undefined : 1,
-          justifyContent: artworks.length ? "flex-start" : "center",
-          height: artworks.length ? "auto" : "100%",
-        }}
-        refreshControl={
-          <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
-        }
-        innerRef={innerFlatListRef}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-      >
+      {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
         <MyCollectionArtworks
           me={me}
           relay={relay}
           showSearchBar={showSearchBar}
           setShowSearchBar={setShowSearchBar}
         />
-        {!!showDevAddButton && (
-          <Button
-            onPress={async () => {
-              toast.show("Adding artwork", "middle")
-              await addRandomMyCollectionArtwork()
-              toast.hideOldest()
-            }}
-            block
-          >
-            Add Random Work
-          </Button>
-        )}
-      </StickyTabPageScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+      ) : null}
+      {!!showDevAddButton && (
+        <Button
+          onPress={async () => {
+            toast.show("Adding artwork", "middle")
+            await addRandomMyCollectionArtwork()
+            toast.hideOldest()
+          }}
+          block
+        >
+          Add Random Work
+        </Button>
+      )}
+    </StickyTabPageScrollView>
   )
 }
 
@@ -191,6 +215,8 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
+          artistsCount
+          artworksCount
         }
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
@@ -261,22 +287,28 @@ export const MyCollectionScreenQuery = graphql`
 
 export const MyCollectionQueryRenderer: React.FC = () => {
   return (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<MyCollectionQuery>
-        environment={defaultEnvironment}
-        query={MyCollectionScreenQuery}
-        variables={{}}
-        cacheConfig={{ force: true }}
-        render={renderWithPlaceholder({
-          Container: MyCollectionContainer,
-          renderPlaceholder: () => <MyCollectionPlaceholder />,
-          renderFallback: ({ retry }) => (
-            // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
-          ),
-        })}
-      />
-    </ArtworkFiltersStoreProvider>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.myCollection,
+      })}
+    >
+      <ArtworkFiltersStoreProvider>
+        <QueryRenderer<MyCollectionQuery>
+          environment={defaultEnvironment}
+          query={MyCollectionScreenQuery}
+          variables={{}}
+          cacheConfig={{ force: true }}
+          render={renderWithPlaceholder({
+            Container: MyCollectionContainer,
+            renderPlaceholder: () => <MyCollectionPlaceholder />,
+            renderFallback: ({ retry }) => (
+              // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+              <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
+            ),
+          })}
+        />
+      </ArtworkFiltersStoreProvider>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
