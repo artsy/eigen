@@ -7,7 +7,7 @@ const IMAGES_PER_ROW = 2
 const IMAGE_OFFSET = 2
 
 interface FourUpImageLayoutProps {
-  imageURLs: string[]
+  imageURLs: (string | null)[]
   cardWidth: number
 }
 interface RowImageProps {
