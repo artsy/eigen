@@ -11,7 +11,10 @@ import {
   MyCollectionQueryRenderer,
 } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
-import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import {
+  MyCollectionTabsStore,
+  MyCollectionTabsStoreProvider,
+} from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -32,8 +35,10 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
+  const view = MyCollectionTabsStore.useStoreState((state) => state.view)
+
   return (
-    <MyCollectionTabsStoreProvider>
+    <>
       <StickyTabPage
         disableBackButtonUpdate
         tabs={compact([
@@ -65,8 +70,8 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         ])}
         staticHeaderContent={<MyProfileHeader me={me} />}
       />
-      <MyCollectionBottomSheetModals view="Add" />
-    </MyCollectionTabsStoreProvider>
+      {view !== null && <MyCollectionBottomSheetModals />}
+    </>
   )
 }
 
@@ -104,15 +109,17 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
     >
-      <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-        environment={defaultEnvironment}
-        query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
-        render={renderWithPlaceholder({
-          Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-          renderPlaceholder: () => <MyCollectionPlaceholder />,
-        })}
-        variables={{}}
-      />
+      <MyCollectionTabsStoreProvider>
+        <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
+          environment={defaultEnvironment}
+          query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
+          render={renderWithPlaceholder({
+            Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+            renderPlaceholder: () => <MyCollectionPlaceholder />,
+          })}
+          variables={{}}
+        />
+      </MyCollectionTabsStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

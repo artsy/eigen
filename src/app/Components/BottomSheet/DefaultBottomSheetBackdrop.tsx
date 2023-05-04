@@ -1,14 +1,23 @@
 import { useColor } from "@artsy/palette-mobile"
 import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { useMemo } from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
-const MAX_OPACITY = 0.5
+const MAX_OPACITY = 0.4
 
-export const ArtworkListsBottomSheetBackdrop = ({
+interface DefaultBottomSheetBackdrop extends BottomSheetBackdropProps {
+  onClose?: () => void
+  // set to "close" to close the bottom sheet when the backdrop is pressed
+  pressBehavior?: "close"
+}
+
+export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = ({
   animatedIndex,
+  onClose,
+  pressBehavior,
   style,
-}: BottomSheetBackdropProps) => {
+}) => {
   const color = useColor()
 
   // animated variables
@@ -31,5 +40,15 @@ export const ArtworkListsBottomSheetBackdrop = ({
     [style, containerAnimatedStyle]
   )
 
-  return <Animated.View style={containerStyle} />
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        if (pressBehavior === "close") {
+          onClose?.()
+        }
+      }}
+    >
+      <Animated.View style={containerStyle} />
+    </TouchableWithoutFeedback>
+  )
 }
