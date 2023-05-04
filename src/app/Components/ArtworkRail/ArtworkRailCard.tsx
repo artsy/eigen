@@ -170,8 +170,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
-  console.warn({ isCreateAlertModalVisibleComponent: isCreateAlertModalVisible })
-
   return (
     <>
       <ContextMenuArtwork

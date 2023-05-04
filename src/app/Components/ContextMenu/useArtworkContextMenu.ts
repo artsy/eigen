@@ -126,7 +126,6 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
             showCreateArtworkAlertModal?.()
-            console.warn("called")
           })
         },
       })
