@@ -57,7 +57,7 @@ describe("Notable Works Rail", () => {
   })
 })
 
-const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] = {
+const artistMockData = {
   id: "an-id",
   internalID: "an-id",
   slug: "a-slug",
