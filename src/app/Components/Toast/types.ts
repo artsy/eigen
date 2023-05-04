@@ -16,6 +16,7 @@ export interface ToastDetails {
 
   placement: ToastPlacement
   message: string
+  cta?: string
 
   onPress?: (helpers: ToastOnPressHelpers) => void
   Icon?: React.FC<IconProps>
@@ -23,4 +24,7 @@ export interface ToastDetails {
   duration?: ToastDuration
 }
 
-export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor" | "duration">
+export type ToastOptions = Pick<
+  ToastDetails,
+  "onPress" | "Icon" | "backgroundColor" | "duration" | "cta"
+>
