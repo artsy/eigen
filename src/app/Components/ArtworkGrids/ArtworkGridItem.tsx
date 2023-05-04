@@ -21,7 +21,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useArtworkItemContextMenu } from "app/utils/hooks/useArtworkItemContextMenu"
+import { useArtworkContextMenu } from "app/utils/hooks/useArtworkContextMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
@@ -104,7 +104,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
-  const artworkQuickActions = useArtworkItemContextMenu(artwork)
+  const artworkQuickActions = useArtworkContextMenu(artwork)
 
   let filterParams: any = undefined
 

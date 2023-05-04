@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 
 type Artwork = ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
 
-export const useArtworkItemContextMenu = (artwork: Artwork) => {
+export const useArtworkContextMenu = (artwork: Artwork) => {
   const { title, isSaved, href, artists, slug, internalID, id, isHangable, image } = artwork
 
   const { trackEvent } = useTracking()

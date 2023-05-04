@@ -8,7 +8,7 @@ import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidt
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useArtworkItemContextMenu } from "app/utils/hooks/useArtworkItemContextMenu"
+import { useArtworkContextMenu } from "app/utils/hooks/useArtworkContextMenu"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -74,7 +74,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const artworkQuickActions = useArtworkItemContextMenu(artwork)
+  const artworkQuickActions = useArtworkContextMenu(artwork)
 
   const {
     artistNames,
