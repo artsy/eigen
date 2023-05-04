@@ -11,7 +11,7 @@ import { Platform } from "react-native"
  */
 export function useEnableContextMenu() {
   const isIOS = Platform.OS === "ios"
-  const enableContextMenu = useFeatureFlag("AREnableContextMenu")
+  const enableContextMenu = useFeatureFlag("AREnableArtworkContextMenu")
 
   const shouldShowContextMenu = isIOS && enableContextMenu
 

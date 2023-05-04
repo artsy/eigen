@@ -105,21 +105,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   const artworkQuickActions = useArtworkItemContextMenu({
-    artwork: {
-      title: artwork.title!,
-      artists: artwork.artists!,
-      image: {
-        url: artwork.image?.url!,
-      },
-      href: artwork.href!,
-      isSaved: artwork.isSaved!,
-      internalID: artwork.internalID!,
-      slug: artwork.slug!,
-      id: artwork.id!,
-      isHangable: artwork.isHangable!,
-      heightCm: artwork.heightCm!,
-      widthCm: artwork.widthCm!,
-    },
+    artwork,
   })
 
   let filterParams: any = undefined

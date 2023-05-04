@@ -1,3 +1,5 @@
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
@@ -8,24 +10,8 @@ import { Schema } from "app/utils/track"
 import { InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 
-interface ArtworkItem {
-  title: string
-  isSaved: boolean
-  artists: any
-  slug: string
-  internalID: string
-  href: string
-  id: string
-  isHangable: boolean
-  heightCm: number
-  widthCm: number
-  image: {
-    url: string
-  }
-}
-
 interface UseArtworkItemContextMenuProps {
-  artwork: ArtworkItem
+  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
 }
 
 export const useArtworkItemContextMenu = ({ artwork }: UseArtworkItemContextMenuProps) => {
@@ -116,5 +102,6 @@ export const useArtworkItemContextMenu = ({ artwork }: UseArtworkItemContextMenu
     return artworkQuickActions
   }
 
-  return getArtworkQuickActions()
+  const artworkQuickActions = getArtworkQuickActions()
+  return artworkQuickActions
 }

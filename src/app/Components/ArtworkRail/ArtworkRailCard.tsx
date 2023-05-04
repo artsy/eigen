@@ -74,23 +74,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const artworkQuickActions = useArtworkItemContextMenu({
-    artwork: {
-      title: artwork.title!,
-      artists: artwork.artists!,
-      image: {
-        url: artwork.image?.url!,
-      },
-      href: artwork.href!,
-      isSaved: artwork.isSaved!,
-      internalID: artwork.internalID!,
-      slug: artwork.slug!,
-      id: artwork.id!,
-      isHangable: artwork.isHangable!,
-      heightCm: artwork.heightCm!,
-      widthCm: artwork.widthCm!,
-    },
-  })
+  const artworkQuickActions = useArtworkItemContextMenu({ artwork })
 
   const {
     artistNames,
@@ -405,7 +389,7 @@ const RecentlySoldCardSection: React.FC<
         <Text variant="lg-display" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
-        {performanceDisplay && (
+        {!!performanceDisplay && (
           <Text variant="lg-display" color="green" numberOfLines={1}>
             {`+${performanceDisplay}`}
           </Text>
