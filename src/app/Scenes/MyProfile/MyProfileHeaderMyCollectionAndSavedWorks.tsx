@@ -5,6 +5,7 @@ import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
+import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
   MyCollectionPlaceholder,
   MyCollectionQueryRenderer,
@@ -17,7 +18,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
-import { createRefetchContainer, QueryRenderer } from "react-relay"
+import { QueryRenderer, createRefetchContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileHeader } from "./MyProfileHeader"
 
@@ -64,6 +65,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         ])}
         staticHeaderContent={<MyProfileHeader me={me} />}
       />
+      <MyCollectionBottomSheetModals view="Add" />
     </MyCollectionTabsStoreProvider>
   )
 }
