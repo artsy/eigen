@@ -1,9 +1,8 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Spacer, Flex, Join } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join, LegacyScreen } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { Screen } from "app/Components/Screen"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
@@ -89,7 +88,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }, [])
 
   return (
-    <Screen.Background>
+    <LegacyScreen.Background>
       <Flex
         flex={1}
         justifyContent="center"
@@ -110,15 +109,17 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <Spacer y={2} />
             <Spacer y={4} />
             <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-            {enableMeetTheSpecialist && <Spacer y={6} />}
-            {enableMeetTheSpecialist && <MeetTheSpecialists onInquiryPress={handleInquiryPress} />}
+            {!!enableMeetTheSpecialist && <Spacer y={6} />}
+            {!!enableMeetTheSpecialist && (
+              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
+            )}
             <Spacer y={6} />
             <CollectorsNetwork />
             <Spacer y={6} />
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
             <Join separator={<Spacer y={6} />}>
               <></>
-              {enableTestimonials && <Testimonials />}
+              {!!enableTestimonials && <Testimonials />}
               <FAQSWA />
             </Join>
             <Spacer y={4} />
@@ -128,7 +129,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
           </Flex>
         </ScrollView>
       </Flex>
-    </Screen.Background>
+    </LegacyScreen.Background>
   )
 }
 
