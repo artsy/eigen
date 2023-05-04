@@ -9,20 +9,22 @@ export const AnimatableHeaderShadow = () => {
   const { scrollOffsetY, headerHeight } = useAnimatableHeaderContext()
   const color = useColor()
 
-  const shadowAnim = useAnimatedStyle(() => ({
-    shadowOpacity: interpolate(
-      scrollOffsetY.value,
-      [0, SHADOW_SCROLL_OFFSET],
-      [0, 0.1],
-      Extrapolate.CLAMP
-    ),
-    elevation: interpolate(
-      scrollOffsetY.value,
-      [0, SHADOW_SCROLL_OFFSET],
-      [0, 3],
-      Extrapolate.CLAMP
-    ),
-  }))
+  const shadowAnim = useAnimatedStyle(() => {
+    return {
+      shadowOpacity: interpolate(
+        scrollOffsetY.value,
+        [0, SHADOW_SCROLL_OFFSET],
+        [0, 0.1],
+        Extrapolate.CLAMP
+      ),
+      elevation: interpolate(
+        scrollOffsetY.value,
+        [0, SHADOW_SCROLL_OFFSET],
+        [0, 3],
+        Extrapolate.CLAMP
+      ),
+    }
+  })
 
   return (
     <Box

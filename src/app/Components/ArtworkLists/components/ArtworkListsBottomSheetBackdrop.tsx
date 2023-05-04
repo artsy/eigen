@@ -12,9 +12,11 @@ export const ArtworkListsBottomSheetBackdrop = ({
   const color = useColor()
 
   // animated variables
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),
-  }))
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),
+    }
+  })
 
   // styles
   const containerStyle = useMemo(
