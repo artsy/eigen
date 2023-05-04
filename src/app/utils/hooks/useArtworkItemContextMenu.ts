@@ -10,11 +10,9 @@ import { Schema } from "app/utils/track"
 import { InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 
-interface UseArtworkItemContextMenuProps {
-  artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
-}
+type Artwork = ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
 
-export const useArtworkItemContextMenu = ({ artwork }: UseArtworkItemContextMenuProps) => {
+export const useArtworkItemContextMenu = (artwork: Artwork) => {
   const { title, isSaved, href, artists, slug, internalID, id, isHangable, image } = artwork
   const { showShareSheet } = useShareSheet()
   const { trackEvent } = useTracking()

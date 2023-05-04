@@ -104,9 +104,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
-  const artworkQuickActions = useArtworkItemContextMenu({
-    artwork,
-  })
+  const artworkQuickActions = useArtworkItemContextMenu(artwork)
 
   let filterParams: any = undefined
 

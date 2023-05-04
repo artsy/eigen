@@ -74,7 +74,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const artworkQuickActions = useArtworkItemContextMenu({ artwork })
+  const artworkQuickActions = useArtworkItemContextMenu(artwork)
 
   const {
     artistNames,
