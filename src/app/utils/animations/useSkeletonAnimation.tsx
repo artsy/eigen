@@ -27,10 +27,13 @@ export function useSkeletonAnimation({
   }, [])
 
   const animatedStyle = useAnimatedStyle(() => {
+    if (enableSkeletonAnimation) {
+      return {
+        opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1])
+      }
+    }
     return {
-      opacity: enableSkeletonAnimation
-        ? interpolate(shared.value, [0, 1], [targetOpacityValue, 1])
-        : 1,
+      opacity: 1
     }
   })
 
