@@ -14,6 +14,7 @@ import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/Cre
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { useArtworkContextMenu } from "app/Components/ContextMenu/useArtworkContextMenu"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
@@ -22,7 +23,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useArtworkContextMenu } from "app/utils/hooks/useArtworkContextMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
