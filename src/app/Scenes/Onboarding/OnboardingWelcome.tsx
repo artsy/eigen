@@ -33,16 +33,18 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
 
   // text and logo appearance
   const opacity = useSharedValue(0)
-  const appearAnim = useAnimatedStyle(() => ({ opacity: opacity.value }))
+  const appearAnim = useAnimatedStyle(() => {
+    return { opacity: opacity.value }
+  })
   useEffect(() => {
     opacity.value = withDelay(100, withTiming(1))
   }, [])
 
   // background sliding
   const translateX = useSharedValue(0)
-  const slideAnim = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }))
+  const slideAnim = useAnimatedStyle(() => {
+    return { transform: [{ translateX: translateX.value }] }
+  })
   useEffect(() => {
     // We want to animate the background only when the device width is smaller than the scaled image width
     const imgScale = imgProps.height / screenHeight

@@ -26,14 +26,13 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
     const [cancelButtonShown, setCancelButtonShown] = useState(false)
     const width = useWindowDimensions().width - space(mx) * 2
 
-    const shrinkAnim = useAnimatedStyle(
-      () => ({
+    const shrinkAnim = useAnimatedStyle(() => {
+      return {
         width: withTiming(width - (cancelButtonShown ? cancelWidth : 0), {
           duration: CANCEL_BUTTON_DURATION,
         }),
-      }),
-      [cancelButtonShown, cancelWidth]
-    )
+      }
+    }, [cancelButtonShown, cancelWidth])
 
     const inputRef = useRef<InputRef>(null)
     useImperativeHandle(ref, () => inputRef.current!)
