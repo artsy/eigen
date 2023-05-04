@@ -1,9 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
 import {
-  ArtworkEntity,
   ArtworkListsProvider,
   ArtworkListsProviderProps,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"

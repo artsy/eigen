@@ -1,6 +1,6 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
+import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
@@ -12,12 +12,19 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError" | "
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const { artworkListId, isSavedToArtworkList, dispatch } = useArtworkListsContext()
-  const toast = useArtworkListToast()
+  const { artworkListId, isSavedToArtworkList, onSave, dispatch } = useArtworkListsContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
+  const artworkEntity: ArtworkEntity = {
+    id: artwork.id,
+    internalID: artwork.internalID,
+    title: artwork.title!,
+    year: artwork.date,
+    artistNames: artwork.artistNames,
+    imageURL: artwork.preview?.url ?? null,
+  }
   let isSaved = artwork.isSaved
 
   if (isArtworkListsEnabled) {
@@ -38,11 +45,17 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
       if (isArtworkListsEnabled) {
         if (isArtworkSaved) {
-          toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+          onSave({
+            action: ResultAction.SavedToDefaultArtworkList,
+            artwork: artworkEntity,
+          })
+
           return
         }
 
-        toast.removedFromDefaultArtworkList()
+        onSave({
+          action: ResultAction.RemovedFromDefaultArtworkList,
+        })
       }
     },
   })
@@ -50,14 +63,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
       type: "SET_ARTWORK",
-      payload: {
-        id: artwork.id,
-        internalID: artwork.internalID,
-        title: artwork.title!,
-        year: artwork.date,
-        artistNames: artwork.artistNames,
-        imageURL: artwork.preview?.url ?? null,
-      },
+      payload: artworkEntity,
     })
   }
 

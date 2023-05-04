@@ -1,10 +1,8 @@
 import { Button, Flex, FlexProps, Spacer } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
-import {
-  ArtworkListMode,
-  useArtworkListsContext,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListEntity, ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
@@ -21,11 +19,6 @@ const INITIAL_FORM_VALUES: CreateNewArtworkListFormValues = {
   name: "",
 }
 
-interface Result {
-  name: string
-  internalID: string
-}
-
 export const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required").max(MAX_NAME_LENGTH),
 })
@@ -35,22 +28,22 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
   const { dismiss } = useBottomSheetModal()
   const [commitMutation] = useCreateNewArtworkList()
 
-  const setRecentlyAddedArtworkList = (result: Result) => {
+  const setRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
     dispatch({
       type: "SET_RECENTLY_ADDED_ARTWORK_LIST",
       payload: {
-        internalID: result.internalID,
-        name: result.name,
+        internalID: artworkList.internalID,
+        name: artworkList.name,
       },
     })
   }
 
-  const preselectRecentlyAddedArtworkList = (artworkListID: string) => {
+  const preselectRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
     dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID",
+      type: "ADD_OR_REMOVE_ARTWORK_LIST",
       payload: {
-        mode: ArtworkListMode.AddingArtworkListIDs,
-        artworkListID,
+        mode: ArtworkListMode.AddingArtworkList,
+        artworkList,
       },
     })
   }
@@ -74,13 +67,13 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       onCompleted: (data) => {
         const response = data.createCollection?.responseOrError
         const artworkList = response?.collection!
-        const result: Result = {
+        const result: ArtworkListEntity = {
           name: artworkList.name,
           internalID: artworkList.internalID,
         }
 
         setRecentlyAddedArtworkList(result)
-        preselectRecentlyAddedArtworkList(artworkList.internalID)
+        preselectRecentlyAddedArtworkList(result)
         closeCurrentView()
 
         helpers.setSubmitting(false)
