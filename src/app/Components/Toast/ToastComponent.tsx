@@ -105,7 +105,7 @@ export const ToastComponent = ({
       </Flex>
 
       {!!cta && (
-        <Text variant="sm" color="white100" underline>
+        <Text variant="xs" color="white100" underline>
           {cta}
         </Text>
       )}
