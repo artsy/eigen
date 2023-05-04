@@ -11,9 +11,9 @@ import {
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
+import { useScreenDimensions } from "app/utils/hooks"
 import { uniq } from "lodash"
 import { useMemo } from "react"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface CareerHighlightBottomSheetItemProps {
   year: string | number
