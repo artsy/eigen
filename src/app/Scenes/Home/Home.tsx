@@ -17,7 +17,7 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Home_showRecommendations$data } from "__generated__/Home_showRecommendations.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -112,7 +112,7 @@ export interface HomeModule {
 
 export interface HomeProps extends ViewProps {
   articlesConnection: Home_articlesConnection$data | null
-  showsByFollowedArtists: Home_showsByFollowedArtists$data | null
+  showRecommendations: Home_showRecommendations$data | null
   featured: Home_featured$data | null
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
@@ -516,8 +516,8 @@ export const HomeFragmentContainer = memo(
           ...ArticlesRail_articlesConnection
         }
       `,
-      showsByFollowedArtists: graphql`
-        fragment Home_showsByFollowedArtists on ShowConnection {
+      showRecommendations: graphql`
+        fragment Home_showRecommendations on ShowConnection {
           ...ShowsRail_showsConnection
         }
       `,
@@ -549,8 +549,8 @@ export const HomeFragmentContainer = memo(
         me @optionalField {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
-          showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-            ...Home_showsByFollowedArtists
+          showRecommendations(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+            ...Home_showRecommendations
           }
         }
         meBelow: me @optionalField {
@@ -767,8 +767,8 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
-              showsByFollowedArtists(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
-                ...Home_showsByFollowedArtists
+              showRecommendations(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
+                ...Home_showRecommendations
               }
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
@@ -791,7 +791,7 @@ export const HomeQueryRenderer: React.FC = () => {
             <HomeFragmentContainer
               articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
-              showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
+              showRecommendations={below?.me?.showRecommendations ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
