@@ -15,10 +15,8 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
-import {
-  MyCollectionZeroState,
-  MyCollectionZeroStateArtworks,
-} from "app/Scenes/MyCollection/Components/MyCollectionZeroStates"
+import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
+import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"

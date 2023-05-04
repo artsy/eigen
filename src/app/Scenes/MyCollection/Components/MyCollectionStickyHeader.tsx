@@ -197,7 +197,7 @@ const AnimatedPill: React.FC<{
   originX: number | undefined
   selectedTab: CollectedTab
   tab: CollectedTab
-}> = ({ disabled, handlePress, originX, selectedTab, tab }) => {
+}> = ({ disabled: disabledProp, handlePress, originX, selectedTab, tab }) => {
   const containerRef = useRef(null)
   const space = useSpace()
 
@@ -215,7 +215,7 @@ const AnimatedPill: React.FC<{
   }
 
   const selected = selectedTab === tab
-  const pressable = (!!selectedTab && selectedTab !== tab) || disabled
+  const disabled = (!!selectedTab && selectedTab !== tab) || disabledProp
 
   return (
     <MotiView
@@ -237,8 +237,8 @@ const AnimatedPill: React.FC<{
       }}
     >
       <Pill
-        accessibilityState={{ selected, disabled: pressable }}
-        disabled={pressable}
+        accessibilityState={{ selected, disabled }}
+        disabled={disabled}
         highlightEnabled
         onPress={() => {
           handlePress()
