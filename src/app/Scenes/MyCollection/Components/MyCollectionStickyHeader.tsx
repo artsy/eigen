@@ -60,7 +60,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 
   return (
     <>
-      {enableCollectedArtists && (
+      {!!enableCollectedArtists && (
         <Flex pb={0}>
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
