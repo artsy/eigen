@@ -420,6 +420,7 @@ const RecentlySoldCardSection: React.FC<
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
+    ...useCreateArtworkAlert_artwork
     id
     slug
     internalID
@@ -464,7 +465,6 @@ const artworkFragment = graphql`
     }
     title
     realizedPrice
-    ...useCreateArtworkAlert_artwork
   }
 `
 

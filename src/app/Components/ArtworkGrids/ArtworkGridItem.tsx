@@ -427,6 +427,7 @@ export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
+      ...useCreateArtworkAlert_artwork
       title
       date
       saleMessage
@@ -473,7 +474,6 @@ export default createFragmentContainer(Artwork, {
         aspectRatio
       }
       realizedPrice
-      ...useCreateArtworkAlert_artwork
     }
   `,
 })

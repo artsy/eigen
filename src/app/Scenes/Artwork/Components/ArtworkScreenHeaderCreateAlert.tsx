@@ -69,8 +69,8 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
 
 const ArtworkScreenHeaderCreateAlert_artwork = graphql`
   fragment ArtworkScreenHeaderCreateAlert_artwork on Artwork {
-    isForSale
     ...useCreateArtworkAlert_artwork
+    isForSale
   }
 `
 
