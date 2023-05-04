@@ -5,7 +5,7 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
-import { ContextMenuTouchable } from "app/Components/ContextMenuTouchable/ContextMenuTouchable"
+import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useArtworkItemContextMenu } from "app/utils/hooks/useArtworkItemContextMenu"
@@ -164,7 +164,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
   return (
-    <ContextMenuTouchable
+    <ContextMenuArtwork
       onPress={onPress || undefined}
       onLongPress={artworkQuickActions}
       testID={testID}
@@ -289,7 +289,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           )}
         </Flex>
       </Flex>
-    </ContextMenuTouchable>
+    </ContextMenuArtwork>
   )
 }
 

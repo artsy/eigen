@@ -4,7 +4,7 @@ import { TouchableHighlight, TouchableHighlightProps } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 
-interface ContextAction extends Omit<ContextMenuAction, "subtitletitle"> {
+interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
   onPress?: () => void
 }
 
@@ -22,7 +22,7 @@ export type TouchableProps = Omit<TouchableHighlightProps, "onLongPress"> & Extr
  * or
  * <Touchable haptic="impactHeavy" />
  */
-export const ContextMenuTouchable: React.FC<TouchableProps> = ({
+export const ContextMenuArtwork: React.FC<TouchableProps> = ({
   children,
   flex,
   haptic,

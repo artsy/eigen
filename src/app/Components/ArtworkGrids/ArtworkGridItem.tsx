@@ -12,7 +12,7 @@ import {
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ContextMenuTouchable } from "app/Components/ContextMenuTouchable/ContextMenuTouchable"
+import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
@@ -193,7 +193,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
-    <ContextMenuTouchable
+    <ContextMenuArtwork
       onPress={handleTap}
       testID={`artworkGridItem-${artwork.title}`}
       onLongPress={artworkQuickActions}
@@ -338,7 +338,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )}
         </Flex>
       </View>
-    </ContextMenuTouchable>
+    </ContextMenuArtwork>
   )
 }
 
