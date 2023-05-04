@@ -1,4 +1,4 @@
-import { useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -14,7 +14,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const PAGE_SIZE = isPad() ? 20 : 10
 
-const ArtworkLists = () => {
+export const ArtworkLists = () => {
   const space = useSpace()
   const artworkListsColCount = useArtworkListsColCount()
   const [refreshing, setRefreshing] = useState(false)
@@ -70,11 +70,12 @@ const ArtworkLists = () => {
 
   return (
     <StickyTabPageFlatList
-      style={{ paddingTop: space(2) }}
+      contentContainerStyle={{ paddingVertical: space(2) }}
       data={artworkSections}
       numColumns={artworkListsColCount}
-      keyExtractor={(item, index) => String(item.id || index)}
+      keyExtractor={(item) => item.key}
       onEndReached={handleLoadMore}
+      ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
       refreshControl={
         <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
       }
@@ -88,11 +89,20 @@ export const ArtworkListsQR = () => (
   </Suspense>
 )
 
+const LoadingIndicator = () => {
+  return (
+    <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="center" px={4}>
+      <Spinner />
+    </Flex>
+  )
+}
+
 export const ArtworkListsPlaceHolder = () => {
   const screen = useScreenDimensions()
+  const space = useSpace()
   return (
-    <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
-      <GenericGridPlaceholder width={screen.width - 40} />
+    <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: space(2) }}>
+      <GenericGridPlaceholder width={screen.width - space(4)} />
     </StickyTabPageScrollView>
   )
 }

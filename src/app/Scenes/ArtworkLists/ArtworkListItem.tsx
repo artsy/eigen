@@ -25,7 +25,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
 
   const item = useFragment(artworkListItemFragment, artworkList)
   const artworkNodes = extractNodes(item.artworksConnection)
-  const imageURLs = artworkNodes.map((node) => node.image?.url ?? null)
+  const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
 
   return (
     <Flex
@@ -62,7 +62,9 @@ const artworkListItemFragment = graphql`
       edges {
         node {
           image {
-            url(version: "square")
+            resized(height: 300, width: 300, version: "normalized") {
+              url
+            }
           }
         }
       }
