@@ -11,6 +11,12 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
 
 interface ExtraTouchableProps {
   flex?: number
+  /**
+   * `haptic` can be used like:
+   *  `<ContextMenuArtwork haptic />`
+   * or
+   * `<ContextMenuArtwork haptic="impactHeavy" />`
+   */
   haptic?: HapticFeedbackTypes | true
   onLongPress?: ContextAction[] | TouchableHighlightProps["onLongPress"]
 }
@@ -18,12 +24,6 @@ interface ExtraTouchableProps {
 export type ContextMenuArtworkProps = Omit<TouchableHighlightProps, "onLongPress"> &
   ExtraTouchableProps
 
-/**
- * `haptic` can be used like:
- * <Touchable haptic />
- * or
- * <Touchable haptic="impactHeavy" />
- */
 export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   children,
   flex,

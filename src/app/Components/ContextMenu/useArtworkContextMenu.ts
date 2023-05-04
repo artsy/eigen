@@ -67,7 +67,7 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
   if (!shouldDisplayContextMenu) {
     return {
       artworkQuickActions: undefined,
-      createAlertProperties: {
+      createAlertProps: {
         isCreateAlertModalVisible: hasArtists ? isCreateAlertModalVisible : false,
         entity,
         attributes,
@@ -133,7 +133,7 @@ export const useArtworkContextMenu = (artwork: Artwork) => {
 
     return {
       artworkQuickActions,
-      createAlertProperties: {
+      createAlertProps: {
         isCreateAlertModalVisible,
         entity,
         attributes,

@@ -75,14 +75,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artworkQuickActions, createAlertProperties } = useArtworkContextMenu(artwork)
+  const { artworkQuickActions, createAlertProps } = useArtworkContextMenu(artwork)
   const {
     isCreateAlertModalVisible,
     entity,
     aggregations,
     attributes,
     closeCreateArtworkAlertModal,
-  } = createAlertProperties
+  } = createAlertProps
   const {
     artistNames,
     date,

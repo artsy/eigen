@@ -104,14 +104,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
-  const { artworkQuickActions, createAlertProperties } = useArtworkContextMenu(artwork)
+  const { artworkQuickActions, createAlertProps } = useArtworkContextMenu(artwork)
   const {
     isCreateAlertModalVisible,
     entity,
     aggregations,
     attributes,
     closeCreateArtworkAlertModal,
-  } = createAlertProperties
+  } = createAlertProps
 
   let filterParams: any = undefined
 
@@ -202,6 +202,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   return (
     <>
       <ContextMenuArtwork
+        haptic
         onPress={handleTap}
         testID={`artworkGridItem-${artwork.title}`}
         onLongPress={artworkQuickActions}
