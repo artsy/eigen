@@ -54,7 +54,7 @@ describe("ArtworkScreenHeader", () => {
     it("renders the header but not the create alert button if the artwork doesn't have an associated artist", () => {
       renderWithRelay({
         Artwork: () => ({
-          artists: [],
+          artistsArray: [],
         }),
       })
 
@@ -67,7 +67,7 @@ describe("ArtworkScreenHeader", () => {
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
-          artists: [{ name: "some-artist-name" }],
+          artistsArray: [{ name: "some-artist-name" }],
         }),
       })
 
