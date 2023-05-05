@@ -1,6 +1,13 @@
-import { Spacer, useTheme, ArtsyLogoWhiteIcon, Flex, Text, Button } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  useTheme,
+  ArtsyLogoWhiteIcon,
+  Flex,
+  Text,
+  Button,
+  LegacyScreen,
+} from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Screen } from "app/Components/Screen"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
@@ -89,8 +96,8 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Screen>
-      <Screen.Background>
+    <LegacyScreen>
+      <LegacyScreen.Background>
         <Animated.View
           style={[
             {
@@ -117,9 +124,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             height: screenHeight,
           }}
         />
-      </Screen.Background>
+      </LegacyScreen.Background>
 
-      <Screen.Body>
+      <LegacyScreen.Body>
         <Spacer y={1} />
 
         <Animated.View style={[{ alignItems: "center", width: "100%" }, appearAnim]}>
@@ -184,9 +191,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             .
           </Text>
 
-          <Screen.SafeBottomPadding />
+          <LegacyScreen.SafeBottomPadding />
         </Animated.View>
-      </Screen.Body>
-    </Screen>
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }

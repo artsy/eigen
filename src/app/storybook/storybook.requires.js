@@ -28,7 +28,6 @@ const getStories = () => {
     require("../Components/Pill/Pill.stories.tsx"),
     require("../Components/PopoverMessage/PopoverMessage.stories.tsx"),
     require("../Components/ReadMore.stories.tsx"),
-    require("../Components/Screen/Screen.stories.tsx"),
     require("../utils/placeholders.stories.tsx"),
   ]
 }
