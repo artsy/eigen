@@ -2,10 +2,13 @@ import { ArtworkIcon, Flex, Separator, Text, UserMultiIcon } from "@artsy/palett
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 
 import { MenuItem } from "app/Components/MenuItem"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 
 export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
+  const setView = MyCollectionTabsStore.useStoreActions((actions) => actions.setView)
+
   return (
     <BottomSheetView>
       <Flex>
@@ -33,7 +36,11 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
               passProps: {
                 mode: "add",
                 source: Tab.collection,
-                onSuccess: popToRoot,
+                onSuccess: () => {
+                  // hide the bottom sheet
+                  setView(null)
+                  popToRoot()
+                },
               },
             })
           }}
