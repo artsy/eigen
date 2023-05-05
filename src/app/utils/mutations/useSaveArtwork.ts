@@ -1,6 +1,4 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
 import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
-import { Schema } from "app/utils/track"
 import { useMutation } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -10,7 +8,6 @@ export interface SaveArtworkOptions {
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
   onError?: () => void
-  contextScreen?: Schema.OwnerEntityTypes | ScreenOwnerType
 }
 
 export const useSaveArtwork = ({
@@ -19,7 +16,6 @@ export const useSaveArtwork = ({
   isSaved,
   onCompleted,
   onError,
-  contextScreen,
 }: SaveArtworkOptions) => {
   const [commit] = useMutation(SaveArtworkMutation)
   const nextSavedState = !isSaved
@@ -41,7 +37,7 @@ export const useSaveArtwork = ({
         },
       },
       onCompleted: () => {
-        refreshOnArtworkSave(contextScreen)
+        refreshOnArtworkSave()
         onCompleted?.(nextSavedState)
       },
       onError: () => {
