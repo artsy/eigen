@@ -13,6 +13,7 @@ export const ArtworkListsBottomSheetBackdrop = ({
 
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => {
+    "worklet"
     return {
       opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),
     }

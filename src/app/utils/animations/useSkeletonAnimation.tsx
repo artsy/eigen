@@ -27,13 +27,14 @@ export function useSkeletonAnimation({
   }, [])
 
   const animatedStyle = useAnimatedStyle(() => {
+    "worklet"
     if (enableSkeletonAnimation) {
       return {
-        opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1])
+        opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1]),
       }
     }
     return {
-      opacity: 1
+      opacity: 1,
     }
   })
 

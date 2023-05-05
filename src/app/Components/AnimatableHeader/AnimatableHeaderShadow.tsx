@@ -10,6 +10,7 @@ export const AnimatableHeaderShadow = () => {
   const color = useColor()
 
   const shadowAnim = useAnimatedStyle(() => {
+    "worklet"
     return {
       shadowOpacity: interpolate(
         scrollOffsetY.value,
