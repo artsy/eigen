@@ -11391,6 +11391,18 @@ type Me implements Node {
     status: EventStatus
   ): ShowConnection
 
+  # A list of shows for the user (pagination logic might be broken)
+  showsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus
+  ): ShowConnection
+
   # A list of artworks similar to recently viewed artworks.
   similarToRecentlyViewedConnection(
     after: String
