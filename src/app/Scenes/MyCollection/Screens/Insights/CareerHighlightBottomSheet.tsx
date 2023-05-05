@@ -142,7 +142,6 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
           })
         }}
       />
-      i{" "}
     </BottomSheet>
   )
 }
