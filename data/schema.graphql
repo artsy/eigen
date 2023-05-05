@@ -11160,6 +11160,7 @@ type Me implements Node {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -14668,6 +14669,7 @@ type Query {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -18867,6 +18869,7 @@ type Viewer {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
