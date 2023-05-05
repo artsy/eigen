@@ -64,7 +64,6 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
@@ -199,14 +198,6 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
-
-  useEffect(() => {
-    RefreshEvents.addListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-
-    return () => {
-      RefreshEvents.removeListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-    }
-  }, [])
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
