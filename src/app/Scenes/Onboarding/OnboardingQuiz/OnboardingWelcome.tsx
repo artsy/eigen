@@ -60,21 +60,27 @@ const OnboardingWelcome = () => {
 
   const fadeOutAnimationsArr = [
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 1 }
     }),
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 2 }
     }),
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 3 }
     }),
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 4 }
     }),
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 5 }
     }),
     useAnimatedStyle(() => {
+      "worklet"
       return { opacity: opacity.value - 6 }
     }),
   ]
