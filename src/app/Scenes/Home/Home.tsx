@@ -93,6 +93,8 @@ import {
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { useTracking } from "react-tracking"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
@@ -689,7 +691,11 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC = () => {
+interface HomeQRProps {
+  environment?: RelayModernEnvironment | RelayMockEnvironment
+}
+
+export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
@@ -732,7 +738,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={getRelayEnvironment()}
+      environment={environment || getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
