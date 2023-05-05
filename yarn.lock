@@ -9671,6 +9671,11 @@ hastscript@^6.0.0:
     property-information "^5.0.0"
     space-separated-tokens "^1.0.0"
 
+hermes-engine@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.10.0.tgz#3a8eca6bbde31e0a2881f265f7c3216ae44c4015"
+  integrity sha512-SiBo9rvuWetTIQGPPYwRHP0Omo/Iw/yd0sujWR0bW08+syIO0qDpo/fgx7GrY5PEy8wLcVz8v7adET2i5DOmJg==
+
 hermes-engine@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.9.0.tgz#84d9cfe84e8f6b1b2020d6e71b350cec84ed982f"
