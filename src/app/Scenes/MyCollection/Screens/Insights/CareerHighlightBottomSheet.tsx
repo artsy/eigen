@@ -62,7 +62,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const flatlistRef = useRef<FlatList>(null)
 
-  const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext
+  const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext!
 
   useEffect(() => {
     if (selectedXAxisHighlight !== null) {

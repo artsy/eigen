@@ -10,7 +10,7 @@ export interface MyCollectionTabsStoreModel {
   setView: Action<this, MyCollectionBottomSheetModalView>
 }
 
-const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
+export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   selectedTab: null,
   view: null,
   setSelectedTab: action((state, payload) => {
@@ -20,6 +20,10 @@ const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
     state.view = payload
   }),
 }
-export const MyCollectionTabsStore = createContextStore(myCollectionTabsStoreModel)
+
+export const MyCollectionTabsStore = createContextStore((injections) => ({
+  ...myCollectionTabsStoreModel,
+  ...injections,
+}))
 
 export const MyCollectionTabsStoreProvider = MyCollectionTabsStore.Provider

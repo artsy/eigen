@@ -42,7 +42,7 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         backdropComponent={renderBackdrop}
         handleIndicatorStyle={{ backgroundColor: "black", width: 40, height: 4, borderRadius: 2 }}
       >
-        <MyCollectionBottomSheetModalAdd />
+        {view === "Add" && <MyCollectionBottomSheetModalAdd />}
       </BottomSheet>
     </>
   )

@@ -89,7 +89,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
     setView("Add")
-  }, 200)
+  }, 100)
 
   const { width } = useMeasure({ ref: closeIconRef })
 
