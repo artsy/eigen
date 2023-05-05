@@ -29,7 +29,7 @@ const showEdge = {
 const meResponseMock = {
   me: [
     {
-      showRecommendations: {
+      showsConnection: {
         totalCount: 20,
         edges: [showEdge, showEdge, showEdge],
       },
@@ -81,7 +81,7 @@ describe("ShowsRailFragmentContainer", () => {
   it("renders without throwing an error when missing shows", () => {
     const showsCopy = cloneDeep(meResponseMock)
     showsCopy.me.forEach((me) => {
-      me.showRecommendations.edges = []
+      me.showsConnection.edges = []
     })
 
     renderWithWrappersLEGACY(<TestRenderer />)
