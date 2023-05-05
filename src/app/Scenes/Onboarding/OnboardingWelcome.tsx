@@ -41,6 +41,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   // text and logo appearance
   const opacity = useSharedValue(0)
   const appearAnim = useAnimatedStyle(() => {
+    "worklet"
     return { opacity: opacity.value }
   })
   useEffect(() => {
@@ -50,6 +51,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   // background sliding
   const translateX = useSharedValue(0)
   const slideAnim = useAnimatedStyle(() => {
+    "worklet"
     return { transform: [{ translateX: translateX.value }] }
   })
   useEffect(() => {

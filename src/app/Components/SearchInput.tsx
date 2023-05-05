@@ -27,6 +27,7 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
     const width = useWindowDimensions().width - space(mx) * 2
 
     const shrinkAnim = useAnimatedStyle(() => {
+      "worklet"
       return {
         width: withTiming(width - (cancelButtonShown ? cancelWidth : 0), {
           duration: CANCEL_BUTTON_DURATION,
