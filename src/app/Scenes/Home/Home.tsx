@@ -50,7 +50,7 @@ import {
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
@@ -741,7 +741,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
