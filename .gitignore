@@ -42,8 +42,9 @@ fastlane/Preview.html
 # bundler
 .vendor
 
-# Cocoa Pods
+# Ruby / Cocoa Pods
 Pods
+/vendor/bundle/
 
 # build artefacts
 derived_data
