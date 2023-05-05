@@ -3,18 +3,17 @@ import {
   ArtworkRailCard_artwork$data,
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { useArtworkContextMenu } from "app/Components/ContextMenu/useArtworkContextMenu"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -73,16 +72,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artworkQuickActions, createAlertProps } = useArtworkContextMenu(artwork)
-  const {
-    isCreateAlertModalVisible,
-    entity,
-    aggregations,
-    attributes,
-    closeCreateArtworkAlertModal,
-  } = createAlertProps
   const {
     artistNames,
     date,
@@ -173,8 +165,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   return (
     <>
       <ContextMenuArtwork
-        onPress={onPress || undefined}
-        onLongPress={artworkQuickActions}
+        artwork={artwork}
+        onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        onPress={onPress}
         testID={testID}
         underlayColor="white100"
         activeOpacity={0.8}
@@ -298,12 +291,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           </Flex>
         </Flex>
       </ContextMenuArtwork>
-      <CreateSavedSearchModal
-        visible={isCreateAlertModalVisible}
-        entity={entity!}
-        attributes={attributes!}
-        aggregations={aggregations!}
-        closeModal={() => closeCreateArtworkAlertModal()}
+
+      <CreateArtworkAlertModal
+        artwork={artwork}
+        onClose={() => setShowCreateArtworkAlertModal(false)}
+        visible={showCreateArtworkAlertModal}
       />
     </>
   )
@@ -420,7 +412,7 @@ const RecentlySoldCardSection: React.FC<
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
-    ...useCreateArtworkAlert_artwork
+    ...CreateArtworkAlertModal_artwork
     id
     slug
     internalID

@@ -54,7 +54,7 @@ describe("ArtworkScreenHeader", () => {
     it("renders the header but not the create alert button if the artwork doesn't have an associated artist", () => {
       renderWithRelay({
         Artwork: () => ({
-          artistsArray: [],
+          artists: [],
         }),
       })
 

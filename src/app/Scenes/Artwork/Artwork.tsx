@@ -694,7 +694,7 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
 
   return (
     <>
-      {artworkProps?.artworkAboveTheFold && (
+      {!!artworkProps?.artworkAboveTheFold && (
         <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
       {/*

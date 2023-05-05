@@ -10,11 +10,10 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { useArtworkContextMenu } from "app/Components/ContextMenu/useArtworkContextMenu"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
@@ -30,7 +29,7 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -104,14 +103,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
-  const { artworkQuickActions, createAlertProps } = useArtworkContextMenu(artwork)
-  const {
-    isCreateAlertModalVisible,
-    entity,
-    aggregations,
-    attributes,
-    closeCreateArtworkAlertModal,
-  } = createAlertProps
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   let filterParams: any = undefined
 
@@ -202,10 +194,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   return (
     <>
       <ContextMenuArtwork
-        haptic
+        onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        artwork={artwork}
         onPress={handleTap}
         testID={`artworkGridItem-${artwork.title}`}
-        onLongPress={artworkQuickActions}
+        haptic
       >
         <View ref={itemRef}>
           {!!artwork.image && (
@@ -351,12 +344,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
           </Flex>
         </View>
       </ContextMenuArtwork>
-      <CreateSavedSearchModal
-        visible={isCreateAlertModalVisible}
-        entity={entity!}
-        attributes={attributes!}
-        aggregations={aggregations!}
-        closeModal={() => closeCreateArtworkAlertModal()}
+
+      <CreateArtworkAlertModal
+        artwork={artwork}
+        onClose={() => setShowCreateArtworkAlertModal(false)}
+        visible={showCreateArtworkAlertModal}
       />
     </>
   )
@@ -427,7 +419,7 @@ export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
-      ...useCreateArtworkAlert_artwork
+      ...CreateArtworkAlertModal_artwork
       title
       date
       saleMessage
