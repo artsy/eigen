@@ -21,6 +21,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
+import { SafeAreaView } from "react-native"
 import { QueryRenderer, createRefetchContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileHeader } from "./MyProfileHeader"
@@ -39,37 +40,45 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
 
   return (
     <>
-      <StickyTabPage
-        disableBackButtonUpdate
-        tabs={compact([
-          {
-            title: Tab.collection,
-            content: <MyCollectionQueryRenderer />,
-            initial: true,
-          },
-          {
-            title: Tab.insights,
-            content: <MyCollectionInsightsQR />,
-            visualClues: [
-              {
-                jsx: (
-                  <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
-                ),
-                visualClueName: "AddedArtworkWithInsightsVisualClueDot",
-              },
-              {
-                jsx: <VisualClueText />,
-                visualClueName: "MyCollectionInsights",
-              },
-            ],
-          },
-          {
-            title: Tab.savedWorks,
-            content: isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />,
-          },
-        ])}
-        staticHeaderContent={<MyProfileHeader me={me} />}
-      />
+      <SafeAreaView style={{ flex: 1 }}>
+        <StickyTabPage
+          disableBackButtonUpdate
+          tabs={compact([
+            {
+              title: Tab.collection,
+              content: <MyCollectionQueryRenderer />,
+              initial: true,
+            },
+            {
+              title: Tab.insights,
+              content: <MyCollectionInsightsQR />,
+              visualClues: [
+                {
+                  jsx: (
+                    <VisualClueDot
+                      style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }}
+                    />
+                  ),
+                  visualClueName: "AddedArtworkWithInsightsVisualClueDot",
+                },
+                {
+                  jsx: <VisualClueText />,
+                  visualClueName: "MyCollectionInsights",
+                },
+              ],
+            },
+            {
+              title: Tab.savedWorks,
+              content: isArtworkListsEnabled ? (
+                <ArtworkListsQR />
+              ) : (
+                <FavoriteArtworksQueryRenderer />
+              ),
+            },
+          ])}
+          staticHeaderContent={<MyProfileHeader me={me} />}
+        />
+      </SafeAreaView>
       {view !== null && <MyCollectionBottomSheetModals />}
     </>
   )
