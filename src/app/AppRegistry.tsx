@@ -454,6 +454,7 @@ export const modules = defineModules({
     MyProfile,
     {
       isRootViewForTabName: "profile",
+      fullBleed: true,
     },
     [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
   ),

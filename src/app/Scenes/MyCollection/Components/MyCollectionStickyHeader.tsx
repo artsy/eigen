@@ -27,6 +27,7 @@ import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
+import { debounce } from "lodash"
 import { MotiView } from "moti"
 import { useRef } from "react"
 import { useTracking } from "react-tracking"
@@ -60,7 +61,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 
   return (
     <>
-      {enableCollectedArtists && (
+      {!!enableCollectedArtists && (
         <Flex pb={0}>
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
@@ -77,12 +78,18 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   )
 }
 
-const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
+export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
   const space = useSpace()
+
   const closeIconRef = useRef(null)
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
+  const setView = MyCollectionTabsStore.useStoreActions((actions) => actions.setView)
+
+  const showAddToMyCollectionBottomSheet = debounce(() => {
+    setView("Add")
+  }, 100)
 
   const { width } = useMeasure({ ref: closeIconRef })
 
@@ -126,15 +133,15 @@ const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) =
               console.log("Search button pressed")
             }}
             haptic
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <SearchIcon width={24} height={24} />
           </Touchable>
           <Spacer x={PILL_PADDING} />
           <Touchable
-            onPress={() => {
-              console.log("Add button pressed")
-            }}
+            onPress={showAddToMyCollectionBottomSheet}
             haptic
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <AddIcon width={24} height={24} />
           </Touchable>
