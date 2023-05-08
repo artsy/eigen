@@ -23,8 +23,7 @@ describe("MyCollectionBottomSheetModalAdd", () => {
 
       fireEvent(addArtistsButton, "onPress")
 
-      // replace with the right mock
-      // expect(console.log).toHaveBeenCalledWith("Add Artists")
+      // TODO: Add this test later
     })
   })
 
@@ -36,7 +35,7 @@ describe("MyCollectionBottomSheetModalAdd", () => {
 
       fireEvent(addArworksButton, "onPress")
 
-      // Will add this test later
+      // TODO: Add this test later
     })
   })
 })

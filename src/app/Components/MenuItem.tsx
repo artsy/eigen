@@ -62,7 +62,6 @@ export const MenuItem: React.FC<{
       >
         {!!icon && <Flex flex={1}>{icon}</Flex>}
         <Flex flex={7}>
-          {/* Description */}
           <Flex>
             <Text variant="sm-display">{title}</Text>
             {!!description && (
@@ -85,7 +84,6 @@ export const MenuItem: React.FC<{
 
         <Spacer x={2} />
 
-        {/* Value */}
         <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
           {!!value && (
             <Flex flex={1}>
