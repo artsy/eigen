@@ -274,7 +274,7 @@
     "danger": "11.2.3",
     "dedent": "0.7.0",
     "dotenv": "8.2.0",
-    "eslint": "7.32.0",
+    "eslint": "8.32.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-import-resolver-typescript": "3.5.3",
     "eslint-plugin-artsy": "file:./eslint-rules",
