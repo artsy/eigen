@@ -1,10 +1,10 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { useSkeletonAnimation } from "app/utils/animations/useSkeletonAnimation"
+import { useScreenDimensions } from "app/utils/hooks"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
-import { useScreenDimensions } from "app/utils/hooks"
 
 type PlaceholderContextValue = {}
 
@@ -112,7 +112,7 @@ export const PlaceholderRaggedText = ({
 }
 
 export const PlaceholderGrid = () => (
-  <Flex mx={2} flexDirection="row">
+  <Flex mx={2} flexDirection="row" testID="PlaceholderGrid">
     <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
   </Flex>
 )
