@@ -71,21 +71,6 @@ export interface Props extends ArtworkActionTrackingProps {
   /** Number of items to fetch in pagination request. Default is 10 */
   pageSize?: number
 
-  // /** Parent screen where the grid is located. For analytics purposes. */
-  // contextScreenOwnerType?: ScreenOwnerType
-
-  // /** Id of the parent screen's entity where the grid is located. For analytics purposes. */
-  // contextScreenOwnerId?: string
-
-  // /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
-  // contextScreenOwnerSlug?: string
-
-  // /** Search query of the parent screen's entity where the grid is located. For analytics purposes. */
-  // contextScreenQuery?: string
-
-  // /** Name of the parent screen's entity where the grid is located. For analytics purposes. */
-  // contextScreen?: string
-
   /** Allow users to save artworks that are not lots to their saves & follows */
   hideSaveIcon?: boolean
 
