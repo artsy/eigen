@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 gem 'fastlane'
 
 gem 'cocoapods', '>= 1.11.2'
-ruby '>= 2.6.10'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
