@@ -10,22 +10,28 @@ import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToP
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
-interface NewWorksForYouRailProps {
+interface NewWorksForYouRailProps extends ArtworkActionTrackingProps {
   title: string
   artworkConnection: NewWorksForYouRail_artworkConnection$key
   isRailVisible: boolean
 }
 
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
-  ({ title, artworkConnection, isRailVisible, scrollRef }) => {
+  ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
     const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
+
+    const trackingProps = extractArtworkActionTrackingProps(restProps)
 
     const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
@@ -75,6 +81,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             />
           </Flex>
           <LargeArtworkRail
+            {...trackingProps}
             artworks={artworks}
             onPress={handleOnArtworkPress}
             showSaveIcon={enableSaveIcon}

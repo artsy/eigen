@@ -66,6 +66,11 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
     edges: [
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
@@ -93,6 +98,11 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       },
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id",
           isSaved: false,
           href: "/artwork/another-another-id-3",
@@ -125,6 +135,11 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       },
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id-3",
           isSaved: false,
           href: "/artwork/another-another-id-3",

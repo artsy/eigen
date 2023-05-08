@@ -5,25 +5,29 @@ import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import { memo } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 
-interface MarketingCollectionRailProps {
+interface MarketingCollectionRailProps extends ArtworkActionTrackingProps {
   home: MarketingCollectionRail_home$key | null
-  contextScreenOwnerType: Schema.OwnerEntityTypes
   contextModuleKey: string
   marketingCollection: MarketingCollectionRail_marketingCollection$key
   marketingCollectionSlug: string
 }
 
 export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = memo(
-  ({ contextScreenOwnerType, contextModuleKey, marketingCollectionSlug, ...restProps }) => {
+  ({ contextModuleKey, marketingCollectionSlug, ...restProps }) => {
     const { trackEvent } = useTracking()
     const contextModule = HomeAnalytics.artworkRailContextModule(contextModuleKey)
+
+    const trackingProps = extractArtworkActionTrackingProps(restProps)
 
     const marketingCollection = useFragment(
       marketingCollectionFragment,
@@ -93,9 +97,10 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
         <Spacer y={4} />
 
         <LargeArtworkRail
+          {...trackingProps}
           artworks={artworks}
           onPress={handleArtworkPress}
-          trackingContextScreenOwnerType={contextScreenOwnerType}
+          trackingContextScreenOwnerType={trackingProps.contextScreenOwnerType}
           dark
           showPartnerName
           onMorePress={handleMorePress}

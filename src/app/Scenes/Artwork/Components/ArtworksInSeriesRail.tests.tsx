@@ -121,6 +121,11 @@ describe("ArtworksInSeriesRail", () => {
                 edges: [
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc123",
                       isSaved: false,
                       slug: "alex-katz-departure-28",
@@ -151,6 +156,11 @@ describe("ArtworksInSeriesRail", () => {
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc456",
                       isSaved: false,
                       slug: "alex-katz-departure-56",
@@ -181,6 +191,11 @@ describe("ArtworksInSeriesRail", () => {
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc789",
                       isSaved: false,
                       slug: "alex-katz-departure-2-ada",
@@ -211,6 +226,11 @@ describe("ArtworksInSeriesRail", () => {
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "xyz123",
                       isSaved: false,
                       slug: "alex-katz-park-avenue-departure",
@@ -241,6 +261,11 @@ describe("ArtworksInSeriesRail", () => {
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc012",
                       isSaved: false,
                       slug: "alex-katz-departure-cut-out-2",

@@ -6,6 +6,10 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import { compact } from "lodash"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -38,7 +42,7 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
   }
 }
 
-interface ArtworkModuleRailProps {
+interface ArtworkModuleRailProps extends ArtworkActionTrackingProps {
   title: string
   rail: ArtworkModuleRail_rail$data
 }
@@ -47,6 +51,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   title,
   rail,
   scrollRef,
+  ...otherProps
 }) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
@@ -74,6 +79,8 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const showRail = artworks.length
+
+  const trackingProps = extractArtworkActionTrackingProps(otherProps)
 
   if (!showRail) {
     return null
@@ -109,6 +116,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
         <SectionTitle title={title} subtitle={subtitle} onPress={handleTitlePress} />
       </Flex>
       <LargeArtworkRail
+        {...trackingProps}
         listRef={listRef}
         artworks={artworks}
         onPress={(artwork, position) => {
