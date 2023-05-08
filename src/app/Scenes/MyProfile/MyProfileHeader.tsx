@@ -9,8 +9,6 @@ import {
   useColor,
   Text,
   Touchable,
-  useScreenDimensions,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
@@ -28,15 +26,13 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
-  const space = useSpace()
 
   const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
 
   const userProfileImagePath = localImage?.path || me?.icon?.url
-  const { safeAreaInsets } = useScreenDimensions()
 
   return (
-    <Flex style={{ paddingTop: space(2) + safeAreaInsets.top }}>
+    <Flex>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
           <TouchableOpacity
