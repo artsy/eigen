@@ -1,3 +1,4 @@
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -9,12 +10,19 @@ describe("SimilarToRecentlyViewed", () => {
     },
   })
 
-  it("renders SimilarToRecentlyViewed", () => {
-    const tree = renderWithRelay({
+  it("renders SimilarToRecentlyViewed", async () => {
+    renderWithRelay({
       Query: () => ({
-        internalID: "foo",
+        article: {
+          internalID: "foo",
+          title: "Hi Article",
+        },
       }),
     })
-    expect(tree.findByText("Hi Article")).toBeTruthy()
+
+    // need to await for the PlaceholderGrid to be removed
+    await waitForElementToBeRemoved(() => screen.getByTestId("PlaceholderGrid"))
+
+    expect(screen.queryByText("Hi Article")).toBeOnTheScreen()
   })
 })
