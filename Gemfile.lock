@@ -301,7 +301,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (= 1.11.3)
+  cocoapods (>= 1.11.2)
   cocoapods-check
   dotenv
   down
@@ -313,6 +313,9 @@ DEPENDENCIES
   sentry-ruby
   xcode-install
   xcpretty
+
+RUBY VERSION
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.4.3
