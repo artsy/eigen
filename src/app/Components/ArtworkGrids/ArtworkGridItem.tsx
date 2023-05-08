@@ -8,6 +8,7 @@ import {
   Text,
   TextProps,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -30,7 +31,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import React, { useRef, useState } from "react"
-import { View } from "react-native"
+import { TouchableHighlight, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -100,6 +101,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   updateRecentSearchesOnTap = false,
 }) => {
   const itemRef = useRef<any>()
+  const color = useColor()
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
@@ -196,153 +198,157 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <ContextMenuArtwork
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
-        onPress={handleTap}
-        testID={`artworkGridItem-${artwork.title}`}
-        haptic
       >
-        <View ref={itemRef}>
-          {!!artwork.image && (
-            <View>
-              {enableNewOpaqueImageView ? (
-                <NewOpaqueImageView
-                  aspectRatio={artwork.image?.aspectRatio ?? 1}
-                  imageURL={artwork.image?.url}
-                  height={height}
-                />
-              ) : (
-                <OpaqueImageView
-                  aspectRatio={artwork.image?.aspectRatio ?? 1}
-                  imageURL={artwork.image?.url}
-                />
-              )}
-              {Boolean(
-                !hideUrgencyTags &&
-                  urgencyTag &&
-                  artwork?.sale?.isAuction &&
-                  !artwork?.sale?.isClosed
-              ) && (
-                <Flex
-                  position="absolute"
-                  bottom="5px"
-                  left="5px"
-                  backgroundColor="white"
-                  px="5px"
-                  py="3px"
-                  borderRadius={2}
-                  alignSelf="flex-start"
-                >
-                  <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                    {urgencyTag}
+        <TouchableHighlight
+          underlayColor={color("white100")}
+          activeOpacity={0.8}
+          onPress={handleTap}
+          testID={`artworkGridItem-${artwork.title}`}
+        >
+          <View ref={itemRef}>
+            {!!artwork.image && (
+              <View>
+                {enableNewOpaqueImageView ? (
+                  <NewOpaqueImageView
+                    aspectRatio={artwork.image?.aspectRatio ?? 1}
+                    imageURL={artwork.image?.url}
+                    height={height}
+                  />
+                ) : (
+                  <OpaqueImageView
+                    aspectRatio={artwork.image?.aspectRatio ?? 1}
+                    imageURL={artwork.image?.url}
+                  />
+                )}
+                {Boolean(
+                  !hideUrgencyTags &&
+                    urgencyTag &&
+                    artwork?.sale?.isAuction &&
+                    !artwork?.sale?.isClosed
+                ) && (
+                  <Flex
+                    position="absolute"
+                    bottom="5px"
+                    left="5px"
+                    backgroundColor="white"
+                    px="5px"
+                    py="3px"
+                    borderRadius={2}
+                    alignSelf="flex-start"
+                  >
+                    <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                      {urgencyTag}
+                    </Text>
+                  </Flex>
+                )}
+              </View>
+            )}
+            {!!canShowAuctionProgressBar && (
+              <Box mt={1}>
+                <DurationProvider startAt={endsAt ?? undefined}>
+                  <LotProgressBar
+                    duration={null}
+                    startAt={artwork.sale?.startAt}
+                    extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                    extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                    biddingEndAt={endsAt}
+                    hasBeenExtended={lotSaleExtended}
+                  />
+                </DurationProvider>
+              </Box>
+            )}
+            <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+              <Flex flex={1}>
+                {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+                  <>
+                    <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                      Lot {artwork.saleArtwork.lotLabel}
+                    </Text>
+                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+                      <DurationProvider startAt={endsAt ?? undefined}>
+                        <LotCloseInfo
+                          duration={null}
+                          saleArtwork={artwork.saleArtwork}
+                          sale={artwork.sale}
+                          lotEndAt={endsAt ?? undefined}
+                          hasBeenExtended={lotSaleExtended}
+                        />
+                      </DurationProvider>
+                    )}
+                  </>
+                )}
+                {!!artwork.artistNames && (
+                  <Text
+                    lineHeight="18px"
+                    weight="regular"
+                    variant="xs"
+                    numberOfLines={1}
+                    {...artistNamesTextStyle}
+                  >
+                    {artwork.artistNames}
                   </Text>
+                )}
+                {!!artwork.title && (
+                  <Text
+                    lineHeight="18px"
+                    variant="xs"
+                    weight="regular"
+                    color="black60"
+                    numberOfLines={1}
+                    {...titleTextStyle}
+                  >
+                    <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                      {artwork.title}
+                    </Text>
+                    {artwork.date ? `, ${artwork.date}` : ""}
+                  </Text>
+                )}
+                {!hidePartner && !!artwork.partner?.name && (
+                  <Text
+                    variant="xs"
+                    lineHeight="18px"
+                    color="black60"
+                    numberOfLines={1}
+                    {...partnerNameTextStyle}
+                  >
+                    {artwork.partner.name}
+                  </Text>
+                )}
+                {!!saleInfo && !hideSaleInfo && (
+                  <Text
+                    lineHeight="18px"
+                    variant="xs"
+                    weight="medium"
+                    numberOfLines={1}
+                    {...saleInfoTextStyle}
+                  >
+                    {saleInfo}
+                  </Text>
+                )}
+              </Flex>
+              {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
+                <Flex>
+                  <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
+                    {artwork.isSaved ? (
+                      <HeartFillIcon
+                        testID="filled-heart-icon"
+                        height={SAVE_ICON_SIZE}
+                        width={SAVE_ICON_SIZE}
+                        fill="blue100"
+                      />
+                    ) : (
+                      <HeartIcon
+                        testID="empty-heart-icon"
+                        height={SAVE_ICON_SIZE}
+                        width={SAVE_ICON_SIZE}
+                      />
+                    )}
+                  </Touchable>
                 </Flex>
               )}
-            </View>
-          )}
-          {!!canShowAuctionProgressBar && (
-            <Box mt={1}>
-              <DurationProvider startAt={endsAt ?? undefined}>
-                <LotProgressBar
-                  duration={null}
-                  startAt={artwork.sale?.startAt}
-                  extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
-                  extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                  biddingEndAt={endsAt}
-                  hasBeenExtended={lotSaleExtended}
-                />
-              </DurationProvider>
-            </Box>
-          )}
-          <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-            <Flex flex={1}>
-              {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-                <>
-                  <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                    Lot {artwork.saleArtwork.lotLabel}
-                  </Text>
-                  {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
-                    <DurationProvider startAt={endsAt ?? undefined}>
-                      <LotCloseInfo
-                        duration={null}
-                        saleArtwork={artwork.saleArtwork}
-                        sale={artwork.sale}
-                        lotEndAt={endsAt ?? undefined}
-                        hasBeenExtended={lotSaleExtended}
-                      />
-                    </DurationProvider>
-                  )}
-                </>
-              )}
-              {!!artwork.artistNames && (
-                <Text
-                  lineHeight="18px"
-                  weight="regular"
-                  variant="xs"
-                  numberOfLines={1}
-                  {...artistNamesTextStyle}
-                >
-                  {artwork.artistNames}
-                </Text>
-              )}
-              {!!artwork.title && (
-                <Text
-                  lineHeight="18px"
-                  variant="xs"
-                  weight="regular"
-                  color="black60"
-                  numberOfLines={1}
-                  {...titleTextStyle}
-                >
-                  <Text lineHeight="18px" variant="xs" weight="regular" italic>
-                    {artwork.title}
-                  </Text>
-                  {artwork.date ? `, ${artwork.date}` : ""}
-                </Text>
-              )}
-              {!hidePartner && !!artwork.partner?.name && (
-                <Text
-                  variant="xs"
-                  lineHeight="18px"
-                  color="black60"
-                  numberOfLines={1}
-                  {...partnerNameTextStyle}
-                >
-                  {artwork.partner.name}
-                </Text>
-              )}
-              {!!saleInfo && !hideSaleInfo && (
-                <Text
-                  lineHeight="18px"
-                  variant="xs"
-                  weight="medium"
-                  numberOfLines={1}
-                  {...saleInfoTextStyle}
-                >
-                  {saleInfo}
-                </Text>
-              )}
             </Flex>
-            {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
-              <Flex>
-                <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
-                  {artwork.isSaved ? (
-                    <HeartFillIcon
-                      testID="filled-heart-icon"
-                      height={SAVE_ICON_SIZE}
-                      width={SAVE_ICON_SIZE}
-                      fill="blue100"
-                    />
-                  ) : (
-                    <HeartIcon
-                      testID="empty-heart-icon"
-                      height={SAVE_ICON_SIZE}
-                      width={SAVE_ICON_SIZE}
-                    />
-                  )}
-                </Touchable>
-              </Flex>
-            )}
-          </Flex>
-        </View>
+          </View>
+        </TouchableHighlight>
       </ContextMenuArtwork>
 
       <CreateArtworkAlertModal
