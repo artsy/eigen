@@ -10,7 +10,6 @@
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
-#import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
@@ -256,10 +255,7 @@ static ARAppDelegate *_sharedInstance = nil;
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
 
-    _referralURLRepresentation = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     _landingURLRepresentation = [url absoluteString];
-
-    [self trackDeeplinkWithTarget:url referrer:_referralURLRepresentation];
 
     // Twitter SSO
     if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {
