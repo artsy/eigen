@@ -75,7 +75,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, id, image, partner, title, sale, saleArtwork } = artwork
+  const { artistNames, date, image, partner, title, sale, saleArtwork } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -406,7 +406,6 @@ const RecentlySoldCardSection: React.FC<
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     availability
-    id
     slug
     isAcquireable
     isBiddable

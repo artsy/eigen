@@ -416,7 +416,6 @@ export default createFragmentContainer(Artwork, {
       date
       saleMessage
       slug
-      id
       internalID
       isAcquireable
       isBiddable
