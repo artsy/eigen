@@ -15,12 +15,16 @@ const reportedExperimentVariants: Record<string, string> = {}
 export function maybeReportExperimentVariant({
   experimentName,
   enabled,
+  visible,
   variantName,
   payload,
   // include context when storing the experiment variants
   storeContext = false,
   ...rest
-}: TrackVariantArgs & { enabled: boolean; storeContext?: boolean }) {
+}: TrackVariantArgs & { enabled: boolean; visible: boolean; storeContext?: boolean }) {
+  if (!visible) {
+    return
+  }
   let combinedValue = ""
   if (!storeContext) {
     combinedValue = `${enabled}-${variantName}-${payload}`

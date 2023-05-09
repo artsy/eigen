@@ -702,6 +702,7 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
+  const isFocused = useIsFocused()
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   useEffect(() => {
@@ -710,6 +711,7 @@ export const HomeQueryRenderer: React.FC = () => {
       maybeReportExperimentVariant({
         experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
         enabled: worksForYouRecommendationsModel.enabled,
+        visible: isFocused,
         variantName: worksForYouRecommendationsModel.variant,
         payload: worksForYouRecommendationsModel.payload,
         context_module: ContextModule.newWorksForYouRail,
