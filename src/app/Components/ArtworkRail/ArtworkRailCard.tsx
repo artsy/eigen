@@ -1,4 +1,3 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
@@ -10,7 +9,6 @@ import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidt
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
-import { Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -53,7 +51,6 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
-  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes | ScreenOwnerType
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -70,7 +67,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   showSaveIcon = false,
   size,
   testID,
-  trackingContextScreenOwnerType,
   ...restProps
 }) => {
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()

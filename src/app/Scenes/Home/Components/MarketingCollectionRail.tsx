@@ -100,7 +100,6 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
           {...trackingProps}
           artworks={artworks}
           onPress={handleArtworkPress}
-          trackingContextScreenOwnerType={trackingProps.contextScreenOwnerType}
           dark
           showPartnerName
           onMorePress={handleMorePress}

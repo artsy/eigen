@@ -1,4 +1,3 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
@@ -7,7 +6,6 @@ import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/Art
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { isPad } from "app/utils/hardware"
-import { Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -28,7 +26,6 @@ interface CommonArtworkRailProps {
   onEndReachedThreshold?: number
   size: ArtworkCardSize
   showSaveIcon?: boolean
-  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes | ScreenOwnerType
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
@@ -55,7 +52,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   dark = false,
   artworks,
   showSaveIcon = false,
-  trackingContextScreenOwnerType,
   viewabilityConfig,
   onViewableItemsChanged,
   onMorePress,
@@ -98,7 +94,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           }}
           showSaveIcon={showSaveIcon}
           size={size}
-          trackingContextScreenOwnerType={trackingContextScreenOwnerType}
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}
