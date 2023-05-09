@@ -163,7 +163,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
-    contextScreen: trackingContextScreenOwnerType,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
