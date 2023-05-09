@@ -11397,7 +11397,11 @@ type Me implements Node {
     after: String
     before: String
     first: Int
+
+    # An IP address, will be used to lookup location
+    ip: String
     last: Int
+    near: Near
     sort: ShowSorts
 
     # Filter shows by chronological event status
