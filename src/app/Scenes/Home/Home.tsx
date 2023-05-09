@@ -7,7 +7,7 @@ import {
   SpacingUnitDSValueNumber,
   Join,
 } from "@artsy/palette-mobile"
-import { useFocusEffect } from "@react-navigation/native"
+import { useFocusEffect, useIsFocused } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -128,11 +128,12 @@ export interface HomeProps extends ViewProps {
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
 
-  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
+  const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
+  const isFocused = useIsFocused()
 
   const { cards } = useContentCards()
 
@@ -155,6 +156,7 @@ const Home = memo((props: HomeProps) => {
   // we cannot rely on mount events for screens in tab views for screen tracking
   // because they can be mounted before the screen is visible
   // do custom screen view instead
+
   useFocusEffect(
     useCallback(() => {
       tracking.trackEvent(HomeAnalytics.homeScreenViewed())
@@ -186,11 +188,11 @@ const Home = memo((props: HomeProps) => {
           newVisibleRails.add(title)
         })
 
-        seVisibleRails(newVisibleRails)
+        setVisibleRails(newVisibleRails)
       }
 
       // Track all viewed rails
-      if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
+      if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled && isFocused) {
         viewableItems.forEach(({ item: { key, contextModule } }: { item: HomeModule }) => {
           if (contextModule && !viewedRails.has(key)) {
             viewedRails.add(key)
