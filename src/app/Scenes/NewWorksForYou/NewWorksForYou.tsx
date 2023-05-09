@@ -38,6 +38,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
               hasMore={() => false}
               pageSize={PAGE_SIZE}
               contextScreenOwnerType={OwnerType.newWorksForYou}
+              contextScreen={OwnerType.newWorksForYou as string}
               HeaderComponent={<Spacer y={2} />}
               shouldAddPadding
               showLoadingSpinner

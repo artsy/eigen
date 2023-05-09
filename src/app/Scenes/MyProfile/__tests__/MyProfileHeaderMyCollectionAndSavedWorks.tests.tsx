@@ -4,6 +4,7 @@ import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated_
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import {
   LOCAL_PROFILE_ICON_PATH_KEY,
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
@@ -31,24 +32,26 @@ jest.mock("@react-navigation/native", () => {
 describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery @relay_test_operation {
-          me @optionalField {
-            ...MyProfileHeaderMyCollectionAndSavedWorks_me
+    <MyCollectionTabsStoreProvider>
+      <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery @relay_test_operation {
+            me @optionalField {
+              ...MyProfileHeaderMyCollectionAndSavedWorks_me
+            }
           }
-        }
-      `}
-      render={({ props, error }) => {
-        if (props?.me) {
-          return <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer me={props?.me} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-      variables={{}}
-    />
+        `}
+        render={({ props, error }) => {
+          if (props?.me) {
+            return <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer me={props?.me} />
+          } else if (error) {
+            console.log(error)
+          }
+        }}
+        variables={{}}
+      />
+    </MyCollectionTabsStoreProvider>
   )
 
   const getWrapper = (mockResolvers = {}) => {

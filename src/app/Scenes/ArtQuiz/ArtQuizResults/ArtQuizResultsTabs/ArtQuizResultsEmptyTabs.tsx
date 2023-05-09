@@ -1,3 +1,4 @@
+import { LegacyScreen } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
@@ -5,7 +6,6 @@ import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQui
 import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { Screen } from "app/Components/Screen"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 enum Tab {
@@ -20,9 +20,9 @@ export const ArtQuizResultsEmptyTabs = () => {
   )
 
   return (
-    <Screen>
-      <Screen.Header onBack={() => navigate("/")} />
-      <Screen.Body fullwidth noBottomSafe>
+    <LegacyScreen>
+      <LegacyScreen.Header onBack={() => navigate("/")} />
+      <LegacyScreen.Body fullwidth noBottomSafe>
         <StickyTabPage
           disableBackButtonUpdate
           tabs={compact([
@@ -43,8 +43,8 @@ export const ArtQuizResultsEmptyTabs = () => {
             />
           }
         />
-      </Screen.Body>
-    </Screen>
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }
 

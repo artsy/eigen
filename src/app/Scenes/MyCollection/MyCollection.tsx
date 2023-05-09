@@ -39,6 +39,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
+import { SafeAreaView } from "react-native"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -316,7 +317,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <Flex>
+    <SafeAreaView style={{ flex: 1 }}>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex flex={1}>
@@ -374,7 +375,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </Flex>
+    </SafeAreaView>
   )
 }
 

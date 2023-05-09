@@ -30,6 +30,7 @@ export const useArtworkListToast = () => {
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
       backgroundColor: "green100",
+      cta: "View List",
       onPress: () => {
         navigate(`/artwork-list/${artworkList.internalID}`)
       },
@@ -41,6 +42,7 @@ export const useArtworkListToast = () => {
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
       backgroundColor: "green100",
+      cta: "View Saves",
       onPress: () => {
         navigate(`/artwork-lists`)
       },

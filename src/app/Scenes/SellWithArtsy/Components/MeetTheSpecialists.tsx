@@ -140,7 +140,7 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-  const bioTextLimit = isPad() ? 160 : 80
+  const bioTextLimit = isPad() ? 160 : 88
 
   const buttonText = `Contact ${specialist.firstName}`
 

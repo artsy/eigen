@@ -32,7 +32,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   const userProfileImagePath = localImage?.path || me?.icon?.url
 
   return (
-    <Flex pt={2}>
+    <Flex>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
           <TouchableOpacity

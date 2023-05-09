@@ -1,4 +1,4 @@
-import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { tappedMainArtworkGrid } from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -27,30 +27,27 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import {
+  ArtworkActionTrackingProps,
+  tracks as artworkActionTracks,
+} from "app/utils/track/ArtworkActions"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
-
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps extends Partial<PageableRouteProps> {
+export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   trackingFlow?: string
-  contextModule?: string
   /** Pass Tap to override generic ing, used for home tracking in rails */
   trackTap?: (artworkSlug: string, index?: number) => void
   itemIndex?: number
-  // By default, we don't track clicks from the grid unless you pass in a contextScreenOwnerType.
-  contextScreenOwnerType?: ScreenOwnerType
-  contextScreenOwnerId?: string
-  contextScreenOwnerSlug?: string
-  contextScreenQuery?: string
-  contextScreen?: string
+
   /** Hide urgency tags (3 Days left, 1 hour left) */
   hideUrgencyTags?: boolean
   /** Hide partner name */
@@ -79,6 +76,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   itemIndex,
   height,
+  contextModule,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -140,10 +138,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const { id, internalID, isSaved } = artwork
 
+  const onArtworkSavedOrUnSaved = (saved: boolean) => {
+    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+    const params = {
+      acquireable: isAcquireable,
+      availability,
+      biddable: isBiddable,
+      context_module: contextModule,
+      context_screen: contextScreen,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      context_screen_owner_type: contextScreenOwnerType,
+      inquireable: isInquireable,
+      offerable: isOfferable,
+    }
+    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+  }
+
   const handleArtworkSave = useSaveArtwork({
     id,
     internalID,
     isSaved,
+    onCompleted: onArtworkSavedOrUnSaved,
   })
 
   const handleTap = () => {
@@ -399,12 +415,17 @@ export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
+      availability
       title
       date
       saleMessage
       slug
       id
       internalID
+      isAcquireable
+      isBiddable
+      isInquireable
+      isOfferable
       isSaved
       artistNames
       href

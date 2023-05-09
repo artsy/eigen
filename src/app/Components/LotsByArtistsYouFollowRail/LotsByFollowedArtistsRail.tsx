@@ -99,6 +99,8 @@ export const LotsByFollowedArtistsRailContainer = memo(
             first: $count
             after: $cursor
             includeArtworksByFollowedArtists: true
+            excludeClosedLots: true
+            sort: "end_at"
             isAuction: true
             liveSale: true
           ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {

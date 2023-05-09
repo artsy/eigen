@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { TextProps } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
@@ -23,7 +24,7 @@ interface Props extends Partial<PageableRouteProps> {
   itemMargin?: number
   isLoading?: boolean
   trackingFlow?: string
-  contextModule?: string
+  contextModule?: ContextModule
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   // Give explicit width to avoid resizing after mount
   width?: number
