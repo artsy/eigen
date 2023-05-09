@@ -7,6 +7,7 @@ import {
   SpacingUnitDSValueNumber,
   Join,
 } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -65,7 +66,7 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, {
@@ -150,6 +151,15 @@ const Home = memo((props: HomeProps) => {
     prefetchUrl("inbox")
     prefetchUrl("sales")
   }, [])
+
+  // we cannot rely on mount events for screens in tab views for screen tracking
+  // because they can be mounted before the screen is visible
+  // do custom screen view instead
+  useFocusEffect(
+    useCallback(() => {
+      tracking.trackEvent(HomeAnalytics.homeScreenViewed())
+    }, [])
+  )
 
   const { loading, relay } = props
 
@@ -345,30 +355,23 @@ const Home = memo((props: HomeProps) => {
   )
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <AboveTheFoldFlatList<HomeModule>
-          testID="home-flat-list"
-          data={modules}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          prefetchUrlExtractor={(item) => item?.prefetchUrl}
-          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
-          renderItem={renderItem}
-          ListHeaderComponent={<HomeHeader />}
-          ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
-          ItemSeparatorComponent={ModuleSeparator}
-          keyExtractor={(_item) => _item.title}
-        />
-        {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
-      </View>
-    </ProvideScreenTracking>
+    <View style={{ flex: 1 }}>
+      <AboveTheFoldFlatList<HomeModule>
+        testID="home-flat-list"
+        data={modules}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        prefetchUrlExtractor={(item) => item?.prefetchUrl}
+        prefetchVariablesExtractor={(item) => item?.prefetchVariables}
+        renderItem={renderItem}
+        ListHeaderComponent={<HomeHeader />}
+        ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+        ItemSeparatorComponent={ModuleSeparator}
+        keyExtractor={(_item) => _item.title}
+      />
+      {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
+    </View>
   )
 })
 
