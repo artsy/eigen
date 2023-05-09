@@ -407,7 +407,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
             </Box>
           )
         }}
-        // keyExtractor={({ key }) => key}
+        keyExtractor={({ key }) => key}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
