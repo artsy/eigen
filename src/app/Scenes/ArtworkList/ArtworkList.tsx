@@ -12,12 +12,12 @@ import { FC, Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface ArtworkListScreenProps {
-  artworkListID: string
+  listID: string
 }
 
-const ArtworkList: FC<ArtworkListScreenProps> = ({ artworkListID }) => {
+export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const queryData = useLazyLoadQuery<ArtworkListQuery>(ArtworkListScreenQuery, {
-    listID: artworkListID,
+    listID,
     count: PAGE_SIZE,
   })
 
