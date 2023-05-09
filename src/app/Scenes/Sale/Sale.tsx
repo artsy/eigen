@@ -22,6 +22,7 @@ import { navigate, popParentViewController } from "app/system/navigation/navigat
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -81,6 +82,7 @@ const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
+  useAndroidGoBack()
   const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   const flatListRef = useRef<FlatList<any>>(null)

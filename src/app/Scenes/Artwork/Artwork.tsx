@@ -23,6 +23,7 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -67,7 +68,7 @@ interface ArtworkProps {
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
-
+  useAndroidGoBack()
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
@@ -406,6 +407,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
             </Box>
           )
         }}
+        // keyExtractor={({ key }) => key}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
@@ -694,7 +696,7 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
 
   return (
     <>
-      {artworkProps?.artworkAboveTheFold && (
+      {!!artworkProps?.artworkAboveTheFold && (
         <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
       {/*
