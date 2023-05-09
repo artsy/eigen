@@ -171,7 +171,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     internalID,
     isSaved,
     onCompleted: onArtworkSavedOrUnSaved,
-    contextScreen: trackingContextScreenOwnerType,
   })
 
   const displayForRecentlySoldArtwork =
@@ -397,7 +396,7 @@ const RecentlySoldCardSection: React.FC<
         <Text variant="lg-display" numberOfLines={1}>
           {priceRealizedDisplay}
         </Text>
-        {performanceDisplay && (
+        {!!performanceDisplay && (
           <Text variant="lg-display" color="green" numberOfLines={1}>
             {`+${performanceDisplay}`}
           </Text>

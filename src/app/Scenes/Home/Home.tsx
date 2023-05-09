@@ -50,7 +50,7 @@ import {
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
@@ -64,7 +64,6 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
@@ -94,6 +93,8 @@ import {
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { useTracking } from "react-tracking"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
@@ -199,14 +200,6 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
-
-  useEffect(() => {
-    RefreshEvents.addListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-
-    return () => {
-      RefreshEvents.removeListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-    }
-  }, [])
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
@@ -698,7 +691,11 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC = () => {
+interface HomeQRProps {
+  environment?: RelayModernEnvironment | RelayMockEnvironment
+}
+
+export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
@@ -741,7 +738,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {

@@ -3,7 +3,6 @@ import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFoll
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
-import { refreshOnArtistFollow } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -87,7 +86,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   }
 
   const successfulFollowChange = () => {
-    refreshOnArtistFollow()
     trackEvent({
       action_name: artist.isFollowed
         ? Schema.ActionNames.ArtistUnfollow
