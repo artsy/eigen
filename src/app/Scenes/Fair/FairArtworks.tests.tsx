@@ -1,82 +1,111 @@
+import { screen } from "@testing-library/react-native"
 import { FairArtworksTestsQuery } from "__generated__/FairArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("FairArtworks", () => {
-  const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    const tree = renderWithWrappersLEGACY(
-      <QueryRenderer<FairArtworksTestsQuery>
-        environment={env}
-        query={graphql`
-          query FairArtworksTestsQuery($fairID: String!) @relay_test_operation {
-            fair(id: $fairID) {
-              ...FairArtworks_fair
-            }
-          }
-        `}
-        variables={{ fairID: "art-basel-hong-kong-2020" }}
-        render={({ props, error }) => {
-          if (error) {
-            console.log(error)
-            return null
-          }
+  const TestRenderer = () => (
+    <QueryRenderer<FairArtworksTestsQuery>
+      query={query}
+      environment={mockEnvironment}
+      variables={{
+        fairID: "art-basel-hong-kong-2020",
+      }}
+      render={({ props, error }) => {
+        if (error) {
+          console.log(error)
+          return null
+        }
 
-          if (!props || !props.fair) {
-            return null
-          }
-          return (
-            <ArtworkFiltersStoreProvider>
-              <FairArtworksFragmentContainer fair={props.fair} />
-            </ArtworkFiltersStoreProvider>
-          )
-        }}
-      />
-    )
+        if (!props?.fair) {
+          return null
+        }
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+        return (
+          <ArtworkFiltersStoreProvider>
+            <FairArtworksFragmentContainer fair={props.fair} />
+          </ArtworkFiltersStoreProvider>
+        )
+      }}
+    />
+  )
 
-    return tree
-  }
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
 
-  it("renders a grid of artworks", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
+  it("renders a grid of artworks", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Fair: () => fair,
+    })
+
+    await flushPromiseQueue()
+
+    expect(screen.getByText("Artwork Title")).toBeTruthy()
   })
 
   it("requests artworks in batches of 30", () => {
-    const wrapper = getWrapper()
-    const artworksGridContainer = wrapper.root.findByType(InfiniteScrollArtworksGridContainer)
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Fair: () => fair,
+    })
+
+    const artworksGridContainer = screen.UNSAFE_getByType(InfiniteScrollArtworksGridContainer)
     expect(artworksGridContainer.props).toMatchObject({ pageSize: 30 })
   })
 
-  it("renders null if there are no artworks", () => {
-    const wrapper = getWrapper({
+  it("renders empty view if there are no artworks", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Fair: () => ({
         fairArtworks: {
           edges: [],
           counts: {
             total: 0,
-            followedArtists: 0,
           },
         },
       }),
     })
 
-    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(wrapper.root)).toContain(
-      "No results found\nPlease try another search.Clear filters"
-    )
+    await flushPromiseQueue()
+
+    expect(screen.getByText(/No results found/)).toBeTruthy()
   })
 })
+
+const query = graphql`
+  query FairArtworksTestsQuery($fairID: String!) @relay_test_operation {
+    fair(id: $fairID) {
+      ...FairArtworks_fair
+    }
+  }
+`
+
+const artwork = {
+  slug: "artwork-slug",
+  id: "artwork-id",
+  internalID: "artwork-internalID",
+  title: "Artwork Title",
+}
+
+const fair = {
+  fairArtworks: {
+    edges: [{ node: artwork }],
+    counts: {
+      total: 1,
+    },
+  },
+}
