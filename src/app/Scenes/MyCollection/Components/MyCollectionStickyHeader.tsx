@@ -85,10 +85,10 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
-  const setView = MyCollectionTabsStore.useStoreActions((actions) => actions.setView)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
-    setView("Add")
+    setViewKind({ viewKind: "Add" })
   }, 100)
 
   const { width } = useMeasure({ ref: closeIconRef })

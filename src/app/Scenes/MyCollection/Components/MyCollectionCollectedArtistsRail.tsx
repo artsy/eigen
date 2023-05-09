@@ -1,34 +1,41 @@
-import { Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Text, useSpace } from "@artsy/palette-mobile"
+import { MyCollectionCollectedArtistsRail_myCollectionInfo$key } from "__generated__/MyCollectionCollectedArtistsRail_myCollectionInfo.graphql"
+import { MyCollectionCollectedArtistsOnlyView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsOnlyView"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { ScrollView } from "react-native"
+import { graphql, useFragment } from "react-relay"
 
-export const MyCollectionCollectedArtistsRail = () => {
+interface MyCollectionCollectedArtistsRail {
+  myCollectionInfo: MyCollectionCollectedArtistsRail_myCollectionInfo$key
+}
+
+export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRail> = ({
+  myCollectionInfo,
+}) => {
   const space = useSpace()
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+  const myCollectionInfoData = useFragment<MyCollectionCollectedArtistsRail_myCollectionInfo$key>(
+    collectedArtistsFragment,
+    myCollectionInfo
+  )
+
+  if (!myCollectionInfoData) {
+    return null
+  }
+
+  if (selectedTab === "Artists") {
+    return <MyCollectionCollectedArtistsOnlyView myCollectionInfo={myCollectionInfoData} />
+  }
 
   return (
     <ScrollView horizontal contentContainerStyle={{ paddingTop: space(2) }}>
-      <Artist />
-      <Spacer x={2} />
-      <Artist />
-      <Spacer x={2} />
-      <Artist />
+      <Text>Collected artists rail</Text>
     </ScrollView>
   )
 }
 
-export const ARTIST_CIRCLE_DIAMETER = 80
-
-const Artist: React.FC = () => {
-  return (
-    <Flex width={ARTIST_CIRCLE_DIAMETER}>
-      <Flex
-        height={ARTIST_CIRCLE_DIAMETER}
-        width={ARTIST_CIRCLE_DIAMETER}
-        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-        backgroundColor="black10"
-      ></Flex>
-      <Text variant="xs" numberOfLines={2} textAlign="center">
-        Artist Name
-      </Text>
-    </Flex>
-  )
-}
+const collectedArtistsFragment = graphql`
+  fragment MyCollectionCollectedArtistsRail_myCollectionInfo on MyCollectionInfo {
+    ...MyCollectionCollectedArtistsOnlyView_myCollectionInfo
+  }
+`

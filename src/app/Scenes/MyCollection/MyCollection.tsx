@@ -152,7 +152,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <StickyTabPageScrollView>
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtistsRail myCollectionInfo={me.myCollectionInfo!} />
         {selectedTab === null && (
           <>
             <Separator my={4} />
@@ -180,7 +180,7 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtistsRail myCollectionInfo={me.myCollectionInfo!} />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
@@ -218,6 +218,7 @@ export const MyCollectionContainer = createPaginationContainer(
           includesPurchasedArtworks
           artistsCount
           artworksCount
+          ...MyCollectionCollectedArtistsRail_myCollectionInfo
         }
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
