@@ -29,7 +29,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
 
   return (
-    <Touchable onPress={() => navigate("/artwork-list")}>
+    <Touchable onPress={() => navigate(`/artwork-list/${item.internalID}`)}>
       <Flex
         justifyContent="space-between"
         width={itemWidth}
