@@ -183,7 +183,7 @@ const Home = memo((props: HomeProps) => {
       const newVisibleRails = new Set<string>()
 
       // Track currently visible rails // needed to enabe tracking artwork views
-      if (enableItemViewsTracking) {
+      if (enableItemViewsTracking && isFocused) {
         viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
           newVisibleRails.add(title)
         })
