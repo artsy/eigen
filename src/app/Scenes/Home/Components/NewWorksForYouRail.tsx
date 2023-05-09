@@ -9,7 +9,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -85,7 +84,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             artworks={artworks}
             onPress={handleOnArtworkPress}
             showSaveIcon={enableSaveIcon}
-            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
             onMorePress={() => {
               trackEvent(tracks.tappedMoreCard())
               navigate("/new-for-you")
