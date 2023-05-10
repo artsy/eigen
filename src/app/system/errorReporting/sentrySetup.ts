@@ -40,6 +40,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableOutOfMemoryTracking: false,
+    integrations: [new Sentry.BrowserIntegrations.Breadcrumbs({ dom: false })],
     ...props,
   })
 }
