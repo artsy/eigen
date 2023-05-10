@@ -32,6 +32,7 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
+
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
@@ -51,6 +52,7 @@
 #import <React/RCTRootView.h>
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
+#import <React/RCTLinkingManager.h>
 
 #import <React/RCTAppSetupUtils.h>
 #if RCT_NEW_ARCH_ENABLED
@@ -261,6 +263,8 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
+
+
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
 
@@ -318,10 +322,7 @@ static ARAppDelegate *_sharedInstance = nil;
             return NO;
         }
     }
-
-    [[AREmission sharedInstance] navigate:[url absoluteString]];
-
-    return YES;
+    return [RCTLinkingManager application:app openURL:url options:options];
 }
 
 - (void)countNumberOfRuns
