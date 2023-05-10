@@ -337,6 +337,7 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Activity: reactModule(Activity, {
+    fullBleed: true,
     hidesBackButton: true,
   }),
   About: reactModule(About),
