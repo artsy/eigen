@@ -53,14 +53,16 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
     }, 2000)
   }
 
-  const collectedArtistsConnection = extractNodes(myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(myCollectionInfo?.collectedArtistsConnection)
+
+  if (!collectedArtists) return <></>
 
   return (
     <Flex mx={-2}>
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={collectedArtistsConnection}
+        data={collectedArtists}
         renderItem={({ index, item }) => (
           <Artist
             key={index}
