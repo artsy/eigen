@@ -2,6 +2,16 @@ import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import { ARTWORK_MEDIUM_QUERY, ArtworkMediumFragmentContainer } from "./ArtworkMedium"
 
+jest.mock("@react-navigation/native", () => {
+  const { useEffect } = require("react")
+  const actualModule = jest.requireActual("@react-navigation/native")
+
+  return {
+    ...actualModule,
+    useFocusEffect: useEffect,
+  }
+})
+
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: ArtworkMediumFragmentContainer,
   query: ARTWORK_MEDIUM_QUERY,

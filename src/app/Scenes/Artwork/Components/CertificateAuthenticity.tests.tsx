@@ -7,6 +7,16 @@ jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 
+jest.mock("@react-navigation/native", () => {
+  const { useEffect } = require("react")
+  const actualModule = jest.requireActual("@react-navigation/native")
+
+  return {
+    ...actualModule,
+    useFocusEffect: useEffect,
+  }
+})
+
 describe("CertificateAuthenticity", () => {
   it("renders", () => {
     const { getByText } = renderWithWrappers(<CertificateOfAuthenticity />)
