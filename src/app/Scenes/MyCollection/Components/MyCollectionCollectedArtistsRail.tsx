@@ -16,7 +16,6 @@ export const ARTIST_CIRCLE_DIAMETER = 70
 const AddMoreButton = () => {
   return (
     <Flex
-      mr={1}
       width={ARTIST_CIRCLE_DIAMETER}
       height={ARTIST_CIRCLE_DIAMETER}
       borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
@@ -57,7 +56,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   const collectedArtistsConnection = extractNodes(myCollectionInfo?.collectedArtistsConnection)
 
   return (
-    <>
+    <Flex mx={-2}>
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -73,9 +72,13 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         keyExtractor={({ internalID }) => internalID}
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={2} />}
-        contentContainerStyle={{ paddingTop: space(2), paddingBottom: 20 }}
+        contentContainerStyle={{
+          paddingTop: space(2),
+          paddingBottom: space(2),
+          marginHorizontal: space(2),
+        }}
         ListFooterComponent={
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" mr={4}>
             {!!isLoading && (
               <Flex
                 mr={1}
@@ -92,7 +95,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         }
         onEndReached={handleLoadMore}
       />
-    </>
+    </Flex>
   )
 }
 
@@ -116,9 +119,16 @@ export const MyCollectionCollectedArtistsRailFragmentContiner = createPagination
   {
     myCollectionInfo: graphql`
       fragment MyCollectionCollectedArtistsRail_myCollectionInfo on MyCollectionInfo
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        collectedArtistsConnection(first: $count, includePersonalArtists: true, after: $cursor)
-          @connection(key: "MyCollection_collectedArtistsConnection") {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        includePersonalArtists: { type: "Boolean", defaultValue: true }
+        cursor: { type: "String" }
+      ) {
+        collectedArtistsConnection(
+          first: $count
+          includePersonalArtists: $includePersonalArtists
+          after: $cursor
+        ) @connection(key: "MyCollection_collectedArtistsConnection") {
           totalCount
           pageInfo {
             hasNextPage
@@ -157,11 +167,19 @@ export const MyCollectionCollectedArtistsRailFragmentContiner = createPagination
       }
     },
     query: graphql`
-      query MyCollectionCollectedArtistsRailQuery($cursor: String, $count: Int!) {
+      query MyCollectionCollectedArtistsRailQuery(
+        $cursor: String
+        $count: Int!
+        $includePersonalArtists: Boolean!
+      ) {
         me {
           myCollectionInfo {
             ...MyCollectionCollectedArtistsRail_myCollectionInfo
-              @arguments(cursor: $cursor, count: $count)
+              @arguments(
+                cursor: $cursor
+                count: $count
+                includePersonalArtists: $includePersonalArtists
+              )
           }
         }
       }
