@@ -12160,13 +12160,7 @@ type MyCollectionConnection {
 
   # A list of edges.
   edges: [MyCollectionEdge]
-
-  # A globally unique ID.
-  id: ID!
   includesPurchasedArtworks: Boolean!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   name: String!
   pageCursors: PageCursors!
 
@@ -12234,7 +12228,7 @@ type MyCollectionEdge {
   node: Artwork
 }
 
-type MyCollectionInfo implements Node {
+type MyCollectionInfo {
   # Insights for all collected artists
   artistInsights(
     # The type of insight.
@@ -12259,13 +12253,7 @@ type MyCollectionInfo implements Node {
   ): ArtistConnection
   default: Boolean!
   description: String!
-
-  # A globally unique ID.
-  id: ID!
   includesPurchasedArtworks: Boolean!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   name: String!
   private: Boolean!
 }
