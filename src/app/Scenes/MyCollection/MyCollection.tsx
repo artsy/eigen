@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionCollectedArtistsRailFragmentContiner } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -151,7 +151,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <StickyTabPageScrollView>
-        <MyCollectionCollectedArtistsRail myCollectionInfo={me.myCollectionInfo} />
+        <MyCollectionCollectedArtistsRailFragmentContiner myCollectionInfo={me.myCollectionInfo} />
         {selectedTab === null && (
           <>
             <Separator my={4} />
@@ -179,7 +179,7 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
-        <MyCollectionCollectedArtistsRail myCollectionInfo={me.myCollectionInfo} />
+        <MyCollectionCollectedArtistsRailFragmentContiner myCollectionInfo={me.myCollectionInfo} />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
