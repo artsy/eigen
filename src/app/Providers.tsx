@@ -64,8 +64,8 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       Theme,
       PopoverMessageProvider,
       ShareSheetProvider,
-      ToastProvider,
       ArtworkListsProvider,
+      ToastProvider,
     ],
     children
   )
