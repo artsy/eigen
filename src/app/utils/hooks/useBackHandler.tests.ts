@@ -9,16 +9,6 @@ jest.mock("react-native", () => ({
   },
 }))
 
-jest.mock("@react-navigation/native", () => {
-  const { useEffect } = require("react")
-  const actualModule = jest.requireActual("@react-navigation/native")
-
-  return {
-    ...actualModule,
-    useFocusEffect: useEffect,
-  }
-})
-
 describe("useBackHandler Hooks", () => {
   const addEventListenerMock = BackHandler.addEventListener as jest.Mock
   const removeEventListenerMock = BackHandler.removeEventListener as jest.Mock

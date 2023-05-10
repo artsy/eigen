@@ -12,16 +12,6 @@ const { getWrapper } = setupTestWrapper_LEGACY({
   query: ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
 })
 
-jest.mock("@react-navigation/native", () => {
-  const { useEffect } = require("react")
-  const actualModule = jest.requireActual("@react-navigation/native")
-
-  return {
-    ...actualModule,
-    useFocusEffect: useEffect,
-  }
-})
-
 describe("ArtworkAttributionClassFAQ", () => {
   it("renders the header", () => {
     const wrapper = getWrapper()
