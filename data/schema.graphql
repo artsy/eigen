@@ -1324,6 +1324,10 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     published: Boolean = true
     sort: ArtworkSorts
   ): ArtworkConnection
+
+  # The total number of artworks by this artist within the collection (this field
+  # will be `undefined` outside of the context of a collection).
+  artworksCountWithinCollection: Int
   auctionResultsConnection(
     after: String
 
@@ -12160,13 +12164,7 @@ type MyCollectionConnection {
 
   # A list of edges.
   edges: [MyCollectionEdge]
-
-  # A globally unique ID.
-  id: ID!
   includesPurchasedArtworks: Boolean!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   name: String!
   pageCursors: PageCursors!
 
@@ -12234,7 +12232,7 @@ type MyCollectionEdge {
   node: Artwork
 }
 
-type MyCollectionInfo implements Node {
+type MyCollectionInfo {
   # Insights for all collected artists
   artistInsights(
     # The type of insight.
@@ -12259,13 +12257,7 @@ type MyCollectionInfo implements Node {
   ): ArtistConnection
   default: Boolean!
   description: String!
-
-  # A globally unique ID.
-  id: ID!
   includesPurchasedArtworks: Boolean!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
   name: String!
   private: Boolean!
 }
