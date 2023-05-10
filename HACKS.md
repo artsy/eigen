@@ -28,6 +28,56 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
+## @segment+analytics-react-native-appboy patch
+
+### When can we remove this:
+
+When we upgrade to a version of `@segment/analytics-react-native` that includes an updated kotlin version compatible with the version of kotlin we need for React Native.
+
+### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to kotlin version missmatch.
+
+## react-native patch
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+## deprecated-react-native-prop-types dependency
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+## react-native-credit-card-input
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+## react-native-scrollable-tab-view patch
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:
@@ -39,26 +89,6 @@ Remove when we stop swizzling UIWindow via ARWindow or react-native-image-crop-p
 https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
-
-## react-native patch-package (stacktrace-parser part only).
-
-#### When can we remove this:
-
-When this is merged: https://github.com/facebook/react-native/pull/30345.
-
-#### Explanation/Context:
-
-For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
-
-## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
-
-#### When can we remove this:
-
-When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/33756
-
-#### Explanation/Context:
-
-Jest 28 changed the way it handles transformed file input.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
@@ -295,36 +325,6 @@ We either need to find a library that gives us masonry layout using a Virtualize
 
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
-
-## react-native patch-package (find-node/asdf part)
-
-#### When we can remove this:
-
-When we upgrade to RN 0.69+.
-
-At that point, we need to add the following to our new `ios/.xcode.env` file:
-
-```
-
-# Support Homebrew on M1
-HOMEBREW_M1_BIN=/opt/homebrew/bin
-if [[ -d $HOMEBREW_M1_BIN && ! $PATH =~ $HOMEBREW_M1_BIN ]]; then
-  export PATH="$HOMEBREW_M1_BIN:$PATH"
-fi
-
-# Set up asdf
-if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  # shellcheck source=/dev/null
-  . "$HOME/.asdf/asdf.sh"
-elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
-  # shellcheck source=/dev/null
-  . "$(brew --prefix asdf)/libexec/asdf.sh"
-fi
-```
-
-#### Explanation/Context
-
-RN 0.68- was using `find-node.sh` to find node on our systems, so it would look for asdf, nvm, nodenv, and others. After 0.69, this file is removed and now we have the `.xcode.env` file to do this ourselves. Since we use asdf, we need to add the asdf bit above. If we want to support other version managers, we can add those too. Grab whatever we need from here https://github.com/facebook/react-native/blob/0.68-stable/scripts/find-node.sh.
 
 ## react-native-scrollable-tab-view pointing to a commit hash
 
