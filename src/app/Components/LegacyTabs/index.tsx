@@ -1,8 +1,13 @@
+/**
+ * TODO: This folder can be deleted once the new react-collapsible-tabs-view
+ * tabs are used everywhere.
+ */
+
 import { TabVisualClues } from "app/Components/StickyTabPage/StickyTabPage"
 import { ContentTabs } from "./ContentTabs"
-import { NavigationalTabs } from "./NavigationalTabs"
-import { StepTabs } from "./StepTabs"
-export * from "./Tab"
+import { NavigationalTabs } from "./LegacyNavigationalTabs"
+import { StepTabs } from "./LegacyStepTabs"
+export * from "./LegacyTab"
 
 export { NavigationalTabs, ContentTabs, StepTabs }
 

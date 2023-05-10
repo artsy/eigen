@@ -3,8 +3,8 @@ import React, { useState } from "react"
 import { View } from "react-native"
 import { TabsProps, TabsType } from "."
 import { ContentTabs } from "./ContentTabs"
-import { NavigationalTabs } from "./NavigationalTabs"
-import { StepTabs } from "./StepTabs"
+import { NavigationalTabs } from "./LegacyNavigationalTabs"
+import { StepTabs } from "./LegacyStepTabs"
 
 interface WrapperProps {
   component: React.FC<TabsProps>
