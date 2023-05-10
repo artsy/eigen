@@ -185,7 +185,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           <Text variant="lg-display" color={color("white100")}>
             {specialist.name}
           </Text>
-          <Text variant="xs" mb={0.5} color={color("white100")}>
+          <Text variant="xs" fontWeight="bold" mb={1} color={color("white100")}>
             {specialist.jobTitle}
           </Text>
           <Flex>
