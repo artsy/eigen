@@ -1,35 +1,21 @@
-import { ArtworkListTestsQuery } from "__generated__/ArtworkListTestsQuery.graphql"
 import { ArtworkList } from "app/Scenes/ArtworkList/ArtworkList"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { QueryRenderer, graphql } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("ArtworkList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<ArtworkListTestsQuery>
-      query={graphql`
-        query ArtworkListTestsQuery($listID: String!, $count: Int) {
-          me {
-            ...ArtworkList_artworksConnection @arguments(listID: $listID, count: $count)
-          }
-        }
-      `}
-      render={() => <ArtworkList listID="some-id" />}
-      variables={{ listID: "some-id", count: 10 }}
-      environment={mockEnvironment}
-    />
-  )
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
 
   it("renders ArtworkList", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithHookWrappersTL(
+      <ArtworkList listID="some-id" />,
+      mockEnvironment
+    )
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => me,
@@ -42,7 +28,10 @@ describe("ArtworkList", () => {
   })
 
   it("displays the artworks", async () => {
-    const { findByText } = renderWithHookWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithHookWrappersTL(
+      <ArtworkList listID="some-id" />,
+      mockEnvironment
+    )
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => me,
