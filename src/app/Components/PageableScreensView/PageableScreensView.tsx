@@ -25,7 +25,7 @@ export const PageableScreensView: React.FC<PageableScreensViewProps> = (props) =
     activeScreen: screens[activeScreenIndex],
   }
 
-  const handlePageSelected: PagerViewProps["onPageSelected"] = (event) => {
+  const handlePageSelected: PagerViewProps["onPageSelected"] = (event: any) => {
     setActiveScreenIndex(event.nativeEvent.position)
   }
 
