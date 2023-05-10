@@ -13,7 +13,7 @@ interface MyCollectionCollectedArtistsRailProps {
 
 export const ARTIST_CIRCLE_DIAMETER = 70
 
-const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
+export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
   myCollectionInfo,
   relay,
 }) => {
