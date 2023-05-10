@@ -13,7 +13,7 @@
     "bundle:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output dist/main.jsbundle  --sourcemap-output dist/main.jsbundle.map --assets-dest dist",
     "bundle:android": "yarn bundle:android:hermes && yarn bundle:hermes && yarn sourcemap-merge:android",
     "bundle:android:hermes": "./scripts/hermes-android-bundle.sh",
-    "bundle:hermes": "NODE_OPTIONS=--max_old_space_size=8192 ./node_modules/react-native/sdks/hermesc/`node -e \"const platform=require('os').platform();console.log(platform === 'darwin' ? 'osx-bin' : (platform === 'linux' ? 'linux64-bin' : (platform === 'win32' ? 'win64-bin' : 'unsupported-os')));\"`/hermesc -O -emit-binary -output-source-map -out=android/app/src/main/assets/index.android.bundle.hbc android/app/src/main/assets/index.android.bundle && rm -f android/app/src/main/assets/index.android.bundle && mv android/app/src/main/assets/index.android.bundle.hbc android/app/src/main/assets/index.android.bundle",
+    "bundle:hermes": "./scripts/hermes-android-bundle-bytecode.sh",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "ci:lint": "yarn lint --format json --out eslint-errors.json",
