@@ -1,7 +1,8 @@
-import { Avatar, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Avatar, Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsRail_myCollectionInfo$data } from "__generated__/MyCollectionCollectedArtistsRail_myCollectionInfo.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { ScrollView } from "react-native"
+import { useState } from "react"
+import { Animated } from "react-native"
 import { RelayPaginationProp, createPaginationContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -17,35 +18,65 @@ const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRai
   relay,
 }) => {
   const space = useSpace()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleLoadMore = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
+      return
+    }
+
+    setIsLoading(true)
+
+    setTimeout(() => {
+      relay.loadMore(10, (err) => {
+        setIsLoading(false)
+
+        if (err) {
+          console.error(err)
+        }
+      })
+    }, 2000)
+  }
 
   const collectedArtistsConnection = extractNodes(myCollectionInfo?.collectedArtistsConnection)
 
   return (
-    <ScrollView
-      horizontal
-      contentContainerStyle={{ paddingTop: space(2) }}
-      showsHorizontalScrollIndicator={false}
-    >
-      {collectedArtistsConnection.map((artist, index) => {
-        return (
+    <>
+      <Animated.FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={collectedArtistsConnection}
+        renderItem={({ index, item }) => (
           <Artist
             key={index}
-            initials={artist.initials || undefined}
-            name={artist.name || ""}
-            image={artist.image?.url || ""}
+            initials={item.initials || undefined}
+            name={item.name || ""}
+            image={item.image?.url || ""}
           />
-        )
-      })}
-      <Avatar initials="+" size="sm" />
-      <Text
-        onPress={() => {
-          // TODO: load more on croll
-          if (relay.hasMore()) relay.loadMore(1)
-        }}
-      >
-        LOAD MORE
-      </Text>
-    </ScrollView>
+        )}
+        keyExtractor={({ internalID }) => internalID}
+        onEndReachedThreshold={0.2}
+        ItemSeparatorComponent={() => <Spacer y={2} />}
+        contentContainerStyle={{ paddingTop: space(2), paddingBottom: 20 }}
+        ListFooterComponent={
+          <Flex flexDirection="row">
+            {!!isLoading && (
+              <Flex
+                mr={1}
+                width={ARTIST_CIRCLE_DIAMETER}
+                height={ARTIST_CIRCLE_DIAMETER}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Spinner />
+              </Flex>
+            )}
+            <Avatar initials="+" size="sm" />
+          </Flex>
+        }
+        onEndReached={handleLoadMore}
+      />
+    </>
   )
 }
 
@@ -69,9 +100,10 @@ export const MyCollectionCollectedArtistsRailFragmentContiner = createPagination
   {
     myCollectionInfo: graphql`
       fragment MyCollectionCollectedArtistsRail_myCollectionInfo on MyCollectionInfo
-      @argumentDefinitions(count: { type: "Int", defaultValue: 1 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         collectedArtistsConnection(first: $count, includePersonalArtists: true, after: $cursor)
           @connection(key: "MyCollection_collectedArtistsConnection") {
+          totalCount
           pageInfo {
             hasNextPage
             startCursor
@@ -79,6 +111,7 @@ export const MyCollectionCollectedArtistsRailFragmentContiner = createPagination
           }
           edges {
             node {
+              internalID
               name
               initials
               image {
