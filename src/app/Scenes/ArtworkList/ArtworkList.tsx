@@ -1,10 +1,10 @@
-import { Flex, Separator, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListQuery } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -16,10 +16,14 @@ interface ArtworkListScreenProps {
 }
 
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
-  const queryData = useLazyLoadQuery<ArtworkListQuery>(ArtworkListScreenQuery, {
-    listID,
-    count: PAGE_SIZE,
-  })
+  const queryData = useLazyLoadQuery<ArtworkListQuery>(
+    ArtworkListScreenQuery,
+    {
+      listID,
+      count: PAGE_SIZE,
+    },
+    { fetchPolicy: "store-or-network" }
+  )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     ArtworkListQuery,
@@ -28,27 +32,8 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const ArtworksGridHeaderContainer = () => {
-    const totalArtworksCount = data?.artworkList?.artworks?.totalCount
-    return (
-      <Flex my={1}>
-        <Text ml={2} mb={1} variant="lg">
-          {data?.artworkList?.name}
-        </Text>
-        <Separator borderColor="black10" mt={1} />
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Text ml={2} variant="xs" color="black60">
-            {totalArtworksCount} {totalArtworksCount === 1 ? "Artwork" : "Artworks"}
-          </Text>
-          <ArtworksFilterHeader
-            onFilterPress={() => console.log("Nothing for now")}
-            selectedFiltersCount={0}
-            showSeparator={false}
-          />
-        </Flex>
-      </Flex>
-    )
-  }
+  const artworkList = data?.artworkList!
+  const artworksCount = artworkList.artworks?.totalCount ?? 0
 
   return (
     <>
@@ -58,7 +43,9 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
         hasMore={() => hasNext}
         isLoading={() => isLoadingNext}
-        HeaderComponent={<ArtworksGridHeaderContainer />}
+        HeaderComponent={
+          <ArtworkListArtworksGridHeader title={artworkList.name} artworksCount={artworksCount} />
+        }
         shouldAddPadding
         refreshControl={RefreshControl}
       />
@@ -113,9 +100,15 @@ const ArtworkListPlaceholder = () => {
   const space = useSpace()
   return (
     <ProvidePlaceholderContext>
-      <Flex mt={6} px={2}>
+      <ArtworkListHeader />
+
+      <Flex px={2}>
         <PlaceholderText height={20} width={200} marginVertical={space(2)} />
         <Separator borderColor="black10" mt={1} mb={2} />
+        <Flex justifyContent="space-between" flexDirection="row" mb={2}>
+          <PlaceholderText width={120} height={22} />
+          <PlaceholderText width={80} height={22} />
+        </Flex>
         <GenericGridPlaceholder width={screen.width - space(4)} />
       </Flex>
     </ProvidePlaceholderContext>

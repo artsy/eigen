@@ -360,7 +360,7 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
-  ArtworkList: reactModule(ArtworkListScreen),
+  ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
   ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),

@@ -1,13 +1,16 @@
-import { Flex, MoreIcon, Touchable, useSpace } from "@artsy/palette-mobile"
+import { MoreIcon } from "@artsy/palette-mobile"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { goBack } from "app/system/navigation/navigate"
+
+const EditHeaderButton = () => <MoreIcon fill="black100" width={24} height={24} />
 
 export const ArtworkListHeader = () => {
-  const space = useSpace()
-
   return (
-    <Flex alignItems="flex-end">
-      <Touchable onPress={() => console.log("Nothing for now")} style={{ height: space(6) }}>
-        <MoreIcon fill="black100" width={24} height={24} mt={2} mr={2} />
-      </Touchable>
-    </Flex>
+    <FancyModalHeader
+      onLeftButtonPress={goBack}
+      renderRightButton={EditHeaderButton}
+      onRightButtonPress={() => console.log("ALARM")}
+      hideBottomDivider
+    />
   )
 }
