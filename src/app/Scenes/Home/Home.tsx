@@ -724,7 +724,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
         storeContext: true,
       })
     }
-  }, [worksForYouRecommendationsModel.enabled])
+  }, [worksForYouRecommendationsModel.enabled, isFocused])
 
   useEffect(() => {
     if (flash_message) {
