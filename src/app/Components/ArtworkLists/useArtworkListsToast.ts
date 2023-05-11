@@ -11,6 +11,7 @@ export const useArtworkListToast = () => {
   const savedToDefaultArtworkList = (onToastPress: () => void) => {
     toast.show("Artwork saved", DEFAULT_TOAST_PLACEMENT, {
       backgroundColor: "green100",
+      cta: "Add to a List",
       onPress: onToastPress,
     })
   }
