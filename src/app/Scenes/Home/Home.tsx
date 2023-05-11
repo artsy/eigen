@@ -7,6 +7,7 @@ import {
   SpacingUnitDSValueNumber,
   Join,
 } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -64,7 +65,6 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -130,7 +130,7 @@ export interface HomeProps extends ViewProps {
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
 
-  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
+  const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
@@ -154,6 +154,16 @@ const Home = memo((props: HomeProps) => {
     prefetchUrl("sales")
   }, [])
 
+  // we cannot rely on mount events for screens in tab views for screen tracking
+  // because they can be mounted before the screen is visible
+  // do custom screen view instead
+
+  useFocusEffect(
+    useCallback(() => {
+      tracking.trackEvent(HomeAnalytics.homeScreenViewed())
+    }, [])
+  )
+
   const { loading, relay } = props
 
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
@@ -173,13 +183,13 @@ const Home = memo((props: HomeProps) => {
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       const newVisibleRails = new Set<string>()
 
-      // Track currently visible rails // needed to enabe tracking artwork views
+      // Track currently visible rails // needed to enable tracking artwork views
       if (enableItemViewsTracking) {
         viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
           newVisibleRails.add(title)
         })
 
-        seVisibleRails(newVisibleRails)
+        setVisibleRails(newVisibleRails)
       }
 
       // Track all viewed rails
@@ -346,30 +356,23 @@ const Home = memo((props: HomeProps) => {
   )
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <AboveTheFoldFlatList<HomeModule>
-          testID="home-flat-list"
-          data={modules}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          prefetchUrlExtractor={(item) => item?.prefetchUrl}
-          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
-          renderItem={renderItem}
-          ListHeaderComponent={<HomeHeader />}
-          ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
-          ItemSeparatorComponent={ModuleSeparator}
-          keyExtractor={(_item) => _item.title}
-        />
-        {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
-      </View>
-    </ProvideScreenTracking>
+    <View style={{ flex: 1 }}>
+      <AboveTheFoldFlatList<HomeModule>
+        testID="home-flat-list"
+        data={modules}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        prefetchUrlExtractor={(item) => item?.prefetchUrl}
+        prefetchVariablesExtractor={(item) => item?.prefetchVariables}
+        renderItem={renderItem}
+        ListHeaderComponent={<HomeHeader />}
+        ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+        ItemSeparatorComponent={ModuleSeparator}
+        keyExtractor={(_item) => _item.title}
+      />
+      {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
+    </View>
   )
 })
 

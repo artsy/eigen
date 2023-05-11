@@ -149,7 +149,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   version: versionProp,
 }) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
