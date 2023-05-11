@@ -19,7 +19,7 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
     <>
       <Text>{data.layout}</Text>
 
-      {data.figures.map((figure, index) => {
+      {data?.figures?.map((figure, index) => {
         return (
           <Fragment key={index}>
             <ArticleSectionImageCollectionImage figure={figure} />

@@ -66,6 +66,11 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
     edges: [
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
@@ -89,10 +94,21 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS22222",
           slug: "this-artworks-slug-2",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id",
           isSaved: false,
           href: "/artwork/another-another-id-3",
@@ -121,10 +137,21 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS",
           slug: "this-artworks-slug",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
       {
         node: {
+          availability: "Not for sale",
+          isAcquireable: true,
+          isBiddable: true,
+          isInquireable: true,
+          isOfferable: true,
           id: "another-another-id-3",
           isSaved: false,
           href: "/artwork/another-another-id-3",
@@ -163,6 +190,12 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS3333",
           slug: "this-artworks-slug-3",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
     ],

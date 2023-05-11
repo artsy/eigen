@@ -121,6 +121,11 @@ describe("ArtworksInSeriesRail", () => {
                 edges: [
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc123",
                       isSaved: false,
                       slug: "alex-katz-departure-28",
@@ -147,10 +152,21 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Haw Contemporary",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc456",
                       isSaved: false,
                       slug: "alex-katz-departure-56",
@@ -177,10 +193,21 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Newzones",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc789",
                       isSaved: false,
                       slug: "alex-katz-departure-2-ada",
@@ -207,10 +234,21 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Kasmin",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "xyz123",
                       isSaved: false,
                       slug: "alex-katz-park-avenue-departure",
@@ -237,10 +275,21 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Kasmin",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
                     node: {
+                      availability: "Not for sale",
+                      isAcquireable: true,
+                      isBiddable: true,
+                      isInquireable: true,
+                      isOfferable: true,
                       id: "abc012",
                       isSaved: false,
                       slug: "alex-katz-departure-cut-out-2",
@@ -267,6 +316,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Meyerovich Gallery",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                 ],

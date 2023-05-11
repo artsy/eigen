@@ -99,8 +99,11 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         <Text variant="xs" color="grey" mx={2}>
           {userEmail}
         </Text>
-        <DevMenuButtonItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
 
+        <DevMenuButtonItem
+          title="Open RN Dev Menu"
+          onPress={() => NativeModules?.DevMenu?.show()}
+        />
         <DevMenuButtonItem
           title="Go to Storybook"
           onPress={() => {

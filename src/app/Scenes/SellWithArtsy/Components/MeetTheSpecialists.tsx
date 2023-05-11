@@ -5,6 +5,7 @@ import { Pill } from "app/Components/Pill"
 import { ReadMore } from "app/Components/ReadMore"
 import {
   SpecialistsData,
+  Specialty,
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
@@ -29,8 +30,7 @@ export const MeetTheSpecialists: React.FC<{
   const color = useColor()
   const space = useSpace()
 
-  const initialSpecialty = "auctions"
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>(initialSpecialty)
+  const [specialityFilter, setSpecialityFilter] = useState<Specialty | null>(null)
 
   const {
     data: { specialists },
@@ -59,7 +59,9 @@ export const MeetTheSpecialists: React.FC<{
     "title"
   )
 
-  const specialistsToDisplay = specialists.filter((i) => i.specialty === selectedSpecialty)
+  const specialistsToDisplay = specialityFilter
+    ? specialists.filter((i) => i.specialty === specialityFilter)
+    : specialists
 
   return (
     <Flex>
@@ -78,9 +80,9 @@ export const MeetTheSpecialists: React.FC<{
           <Pill
             key={pill.title}
             rounded
-            selected={selectedSpecialty === pill.type}
+            selected={specialityFilter === pill.type}
             onPress={() => {
-              setSelectedSpecialty(pill.type)
+              setSpecialityFilter(specialityFilter === pill.type ? null : pill.type)
             }}
             mr={1}
             stateStyle={{
@@ -140,7 +142,7 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-  const bioTextLimit = isPad() ? 160 : 80
+  const bioTextLimit = isPad() ? 160 : 88
 
   const buttonText = `Contact ${specialist.firstName}`
 
@@ -166,7 +168,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           height: "100%",
           flexDirection: "row",
         }}
-        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
+        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 3 }}
         transition={{
           type: "timing",
           duration: 400,
@@ -185,7 +187,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           <Text variant="lg-display" color={color("white100")}>
             {specialist.name}
           </Text>
-          <Text variant="xs" mb={0.5} color={color("white100")}>
+          <Text variant="xs" fontWeight="bold" mb={1} color={color("white100")}>
             {specialist.jobTitle}
           </Text>
           <Flex>

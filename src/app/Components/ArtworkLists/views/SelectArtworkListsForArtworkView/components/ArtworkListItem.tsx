@@ -1,10 +1,8 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
-import {
-  ArtworkListMode,
-  useArtworkListsContext,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
+import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
+import { ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
 import { TouchableOpacity } from "react-native"
@@ -17,21 +15,24 @@ interface ArtworkListItemProps {
 }
 
 export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
-  const { state, dispatch } = useArtworkListsContext()
+  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.url ?? null
 
   const handleArtworkListPress = () => {
     const mode = artworkList.isSavedArtwork
-      ? ArtworkListMode.RemovingArtworkListIDs
-      : ArtworkListMode.AddingArtworkListIDs
+      ? ArtworkListMode.RemovingArtworkList
+      : ArtworkListMode.AddingArtworkList
 
     dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST_ID",
+      type: "ADD_OR_REMOVE_ARTWORK_LIST",
       payload: {
-        artworkListID: artworkList.internalID,
         mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
+        },
       },
     })
   }
@@ -49,7 +50,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
      * User added artwork to the previously unselected artwork list
      * So we have to display the artwork list as *selected*
      */
-    if (state.addingArtworkListIDs.includes(artworkList.internalID)) {
+    if (addingArtworkListIDs.includes(artworkList.internalID)) {
       return true
     }
 
@@ -57,7 +58,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
      * User deleted artwork from the previously selected artwork list
      * So we have to display the artwork list as *unselected*
      */
-    if (state.removingArtworkListIDs.includes(artworkList.internalID)) {
+    if (removingArtworkListIDs.includes(artworkList.internalID)) {
       return false
     }
 

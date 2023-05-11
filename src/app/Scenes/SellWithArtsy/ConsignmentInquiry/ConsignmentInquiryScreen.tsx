@@ -3,14 +3,15 @@ import { SentConsignmentInquiry } from "@artsy/cohesion/dist/Schema/Events/Consi
 import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInquiryScreenMutation.graphql"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
 import { useTracking } from "react-tracking"
 import { commitMutation, Environment, graphql } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import * as Yup from "yup"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
 import { ConsignmentInquiryForm } from "./ConsignmentInquiryForm"
@@ -131,6 +132,8 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     <FormikProvider value={formik}>
       <>
         <ArtsyKeyboardAvoidingView>
+          <FancyModalHeader hideBottomDivider />
+
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
@@ -139,7 +142,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
         </ArtsyKeyboardAvoidingView>
 
         <AbandonFlowModal
-          isVisible={showAbandonModal && !showConfirmedModal}
+          isVisible={!!showAbandonModal && !showConfirmedModal}
           title="Leave without sending message?"
           subtitle="Your message to the Sell with Artsy specialists will not been sent."
           leaveButtonTitle="Leave Without Sending"
@@ -149,7 +152,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
 
         <FancyModal
           fullScreen
-          visible={showConfirmedModal && !showAbandonModal}
+          visible={!!showConfirmedModal && !showAbandonModal}
           animationPosition="right"
         >
           <ConsignmentInquiryConfirmation />

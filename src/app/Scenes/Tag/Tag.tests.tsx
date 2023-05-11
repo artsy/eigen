@@ -1,94 +1,106 @@
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
-import About from "app/Components/Tag/About"
-import { TagArtworks } from "app/Components/Tag/TagArtworks"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { createMockEnvironment } from "relay-test-utils"
 import { Tag } from "./Tag"
 
 describe("Tag", () => {
   const tagID = "skull"
-  let environment: ReturnType<typeof createMockEnvironment>
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestRenderer = () => (
+    <QueryRenderer<TagTestsQuery>
+      query={query}
+      environment={mockEnvironment}
+      variables={{ tagID }}
+      render={({ props }) => {
+        if (!props?.tag) {
+          return null
+        }
+
+        return <Tag tagID={tagID} tag={props.tag} />
+      }}
+    />
+  )
 
   beforeEach(() => {
-    environment = createMockEnvironment()
-  })
-
-  function mockMostRecentOperation(mockResolvers: MockResolvers = {}) {
-    environment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ...mockResolvers,
-      })
-      return result
-    })
-  }
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<TagTestsQuery>
-        environment={environment}
-        query={graphql`
-          query TagTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
-            tag(id: $tagID) {
-              slug
-              description
-              ...TagHeader_tag
-              ...About_tag
-              ...TagArtworks_tag @arguments(input: $input)
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (props?.tag) {
-            return <Tag tagID={tagID} tag={props.tag} />
-          }
-
-          return null
-        }}
-        variables={{ tagID }}
-      />
-    )
-  }
-
-  it("renders without throwing an error", () => {
-    renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    mockEnvironment = getMockRelayEnvironment()
   })
 
   it("returns all tabs", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
-    expect(tree.root.findAllByType(About)).toHaveLength(1)
-  })
-
-  it('don\'t render "about" tab without description', async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockMostRecentOperation({
-      Tag() {
-        return {
-          description: null,
-        }
-      },
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Tag: () => tag,
     })
 
-    expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
-    expect(tree.root.findAllByType(About)).toHaveLength(0)
+    await flushPromiseQueue()
+
+    expect(screen.getByText("Artworks")).toBeTruthy()
+    expect(screen.getByText("About")).toBeTruthy()
+  })
+
+  it("don't render tabs without description", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Tag: () => ({
+        ...tag,
+        description: null,
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Artworks")).toBeNull()
+    expect(screen.queryByText("About")).toBeNull()
   })
 
   it("renders filter modal", async () => {
-    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    renderWithWrappers(<TestRenderer />)
 
-    await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())
-    fireEvent.press(UNSAFE_getByType(TouchableHighlightColor))
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Tag: () => tag,
+    })
 
-    expect(UNSAFE_getAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
+    await flushPromiseQueue()
+
+    fireEvent.press(screen.getByText("Sort & Filter"))
+
+    expect(screen.UNSAFE_getByType(ArtworkFilterOptionsScreen)).toBeTruthy()
   })
 })
+
+const query = graphql`
+  query TagTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
+    tag(id: $tagID) {
+      slug
+      description
+      ...TagHeader_tag
+      ...About_tag
+      ...TagArtworks_tag @arguments(input: $input)
+    }
+  }
+`
+
+const artwork = {
+  slug: "artwork-slug",
+  id: "artwork-id",
+  internalID: "artwork-internalID",
+  title: "Artwork Title",
+}
+
+const tag = {
+  description: "Tag Description",
+  artworks: {
+    edges: [{ node: artwork }],
+    counts: {
+      total: 1,
+    },
+  },
+}

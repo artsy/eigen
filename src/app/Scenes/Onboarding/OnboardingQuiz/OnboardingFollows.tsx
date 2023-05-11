@@ -1,6 +1,5 @@
-import { Spacer, Flex, Box, ProgressBar, Text, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, ProgressBar, Text, Button, LegacyScreen } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { Screen } from "app/Components/Screen"
 import { SearchInput } from "app/Components/SearchInput"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
@@ -47,9 +46,9 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
   }
 
   return (
-    <Screen>
-      <Screen.Header onSkip={onDone} />
-      <Screen.Body>
+    <LegacyScreen>
+      <LegacyScreen.Header onSkip={onDone} />
+      <LegacyScreen.Body>
         {!debouncedValue && (
           <Box pt={2}>
             <ProgressBar progress={progress} />
@@ -83,8 +82,8 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
             </Button>
           </Flex>
         </Flex>
-        <Screen.SafeBottomPadding />
-      </Screen.Body>
-    </Screen>
+        <LegacyScreen.SafeBottomPadding />
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }

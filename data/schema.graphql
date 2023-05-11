@@ -1324,6 +1324,10 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     published: Boolean = true
     sort: ArtworkSorts
   ): ArtworkConnection
+
+  # The total number of artworks by this artist within the collection (this field
+  # will be `undefined` outside of the context of a collection).
+  artworksCountWithinCollection: Int
   auctionResultsConnection(
     after: String
 
@@ -11160,6 +11164,7 @@ type Me implements Node {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -11385,6 +11390,22 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus
+  ): ShowConnection
+
+  # A list of shows for the user (pagination logic might be broken)
+  showsConnection(
+    after: String
+    before: String
+    first: Int
+
+    # An IP address, will be used to lookup location
+    ip: String
+    last: Int
+    near: Near
     sort: ShowSorts
 
     # Filter shows by chronological event status
@@ -14656,6 +14677,7 @@ type Query {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -18855,6 +18877,7 @@ type Viewer {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 

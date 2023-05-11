@@ -1,60 +1,55 @@
 import { ShowArtworksTestsQuery } from "__generated__/ShowArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ShowArtworksPaginationContainer as ShowArtworks } from "app/Scenes/Show/Components/ShowArtworks"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 
 describe("ShowArtworks", () => {
-  const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    const tree = renderWithWrappersLEGACY(
-      <QueryRenderer<ShowArtworksTestsQuery>
-        environment={env}
-        query={graphql`
-          query ShowArtworksTestsQuery($showID: String!) @relay_test_operation {
-            show(id: $showID) {
-              ...ShowArtworks_show
-            }
-          }
-        `}
-        variables={{ showID: "catty-art-show" }}
-        render={({ props, error }) => {
-          if (error) {
-            console.log(error)
-            return null
-          }
+  const TestRenderer = () => {
+    const data = useLazyLoadQuery<ShowArtworksTestsQuery>(query, {
+      showID: "catty-art-show",
+    })
 
-          if (!props || !props.show) {
-            return null
-          }
-          return (
-            <ArtworkFiltersStoreProvider>
-              <ShowArtworks show={props.show} />
-            </ArtworkFiltersStoreProvider>
-          )
-        }}
-      />
+    if (!data.show) {
+      return null
+    }
+
+    return (
+      <ArtworkFiltersStoreProvider>
+        <ShowArtworks show={data.show} />
+      </ArtworkFiltersStoreProvider>
     )
-
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-
-    return tree
   }
 
-  it("renders a grid of artworks", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
   })
 
-  it("renders null if there are no artworks", () => {
-    const wrapper = getWrapper({
+  it("renders a grid of artworks", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Show: () => show,
+    })
+
+    await flushPromiseQueue()
+
+    expect(getByText("Show Artwork")).toBeTruthy()
+  })
+
+  it("renders empty view if there are no artworks", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Show: () => ({
         showArtworks: {
+          ...show.showArtworks,
           edges: [],
           counts: {
             total: 0,
@@ -63,6 +58,31 @@ describe("ShowArtworks", () => {
       }),
     })
 
-    expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
+    await flushPromiseQueue()
+
+    expect(getByText(/No results found/)).toBeTruthy()
   })
 })
+
+const showArtwork = {
+  id: "show-artwork-id",
+  internalID: "show-artwork-internalID",
+  title: "Show Artwork",
+}
+
+const show = {
+  showArtworks: {
+    edges: [{ node: showArtwork }],
+    counts: {
+      total: 1,
+    },
+  },
+}
+
+const query = graphql`
+  query ShowArtworksTestsQuery($showID: String!) @relay_test_operation {
+    show(id: $showID) {
+      ...ShowArtworks_show
+    }
+  }
+`

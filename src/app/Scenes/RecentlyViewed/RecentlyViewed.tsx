@@ -42,6 +42,7 @@ export const RecentlyViewed: React.FC = () => {
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
             contextScreenOwnerType={OwnerType.recentlyViewed}
+            contextScreen={OwnerType.recentlyViewed}
             HeaderComponent={<Spacer y={2} />}
             shouldAddPadding
             refreshControl={RefreshControl}

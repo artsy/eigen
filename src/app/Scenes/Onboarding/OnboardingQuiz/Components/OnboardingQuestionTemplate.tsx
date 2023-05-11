@@ -6,9 +6,9 @@ import {
   ProgressBar,
   Text,
   Button,
+  LegacyScreen,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
-import { Screen } from "app/Components/Screen"
 import {
   OnboardingContextAction,
   State,
@@ -90,9 +90,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
   return (
-    <Screen>
-      <Screen.Header onBack={handleBack} onSkip={onDone} />
-      <Screen.Body>
+    <LegacyScreen>
+      <LegacyScreen.Header onBack={handleBack} onSkip={onDone} />
+      <LegacyScreen.Body>
         <Box pt={2}>
           <ProgressBar progress={progress} />
         </Box>
@@ -126,10 +126,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <Button block disabled={isDisabled} onPress={handleNext}>
             Next
           </Button>
-          <Screen.SafeBottomPadding />
+          <LegacyScreen.SafeBottomPadding />
         </Flex>
-      </Screen.Body>
-    </Screen>
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }
 

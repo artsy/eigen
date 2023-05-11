@@ -3,6 +3,7 @@
 If things are not going right some of the things you can try are
 
 - Pulling from main branch
+- `rm -rf node_modules`
 - `yarn setup:artsy`
 - `yarn install:all`
 - `yarn relay`

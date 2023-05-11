@@ -1,6 +1,6 @@
 import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { ArtworkEntity } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
+import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { FC } from "react"
 
 interface ArtworkInfoProps {

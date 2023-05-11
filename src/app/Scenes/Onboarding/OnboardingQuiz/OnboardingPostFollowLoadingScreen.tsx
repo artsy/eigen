@@ -1,5 +1,5 @@
+import { LegacyScreen } from "@artsy/palette-mobile"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { Screen } from "app/Components/Screen"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
@@ -15,13 +15,13 @@ export const OnboardingPostFollowLoadingScreen = () => {
   useTimeoutFn(onDone, NAVIGATE_TO_NEXT_SCREEN_DELAY)
 
   return (
-    <Screen>
-      <Screen.Background>
+    <LegacyScreen>
+      <LegacyScreen.Background>
         <FullScreenLoadingImage
           imgSource={require("images/HirstTheWonder.webp")}
           loadingText={text}
         />
-      </Screen.Background>
-    </Screen>
+      </LegacyScreen.Background>
+    </LegacyScreen>
   )
 }

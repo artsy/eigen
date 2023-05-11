@@ -81,7 +81,7 @@ export const ConsignmentInquiryForm: React.FC<{
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
     >
-      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
+      <Box pb={`${safeAreaInsets.bottom}px`} px={2}>
         <Box>
           <Text variant="lg-display" mb={2}>
             {!!recipientName ? `Contact ${recipientName}` : "Contact a specialist"}
