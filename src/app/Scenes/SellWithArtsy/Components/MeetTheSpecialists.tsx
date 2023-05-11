@@ -168,7 +168,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
           height: "100%",
           flexDirection: "row",
         }}
-        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 2 }}
+        animate={{ bottom: isBioExpanded ? -20 : -imgHeight / 3 }}
         transition={{
           type: "timing",
           duration: 400,
