@@ -73,8 +73,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
-          paddingTop: space(2),
-          paddingBottom: space(2),
+          paddingVertical: space(2),
           marginHorizontal: space(2),
         }}
         ListFooterComponent={
@@ -90,7 +89,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                 <Spinner />
               </Flex>
             )}
-            <AddMoreButton />
+            {!relay.hasMore() && <AddMoreButton />}
           </Flex>
         }
         onEndReached={handleLoadMore}
@@ -99,7 +98,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   )
 }
 
-const Artist: React.FC<{ name: string; initials: string | undefined; image: any }> = ({
+const Artist: React.FC<{ name: string; initials: string | undefined; image: string }> = ({
   name,
   initials,
   image,
@@ -114,7 +113,7 @@ const Artist: React.FC<{ name: string; initials: string | undefined; image: any 
   )
 }
 
-export const MyCollectionCollectedArtistsRailFragmentContiner = createPaginationContainer(
+export const MyCollectionCollectedArtistsRailPaginationContainer = createPaginationContainer(
   MyCollectionCollectedArtistsRail,
   {
     myCollectionInfo: graphql`
