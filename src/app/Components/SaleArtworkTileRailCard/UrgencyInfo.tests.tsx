@@ -59,7 +59,7 @@ describe("UrgencyInfo", () => {
       />
     )
 
-    // ideally onTimerEndMock would be called once at some point
+    // IRL onTimerEndMock is called once when the timer ends
     // but since timer runs endlessly, jest timer would never exit
     // TODO: Find better way to test this block
     jest.runAllTimers()
