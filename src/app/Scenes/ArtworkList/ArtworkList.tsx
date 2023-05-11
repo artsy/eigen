@@ -5,6 +5,7 @@ import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
+import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -22,7 +23,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
       listID,
       count: PAGE_SIZE,
     },
-    { fetchPolicy: "store-or-network" }
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -34,6 +35,10 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   const artworkList = data?.artworkList!
   const artworksCount = artworkList.artworks?.totalCount ?? 0
+
+  if (artworksCount === 0) {
+    return <ArtworkListEmptyState me={queryData.me!} title={artworkList.name} />
+  }
 
   return (
     <>
@@ -57,6 +62,7 @@ export const ArtworkListScreenQuery = graphql`
   query ArtworkListQuery($listID: String!, $count: Int, $after: String) {
     me {
       ...ArtworkList_artworksConnection @arguments(listID: $listID, count: $count, after: $after)
+      ...ArtworkListEmptyState_me @arguments(listID: $listID)
     }
   }
 `
