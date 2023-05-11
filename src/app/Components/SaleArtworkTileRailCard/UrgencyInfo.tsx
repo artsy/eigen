@@ -27,7 +27,7 @@ export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
       // lot just closed
       props.onTimerEnd?.()
     }
-  }, [timeText, previousTimeText])
+  }, [timeText, previousTimeText, color])
 
   if (timeText) {
     return (
@@ -73,8 +73,7 @@ const getInfo = (time: Time): { text: string; textColor: "blue100" | "red100" } 
 const useTimeText = (props: UrgencyInfoProps) => {
   const { isLiveAuction, startAt, endAt, saleTimeZone } = props
 
-  const [timeText, setTimeText] = useState("")
-  const [previousTimeText, setPreviousTimeText] = useState("")
+  const [timerInfoText, setTimerInfoText] = useState({ prev: "", current: "" })
   const [color, setColor] = useState<string | undefined>(undefined)
 
   const userTimeZone = moment.tz.guess()
@@ -104,17 +103,19 @@ const useTimeText = (props: UrgencyInfoProps) => {
       prefix = ""
       suffix = "left"
     } else if (!endAt && !hasEnded && hasStarted) {
-      setPreviousTimeText(timeText)
-      setTimeText("In progress")
+      setTimerInfoText({ current: "In progress", prev: timerInfoText.current })
       setColor("blue100")
       return
     }
-    setPreviousTimeText(timeText)
-    setTimeText(!!text ? prefix + `${!!prefix ? " " : ""}${text} ` + suffix : "")
+    setTimerInfoText({
+      current: !!text ? prefix + `${!!prefix ? " " : ""}${text} ` + suffix : "",
+      prev: timerInfoText.current,
+    })
     setColor(textColor)
   }
 
   useInterval(callback, 1000)
 
+  const { prev: previousTimeText, current: timeText } = timerInfoText
   return { color, previousTimeText, timeText }
 }
