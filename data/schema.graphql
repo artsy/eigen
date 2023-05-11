@@ -1324,6 +1324,10 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     published: Boolean = true
     sort: ArtworkSorts
   ): ArtworkConnection
+
+  # The total number of artworks by this artist within the collection (this field
+  # will be `undefined` outside of the context of a collection).
+  artworksCountWithinCollection: Int
   auctionResultsConnection(
     after: String
 
