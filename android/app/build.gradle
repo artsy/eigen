@@ -117,8 +117,6 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
 project.ext.react = [
     entryFile: "index.android.js",
     enableHermes: true,  // clean and rebuild if changing
-    hermesFlagsRelease: ["-O", "-output-source-map"],
-    hermesFlagsDebug: ["-O", "-output-source-map"],
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
