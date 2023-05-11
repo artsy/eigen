@@ -31,6 +31,24 @@ if your problems come from asdf package manager try
 
 - remove `.nvm` if it exists also on your home environment
 
+## Broken Hot Reloading and general DX instability
+
+We've noticed an issue where the DX is impacted when _not_ booting the app from Xcode. For example, a common (problematic) workflow is:
+
+- `git pull`
+- `yarn open-Xcode`
+- compile the app
+- go back to terminal
+- `yarn start`
+
+And then the next day, since the app has already been compiled, skip the Xcode step and just run `yarn start` in the terminal and open the app in the simulator.
+
+Following this sequence of steps, minor changes made to JS code would visibly hot reload _and then_ unexpectedly trigger a full page reload, which would often also kick you back to the main screen. Syntax errors or frequent, habitual file-saves would frequently lead to app crashes, forcing one to reboot the app in order to resume dev.
+
+#### To fix this, always compile the app from Xcode and let the simulator launch from there.
+
+When the terminal window automatically pops up and executes `yarn start`, let it run, and do not close it. And when you are done for the day and want to start developing the following day, remember to open Xcode and boot it from there, and not manually in the terminal. This will lead to a vastly better developer experience.
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
