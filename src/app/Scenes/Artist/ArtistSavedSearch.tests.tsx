@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -45,7 +46,7 @@ describe("Saved search banner on artist screen", () => {
   }
 
   const getTree = (searchCriteriaID?: string) =>
-    renderWithWrappers(
+    renderWithHookWrappersTL(
       <ArtistQueryRenderer
         artistID="ignored"
         environment={environment as unknown as RelayModernEnvironment}
@@ -58,6 +59,8 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+
+    await flushPromiseQueue()
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
@@ -72,6 +75,8 @@ describe("Saved search banner on artist screen", () => {
     rejectMostRecentRelayOperation(environment, new Error())
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
+    await flushPromiseQueue()
+
     expect(screen.getByText("Sorry, an error occured")).toBeTruthy()
     expect(screen.getByText("Failed to get saved search criteria")).toBeTruthy()
   })
@@ -81,6 +86,8 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+
+    await flushPromiseQueue()
 
     expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
   })

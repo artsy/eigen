@@ -152,6 +152,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Haw Contemporary",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
@@ -187,6 +193,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Newzones",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
@@ -222,6 +234,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Kasmin",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
@@ -257,6 +275,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Kasmin",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                   {
@@ -292,6 +316,12 @@ describe("ArtworksInSeriesRail", () => {
                         name: "Meyerovich Gallery",
                       },
                       realizedPrice: null,
+                      customArtworkLists: {
+                        totalCount: 0,
+                      },
+                      preview: {
+                        url: null,
+                      },
                     },
                   },
                 ],

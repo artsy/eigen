@@ -12,6 +12,7 @@ import {
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
@@ -21,7 +22,6 @@ import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableR
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -136,8 +136,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const { id, internalID, isSaved } = artwork
-
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
     const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
     const params = {
@@ -155,10 +153,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
   }
 
-  const handleArtworkSave = useSaveArtwork({
-    id,
-    internalID,
-    isSaved,
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
@@ -326,8 +322,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
           </Flex>
           {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
             <Flex>
-              <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
-                {artwork.isSaved ? (
+              <Touchable haptic onPress={saveArtworkToLists} testID="save-artwork-icon">
+                {isSaved ? (
                   <HeartFillIcon
                     testID="filled-heart-icon"
                     height={SAVE_ICON_SIZE}
@@ -420,13 +416,11 @@ export default createFragmentContainer(Artwork, {
       date
       saleMessage
       slug
-      id
       internalID
       isAcquireable
       isBiddable
       isInquireable
       isOfferable
-      isSaved
       artistNames
       href
       sale {
@@ -460,6 +454,7 @@ export default createFragmentContainer(Artwork, {
         aspectRatio
       }
       realizedPrice
+      ...useSaveArtworkToArtworkLists_artwork
     }
   `,
 })

@@ -5,10 +5,10 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -75,8 +75,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, id, image, internalID, isSaved, partner, title, sale, saleArtwork } =
-    artwork
+  const { artistNames, date, image, partner, title, sale, saleArtwork } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -162,10 +161,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
   }
 
-  const handleArtworkSave = useSaveArtwork({
-    id,
-    internalID,
-    isSaved,
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
@@ -268,7 +265,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <Touchable
                 haptic
                 hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
-                onPress={handleArtworkSave}
+                onPress={saveArtworkToLists}
                 testID="save-artwork-icon"
                 underlayColor={backgroundColor}
               >
@@ -408,9 +405,7 @@ const RecentlySoldCardSection: React.FC<
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     availability
-    id
     slug
-    internalID
     isAcquireable
     isBiddable
     isInquireable
@@ -427,7 +422,6 @@ const artworkFragment = graphql`
       }
       aspectRatio
     }
-    isSaved
     sale {
       isAuction
       isClosed
@@ -449,6 +443,7 @@ const artworkFragment = graphql`
     }
     title
     realizedPrice
+    ...useSaveArtworkToArtworkLists_artwork
   }
 `
 
