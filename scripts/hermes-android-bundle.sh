@@ -9,6 +9,6 @@ react-native bundle \
 --entry-file index.android.js \
 --reset-cache \
 --assets-dest android/app/src/main/res \
---bundle-output $BUNDLE_DIR/index.android-js.bundle \
+--bundle-output $BUNDLE_DIR/index.android.bundle \
 --sourcemap-output $BUNDLE_DIR/index.android.bundle.packager.map \
 --minify false

@@ -8,5 +8,6 @@ BUNDLE_DIR="android/app/src/main/assets"
 ./node_modules/react-native/sdks/hermesc/$platform/hermesc \
 -O -emit-binary \
 -output-source-map \
--out="$BUNDLE_DIR/index.android.bundle.hbc" "$BUNDLE_DIR/index.android-js.bundle" \
+-out="$BUNDLE_DIR/index.android.bundle.hbc" "$BUNDLE_DIR/index.android.bundle" \
+&& rm -f "$BUNDLE_DIR/index.android.bundle" \
 && mv "$BUNDLE_DIR/index.android.bundle.hbc" "$BUNDLE_DIR/index.android.bundle"
