@@ -12,6 +12,8 @@ export const HomeContainer = () => {
     (state) => state.auth.requestedPushPermissionsThisSession
   )
 
+  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+
   const shouldShowArtQuiz = useFeatureFlag("ARShowArtQuizApp")
 
   const navigateToArtQuiz = async () => {
@@ -19,7 +21,7 @@ export const HomeContainer = () => {
   }
 
   useEffect(() => {
-    if (shouldShowArtQuiz && artQuizState === "incomplete") {
+    if (shouldShowArtQuiz && artQuizState === "incomplete" && isNavigationReady) {
       navigateToArtQuiz()
       return
     }
@@ -31,7 +33,7 @@ export const HomeContainer = () => {
       requestPushNotificationsPermission()
       GlobalStore.actions.auth.setState({ requestedPushPermissionsThisSession: true })
     }
-  }, [shouldShowArtQuiz, artQuizState, navigateToArtQuiz])
+  }, [shouldShowArtQuiz, artQuizState, navigateToArtQuiz, isNavigationReady])
 
   if (shouldShowArtQuiz && artQuizState === "incomplete") {
     return null

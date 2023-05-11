@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { Severity, addBreadcrumb } from "@sentry/react-native"
-import { AppModule, modules, ViewOptions } from "app/AppRegistry"
+import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
