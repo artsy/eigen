@@ -6,6 +6,7 @@
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
+#import <React/RCTLinkingManager.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
@@ -36,7 +37,9 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
-           [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
+            [RCTLinkingManager application:application
+                      continueUserActivity:userActivity
+                        restorationHandler:restorationHandler];
         }
     });
     return YES;
