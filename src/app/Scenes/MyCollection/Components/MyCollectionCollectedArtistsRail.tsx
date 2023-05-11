@@ -42,15 +42,13 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
 
     setIsLoading(true)
 
-    setTimeout(() => {
-      relay.loadMore(10, (err) => {
-        setIsLoading(false)
+    relay.loadMore(10, (err) => {
+      setIsLoading(false)
 
-        if (err) {
-          console.error(err)
-        }
-      })
-    }, 2000)
+      if (err) {
+        console.error(err)
+      }
+    })
   }
 
   const collectedArtists = extractNodes(myCollectionInfo?.collectedArtistsConnection)
@@ -72,7 +70,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
           />
         )}
         keyExtractor={({ internalID }) => internalID}
-        onEndReachedThreshold={0.2}
+        onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
           paddingTop: space(2),
@@ -122,7 +120,7 @@ export const MyCollectionCollectedArtistsRailFragmentContiner = createPagination
     myCollectionInfo: graphql`
       fragment MyCollectionCollectedArtistsRail_myCollectionInfo on MyCollectionInfo
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
+        count: { type: "Int", defaultValue: 20 }
         includePersonalArtists: { type: "Boolean", defaultValue: true }
         cursor: { type: "String" }
       ) {
