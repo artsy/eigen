@@ -11,8 +11,9 @@
   "scripts": {
     "android": "react-native run-android",
     "bundle:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output dist/main.jsbundle  --sourcemap-output dist/main.jsbundle.map --assets-dest dist",
-    "bundle:android": "yarn bundle:android:hermes && yarn bundle:hermes && yarn sourcemap-merge:android",
+    "bundle:android": "yarn bundle:android:hermes && yarn bundle:hermes && yarn bundle:android:sourcemap",
     "bundle:android:hermes": "./scripts/hermes-android-bundle.sh",
+    "bundle:android:sourcemap": "./scripts/hermes-android-sourcemap.sh",
     "bundle:hermes": "./scripts/hermes-android-bundle-bytecode.sh",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
@@ -58,7 +59,6 @@
     "setup:artsy:update!": "scripts/update-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
     "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-distribute-macos",
-    "sourcemap-merge:android": "./scripts/hermes-android-sourcemap.sh",
     "start": "concurrently --kill-others -n relay,metro 'yarn relay --watch' 'yarn react-native start'",
     "start-storybook": "STORYBOOK=1 yarn start",
     "start:reset-cache": "concurrently --kill-others -n relay,metro 'yarn relay --watch' 'yarn react-native start --reset-cache'",
