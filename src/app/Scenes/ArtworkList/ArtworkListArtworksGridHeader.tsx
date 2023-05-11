@@ -1,5 +1,6 @@
 import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { FC } from "react"
 
 interface ArtworkListArtworksGridHeaderProps {
@@ -13,12 +14,8 @@ export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProp
 }) => {
   return (
     <Flex mb={1}>
-      <Text ml={2} mb={1} variant="lg">
-        {title}
-      </Text>
-
+      <ArtworkListTitle title={title} />
       <Separator borderColor="black10" mt={1} />
-
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text ml={2} variant="xs" color="black60">
           {artworksCount} {artworksCount === 1 ? "Artwork" : "Artworks"}

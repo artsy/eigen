@@ -23,7 +23,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
       listID,
       count: PAGE_SIZE,
     },
-    { fetchPolicy: "store-or-network" }
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<

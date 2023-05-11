@@ -32,7 +32,7 @@ describe("ArtworkListEmptyState", () => {
     return null
   }
 
-  it("displays 'Keep track of artworks you love' if its a default artwork and has 0 artworks", async () => {
+  it("should render correct texts for default artwork list", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -52,7 +52,7 @@ describe("ArtworkListEmptyState", () => {
     expect(getByText("Select the heart on an artwork to save it or add it to a list.")).toBeTruthy()
   })
 
-  it("displays 'Start curating your list of works' if its not a default artwork or Saved artworks has more than 1 artworks", async () => {
+  it("should render correct texts for non-default artwork list when user has saved artworks", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -72,5 +72,29 @@ describe("ArtworkListEmptyState", () => {
     expect(
       getByText("Add works from Saved Artworks or add new artworks as you browse.")
     ).toBeTruthy()
+  })
+
+  it("should render correct texts for non-default artwork list when user doesn't have any saved artworks", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Me: () => ({
+        artworkList: {
+          default: false,
+          artworks: {
+            edges: [],
+          },
+        },
+
+        savedArtworksArtworkList: {
+          artworksCount: 0,
+        },
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    expect(getByText("Keep track of artworks you love")).toBeTruthy()
+    expect(getByText("Select the heart on an artwork to save it or add it to a list.")).toBeTruthy()
   })
 })

@@ -1,6 +1,7 @@
 import { Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
@@ -19,19 +20,19 @@ export const ArtworkListEmptyState = ({ me, title }: ArtworkListEmptyStateProps)
   return (
     <Flex mb={1}>
       <ArtworkListHeader />
-      <Text ml={2} mb={1} variant="lg">
-        {title}
-      </Text>
-
+      <ArtworkListTitle title={title} />
       <Separator borderColor="black10" mt={1} />
-
       <Flex px={2} mt={4}>
         <Text variant="sm">{text.title}</Text>
         <Text variant="xs" color="black60">
           {text.description}
         </Text>
-
-        <Button mt={2} variant="outline" size="small" onPress={() => navigate("/")}>
+        <Button
+          mt={2}
+          variant="outline"
+          size="small"
+          onPress={() => navigate("/collection/trending-this-week")}
+        >
           Browse Works
         </Button>
       </Flex>
