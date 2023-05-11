@@ -7,7 +7,7 @@ import {
   SpacingUnitDSValueNumber,
   Join,
 } from "@artsy/palette-mobile"
-import { useFocusEffect, useIsFocused } from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -135,7 +135,6 @@ const Home = memo((props: HomeProps) => {
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
-  const isFocused = useIsFocused()
 
   const { cards } = useContentCards()
 
@@ -184,8 +183,8 @@ const Home = memo((props: HomeProps) => {
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       const newVisibleRails = new Set<string>()
 
-      // Track currently visible rails // needed to enabe tracking artwork views
-      if (enableItemViewsTracking && isFocused) {
+      // Track currently visible rails // needed to enable tracking artwork views
+      if (enableItemViewsTracking) {
         viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
           newVisibleRails.add(title)
         })
@@ -194,7 +193,7 @@ const Home = memo((props: HomeProps) => {
       }
 
       // Track all viewed rails
-      if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled && isFocused) {
+      if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
         viewableItems.forEach(({ item: { key, contextModule } }: { item: HomeModule }) => {
           if (contextModule && !viewedRails.has(key)) {
             viewedRails.add(key)
@@ -706,7 +705,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
     flash_message?: string
   }
 
-  const isFocused = useIsFocused()
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
   useEffect(() => {
@@ -715,7 +713,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
       maybeReportExperimentVariant({
         experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
         enabled: worksForYouRecommendationsModel.enabled,
-        visible: isFocused,
         variantName: worksForYouRecommendationsModel.variant,
         payload: worksForYouRecommendationsModel.payload,
         context_module: ContextModule.newWorksForYouRail,
@@ -724,7 +721,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
         storeContext: true,
       })
     }
-  }, [worksForYouRecommendationsModel.enabled, isFocused])
+  }, [worksForYouRecommendationsModel.enabled])
 
   useEffect(() => {
     if (flash_message) {

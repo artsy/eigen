@@ -50,9 +50,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
     if (isLastStep) {
       trackEvent(tracks.myCollectionOnboardingCompleted())
     }
-    if (isVisible) {
-      trackEvent(tracks.screen(activeStep.toString()))
-    }
+    trackEvent(tracks.screen(activeStep.toString()))
   }, [activeStep])
 
   useEffect(() => {

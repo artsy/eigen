@@ -139,7 +139,6 @@ interface NewWorksForYouQueryRendererProps {
   utm_medium?: string
   includeBackfill?: boolean
   maxWorksPerArtist?: number
-  isVisible: boolean
   version?: string
 }
 
@@ -147,7 +146,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   utm_medium,
   includeBackfill = true,
   maxWorksPerArtist = 3,
-  isVisible,
   version: versionProp,
 }) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
@@ -168,7 +166,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       maybeReportExperimentVariant({
         experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
         enabled: worksForYouRecommendationsModel.enabled,
-        visible: isVisible,
         variantName: worksForYouRecommendationsModel.variant,
         payload: worksForYouRecommendationsModel.payload,
         context_owner_type: OwnerType.newWorksForYou,
