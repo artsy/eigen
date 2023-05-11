@@ -6,7 +6,6 @@ import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter }
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collection/Screens/CollectionHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useRef } from "react"
@@ -20,7 +19,6 @@ interface CollectionProps {
 }
 
 export const Collection: React.FC<CollectionProps> = (props) => {
-  useAndroidGoBack()
   const { collection } = props
   const flatListRef = useRef<FlatList>(null)
   const { slug, id, linkedCollections, isDepartment } = collection

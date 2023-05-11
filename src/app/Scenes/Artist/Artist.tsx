@@ -24,7 +24,6 @@ import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabP
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
-import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -189,8 +188,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     categories,
     sizes,
   } = props
-
-  useAndroidGoBack()
 
   return (
     <SearchCriteriaQueryRenderer

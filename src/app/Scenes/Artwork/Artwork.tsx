@@ -23,7 +23,6 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
-import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -68,7 +67,6 @@ interface ArtworkProps {
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
-  useAndroidGoBack()
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
