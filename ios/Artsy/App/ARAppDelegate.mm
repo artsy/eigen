@@ -52,10 +52,7 @@
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
 #import <React/RCTLinkingManager.h>
-<<<<<<< HEAD:ios/Artsy/App/ARAppDelegate.m
-=======
 #import <React/RCTAppSetupUtils.h>
->>>>>>> origin/main:ios/Artsy/App/ARAppDelegate.mm
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -271,21 +268,6 @@ static ARAppDelegate *_sharedInstance = nil;
     id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
 
     _landingURLRepresentation = [url absoluteString];
-
-<<<<<<< HEAD:ios/Artsy/App/ARAppDelegate.m
-    // Twitter SSO
-    if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {
-        NSNotification *notification = nil;
-        notification = [NSNotification notificationWithName:kAFApplicationLaunchedWithURLNotification
-                                                     object:nil
-                                                   userInfo:@{kAFApplicationLaunchOptionsURLKey : url}];
-
-        [[NSNotificationCenter defaultCenter] postNotification:notification];
-        return YES;
-    }
-=======
-    [self trackDeeplinkWithTarget:url referrer:_referralURLRepresentation];
->>>>>>> origin/main:ios/Artsy/App/ARAppDelegate.mm
 
     // Facebook
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
