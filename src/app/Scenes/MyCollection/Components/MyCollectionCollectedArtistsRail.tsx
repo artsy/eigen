@@ -42,7 +42,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
 
     setIsLoading(true)
 
-    relay.loadMore(10, (err) => {
+    relay.loadMore(20, (err) => {
       setIsLoading(false)
 
       if (err) {
