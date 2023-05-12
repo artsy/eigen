@@ -123,7 +123,7 @@ const artworkListsFragment = graphql`
         default: false
         saves: true
         sort: CREATED_AT_DESC
-      ) @connection(key: "ArtworkListItem_customArtworkLists") {
+      ) @connection(key: "ArtworkLists_customArtworkLists", filters: []) {
         edges {
           node {
             internalID
