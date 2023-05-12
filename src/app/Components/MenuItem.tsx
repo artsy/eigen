@@ -86,7 +86,7 @@ export const MenuItem: React.FC<{
 
         <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
           {!!value && (
-            <Flex flex={1}>
+            <Flex width={200}>
               <Text
                 variant="sm-display"
                 color={disabled && allowDisabledVisualClue ? "black30" : "black60"}

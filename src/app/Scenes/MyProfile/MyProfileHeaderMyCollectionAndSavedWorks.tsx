@@ -40,7 +40,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
 
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
         <StickyTabPage
           disableBackButtonUpdate
           tabs={compact([
