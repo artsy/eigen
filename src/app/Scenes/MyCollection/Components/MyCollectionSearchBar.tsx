@@ -168,6 +168,7 @@ export const ViewAsIcons: React.FC<{
   viewOption: ViewOption
 }> = ({ onViewOptionChange, viewOption }) => {
   const space = useSpace()
+
   return (
     <>
       <Flex flexDirection="row">

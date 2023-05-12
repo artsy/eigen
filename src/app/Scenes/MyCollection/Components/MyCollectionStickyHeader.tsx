@@ -65,7 +65,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
       return !!hasArtworks
     }
     return selectedTab === "Artworks"
-  }, [selectedTab, hasArtworks])
+  }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
     <>

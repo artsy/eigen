@@ -92,7 +92,7 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
 
   return (
     <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
-      <Avatar initials={data.initials!} src={data?.image?.url || undefined} size="sm" />
+      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="sm" />
       <Text variant="xs" numberOfLines={2} textAlign="center">
         {data.name}
       </Text>

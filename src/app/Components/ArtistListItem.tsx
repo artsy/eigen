@@ -6,7 +6,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
-import React, { useMemo } from "react"
+import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { RelayProp, commitMutation, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -85,7 +85,7 @@ const ArtistListItem: React.FC<Props> = ({
     navigate(href)
   }
 
-  const meta = useMemo(() => {
+  const getMeta = () => {
     const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
 
     if (tombstoneText || Number.isInteger(uploadsCount)) {
@@ -105,7 +105,8 @@ const ArtistListItem: React.FC<Props> = ({
     }
 
     return undefined
-  }, [nationality, birthday, deathday, uploadsCount])
+  }
+  const meta = getMeta()
 
   if (!name) {
     return null
