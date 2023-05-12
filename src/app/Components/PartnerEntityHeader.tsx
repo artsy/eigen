@@ -24,7 +24,6 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
       <TouchableWithoutFeedback onPress={() => navigate(partner.href!)}>
         <EntityHeader
           name={partner.name}
-          href={Boolean(partner.isDefaultProfilePublic) ? partner.href ?? undefined : undefined}
           meta={cities ?? undefined}
           imageUrl={avatarUrl ?? undefined}
           initials={partner.initials ?? undefined}
