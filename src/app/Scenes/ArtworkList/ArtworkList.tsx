@@ -1,5 +1,5 @@
 import { Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { ArtworkListQuery } from "__generated__/ArtworkListQuery.graphql"
+import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -33,6 +33,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     {
       listID,
       count: PAGE_SIZE,
+      sort: SORT_OPTIONS[0].value as CollectionArtworkSorts,
     },
     { fetchPolicy: "store-and-network" }
   )
@@ -49,7 +50,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
       return
     }
     refetch(
-      { sort: "SAVED_AT_DESC" },
+      { sort: selectedSortValue as CollectionArtworkSorts },
       {
         fetchPolicy: "store-and-network",
       }
@@ -124,7 +125,7 @@ const artworkListFragment = graphql`
     listID: { type: "String!" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
-    sort: { type: "CollectionArtworkSorts", defaultValue: SAVED_AT_DESC }
+    sort: { type: "CollectionArtworkSorts" }
   ) {
     artworkList: collection(id: $listID) {
       internalID
