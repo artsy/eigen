@@ -18,7 +18,6 @@ export const SelectArtworkListsForArtworkFooter = () => {
   const handleSave = () => {
     commit({
       variables: {
-        artworkID: artwork.internalID,
         input: {
           artworkIDs: [artwork.internalID],
           addToCollectionIDs: addingArtworkListIDs,
