@@ -20,8 +20,7 @@ export interface MyCollectionTabsStoreModel {
 }
 
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
-  // TODO: Revert to null
-  selectedTab: "Artists",
+  selectedTab: null,
   viewKind: null,
   id: null,
   setSelectedTab: action((state, payload) => {
