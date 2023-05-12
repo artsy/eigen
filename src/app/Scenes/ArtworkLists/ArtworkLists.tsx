@@ -9,7 +9,8 @@ import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Suspense, useState } from "react"
+import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import { Suspense, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 /**
@@ -66,6 +67,14 @@ export const ArtworkLists = () => {
       }
     )
   }
+
+  useEffect(() => {
+    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+
+    return () => {
+      RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+    }
+  }, [])
 
   const artworkSections = artworksList.map((artworkList) => {
     const isDefaultArtworkList = artworkList.internalID === savedArtworksArtworkList.internalID

@@ -19,7 +19,6 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const handleSave = () => {
     commit({
       variables: {
-        artworkID: artwork.internalID,
         input: {
           artworkIDs: [artwork.internalID],
           addToCollectionIDs: addingArtworkListIDs,
