@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsOnlyView_me$key } from "__generated__/MyCollectionCollectedArtistsOnlyView_me.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
@@ -15,6 +15,7 @@ export const MyCollectionCollectedArtistsOnlyView: React.FC<
   MyCollectionCollectedArtistsOnlyViewProps
 > = ({ me }) => {
   const [refreshing, setRefreshing] = useState(false)
+  const space = useSpace()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     collectedArtistsPaginationFragment,
     me
@@ -55,6 +56,7 @@ export const MyCollectionCollectedArtistsOnlyView: React.FC<
       }}
       onEndReached={handleLoadMore}
       ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
+      style={{ paddingTop: space(2) }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       refreshControl={
         <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
@@ -73,11 +75,15 @@ const LoadingIndicator = () => {
 
 const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsOnlyView_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, after: { type: "String" })
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsOnlyView_myCollectionInfoRefetch") {
     myCollectionInfo {
-      collectedArtistsConnection(first: $count, after: $after)
-        @connection(key: "MyCollectionCollectedArtistsOnlyView_collectedArtistsConnection") {
+      collectedArtistsConnection(
+        first: $count
+        after: $after
+        sort: TRENDING_DESC
+        includePersonalArtists: true
+      ) @connection(key: "MyCollectionCollectedArtistsOnlyView_collectedArtistsConnection") {
         edges {
           node {
             internalID

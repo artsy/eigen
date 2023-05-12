@@ -28,7 +28,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist }
   return (
     <ArtistListItemContainer
       artist={artistData}
-      uploadsCount={1}
+      uploadsCount={artistData.artworksCountWithinCollection}
       showFollowButton={false}
       RightButton={RightButton}
     />
@@ -38,6 +38,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist }
 const artistFragment = graphql`
   fragment MyCollectionCollectedArtistItem_artist on Artist {
     id
+    artworksCountWithinCollection
     ...ArtistListItem_artist
   }
 `
