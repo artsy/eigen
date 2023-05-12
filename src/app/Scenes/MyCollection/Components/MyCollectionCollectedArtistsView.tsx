@@ -78,7 +78,9 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       style={{ paddingTop: space(2) }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       refreshControl={
-        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+        !__TEST__ ? (
+          <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+        ) : undefined
       }
     />
   )

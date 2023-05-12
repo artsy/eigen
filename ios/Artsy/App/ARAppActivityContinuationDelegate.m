@@ -1,11 +1,11 @@
 #import "ARAppActivityContinuationDelegate.h"
 
-#import "ARAppDelegate+Analytics.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
+#import <React/RCTLinkingManager.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
@@ -31,12 +31,11 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
     }
 
     DecodeURL(URL, ^(NSURL *decodedURL) {
-        // Always let analytics know there's a URL being received
-        [[ARAppDelegate sharedInstance] trackDeeplinkWithTarget:decodedURL referrer:userActivity.referrerURL.absoluteString];
-
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
-           [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
+            [RCTLinkingManager application:application
+                      continueUserActivity:userActivity
+                        restorationHandler:restorationHandler];
         }
     });
     return YES;

@@ -34,12 +34,12 @@ import {
   RefreshEvents,
   refreshMyCollectionInsights,
 } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { SafeAreaView } from "react-native"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -165,9 +165,7 @@ const MyCollection: React.FC<{
 
   return (
     <StickyTabPageScrollView
-      contentContainerStyle={{
-        justifyContent: "flex-start",
-      }}
+      contentContainerStyle={{ justifyContent: "flex-start" }}
       refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       innerRef={innerFlatListRef}
       keyboardDismissMode="on-drag"
@@ -318,7 +316,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex flex={1}>
@@ -376,10 +374,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </SafeAreaView>
+    </Flex>
   )
 }
 
-export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
->["node"]
+export type MyCollectionArtworkEdge =
+  ExtractNodeType<InfiniteScrollArtworksGrid_myCollectionConnection$data>

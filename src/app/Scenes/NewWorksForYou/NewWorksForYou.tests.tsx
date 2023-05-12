@@ -1,8 +1,11 @@
+import { screen } from "@testing-library/react-native"
 import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
-import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { DEFAULT_RECS_MODEL_VERSION, NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 describe("NewWorksForYou", () => {
@@ -27,7 +30,11 @@ describe("NewWorksForYou", () => {
         }
       `}
       render={({ props }) => {
-        return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
+        if (!props?.viewer) {
+          return
+        }
+
+        return <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
       variables={{
         version: DEFAULT_RECS_MODEL_VERSION,
@@ -39,69 +46,45 @@ describe("NewWorksForYou", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+    mockEnvironment = getMockRelayEnvironment()
   })
 
-  it("renders NewWorksForYou", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders NewWorksForYou", async () => {
+    renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => mockResponse,
-      })
-    )
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Viewer: () => viewer,
+    })
 
-    expect(tree.root.findAllByType(Artwork).length).toEqual(2)
+    await flushPromiseQueue()
+
+    const artworkTitle = "Sunflower Seeds Exhibition"
+    expect(screen.getByText(artworkTitle)).toBeTruthy()
   })
 })
 
-const mockResponse = {
-  viewer: {
-    artworks: {
-      edges: [
-        {
-          node: {
-            slug: "ai-weiwei-sunflower-seeds-exhibition",
-            id: "QXJ0d29yazo2MTNhMzhkNjYxMTI5NzAwMGQ3Y2NjMWQ=",
-            image: {
-              aspectRatio: 1.27,
-              url: "https://d32dm0rphc51dk.cloudfront.net/ZRMpZo7ikbEdx3yqBNlDVA/large.jpg",
-            },
-            title: "Sunflower Seeds Exhibition ",
-            date: "2010",
-            saleMessage: "US$1,750",
-            internalID: "613a38d6611297000d7ccc1d",
-            artistNames: "Ai Weiwei",
-            href: "/artwork/ai-weiwei-sunflower-seeds-exhibition",
-            sale: null,
-            saleArtwork: null,
-            partner: {
-              name: "West Chelsea Contemporary",
-            },
-          },
-        },
-        {
-          node: {
-            slug: "jean-michel-basquiat-jean-michel-basquiat-hollywood-africans-triptych-skate-decks-1",
-            id: "QXJ0d29yazo2MTRlNDAwNmY4NTZhMDAwMGRmMTM5OWM=",
-            image: {
-              aspectRatio: 1,
-              url: "https://d32dm0rphc51dk.cloudfront.net/fQkbGHRoxplWPRcIpGeAXw/large.jpg",
-            },
-            title: "JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS",
-            date: "ca. 2014",
-            saleMessage: "£1,095",
-            internalID: "614e4006f856a0000df1399c",
-            artistNames: "Jean-Michel Basquiat",
-            href: "/artwork/jean-michel-basquiat-jean-michel-basquiat-hollywood-africans-triptych-skate-decks-1",
-            sale: null,
-            saleArtwork: null,
-            partner: {
-              name: "Arts Limited",
-            },
-          },
-        },
-      ],
-    },
+const artwork = {
+  slug: "artwork-one-slug",
+  id: "artwork-one-id",
+  image: {
+    aspectRatio: 1.27,
+    url: "https://d32dm0rphc51dk.cloudfront.net/ZRMpZo7ikbEdx3yqBNlDVA/large.jpg",
+  },
+  title: "Sunflower Seeds Exhibition",
+  date: "2010",
+  saleMessage: "US$1,750",
+  internalID: "artwork-one-internalID",
+  artistNames: "Ai Weiwei",
+  href: "/artwork/ai-weiwei-sunflower-seeds-exhibition",
+  sale: null,
+  saleArtwork: null,
+  partner: {
+    name: "West Chelsea Contemporary",
+  },
+}
+
+const viewer = {
+  artworks: {
+    edges: [{ node: artwork }],
   },
 }
