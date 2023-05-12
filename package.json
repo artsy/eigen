@@ -165,6 +165,7 @@
     "react-native-bootsplash": "3.2.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.12-artsy",
     "react-native-credit-card-input": "0.4.1",
+    "react-native-dev-menu-android": "1.0.10",
     "react-native-device-info": "10.3.0",
     "react-native-fast-image": "8.6.3",
     "react-native-fbsdk-next": "11",

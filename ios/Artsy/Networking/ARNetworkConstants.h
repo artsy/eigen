@@ -3,8 +3,6 @@ extern NSString *const ARBaseDeprecatedMobileWebURL;
 extern NSString *const ARBaseApiURL;
 extern NSString *const ARStagingBaseDeprecatedMobileWebURL;
 
-extern NSString *const ARTwitterCallbackPath;
-
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
 

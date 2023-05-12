@@ -10,7 +10,6 @@
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
-#import "ARAppDelegate+Analytics.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
@@ -32,6 +31,7 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
+
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
@@ -51,6 +51,8 @@
 #import <React/RCTRootView.h>
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
+#import <React/RCTLinkingManager.h>
+#import <React/RCTAppSetupUtils.h>
 
 #import <React/RCTAppSetupUtils.h>
 #if RCT_NEW_ARCH_ENABLED
@@ -261,24 +263,12 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
+
+
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     id annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
 
-    _referralURLRepresentation = options[UIApplicationOpenURLOptionsSourceApplicationKey];
     _landingURLRepresentation = [url absoluteString];
-
-    [self trackDeeplinkWithTarget:url referrer:_referralURLRepresentation];
-
-    // Twitter SSO
-    if ([[url absoluteString] hasPrefix:ARTwitterCallbackPath]) {
-        NSNotification *notification = nil;
-        notification = [NSNotification notificationWithName:kAFApplicationLaunchedWithURLNotification
-                                                     object:nil
-                                                   userInfo:@{kAFApplicationLaunchOptionsURLKey : url}];
-
-        [[NSNotificationCenter defaultCenter] postNotification:notification];
-        return YES;
-    }
 
     // Facebook
     NSString *fbScheme = [@"fb" stringByAppendingString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
@@ -318,10 +308,7 @@ static ARAppDelegate *_sharedInstance = nil;
             return NO;
         }
     }
-
-    [[AREmission sharedInstance] navigate:[url absoluteString]];
-
-    return YES;
+    return [RCTLinkingManager application:app openURL:url options:options];
 }
 
 - (void)countNumberOfRuns

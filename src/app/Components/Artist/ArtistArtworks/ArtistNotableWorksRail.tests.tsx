@@ -94,6 +94,12 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS22222",
           slug: "this-artworks-slug-2",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
       {
@@ -131,6 +137,12 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS",
           slug: "this-artworks-slug",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
       {
@@ -178,6 +190,12 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           internalID: "37297491dDsddS3333",
           slug: "this-artworks-slug-3",
           realizedPrice: null,
+          customArtworkLists: {
+            totalCount: 0,
+          },
+          preview: {
+            url: null,
+          },
         },
       },
     ],

@@ -118,9 +118,11 @@ jest.mock("sift-react-native", () => ({
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("@react-navigation/native", () => {
+  const { useEffect } = require("react")
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
     ...actualNav,
+    useFocusEffect: useEffect,
     useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: jest.fn(),
