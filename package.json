@@ -10,8 +10,7 @@
   "main": "index-common.js",
   "scripts": {
     "android": "react-native run-android",
-    "bundle:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output dist/main.jsbundle  --sourcemap-output dist/main.jsbundle.map --assets-dest dist",
-    "bundle:ios-new": "yarn bundle:ios:js && yarn bundle:ios:hermes && yarn bundle:ios:sourcemap",
+    "bundle:ios": "yarn bundle:ios:js && yarn bundle:ios:hermes && yarn bundle:ios:sourcemap",
     "bundle:ios:js": "./scripts/hermes-ios-bundle.sh",
     "bundle:ios:hermes": "./scripts/hermes-ios-bundle-bytecode.sh",
     "bundle:ios:sourcemap": "./scripts/hermes-ios-bundle-sourcemap.sh",
