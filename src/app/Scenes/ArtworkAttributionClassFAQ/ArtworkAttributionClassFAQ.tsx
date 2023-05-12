@@ -4,6 +4,7 @@ import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__gen
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
 import { ScrollView } from "react-native"
@@ -15,6 +16,7 @@ interface Props {
 
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {
   const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
 
   return (
     <ScrollView>
