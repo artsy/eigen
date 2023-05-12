@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
@@ -23,7 +24,11 @@ export const SelectArtworkListsForArtworkView = () => {
       </ArtworkListsBottomSheetSectionTitle>
 
       <SelectArtworkListsForArtworkHeader />
-      <SelectArtworkListsForArtwork />
+
+      <Flex flex={1} overflow="hidden">
+        <SelectArtworkListsForArtwork />
+      </Flex>
+
       <SelectArtworkListsForArtworkFooter />
     </AutomountedBottomSheetModal>
   )

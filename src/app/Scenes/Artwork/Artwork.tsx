@@ -67,7 +67,6 @@ interface ArtworkProps {
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
-
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
@@ -406,6 +405,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
             </Box>
           )
         }}
+        keyExtractor={({ key }) => key}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
@@ -694,7 +694,7 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
 
   return (
     <>
-      {artworkProps?.artworkAboveTheFold && (
+      {!!artworkProps?.artworkAboveTheFold && (
         <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
       {/*

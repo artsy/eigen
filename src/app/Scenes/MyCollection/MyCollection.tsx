@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionCollectedArtistsRailPaginationContainer } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -34,12 +34,12 @@ import {
   RefreshEvents,
   refreshMyCollectionInsights,
 } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { SafeAreaView } from "react-native"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -152,7 +152,9 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <StickyTabPageScrollView>
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtistsRailPaginationContainer
+          myCollectionInfo={me.myCollectionInfo}
+        />
         {selectedTab === null && (
           <>
             <Separator my={4} />
@@ -165,9 +167,7 @@ const MyCollection: React.FC<{
 
   return (
     <StickyTabPageScrollView
-      contentContainerStyle={{
-        justifyContent: "flex-start",
-      }}
+      contentContainerStyle={{ justifyContent: "flex-start" }}
       refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       innerRef={innerFlatListRef}
       keyboardDismissMode="on-drag"
@@ -180,7 +180,9 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtistsRailPaginationContainer
+          myCollectionInfo={me.myCollectionInfo}
+        />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
@@ -218,6 +220,7 @@ export const MyCollectionContainer = createPaginationContainer(
           includesPurchasedArtworks
           artistsCount
           artworksCount
+          ...MyCollectionCollectedArtistsRail_myCollectionInfo
         }
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
@@ -317,7 +320,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex flex={1}>
@@ -375,10 +378,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </SafeAreaView>
+    </Flex>
   )
 }
 
-export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
->["node"]
+export type MyCollectionArtworkEdge =
+  ExtractNodeType<InfiniteScrollArtworksGrid_myCollectionConnection$data>
