@@ -7,18 +7,29 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import { SortByModal, SortOption } from "app/Scenes/SavedSearchAlertsList/Components/SortByModal"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { FC, Suspense } from "react"
+import { FC, Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import usePrevious from "react-use/lib/usePrevious"
 
 interface ArtworkListScreenProps {
   listID: string
 }
 
+const SORT_OPTIONS: SortOption[] = [
+  { value: "SAVED_AT_DESC", text: "Recently Added" },
+  { value: "SAVED_AT_ASC", text: "First Added" },
+]
+
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedSortValue, setSelectedSortValue] = useState("SAVED_AT_DESC")
+  const prevSelectedSortValue = usePrevious(selectedSortValue)
+
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
-    ArtworkListScreenQuery,
+    artworkListScreenQuery,
     {
       listID,
       count: PAGE_SIZE,
@@ -32,6 +43,27 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   >(artworkListFragment, queryData.me)
 
   const RefreshControl = useRefreshControl(refetch)
+
+  const handleSortByModalClosed = () => {
+    if (selectedSortValue === prevSelectedSortValue) {
+      return
+    }
+    refetch(
+      { sort: "SAVED_AT_DESC" },
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
+  }
+
+  const handleCloseModal = () => {
+    setModalVisible(false)
+  }
+
+  const handleSelectOption = (option: SortOption) => {
+    setSelectedSortValue(option.value)
+    handleCloseModal()
+  }
 
   const artworkList = data?.artworkList!
   const artworksCount = artworkList.artworks?.totalCount ?? 0
@@ -49,19 +81,37 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         hasMore={() => hasNext}
         isLoading={() => isLoadingNext}
         HeaderComponent={
-          <ArtworkListArtworksGridHeader title={artworkList.name} artworksCount={artworksCount} />
+          <ArtworkListArtworksGridHeader
+            title={artworkList.name}
+            artworksCount={artworksCount}
+            onSortButtonPress={() => setModalVisible(true)}
+          />
         }
         shouldAddPadding
         refreshControl={RefreshControl}
+      />
+      <SortByModal
+        visible={modalVisible}
+        options={SORT_OPTIONS}
+        selectedValue={selectedSortValue}
+        onCloseModal={handleCloseModal}
+        onSelectOption={handleSelectOption}
+        onModalFinishedClosing={handleSortByModalClosed}
       />
     </>
   )
 }
 
-export const ArtworkListScreenQuery = graphql`
-  query ArtworkListQuery($listID: String!, $count: Int, $after: String) {
+export const artworkListScreenQuery = graphql`
+  query ArtworkListQuery(
+    $listID: String!
+    $count: Int
+    $after: String
+    $sort: CollectionArtworkSorts
+  ) {
     me {
-      ...ArtworkList_artworksConnection @arguments(listID: $listID, count: $count, after: $after)
+      ...ArtworkList_artworksConnection
+        @arguments(listID: $listID, count: $count, after: $after, sort: $sort)
       ...ArtworkListEmptyState_me @arguments(listID: $listID)
     }
   }
@@ -74,12 +124,13 @@ const artworkListFragment = graphql`
     listID: { type: "String!" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
+    sort: { type: "CollectionArtworkSorts", defaultValue: SAVED_AT_DESC }
   ) {
     artworkList: collection(id: $listID) {
       internalID
       name
 
-      artworks: artworksConnection(first: $count, after: $after)
+      artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "ArtworkList_artworks") {
         totalCount
         edges {
