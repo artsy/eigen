@@ -1,10 +1,12 @@
 import { Spacer, Box, Text, Join, Button } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { ScrollView } from "react-native"
 
 export const CertificateOfAuthenticity: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
 
   return (
     <ScrollView>

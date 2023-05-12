@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
 import { NavStack } from "app/system/navigation/NavStack"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { BottomTabType } from "./BottomTabType"
 import { BottomTabs } from "./BottomTabs"
 
@@ -11,6 +12,7 @@ const TabContent = ({
 }: {
   route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
 }) => {
+  useAndroidGoBack()
   // TODO: simplify this, we probably can get rid of NavStack
   return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
 }
