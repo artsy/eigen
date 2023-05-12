@@ -1,7 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, NoArtworkIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -10,11 +11,9 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Touchable } from "@artsy/palette-mobile"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
 import { MedianSalePriceChartTracking } from "./Components/MedianSalePriceChartTracking"
 import { MedianSalePriceChart } from "./MedianSalePriceChart"
