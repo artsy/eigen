@@ -7,6 +7,8 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtistItem {
   artist: MyCollectionCollectedArtistItem_artist$key
+  // TODO: Implement compact version of artists grid
+  compact?: boolean
 }
 
 export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist }) => {

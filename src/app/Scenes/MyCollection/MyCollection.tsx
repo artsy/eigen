@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -152,7 +152,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <StickyTabPageScrollView>
-        <MyCollectionCollectedArtistsRail me={me} />
+        <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
             <Separator my={4} />
@@ -180,7 +180,7 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
-        <MyCollectionCollectedArtistsRail me={me} />
+        <MyCollectionCollectedArtists me={me} />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
@@ -219,7 +219,7 @@ export const MyCollectionContainer = createPaginationContainer(
           artistsCount
           artworksCount
         }
-        ...MyCollectionCollectedArtistsRail_me
+        ...MyCollectionCollectedArtists_me
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
         }
