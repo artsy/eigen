@@ -2706,7 +2706,6 @@
 			isa = PBXGroup;
 			children = (
 				8E4207782A055D2D006888BD /* ARAppDelegate.mm */,
-				CBE3249627E275A100395A93 /* ARAppDelegate+Analytics.m */,
 				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
 				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
