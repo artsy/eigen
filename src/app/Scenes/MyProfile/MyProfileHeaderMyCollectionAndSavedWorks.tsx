@@ -15,7 +15,7 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -120,7 +120,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
     >
       <MyCollectionTabsStoreProvider>
         <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-          environment={defaultEnvironment}
+          environment={getRelayEnvironment()}
           query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
           render={renderWithPlaceholder({
             Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,

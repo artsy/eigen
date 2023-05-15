@@ -237,10 +237,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.26":
-  version "11.0.26"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.26.tgz#68dd5de57c97dd50746b2030ab92208c5b5598cd"
-  integrity sha512-uDkumcNxhO3C+Th1aYDnZRW6r7TxeuI1lexnpX2stRkrJjbwa+UHj6Wg0vWbVKespQaLtiflFkI3a1oekktDhg==
+"@artsy/palette-mobile@11.0.29":
+  version "11.0.29"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.29.tgz#c377b7b955e8fb3fd9b84d370ef00120a323cbb2"
+  integrity sha512-bnFnoYLnlJ5bIxAUlNYb2lhBXsq3ssmJHaNUv1XhRH6hU874fQKozycOYLsOlBBCDQhS0hrW2pzlvCCIT0zaQQ==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -5006,10 +5006,10 @@
     "@babel/runtime" "^7.12.5"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@12.0.1":
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.0.1.tgz#ae7df2f80c40447f88c25be68ec5ef4bf8992f8f"
-  integrity sha512-IPyKF/WsxfpABf4VJUNgerLDoac/KusgZbLSkfbHCXboNBVKQZjdXGfp8C30Ih6xHnhjJAwO/Ff3dJGGGyXDkA==
+"@testing-library/react-native@12.1.2":
+  version "12.1.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.1.2.tgz#1935affe1106aeddf0087dff31a6d7414917c098"
+  integrity sha512-5rQMQpbSQAuJc4TxjTt1IoeT1a5eVXaa61hf/YcjV2QtGqCoyhuW8DvhTowrL7y2Ds4NzuYBmbVxjNPR6GIblw==
   dependencies:
     pretty-format "^29.0.0"
 
@@ -14741,10 +14741,10 @@ react-native-safe-area-context@3.4.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.4.0.tgz#b751f492a7f7470bccb09f1a11ccc276a3c5fe98"
   integrity sha512-kmzSK8L9LX+1rF6+qPBZR0kjGn5rE0IHNHL4px/lNwyxA+0siekTkCG+BlzbBy4V3yKeLzQ+UxgT9mEtDHs/Tg==
 
-react-native-screens@3.15.0:
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.15.0.tgz#78e42c8df72851b1ff235ddf5434b961ae123ca5"
-  integrity sha512-ezC5TibsUYyqPuuHpZoM3iEl6bRzCVBMJeGaFkn7xznuOt1VwkZVub0BvafIEYR/+AQC/RjxzMSQPs1qal0+wA==
+react-native-screens@3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.20.0.tgz#4d154177395e5541387d9a05bc2e12e54d2fb5b1"
+  integrity sha512-joWUKWAVHxymP3mL9gYApFHAsbd9L6ZcmpoZa6Sl3W/82bvvNVMqcfP7MeNqVCg73qZ8yL4fW+J/syusHleUgg==
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
