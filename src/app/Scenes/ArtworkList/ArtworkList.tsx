@@ -3,11 +3,11 @@ import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkL
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { SortOption, SortByModal } from "app/Components/SortByModal/SortByModal"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
-import { SortByModal, SortOption } from "app/Scenes/SavedSearchAlertsList/Components/SortByModal"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { FC, Suspense, useState } from "react"
@@ -23,9 +23,11 @@ const SORT_OPTIONS: SortOption[] = [
   { value: "SAVED_AT_ASC", text: "First Added" },
 ]
 
+const DEFAULT_SORT_OPTION = SORT_OPTIONS[0].value as CollectionArtworkSorts
+
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
-  const [modalVisible, setModalVisible] = useState(false)
-  const [selectedSortValue, setSelectedSortValue] = useState("SAVED_AT_DESC")
+  const [sortModalVisible, setSortModalVisible] = useState(false)
+  const [selectedSortValue, setSelectedSortValue] = useState(DEFAULT_SORT_OPTION)
   const prevSelectedSortValue = usePrevious(selectedSortValue)
 
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
@@ -33,7 +35,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     {
       listID,
       count: PAGE_SIZE,
-      sort: SORT_OPTIONS[0].value as CollectionArtworkSorts,
+      sort: DEFAULT_SORT_OPTION,
     },
     { fetchPolicy: "store-and-network" }
   )
@@ -43,27 +45,31 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     ArtworkList_artworksConnection$key
   >(artworkListFragment, queryData.me)
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(refetch, PAGE_SIZE, selectedSortValue)
 
   const handleSortByModalClosed = () => {
     if (selectedSortValue === prevSelectedSortValue) {
       return
     }
     refetch(
-      { sort: selectedSortValue as CollectionArtworkSorts },
+      { sort: selectedSortValue },
       {
         fetchPolicy: "store-and-network",
       }
     )
   }
 
-  const handleCloseModal = () => {
-    setModalVisible(false)
+  const closeSortModal = () => {
+    setSortModalVisible(false)
   }
 
   const handleSelectOption = (option: SortOption) => {
-    setSelectedSortValue(option.value)
-    handleCloseModal()
+    setSelectedSortValue(option.value as CollectionArtworkSorts)
+    closeSortModal()
+  }
+
+  const openSortModal = () => {
+    setSortModalVisible(true)
   }
 
   const artworkList = data?.artworkList!
@@ -85,17 +91,17 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
           <ArtworkListArtworksGridHeader
             title={artworkList.name}
             artworksCount={artworksCount}
-            onSortButtonPress={() => setModalVisible(true)}
+            onSortButtonPress={openSortModal}
           />
         }
         shouldAddPadding
         refreshControl={RefreshControl}
       />
       <SortByModal
-        visible={modalVisible}
+        visible={sortModalVisible}
         options={SORT_OPTIONS}
         selectedValue={selectedSortValue}
-        onCloseModal={handleCloseModal}
+        onCloseModal={closeSortModal}
         onSelectOption={handleSelectOption}
         onModalFinishedClosing={handleSortByModalClosed}
       />
