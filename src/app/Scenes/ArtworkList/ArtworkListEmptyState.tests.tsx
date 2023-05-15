@@ -40,19 +40,18 @@ describe("ArtworkListEmptyState", () => {
         artworkList: {
           default: true,
         },
-
-        savedArtworksArtworkList: {
-          artworksCount: 0,
-        },
       }),
     })
     await flushPromiseQueue()
 
-    expect(getByText("Keep track of artworks you love")).toBeTruthy()
-    expect(getByText("Select the heart on an artwork to save it or add it to a list.")).toBeTruthy()
+    const title = "Keep track of artworks you love"
+    const description = "Select the heart on an artwork to save it or add it to a list."
+
+    expect(getByText(title)).toBeTruthy()
+    expect(getByText(description)).toBeTruthy()
   })
 
-  it("should render correct texts for non-default artwork list when user has saved artworks", async () => {
+  it("should render correct texts for non-default artwork list", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -60,41 +59,15 @@ describe("ArtworkListEmptyState", () => {
         artworkList: {
           default: false,
         },
-
-        savedArtworksArtworkList: {
-          artworksCount: 2,
-        },
-      }),
-    })
-    await flushPromiseQueue()
-
-    expect(getByText("Start curating your list of works")).toBeTruthy()
-    expect(
-      getByText("Add works from Saved Artworks or add new artworks as you browse.")
-    ).toBeTruthy()
-  })
-
-  it("should render correct texts for non-default artwork list when user doesn't have any saved artworks", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        artworkList: {
-          default: false,
-          artworks: {
-            edges: [],
-          },
-        },
-
-        savedArtworksArtworkList: {
-          artworksCount: 0,
-        },
       }),
     })
 
     await flushPromiseQueue()
 
-    expect(getByText("Keep track of artworks you love")).toBeTruthy()
-    expect(getByText("Select the heart on an artwork to save it or add it to a list.")).toBeTruthy()
+    const title = "Start curating your list of works"
+    const description = "Add works from Saved Artworks or add new artworks as you browse."
+
+    expect(getByText(title)).toBeTruthy()
+    expect(getByText(description)).toBeTruthy()
   })
 })
