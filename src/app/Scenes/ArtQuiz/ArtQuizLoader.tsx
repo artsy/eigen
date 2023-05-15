@@ -10,7 +10,7 @@ export const ArtQuizLoader = ({ isCalculatingResult }: { isCalculatingResult?: b
           </Flex>
           {!!isCalculatingResult && (
             <>
-              <Text variant="lg-display">Art Taste Quiz</Text>
+              <Text variant="lg-display">Finding art for you...</Text>
               <Text color="black60">Calculating Results...</Text>
             </>
           )}
