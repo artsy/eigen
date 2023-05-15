@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Message } from "@artsy/palette-mobile"
+import { Box, Message, Spacer } from "@artsy/palette-mobile"
+import { ArtistArtworksQuery, FilterArtworksInput } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -21,10 +22,17 @@ import {
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import React, { useContext, useEffect, useState } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import {
+  RelayPaginationProp,
+  createPaginationContainer,
+  graphql,
+  useLazyLoadQuery,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
@@ -226,7 +234,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   return artist.artworks ? filteredArtworks() : null
 }
 
-export default createPaginationContainer(
+export const ArtistArtworksPaginationContainer = createPaginationContainer(
   ArtworksGrid,
   {
     artist: graphql`
@@ -294,7 +302,7 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtistArtworksQuery(
+      query ArtistArtworksPaginationQuery(
         $id: ID!
         $count: Int!
         $cursor: String
@@ -309,3 +317,35 @@ export default createPaginationContainer(
     `,
   }
 )
+
+const artistArtworksQuery = graphql`
+  query ArtistArtworksQuery($artistID: String!, $input: FilterArtworksInput) {
+    artist(id: $artistID) {
+      ...ArtistArtworks_artist @arguments(input: $input)
+    }
+  }
+`
+
+export const ArtistArtworksQueryRenderer: React.FC<{
+  artistID: string
+  searchCriteria: SearchCriteriaAttributes | null
+  predefinedFilters?: FilterArray
+  input?: FilterArtworksInput
+}> = withSuspense(({ artistID, searchCriteria, predefinedFilters, input }) => {
+  const data = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+    artistID,
+    input,
+  })
+
+  if (!data?.artist) {
+    return null
+  }
+
+  return (
+    <ArtistArtworksPaginationContainer
+      artist={data.artist}
+      predefinedFilters={predefinedFilters}
+      searchCriteria={searchCriteria}
+    />
+  )
+}, StickTabPagePlaceholder)

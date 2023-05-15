@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistAboutQuery } from "__generated__/ArtistAboutQuery.graphql"
+import { ArtistAbout_artist$key } from "__generated__/ArtistAbout_artist.graphql"
 import Articles from "app/Components/Artist/Articles/Articles"
 import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
@@ -7,17 +8,21 @@ import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app
 import Biography from "app/Components/Artist/Biography"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
 import { Stack } from "app/Components/Stack"
+import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
-import { createFragmentContainer, graphql } from "react-relay"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 interface Props {
-  artist: ArtistAbout_artist$data
+  artist: ArtistAbout_artist$key
 }
 
-export const ArtistAbout: React.FC<Props> = ({ artist }) => {
+export const ArtistAbout: React.FC<Props> = ({ artist: artistProp }) => {
+  const artist = useFragment(artistAboutFragment, artistProp)
+
   const articles = extractNodes(artist.articles)
   const relatedArtists = extractNodes(artist.related?.artists)
 
@@ -52,45 +57,60 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   )
 }
 
-export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
-  artist: graphql`
-    fragment ArtistAbout_artist on Artist {
-      hasMetadata
-      internalID
-      slug
-      ...Biography_artist
-      ...ArtistSeriesMoreSeries_artist
-      ...ArtistNotableWorksRail_artist
-      # this should match the query in ArtistNotableWorksRail
-      notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
-        edges {
-          node {
-            id
-          }
+const artistAboutFragment = graphql`
+  fragment ArtistAbout_artist on Artist {
+    hasMetadata
+    internalID
+    slug
+    ...Biography_artist
+    ...ArtistSeriesMoreSeries_artist
+    ...ArtistNotableWorksRail_artist
+    # this should match the query in ArtistNotableWorksRail
+    notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
+      edges {
+        node {
+          id
         }
       }
-      ...ArtistCollectionsRail_artist
-      iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
-        ...ArtistCollectionsRail_collections
-      }
-      ...ArtistConsignButton_artist
-      ...ArtistAboutShows_artist
-      related {
-        artists: artistsConnection(first: 16) {
-          edges {
-            node {
-              ...RelatedArtists_artists
-            }
-          }
-        }
-      }
-      articles: articlesConnection(first: 10, inEditorialFeed: true) {
+    }
+    ...ArtistCollectionsRail_artist
+    iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
+      ...ArtistCollectionsRail_collections
+    }
+    ...ArtistConsignButton_artist
+    ...ArtistAboutShows_artist
+    related {
+      artists: artistsConnection(first: 16) {
         edges {
           node {
-            ...Articles_articles
+            ...RelatedArtists_artists
           }
         }
       }
     }
-  `,
-})
+    articles: articlesConnection(first: 10, inEditorialFeed: true) {
+      edges {
+        node {
+          ...Articles_articles
+        }
+      }
+    }
+  }
+`
+
+const artistAboutQuery = graphql`
+  query ArtistAboutQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistAbout_artist
+    }
+  }
+`
+
+export const ArtistAboutQueryRenderer = withSuspense(({ artistID }: { artistID: string }) => {
+  const data = useLazyLoadQuery<ArtistAboutQuery>(artistAboutQuery, { artistID })
+  if (!data.artist) {
+    return null
+  }
+
+  return <ArtistAbout artist={data.artist} />
+}, StickTabPagePlaceholder)

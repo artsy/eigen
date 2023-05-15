@@ -3,15 +3,16 @@ import {
   DecreaseIcon,
   Flex,
   IncreaseIcon,
+  Join,
+  Separator,
   Spacer,
   Text,
-  Separator,
-  Join,
 } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Select } from "app/Components/Select"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -20,9 +21,8 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface MarketStatsProps {
   priceInsightsConnection: MarketStats_priceInsightsConnection$data
@@ -189,11 +189,10 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  environment: RelayModernEnvironment
-}> = ({ artistInternalID, environment }) => {
+}> = ({ artistInternalID }) => {
   return (
     <QueryRenderer<MarketStatsQuery>
-      environment={environment}
+      environment={getRelayEnvironment()}
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {

@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
+import { ArtistInsightsQuery } from "__generated__/ArtistInsightsQuery.graphql"
+import { ArtistInsights_artist$key } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import {
   AnimatedArtworkFilterButton,
@@ -9,27 +10,30 @@ import {
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "app/Components/StickyTabPage/StickyTabPage"
+import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
-  artist: ArtistInsights_artist$data
-  relay: RelayProp
+  artist: ArtistInsights_artist$key
   tabIndex: number
   initialFilters?: FilterArray
 }
 
 const FILTER_BUTTON_OFFSET = 50
+
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay, tabIndex, initialFilters } = props
+  const { tabIndex, initialFilters } = props
+  const artist = useFragment(artistInsightsFragment, props.artist)
 
   const tracking = useTracking()
   const flatListRef = useRef<{ getNode(): FlatList<any> } | null>(null)
@@ -81,10 +85,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         onScrollEndDrag={onScrollEndDrag}
         innerRef={flatListRef}
       >
-        <MarketStatsQueryRenderer
-          artistInternalID={artist.internalID}
-          environment={relay.environment}
-        />
+        <MarketStatsQueryRenderer artistInternalID={artist.internalID} />
         <View
           onLayout={({
             nativeEvent: {
@@ -119,17 +120,37 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   )
 }
 
-export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
-  artist: graphql`
-    fragment ArtistInsights_artist on Artist {
-      name
-      id
-      internalID
-      slug
-      ...ArtistInsightsAuctionResults_artist
+const artistInsightsFragment = graphql`
+  fragment ArtistInsights_artist on Artist {
+    name
+    id
+    internalID
+    slug
+    ...ArtistInsightsAuctionResults_artist
+  }
+`
+
+const artistInsightsQuery = graphql`
+  query ArtistInsightsQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistInsights_artist
     }
-  `,
-})
+  }
+`
+
+export const ArtistInsightsQueryRenderer: React.FC<{
+  artistID: string
+  initialFilters?: FilterArray
+  tabIndex: number
+}> = withSuspense(({ artistID, initialFilters, tabIndex }) => {
+  const data = useLazyLoadQuery<ArtistInsightsQuery>(artistInsightsQuery, { artistID })
+
+  if (!data.artist) {
+    return null
+  }
+
+  return <ArtistInsights tabIndex={tabIndex} artist={data.artist} initialFilters={initialFilters} />
+}, StickTabPagePlaceholder)
 
 export const tracks = {
   openFilter: (id: string, slug: string) => {

@@ -6,7 +6,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { ReactTestInstance } from "react-test-renderer"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -15,12 +14,7 @@ describe("MarketStats", () => {
   beforeEach(() => (environment = createMockEnvironment()))
 
   const TestWrapper = () => {
-    return (
-      <MarketStatsQueryRenderer
-        artistInternalID="some-id"
-        environment={environment as unknown as RelayModernEnvironment}
-      />
-    )
+    return <MarketStatsQueryRenderer artistInternalID="some-id" />
   }
 
   it("renders market stats", () => {
