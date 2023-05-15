@@ -1,5 +1,6 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { produce, setAutoFreeze } from "immer"
 import { Platform } from "react-native"
@@ -47,9 +48,10 @@ export const Versions = {
   AddCategoryToSubmissionArtworkDetails: 35,
   AddOnboardingArtQuizStateToAuthModel: 36,
   AddPushPromptStateToAuthModel: 37,
+  AddUserPreferredArtistsView: 38,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddPushPromptStateToAuthModel
+export const CURRENT_APP_VERSION = Versions.AddUserPreferredArtistsView
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -274,6 +276,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddPushPromptStateToAuthModel]: (state) => {
     state.auth.requestedPushPermissionsThisSession = false
+  },
+  [Versions.AddUserPreferredArtistsView]: (state) => {
+    state.userPrefs.artistViewOption = DEFAULT_VIEW_OPTION
   },
 }
 

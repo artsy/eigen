@@ -7,7 +7,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 
 export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
-  const setView = MyCollectionTabsStore.useStoreActions((actions) => actions.setView)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   return (
     <BottomSheetView>
@@ -38,7 +38,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
                 source: Tab.collection,
                 onSuccess: () => {
                   // hide the bottom sheet
-                  setView(null)
+                  setViewKind({ viewKind: null })
                   popToRoot()
                 },
               },
