@@ -1,26 +1,9 @@
 import { ContextModule } from "@artsy/cohesion"
 import { SearchEntity } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { Schema } from "app/utils/track"
-import { AlgoliaIndexKey, PillType, TappedSearchResultData } from "./types"
+import { PillType, TappedSearchResultData } from "./types"
 
 export const SEARCH_THROTTLE_INTERVAL = 500
-
-export const SINGLE_INDICES_WITH_AN_ARTICLE = [
-  AlgoliaIndexKey.Artist,
-  AlgoliaIndexKey.Auction,
-  AlgoliaIndexKey.ArtistSeries,
-  AlgoliaIndexKey.Article,
-]
-export const ALLOWED_ALGOLIA_KEYS = [
-  AlgoliaIndexKey.Artist,
-  AlgoliaIndexKey.Article,
-  AlgoliaIndexKey.Auction,
-  AlgoliaIndexKey.ArtistSeries,
-  AlgoliaIndexKey.Collection,
-  AlgoliaIndexKey.Fair,
-  AlgoliaIndexKey.Show,
-  AlgoliaIndexKey.Gallery,
-]
 
 export const TOP_PILL: PillType = {
   displayName: "Top",
@@ -82,7 +65,7 @@ export const GALLERY_PILL: PillType = {
   key: "PartnerGallery",
 }
 
-export const ES_ONLY_PILLS: PillType[] = [
+export const PILLS: PillType[] = [
   TOP_PILL,
   ARTWORKS_PILL,
   ARTIST_PILL,
@@ -95,13 +78,11 @@ export const ES_ONLY_PILLS: PillType[] = [
   GALLERY_PILL,
 ]
 
-export const DEFAULT_PILLS: PillType[] = [TOP_PILL, ARTWORKS_PILL]
-
 interface SearchEntityMap {
   [key: string]: SearchEntity
 }
 
-export const ELASTIC_PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
+export const PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
   artwork: "ARTWORK",
   artist: "ARTIST",
   article: "ARTICLE",

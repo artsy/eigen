@@ -5,7 +5,7 @@ import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
-import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
+import { PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
@@ -25,7 +25,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
   const flatListRef = useRef<FlatList>(null)
   const { inputRef } = useContext(SearchContext)
 
-  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
+  const selectedEntity = PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
 
   const queryData = useLazyLoadQuery<ElasticSearchResultsQuery>(elasticSearchResultsQuery, {
     query,

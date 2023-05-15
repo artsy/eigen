@@ -6,6 +6,7 @@ import { SearchInput } from "app/Components/SearchInput"
 import { ElasticSearchPills } from "app/Scenes/Search/ElasticSearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
@@ -13,7 +14,6 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
@@ -22,7 +22,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { ES_ONLY_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
+import { PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
@@ -134,7 +134,7 @@ export const Search2: React.FC = () => {
                 <ElasticSearchPills
                   viewer={queryData.viewer}
                   ref={searchPillsRef}
-                  pills={ES_ONLY_PILLS}
+                  pills={PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
                   isLoading={isLoading}
@@ -163,7 +163,7 @@ export const Search2: React.FC = () => {
                 <Spacer y={4} />
               )}
 
-              <HorizontalPadding>{shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
+              <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
               <Spacer y={4} />
             </Scrollable>
