@@ -653,7 +653,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.15.0):
+  - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
   - RNSentry (3.2.13):
@@ -1246,7 +1246,7 @@ SPEC CHECKSUMS:
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: f0d66bda3d074c43c72a18f4fd4f4c26687bc1fd
-  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
+  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
