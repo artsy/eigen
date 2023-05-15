@@ -3,7 +3,7 @@ import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
@@ -64,7 +64,7 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
 }> = ({ artistID }) => {
   return (
     <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionBottomSheetModalArtistPreviewQuery($artistID: String!) {
           artist(id: $artistID) {
