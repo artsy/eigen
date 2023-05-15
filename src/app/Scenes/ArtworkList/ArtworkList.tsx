@@ -45,7 +45,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     ArtworkList_artworksConnection$key
   >(artworkListFragment, queryData.me)
 
-  const RefreshControl = useRefreshControl(refetch, PAGE_SIZE, selectedSortValue)
+  const RefreshControl = useRefreshControl(refetch, { sort: selectedSortValue })
 
   const handleSortByModalClosed = () => {
     if (selectedSortValue === prevSelectedSortValue) {

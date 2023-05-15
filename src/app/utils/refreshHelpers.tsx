@@ -26,19 +26,27 @@ export const refreshFavoriteArtworks = () => {
   RefreshEvents.emit(FAVORITE_ARTWORKS_REFRESH_KEY)
 }
 
-export const useRefreshControl = (refetch: any, pageSize: number = PAGE_SIZE, sort?: string) => {
-  const [isRefreshing, setIsRefreshing] = useState(false)
+interface RefreshArgs extends Record<string, any> {
+  pageSize?: number
+}
 
-  const refetchObj = !!sort ? { count: pageSize, sort: sort } : { count: pageSize }
+export const useRefreshControl = (refetch: any, args?: RefreshArgs) => {
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleRefresh = () => {
     setIsRefreshing(true)
-    refetch(refetchObj, {
-      fetchPolicy: "store-and-network",
-      onComplete: () => {
-        setIsRefreshing(false)
+    refetch(
+      {
+        ...args,
+        count: args?.pageSize ?? PAGE_SIZE,
       },
-    })
+      {
+        fetchPolicy: "store-and-network",
+        onComplete: () => {
+          setIsRefreshing(false)
+        },
+      }
+    )
   }
 
   return <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
