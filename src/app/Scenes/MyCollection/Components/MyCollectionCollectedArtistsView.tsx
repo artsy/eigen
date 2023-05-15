@@ -66,7 +66,14 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
     <FlatList
       data={collectedArtists}
       renderItem={({ item: artist }) => {
-        return <MyCollectionCollectedArtistItem artist={artist} key={artist.internalID} compact />
+        return (
+          <MyCollectionCollectedArtistItem
+            artworksCount={artist.artworksCount}
+            artist={artist}
+            key={artist.internalID}
+            compact
+          />
+        )
       }}
       onEndReached={handleLoadMore}
       ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
@@ -106,6 +113,7 @@ const collectedArtistsPaginationFragment = graphql`
         includePersonalArtists: true
       ) @connection(key: "MyCollectionCollectedArtistsView_collectedArtistsConnection") {
         edges {
+          artworksCount
           node {
             internalID
             ...MyCollectionCollectedArtistItem_artist
