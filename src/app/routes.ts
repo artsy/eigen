@@ -228,7 +228,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/recently-viewed", "RecentlyViewed"),
     addRoute("/reverse-image", "ReverseImage"),
     addRoute("/sales", "Sales"),
-    addRoute("/search", "Search"),
+    addRoute("/search", "Search2"),
     addRoute("/search2", "Search2"),
     addRoute("/sell/inquiry", "ConsignmentInquiry"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),

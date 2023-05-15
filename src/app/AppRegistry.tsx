@@ -20,9 +20,7 @@ import {
   RecentlyViewedScreen,
   RecentlyViewedScreenQuery,
 } from "app/Scenes/RecentlyViewed/RecentlyViewed"
-import { SearchScreenQuery } from "app/Scenes/Search/Search"
-import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
-import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
+import { SearchScreen2, SearchScreenQuery } from "app/Scenes/Search/Search2"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -502,10 +500,7 @@ export const modules = defineModules({
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
-  Search: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }, [
-    SearchScreenQuery,
-  ]),
-  Search2: reactModule(SearchSwitchContainer, {}, [SearchScreenQuery2]),
+  Search2: reactModule(SearchScreen2, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
