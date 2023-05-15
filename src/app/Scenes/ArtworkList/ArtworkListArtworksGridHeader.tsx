@@ -6,11 +6,13 @@ import { FC } from "react"
 interface ArtworkListArtworksGridHeaderProps {
   title: string
   artworksCount: number
+  onSortButtonPress: () => void
 }
 
 export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProps> = ({
   title,
   artworksCount,
+  onSortButtonPress,
 }) => {
   return (
     <Flex mb={1}>
@@ -22,7 +24,7 @@ export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProp
         </Text>
 
         <ArtworksFilterHeader
-          onFilterPress={() => console.log("Nothing for now")}
+          onFilterPress={onSortButtonPress}
           title="Sort"
           selectedFiltersCount={0}
           showSeparator={false}
