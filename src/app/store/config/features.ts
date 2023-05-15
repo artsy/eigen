@@ -276,6 +276,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableStickyTabsLazyLoading: {
+    description: "Enable lazy loading on sticky tabs",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {

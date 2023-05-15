@@ -77,8 +77,10 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     Array<JSX.Element | null>
   >([])
 
+  const enableLazyLoading = useFeatureFlag("AREnableStickyTabsLazyLoading")
+
   const [viewedTabLabels, setViewedTabLabels] = useState(
-    lazyLoadTabs ? [tabs[initialTabIndex].title] : tabs.map((tab) => tab.title)
+    enableLazyLoading && lazyLoadTabs ? [tabs[initialTabIndex].title] : tabs.map((tab) => tab.title)
   )
 
   const enablePanOnStaticHeader = useFeatureFlag("AREnablePanOnStaticHeader")
