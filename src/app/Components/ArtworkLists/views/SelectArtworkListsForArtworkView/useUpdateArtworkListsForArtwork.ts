@@ -2,7 +2,6 @@ import {
   useUpdateArtworkListsForArtworkMutation,
   useUpdateArtworkListsForArtworkMutation$data,
 } from "__generated__/useUpdateArtworkListsForArtworkMutation.graphql"
-import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { UseMutationConfig, graphql, useMutation } from "react-relay"
 import { Disposable, RecordSourceSelectorProxy } from "relay-runtime"
 
@@ -32,10 +31,6 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
     return initialCommit({
       ...config,
       updater: updater(artworkID),
-      onCompleted: (...args) => {
-        refreshOnArtworkSave()
-        config.onCompleted?.(...args)
-      },
     })
   }
 
@@ -112,15 +107,24 @@ export const getArtworkListsCountByType = (artworkLists: ArtworkListEntity) => {
 }
 
 const SaveArtworkListsMutation = graphql`
-  mutation useUpdateArtworkListsForArtworkMutation($input: ArtworksCollectionsBatchUpdateInput!) {
+  mutation useUpdateArtworkListsForArtworkMutation(
+    $artworkID: String!
+    $input: ArtworksCollectionsBatchUpdateInput!
+  ) {
     artworksCollectionsBatchUpdate(input: $input) {
       responseOrError {
         ... on ArtworksCollectionsBatchUpdateSuccess {
           addedToArtworkLists: addedToCollections {
+            internalID
             default
+            ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+            ...ArtworkListItem_collection
           }
           removedFromArtworkLists: removedFromCollections {
+            internalID
             default
+            ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+            ...ArtworkListItem_collection
           }
         }
         ... on ArtworksCollectionsBatchUpdateFailure {

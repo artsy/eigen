@@ -6,7 +6,6 @@ import { RefreshControl } from "react-native"
 export const RefreshEvents = new EventEmitter()
 RefreshEvents.setMaxListeners(20)
 
-// TODO: Rename to FAVORITE_ARTWORK_LISTS_REFRESH_KEY when `AREnableArtworkLists` is released
 export const FAVORITE_ARTWORKS_REFRESH_KEY = "refreshFavoriteArtworks"
 export const MY_COLLECTION_REFRESH_KEY = "refreshMyCollection"
 export const MY_COLLECTION_INSIGHTS_REFRESH_KEY = "refreshMyCollectionInsights"
