@@ -102,7 +102,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
 
-        {hasMarketSignals /* || average sale price data */ && (
+        {!!hasMarketSignals /* || average sale price data */ && (
           <>
             <CareerHighlightsRail me={data.me!} />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
