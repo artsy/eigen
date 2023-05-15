@@ -278,8 +278,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableStickyTabsLazyLoading: {
     description: "Enable lazy loading on sticky tabs",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableStickyTabsLazyLoading",
   },
 }
 
