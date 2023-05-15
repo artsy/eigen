@@ -62,15 +62,26 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
     return null
   }
 
+  const artistsAndArtworksCount = data.myCollectionInfo?.collectedArtistsConnection?.edges
+    ?.filter((edge) => edge !== null && edge.node !== null)
+    .map((edge) => {
+      return {
+        artist: edge?.node,
+        artworksCount: edge?.artworksCount || null,
+      }
+    })
+
   return (
     <FlatList
-      data={collectedArtists}
-      renderItem={({ item: artist }) => {
+      data={artistsAndArtworksCount}
+      renderItem={({ item }) => {
         return (
           <MyCollectionCollectedArtistItem
-            artworksCount={artist.artworksCount}
-            artist={artist}
-            key={artist.internalID}
+            artworksCount={item.artworksCount}
+            // Castiing this type as ts was not able to infer it
+            artist={item.artist!}
+            // Castiing this type as ts was not able to infer it
+            key={item.artist!.internalID}
             compact
           />
         )
