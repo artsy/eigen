@@ -99,7 +99,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.125.1",
-    "@artsy/palette-mobile": "11.0.26",
+    "@artsy/palette-mobile": "11.0.29",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",
@@ -224,7 +224,7 @@
     "@react-native-community/cli-platform-ios": "6.2.0",
     "@testing-library/jest-native": "5.4.2",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/react-native": "12.0.1",
+    "@testing-library/react-native": "12.1.2",
     "@tsconfig/react-native": "2.0.2",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.1.1",
