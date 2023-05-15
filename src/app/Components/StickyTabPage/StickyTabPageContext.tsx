@@ -9,6 +9,7 @@ export const StickyTabPageContext = React.createContext<{
   stickyHeaderHeight: Animated.Node<number> | null
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
+  viewedTabLabels: string[]
   tabVisualClues: Array<TabVisualClues | undefined>
   activeTabIndex: GlobalState<number>
   setActiveTabIndex(index: number): void

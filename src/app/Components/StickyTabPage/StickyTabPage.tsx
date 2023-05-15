@@ -40,6 +40,7 @@ interface StickyTabPageProps {
   disableBackButtonUpdate?: boolean
   shouldTrackEventOnTabClick?: boolean
   onTabPress?: (tabIndex: number) => void
+  lazyLoadTabs?: boolean
 }
 
 /**
@@ -52,13 +53,14 @@ interface StickyTabPageProps {
  * about whether the tab is being shown currently etc.
  */
 export const StickyTabPage: React.FC<StickyTabPageProps> = ({
-  tabs,
-  staticHeaderContent = <></>,
-  stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,
-  shouldTrackEventOnTabClick = true,
+  lazyLoadTabs = false,
   onTabPress,
+  shouldTrackEventOnTabClick = true,
+  staticHeaderContent = <></>,
+  stickyHeaderContent = <StickyTabPageTabBar />,
+  tabs,
 }) => {
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(
@@ -74,6 +76,10 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<
     Array<JSX.Element | null>
   >([])
+
+  const [viewedTabLabels, setViewedTabLabels] = useState(
+    lazyLoadTabs ? [tabs[initialTabIndex].title] : tabs.map((tab) => tab.title)
+  )
 
   const enablePanOnStaticHeader = useFeatureFlag("AREnablePanOnStaticHeader")
 
@@ -120,6 +126,19 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     []
   )
 
+  const getTabContent = (
+    content: JSX.Element | ((tabIndex: number) => JSX.Element),
+    index: number
+  ) => {
+    if (lazyLoadTabs && !viewedTabLabels.includes(tabs[index].title)) {
+      return null
+    }
+    if (typeof content === "function") {
+      return content(index)
+    }
+    return content
+  }
+
   return (
     <StickyTabPageContext.Provider
       value={{
@@ -128,8 +147,14 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
+        viewedTabLabels,
         tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
+          const tabTitle = tabs[index].title
+          if (!viewedTabLabels.includes(tabTitle)) {
+            setViewedTabLabels(viewedTabLabels.concat(tabs[index].title))
+          }
+
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
           railRef.current?.setOffset(index * width)
@@ -180,7 +205,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
                           }),
                       }}
                     >
-                      {typeof content === "function" ? content(index) : content}
+                      {getTabContent(content, index)}
                     </StickyTabPageFlatListContext.Provider>
                   </View>
                 )
