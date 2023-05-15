@@ -96,9 +96,11 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     },
 
     onSubmit: async ({ email, name, phoneNumber, message }) => {
+      const formattedValue = name.trim()
+
       const input = !!recipientEmail
-        ? { email, name, phoneNumber, message, userId, recipientEmail }
-        : { email, name, phoneNumber, message, userId }
+        ? { email, name: formattedValue, phoneNumber, message, userId, recipientEmail }
+        : { email, name: formattedValue, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {
         const consignmentInquiryId =
           response.createConsignmentInquiry?.consignmentInquiryOrError?.consignmentInquiry

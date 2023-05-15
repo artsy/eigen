@@ -94,7 +94,7 @@ export const ConsignmentInquiryForm: React.FC<{
             autoCapitalize="words"
             autoCorrect={false}
             onChangeText={(text) => {
-              handleOnChangeText("name", text.trim())
+              handleOnChangeText("name", text)
             }}
             onSubmitEditing={() => jumpToNextField("name")}
             blurOnSubmit={false}
@@ -150,7 +150,6 @@ export const ConsignmentInquiryForm: React.FC<{
             title="Your Message"
             numberOfLines={4}
             multiline
-            autoCapitalize="none"
             onFocus={showMessageInputFully}
             onChangeText={(text) => {
               handleOnChangeText("message", text.trimStart())
@@ -159,8 +158,7 @@ export const ConsignmentInquiryForm: React.FC<{
             blurOnSubmit={false}
             placeholder="Questions about selling multiple works or an entire collection? Tell us more about how we can assist you. "
             value={values.message}
-            spellCheck={false}
-            autoCorrect={false}
+            autoComplete="off"
             error={errors.message}
           />
           <Spacer y={4} />
