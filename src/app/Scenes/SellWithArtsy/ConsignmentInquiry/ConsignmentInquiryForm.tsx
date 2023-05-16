@@ -94,7 +94,7 @@ export const ConsignmentInquiryForm: React.FC<{
             autoCapitalize="words"
             autoCorrect={false}
             onChangeText={(text) => {
-              handleOnChangeText("name", text.trim())
+              handleOnChangeText("name", text)
             }}
             onSubmitEditing={() => jumpToNextField("name")}
             blurOnSubmit={false}
