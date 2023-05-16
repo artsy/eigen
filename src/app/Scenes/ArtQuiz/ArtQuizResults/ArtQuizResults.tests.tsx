@@ -1,14 +1,20 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtQuizResultsTabsTestsQuery } from "__generated__/ArtQuizResultsTabsTestsQuery.graphql"
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("ArtQuizResults", () => {
-  const { renderWithRelay } = setupTestWrapper({
+  const { renderWithRelay } = setupTestWrapper<ArtQuizResultsTabsTestsQuery>({
     Component: ({ me }) => <ArtQuizResultsTabs me={me} />,
     query: graphql`
       query ArtQuizResultsTabsTestsQuery @relay_test_operation {
         me {
+          quiz {
+            savedArtworks {
+              __typename
+            }
+          }
           ...ArtQuizResultsTabs_me
         }
       }
