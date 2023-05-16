@@ -1,5 +1,5 @@
-import { InfoCircleIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import NetInfo, { NetInfoState } from "@react-native-community/netinfo"
+import { InfoCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
@@ -14,6 +14,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
+import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -62,6 +63,8 @@ const track: Track<Props, State> = _track
 export class Conversation extends React.Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   messages: MessagesComponent
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  composer: Composer
 
   // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
   state = {
@@ -84,8 +87,9 @@ export class Conversation extends React.Component<Props, State> {
     navigationEvents.removeListener("goBack", this.handleModalDismissed)
   }
 
-  handleConnectivityChange = (state: NetInfoState) => {
-    this.setState({ isConnected: !!state.isConnected })
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  handleConnectivityChange = (isConnected) => {
+    this.setState({ isConnected })
   }
 
   handleModalDismissed = () => {
@@ -129,7 +133,8 @@ export class Conversation extends React.Component<Props, State> {
   @track((props) => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConversationSendReply,
-    owner_id: props.me.conversation?.internalID,
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   messageSuccessfullySent(text: string) {
@@ -162,20 +167,16 @@ export class Conversation extends React.Component<Props, State> {
       <ComposerFragmentContainer
         conversation={conversation!}
         disabled={this.state.sendingMessage || !this.state.isConnected}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        ref={(composer) => (this.composer = composer)}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         value={this.state.failedMessageText}
         onSubmit={(text) => {
           this.setState({ sendingMessage: true, failedMessageText: null })
-
           sendConversationMessage(
             this.props.relay.environment,
-            {
-              lastMessageID: conversation?.lastMessageID!,
-              internalID: conversation?.internalID!,
-              id: conversation?.id!,
-              from: {
-                email: conversation?.from.email!,
-              },
-            },
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            conversation,
             text,
             (_response) => {
               this.messageSuccessfullySent(text)

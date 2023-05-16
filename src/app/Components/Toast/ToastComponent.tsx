@@ -117,8 +117,7 @@ export const ToastComponent = ({
       position="absolute"
       left="1"
       right="1"
-      minHeight={EDGE_TOAST_HEIGHT}
-      py={1}
+      height={EDGE_TOAST_HEIGHT}
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
