@@ -7,6 +7,8 @@ export interface Location {
   lng: number
 }
 
+Geolocation.setRNConfiguration({ skipPermissionRequests: true })
+
 /**
  * Returns the user's location if available, otherwise returns the user's IP address
  * Usage:
