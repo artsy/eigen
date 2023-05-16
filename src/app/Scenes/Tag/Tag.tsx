@@ -80,7 +80,6 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
       variables={{ tagID }}
       render={renderWithPlaceholder({
         Container: Tag,
-        // TODO: Placeholder looks borked need to fix
         renderPlaceholder: () => <TagPlaceholder />,
         initialProps: { tagID },
       })}
