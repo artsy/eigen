@@ -6,11 +6,13 @@ import { SelectArtworkListsForArtwork } from "app/Components/ArtworkLists/views/
 import { SelectArtworkListsForArtworkFooter } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtworkFooter"
 import { SelectArtworkListsForArtworkHeader } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtworkHeader"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const SNAP_POINTS = ["50%", "95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
   const { reset } = useArtworkListsContext()
+  const insets = useSafeAreaInsets()
 
   return (
     <AutomountedBottomSheetModal
@@ -29,7 +31,7 @@ export const SelectArtworkListsForArtworkView = () => {
         <SelectArtworkListsForArtwork />
       </Flex>
 
-      <SelectArtworkListsForArtworkFooter />
+      <SelectArtworkListsForArtworkFooter p={2} pb={`${insets.bottom}px`} />
     </AutomountedBottomSheetModal>
   )
 }
