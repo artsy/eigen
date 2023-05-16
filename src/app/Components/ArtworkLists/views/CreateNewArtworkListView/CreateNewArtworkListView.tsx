@@ -6,10 +6,12 @@ import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useCallback, useMemo } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
   const { state, dispatch } = useArtworkListsContext()
+  const insets = useSafeAreaInsets()
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
 
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
@@ -40,7 +42,7 @@ export const CreateNewArtworkListView = () => {
           <ArtworkInfo artwork={state.artwork!} />
         </Box>
 
-        <CreateNewArtworkListForm m={2} />
+        <CreateNewArtworkListForm m={2} mb={`${insets.bottom}px`} />
       </BottomSheetView>
     </AutomountedBottomSheetModal>
   )

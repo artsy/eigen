@@ -5,10 +5,12 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ResultAction } from "app/Components/ArtworkLists/types"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const SelectArtworkListsForArtworkFooter = () => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
+  const insets = useSafeAreaInsets()
   const { selectedArtworkListIDs } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
@@ -42,7 +44,7 @@ export const SelectArtworkListsForArtworkFooter = () => {
   }
 
   return (
-    <Box p={2}>
+    <Box p={2} pb={`${insets.bottom}px`}>
       <Text variant="xs" textAlign="center">
         {getSelectedListsCountText(selectedArtworkListIDs.length)}
       </Text>
