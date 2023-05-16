@@ -1,24 +1,20 @@
-import { Flex, useTheme } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 import { TagQuery } from "__generated__/TagQuery.graphql"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import About from "app/Components/Tag/About"
-import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
-import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
-import Header from "app/Scenes/Tag/TagHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { goBack } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { View } from "react-native"
+import { Tabs } from "react-native-collapsible-tab-view"
 import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
+import About from "./About"
+import { TagArtworksPaginationContainer } from "./TagArtworks"
+import { TagPlaceholder } from "./TagPlaceholder"
 
 const isHandset = DeviceInfo.getDeviceType() === "Handset"
+// Do we need to handle the tablet paddings or are they handled automatically by palette responsiveness?
 const commonPadding = isHandset ? 20 : 40
-
-const TABS = {
-  ARTWORKS: "Artworks",
-  ABOUT: "About",
-}
 
 interface TagProps {
   tagID?: string
@@ -31,37 +27,10 @@ interface TagQueryRendererProps {
 
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
-  const { color } = useTheme()
 
-  const tabs: TabProps[] = [
-    {
-      title: TABS.ARTWORKS,
-      content: <TagArtworksPaginationContainer tag={tag} />,
-    },
-  ]
-
-  if (tag.description) {
-    tabs.push({
-      title: TABS.ABOUT,
-      content: <About tag={tag} />,
-    })
+  const handleTabPress = () => {
+    // tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
   }
-
-  const headerContent = (
-    <View
-      style={{
-        backgroundColor: color("white100"),
-        paddingLeft: commonPadding,
-        paddingRight: commonPadding,
-        justifyContent: "center",
-        alignSelf: isHandset ? "auto" : "center",
-      }}
-    >
-      <Header tag={tag} />
-    </View>
-  )
-
-  const stickyHeaderContentProp = tabs.length === 1 ? { stickyHeaderContent: <></> } : {}
 
   return (
     <ProvideScreenTracking
@@ -72,13 +41,35 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag.slug,
       }}
     >
-      <Flex flex={1}>
-        <StickyTabPage
-          staticHeaderContent={headerContent}
-          {...stickyHeaderContentProp}
-          tabs={tabs}
-        />
-      </Flex>
+      <Screen>
+        <Screen.Body fullwidth>
+          <TabsContainer
+            // TODO: Do we want to track anything here? we weren't tracking anything before
+            // onTabChange={handleTabPress}
+            renderHeader={() => {
+              if (tag.name) {
+                return (
+                  <Screen.Header
+                    title={tag.name}
+                    titleProps={{ alignItems: "center" }}
+                    onBack={goBack}
+                  />
+                )
+              }
+              return null
+            }}
+          >
+            <Tabs.Tab name="Artworks" label="Artworks">
+              <TagArtworksPaginationContainer tag={tag} />
+            </Tabs.Tab>
+            {!!tag.description ? (
+              <Tabs.Tab name="About" label="About">
+                <About tag={tag} />
+              </Tabs.Tab>
+            ) : null}
+          </TabsContainer>
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -88,14 +79,14 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<TagQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {
             slug
+            name
             description
             ...About_tag
-            ...TagHeader_tag
             ...TagArtworks_tag @arguments(input: $input)
           }
         }
@@ -103,6 +94,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
       variables={{ tagID }}
       render={renderWithPlaceholder({
         Container: Tag,
+        // TODO: Placeholder looks borked need to fix
         renderPlaceholder: () => <TagPlaceholder />,
         initialProps: { tagID },
       })}
