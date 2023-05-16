@@ -13,8 +13,8 @@ import { graphql, useFragment } from "react-relay"
 
 enum Tab {
   worksYouLiked = "Works you liked",
-  exploreWorks = "Explore Works",
-  exploreArtists = "Explore Artists",
+  exploreWorks = "Works for You",
+  exploreArtists = "Artists for You",
 }
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
