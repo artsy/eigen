@@ -14,15 +14,22 @@ export const ARTIST_CIRCLE_DIAMETER = 70
 
 const AddMoreButton = () => {
   return (
-    <Flex
-      width={ARTIST_CIRCLE_DIAMETER}
-      height={ARTIST_CIRCLE_DIAMETER}
-      borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-      alignItems="center"
-      justifyContent="center"
-      backgroundColor="black5"
-    >
-      <AddIcon height={28} width={28} fill="black60" />
+    <Flex>
+      <Flex
+        width={ARTIST_CIRCLE_DIAMETER}
+        height={ARTIST_CIRCLE_DIAMETER}
+        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor="black5"
+        border="1px solid"
+        borderColor="black15"
+      >
+        <AddIcon height={28} width={28} fill="black60" />
+      </Flex>
+      <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
+        Add Artist
+      </Text>
     </Flex>
   )
 }
@@ -93,7 +100,7 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
   return (
     <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
       <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="sm" />
-      <Text variant="xs" numberOfLines={2} textAlign="center">
+      <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
         {data.name}
       </Text>
     </Flex>
