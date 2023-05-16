@@ -6,13 +6,12 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Tabs } from "react-native-collapsible-tab-view"
-import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
 import About from "./About"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 import { TagPlaceholder } from "./TagPlaceholder"
 
-const isHandset = DeviceInfo.getDeviceType() === "Handset"
+// const isHandset = DeviceInfo.getDeviceType() === "Handset"
 // Do we need to handle the tablet paddings or are they handled automatically by palette responsiveness?
 // const commonPadding = isHandset ? 20 : 40
 
