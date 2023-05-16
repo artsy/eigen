@@ -1,4 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "app/store/migration"
 import { sanitize } from "app/store/persistence"
@@ -848,5 +849,23 @@ describe("App version Versions.AddPushPromptStateToAuthModel", () => {
     }) as any
 
     expect(migratedState.auth.requestedPushPermissionsThisSession).toEqual(false)
+  })
+})
+
+describe("App version Versions.AddUserPreferredArtistsView", () => {
+  const migrationToTest = Versions.AddUserPreferredArtistsView
+
+  it("adds artist view option to user prefs model", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPrefs.artistViewOption).toEqual(DEFAULT_VIEW_OPTION)
   })
 })

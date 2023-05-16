@@ -13,9 +13,8 @@ interface ArtworkListEmptyStateProps {
 export const ArtworkListEmptyState = ({ me, title }: ArtworkListEmptyStateProps) => {
   const fragmentData = useFragment(artworkListEmptyStateFragment, me)
 
-  const savedArtworksCount = fragmentData.savedArtworksArtworkList?.artworksCount ?? 0
   const isDefaultArtworkList = fragmentData.artworkList?.default ?? false
-  const text = getText(isDefaultArtworkList, savedArtworksCount)
+  const text = getText(isDefaultArtworkList)
 
   return (
     <Flex mb={1}>
@@ -45,15 +44,11 @@ const artworkListEmptyStateFragment = graphql`
     artworkList: collection(id: $listID) {
       default
     }
-
-    savedArtworksArtworkList: collection(id: "saved-artwork") {
-      artworksCount(onlyVisible: true)
-    }
   }
 `
 
-const getText = (isDefaultArtworkList: boolean, savedArtworksCount: number) => {
-  if (isDefaultArtworkList || savedArtworksCount === 0) {
+const getText = (isDefaultArtworkList: boolean) => {
+  if (isDefaultArtworkList) {
     return {
       title: "Keep track of artworks you love",
       description: "Select the heart on an artwork to save it or add it to a list.",

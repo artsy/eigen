@@ -29,7 +29,7 @@ import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { debounce } from "lodash"
 import { MotiView } from "moti"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 import { useTracking } from "react-tracking"
 
 // CONSTANTS
@@ -58,6 +58,14 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
+  const showArtworkFilters = useMemo(() => {
+    if (!enableCollectedArtists) {
+      return !!hasArtworks
+    }
+    return selectedTab === "Artworks"
+  }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
     <>
@@ -66,7 +74,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
-      {!!hasArtworks && (
+      {!!showArtworkFilters && (
         <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
       )}
       <Messages
@@ -85,10 +93,10 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
-  const setView = MyCollectionTabsStore.useStoreActions((actions) => actions.setView)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
-    setView("Add")
+    setViewKind({ viewKind: "Add" })
   }, 100)
 
   const { width } = useMeasure({ ref: closeIconRef })

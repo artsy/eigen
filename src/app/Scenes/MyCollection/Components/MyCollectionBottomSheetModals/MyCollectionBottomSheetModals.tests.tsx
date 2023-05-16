@@ -1,5 +1,5 @@
 import {
-  MyCollectionBottomSheetModalView,
+  MyCollectionBottomSheetModalKind,
   MyCollectionBottomSheetModals,
 } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
@@ -9,11 +9,13 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionBottomSheetModals", () => {
-  const TestRenderer: React.FC<{ view?: MyCollectionBottomSheetModalView }> = ({ view }) => (
+  const TestRenderer: React.FC<{ viewKind?: MyCollectionBottomSheetModalKind }> = ({
+    viewKind,
+  }) => (
     <MyCollectionTabsStoreProvider
       runtimeModel={{
         ...myCollectionTabsStoreModel,
-        view: view ?? null,
+        viewKind: viewKind ?? null,
       }}
     >
       <MyCollectionBottomSheetModals />
@@ -26,7 +28,7 @@ describe("MyCollectionBottomSheetModals", () => {
   })
 
   it("renders Add to my collection when the Add view is specified", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer view="Add" />)
+    const { getByText } = renderWithWrappers(<TestRenderer viewKind="Add" />)
     expect(getByText("Add to My Collection")).toBeTruthy()
   })
 })

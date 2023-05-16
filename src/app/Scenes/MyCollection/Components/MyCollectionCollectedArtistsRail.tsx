@@ -1,14 +1,13 @@
 import { AddIcon, Avatar, Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
-import { MyCollectionCollectedArtistsRail_myCollectionInfo$data } from "__generated__/MyCollectionCollectedArtistsRail_myCollectionInfo.graphql"
+import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
+import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { useState } from "react"
 import { Animated } from "react-native"
-import { RelayPaginationProp, createPaginationContainer } from "react-relay"
+import { useFragment, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
 interface MyCollectionCollectedArtistsRailProps {
-  myCollectionInfo: MyCollectionCollectedArtistsRail_myCollectionInfo$data | null
-  relay: RelayPaginationProp
+  me: MyCollectionCollectedArtistsRail_me$key
 }
 
 export const ARTIST_CIRCLE_DIAMETER = 70
@@ -29,29 +28,24 @@ const AddMoreButton = () => {
 }
 
 export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
-  myCollectionInfo,
-  relay,
+  me,
 }) => {
   const space = useSpace()
-  const [isLoading, setIsLoading] = useState(false)
+
+  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
+    collectedArtistsPaginationFragment,
+    me
+  )
 
   const handleLoadMore = () => {
-    if (!relay.hasMore() || relay.isLoading()) {
+    if (!hasNext || isLoadingNext) {
       return
     }
 
-    setIsLoading(true)
-
-    relay.loadMore(20, (err) => {
-      setIsLoading(false)
-
-      if (err) {
-        console.error(err)
-      }
-    })
+    loadNext(10)
   }
 
-  const collectedArtists = extractNodes(myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(data.myCollectionInfo?.collectedArtistsConnection)
 
   if (!collectedArtists) return <></>
 
@@ -61,14 +55,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         horizontal
         showsHorizontalScrollIndicator={false}
         data={collectedArtists}
-        renderItem={({ index, item }) => (
-          <Artist
-            key={index}
-            initials={item.initials || undefined}
-            name={item.name || ""}
-            image={item.image?.url || ""}
-          />
-        )}
+        renderItem={({ item }) => <Artist key={item.internalID} artist={item} />}
         keyExtractor={({ internalID }) => internalID}
         onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
@@ -78,7 +65,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         }}
         ListFooterComponent={
           <Flex flexDirection="row" mr={4}>
-            {!!isLoading && (
+            {!!isLoadingNext && (
               <Flex
                 mr={1}
                 width={ARTIST_CIRCLE_DIAMETER}
@@ -89,7 +76,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                 <Spinner />
               </Flex>
             )}
-            {!relay.hasMore() && <AddMoreButton />}
+            {!hasNext && <AddMoreButton />}
           </Flex>
         }
         onEndReached={handleLoadMore}
@@ -98,90 +85,49 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   )
 }
 
-const Artist: React.FC<{ name: string; initials: string | undefined; image: string }> = ({
-  name,
-  initials,
-  image,
+export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$key }> = ({
+  artist,
 }) => {
+  const data = useFragment(artistFragment, artist)
+
   return (
     <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
-      <Avatar initials={initials} src={image} size="sm" />
+      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="sm" />
       <Text variant="xs" numberOfLines={2} textAlign="center">
-        {name}
+        {data.name}
       </Text>
     </Flex>
   )
 }
 
-export const MyCollectionCollectedArtistsRailPaginationContainer = createPaginationContainer(
-  MyCollectionCollectedArtistsRail,
-  {
-    myCollectionInfo: graphql`
-      fragment MyCollectionCollectedArtistsRail_myCollectionInfo on MyCollectionInfo
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
-        includePersonalArtists: { type: "Boolean", defaultValue: true }
-        cursor: { type: "String" }
-      ) {
-        collectedArtistsConnection(
-          first: $count
-          includePersonalArtists: $includePersonalArtists
-          after: $cursor
-        ) @connection(key: "MyCollection_collectedArtistsConnection") {
-          totalCount
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
-          edges {
-            node {
-              internalID
-              name
-              initials
-              image {
-                url
-              }
-            }
+const collectedArtistsPaginationFragment = graphql`
+  fragment MyCollectionCollectedArtistsRail_me on Me
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @refetchable(queryName: "MyCollectionCollectedArtistsRail_myCollectionInfoRefetch") {
+    myCollectionInfo {
+      collectedArtistsConnection(
+        first: $count
+        after: $after
+        sort: TRENDING_DESC
+        includePersonalArtists: true
+      ) @connection(key: "MyCollectionCollectedArtistsRail_collectedArtistsConnection") {
+        edges {
+          node {
+            internalID
+            ...MyCollectionCollectedArtistsRail_artist
           }
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props?.myCollectionInfo?.collectedArtistsConnection
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
-    },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        cursor,
-        count,
-      }
-    },
-    query: graphql`
-      query MyCollectionCollectedArtistsRailQuery(
-        $cursor: String
-        $count: Int!
-        $includePersonalArtists: Boolean!
-      ) {
-        me {
-          myCollectionInfo {
-            ...MyCollectionCollectedArtistsRail_myCollectionInfo
-              @arguments(
-                cursor: $cursor
-                count: $count
-                includePersonalArtists: $includePersonalArtists
-              )
-          }
-        }
-      }
-    `,
+    }
   }
-)
+`
+
+const artistFragment = graphql`
+  fragment MyCollectionCollectedArtistsRail_artist on Artist {
+    name
+    initials
+    image {
+      url
+    }
+  }
+`

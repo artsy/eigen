@@ -1,23 +1,48 @@
-import { MyCollectionBottomSheetModalView } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
+import { MyCollectionBottomSheetModalKind } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import { Action, action, createContextStore } from "easy-peasy"
 
 export type CollectedTab = "Artworks" | "Artists" | null
 
+type ViewPayload =
+  | {
+      viewKind: "Add" | null
+    }
+  | {
+      viewKind: "Artist"
+      id: string
+    }
 export interface MyCollectionTabsStoreModel {
   selectedTab: CollectedTab
-  view: MyCollectionBottomSheetModalView
+  viewKind: MyCollectionBottomSheetModalKind
+  id: string | null
   setSelectedTab: Action<this, CollectedTab>
-  setView: Action<this, MyCollectionBottomSheetModalView>
+  setViewKind: Action<this, ViewPayload>
 }
 
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   selectedTab: null,
-  view: null,
+  viewKind: null,
+  id: null,
   setSelectedTab: action((state, payload) => {
     state.selectedTab = payload
   }),
-  setView: action((state, payload) => {
-    state.view = payload
+  setViewKind: action((state, payload) => {
+    // Reset the id if the modal is closed
+    switch (payload.viewKind) {
+      case null:
+        state.viewKind = null
+        state.id = null
+        break
+
+      case "Add":
+        state.viewKind = "Add"
+        break
+
+      default:
+        state.viewKind = payload.viewKind
+        state.id = payload.id
+        break
+    }
   }),
 }
 

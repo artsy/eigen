@@ -25,7 +25,7 @@ export enum Tab {
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{}> = ({}) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const view = MyCollectionTabsStore.useStoreState((state) => state.view)
+  const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
 
   return (
     <>
@@ -69,7 +69,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{}> = ({}) => {
           staticHeaderContent={<MyProfileHeaderQueryRenderer />}
         />
       </SafeAreaView>
-      {view !== null && <MyCollectionBottomSheetModals />}
+      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }
