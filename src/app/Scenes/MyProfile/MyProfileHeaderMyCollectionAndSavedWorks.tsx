@@ -36,7 +36,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const view = MyCollectionTabsStore.useStoreState((state) => state.view)
+  const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
 
   return (
     <>
@@ -79,7 +79,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           staticHeaderContent={<MyProfileHeader me={me} />}
         />
       </SafeAreaView>
-      {view !== null && <MyCollectionBottomSheetModals />}
+      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }
@@ -124,7 +124,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
           query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
           render={renderWithPlaceholder({
             Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-            renderPlaceholder: () => <MyCollectionPlaceholder />,
+            renderPlaceholder: () => (
+              <SafeAreaView>
+                <MyCollectionPlaceholder />
+              </SafeAreaView>
+            ),
           })}
           variables={{}}
         />

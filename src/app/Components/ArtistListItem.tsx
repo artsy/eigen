@@ -1,13 +1,15 @@
-import { Flex, ClassTheme, EntityHeader, Touchable } from "@artsy/palette-mobile"
+import { ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { Schema, track } from "app/utils/track"
+import { pluralize } from "app/utils/pluralize"
+import { Schema } from "app/utils/track"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayProp, commitMutation, createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
@@ -19,10 +21,9 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>
   disableNavigation?: boolean
   onFollowFinish?: () => void
-}
-
-interface State {
-  isFollowedChanging: boolean
+  uploadsCount?: number | null
+  RightButton?: JSX.Element
+  showFollowButton?: boolean
 }
 
 export const formatTombstoneText = (
@@ -45,115 +46,107 @@ export const formatTombstoneText = (
   }
 }
 
-@track()
-export class ArtistListItem extends React.Component<Props, State> {
-  static defaultProps = {
-    withFeedback: false,
-    containerStyle: {},
-  }
+const ArtistListItem: React.FC<Props> = ({
+  withFeedback = false,
+  containerStyle = {},
+  disableNavigation,
+  relay,
+  artist,
+  onFollowFinish,
+  contextModule,
+  uploadsCount,
+  RightButton,
+  showFollowButton = true,
+}) => {
+  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
+  const imageURl = image && image.url
 
-  state = { isFollowedChanging: false }
+  const tracking = useTracking()
 
-  handleFollowArtist = () => {
-    const {
-      relay,
-      artist: { slug, id, is_followed },
-      onFollowFinish,
-    } = this.props
-
-    this.setState(
-      {
-        isFollowedChanging: true,
+  const handleFollowArtist = async () => {
+    await followArtistMutation({
+      environment: relay.environment,
+      onCompleted: () => {
+        handleShowSuccessfullyUpdated()
+        onFollowFinish?.()
       },
-      async () => {
-        followArtistMutation({
-          environment: relay.environment,
-          onCompleted: () => {
-            this.handleShowSuccessfullyUpdated()
-            onFollowFinish?.()
-          },
-          artistID: id,
-          artistSlug: slug,
-          isFollowed: is_followed,
-        })
-      }
-    )
-  }
-
-  @track((props: Props) => ({
-    action_name: props.artist.is_followed
-      ? Schema.ActionNames.ArtistFollow
-      : Schema.ActionNames.ArtistUnfollow,
-    action_type: Schema.ActionTypes.Success,
-    owner_id: props.artist.internalID,
-    owner_slug: props.artist.slug,
-    owner_type: Schema.OwnerEntityTypes.Artist,
-    context_module: props.contextModule,
-  }))
-  handleShowSuccessfullyUpdated() {
-    this.setState({
-      isFollowedChanging: false,
+      artistID: artist.id,
+      artistSlug: artist.slug,
+      isFollowed: is_followed,
     })
   }
 
-  @track((props: Props) => {
-    return {
-      action_name: Schema.ActionNames.ArtistName,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: props.artist.internalID,
-      owner_slug: props.artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    } as any
-  })
-  handleTap(href: string) {
+  const handleShowSuccessfullyUpdated = () => {
+    tracking.trackEvent(tracks.successfulUpdate(artist, contextModule))
+  }
+
+  const handleTap = (href: string) => {
+    tracks.tapArtistGroup(artist)
     navigate(href)
   }
 
-  render() {
-    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
-    const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
-    const imageURl = image && image.url
+  const getMeta = () => {
+    const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
 
-    if (!name) {
-      return null
+    if (tombstoneText || Number.isInteger(uploadsCount)) {
+      return (
+        <Flex>
+          <Text variant="xs" color="black60">
+            {tombstoneText}
+          </Text>
+
+          {Number.isInteger(uploadsCount) && (
+            <Text variant="xs" color={uploadsCount === 0 ? "black60" : "black100"}>
+              {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
+            </Text>
+          )}
+        </Flex>
+      )
     }
 
-    return (
-      <ClassTheme>
-        {({ color }) => (
-          <Touchable
-            noFeedback={!withFeedback}
-            onPress={() => {
-              if (href && !disableNavigation) {
-                this.handleTap(href)
-              }
-            }}
-            underlayColor={color("black5")}
-            style={containerStyle}
-          >
-            <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-              <Flex flex={1}>
-                <EntityHeader
-                  mr={1}
-                  name={name}
-                  meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
-                  imageUrl={imageURl ?? undefined}
-                  initials={initials ?? undefined}
-                />
-              </Flex>
-              <Flex>
-                <FollowButton
-                  haptic
-                  isFollowed={!!is_followed}
-                  onPress={this.handleFollowArtist.bind(this)}
-                />
-              </Flex>
-            </Flex>
-          </Touchable>
-        )}
-      </ClassTheme>
-    )
+    return undefined
   }
+  const meta = getMeta()
+
+  if (!name) {
+    return null
+  }
+
+  return (
+    <ClassTheme>
+      {({ color }) => (
+        <Touchable
+          noFeedback={!withFeedback}
+          onPress={() => {
+            if (href && !disableNavigation) {
+              handleTap(href)
+            }
+          }}
+          underlayColor={color("black5")}
+          style={containerStyle}
+        >
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex flex={1}>
+              <EntityHeader
+                mr={1}
+                name={name}
+                meta={meta}
+                imageUrl={imageURl ?? undefined}
+                initials={initials ?? undefined}
+                avatarSize="sm"
+                RightButton={RightButton}
+              />
+            </Flex>
+            {!!showFollowButton && (
+              <Flex>
+                <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
+              </Flex>
+            )}
+          </Flex>
+        </Touchable>
+      )}
+    </ClassTheme>
+  )
 }
 
 export const followArtistMutation = ({
@@ -233,3 +226,24 @@ export const ArtistListItemPlaceholder = () => (
     </Flex>
   </Flex>
 )
+
+const tracks = {
+  tapArtistGroup: (artist: Props["artist"]) => ({
+    action_name: Schema.ActionNames.ArtistName,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: artist.internalID,
+    owner_slug: artist.slug,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }),
+
+  successfulUpdate: (artist: Props["artist"], contextModule: string | undefined) => ({
+    action_name: artist.is_followed
+      ? Schema.ActionNames.ArtistFollow
+      : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: artist.internalID,
+    owner_slug: artist.slug,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+    context_module: contextModule,
+  }),
+}
