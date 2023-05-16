@@ -1,17 +1,29 @@
-import { Checkbox, Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Checkbox,
+  Flex,
+  Join,
+  Message,
+  Spacer,
+  Text,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { Image } from "react-native"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data
 }
+
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
 > = ({ artist }) => {
@@ -19,19 +31,46 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
     <BottomSheetView>
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
-          <ArtistListItemContainer artist={artist} />
+          <Join separator={<Spacer y={2} />}>
+            <ArtistListItemContainer artist={artist} />
+            <ArtistKindPills artist={artist} />
+          </Join>
 
           <ShareArtistCheckbox onCheckboxPress={() => {}} />
 
-          <Text color="red100" underline onPress={() => {}}>
-            Remove Artist
-          </Text>
+          <RemoveTheArtist canBeRemoved={false} />
         </Join>
       </Flex>
     </BottomSheetView>
   )
 }
 
+const RemoveTheArtist: React.FC<{ canBeRemoved: boolean }> = ({ canBeRemoved }) => {
+  const color = useColor()
+
+  return (
+    <Join separator={<Spacer y={1} />}>
+      <Text
+        disabled={!canBeRemoved}
+        onPress={() => {}}
+        color={canBeRemoved ? "red100" : "black60"}
+        variant="xs"
+        underline
+      >
+        Remove Artist
+      </Text>
+      {!canBeRemoved && (
+        <Message
+          variant="default"
+          title=" To remove this artist, please remove their artworks from My Collection first."
+          IconComponent={() => (
+            <Image source={require("images/info.webp")} style={{ tintColor: color("black100") }} />
+          )}
+        />
+      )}
+    </Join>
+  )
+}
 const ShareArtistCheckbox: React.FC<{ onCheckboxPress: () => void }> = ({ onCheckboxPress }) => {
   return (
     <Touchable haptic onPress={onCheckboxPress}>
@@ -54,6 +93,7 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
     artist: graphql`
       fragment MyCollectionBottomSheetModalArtistPreview_artist on Artist {
         ...ArtistListItem_artist
+        ...ArtistKindPills_artist
       }
     `,
   }
