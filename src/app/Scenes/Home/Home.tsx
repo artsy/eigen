@@ -18,7 +18,6 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsConnection$data } from "__generated__/Home_showsConnection.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -42,7 +41,7 @@ import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAd
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
-import { ShowsRailFragmentContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import {
   DEFAULT_RECS_MODEL_VERSION,
@@ -115,7 +114,6 @@ export interface HomeModule extends ArtworkActionTrackingProps {
 
 export interface HomeProps extends ViewProps {
   articlesConnection: Home_articlesConnection$data | null
-  showsConnection: Home_showsConnection$data | null
   featured: Home_featured$data | null
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
@@ -170,7 +168,7 @@ const Home = memo((props: HomeProps) => {
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
-
+  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
@@ -337,7 +335,7 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "shows":
-          return <ShowsRailFragmentContainer title={item.title} showsConnection={item.data} />
+          return <ShowsRailContainer title={item.title} withLocation={!enableShowsForYouLocation} />
         case "auction-results":
           return (
             <AuctionResultsRail
@@ -520,11 +518,6 @@ export const HomeFragmentContainer = memo(
           ...ArticlesRail_articlesConnection
         }
       `,
-      showsConnection: graphql`
-        fragment Home_showsConnection on ShowConnection {
-          ...ShowsRail_showsConnection
-        }
-      `,
       featured: graphql`
         fragment Home_featured on ViewingRoomConnection {
           ...ViewingRoomsListFeatured_featured
@@ -553,9 +546,6 @@ export const HomeFragmentContainer = memo(
         me @optionalField {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
-          showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-            ...Home_showsConnection
-          }
         }
         meBelow: me @optionalField {
           ...Home_meBelow
@@ -775,9 +765,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
-              showsConnection(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
-                ...Home_showsConnection
-              }
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
               @optionalField {
@@ -799,7 +786,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             <HomeFragmentContainer
               articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
-              showsConnection={below?.me?.showsConnection ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}

@@ -196,8 +196,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.showsRail,
-        data: props.showsConnection,
-        isEmpty: isEmpty(props.showsConnection),
+        data: true,
+        isEmpty: false,
         key: "showsRail",
         title: "Shows for You",
         type: "shows",
@@ -237,7 +237,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.recentlyViewedWorksArtworkModule,
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
-    props.showsConnection,
     props.homePageBelow?.fairsModule,
     showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,
