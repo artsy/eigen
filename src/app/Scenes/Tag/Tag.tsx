@@ -1,5 +1,5 @@
 import { Screen } from "@artsy/palette-mobile"
-import { TagQuery } from "__generated__/TagQuery.graphql"
+import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
 import { TabsContainer } from "app/Components/Tabs/TabsContainer"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -11,13 +11,9 @@ import About from "./About"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 import { TagPlaceholder } from "./TagPlaceholder"
 
-// const isHandset = DeviceInfo.getDeviceType() === "Handset"
-// Do we need to handle the tablet paddings or are they handled automatically by palette responsiveness?
-// const commonPadding = isHandset ? 20 : 40
-
 interface TagProps {
   tagID?: string
-  tag: NonNullable<TagQuery["response"]["tag"]>
+  tag: TagQuery$data["tag"]
 }
 
 interface TagQueryRendererProps {
@@ -27,41 +23,32 @@ interface TagQueryRendererProps {
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
 
-  // const handleTabPress = () => {
-  //   // tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
-  // }
-
   return (
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.TagPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Tag,
         context_screen_owner_id: tagID,
-        context_screen_owner_slug: tag.slug,
+        context_screen_owner_slug: tag?.slug,
       }}
     >
       <Screen>
         <Screen.Body fullwidth>
           <TabsContainer
-            // TODO: Do we want to track anything here? we weren't tracking anything before
-            // onTabChange={handleTabPress}
             renderHeader={() => {
-              if (tag.name) {
-                return (
-                  <Screen.Header
-                    title={tag.name}
-                    titleProps={{ alignItems: "center" }}
-                    onBack={goBack}
-                  />
-                )
-              }
-              return null
+              return (
+                <Screen.Header
+                  title={tag?.name!}
+                  titleProps={{ alignItems: "flex-start" }}
+                  onBack={goBack}
+                />
+              )
             }}
           >
             <Tabs.Tab name="Artworks" label="Artworks">
-              <TagArtworksPaginationContainer tag={tag} />
+              <TagArtworksPaginationContainer tag={tag!} />
             </Tabs.Tab>
-            {!!tag.description ? (
+            {!!tag?.description ? (
               <Tabs.Tab name="About" label="About">
                 <About tag={tag} />
               </Tabs.Tab>

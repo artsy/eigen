@@ -43,7 +43,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   if (initialArtworksTotal.current === 0) {
     return (
-      <Box mt={1}>
+      <Box pt={2}>
         <SimpleMessage>There aren’t any works available in the tag at this time.</SimpleMessage>
       </Box>
     )
@@ -51,7 +51,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   if (artworksTotal === 0) {
     return (
-      <Box pt={1}>
+      <Box pt={2}>
         <FilteredArtworkGridZeroState id={tag.id} slug={tag.slug} trackClear={trackClear} />
       </Box>
     )
