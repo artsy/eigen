@@ -8,7 +8,7 @@ import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizR
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {
@@ -25,26 +25,24 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
 
   const [activeTab, setActiveTab] = useState<Tab>(Tab.worksYouLiked)
 
-  const tabsRef = useRef(
-    compact([
-      {
-        title: Tab.worksYouLiked,
-        content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
-        initial: true,
-      },
-      {
-        title: Tab.exploreWorks,
-        content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
-      },
-      {
-        title: Tab.exploreArtists,
-        content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
-      },
-    ])
-  )
+  const tabs = compact([
+    {
+      title: Tab.worksYouLiked,
+      content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
+      initial: true,
+    },
+    {
+      title: Tab.exploreWorks,
+      content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
+    },
+    {
+      title: Tab.exploreArtists,
+      content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
+    },
+  ])
 
   const handleTabPress = (tabIndex: number) => {
-    setActiveTab(tabsRef.current[tabIndex].title)
+    setActiveTab(tabs[tabIndex].title)
   }
 
   return (
@@ -54,7 +52,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
         <StickyTabPage
           onTabPress={handleTabPress}
           disableBackButtonUpdate
-          tabs={tabsRef.current}
+          tabs={tabs}
           staticHeaderContent={
             activeTab === Tab.worksYouLiked ? (
               <ArtQuizResultsTabsHeader
