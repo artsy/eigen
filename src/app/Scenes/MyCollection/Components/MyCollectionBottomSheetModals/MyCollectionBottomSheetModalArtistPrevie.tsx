@@ -14,7 +14,6 @@ import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generat
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Image } from "react-native"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
@@ -22,20 +21,20 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data
-  artworksCount: number | null
+  uploadsCount: number | null
 }
 
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
-> = ({ artist, artworksCount }) => {
-  const canBeRemoved = artworksCount === 0
+> = ({ artist, uploadsCount }) => {
+  const canBeRemoved = uploadsCount === 0
 
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer artist={artist} />
+            <ArtistListItemContainer artist={artist} uploadsCount={uploadsCount} />
             <ArtistKindPills artist={artist} />
           </Join>
 
@@ -104,8 +103,8 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
 
 export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
   artistID: string
-  artworksCount: number | null
-}> = ({ artistID, artworksCount }) => {
+  uploadsCount: number | null
+}> = ({ artistID, uploadsCount }) => {
   return (
     <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
       environment={getRelayEnvironment()}
@@ -124,7 +123,7 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         Container: MyCollectionBottomSheetModalArtistPreviewFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
         renderFallback: () => null,
-        initialProps: { artworksCount },
+        initialProps: { uploadsCount },
       })}
     />
   )
@@ -137,8 +136,6 @@ const LoadingSkeleton = () => {
         <Flex px={2} pt={2}>
           <Join separator={<Spacer y={4} />}>
             <ArtistListItemPlaceholder />
-            <PlaceholderBox height={60} width={180} />
-            <PlaceholderBox height={25} width={50} />
           </Join>
         </Flex>
       </BottomSheetView>
