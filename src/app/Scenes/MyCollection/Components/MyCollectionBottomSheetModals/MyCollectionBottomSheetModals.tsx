@@ -1,7 +1,6 @@
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
-import { MyCollectionBottomSheetModalArtist } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtist"
 import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPrevie"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { useCallback, useMemo, useRef } from "react"
@@ -46,10 +45,9 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         handleIndicatorStyle={{ backgroundColor: "black", width: 40, height: 4, borderRadius: 2 }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
-        {view === "Artist" && !!id && <MyCollectionBottomSheetModalArtist artistId={id} />}
-        {
-          /* view === "Artist" && */ <MyCollectionBottomSheetModalArtistPreviewQueryRenderer artistID="banksy" />
-        }
+        {view === "Artist" && !!id && (
+          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer artistID={id} />
+        )}
       </BottomSheet>
     </>
   )
