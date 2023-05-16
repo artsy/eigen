@@ -43,28 +43,8 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
     ])
   )
 
-  const handleTabChange = (tabIndex: number) => {
+  const handleTabPress = (tabIndex: number) => {
     setActiveTab(tabsRef.current[tabIndex].title)
-  }
-
-  const renderHeaderContent = () => {
-    switch (activeTab) {
-      case Tab.worksYouLiked:
-        return (
-          <ArtQuizResultsTabsHeader
-            title="Explore Art We Think You'll Love"
-            subtitle="We think you’ll enjoy these recommendations based on your likes. Keep saving and following to continue tailoring Artsy to you."
-          />
-        )
-      case Tab.exploreWorks:
-      case Tab.exploreArtists:
-        return (
-          <ArtQuizResultsTabsHeader
-            title="Explore Your Quiz Results"
-            subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
-          />
-        )
-    }
   }
 
   return (
@@ -72,10 +52,22 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
       <LegacyScreen.Header onBack={() => navigate("/")} />
       <LegacyScreen.Body fullwidth noBottomSafe>
         <StickyTabPage
-          onTabPress={handleTabChange}
+          onTabPress={handleTabPress}
           disableBackButtonUpdate
           tabs={tabsRef.current}
-          staticHeaderContent={renderHeaderContent()}
+          staticHeaderContent={
+            activeTab === Tab.worksYouLiked ? (
+              <ArtQuizResultsTabsHeader
+                title="Explore Art We Think You'll Love"
+                subtitle="We think you’ll enjoy these recommendations based on your likes. Keep saving and following to continue tailoring Artsy to you."
+              />
+            ) : (
+              <ArtQuizResultsTabsHeader
+                title="Explore Your Quiz Results"
+                subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
+              />
+            )
+          }
         />
       </LegacyScreen.Body>
     </LegacyScreen>
