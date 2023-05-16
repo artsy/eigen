@@ -12,7 +12,7 @@ import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 export const CreateNewArtworkListView = () => {
   const { state, dispatch } = useArtworkListsContext()
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
-  const bottomOffset = useArtworkListsBottomOffset()
+  const bottomOffset = useArtworkListsBottomOffset(2)
 
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
     useBottomSheetDynamicSnapPoints(initialSnapPoints)

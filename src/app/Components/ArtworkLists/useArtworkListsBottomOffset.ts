@@ -1,7 +1,10 @@
 import { useSpace } from "@artsy/palette-mobile"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-export const useArtworkListsBottomOffset = () => {
+type Callback = ReturnType<typeof useSpace>
+type SpaceName = Parameters<Callback>[0]
+
+export const useArtworkListsBottomOffset = (defaultSpace: SpaceName) => {
   const insets = useSafeAreaInsets()
   const space = useSpace()
 
@@ -10,5 +13,5 @@ export const useArtworkListsBottomOffset = () => {
     return insets.bottom
   }
 
-  return space(2)
+  return space(defaultSpace)
 }

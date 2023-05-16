@@ -12,7 +12,7 @@ const SNAP_POINTS = ["50%", "95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
   const { reset } = useArtworkListsContext()
-  const bottomOffset = useArtworkListsBottomOffset()
+  const bottomOffset = useArtworkListsBottomOffset(2)
 
   return (
     <AutomountedBottomSheetModal
