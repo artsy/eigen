@@ -14,7 +14,7 @@ import { TagPlaceholder } from "./TagPlaceholder"
 
 const isHandset = DeviceInfo.getDeviceType() === "Handset"
 // Do we need to handle the tablet paddings or are they handled automatically by palette responsiveness?
-const commonPadding = isHandset ? 20 : 40
+// const commonPadding = isHandset ? 20 : 40
 
 interface TagProps {
   tagID?: string
@@ -28,9 +28,9 @@ interface TagQueryRendererProps {
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
 
-  const handleTabPress = () => {
-    // tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
-  }
+  // const handleTabPress = () => {
+  //   // tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
+  // }
 
   return (
     <ProvideScreenTracking
