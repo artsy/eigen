@@ -209,7 +209,7 @@ const useStyleForState = (
 }
 
 const Container = styled(Flex)<PillProps>`
-  border-width: 1;
+  border-width: 1px;
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`

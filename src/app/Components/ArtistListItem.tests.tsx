@@ -1,6 +1,6 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -9,7 +9,10 @@ import { ArtistListItemContainer, formatTombstoneText } from "./ArtistListItem"
 describe("ArtistListItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = ({ withFeedback = false }: { withFeedback?: boolean }) => (
+  const TestRenderer: React.FC<{
+    withFeedback?: boolean
+    uploadsCount?: number | null
+  }> = ({ withFeedback = false, uploadsCount }) => (
     <QueryRenderer<ArtistListItemTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -22,7 +25,13 @@ describe("ArtistListItem", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artist) {
-          return <ArtistListItemContainer artist={props.artist} withFeedback={withFeedback} />
+          return (
+            <ArtistListItemContainer
+              artist={props.artist}
+              withFeedback={withFeedback}
+              uploadsCount={uploadsCount}
+            />
+          )
         }
         return null
       }}
@@ -43,6 +52,18 @@ describe("ArtistListItem", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer withFeedback />).root
     resolveMostRecentRelayOperation(mockEnvironment)
     expect(tree.findByType(Touchable).props.noFeedback).toBe(false)
+  })
+
+  it("shows uploaded artworks counts when specified", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer withFeedback uploadsCount={3} />)
+    resolveMostRecentRelayOperation(mockEnvironment)
+    expect(getByText("3 artworks uploaded")).toBeTruthy()
+  })
+
+  it("shows uploaded artworks counts when no count is specified", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer withFeedback />)
+    resolveMostRecentRelayOperation(mockEnvironment)
+    expect(() => getByText("uploaded")).toThrow()
   })
 })
 

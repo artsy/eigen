@@ -1,11 +1,12 @@
-import { MyCollectionCollectedArtistsRailTestsQuery } from "__generated__/MyCollectionCollectedArtistsRailTestsQuery.graphql"
-import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionCollectedArtistsViewTestsQuery } from "__generated__/MyCollectionCollectedArtistsViewTestsQuery.graphql"
+import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-describe("MyCollectionCollectedArtistsRail", () => {
+describe("MyCollectionCollectedArtistsView", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -14,23 +15,25 @@ describe("MyCollectionCollectedArtistsRail", () => {
 
   const TestRenderer = () => {
     return (
-      <QueryRenderer<MyCollectionCollectedArtistsRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
-            me {
-              ...MyCollectionCollectedArtistsRail_me
+      <MyCollectionTabsStoreProvider>
+        <QueryRenderer<MyCollectionCollectedArtistsViewTestsQuery>
+          environment={mockEnvironment}
+          query={graphql`
+            query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
+              me {
+                ...MyCollectionCollectedArtistsView_me
+              }
             }
-          }
-        `}
-        render={({ props }) => {
-          if (!props?.me) {
-            return null
-          }
-          return <MyCollectionCollectedArtistsRail me={props.me} />
-        }}
-        variables={{}}
-      />
+          `}
+          render={({ props }) => {
+            if (!props?.me) {
+              return null
+            }
+            return <MyCollectionCollectedArtistsView me={props.me} />
+          }}
+          variables={{}}
+        />
+      </MyCollectionTabsStoreProvider>
     )
   }
 

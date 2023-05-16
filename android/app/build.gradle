@@ -85,12 +85,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
-project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
-]
-
-apply from: "../../node_modules/react-native/react.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -119,6 +113,13 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
+// order matters here, this must be set before the react.gradle apply
+project.ext.react = [
+    entryFile: "index.android.js",
+    enableHermes: true,  // clean and rebuild if changing
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
 /**
  * Whether to enable the Hermes VM.
  *
