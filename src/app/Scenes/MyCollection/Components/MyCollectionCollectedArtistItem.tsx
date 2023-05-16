@@ -23,7 +23,11 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
     return (
       <Touchable
         onPress={() => {
-          setViewKind({ viewKind: "Artist", id: artistData.internalID })
+          setViewKind({
+            viewKind: "Artist",
+            id: artistData.internalID,
+            artworksCount: artworksCount,
+          })
         }}
       >
         <MoreIcon height={18} width={18} />

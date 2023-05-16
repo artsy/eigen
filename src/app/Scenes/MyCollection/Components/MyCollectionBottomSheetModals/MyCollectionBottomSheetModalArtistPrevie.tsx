@@ -22,11 +22,14 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data
+  artworksCount: number | null
 }
 
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
-> = ({ artist }) => {
+> = ({ artist, artworksCount }) => {
+  const canBeRemoved = artworksCount === 0
+
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
@@ -38,7 +41,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
 
           <ShareArtistCheckbox onCheckboxPress={() => {}} />
 
-          <RemoveTheArtist canBeRemoved={false} />
+          <RemoveTheArtist canBeRemoved={canBeRemoved} />
         </Join>
       </Flex>
     </BottomSheetView>
@@ -101,7 +104,8 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
 
 export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
   artistID: string
-}> = ({ artistID }) => {
+  artworksCount: number | null
+}> = ({ artistID, artworksCount }) => {
   return (
     <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
       environment={getRelayEnvironment()}
@@ -120,6 +124,7 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         Container: MyCollectionBottomSheetModalArtistPreviewFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
         renderFallback: () => null,
+        initialProps: { artworksCount },
       })}
     />
   )
