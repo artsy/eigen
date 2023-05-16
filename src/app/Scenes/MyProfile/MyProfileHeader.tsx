@@ -26,7 +26,6 @@ import { normalizeMyProfileBio } from "./utils"
 const ICON_SIZE = 14
 
 export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
-  console.log({ props })
   const { fetchKey, refetch } = useRefetch()
   const me = useFragment(myProfileHeaderFragment, props.me)
 

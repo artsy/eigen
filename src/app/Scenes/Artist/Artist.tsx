@@ -203,7 +203,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
 
           return (
             <QueryRenderer<ArtistQuery>
-              environment={getRelayEnvironment()}
+              environment={environment || getRelayEnvironment()}
               variables={{ artistID }}
               query={ArtistScreenQuery}
               render={renderWithPlaceholder({

@@ -1,20 +1,47 @@
-import { IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
+import { DecreaseIcon, IncreaseIcon } from "@artsy/palette-mobile"
+import { MarketStatsTestsQuery } from "__generated__/MarketStatsTestsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { QueryRenderer, graphql } from "react-relay"
 import { ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
+import { MarketStatsFragmentContainer } from "./MarketStats"
 
 describe("MarketStats", () => {
   let environment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (environment = createMockEnvironment()))
 
   const TestWrapper = () => {
-    return <MarketStatsQueryRenderer artistInternalID="some-id" />
+    return (
+      <QueryRenderer<MarketStatsTestsQuery>
+        environment={environment}
+        query={graphql`
+          query MarketStatsTestsQuery @relay_test_operation {
+            priceInsightsConnection: priceInsights(
+              artistId: "some-id"
+              sort: ANNUAL_VALUE_SOLD_CENTS_DESC
+            ) {
+              ...MarketStats_priceInsightsConnection
+            }
+          }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.priceInsightsConnection) {
+            return (
+              <MarketStatsFragmentContainer
+                priceInsightsConnection={props.priceInsightsConnection}
+              />
+            )
+          }
+          return null
+        }}
+      />
+    )
   }
 
   it("renders market stats", () => {
