@@ -87,7 +87,8 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   const toast = useToast()
 
   const formik = useFormik<InquiryFormikSchema>({
-    validateOnChange: true,
+    validateOnChange: false,
+    validateOnBlur: true,
     initialValues: {
       email,
       name,
@@ -96,11 +97,11 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     },
 
     onSubmit: async ({ email, name, phoneNumber, message }) => {
-      const formattedValue = name.trim()
+      const formattedNameValue = name.trim()
 
       const input = !!recipientEmail
-        ? { email, name: formattedValue, phoneNumber, message, userId, recipientEmail }
-        : { email, name: formattedValue, phoneNumber, message, userId }
+        ? { email, name: formattedNameValue, phoneNumber, message, userId, recipientEmail }
+        : { email, name: formattedNameValue, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {
         const consignmentInquiryId =
           response.createConsignmentInquiry?.consignmentInquiryOrError?.consignmentInquiry
