@@ -7,6 +7,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowsRailContainer } from "./ShowsRail"
 
 jest.mock("@react-native-community/geolocation", () => ({
+  setRNConfiguration: jest.fn(),
   getCurrentPosition: jest.fn((success, _) => {
     success({ coords: { latitude: 1, longitude: 2 } })
   }),
