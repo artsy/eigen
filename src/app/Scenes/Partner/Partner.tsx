@@ -59,19 +59,26 @@ const Partner: React.FC<PartnerProps> = (props) => {
         <Screen.Body fullwidth>
           <Screen.Header />
           <TabsContainer
+            lazy
             initialTabName={initialTab}
             renderHeader={() => <PartnerHeader partner={partner} />}
           >
             <Tabs.Tab name="Overview" label="Overview">
-              <PartnerOverview partner={partner} />
+              <Tabs.Lazy>
+                <PartnerOverview partner={partner} />
+              </Tabs.Lazy>
             </Tabs.Tab>
             <Tabs.Tab name="Artworks" label="Artworks">
-              <ArtworkFiltersStoreProvider>
-                <PartnerArtwork partner={partner} />
-              </ArtworkFiltersStoreProvider>
+              <Tabs.Lazy>
+                <ArtworkFiltersStoreProvider>
+                  <PartnerArtwork partner={partner} />
+                </ArtworkFiltersStoreProvider>
+              </Tabs.Lazy>
             </Tabs.Tab>
             <Tabs.Tab name="Shows" label="Shows">
-              <PartnerShows partner={partner} />
+              <Tabs.Lazy>
+                <PartnerShows partner={partner} />
+              </Tabs.Lazy>
             </Tabs.Tab>
           </TabsContainer>
         </Screen.Body>
