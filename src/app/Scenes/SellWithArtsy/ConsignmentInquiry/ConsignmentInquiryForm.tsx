@@ -15,7 +15,7 @@ export const ConsignmentInquiryForm: React.FC<{
   recipientName?: string
 }> = ({ confirmLeaveEdit, canPopScreen, recipientName }) => {
   const { safeAreaInsets } = useScreenDimensions()
-  const { values, handleChange, errors, setErrors, handleSubmit, isValid, dirty } =
+  const { values, handleChange, errors, handleSubmit, isValid, dirty, validateField } =
     useFormikContext<InquiryFormikSchema>()
 
   const navigation = useNavigation()
@@ -68,9 +68,7 @@ export const ConsignmentInquiryForm: React.FC<{
 
   const handleOnChangeText = (field: keyof InquiryFormikSchema, text: string) => {
     if (errors[field]) {
-      setErrors({
-        [field]: undefined,
-      })
+      validateField(field)
     }
     handleChange(field)(text)
   }
@@ -87,81 +85,77 @@ export const ConsignmentInquiryForm: React.FC<{
             {!!recipientName ? `Contact ${recipientName}` : "Contact a specialist"}
           </Text>
           <Input
-            required
-            ref={nameInputRef}
-            testID="swa-inquiry-name-input"
-            title="Name"
+            accessibilityLabel="Name"
             autoCapitalize="words"
             autoCorrect={false}
-            onChangeText={(text) => {
-              handleOnChangeText("name", text.trim())
-            }}
-            onSubmitEditing={() => jumpToNextField("name")}
             blurOnSubmit={false}
-            placeholder="First and last name"
-            returnKeyType="next"
-            maxLength={128}
-            value={values.name}
             error={errors.name}
+            maxLength={128}
+            onBlur={() => validateField("name")}
+            onChangeText={(text) => handleOnChangeText("name", text)}
+            onSubmitEditing={() => jumpToNextField("name")}
+            placeholder="First and last name"
+            ref={nameInputRef}
+            required
+            returnKeyType="next"
+            testID="swa-inquiry-name-input"
+            title="Name"
+            value={values.name}
           />
           <Spacer y={2} />
           <Input
-            required
-            ref={emailInputRef}
-            testID="swa-inquiry-email-input"
-            title="Email"
+            accessibilityLabel="Email address"
             autoCapitalize="none"
-            enableClearButton
-            keyboardType="email-address"
-            onChangeText={(text) => {
-              handleOnChangeText("email", text.trim())
-            }}
-            onSubmitEditing={() => jumpToNextField("email")}
+            autoCorrect={false}
             blurOnSubmit={false}
+            enableClearButton
+            error={errors.email}
+            keyboardType="email-address"
+            onBlur={() => validateField("email")}
+            onChangeText={(text) => handleOnChangeText("email", text.trim())}
+            onSubmitEditing={() => jumpToNextField("email")}
             placeholder="Email address"
-            value={values.email}
+            ref={emailInputRef}
+            required
             returnKeyType="next"
             spellCheck={false}
-            autoCorrect={false}
+            testID="swa-inquiry-email-input"
             textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
-            error={errors.email}
+            title="Email"
+            value={values.email}
           />
           <Spacer y={2} />
           <PhoneInput
-            ref={phoneInputRef}
-            testID="swa-inquiry-phone-input"
-            style={{ flex: 1 }}
-            title="Phone number"
-            placeholder="(000) 000-0000"
-            onChangeText={(text) => {
-              handleOnChangeText("phoneNumber", text.trim())
-            }}
-            onSubmitEditing={() => jumpToNextField("phone")}
-            value={values.phoneNumber}
-            setValidation={() => null}
             accessibilityLabel="Phone number"
+            onChangeText={(text) => handleOnChangeText("phoneNumber", text.trim())}
+            onSubmitEditing={() => jumpToNextField("phone")}
+            placeholder="(000) 000-0000"
+            ref={phoneInputRef}
+            setValidation={() => null}
             shouldDisplayLocalError={false}
+            style={{ flex: 1 }}
+            testID="swa-inquiry-phone-input"
+            title="Phone number"
+            value={values.phoneNumber}
           />
           <Spacer y={4} />
           <Input
-            required
+            accessibilityLabel="Message to the Artsy Specialist"
+            blurOnSubmit={false}
+            error={errors.message}
+            multiline
+            numberOfLines={4}
+            onBlur={() => validateField("message")}
+            onChangeText={(text) => handleOnChangeText("message", text.trimStart())}
+            onFocus={showMessageInputFully}
+            onSubmitEditing={() => jumpToNextField("message")}
+            placeholder="Questions about selling multiple works or an entire collection? Tell us more about how we can assist you. "
             ref={messageInputRef}
+            required
+            returnKeyType="default"
             testID="swa-inquiry-message-input"
             title="Your Message"
-            numberOfLines={4}
-            multiline
-            autoCapitalize="none"
-            onFocus={showMessageInputFully}
-            onChangeText={(text) => {
-              handleOnChangeText("message", text.trimStart())
-            }}
-            onSubmitEditing={() => jumpToNextField("message")}
-            blurOnSubmit={false}
-            placeholder="Questions about selling multiple works or an entire collection? Tell us more about how we can assist you. "
             value={values.message}
-            spellCheck={false}
-            autoCorrect={false}
-            error={errors.message}
           />
           <Spacer y={4} />
           <Text variant="xs" color="black60" mb={2}>
@@ -171,9 +165,10 @@ export const ConsignmentInquiryForm: React.FC<{
             </LinkText>{" "}
           </Text>
           <Button
+            accessibilityLabel="Submit"
             block
-            onPress={handleSubmit}
             disabled={!(isValid && dirty)}
+            onPress={handleSubmit}
             testID="swa-inquiry-submit-button"
           >
             Send
