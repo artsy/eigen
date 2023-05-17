@@ -101,22 +101,16 @@ export const PartnerShows: React.FC<{
     }
   }
 
-  // TODO: fix the functionality below
-  // const tabContext = useContext(StickyTabPageFlatListContext)
-
-  // const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
-  const tabIsActive = true
-
   return (
     <TabFlatList
       contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
       data={sections}
       renderItem={({ item }) => item.content}
       // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
-      onEndReachedThreshold={tabIsActive ? 1 : 0}
+      onEndReachedThreshold={1}
       // render up to the first chunk on initial mount
       initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
-      windowSize={tabIsActive ? 5 : 1}
+      windowSize={5}
       onEndReached={() => {
         if (isLoadingMore || !relay.hasMore()) {
           return
