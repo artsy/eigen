@@ -3,6 +3,7 @@ import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_part
 import { ReadMore } from "app/Components/ReadMore"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { PartnerArtistsList } from "app/Scenes/Partner/Components/PartnerArtistsList"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
@@ -22,8 +23,9 @@ export const PartnerOverview: React.FC<{
   }
 
   return (
-    // TODO: Switch to StickyTabPageFlatList
-    <StickyTabPageScrollView>
+    // TODO: fix warning about VirtualizedLists should never be nested inside plain
+    // ScrollViews with the same orientation, maybe refactor to use Tabsflatlist?
+    <TabScrollView>
       <Spacer y={2} />
       {!!aboutText && (
         <>
@@ -33,7 +35,7 @@ export const PartnerOverview: React.FC<{
       )}
       <PartnerLocationSection partner={partner} />
       {!!displayArtistsSection ? <PartnerArtistsList partner={partner} /> : null}
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 

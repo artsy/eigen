@@ -22,7 +22,7 @@ const PartnerHeader: React.FC<{
 
   return (
     <>
-      <Box px={2} pb={1} pt={6}>
+      <Box px={2} pb={1}>
         <Text variant="lg-display" mb={1}>
           {partner.name}
         </Text>
@@ -41,7 +41,7 @@ const PartnerHeader: React.FC<{
           )}
         </Flex>
       </Box>
-      {firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
+      {!!firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
     </>
   )
 }

@@ -1,16 +1,17 @@
-import { Separator } from "@artsy/palette-mobile"
+import { Screen, Separator } from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Schema, screenTrack } from "app/utils/track"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -18,59 +19,72 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Component
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
 import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } from "./Components/PartnerSubscriberBanner"
 
-interface Props {
+interface PartnerProps {
   partner: Partner_partner$data
   initialTab?: string
   relay: RelayRefetchProp
 }
 
-@screenTrack((props: Props) => ({
-  context_screen: Schema.PageNames.PartnerPage,
-  context_screen_owner_slug: props.partner.slug,
-  context_screen_owner_id: props.partner.internalID,
-  context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
-}))
-class Partner extends React.Component<Props> {
-  render() {
-    const { partner, initialTab } = this.props
-    const { partnerType, displayFullPartnerPage } = partner
+const Partner: React.FC<PartnerProps> = (props) => {
+  const { partner, initialTab } = props
+  const { partnerType, displayFullPartnerPage } = partner
 
-    if (!displayFullPartnerPage && partnerType !== "Brand") {
-      return (
-        <>
-          <PartnerHeader partner={partner} />
-          <Separator my={2} />
-          <PartnerSubscriberBanner partner={partner} />
-        </>
-      )
-    }
-
+  if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
-      <StickyTabPage
-        staticHeaderContent={<PartnerHeader partner={partner} />}
-        tabs={[
-          {
-            title: "Overview",
-            content: <PartnerOverview partner={partner} />,
-          },
-          {
-            title: "Artworks",
-            initial: initialTab === "Artworks",
-            content: (
-              <ArtworkFiltersStoreProvider>
-                <PartnerArtwork partner={partner} />
-              </ArtworkFiltersStoreProvider>
-            ),
-          },
-          {
-            title: "Shows",
-            initial: initialTab === "Shows",
-            content: <PartnerShows partner={partner} />,
-          },
-        ]}
-      />
+      <ProvideScreenTracking
+        info={{
+          context_screen: Schema.PageNames.PartnerPage,
+          context_screen_owner_slug: props.partner.slug,
+          context_screen_owner_id: props.partner.internalID,
+          context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
+        }}
+      >
+        <PartnerHeader partner={partner} />
+        <Separator my={2} />
+        <PartnerSubscriberBanner partner={partner} />
+      </ProvideScreenTracking>
     )
   }
+
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.PartnerPage,
+        context_screen_owner_slug: props.partner.slug,
+        context_screen_owner_id: props.partner.internalID,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
+      }}
+    >
+      <Screen>
+        <Screen.Body fullwidth>
+          <Screen.Header />
+          <TabsContainer
+            lazy
+            initialTabName={initialTab}
+            renderHeader={() => <PartnerHeader partner={partner} />}
+          >
+            <Tabs.Tab name="Overview" label="Overview">
+              <Tabs.Lazy>
+                <PartnerOverview partner={partner} />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+            <Tabs.Tab name="Artworks" label="Artworks">
+              <Tabs.Lazy>
+                <ArtworkFiltersStoreProvider>
+                  <PartnerArtwork partner={partner} />
+                </ArtworkFiltersStoreProvider>
+              </Tabs.Lazy>
+            </Tabs.Tab>
+            <Tabs.Tab name="Shows" label="Shows">
+              <Tabs.Lazy>
+                <PartnerShows partner={partner} />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          </TabsContainer>
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTracking>
+  )
 }
 
 export const PartnerContainer = createRefetchContainer(
@@ -106,7 +120,7 @@ export const PartnerQueryRenderer: React.FC<{
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
   const { loading, data } = useClientQuery<PartnerInitialQuery>({
-    environment: defaultEnvironment,
+    environment: getRelayEnvironment(),
     query: graphql`
       query PartnerInitialQuery($partnerID: String!) {
         partner(id: $partnerID) {
@@ -126,7 +140,7 @@ export const PartnerQueryRenderer: React.FC<{
       render={({ isRetry }) => {
         return (
           <QueryRenderer<PartnerQuery>
-            environment={defaultEnvironment}
+            environment={getRelayEnvironment()}
             query={graphql`
               query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
                 partner(id: $partnerID) {
