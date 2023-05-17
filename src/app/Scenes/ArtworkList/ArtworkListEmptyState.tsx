@@ -3,38 +3,51 @@ import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyStat
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { navigate } from "app/system/navigation/navigate"
+import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
   me: ArtworkListEmptyState_me$key
   title: string
+  refreshControl: JSX.Element
 }
 
-export const ArtworkListEmptyState = ({ me, title }: ArtworkListEmptyStateProps) => {
+export const ArtworkListEmptyState = ({
+  me,
+  title,
+  refreshControl,
+}: ArtworkListEmptyStateProps) => {
   const fragmentData = useFragment(artworkListEmptyStateFragment, me)
 
   const isDefaultArtworkList = fragmentData.artworkList?.default ?? false
   const text = getText(isDefaultArtworkList)
 
   return (
-    <Flex mb={1}>
+    <Flex flex={1} mb={1}>
       <ArtworkListHeader />
-      <ArtworkListTitle title={title} />
-      <Separator borderColor="black10" mt={1} />
-      <Flex px={2} mt={4}>
-        <Text variant="sm">{text.title}</Text>
-        <Text variant="xs" color="black60">
-          {text.description}
-        </Text>
-        <Button
-          mt={2}
-          variant="outline"
-          size="small"
-          onPress={() => navigate("/collection/trending-this-week")}
-        >
-          Browse Works
-        </Button>
-      </Flex>
+
+      <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
+        <ArtworkListTitle title={title} />
+
+        <Separator borderColor="black10" mt={1} />
+
+        <Flex px={2} mt={4}>
+          <Text variant="sm">{text.title}</Text>
+
+          <Text variant="xs" color="black60">
+            {text.description}
+          </Text>
+
+          <Button
+            mt={2}
+            variant="outline"
+            size="small"
+            onPress={() => navigate("/collection/trending-this-week")}
+          >
+            Browse Works
+          </Button>
+        </Flex>
+      </ScrollView>
     </Flex>
   )
 }
