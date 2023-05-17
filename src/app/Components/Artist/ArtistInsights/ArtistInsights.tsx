@@ -10,7 +10,7 @@ import {
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
+import { StickyTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -150,7 +150,7 @@ export const ArtistInsightsQueryRenderer: React.FC<{
   }
 
   return <ArtistInsights tabIndex={tabIndex} artist={data.artist} initialFilters={initialFilters} />
-}, StickTabPagePlaceholder)
+}, StickyTabPagePlaceholder)
 
 export const tracks = {
   openFilter: (id: string, slug: string) => {

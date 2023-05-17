@@ -199,7 +199,10 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               sort: "-published_at",
             }
           }
+
           const input = prepareFilterArtworksParamsForInput(initialArtworksInput)
+
+          console.log(searchCriteriaProps)
 
           return (
             <QueryRenderer<ArtistQuery>

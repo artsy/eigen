@@ -80,7 +80,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const enableLazyLoading = useFeatureFlag("AREnableStickyTabsLazyLoading")
 
   const [viewedTabLabels, setViewedTabLabels] = useState(
-    enableLazyLoading && lazyLoadTabs ? [tabs[initialTabIndex].title] : tabs.map((tab) => tab.title)
+    enableLazyLoading && lazyLoadTabs ? [tabs[initialTabIndex].title] : []
   )
 
   const enablePanOnStaticHeader = useFeatureFlag("AREnablePanOnStaticHeader")
@@ -128,6 +128,10 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     []
   )
 
+  const isTabViewed = (tabTitle: string) => {
+    return lazyLoadTabs && viewedTabLabels.includes(tabTitle)
+  }
+
   const getTabContent = (
     content: JSX.Element | ((tabIndex: number) => JSX.Element),
     index: number
@@ -153,7 +157,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
           const tabTitle = tabs[index].title
-          if (!viewedTabLabels.includes(tabTitle)) {
+
+          if (!isTabViewed(tabTitle)) {
             setViewedTabLabels(viewedTabLabels.concat(tabs[index].title))
           }
 

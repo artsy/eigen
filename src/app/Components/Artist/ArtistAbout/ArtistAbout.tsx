@@ -8,7 +8,7 @@ import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app
 import Biography from "app/Components/Artist/Biography"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
 import { Stack } from "app/Components/Stack"
-import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
+import { StickyTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
@@ -113,4 +113,4 @@ export const ArtistAboutQueryRenderer = withSuspense(({ artistID }: { artistID: 
   }
 
   return <ArtistAbout artist={data.artist} />
-}, StickTabPagePlaceholder)
+}, StickyTabPagePlaceholder)

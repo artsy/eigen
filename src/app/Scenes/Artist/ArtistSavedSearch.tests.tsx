@@ -1,16 +1,16 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
+type ArtistQueries = "ArtistQuery" | "SearchCriteriaQuery" | "ArtistArtworksQuery"
 
 describe("Saved search banner on artist screen", () => {
   const originalError = console.error
@@ -54,26 +54,11 @@ describe("Saved search banner on artist screen", () => {
       />
     )
 
-  it("should convert the criteria attributes to the filter params format", async () => {
-    getTree("search-criteria-id")
-
-    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-
-    await flushPromiseQueue()
-
-    fireEvent.press(screen.getByText("Sort & Filter"))
-
-    expect(screen.getByText("Sort By • 1")).toBeTruthy()
-    expect(screen.getByText("Rarity • 2")).toBeTruthy()
-    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
-  })
-
   it("should an error message when something went wrong during the search criteria query", async () => {
     getTree("something")
 
     rejectMostRecentRelayOperation(environment, new Error())
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistQuery", MockArtistQuery)
 
     await flushPromiseQueue()
 
@@ -85,7 +70,7 @@ describe("Saved search banner on artist screen", () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistQuery", MockArtistQuery)
 
     await flushPromiseQueue()
 
@@ -108,7 +93,7 @@ const MockSearchCriteriaQuery = {
     }
   },
 }
-const MockArtistAboveTheFoldQuery = {
+const MockArtistQuery = {
   Artist() {
     return {
       has_metadata: true,

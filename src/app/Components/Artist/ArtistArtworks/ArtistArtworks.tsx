@@ -22,7 +22,7 @@ import {
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
+import { StickyTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
@@ -348,4 +348,4 @@ export const ArtistArtworksQueryRenderer: React.FC<{
       searchCriteria={searchCriteria}
     />
   )
-}, StickTabPagePlaceholder)
+}, StickyTabPagePlaceholder)

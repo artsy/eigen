@@ -1,7 +1,7 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
-export const StickTabPagePlaceholder: React.FC = () => {
+export const StickyTabPagePlaceholder: React.FC = () => {
   return (
     <StickyTabPageScrollView
       style={{ flex: 1 }}
