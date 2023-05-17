@@ -1,16 +1,17 @@
-import { Separator } from "@artsy/palette-mobile"
+import { Screen, Separator } from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -54,29 +55,27 @@ const Partner: React.FC<PartnerProps> = (props) => {
         context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
       }}
     >
-      <StickyTabPage
-        staticHeaderContent={<PartnerHeader partner={partner} />}
-        tabs={[
-          {
-            title: "Overview",
-            content: <PartnerOverview partner={partner} />,
-          },
-          {
-            title: "Artworks",
-            initial: initialTab === "Artworks",
-            content: (
+      <Screen>
+        <Screen.Body fullwidth>
+          <Screen.Header />
+          <TabsContainer
+            initialTabName={initialTab}
+            renderHeader={() => <PartnerHeader partner={partner} />}
+          >
+            <Tabs.Tab name="Overview" label="Overview">
+              <PartnerOverview partner={partner} />
+            </Tabs.Tab>
+            <Tabs.Tab name="Artworks" label="Artworks">
               <ArtworkFiltersStoreProvider>
                 <PartnerArtwork partner={partner} />
               </ArtworkFiltersStoreProvider>
-            ),
-          },
-          {
-            title: "Shows",
-            initial: initialTab === "Shows",
-            content: <PartnerShows partner={partner} />,
-          },
-        ]}
-      />
+            </Tabs.Tab>
+            <Tabs.Tab name="Shows" label="Shows">
+              <PartnerShows partner={partner} />
+            </Tabs.Tab>
+          </TabsContainer>
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
