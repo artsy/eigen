@@ -61,9 +61,9 @@ export const ConsignmentInquiryForm: React.FC<{
   // multiline input and the send button at the same time, hence the need
   // for this function
   const showMessageInputFully = () => {
-    /*  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
       ScrollViewRef.current?.scrollToEnd()
-    }) */
+    })
   }
 
   const handleOnChangeText = (field: keyof InquiryFormikSchema, text: string) => {
