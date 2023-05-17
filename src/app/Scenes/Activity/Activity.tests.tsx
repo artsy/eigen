@@ -5,26 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
 
-jest.mock("react-native-collapsible-tab-view", () => {
-  const React = require("react-native")
-  const MockedTabs = ({ name, children }: any) => (
-    <React.View>
-      <React.Text>{name}</React.Text>
-      {children}
-    </React.View>
-  )
-
-  return {
-    Tabs: {
-      Container: React.View,
-      Tab: MockedTabs,
-      FlatList: React.FlatList,
-      ScrollView: React.ScrollView,
-    },
-    useHeaderMeasurements: () => ({ height: { value: 0 } }),
-  }
-})
-
 describe("Activity", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
