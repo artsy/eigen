@@ -655,9 +655,10 @@ jest.mock("react-native-collapsible-tab-view", () => {
   return {
     Tabs: {
       Container: React.View,
-      Tab: MockedTabs,
       FlatList: React.FlatList,
+      Lazy: React.View,
       ScrollView: React.ScrollView,
+      Tab: MockedTabs,
     },
     useHeaderMeasurements: () => ({ height: { value: 0 } }),
     useTabNameContext: () => "Tab",

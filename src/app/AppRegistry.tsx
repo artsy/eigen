@@ -474,7 +474,10 @@ export const modules = defineModules({
   NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  Partner: reactModule(PartnerQueryRenderer),
+  Partner: reactModule(PartnerQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   PartnerLocations: reactModule(PartnerLocations),
   PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
   PrivacyRequest: reactModule(PrivacyRequest),
