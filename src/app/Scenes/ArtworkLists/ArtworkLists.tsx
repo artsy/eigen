@@ -12,7 +12,19 @@ import { isPad } from "app/utils/hardware"
 import { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const PAGE_SIZE = isPad() ? 20 : 10
+/**
+ * We should query 1 less custom artwork list
+ * since "Saved Artworks" is also displayed (the default artwork list)
+ *
+ * === MOBILE ===
+ * 1 default artwork list + 11 custom artwork lists = 12 artwork lists
+ * 12 / 2 column = 6 rows
+ *
+ * === TABLET ===
+ * 1 default artwork list + 23 custom artwork lists = 24 artwork lists
+ * 24 / 3 column = 8 rows
+ */
+const PAGE_SIZE = isPad() ? 23 : 11
 
 export const ArtworkLists = () => {
   const space = useSpace()
@@ -39,7 +51,7 @@ export const ArtworkLists = () => {
       return
     }
 
-    loadNext(10)
+    loadNext(PAGE_SIZE)
   }
 
   const handleRefresh = () => {

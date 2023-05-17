@@ -60,12 +60,16 @@ export const MenuItem: React.FC<{
         style={style}
         opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
       >
-        {!!icon && <Flex flex={1}>{icon}</Flex>}
+        {!!icon && (
+          <Flex flex={1} flexGrow={1} height="100%">
+            {icon}
+          </Flex>
+        )}
         <Flex flex={7}>
           <Flex>
             <Text variant="sm-display">{title}</Text>
             {!!description && (
-              <Text variant="sm-display" color="black60">
+              <Text variant="xs" color="black60">
                 {description}
               </Text>
             )}

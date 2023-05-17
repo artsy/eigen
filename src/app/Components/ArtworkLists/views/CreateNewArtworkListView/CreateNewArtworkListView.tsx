@@ -4,6 +4,7 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
+import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useCallback, useMemo } from "react"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
@@ -11,6 +12,7 @@ import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 export const CreateNewArtworkListView = () => {
   const { state, dispatch } = useArtworkListsContext()
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
+  const bottomOffset = useArtworkListsBottomOffset(2)
 
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
     useBottomSheetDynamicSnapPoints(initialSnapPoints)
@@ -40,7 +42,7 @@ export const CreateNewArtworkListView = () => {
           <ArtworkInfo artwork={state.artwork!} />
         </Box>
 
-        <CreateNewArtworkListForm m={2} />
+        <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
       </BottomSheetView>
     </AutomountedBottomSheetModal>
   )

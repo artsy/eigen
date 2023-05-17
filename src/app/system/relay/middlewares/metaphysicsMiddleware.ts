@@ -109,12 +109,8 @@ export function persistedQueryMiddleware(): Middleware {
     let body: { variables?: object; query?: string; documentID?: string } = {}
     const queryID = req.getID()
     const variables = req.getVariables()
-    if (__DEV__) {
-      body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-      ;(req as any).operation.text = body.query ?? null
-    } else {
-      body = { documentID: queryID, variables }
-    }
+
+    body = { documentID: queryID, variables }
 
     if (body && (body.query || body.documentID)) {
       req.fetchOpts.body = JSON.stringify(body)

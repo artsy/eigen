@@ -2,24 +2,32 @@ import { Flex, Text, TimerIcon } from "@artsy/palette-mobile"
 import { Time, useTimer } from "app/utils/useTimer"
 import { DateTime } from "luxon"
 import moment from "moment"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useInterval from "react-use/lib/useInterval"
 
 interface UrgencyInfoProps {
   endAt: string
   isLiveAuction?: boolean
+  onTimerEnd?: () => void
   startAt: string
   saleTimeZone: string
 }
 
 export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
-  const { timeText, color } = useTimeText(props)
+  const { timeText, previousTimeText, color } = useTimeText(props)
   const { hasStarted } = useTimer(props.endAt, props.startAt)
   const showDate =
     timeText !== "In progress" && props.isLiveAuction && !hasStarted && !!props.startAt
   const startDateTime = DateTime.fromISO(props.startAt)
   const isSameYear = DateTime.now().year === startDateTime.year
   const formattedDate = startDateTime.toFormat(isSameYear ? "LLL dd, t" : "ff")
+
+  useEffect(() => {
+    if (!!previousTimeText && !timeText) {
+      // lot just closed
+      props.onTimerEnd?.()
+    }
+  }, [timeText, previousTimeText, color])
 
   if (timeText) {
     return (
@@ -31,7 +39,7 @@ export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
             {timeText}
           </Text>
         </Flex>
-        {showDate && (
+        {!!showDate && (
           <Text variant="xs" color="black60">
             {formattedDate}
           </Text>
@@ -65,7 +73,7 @@ const getInfo = (time: Time): { text: string; textColor: "blue100" | "red100" } 
 const useTimeText = (props: UrgencyInfoProps) => {
   const { isLiveAuction, startAt, endAt, saleTimeZone } = props
 
-  const [timeText, setTimeText] = useState("")
+  const [timerInfoText, setTimerInfoText] = useState({ prev: "", current: "" })
   const [color, setColor] = useState<string | undefined>(undefined)
 
   const userTimeZone = moment.tz.guess()
@@ -95,15 +103,19 @@ const useTimeText = (props: UrgencyInfoProps) => {
       prefix = ""
       suffix = "left"
     } else if (!endAt && !hasEnded && hasStarted) {
-      setTimeText("In progress")
+      setTimerInfoText({ current: "In progress", prev: timerInfoText.current })
       setColor("blue100")
       return
     }
-    setTimeText(!!text ? prefix + `${!!prefix ? " " : ""}${text} ` + suffix : "")
+    setTimerInfoText({
+      current: !!text ? prefix + `${!!prefix ? " " : ""}${text} ` + suffix : "",
+      prev: timerInfoText.current,
+    })
     setColor(textColor)
   }
 
   useInterval(callback, 1000)
 
-  return { color, timeText }
+  const { prev: previousTimeText, current: timeText } = timerInfoText
+  return { color, previousTimeText, timeText }
 }

@@ -282,6 +282,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableStickyTabsLazyLoading",
   },
+  AREnableShowsForYouLocation: {
+    description: "Enable Shows For You Location",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableShowsForYouLocation",
+  },
 }
 
 export interface DevToggleDescriptor {

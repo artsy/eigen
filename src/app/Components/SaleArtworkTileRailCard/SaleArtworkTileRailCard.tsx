@@ -31,6 +31,7 @@ export interface SaleArtworkTileRailCardProps {
   useSquareAspectRatio?: boolean
   contextScreenOwnerType?: ScreenOwnerType
   cardSize?: "small" | "large"
+  refreshRail?: () => void
 }
 
 export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = ({
@@ -40,6 +41,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   useSquareAspectRatio = false,
   contextScreenOwnerType,
   cardSize = "small",
+  refreshRail,
 }) => {
   const enableNewSaleArtworkTileRailCard =
     useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
@@ -164,12 +166,13 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
           {artistNamesDisplay}
           {titleAndDateDisplay}
           {customSaleMessage ? customSaleMessageDisplay : saleMessageDisplay}
-          {enableNewSaleArtworkTileRailCard && (
+          {!!enableNewSaleArtworkTileRailCard && (
             <UrgencyInfo
               startAt={startAt}
               endAt={endAt}
               isLiveAuction={!!saleArtwork.sale?.liveStartAt}
               saleTimeZone={saleArtwork.sale?.timeZone ?? ""}
+              onTimerEnd={refreshRail}
             />
           )}
         </Box>
