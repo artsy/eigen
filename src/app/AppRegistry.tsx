@@ -512,7 +512,7 @@ export const modules = defineModules({
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
   Storybook: reactModule(StorybookUIRoot),
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
-  Tag: reactModule(TagQueryRenderer),
+  Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   UpcomingAuctionResults: reactModule(AuctionResultsUpcomingQueryRenderer, {}, [
     AuctionResultsUpcomingPrefetchQuery,
