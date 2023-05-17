@@ -1,6 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { getCurrentEmissionState } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
 import _ from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
@@ -109,8 +110,12 @@ export function persistedQueryMiddleware(): Middleware {
     let body: { variables?: object; query?: string; documentID?: string } = {}
     const queryID = req.getID()
     const variables = req.getVariables()
-
-    body = { documentID: queryID, variables }
+    if (__DEV__) {
+      body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
+      ;(req as any).operation.text = body.query ?? null
+    } else {
+      body = { documentID: queryID, variables }
+    }
 
     if (body && (body.query || body.documentID)) {
       req.fetchOpts.body = JSON.stringify(body)
