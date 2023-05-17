@@ -1,96 +1,71 @@
-import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { cloneDeep } from "lodash"
+import Geolocation from "@react-native-community/geolocation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { NetworkInfo } from "react-native-network-info"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowsRailFragmentContainer } from "./ShowsRail"
+import { ShowsRailContainer } from "./ShowsRail"
 
-const showEdge = {
-  cursor: "YXJyYXljb25uZWN0aW9uOjA=",
-  node: {
-    name: "Leeum Collection: Beyond Space",
-    id: "U2hvdzo1OGE1M2YzYzc2MjJkZDQxNmY3YTNjNGQ=",
-    metaImage: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/vWq6mRB9uyvfhA1JT1xH_A/larger.jpg",
-    },
-    internalID: "58a53f3c7622dd416f7a3c4d",
-    slug: "leeum-samsung-museum-of-art-leeum-collection-beyond-space",
-    href: "/show/leeum-samsung-museum-of-art-leeum-collection-beyond-space",
-    status: "running",
-    startAt: "2014-08-19T12:00:00+00:00",
-    endAt: "2999-12-31T12:00:00+00:00",
-    artists: null,
-    partner: {
-      name: "Leeum, Samsung Museum of Art",
-    },
+jest.mock("@react-native-community/geolocation", () => ({
+  setRNConfiguration: jest.fn(),
+  getCurrentPosition: jest.fn((success, _) => {
+    success({ coords: { latitude: 1, longitude: 2 } })
+  }),
+}))
+
+jest.mock("react-native-network-info", () => ({
+  NetworkInfo: {
+    getIPV4Address: jest.fn(async () => "my-ip"),
   },
-}
-const meResponseMock = {
-  me: [
-    {
-      showsConnection: {
-        totalCount: 20,
-        edges: [showEdge, showEdge, showEdge],
-      },
-    },
-  ],
-}
+}))
 
-describe("ShowsRailFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
+describe("ShowsRailContainer", () => {
+  const environment = createMockEnvironment()
 
-  const TestRenderer = () => (
-    <QueryRenderer<ShowsRailTestsQuery>
-      environment={env}
-      query={graphql`
-        query ShowsRailTestsQuery @raw_response_type {
-          showsConnection {
-            ...ShowsRail_showsConnection
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props) {
-          return (
-            <ShowsRailFragmentContainer title="Shows" showsConnection={props.showsConnection!} />
-          )
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
-  it("doesn't throw when rendered", () => {
-    renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: meResponseMock,
-        }),
-      })
+  it("renders the title and the shows", async () => {
+    const { getByText } = renderWithHookWrappersTL(
+      <ShowsRailContainer title="Shows for You" />,
+      environment
     )
-  })
 
-  it("renders without throwing an error when missing shows", () => {
-    const showsCopy = cloneDeep(meResponseMock)
-    showsCopy.me.forEach((me) => {
-      me.showsConnection.edges = []
-    })
-
-    renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: showsCopy,
-        }),
-      })
+    environment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, { Me: () => meResponse })
     )
+
+    expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
+    expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
+
+    await flushPromiseQueue()
+
+    expect(getByText("Shows for You")).toBeDefined()
+
+    expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
   })
 })
+
+const meResponse = {
+  showsConnection: {
+    totalCount: 20,
+    edges: [
+      {
+        node: {
+          name: "Leeum Collection: Beyond Space",
+          id: "U2hvdzo1OGE1M2YzYzc2MjJkZDQxNmY3YTNjNGQ=",
+          metaImage: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/vWq6mRB9uyvfhA1JT1xH_A/larger.jpg",
+          },
+          internalID: "58a53f3c7622dd416f7a3c4d",
+          slug: "leeum-samsung-museum-of-art-leeum-collection-beyond-space",
+          href: "/show/leeum-samsung-museum-of-art-leeum-collection-beyond-space",
+          status: "running",
+          startAt: "2014-08-19T12:00:00+00:00",
+          endAt: "2999-12-31T12:00:00+00:00",
+          artists: null,
+          partner: {
+            name: "Leeum, Samsung Museum of Art",
+          },
+        },
+      },
+    ],
+  },
+}

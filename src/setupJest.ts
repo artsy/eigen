@@ -631,3 +631,14 @@ jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
   ...require("@gorhom/bottom-sheet/mock"),
 }))
+
+jest.mock("@react-native-community/geolocation", () => ({
+  addListener: jest.fn(),
+  getCurrentPosition: jest.fn(),
+  removeListeners: jest.fn(),
+  requestAuthorization: jest.fn(),
+  setConfiguration: jest.fn(),
+  startObserving: jest.fn(),
+  setRNConfiguration: jest.fn(),
+  stopObserving: jest.fn(),
+}))
