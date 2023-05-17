@@ -92,15 +92,15 @@ input addOrderedSetItemMutationInput {
 }
 
 type addOrderedSetItemMutationPayload {
+  # On success: the updated parent set or the set item added.
+  addOrderedSetItemResponseOrError: addOrderedSetItemResponseOrError
   clientMutationId: String
-
-  # On success: the ordered set item added.
-  orderedSetItemOrError: addOrderedSetItemResponseOrError
 }
 
 union addOrderedSetItemResponseOrError = addOrderedSetItemFailure | addOrderedSetItemSuccess
 
 type addOrderedSetItemSuccess {
+  set: OrderedSet
   setItem: OrderedSetItem
 }
 
@@ -7922,8 +7922,8 @@ input deleteOrderedSetItemMutationInput {
 type deleteOrderedSetItemMutationPayload {
   clientMutationId: String
 
-  # On success: the ordered set item deleted.
-  orderedSetItemOrError: deleteOrderedSetItemResponseOrError
+  # On success: the updated parent set or the set item deleted.
+  deleteOrderedSetItemResponseOrError: deleteOrderedSetItemResponseOrError
 }
 
 union deleteOrderedSetItemResponseOrError =
@@ -7931,6 +7931,7 @@ union deleteOrderedSetItemResponseOrError =
   | deleteOrderedSetItemSuccess
 
 type deleteOrderedSetItemSuccess {
+  set: OrderedSet
   setItem: OrderedSetItem
 }
 
