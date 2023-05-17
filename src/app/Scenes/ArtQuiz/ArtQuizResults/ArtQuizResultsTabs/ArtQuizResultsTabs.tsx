@@ -1,20 +1,14 @@
-import { LegacyScreen } from "@artsy/palette-mobile"
+import { Flex, Screen } from "@artsy/palette-mobile"
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
 import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtists"
 import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtworks"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
-import { compact } from "lodash"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql, useFragment } from "react-relay"
-
-enum Tab {
-  worksYouLiked = "Works you liked",
-  exploreWorks = "Explore Works",
-  exploreArtists = "Explore Artists",
-}
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
   const queryResult = useFragment<ArtQuizResultsTabs_me$key>(artQuizResultsTabsFragment, me)?.quiz
@@ -23,35 +17,40 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
   const recommendedArtworks = queryResult?.recommendedArtworks!
 
   return (
-    <LegacyScreen>
-      <LegacyScreen.Header onBack={() => navigate("/")} />
-      <LegacyScreen.Body fullwidth noBottomSafe>
-        <StickyTabPage
-          disableBackButtonUpdate
-          tabs={compact([
-            {
-              title: Tab.worksYouLiked,
-              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
-              initial: true,
-            },
-            {
-              title: Tab.exploreWorks,
-              content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
-            },
-            {
-              title: Tab.exploreArtists,
-              content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
-            },
-          ])}
-          staticHeaderContent={
-            <ArtQuizResultsTabsHeader
-              title="Explore Your Quiz Results"
-              subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
-            />
-          }
-        />
-      </LegacyScreen.Body>
-    </LegacyScreen>
+    <Screen>
+      <Screen.Body fullwidth>
+        <Screen.Header onBack={() => navigate("/")} />
+        <TabsContainer
+          lazy
+          renderHeader={() => {
+            return (
+              <Flex mb={1}>
+                <ArtQuizResultsTabsHeader
+                  title="Explore Your Quiz Results"
+                  subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
+                />
+              </Flex>
+            )
+          }}
+        >
+          <Tabs.Tab name="worksYouLiked" label="Works you liked">
+            <Tabs.Lazy>
+              <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+          <Tabs.Tab name="exploreWorks" label="Explore Works">
+            <Tabs.Lazy>
+              <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+          <Tabs.Tab name="exploreArtists" label="Explore Artists">
+            <Tabs.Lazy>
+              <ArtQuizExploreArtists savedArtworks={savedArtworks} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </TabsContainer>
+      </Screen.Body>
+    </Screen>
   )
 }
 

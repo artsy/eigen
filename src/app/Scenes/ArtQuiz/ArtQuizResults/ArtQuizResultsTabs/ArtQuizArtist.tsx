@@ -46,7 +46,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           navigate(`/artist/${artist?.slug}`)
         }}
       >
-        <Flex px={2} flexDirection="row" justifyContent="space-between">
+        <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
             <Text variant="lg-display">{artist?.name}</Text>
             <Text variant="lg-display" color="black60">
@@ -61,7 +61,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           </Flex>
         </Flex>
         <Spacer y={1} />
-        <Flex px={2}>
+        <Flex>
           <ReadMore
             content={artist?.biographyBlurb?.text!}
             maxChars={textLimit}
@@ -71,12 +71,14 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           />
         </Flex>
         <Spacer y={2} />
-        <SmallArtworkRail
-          artworks={artworks}
-          onPress={(artwork) => {
-            navigate(artwork?.href!)
-          }}
-        />
+        <Flex mx={-2}>
+          <SmallArtworkRail
+            artworks={artworks}
+            onPress={(artwork) => {
+              navigate(artwork?.href!)
+            }}
+          />
+        </Flex>
       </TouchableOpacity>
     </Flex>
   )
