@@ -6,9 +6,9 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Schema, screenTrack } from "app/utils/track"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -18,34 +18,42 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Component
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
 import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } from "./Components/PartnerSubscriberBanner"
 
-interface Props {
+interface PartnerProps {
   partner: Partner_partner$data
   initialTab?: string
   relay: RelayRefetchProp
 }
 
-@screenTrack((props: Props) => ({
-  context_screen: Schema.PageNames.PartnerPage,
-  context_screen_owner_slug: props.partner.slug,
-  context_screen_owner_id: props.partner.internalID,
-  context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
-}))
-class Partner extends React.Component<Props> {
-  render() {
-    const { partner, initialTab } = this.props
-    const { partnerType, displayFullPartnerPage } = partner
+const Partner: React.FC<PartnerProps> = (props) => {
+  const { partner, initialTab } = props
+  const { partnerType, displayFullPartnerPage } = partner
 
-    if (!displayFullPartnerPage && partnerType !== "Brand") {
-      return (
-        <>
-          <PartnerHeader partner={partner} />
-          <Separator my={2} />
-          <PartnerSubscriberBanner partner={partner} />
-        </>
-      )
-    }
-
+  if (!displayFullPartnerPage && partnerType !== "Brand") {
     return (
+      <ProvideScreenTracking
+        info={{
+          context_screen: Schema.PageNames.PartnerPage,
+          context_screen_owner_slug: props.partner.slug,
+          context_screen_owner_id: props.partner.internalID,
+          context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
+        }}
+      >
+        <PartnerHeader partner={partner} />
+        <Separator my={2} />
+        <PartnerSubscriberBanner partner={partner} />
+      </ProvideScreenTracking>
+    )
+  }
+
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.PartnerPage,
+        context_screen_owner_slug: props.partner.slug,
+        context_screen_owner_id: props.partner.internalID,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
+      }}
+    >
       <StickyTabPage
         staticHeaderContent={<PartnerHeader partner={partner} />}
         tabs={[
@@ -69,8 +77,8 @@ class Partner extends React.Component<Props> {
           },
         ]}
       />
-    )
-  }
+    </ProvideScreenTracking>
+  )
 }
 
 export const PartnerContainer = createRefetchContainer(
@@ -106,7 +114,7 @@ export const PartnerQueryRenderer: React.FC<{
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
   const { loading, data } = useClientQuery<PartnerInitialQuery>({
-    environment: defaultEnvironment,
+    environment: getRelayEnvironment(),
     query: graphql`
       query PartnerInitialQuery($partnerID: String!) {
         partner(id: $partnerID) {
@@ -126,7 +134,7 @@ export const PartnerQueryRenderer: React.FC<{
       render={({ isRetry }) => {
         return (
           <QueryRenderer<PartnerQuery>
-            environment={defaultEnvironment}
+            environment={getRelayEnvironment()}
             query={graphql`
               query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
                 partner(id: $partnerID) {
