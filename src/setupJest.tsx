@@ -642,3 +642,24 @@ jest.mock("@react-native-community/geolocation", () => ({
   setRNConfiguration: jest.fn(),
   stopObserving: jest.fn(),
 }))
+
+jest.mock("react-native-collapsible-tab-view", () => {
+  const React = require("react-native")
+  const MockedTabs = ({ name, children }: any) => (
+    <React.View>
+      <React.Text>{name}</React.Text>
+      {children}
+    </React.View>
+  )
+
+  return {
+    Tabs: {
+      Container: React.View,
+      Tab: MockedTabs,
+      FlatList: React.FlatList,
+      ScrollView: React.ScrollView,
+    },
+    useHeaderMeasurements: () => ({ height: { value: 0 } }),
+    useTabNameContext: () => "Tab",
+  }
+})
