@@ -50,7 +50,6 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
       <TouchableWithoutFeedback onPress={() => handleTap(partner.href!)}>
         <EntityHeader
           name={partner.name!}
-          href={(partner.isDefaultProfilePublic && partner.href) || undefined}
           meta={locationNames || undefined}
           imageUrl={partner.profile?.icon?.url || undefined}
           initials={partner.initials || undefined}
