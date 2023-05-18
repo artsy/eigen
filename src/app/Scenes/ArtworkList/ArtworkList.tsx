@@ -9,7 +9,6 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
-import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { FC, Suspense, useState } from "react"
@@ -76,25 +75,19 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   const artworkList = data?.artworkList!
   const artworksCount = artworkList.artworks?.totalCount ?? 0
-  const artworkListEntity: HeaderMenuArtworkListEntity = {
-    title: artworkList.name,
-    internalID: artworkList.internalID,
-  }
 
   if (artworksCount === 0) {
-    return (
-      <ArtworkListEmptyState
-        artworkListEntity={artworkListEntity}
-        me={queryData.me!}
-        title={artworkList.name}
-        refreshControl={RefreshControl}
-      />
-    )
+    return <ArtworkListEmptyState me={queryData.me!} refreshControl={RefreshControl} />
   }
 
   return (
     <ArtworkListsProvider artworkListId={listID}>
-      <ArtworkListHeader artworkListEntity={artworkListEntity} />
+      <ArtworkListHeader
+        artworkListEntity={{
+          title: artworkList.name,
+          internalID: artworkList.internalID,
+        }}
+      />
       <InfiniteScrollArtworksGridContainer
         connection={data?.artworkList?.artworks}
         loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
