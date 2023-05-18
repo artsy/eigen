@@ -8,12 +8,13 @@ import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizR
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
+import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {
   worksYouLiked = "Works you liked",
-  exploreWorks = "Explore Works",
-  exploreArtists = "Explore Artists",
+  exploreWorks = "Works for You",
+  exploreArtists = "Artists for You",
 }
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
@@ -22,32 +23,48 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
   const savedArtworks = queryResult?.savedArtworks!
   const recommendedArtworks = queryResult?.recommendedArtworks!
 
+  const [activeTab, setActiveTab] = useState<Tab>(Tab.worksYouLiked)
+
+  const tabs = compact([
+    {
+      title: Tab.worksYouLiked,
+      content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
+      initial: true,
+    },
+    {
+      title: Tab.exploreWorks,
+      content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
+    },
+    {
+      title: Tab.exploreArtists,
+      content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
+    },
+  ])
+
+  const handleTabPress = (tabIndex: number) => {
+    setActiveTab(tabs[tabIndex].title)
+  }
+
   return (
     <LegacyScreen>
       <LegacyScreen.Header onBack={() => navigate("/")} />
       <LegacyScreen.Body fullwidth noBottomSafe>
         <StickyTabPage
+          onTabPress={handleTabPress}
           disableBackButtonUpdate
-          tabs={compact([
-            {
-              title: Tab.worksYouLiked,
-              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
-              initial: true,
-            },
-            {
-              title: Tab.exploreWorks,
-              content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
-            },
-            {
-              title: Tab.exploreArtists,
-              content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
-            },
-          ])}
+          tabs={tabs}
           staticHeaderContent={
-            <ArtQuizResultsTabsHeader
-              title="Explore Your Quiz Results"
-              subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
-            />
+            activeTab === Tab.worksYouLiked ? (
+              <ArtQuizResultsTabsHeader
+                title="Explore Art We Think You'll Love"
+                subtitle="We think you’ll enjoy these recommendations based on your likes. Keep saving and following to continue tailoring Artsy to you."
+              />
+            ) : (
+              <ArtQuizResultsTabsHeader
+                title="Explore Your Quiz Results"
+                subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
+              />
+            )
           }
         />
       </LegacyScreen.Body>

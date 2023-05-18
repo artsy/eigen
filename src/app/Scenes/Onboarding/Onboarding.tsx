@@ -116,7 +116,7 @@ export const OnboardingWelcomeScreens = () => {
         </StackNavigator.Group>
 
         <StackNavigator.Group screenOptions={{ presentation: "modal" }}>
-          {userIsDev && (
+          {!!userIsDev && (
             <StackNavigator.Screen
               name="DevMenu"
               component={DevMenu}
