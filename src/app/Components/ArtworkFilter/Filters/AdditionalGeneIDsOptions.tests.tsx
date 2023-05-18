@@ -38,6 +38,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -91,6 +92,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -117,6 +119,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -148,6 +151,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 

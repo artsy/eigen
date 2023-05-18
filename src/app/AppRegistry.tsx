@@ -349,7 +349,9 @@ export const modules = defineModules({
   }),
   Article: reactModule(ArticleScreen),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
-  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
+  Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
+    ArtistScreenQuery,
+  ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),

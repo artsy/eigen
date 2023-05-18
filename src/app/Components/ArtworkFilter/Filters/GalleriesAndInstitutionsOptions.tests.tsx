@@ -42,6 +42,7 @@ describe("Galleries and Institutions Options Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 

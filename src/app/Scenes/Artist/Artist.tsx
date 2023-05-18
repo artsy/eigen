@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Screen, ShareIcon } from "@artsy/palette-mobile"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -6,8 +6,8 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
+import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
-import { ArtistHeaderFloatingButtonsFragmentContainer } from "app/Components/Artist/ArtistHeaderFloatingButtons"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
@@ -15,18 +15,23 @@ import {
   getFilterArrayFromQueryParams,
   prepareFilterArtworksParamsForInput,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect } from "react"
-import { ActivityIndicator, View } from "react-native"
+import { MotiView } from "moti"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, TouchableOpacity, View } from "react-native"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -54,8 +59,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   } = props
 
   const popoverMessage = usePopoverMessage()
+  const { showShareSheet } = useShareSheet()
+  const [currentTab, setCurrentTab] = useState(initialTab)
 
-  const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
     !!artistAboveTheFold.statuses?.articles ||
@@ -72,49 +78,21 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     }
   }, [fetchCriteriaError])
 
-  if (displayAboutSection) {
-    tabs.push({
-      title: "Overview",
-      content: artistBelowTheFold ? (
-        <ArtistAboutContainer artist={artistBelowTheFold} />
-      ) : (
-        <LoadingPage />
-      ),
+  const handleSharePress = () => {
+    showShareSheet({
+      type: "artist",
+      internalID: artistAboveTheFold.internalID,
+      slug: artistAboveTheFold.slug,
+      artists: [{ name: artistAboveTheFold.name }],
+      title: artistAboveTheFold.name!,
+      href: artistAboveTheFold.href!,
+      currentImageUrl: artistAboveTheFold.image?.url ?? undefined,
     })
   }
 
-  tabs.push({
-    title: "Artworks",
-    content: (
-      <ArtistArtworks
-        artist={artistAboveTheFold}
-        searchCriteria={searchCriteria}
-        predefinedFilters={predefinedFilters}
-      />
-    ),
-  })
-
-  if (!!artistAboveTheFold?.statuses?.auctionLots) {
-    tabs.push({
-      title: "Insights",
-      content: artistBelowTheFold ? (
-        (tabIndex: number) => (
-          <ArtistInsightsFragmentContainer
-            tabIndex={tabIndex}
-            artist={artistBelowTheFold}
-            initialFilters={auctionResultsInitialFilters}
-          />
-        )
-      ) : (
-        <LoadingPage />
-      ),
-    })
+  const handleTabChange = (tabName: string) => {
+    setCurrentTab(tabName)
   }
-
-  // Set initial tab
-  tabs.forEach((tab) => {
-    tab.initial = tab.title === initialTab
-  })
 
   return (
     <ProvideScreenTracking
@@ -125,16 +103,85 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         context_screen_owner_id: artistAboveTheFold.internalID,
       }}
     >
-      <Flex style={{ flex: 1 }}>
-        <StickyTabPage
-          staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
-          tabs={tabs}
-          bottomContent={
-            <ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />
-          }
-          disableBackButtonUpdate
-        />
-      </Flex>
+      <ArtworkFiltersStoreProvider>
+        <Screen>
+          <Screen.Body fullwidth>
+            <Screen.Header
+              onBack={goBack}
+              rightElements={
+                <>
+                  <TouchableOpacity onPress={handleSharePress}>
+                    <ShareIcon width={23} height={23} />
+                  </TouchableOpacity>
+                </>
+              }
+            />
+            <TabsContainer
+              initialTabName={initialTab}
+              onTabPress={handleTabChange}
+              renderHeader={() => {
+                return <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
+              }}
+              renderBelowTabBar={() => {
+                if (currentTab === "Artworks") {
+                  return (
+                    <MotiView
+                      from={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 100 }}
+                    >
+                      <ArtistArtworksFilterHeader artist={artistAboveTheFold!} />
+                    </MotiView>
+                  )
+                }
+
+                return null
+              }}
+            >
+              {displayAboutSection ? (
+                <Tabs.Tab name="Overview" label="Overview">
+                  <Tabs.Lazy>
+                    <>
+                      {artistBelowTheFold ? (
+                        <ArtistAboutContainer artist={artistBelowTheFold} />
+                      ) : (
+                        <LoadingPage />
+                      )}
+                    </>
+                  </Tabs.Lazy>
+                </Tabs.Tab>
+              ) : null}
+
+              <Tabs.Tab name="Artworks" label="Artworks">
+                <Tabs.Lazy>
+                  <ArtistArtworks
+                    artist={artistAboveTheFold}
+                    searchCriteria={searchCriteria}
+                    predefinedFilters={predefinedFilters}
+                  />
+                </Tabs.Lazy>
+              </Tabs.Tab>
+
+              {artistAboveTheFold?.statuses?.auctionLots ? (
+                <Tabs.Tab name="Insights" label="Insights">
+                  <Tabs.Lazy>
+                    <>
+                      {artistBelowTheFold ? (
+                        <ArtistInsightsFragmentContainer
+                          artist={artistBelowTheFold}
+                          initialFilters={auctionResultsInitialFilters}
+                        />
+                      ) : (
+                        <LoadingPage />
+                      )}
+                    </>
+                  </Tabs.Lazy>
+                </Tabs.Tab>
+              ) : null}
+            </TabsContainer>
+          </Screen.Body>
+        </Screen>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }
@@ -153,6 +200,9 @@ interface ArtistQueryRendererProps {
 export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
     artist(id: $artistID) {
+      ...ArtistArtworksFilterHeader_artist
+      ...ArtistHeader_artist
+      ...ArtistArtworks_artist @arguments(input: $input)
       internalID
       slug
       has_metadata: hasMetadata
@@ -160,9 +210,11 @@ export const ArtistScreenQuery = graphql`
         partner_shows: partnerShows
         related_artists: relatedArtists
       }
-      ...ArtistHeader_artist
-      ...ArtistArtworks_artist @arguments(input: $input)
-      ...ArtistHeaderFloatingButtons_artist
+      href
+      name
+      image {
+        url(version: "large")
+      }
       statuses {
         auctionLots
         articles

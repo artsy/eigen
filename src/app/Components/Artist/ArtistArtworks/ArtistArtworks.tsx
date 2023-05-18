@@ -1,32 +1,25 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Box, Message } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
+import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import {
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "app/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import {
-  useArtworkFilters,
-  useSelectedFiltersCount,
-} from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { Schema } from "app/utils/track"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
+// import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist$data
@@ -38,62 +31,29 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
-  const tracking = useTracking()
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-
-  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
-  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
-
-  const openFilterArtworksModal = (openedFrom: FilterModalOpenedFrom) => {
-    if (openedFrom === "sortAndFilter") {
-      tracking.trackEvent({
-        action_name: "filter",
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_id: artist.id,
-        context_screen_owner_slug: artist.slug,
-        action_type: Schema.ActionTypes.Tap,
-      })
-    }
-
-    handleOpenFilterArtworksModal()
-  }
-
-  const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen: Schema.PageNames.ArtistPage,
-      context_screen_owner_id: artist.id,
-      context_screen_owner_slug: artist.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-
-    handleCloseFilterArtworksModal()
-  }
+  const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
+    useShowArtworksFilterModal({ artist })
 
   return (
-    <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
-        <ArtistArtworksContainer
-          {...props}
-          artist={artist}
-          relay={relay}
-          openFilterModal={openFilterArtworksModal}
-        />
-        <ArtworkFilterNavigator
-          {...props}
-          id={artist.internalID}
-          slug={artist.slug}
-          visible={isFilterArtworksModalVisible}
-          name={artist.name ?? ""}
-          exitModal={handleCloseFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-          mode={FilterModalMode.ArtistArtworks}
-          shouldShowCreateAlertButton
-        />
-      </StickyTabPageScrollView>
-    </ArtworkFiltersStoreProvider>
+    <TabScrollView keyboardShouldPersistTaps="handled">
+      <ArtistArtworksContainer
+        {...props}
+        artist={artist}
+        relay={relay}
+        openFilterModal={openFilterArtworksModal}
+      />
+      <ArtworkFilterNavigator
+        {...props}
+        id={artist.internalID}
+        slug={artist.slug}
+        visible={showFilterArtworksModal}
+        name={artist.name ?? ""}
+        exitModal={closeFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
+        mode={FilterModalMode.ArtistArtworks}
+        shouldShowCreateAlertButton
+      />
+    </TabScrollView>
   )
 }
 
@@ -106,7 +66,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   relay,
   searchCriteria,
   predefinedFilters,
-  openFilterModal,
   ...props
 }) => {
   const tracking = useTracking()
@@ -116,7 +75,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     (state) => state.setInitialFilterStateAction
   )
 
-  const appliedFiltersCount = useSelectedFiltersCount()
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
 
@@ -160,30 +118,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
-  useEffect(() => {
-    setJSX(
-      <Box backgroundColor="white">
-        <ArtworksFilterHeader
-          onFilterPress={() => openFilterModal("sortAndFilter")}
-          selectedFiltersCount={appliedFiltersCount}
-          childrenPosition="left"
-        >
-          <SavedSearchButtonV2
-            artistId={artist.internalID}
-            artistSlug={artist.slug}
-            onPress={() => openFilterModal("createAlert")}
-          />
-        </ArtworksFilterHeader>
-      </Box>
-    )
-  }, [appliedFiltersCount])
-
   const filteredArtworks = () => {
     if (artworksCount === 0) {
       return (
-        <Box mb="80px" pt={1}>
+        <Box mb="80px" pt={2}>
           <FilteredArtworkGridZeroState
             id={artist.id}
             slug={artist.slug}
@@ -195,7 +133,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     } else {
       return (
         <>
-          <Spacer y={1} />
+          <Spacer y={2} />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}

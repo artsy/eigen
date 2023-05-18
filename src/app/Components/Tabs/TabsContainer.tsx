@@ -9,21 +9,27 @@ const TAB_BAR_HEIGHT = 50
 
 export interface TabsContainerProps extends CollapsibleProps {
   renderBelowTabBar?: () => JSX.Element | null
+  // This prop is more immediate than onTabChange, which waits till the
+  // transition takes place
+  onTabPress?: (tabName: string) => void
   tabScrollEnabled?: boolean
 }
 
 export const TabsContainer: React.FC<TabsContainerProps> = ({
-  renderHeader,
   children,
   initialTabName,
-  tabScrollEnabled = false,
+  renderHeader,
   renderBelowTabBar,
+  tabScrollEnabled = false,
+  onTabPress,
+  ...tabContainerProps
 }) => {
   const space = useSpace()
   const color = useColor()
 
   return (
     <BaseTabs.Container
+      {...tabContainerProps}
       renderHeader={renderHeader}
       headerContainerStyle={{
         shadowOpacity: 0,
@@ -35,31 +41,38 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
       containerStyle={{
         paddingTop: space(2),
       }}
-      renderTabBar={(props) => (
-        <>
-          <MaterialTabBar
-            {...props}
-            scrollEnabled={tabScrollEnabled}
-            style={{
-              height: TAB_BAR_HEIGHT,
-              borderBottomWidth: 1,
-              borderColor: color("black30"),
-            }}
-            contentContainerStyle={{}}
-            activeColor={color("onBackground")}
-            inactiveColor={color("onBackgroundMedium")}
-            labelStyle={{ marginTop: 0 }} // removing the horizonal margin from the lib
-            tabStyle={{
-              marginHorizontal: 10,
-            }} // adding the margin back here
-            indicatorStyle={{
-              backgroundColor: color("onBackground"),
-              height: 1,
-            }}
-          />
-          {!!renderBelowTabBar && renderBelowTabBar()}
-        </>
-      )}
+      renderTabBar={(tabBarProps) => {
+        return (
+          <>
+            <MaterialTabBar
+              {...tabBarProps}
+              scrollEnabled={tabScrollEnabled}
+              onTabPress={(tab) => {
+                tabBarProps.onTabPress(tab)
+                onTabPress?.(tab)
+              }}
+              style={{
+                height: TAB_BAR_HEIGHT,
+                borderBottomWidth: 1,
+                borderColor: color("black30"),
+              }}
+              contentContainerStyle={{}}
+              activeColor={color("onBackground")}
+              inactiveColor={color("onBackgroundMedium")}
+              labelStyle={{ marginTop: 0 }} // removing the horizonal margin from the lib
+              tabStyle={{
+                marginHorizontal: 10,
+              }} // adding the margin back here
+              indicatorStyle={{
+                backgroundColor: color("onBackground"),
+                height: 1,
+              }}
+            />
+
+            {!!renderBelowTabBar && renderBelowTabBar()}
+          </>
+        )
+      }}
     >
       {children}
     </BaseTabs.Container>
