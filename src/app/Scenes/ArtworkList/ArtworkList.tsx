@@ -76,7 +76,13 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const artworksCount = artworkList.artworks?.totalCount ?? 0
 
   if (artworksCount === 0) {
-    return <ArtworkListEmptyState me={queryData.me!} title={artworkList.name} />
+    return (
+      <ArtworkListEmptyState
+        me={queryData.me!}
+        title={artworkList.name}
+        refreshControl={RefreshControl}
+      />
+    )
   }
 
   return (
