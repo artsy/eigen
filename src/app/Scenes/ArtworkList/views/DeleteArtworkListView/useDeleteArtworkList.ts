@@ -73,7 +73,6 @@ const deleteArtworkListUpdater = (store: Store, data: Data) => {
   const me = root.getLinkedRecord("me")
 
   if (!me || !artworkListID) {
-    console.log("[debug] step 1")
     return
   }
 
@@ -81,10 +80,8 @@ const deleteArtworkListUpdater = (store: Store, data: Data) => {
   const customArtworkListsConnection = ConnectionHandler.getConnection(me, key)
 
   if (!customArtworkListsConnection) {
-    console.log("[debug] step 2")
     return
   }
 
-  console.log("[debug] step 3")
   ConnectionHandler.deleteNode(customArtworkListsConnection, artworkListID)
 }
