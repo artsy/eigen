@@ -1,21 +1,16 @@
 import { Box } from "@artsy/palette-mobile"
-import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
-import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
+import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
-import { useCallback, useMemo } from "react"
+import { useCallback } from "react"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
   const { state, dispatch } = useArtworkListsContext()
-  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
   const bottomOffset = useArtworkListsBottomOffset(2)
-
-  const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-    useBottomSheetDynamicSnapPoints(initialSnapPoints)
 
   const closeCurrentView = useCallback(() => {
     dispatch({
@@ -25,25 +20,20 @@ export const CreateNewArtworkListView = () => {
   }, [dispatch])
 
   return (
-    <AutomountedBottomSheetModal
+    <AutoHeightBottomSheet
       visible
       name={ArtworkListsViewName.CreateNewArtworkLists}
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
       onDismiss={closeCurrentView}
     >
-      <BottomSheetView onLayout={handleContentLayout}>
-        <ArtworkListsBottomSheetSectionTitle mt={1}>
-          Create a new list
-        </ArtworkListsBottomSheetSectionTitle>
+      <ArtworkListsBottomSheetSectionTitle mt={1}>
+        Create a new list
+      </ArtworkListsBottomSheetSectionTitle>
 
-        <Box m={2}>
-          <ArtworkInfo artwork={state.artwork!} />
-        </Box>
+      <Box m={2}>
+        <ArtworkInfo artwork={state.artwork!} />
+      </Box>
 
-        <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
-      </BottomSheetView>
-    </AutomountedBottomSheetModal>
+      <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
+    </AutoHeightBottomSheet>
   )
 }

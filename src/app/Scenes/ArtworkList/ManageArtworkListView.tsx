@@ -1,9 +1,8 @@
 import { Flex, Join, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
-import { AutomountedBottomSheetModal } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
+import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { noop } from "lodash"
-import { FC, useMemo } from "react"
+import { FC } from "react"
 
 interface ItemProps {
   label: string
@@ -25,28 +24,16 @@ interface ManageArtworkListViewProps {
 }
 
 export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({ onDismiss }) => {
-  const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
-  const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
-    useBottomSheetDynamicSnapPoints(initialSnapPoints)
-
   return (
-    <AutomountedBottomSheetModal
-      visible
-      snapPoints={animatedSnapPoints}
-      handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
-      onDismiss={onDismiss}
-    >
-      <BottomSheetView onLayout={handleContentLayout}>
-        <ArtworkListsBottomSheetSectionTitle>Manage list</ArtworkListsBottomSheetSectionTitle>
+    <AutoHeightBottomSheet visible onDismiss={onDismiss}>
+      <ArtworkListsBottomSheetSectionTitle mt={1}>Manage list</ArtworkListsBottomSheetSectionTitle>
 
-        <Join separator={<Separator my={1} />}>
-          <Item label="Edit List" onPress={noop} />
-          <Item label="Delete List" onPress={noop} />
-        </Join>
+      <Join separator={<Separator my={1} />}>
+        <Item label="Edit List" onPress={noop} />
+        <Item label="Delete List" onPress={noop} />
+      </Join>
 
-        <Spacer y={2} />
-      </BottomSheetView>
-    </AutomountedBottomSheetModal>
+      <Spacer y={2} />
+    </AutoHeightBottomSheet>
   )
 }

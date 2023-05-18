@@ -2,7 +2,7 @@ import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { FC, useEffect, useRef } from "react"
 
-interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
+export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
 }
 
