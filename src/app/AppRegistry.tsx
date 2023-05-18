@@ -343,7 +343,10 @@ export const modules = defineModules({
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
-  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
+  ArtQuizResults: reactModule(ArtQuizResults, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Article: reactModule(ArticleScreen),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
