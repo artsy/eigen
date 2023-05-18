@@ -38,14 +38,12 @@ describe("ArtQuizResults", () => {
       "We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love.",
     ],
   ])("should display expected header for %s tab", (selected, title, subtitle) => {
-    const { debug } = renderWithRelay()
+    renderWithRelay()
 
     const tab = screen.getByText(selected)
-
     fireEvent.press(tab)
+
     expect(screen.getByText(title)).toBeTruthy()
     expect(screen.getByText(subtitle)).toBeTruthy()
-
-    debug()
   })
 })
