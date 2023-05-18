@@ -4,15 +4,14 @@ import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabFlatList } from "app/Components/Tabs/TabFlatList"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Component } from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -60,16 +59,13 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map((show) => ({
-      key: show.id,
-      content: <ShowItemRow show={show} isListItem />,
-    }))
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows)
 
     if (!shows.length) {
       return (
-        <StickyTabPageScrollView
+        <TabScrollView
           refreshControl={
-            <StickTabPageRefreshControl
+            <RefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -79,12 +75,12 @@ export class Shows extends Component<Props, State> {
             title="You haven’t saved any shows yet"
             subtitle="When you save shows, they will show up here for future use."
           />
-        </StickyTabPageScrollView>
+        </TabScrollView>
       )
     }
 
     return (
-      <StickyTabPageFlatList
+      <TabFlatList
         data={shows}
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
@@ -92,7 +88,7 @@ export class Shows extends Component<Props, State> {
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={0.5} />}
         refreshControl={
-          <StickTabPageRefreshControl
+          <RefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />
@@ -102,6 +98,9 @@ export class Shows extends Component<Props, State> {
             <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
           ) : null
         }
+        renderItem={({ item }) => {
+          return <ShowItemRow show={item} isListItem />
+        }}
       />
     )
   }

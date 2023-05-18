@@ -418,7 +418,10 @@ export const modules = defineModules({
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  Favorites: reactModule(Favorites),
+  Favorites: reactModule(Favorites, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
