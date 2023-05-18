@@ -1,6 +1,7 @@
-import { Flex, Join, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
+import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { noop } from "lodash"
 import { FC } from "react"
 
@@ -24,6 +25,8 @@ interface ManageArtworkListViewProps {
 }
 
 export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({ onDismiss }) => {
+  const bottomOffset = useArtworkListsBottomOffset(2)
+
   return (
     <AutoHeightBottomSheet visible onDismiss={onDismiss}>
       <ArtworkListsBottomSheetSectionTitle mt={1}>Manage list</ArtworkListsBottomSheetSectionTitle>
@@ -33,7 +36,7 @@ export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({ onDismis
         <Item label="Delete List" onPress={noop} />
       </Join>
 
-      <Spacer y={2} />
+      <Box height={`${bottomOffset}px`} />
     </AutoHeightBottomSheet>
   )
 }
