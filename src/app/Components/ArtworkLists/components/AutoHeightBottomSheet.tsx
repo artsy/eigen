@@ -5,9 +5,9 @@ import {
 } from "app/Components/ArtworkLists/components/AutomountedBottomSheetModal"
 import { FC, useMemo } from "react"
 
-type AutoHeightBottomSheet = Omit<AutomountedBottomSheetModalProps, "snapPoints">
+export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints">
 
-export const AutoHeightBottomSheet: FC<AutoHeightBottomSheet> = ({ children, ...rest }) => {
+export const AutoHeightBottomSheet: FC<AutoHeightBottomSheetProps> = ({ children, ...rest }) => {
   const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT"], [])
   const { animatedHandleHeight, animatedSnapPoints, animatedContentHeight, handleContentLayout } =
     useBottomSheetDynamicSnapPoints(initialSnapPoints)
