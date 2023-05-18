@@ -140,6 +140,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     <ContextMenu
       actions={contextActions}
       onPress={handleContextPress}
+      previewPadding={20}
       disabled={!shouldDisplayContextMenu}
     >
       {children}
