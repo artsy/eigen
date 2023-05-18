@@ -2,13 +2,11 @@ import { Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
 import { ArtworkListHeader, ArtworkListHeaderProps } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
-import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { navigate } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps extends ArtworkListHeaderProps {
-  artworkListEntity: HeaderMenuArtworkListEntity
   me: ArtworkListEmptyState_me$key
   title: string
   refreshControl: JSX.Element
