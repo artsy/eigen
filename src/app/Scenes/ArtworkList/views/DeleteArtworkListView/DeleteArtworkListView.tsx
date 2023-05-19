@@ -6,6 +6,7 @@ import {
   AutoHeightBottomSheetProps,
 } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
+import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { useDeleteArtworkList } from "app/Scenes/ArtworkList/views/DeleteArtworkListView/useDeleteArtworkList"
 import { goBack } from "app/system/navigation/navigate"
@@ -23,6 +24,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
   ...rest
 }) => {
   const bottomOffset = useArtworkListsBottomOffset(2)
+  const toast = useArtworkListToast()
   const { dismiss } = useBottomSheetModal()
   const [commit, isArtworkListDeleting] = useDeleteArtworkList()
 
@@ -38,6 +40,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
         },
       },
       onCompleted: () => {
+        toast.changesSaved()
         goBack()
       },
       onError: (error) => {
