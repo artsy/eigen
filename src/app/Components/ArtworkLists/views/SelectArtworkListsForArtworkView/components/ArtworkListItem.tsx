@@ -18,7 +18,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
   const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
-  const imageURL = nodes[0]?.image?.url ?? null
+  const imageURL = nodes[0]?.image?.resized?.url ?? null
 
   const handleArtworkListPress = () => {
     const mode = artworkList.isSavedArtwork
@@ -93,11 +93,13 @@ const ArtworkListItemFragment = graphql`
     internalID
     isSavedArtwork(artworkID: $artworkID)
     artworksCount(onlyVisible: true)
-    artworksConnection(first: 1, sort: SAVED_AT_DESC) {
+    artworksConnection(first: 4) {
       edges {
         node {
           image {
-            url(version: "square")
+            resized(height: 300, width: 300, version: "normalized") {
+              url
+            }
           }
         }
       }

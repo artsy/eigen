@@ -26,7 +26,7 @@ describe("ArtworkListEmptyState", () => {
     )
 
     if (data.me) {
-      return <ArtworkListEmptyState me={data.me} title="Title" />
+      return <ArtworkListEmptyState me={data.me} title="Title" refreshControl={<></>} />
     }
 
     return null

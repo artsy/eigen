@@ -167,7 +167,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         {!!state.artwork && (
           <>
             <SelectArtworkListsForArtworkView />
-            {state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+            {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
           </>
         )}
       </BottomSheetModalProvider>

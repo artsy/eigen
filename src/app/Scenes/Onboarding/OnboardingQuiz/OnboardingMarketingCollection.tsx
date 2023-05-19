@@ -1,4 +1,4 @@
-import { Flex, Button, LegacyScreen } from "@artsy/palette-mobile"
+import { Flex, Button, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -46,6 +46,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           description={description}
           marketingCollection={marketingCollection!}
         />
+        <Spacer y={2} />
         <InfiniteScrollArtworksGrid
           // we are deliberately limiting the number of artworks shown in these grids
           loadMore={() => null}

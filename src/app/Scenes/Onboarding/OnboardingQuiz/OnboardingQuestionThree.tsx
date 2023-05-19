@@ -133,5 +133,5 @@ export const OnboardingQuestionThree = () => {
 }
 
 const ACTION = "SET_ANSWER_THREE"
-const QUESTION = "Almost done! What would you like to see first?"
+const QUESTION = "Almost done! Now select some artworks and artists to tailor Artsy to your tastes."
 const SUBTITLE = "Choose one to start exploring."

@@ -3,6 +3,7 @@ import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkL
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { SortOption, SortByModal } from "app/Components/SortByModal/SortByModal"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
@@ -76,11 +77,17 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const artworksCount = artworkList.artworks?.totalCount ?? 0
 
   if (artworksCount === 0) {
-    return <ArtworkListEmptyState me={queryData.me!} title={artworkList.name} />
+    return (
+      <ArtworkListEmptyState
+        me={queryData.me!}
+        title={artworkList.name}
+        refreshControl={RefreshControl}
+      />
+    )
   }
 
   return (
-    <>
+    <ArtworkListsProvider artworkListId={listID}>
       <ArtworkListHeader />
       <InfiniteScrollArtworksGridContainer
         connection={data?.artworkList?.artworks}
@@ -105,7 +112,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         onSelectOption={handleSelectOption}
         onModalFinishedClosing={handleSortByModalClosed}
       />
-    </>
+    </ArtworkListsProvider>
   )
 }
 

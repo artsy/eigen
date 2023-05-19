@@ -15,7 +15,7 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
   const id = MyCollectionTabsStore.useStoreState((state) => state.id)
   const uploadsCount = MyCollectionTabsStore.useStoreState((state) => state.artworksCount)
 
-  const snapPoints = useMemo(() => [view === "Artist" ? "55%" : "50%"], [])
+  const snapPoints = useMemo(() => [370], [])
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
