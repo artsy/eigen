@@ -142,7 +142,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         </FancyModalHeader>
 
         <AbandonFlowModal
-          isVisible={showAbandonModal && modalType === "edit"}
+          isVisible={!!showAbandonModal && modalType === "edit"}
           title="Leave without saving?"
           subtitle="Changes you have made so far will not be saved."
           leaveButtonTitle="Leave Without Saving"

@@ -23,13 +23,17 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
     return (
       <Touchable
         onPress={() => {
-          setViewKind({ viewKind: "Artist", id: artistData.id })
+          setViewKind({
+            viewKind: "Artist",
+            id: artistData.internalID,
+            artworksCount: artworksCount,
+          })
         }}
       >
         <MoreIcon height={18} width={18} />
       </Touchable>
     )
-  }, [artistData.id])
+  }, [artistData.internalID])
 
   return (
     <ArtistListItemContainer
@@ -43,7 +47,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
 
 const artistFragment = graphql`
   fragment MyCollectionCollectedArtistItem_artist on Artist {
-    id
+    internalID
     ...ArtistListItem_artist
   }
 `

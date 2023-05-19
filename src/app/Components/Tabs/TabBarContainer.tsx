@@ -1,8 +1,8 @@
 import { Box, useColor } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
 import React, { useEffect, useRef } from "react"
 import { Animated, LayoutRectangle, ScrollView, View } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 
 export interface TabBarContainerProps {
   activeTabIndex: number
