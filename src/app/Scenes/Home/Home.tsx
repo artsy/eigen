@@ -501,6 +501,7 @@ export const HomeFragmentContainer = memo(
             first: 12
             state: PAST
           ) {
+            ...AuctionResultsRail_auctionResults
             ...AuctionResultsRail_auctionResults @relay(mask: false)
           }
 
@@ -509,6 +510,7 @@ export const HomeFragmentContainer = memo(
             state: UPCOMING
             sort: DATE_ASC
           ) {
+            ...AuctionResultsRail_auctionResults
             ...AuctionResultsRail_auctionResults @relay(mask: false)
           }
         }
