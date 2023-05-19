@@ -29,7 +29,7 @@ interface CreateOrEditArtworkListFormProps {
 
 export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> = ({
   mode,
-  initialValues,
+  initialValues: _initialValues,
   onSubmit,
   onBackPress,
 }) => {
@@ -46,14 +46,22 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
     )
   }
 
+  const initialValues: CreateOrEditArtworkListFormValues = {
+    ...INITIAL_FORM_VALUES,
+    ..._initialValues,
+  }
+
   return (
     <Formik
-      initialValues={{ ...INITIAL_FORM_VALUES, ...initialValues }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       {(formik) => {
-        const isSaveButtonDisabled = !formik.isValid || formik.values.name.length === 0
+        const isSaveButtonDisabled =
+          !formik.isValid ||
+          formik.values.name.length === 0 ||
+          (mode === "edit" && formik.values.name === initialValues.name)
 
         return (
           <>
