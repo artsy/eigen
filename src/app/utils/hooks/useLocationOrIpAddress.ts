@@ -1,5 +1,5 @@
 import Geolocation from "@react-native-community/geolocation"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { NetworkInfo } from "react-native-network-info"
 
 export interface Location {
