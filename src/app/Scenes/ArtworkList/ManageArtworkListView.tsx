@@ -3,8 +3,8 @@ import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists
 import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
-import { DeleteArtworkListView } from "app/Scenes/ArtworkList/views/DeleteArtworkListView/DeleteArtworkListView"
 import { FC, useCallback, useState } from "react"
+import { DeleteArtworkListView } from "./views/DeleteArtworkListView/DeleteArtworkListView"
 
 interface ItemProps {
   label: string

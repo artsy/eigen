@@ -15,7 +15,6 @@ export const useDeleteArtworkList = (): Response => {
     useMutation<useDeleteArtworkListMutation>(DeleteArtworkListMutation)
 
   const commit = (config: CommitConfig) => {
-    // TODO: Add updater
     return initialCommit({
       ...config,
       updater: deleteArtworkListUpdater,

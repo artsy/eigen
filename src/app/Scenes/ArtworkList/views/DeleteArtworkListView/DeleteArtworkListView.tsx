@@ -1,5 +1,6 @@
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { captureMessage } from "@sentry/react-native"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import {
   AutoHeightBottomSheet,
@@ -8,9 +9,9 @@ import {
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
-import { useDeleteArtworkList } from "app/Scenes/ArtworkList/views/DeleteArtworkListView/useDeleteArtworkList"
 import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
+import { useDeleteArtworkList } from "./useDeleteArtworkList"
 
 const NAME = "deleteArtworkListView"
 
@@ -44,8 +45,11 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
         goBack()
       },
       onError: (error) => {
-        // TODO: Handle error (e.g capture for Sentry)
-        console.error(error)
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error.stack!)
+        }
       },
     })
   }
