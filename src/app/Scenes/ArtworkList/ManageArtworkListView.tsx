@@ -1,25 +1,11 @@
-import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Box } from "@artsy/palette-mobile"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { FC, useCallback, useState } from "react"
+import { ManageArtworkListMenuItem } from "./ManageArtworkListMenuItem"
 import { DeleteArtworkListView } from "./views/DeleteArtworkListView/DeleteArtworkListView"
-
-interface ItemProps {
-  label: string
-  onPress: () => void
-}
-
-const Item: FC<ItemProps> = ({ label, onPress }) => {
-  return (
-    <Touchable onPress={onPress}>
-      <Flex p={2}>
-        <Text variant="sm-display">{label}</Text>
-      </Flex>
-    </Touchable>
-  )
-}
 
 interface ManageArtworkListViewProps {
   artworkListEntity: HeaderMenuArtworkListEntity
@@ -48,7 +34,7 @@ export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({
           Manage list
         </ArtworkListsBottomSheetSectionTitle>
 
-        <Item label="Delete List" onPress={openDeleteView} />
+        <ManageArtworkListMenuItem label="Delete List" onPress={openDeleteView} />
 
         <Box height={`${bottomOffset}px`} />
       </AutoHeightBottomSheet>
