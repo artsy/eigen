@@ -14,8 +14,8 @@ Geolocation.setRNConfiguration({ skipPermissionRequests: true })
  * Usage:
  *   const { isLoading, location, ip } = useLocationOrIpAddress()
  */
-export const useLocationOrIpAddress = () => {
-  const [isLoading, setIsLoading] = useState(true)
+export const useLocationOrIpAddress = (disabled = false) => {
+  const [isLoading, setIsLoading] = useState(!disabled)
   const [location, setLocation] = useState<Location | null>(null)
   const [ipAddress, setIpAddress] = useState<string | null>(null)
 
@@ -49,8 +49,12 @@ export const useLocationOrIpAddress = () => {
   }
 
   useEffect(() => {
+    if (disabled) {
+      return
+    }
+
     getLocation()
-  }, [])
+  }, [disabled])
 
   return { isLoading, location, ipAddress }
 }

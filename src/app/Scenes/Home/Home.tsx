@@ -335,7 +335,9 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "shows":
-          return <ShowsRailContainer title={item.title} withLocation={!enableShowsForYouLocation} />
+          return (
+            <ShowsRailContainer title={item.title} disableLocation={!enableShowsForYouLocation} />
+          )
         case "auction-results":
           return (
             <AuctionResultsRail
