@@ -77,18 +77,17 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const artworksCount = artworkList.artworks?.totalCount ?? 0
 
   if (artworksCount === 0) {
-    return (
-      <ArtworkListEmptyState
-        me={queryData.me!}
-        title={artworkList.name}
-        refreshControl={RefreshControl}
-      />
-    )
+    return <ArtworkListEmptyState me={queryData.me!} refreshControl={RefreshControl} />
   }
 
   return (
     <ArtworkListsProvider artworkListId={listID}>
-      <ArtworkListHeader />
+      <ArtworkListHeader
+        artworkListEntity={{
+          title: artworkList.name,
+          internalID: artworkList.internalID,
+        }}
+      />
       <InfiniteScrollArtworksGridContainer
         connection={data?.artworkList?.artworks}
         loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
