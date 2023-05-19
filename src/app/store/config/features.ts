@@ -278,7 +278,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableShowsForYouLocation",
   },

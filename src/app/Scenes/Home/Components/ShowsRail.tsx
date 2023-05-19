@@ -109,16 +109,14 @@ export const tracks = {
 
 interface ShowsRailContainerProps {
   title: string
-  withLocation?: boolean
+  disableLocation?: boolean
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
-  withLocation = true,
+  disableLocation = false,
   ...restProps
 }) => {
-  const { location, ipAddress, isLoading } = useLocationOrIpAddress()
-
-  const locationProps = withLocation ? { location, ipAddress } : {}
+  const { location, ipAddress, isLoading } = useLocationOrIpAddress(disableLocation)
 
   if (isLoading) {
     return <ShowsRailPlaceholder />
@@ -126,7 +124,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 
   return (
     <Suspense fallback={<ShowsRailPlaceholder />}>
-      <ShowsRail {...restProps} {...locationProps} />
+      <ShowsRail {...restProps} location={location} ipAddress={ipAddress} />
     </Suspense>
   )
 }

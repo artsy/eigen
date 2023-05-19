@@ -20,26 +20,56 @@ jest.mock("react-native-network-info", () => ({
 }))
 
 describe("ShowsRailContainer", () => {
-  const environment = createMockEnvironment()
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-  it("renders the title and the shows", async () => {
-    const { getByText } = renderWithHookWrappersTL(
-      <ShowsRailContainer title="Shows for You" />,
-      environment
-    )
+  describe("with location enabled", () => {
+    const environment = createMockEnvironment()
 
-    environment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, { Me: () => meResponse })
-    )
+    it("renders the title and the shows", async () => {
+      const { getByText } = renderWithHookWrappersTL(
+        <ShowsRailContainer title="Shows for You" />,
+        environment
+      )
 
-    expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
-    expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
+      environment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, { Me: () => meResponse })
+      )
 
-    await flushPromiseQueue()
+      expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
+      expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
 
-    expect(getByText("Shows for You")).toBeDefined()
+      await flushPromiseQueue()
 
-    expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
+      expect(getByText("Shows for You")).toBeDefined()
+
+      expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
+    })
+  })
+
+  describe("with location disabled", () => {
+    const environment = createMockEnvironment()
+
+    it("renders the title and the shows", async () => {
+      const { getByText } = renderWithHookWrappersTL(
+        <ShowsRailContainer title="Shows for You" disableLocation />,
+        environment
+      )
+
+      environment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, { Me: () => meResponse })
+      )
+
+      expect(Geolocation.getCurrentPosition).not.toHaveBeenCalled()
+      expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
+
+      await flushPromiseQueue()
+
+      expect(getByText("Shows for You")).toBeDefined()
+
+      expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
+    })
   })
 })
 
