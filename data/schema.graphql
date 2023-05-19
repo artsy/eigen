@@ -14362,6 +14362,7 @@ type Query {
     email: String
     first: Int
     last: Int
+    name: String
     page: Int
     size: Int
     userId: String
@@ -18621,6 +18622,7 @@ type Viewer {
     email: String
     first: Int
     last: Int
+    name: String
     page: Int
     size: Int
     userId: String
