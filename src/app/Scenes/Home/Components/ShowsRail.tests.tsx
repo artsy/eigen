@@ -48,7 +48,7 @@ describe("ShowsRailContainer", () => {
     })
   })
 
-  describe("with location enabled", () => {
+  describe("with location disabled", () => {
     const environment = createMockEnvironment()
 
     it("renders the title and the shows", async () => {
