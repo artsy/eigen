@@ -1,3 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
+Fixes a crash affecting many Android users
+
 Have feedback? Email us at support@artsy.net
