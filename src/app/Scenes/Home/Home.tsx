@@ -502,7 +502,11 @@ export const HomeFragmentContainer = memo(
             state: PAST
           ) {
             ...AuctionResultsRail_auctionResults
-            ...AuctionResultsRail_auctionResults @relay(mask: false)
+            edges {
+              node {
+                internalID
+              }
+            }
           }
 
           auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
@@ -511,7 +515,11 @@ export const HomeFragmentContainer = memo(
             sort: DATE_ASC
           ) {
             ...AuctionResultsRail_auctionResults
-            ...AuctionResultsRail_auctionResults @relay(mask: false)
+            edges {
+              node {
+                internalID
+              }
+            }
           }
         }
       `,
