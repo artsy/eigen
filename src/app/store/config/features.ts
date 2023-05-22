@@ -228,8 +228,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableInstantViewInRoom: {
     description: "Enable Instant View In Room",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableInstantViewInRoom",
   },
   AREnableSkeletonAnimation: {
     description: "Enable Skeleton Animation",
