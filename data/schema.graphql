@@ -11054,6 +11054,7 @@ type Me implements Node {
     before: String
     default: Boolean
     first: Int
+    includesArtworkID: String
     last: Int
     page: Int
     saves: Boolean
