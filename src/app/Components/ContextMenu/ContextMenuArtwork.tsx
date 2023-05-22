@@ -1,10 +1,10 @@
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { Schema } from "app/utils/track"
 import React from "react"
 import { InteractionManager, Platform } from "react-native"
@@ -34,19 +34,17 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const enableContextMenu = useFeatureFlag("AREnableArtworkContextMenu")
   const isIOS = Platform.OS === "ios"
 
-  const { title, isSaved, href, artists, slug, internalID, id, isHangable, image } = artwork
+  const { title, href, artists, slug, internalID, id, isHangable, image } = artwork
 
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
 
-  const handleArtworkSave = useSaveArtwork({
-    id,
-    internalID,
-    isSaved,
-    onCompleted: () => {
-      // TODO: do we need tracking here?
-    },
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
+    onCompleted:
+      // TODO: Do we need to track anything here?
+      () => null,
   })
 
   const openViewInRoom = () => {
@@ -75,7 +73,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         title: isSaved ? "Remove from saved" : "Save",
         systemIcon: isSaved ? "heart.fill" : "heart",
         onPress: () => {
-          handleArtworkSave()
+          saveArtworkToLists()
         },
       },
       {

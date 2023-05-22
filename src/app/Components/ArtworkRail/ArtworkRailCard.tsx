@@ -427,6 +427,7 @@ const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     ...CreateArtworkAlertModal_artwork
     id
+    internalID
     availability
     slug
     isAcquireable
