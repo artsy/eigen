@@ -1,9 +1,8 @@
-import { Separator } from "@artsy/palette-mobile"
+import { Separator, useSpace } from "@artsy/palette-mobile"
 import { About_gene$data } from "__generated__/About_gene.graphql"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import Biography from "./Biography"
 
 interface Props {
@@ -11,6 +10,7 @@ interface Props {
 }
 
 const About: React.FC<Props> = ({ gene }) => {
+  const space = useSpace()
   const relatedArtists = () => {
     return (gene.trending_artists || []).length ? (
       <RelatedArtists artists={gene.trending_artists as any} />
@@ -18,11 +18,11 @@ const About: React.FC<Props> = ({ gene }) => {
   }
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
+    <TabScrollView contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}>
       <Biography gene={gene as any} />
       <Separator mb={2} />
       {relatedArtists()}
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 

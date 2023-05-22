@@ -9,10 +9,9 @@ import {
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { Schema } from "app/utils/track"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -31,24 +30,11 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   const initialArtworksTotal = useRef(artworksTotal)
   const selectedFiltersCount = useSelectedFiltersCount()
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
   useArtworkFilters({
     relay,
     aggregations: gene.artworks?.aggregations,
     componentPath: "Gene/GeneArtworks",
   })
-
-  useEffect(() => {
-    setJSX(
-      <Box backgroundColor="white">
-        <ArtworksFilterHeader
-          selectedFiltersCount={selectedFiltersCount}
-          onFilterPress={openFilterModal}
-        />
-      </Box>
-    )
-  }, [artworksTotal, openFilterModal])
 
   const trackClear = () => {
     tracking.trackEvent(tracks.clearFilters(gene.id, gene.slug))
@@ -73,16 +59,25 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   }
 
   return (
-    <Box mt={1}>
-      <Text variant="sm-display" color="black60" mb={2}>
-        Showing {artworksTotal} works
-      </Text>
-      <InfiniteScrollArtworksGrid
-        connection={gene.artworks!}
-        hasMore={relay.hasMore}
-        loadMore={relay.loadMore}
-      />
-    </Box>
+    <>
+      {/* TODO: move this to renderBelowTabBar */}
+      <Box mx={-2}>
+        <ArtworksFilterHeader
+          selectedFiltersCount={selectedFiltersCount}
+          onFilterPress={openFilterModal}
+        />
+      </Box>
+      <Box mt={1}>
+        <Text variant="sm-display" color="black60" mb={2}>
+          Showing {artworksTotal} works
+        </Text>
+        <InfiniteScrollArtworksGrid
+          connection={gene.artworks!}
+          hasMore={relay.hasMore}
+          loadMore={relay.loadMore}
+        />
+      </Box>
+    </>
   )
 }
 
@@ -106,7 +101,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView disableScrollViewPanResponder>
+      <TabScrollView disableScrollViewPanResponder>
         <GeneArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
@@ -117,7 +112,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Gene}
         />
-      </StickyTabPageScrollView>
+      </TabScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }
