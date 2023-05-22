@@ -276,6 +276,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableArtworkContextMenu: {
+    description: "Enable Context Menu on artwork cards",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkContextMenu",
+  },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
     readyForRelease: false,

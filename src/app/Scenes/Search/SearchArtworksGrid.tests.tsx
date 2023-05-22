@@ -49,7 +49,7 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal closing", () => {
     renderWithRelay()
 
-    screen.UNSAFE_getByType(FancyModal).props.onBackgroundPressed()
+    screen.UNSAFE_getAllByType(FancyModal)[0].props.onBackgroundPressed()
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [

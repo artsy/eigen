@@ -84,6 +84,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
+          testID={`artwork-${item.slug}`}
           {...trackingProps}
           artwork={item}
           showPartnerName={showPartnerName}
