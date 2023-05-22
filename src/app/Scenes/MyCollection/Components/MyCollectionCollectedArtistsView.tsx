@@ -78,9 +78,9 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
         return (
           <MyCollectionCollectedArtistItem
             artworksCount={item.artworksCount}
-            // Castiing this type as ts was not able to infer it
+            // casting this type because typescript was not able to infer it correctly
             artist={item.artist!}
-            // Castiing this type as ts was not able to infer it
+            // casting this type because typescript was not able to infer it correctly
             key={item.artist!.internalID}
             compact
           />
@@ -89,11 +89,11 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       onEndReached={handleLoadMore}
       ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
       ListHeaderComponent={() => (
-        <Flex alignItems="flex-end">
+        <Flex alignItems="flex-end" px={2}>
           <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
         </Flex>
       )}
-      style={{ paddingTop: space(2) }}
+      style={{ paddingVertical: space(2) }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       refreshControl={
         !__TEST__ ? (
