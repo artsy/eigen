@@ -42,6 +42,7 @@ export const NewWorksFromGalleriesYouFollow: React.FC = () => {
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
             contextScreenOwnerType={OwnerType.newWorksFromGalleriesYouFollow}
+            contextScreen={OwnerType.newWorksFromGalleriesYouFollow}
             HeaderComponent={<Spacer y={2} />}
             shouldAddPadding
             refreshControl={RefreshControl}

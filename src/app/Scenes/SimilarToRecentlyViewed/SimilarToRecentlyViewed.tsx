@@ -42,6 +42,7 @@ export const SimilarToRecentlyViewed: React.FC = () => {
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
             contextScreenOwnerType={OwnerType.similarToRecentlyViewed}
+            contextScreen={OwnerType.similarToRecentlyViewed}
             HeaderComponent={<Spacer y={2} />}
             shouldAddPadding
             refreshControl={RefreshControl}

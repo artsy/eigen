@@ -22,11 +22,7 @@ const ResultsScreen = () => {
     return <ArtQuizResultsTabs me={queryResult.me} />
   }
 
-  return (
-    <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizResultsEmptyTabs />
-    </Suspense>
-  )
+  return <ArtQuizResultsEmptyTabs />
 }
 
 export const ArtQuizResults = ({ isCalculatingResult }: { isCalculatingResult?: boolean }) => {

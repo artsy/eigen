@@ -92,15 +92,15 @@ input addOrderedSetItemMutationInput {
 }
 
 type addOrderedSetItemMutationPayload {
+  # On success: the updated parent set or the set item added.
+  addOrderedSetItemResponseOrError: addOrderedSetItemResponseOrError
   clientMutationId: String
-
-  # On success: the ordered set item added.
-  orderedSetItemOrError: addOrderedSetItemResponseOrError
 }
 
 union addOrderedSetItemResponseOrError = addOrderedSetItemFailure | addOrderedSetItemSuccess
 
 type addOrderedSetItemSuccess {
+  set: OrderedSet
   setItem: OrderedSetItem
 }
 
@@ -1658,6 +1658,9 @@ type ArtistCounts {
 
 # An edge in a connection.
 type ArtistEdge {
+  # When a relevant `artworksCount` field exists to augment a connection
+  artworksCount: Int
+
   # A cursor for use in pagination
   cursor: String!
 
@@ -7919,8 +7922,8 @@ input deleteOrderedSetItemMutationInput {
 type deleteOrderedSetItemMutationPayload {
   clientMutationId: String
 
-  # On success: the ordered set item deleted.
-  orderedSetItemOrError: deleteOrderedSetItemResponseOrError
+  # On success: the updated parent set or the set item deleted.
+  deleteOrderedSetItemResponseOrError: deleteOrderedSetItemResponseOrError
 }
 
 union deleteOrderedSetItemResponseOrError =
@@ -7928,6 +7931,7 @@ union deleteOrderedSetItemResponseOrError =
   | deleteOrderedSetItemSuccess
 
 type deleteOrderedSetItemSuccess {
+  set: OrderedSet
   setItem: OrderedSetItem
 }
 
@@ -11073,6 +11077,7 @@ type Me implements Node {
     before: String
     dismissed: Boolean
     first: Int
+    fromId: String
     hasMessage: Boolean
     hasReply: Boolean
     last: Int
@@ -11160,6 +11165,7 @@ type Me implements Node {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -11385,6 +11391,22 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus
+  ): ShowConnection
+
+  # A list of shows for the user (pagination logic might be broken)
+  showsConnection(
+    after: String
+    before: String
+    first: Int
+
+    # An IP address, will be used to lookup location
+    ip: String
+    last: Int
+    near: Near
     sort: ShowSorts
 
     # Filter shows by chronological event status
@@ -14170,6 +14192,7 @@ type Query {
     before: String
     dismissed: Boolean
     first: Int
+    fromId: String
     hasMessage: Boolean
     hasReply: Boolean
     last: Int
@@ -14341,6 +14364,7 @@ type Query {
     email: String
     first: Int
     last: Int
+    name: String
     page: Int
     size: Int
     userId: String
@@ -14656,6 +14680,7 @@ type Query {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 
@@ -18429,6 +18454,7 @@ type Viewer {
     before: String
     dismissed: Boolean
     first: Int
+    fromId: String
     hasMessage: Boolean
     hasReply: Boolean
     last: Int
@@ -18599,6 +18625,7 @@ type Viewer {
     email: String
     first: Int
     last: Int
+    name: String
     page: Int
     size: Int
     userId: String
@@ -18855,6 +18882,7 @@ type Viewer {
     before: String
     biddableSale: Boolean
     estimateRange: String
+    excludeClosedLots: Boolean
     first: Int
     geneIDs: [String]
 

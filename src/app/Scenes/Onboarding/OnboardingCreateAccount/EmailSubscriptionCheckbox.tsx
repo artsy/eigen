@@ -1,6 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { Touchable } from "@artsy/palette-mobile"
-import { Checkbox } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, Checkbox } from "@artsy/palette-mobile"
 
 interface EmailSubscriptionCheckboxProps {
   checked: boolean

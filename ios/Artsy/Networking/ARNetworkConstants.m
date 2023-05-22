@@ -5,8 +5,6 @@ NSString *const ARBaseDeprecatedMobileWebURL = @"https://m.artsy.net";
 NSString *const ARStagingBaseDeprecatedMobileWebURL = @"https://m-staging.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
 
-NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
-
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
 

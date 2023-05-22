@@ -1,4 +1,4 @@
-import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { tappedMainArtworkGrid } from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -14,6 +14,7 @@ import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artw
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -24,36 +25,32 @@ import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableR
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import {
+  ArtworkActionTrackingProps,
+  tracks as artworkActionTracks,
+} from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
-
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps extends Partial<PageableRouteProps> {
+export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   trackingFlow?: string
-  contextModule?: string
   /** Pass Tap to override generic ing, used for home tracking in rails */
   trackTap?: (artworkSlug: string, index?: number) => void
   itemIndex?: number
-  // By default, we don't track clicks from the grid unless you pass in a contextScreenOwnerType.
-  contextScreenOwnerType?: ScreenOwnerType
-  contextScreenOwnerId?: string
-  contextScreenOwnerSlug?: string
-  contextScreenQuery?: string
-  contextScreen?: string
+
   /** Hide urgency tags (3 Days left, 1 hour left) */
   hideUrgencyTags?: boolean
   /** Hide partner name */
@@ -82,6 +79,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   itemIndex,
   height,
+  contextModule,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -143,12 +141,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const { id, internalID, isSaved } = artwork
+  const onArtworkSavedOrUnSaved = (saved: boolean) => {
+    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+    const params = {
+      acquireable: isAcquireable,
+      availability,
+      biddable: isBiddable,
+      context_module: contextModule,
+      context_screen: contextScreen,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      context_screen_owner_type: contextScreenOwnerType,
+      inquireable: isInquireable,
+      offerable: isOfferable,
+    }
+    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+  }
 
-  const handleArtworkSave = useSaveArtwork({
-    id,
-    internalID,
-    isSaved,
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
+    onCompleted: onArtworkSavedOrUnSaved,
   })
 
   const handleTap = () => {
@@ -199,7 +211,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
       >
-        <TouchableHighlight
+        <Touchable
+          haptic
           underlayColor={color("white100")}
           activeOpacity={0.8}
           onPress={handleTap}
@@ -328,8 +341,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Flex>
               {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
                 <Flex>
-                  <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
-                    {artwork.isSaved ? (
+                  <Touchable haptic onPress={saveArtworkToLists} testID="save-artwork-icon">
+                    {isSaved ? (
                       <HeartFillIcon
                         testID="filled-heart-icon"
                         height={SAVE_ICON_SIZE}
@@ -348,7 +361,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               )}
             </Flex>
           </View>
-        </TouchableHighlight>
+        </Touchable>
       </ContextMenuArtwork>
 
       <CreateArtworkAlertModal
@@ -426,6 +439,7 @@ export default createFragmentContainer(Artwork, {
     fragment ArtworkGridItem_artwork on Artwork
     @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
       ...CreateArtworkAlertModal_artwork
+      availability
       title
       date
       saleMessage
@@ -438,7 +452,10 @@ export default createFragmentContainer(Artwork, {
       isHangable
       id
       internalID
-      isSaved
+      isAcquireable
+      isBiddable
+      isInquireable
+      isOfferable
       artistNames
       href
       sale {
@@ -472,6 +489,7 @@ export default createFragmentContainer(Artwork, {
         aspectRatio
       }
       realizedPrice
+      ...useSaveArtworkToArtworkLists_artwork
     }
   `,
 })

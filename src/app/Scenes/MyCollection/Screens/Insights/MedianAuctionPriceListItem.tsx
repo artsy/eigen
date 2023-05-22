@@ -1,6 +1,7 @@
 import { NoArtworkIcon, Flex, useColor, Text, Touchable, ToolTip } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { isNil } from "lodash"
 
 export type MedianSalePriceArtwork = NonNullable<
   NonNullable<NonNullable<MedianAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
@@ -23,6 +24,8 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
   const restItems = artworks.slice(1)
 
   const artist = firstItem?.artist
+
+  const firstMedianSalePriceDisplayText = firstItem?.marketPriceInsights?.medianSalePriceDisplayText
 
   return (
     <Flex pt={0.5} pb={2}>
@@ -63,17 +66,23 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
             <Text variant="xs">{firstItem?.mediumType?.name}</Text>
           </Flex>
           <Flex alignItems="flex-end">
-            <ToolTip
-              enabled={enableToolTip}
-              initialToolTipText="Tap to interact with graph"
-              position="TOP"
-              tapToDismiss
-              // default yOffset is 5. Adjust however you see fit
-            >
+            {!isNil(firstMedianSalePriceDisplayText) && enableToolTip ? (
+              <ToolTip
+                enabled
+                initialToolTipText="Tap to interact with graph"
+                position="TOP"
+                tapToDismiss
+                // default yOffset is 5. Adjust however you see fit
+              >
+                <Text variant="xs" weight="medium">
+                  {firstMedianSalePriceDisplayText}
+                </Text>
+              </ToolTip>
+            ) : (
               <Text variant="xs" weight="medium">
-                {firstItem?.marketPriceInsights?.medianSalePriceDisplayText}
+                {firstMedianSalePriceDisplayText}
               </Text>
-            </ToolTip>
+            )}
           </Flex>
         </Flex>
       </Touchable>

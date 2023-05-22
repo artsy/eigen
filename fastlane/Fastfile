@@ -423,25 +423,15 @@ lane :upload_sentry_artifacts do |options|
   end
 
   begin
-    sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
-                        sentry_cli_path: sentry_cli_path,
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         version: sentry_release_name,
-                         dist: dist_version,
-                         file: bundle_path,
-                         file_url: outfile)
-    puts "Uploaded source js for #{project_slug}"
-
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
                           sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,
                             dist: dist_version,
-                            sourcemap: source_map_path,
+                            sourcemap: [bundle_path, source_map_path],
                             rewrite: true)
-    puts "Uploaded js.map for #{project_slug}"
+    puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
       message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
       puts message

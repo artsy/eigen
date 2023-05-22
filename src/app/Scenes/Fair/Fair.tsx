@@ -7,18 +7,18 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { HeaderButton } from "app/Components/HeaderButton"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
+import { NavigationalTabs, TabsType } from "app/Components/Tabs"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { NavigationalTabs, TabsType } from "app/Components/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
@@ -172,7 +172,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
-    runOnJS(setShouldHideButtons)(hideButtons)
+    return runOnJS(setShouldHideButtons)(hideButtons)
   })
 
   return (
@@ -274,7 +274,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
       <SearchImageHeaderButton
-        isImageSearchButtonVisible={shouldShowImageSearchButton && !shouldHideButtons}
+        isImageSearchButtonVisible={!!shouldShowImageSearchButton && !shouldHideButtons}
         owner={{
           type: OwnerType.fair,
           id: fair.internalID,

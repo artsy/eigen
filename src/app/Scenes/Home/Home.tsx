@@ -3,10 +3,11 @@ import {
   ArtsyLogoBlackIcon,
   Box,
   Flex,
+  Join,
   Spacer,
   SpacingUnitDSValueNumber,
-  Join,
 } from "@artsy/palette-mobile"
+import { useFocusEffect } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -17,7 +18,6 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -41,7 +41,7 @@ import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAd
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
-import { ShowsRailFragmentContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import {
   DEFAULT_RECS_MODEL_VERSION,
@@ -50,7 +50,7 @@ import {
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
@@ -64,14 +64,16 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, {
+  RefObject,
   createRef,
   memo,
-  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -87,18 +89,18 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 
 import { useTracking } from "react-tracking"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
-export interface HomeModule {
-  // Used for tracking rail views
-  contextModule?: ContextModule
+export interface HomeModule extends ArtworkActionTrackingProps {
   data: any
   hidden?: boolean
   isEmpty: boolean
@@ -112,7 +114,6 @@ export interface HomeModule {
 
 export interface HomeProps extends ViewProps {
   articlesConnection: Home_articlesConnection$data | null
-  showsByFollowedArtists: Home_showsByFollowedArtists$data | null
   featured: Home_featured$data | null
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
@@ -127,7 +128,7 @@ export interface HomeProps extends ViewProps {
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
 
-  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
+  const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
@@ -151,13 +152,23 @@ const Home = memo((props: HomeProps) => {
     prefetchUrl("sales")
   }, [])
 
+  // we cannot rely on mount events for screens in tab views for screen tracking
+  // because they can be mounted before the screen is visible
+  // do custom screen view instead
+
+  useFocusEffect(
+    useCallback(() => {
+      tracking.trackEvent(HomeAnalytics.homeScreenViewed())
+    }, [])
+  )
+
   const { loading, relay } = props
 
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
-
+  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
@@ -170,13 +181,13 @@ const Home = memo((props: HomeProps) => {
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       const newVisibleRails = new Set<string>()
 
-      // Track currently visible rails // needed to enabe tracking artwork views
+      // Track currently visible rails // needed to enable tracking artwork views
       if (enableItemViewsTracking) {
         viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
           newVisibleRails.add(title)
         })
 
-        seVisibleRails(newVisibleRails)
+        setVisibleRails(newVisibleRails)
       }
 
       // Track all viewed rails
@@ -198,16 +209,10 @@ const Home = memo((props: HomeProps) => {
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
-  useEffect(() => {
-    RefreshEvents.addListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-
-    return () => {
-      RefreshEvents.removeListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-    }
-  }, [])
-
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: HomeModule; index: number }) => {
+      const trackingProps = extractArtworkActionTrackingProps(item)
+
       if (!item.data) {
         return <></>
       }
@@ -216,7 +221,7 @@ const Home = memo((props: HomeProps) => {
         case "marketingCollection":
           return (
             <MarketingCollectionRail
-              contextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+              {...trackingProps}
               contextModuleKey="curators-picks-emerging"
               home={props.homePageAbove}
               marketingCollection={item.data}
@@ -247,6 +252,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -255,6 +261,7 @@ const Home = memo((props: HomeProps) => {
         case "worksByArtistsYouFollow":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -263,6 +270,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork-recommendations":
           return (
             <ArtworkRecommendationsRail
+              {...trackingProps}
               title={item.title}
               me={item.data || null}
               isRailVisible={visibleRails.has(item.title)}
@@ -303,6 +311,7 @@ const Home = memo((props: HomeProps) => {
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
+              {...trackingProps}
               artworkConnection={item.data}
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
@@ -326,12 +335,14 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "shows":
-          return <ShowsRailFragmentContainer title={item.title} showsConnection={item.data} />
+          return (
+            <ShowsRailContainer title={item.title} disableLocation={!enableShowsForYouLocation} />
+          )
         case "auction-results":
           return (
             <AuctionResultsRail
               title={item.title}
-              contextModule={item.contextModule}
+              contextModule={item.contextModule!}
               auctionResults={item.data}
             />
           )
@@ -345,30 +356,23 @@ const Home = memo((props: HomeProps) => {
   )
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <AboveTheFoldFlatList<HomeModule>
-          testID="home-flat-list"
-          data={modules}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          prefetchUrlExtractor={(item) => item?.prefetchUrl}
-          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
-          renderItem={renderItem}
-          ListHeaderComponent={<HomeHeader />}
-          ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
-          ItemSeparatorComponent={ModuleSeparator}
-          keyExtractor={(_item) => _item.title}
-        />
-        {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
-      </View>
-    </ProvideScreenTracking>
+    <View style={{ flex: 1 }}>
+      <AboveTheFoldFlatList<HomeModule>
+        testID="home-flat-list"
+        data={modules}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        prefetchUrlExtractor={(item) => item?.prefetchUrl}
+        prefetchVariablesExtractor={(item) => item?.prefetchVariables}
+        renderItem={renderItem}
+        ListHeaderComponent={<HomeHeader />}
+        ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+        ItemSeparatorComponent={ModuleSeparator}
+        keyExtractor={(_item) => _item.title}
+      />
+      {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
+    </View>
   )
 })
 
@@ -497,8 +501,12 @@ export const HomeFragmentContainer = memo(
             first: 12
             state: PAST
           ) {
-            totalCount
             ...AuctionResultsRail_auctionResults
+            edges {
+              node {
+                internalID
+              }
+            }
           }
 
           auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
@@ -506,19 +514,18 @@ export const HomeFragmentContainer = memo(
             state: UPCOMING
             sort: DATE_ASC
           ) {
-            totalCount
             ...AuctionResultsRail_auctionResults
+            edges {
+              node {
+                internalID
+              }
+            }
           }
         }
       `,
       articlesConnection: graphql`
         fragment Home_articlesConnection on ArticleConnection {
           ...ArticlesRail_articlesConnection
-        }
-      `,
-      showsByFollowedArtists: graphql`
-        fragment Home_showsByFollowedArtists on ShowConnection {
-          ...ShowsRail_showsConnection
         }
       `,
       featured: graphql`
@@ -549,9 +556,6 @@ export const HomeFragmentContainer = memo(
         me @optionalField {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
-          showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-            ...Home_showsByFollowedArtists
-          }
         }
         meBelow: me @optionalField {
           ...Home_meBelow
@@ -690,7 +694,11 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC = () => {
+interface HomeQRProps {
+  environment?: RelayModernEnvironment | RelayMockEnvironment
+}
+
+export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
@@ -733,7 +741,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
@@ -767,9 +775,6 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
-              showsByFollowedArtists(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
-                ...Home_showsByFollowedArtists
-              }
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
               @optionalField {
@@ -791,7 +796,6 @@ export const HomeQueryRenderer: React.FC = () => {
             <HomeFragmentContainer
               articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
-              showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}

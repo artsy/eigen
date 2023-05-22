@@ -1,10 +1,9 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import {
   ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-  ArtworkEntity,
   ArtworkListsContext,
-  ArtworkListsContextState,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkEntity, ArtworkListsContextState } from "app/Components/ArtworkLists/types"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -25,6 +24,8 @@ describe("CreateNewArtworkListView", () => {
         artwork: artworkEntity,
       },
       isSavedToArtworkList: false,
+      addingArtworkListIDs: [],
+      removingArtworkListIDs: [],
       dispatch: noop,
       reset: noop,
       onSave: noop,

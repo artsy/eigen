@@ -1,8 +1,9 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
@@ -19,6 +20,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       // Above-The-Fold Modules
       {
         contextModule: ContextModule.newWorksForYouRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.newWorksForYou,
         isEmpty: isEmpty(props.newWorksForYou),
         key: "newWorksForYouRail",
@@ -73,7 +76,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         contextModule: ContextModule.upcomingAuctionsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
         hidden: !showUpcomingAuctionResultsRail,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcoming?.totalCount,
+        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsUpcoming),
         key: "upcomingAuctionLotsForYouRail",
         title: "Upcoming Auction Lots For You",
         type: "auction-results",
@@ -81,7 +84,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         contextModule: ContextModule.auctionResultsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsPast,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsPast?.totalCount,
+        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsPast),
         key: "latestAuctionResultsRail",
         prefetchUrl: "/auction-results-for-artists-you-follow",
         title: "Latest Auction Results",
@@ -108,6 +111,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.curatorsPicksEmergingRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.emergingPicks,
         hidden: !enableCuratorsPickRail,
         isEmpty: isEmpty(props.emergingPicks),
@@ -127,6 +132,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.artworkRecommendationsRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.meBelow,
         isEmpty: !props.meBelow?.artworkRecommendationsCounts?.totalCount,
         title: "Artwork Recommendations",
@@ -135,6 +142,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule?.results),
         title: "New Works from Galleries You Follow",
@@ -159,6 +168,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.recentlyViewedRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.recentlyViewedWorksArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.recentlyViewedWorksArtworkModule?.results),
         key: "recentlyViewedRail",
@@ -167,6 +178,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.similarToWorksYouViewedRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
         data: props.homePageBelow?.similarToRecentlyViewedArtworkModule,
         isEmpty: isEmpty(props.homePageBelow?.similarToRecentlyViewedArtworkModule?.results),
         key: "similarToWorksYouViewedRail",
@@ -184,8 +197,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.showsRail,
-        data: props.showsByFollowedArtists,
-        isEmpty: isEmpty(props.showsByFollowedArtists),
+        data: true,
+        isEmpty: false,
         key: "showsRail",
         title: "Shows for You",
         type: "shows",
@@ -225,7 +238,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.recentlyViewedWorksArtworkModule,
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
-    props.showsByFollowedArtists,
     props.homePageBelow?.fairsModule,
     showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,

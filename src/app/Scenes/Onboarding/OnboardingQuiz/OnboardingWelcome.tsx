@@ -59,12 +59,30 @@ const OnboardingWelcome = () => {
   const screenHeight = "100%"
 
   const fadeOutAnimationsArr = [
-    useAnimatedStyle(() => ({ opacity: opacity.value - 1 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 2 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 3 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 4 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 5 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 6 })),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 1 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 2 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 3 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 4 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 5 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 6 }
+    }),
   ]
 
   useEffect(() => {

@@ -118,9 +118,11 @@ jest.mock("sift-react-native", () => ({
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("@react-navigation/native", () => {
+  const { useEffect } = require("react")
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
     ...actualNav,
+    useFocusEffect: useEffect,
     useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: jest.fn(),
@@ -628,4 +630,15 @@ jest.mock("app/utils/track/providers.tsx", () => ({
 jest.mock("@gorhom/bottom-sheet", () => ({
   __esModule: true,
   ...require("@gorhom/bottom-sheet/mock"),
+}))
+
+jest.mock("@react-native-community/geolocation", () => ({
+  addListener: jest.fn(),
+  getCurrentPosition: jest.fn(),
+  removeListeners: jest.fn(),
+  requestAuthorization: jest.fn(),
+  setConfiguration: jest.fn(),
+  startObserving: jest.fn(),
+  setRNConfiguration: jest.fn(),
+  stopObserving: jest.fn(),
 }))

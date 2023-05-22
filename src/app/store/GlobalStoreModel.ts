@@ -30,11 +30,13 @@ import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
 import { CURRENT_APP_VERSION } from "./migration"
 import { assignDeep, sanitize } from "./persistence"
 
+type SessionState = {
+  isHydrated: boolean
+  isNavigationReady: boolean
+}
 interface GlobalStoreStateModel {
   version: number
-  sessionState: {
-    isHydrated: boolean
-  }
+  sessionState: SessionState
 
   native: NativeModel
   bottomTabs: BottomTabsModel
@@ -56,6 +58,8 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   reset: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
   resetAfterSignOut: ThunkOn<this>
   didRehydrate: ThunkOn<this>
+
+  setSessionState: Action<this, Partial<SessionState>>
 
   // for dev only.
   _setVersion: Action<this, number>
@@ -115,6 +119,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   sessionState: {
     // we don't perform hydration at test time so let's set it to always true for tests
     isHydrated: __TEST__,
+    isNavigationReady: false,
   },
 
   // NATIVE MIGRATION STATE
@@ -135,6 +140,9 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
 
+  setSessionState: action((state, payload) => {
+    state.sessionState = { ...state.sessionState, ...payload }
+  }),
   // for dev only.
   _setVersion: action((state, newVersion) => {
     state.version = newVersion

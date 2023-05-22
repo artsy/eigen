@@ -15,7 +15,7 @@ interface ArtworkListsProps {
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const { state, dispatch } = useArtworkListsContext()
+  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
@@ -31,10 +31,10 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const selectedArtworkListIds = useMemo(() => {
     return getSelectedArtworkListIds({
       artworkLists,
-      addToArtworkListIDs: state.addingArtworkListIDs,
-      removeFromArtworkListIDs: state.removingArtworkListIDs,
+      addToArtworkListIDs: addingArtworkListIDs,
+      removeFromArtworkListIDs: removingArtworkListIDs,
     })
-  }, [state.addingArtworkListIDs, state.removingArtworkListIDs, artworkLists.length])
+  }, [addingArtworkListIDs.length, removingArtworkListIDs.length, artworkLists.length])
 
   useEffect(() => {
     dispatch({

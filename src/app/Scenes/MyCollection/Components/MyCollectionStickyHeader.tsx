@@ -18,13 +18,18 @@ import {
   PurchasedArtworkAddedMessage,
   SubmittedArtworkAddedMessage,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
+import {
+  CollectedTab,
+  MyCollectionTabsStore,
+} from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
+import { debounce } from "lodash"
 import { MotiView } from "moti"
-import { useRef, useState } from "react"
+import { useMemo, useRef } from "react"
 import { useTracking } from "react-tracking"
 
 // CONSTANTS
@@ -34,37 +39,44 @@ const PILL_PADDING_IN_PX = 10
 
 interface MyCollectionStickyHeaderProps {
   filtersCount: number
+  hasArtworks: boolean
   hasMarketSignals: boolean
   showModal: () => void
   showNewWorksMessage: boolean
   showSeparator: boolean
 }
 
-type CollectedTab = "Artworks" | "Artists" | null
-
 export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> = ({
   filtersCount,
+  hasArtworks,
   hasMarketSignals,
   showModal,
   showNewWorksMessage,
   showSeparator,
 }) => {
   const { showVisualClue } = useVisualClue()
-  const [selectedTab, setSelectedTab] = useState<CollectedTab>(null)
 
   const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
+  const showArtworkFilters = useMemo(() => {
+    if (!enableCollectedArtists) {
+      return !!hasArtworks
+    }
+    return selectedTab === "Artworks"
+  }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
     <>
-      {enableCollectedArtists && (
+      {!!enableCollectedArtists && (
         <Flex pb={0}>
-          <MainStickyHeader selectedTab={selectedTab} onTabChange={setSelectedTab} />
+          <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
-
-      <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
-
+      {!!showArtworkFilters && (
+        <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
+      )}
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}
@@ -74,14 +86,18 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   )
 }
 
-interface MainStickyHeaderProps {
-  selectedTab: CollectedTab
-  onTabChange: (tab: CollectedTab) => void
-}
-
-const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabChange }) => {
+export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
   const space = useSpace()
+
   const closeIconRef = useRef(null)
+
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+  const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
+
+  const showAddToMyCollectionBottomSheet = debounce(() => {
+    setViewKind({ viewKind: "Add" })
+  }, 100)
 
   const { width } = useMeasure({ ref: closeIconRef })
 
@@ -96,26 +112,25 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
         justifyContent="space-between"
         style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
       >
-        <AnimatedCloseIcon
-          closeIconRef={closeIconRef}
-          onTabChange={onTabChange}
-          selectedTab={selectedTab}
-        />
+        <AnimatedCloseIcon closeIconRef={closeIconRef} />
 
         {/* Pills */}
         <Flex flexDirection="row" justifyContent="center" alignItems="center">
           <AnimatedPill
-            handlePress={() => onTabChange("Artists")}
+            handlePress={() => setSelectedTab("Artists")}
             originX={originX}
             selectedTab={selectedTab}
             tab="Artists"
           />
+
           <Spacer x={PILL_PADDING} />
+
           <AnimatedPill
-            handlePress={() => onTabChange("Artworks")}
+            handlePress={() => setSelectedTab("Artworks")}
             originX={originX}
             selectedTab={selectedTab}
             tab="Artworks"
+            disabled={!hasArtworks}
           />
         </Flex>
 
@@ -126,17 +141,17 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
               console.log("Search button pressed")
             }}
             haptic
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <SearchIcon width={18} height={24} />
+            <SearchIcon width={24} height={24} />
           </Touchable>
           <Spacer x={PILL_PADDING} />
           <Touchable
-            onPress={() => {
-              console.log("Add button pressed")
-            }}
+            onPress={showAddToMyCollectionBottomSheet}
             haptic
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <AddIcon width={18} height={24} />
+            <AddIcon width={24} height={24} />
           </Touchable>
         </Flex>
       </Flex>
@@ -146,9 +161,10 @@ const MainStickyHeader: React.FC<MainStickyHeaderProps> = ({ selectedTab, onTabC
 
 const AnimatedCloseIcon: React.FC<{
   closeIconRef: React.RefObject<any>
-  onTabChange: (tab: CollectedTab) => void
-  selectedTab: CollectedTab
-}> = ({ closeIconRef, onTabChange, selectedTab }) => {
+}> = ({ closeIconRef }) => {
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+  const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
+
   const space = useSpace()
 
   return (
@@ -168,7 +184,7 @@ const AnimatedCloseIcon: React.FC<{
       >
         <Touchable
           onPress={() => {
-            onTabChange(null)
+            setSelectedTab(null)
           }}
           haptic="impactLight"
         >
@@ -190,17 +206,13 @@ const AnimatedCloseIcon: React.FC<{
   )
 }
 
-const AnimatedPill = ({
-  selectedTab,
-  tab,
-  handlePress,
-  originX,
-}: {
-  selectedTab: CollectedTab
-  tab: CollectedTab
+const AnimatedPill: React.FC<{
+  disabled?: boolean
   handlePress: () => void
   originX: number | undefined
-}) => {
+  selectedTab: CollectedTab
+  tab: CollectedTab
+}> = ({ disabled: disabledProp, handlePress, originX, selectedTab, tab }) => {
   const containerRef = useRef(null)
   const space = useSpace()
 
@@ -218,7 +230,7 @@ const AnimatedPill = ({
   }
 
   const selected = selectedTab === tab
-  const disabled = !!selectedTab && selectedTab !== tab
+  const disabled = (!!selectedTab && selectedTab !== tab) || disabledProp
 
   return (
     <MotiView
@@ -294,15 +306,11 @@ const Filters = ({
   )
 }
 
-const Messages = ({
-  hasMarketSignals,
-  showNewWorksMessage,
-  showSubmissionMessage,
-}: {
+const Messages: React.FC<{
   hasMarketSignals: boolean
   showNewWorksMessage: boolean
   showSubmissionMessage: boolean
-}) => {
+}> = ({ hasMarketSignals, showNewWorksMessage, showSubmissionMessage }) => {
   return (
     <>
       {!!showNewWorksMessage && (

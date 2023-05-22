@@ -1,8 +1,8 @@
 import { BottomSheetModal, BottomSheetModalProps } from "@gorhom/bottom-sheet"
-import { ArtworkListsBottomSheetBackdrop } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetBackdrop"
+import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { FC, useEffect, useRef } from "react"
 
-interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
+export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
 }
 
@@ -25,7 +25,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       ref={ref}
       enablePanDownToClose
       keyboardBlurBehavior="restore"
-      backdropComponent={ArtworkListsBottomSheetBackdrop}
+      backdropComponent={DefaultBottomSheetBackdrop}
       {...rest}
     />
   )

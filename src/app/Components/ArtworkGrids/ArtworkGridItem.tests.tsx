@@ -1,8 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -290,29 +291,59 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("save artworks", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkGridSaveIcon: true })
-    })
-
     it("favourites works", async () => {
-      renderWithRelay()
-
-      expect(screen.getByTestId("empty-heart-icon")).toBeTruthy()
-
-      const saveButton = screen.getByTestId("save-artwork-icon")
-
-      fireEvent.press(saveButton)
-
-      await waitFor(() => {
-        expect(screen.getByTestId("filled-heart-icon")).toBeTruthy()
+      renderWithRelay({
+        Artwork: () => artwork,
       })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByTestId("empty-heart-icon")).toBeTruthy()
+      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+
+      fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+      expect(screen.queryByTestId("filled-heart-icon")).toBeTruthy()
+      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
     })
 
     it("is not visible when hideSaveIcon prop is specified", () => {
-      renderWithRelay({}, { hideSaveIcon: true })
+      renderWithRelay({})
 
-      expect(screen.queryByTestId("empty-heart-icon")).toBeFalsy()
-      expect(screen.queryByTestId("filled-heart-icon")).toBeFalsy()
+      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
+      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
     })
   })
 })
+
+const artwork = {
+  title: "Some Kind of Dinosaur",
+  date: "2015",
+  saleMessage: "Contact For Price",
+  sale: {
+    isAuction: true,
+    isClosed: true,
+    endAt: "2020-08-26T02:50:09+00:00",
+    cascadingEndTimeIntervalMinutes: null,
+  },
+  isSaved: false,
+  saleArtwork: null,
+  image: {
+    url: "artsy.net/image-url",
+    aspectRatio: 0.74,
+  },
+  artistNames: "Mikael Olson",
+  partner: {
+    name: "partner",
+  },
+  id: "mikael-olson-some-kind-of-dinosaur",
+  href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+  slug: "cool-artwork",
+  internalID: "abc1234",
+  preview: {
+    url: "artsy.net/image-url",
+  },
+  customArtworkLists: {
+    totalCount: 0,
+  },
+}

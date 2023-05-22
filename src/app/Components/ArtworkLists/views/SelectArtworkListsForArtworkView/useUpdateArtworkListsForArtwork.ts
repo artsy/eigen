@@ -118,11 +118,13 @@ const SaveArtworkListsMutation = graphql`
             internalID
             default
             ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+            ...ArtworkListItem_collection
           }
           removedFromArtworkLists: removedFromCollections {
             internalID
             default
             ...ArtworkListItem_item @arguments(artworkID: $artworkID)
+            ...ArtworkListItem_collection
           }
         }
         ... on ArtworksCollectionsBatchUpdateFailure {

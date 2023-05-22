@@ -43,6 +43,7 @@ export const ArtworkRecommendations: React.FC = () => {
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
             contextScreenOwnerType={OwnerType.artworkRecommendations}
+            contextScreen={OwnerType.artworkRecommendations}
             HeaderComponent={<Spacer y={2} />}
             shouldAddPadding
             refreshControl={RefreshControl}

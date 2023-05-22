@@ -6,7 +6,6 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import { ScreenOwnerType } from "@artsy/cohesion"
 import { Box, Flex, Spinner, Button } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
@@ -16,6 +15,7 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
+import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { useState } from "react"
 import {
   ActivityIndicator,
@@ -43,7 +43,7 @@ import Artwork, { ArtworkProps } from "./ArtworkGridItem"
  *   - the calculation currently only takes into account the size of the image, not if e.g. the sale message is present
  */
 
-export interface Props {
+export interface Props extends ArtworkActionTrackingProps {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection?: string
 
@@ -70,21 +70,6 @@ export interface Props {
 
   /** Number of items to fetch in pagination request. Default is 10 */
   pageSize?: number
-
-  /** Parent screen where the grid is located. For analytics purposes. */
-  contextScreenOwnerType?: ScreenOwnerType
-
-  /** Id of the parent screen's entity where the grid is located. For analytics purposes. */
-  contextScreenOwnerId?: string
-
-  /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
-  contextScreenOwnerSlug?: string
-
-  /** Search query of the parent screen's entity where the grid is located. For analytics purposes. */
-  contextScreenQuery?: string
-
-  /** Name of the parent screen's entity where the grid is located. For analytics purposes. */
-  contextScreen?: string
 
   /** Allow users to save artworks that are not lots to their saves & follows */
   hideSaveIcon?: boolean

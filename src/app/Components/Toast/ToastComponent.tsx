@@ -1,11 +1,10 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Touchable } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -30,6 +29,7 @@ export const ToastComponent = ({
   Icon,
   backgroundColor = "black100",
   duration = "short",
+  cta,
 }: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
@@ -97,9 +97,18 @@ export const ToastComponent = ({
   const innerTopBottom = (
     <Flex flex={1} flexDirection="row" alignItems="center" mx={2}>
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
-      <Text variant="xs" color="white100">
-        {message}
-      </Text>
+
+      <Flex flex={1}>
+        <Text variant="xs" color="white100">
+          {message}
+        </Text>
+      </Flex>
+
+      {!!cta && (
+        <Text variant="xs" color="white100" underline>
+          {cta}
+        </Text>
+      )}
     </Flex>
   )
 
@@ -128,7 +137,6 @@ export const ToastComponent = ({
       backgroundColor={color(backgroundColor)}
       opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
       overflow="hidden"
-      paddingRight={2}
       zIndex={999}
     >
       {onPress !== undefined ? (

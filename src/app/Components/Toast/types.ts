@@ -17,10 +17,16 @@ export interface ToastDetails {
   placement: ToastPlacement
   message: string
 
+  /* Display CTA for toasts with top or bottom placement */
+  cta?: string
+
   onPress?: (helpers: ToastOnPressHelpers) => void
   Icon?: React.FC<IconProps>
   backgroundColor?: Color
   duration?: ToastDuration
 }
 
-export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor" | "duration">
+export type ToastOptions = Pick<
+  ToastDetails,
+  "onPress" | "Icon" | "backgroundColor" | "duration" | "cta"
+>

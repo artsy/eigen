@@ -1,14 +1,14 @@
 import {
   Avatar,
-  MapPinIcon,
-  BriefcaseIcon,
-  SettingsIcon,
-  InstitutionIcon,
-  Flex,
   Box,
-  useColor,
+  BriefcaseIcon,
+  Flex,
+  InstitutionIcon,
+  MapPinIcon,
+  SettingsIcon,
   Text,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
