@@ -1,9 +1,8 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { getSelectedArtworkListIds } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/utils/getSelectedArtworkListIds"
 import { extractNodes } from "app/utils/extractNodes"
-import { FC, useEffect, useMemo, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkListItem } from "./ArtworkListItem"
@@ -15,7 +14,7 @@ interface ArtworkListsProps {
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
+  const { dispatch } = useArtworkListsContext()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
@@ -28,21 +27,6 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   if (savedArtworksArtworkList) {
     artworkLists = [savedArtworksArtworkList, ...artworkLists]
   }
-
-  const selectedArtworkListIds = useMemo(() => {
-    return getSelectedArtworkListIds({
-      artworkLists,
-      addToArtworkListIDs: addingArtworkListIDs,
-      removeFromArtworkListIDs: removingArtworkListIDs,
-    })
-  }, [addingArtworkListIDs.length, removingArtworkListIDs.length, artworkLists.length])
-
-  useEffect(() => {
-    dispatch({
-      type: "SET_SELECTED_ARTWORK_LIST_IDS",
-      payload: selectedArtworkListIds,
-    })
-  }, [selectedArtworkListIds, dispatch])
 
   useEffect(() => {
     dispatch({

@@ -46,7 +46,6 @@ export type ArtworkListState = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
-  selectedArtworkListIDs: string[]
   selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
@@ -61,7 +60,6 @@ export type ArtworkListAction =
       type: "ADD_OR_REMOVE_ARTWORK_LIST"
       payload: { mode: ArtworkListMode; artworkList: ArtworkListEntity }
     }
-  | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
   | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
 
 export interface ArtworkListsContextState {
