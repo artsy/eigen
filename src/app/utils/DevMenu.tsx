@@ -9,6 +9,7 @@ import {
   useSpace,
   Separator,
   Touchable,
+  Screen,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -23,14 +24,14 @@ import { environment, EnvironmentKey } from "app/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "app/store/config/features"
 import { Versions } from "app/store/migration"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import {
   Alert,
   AlertButton,
-  BackHandler,
   Button as RNButton,
   DevSettings,
   NativeModules,
@@ -53,7 +54,7 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void }) => {
+export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
@@ -64,23 +65,19 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const space = useSpace()
   const toast = useToast()
 
-  useEffect(
-    useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackButton)
-
-      return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
-    }, [])
-  )
   const handleBackButton = () => {
     onClose()
     return true
   }
+
+  useBackHandler(handleBackButton)
+
   const { unleashEnv } = useUnleashEnvironment()
 
   const chevronStyle = { marginRight: space(1) }
 
   return (
-    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py={2}>
+    <Screen>
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
@@ -274,7 +271,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           />
         </CollapseMenu>
       </ScrollView>
-    </Flex>
+    </Screen>
   )
 }
 

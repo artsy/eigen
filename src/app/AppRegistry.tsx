@@ -408,7 +408,7 @@ export const modules = defineModules({
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
   DevMenuOld: reactModule(DevMenuOld, { alwaysPresentModally: true }),
-  DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
+  DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
