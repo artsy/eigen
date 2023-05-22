@@ -5,7 +5,7 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
+import { extractNodes, isConnectionEmpty } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { memo } from "react"
 import { FlatList } from "react-native"
@@ -49,7 +49,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
       (auctionResult) => auctionResult
     )
 
-    if (!auctionResults || auctionResults?.totalCount === 0) {
+    if (isConnectionEmpty(auctionResults)) {
       return null
     }
 
@@ -94,7 +94,6 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
 
 const meFragment = graphql`
   fragment AuctionResultsRail_auctionResults on AuctionResultConnection {
-    totalCount
     edges {
       node {
         ...AuctionResultListItem_auctionResult
