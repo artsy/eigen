@@ -425,7 +425,10 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(GeneQueryRenderer),
+  Gene: reactModule(GeneQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
   }),

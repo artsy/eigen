@@ -1,23 +1,21 @@
+import { Screen } from "@artsy/palette-mobile"
 import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
 import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { goBack } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql, QueryRenderer } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
 const commonPadding = isPad ? 40 : 20
-
-const TABS = {
-  WORKS: "Works",
-  ABOUT: "About",
-}
 
 interface GeneProps {
   geneID: string
@@ -33,23 +31,6 @@ interface GeneQueryRendererProps {
 export const Gene: React.FC<GeneProps> = (props) => {
   const { gene, geneID } = props
 
-  const headerContent = (
-    <View style={styles.header}>
-      <Header gene={gene} shortForm={false} />
-    </View>
-  )
-  const tabs = [
-    {
-      title: TABS.WORKS,
-      content: <GeneArtworksPaginationContainer gene={gene} />,
-      initial: true,
-    },
-    {
-      title: TABS.ABOUT,
-      content: <About gene={gene} />,
-    },
-  ]
-
   return (
     <ProvideScreenTracking
       info={{
@@ -59,9 +40,29 @@ export const Gene: React.FC<GeneProps> = (props) => {
         context_screen_owner_slug: gene.slug,
       }}
     >
-      <View style={styles.container}>
-        <StickyTabPage tabs={tabs} staticHeaderContent={headerContent} />
-      </View>
+      <Screen>
+        <Screen.Header onBack={goBack} />
+        <TabsContainer
+          lazy
+          renderHeader={() => (
+            <View style={styles.header}>
+              <Header gene={gene} shortForm={false} />
+            </View>
+          )}
+          // TODO: add renderBelowTabBar artwork filters
+        >
+          <Tabs.Tab name="Works" label="Works">
+            <Tabs.Lazy>
+              <GeneArtworksPaginationContainer gene={gene} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+          <Tabs.Tab name="About" label="About">
+            <Tabs.Lazy>
+              <About gene={gene} />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </TabsContainer>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -78,7 +79,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<GeneQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
           gene(id: $geneID) {
@@ -112,7 +113,6 @@ const styles = StyleSheet.create<Styles>({
     flex: 1,
   },
   header: {
-    backgroundColor: "white",
     paddingLeft: commonPadding,
     paddingRight: commonPadding,
     marginBottom: 10,

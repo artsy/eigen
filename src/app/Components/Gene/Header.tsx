@@ -1,8 +1,8 @@
 import { Box, Text } from "@artsy/palette-mobile"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import { Header_gene$data } from "__generated__/Header_gene.graphql"
-import { Schema, Track, track as _track } from "app/utils/track"
 import { FollowButton } from "app/Components/Button/FollowButton"
+import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -28,7 +28,7 @@ class Header extends React.Component<Props, State> {
 
     return (
       <>
-        <Box marginTop={6} justifyContent="center">
+        <Box>
           <Text variant="lg-display" numberOfLines={2}>
             {title}
           </Text>

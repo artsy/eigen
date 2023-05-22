@@ -1,23 +1,19 @@
+import { TouchableHighlightColor } from "@artsy/palette-mobile"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "./Gene"
 
 describe("Gene", () => {
   const geneID = "gene-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
+  const environment = getMockRelayEnvironment()
 
   const TestRenderer = () => {
     return (
