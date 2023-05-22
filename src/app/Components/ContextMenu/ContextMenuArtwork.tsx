@@ -134,6 +134,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     onPressToCall?.()
   }
 
+  if (!shouldDisplayContextMenu) {
+    return <>{children}</>
+  }
+
   return (
     <ContextMenu
       actions={contextActions}
