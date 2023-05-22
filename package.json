@@ -354,6 +354,6 @@
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
-    "yarn.lock": "yarn install"
+    "yarn.lock": "yarn install:all"
   }
 }
