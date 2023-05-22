@@ -19,17 +19,17 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
   const artistData = useFragment<MyCollectionCollectedArtistItem_artist$key>(artistFragment, artist)
 
+  const showArtistPreview = () => {
+    setViewKind({
+      viewKind: "Artist",
+      id: artistData.internalID,
+      artworksCount: artworksCount,
+    })
+  }
+
   const RightButton = useMemo(() => {
     return (
-      <Touchable
-        onPress={() => {
-          setViewKind({
-            viewKind: "Artist",
-            id: artistData.internalID,
-            artworksCount: artworksCount,
-          })
-        }}
-      >
+      <Touchable onPress={showArtistPreview}>
         <MoreIcon height={18} width={18} />
       </Touchable>
     )
@@ -41,6 +41,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
       uploadsCount={artworksCount}
       showFollowButton={false}
       RightButton={RightButton}
+      onPress={showArtistPreview}
     />
   )
 }
