@@ -23,7 +23,7 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   createNewArtworkListViewVisible: false,
   artwork: null,
   recentlyAddedArtworkList: null,
-  selectedArtworkListIDs: [],
+  selectedTotalCount: 0,
   addingArtworkLists: [],
   removingArtworkLists: [],
 }
@@ -211,10 +211,10 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         [mode]: [...artworkLists, artworkList],
       }
-    case "SET_SELECTED_ARTWORK_LIST_IDS":
+    case "SET_SELECTED_TOTAL_COUNT":
       return {
         ...state,
-        selectedArtworkListIDs: action.payload,
+        selectedTotalCount: action.payload,
       }
     case "RESET":
       return ARTWORK_LISTS_CONTEXT_INITIAL_STATE

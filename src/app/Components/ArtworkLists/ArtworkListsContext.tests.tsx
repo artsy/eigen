@@ -229,6 +229,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList,
               customArtworkLists,
+              artworkLists,
             }),
           })
 
@@ -244,6 +245,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList,
               customArtworkLists,
+              artworkLists,
             }),
           })
 
@@ -261,6 +263,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList,
               customArtworkLists,
+              artworkLists,
             }),
           })
 
@@ -279,6 +282,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList,
               customArtworkLists,
+              artworkLists,
             }),
           })
 
@@ -301,6 +305,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
               customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
             }),
           })
 
@@ -316,6 +321,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
               customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
             }),
           })
 
@@ -334,6 +340,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
               customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
             }),
           })
 
@@ -355,6 +362,7 @@ describe("ArtworkListsProvider", () => {
             Me: () => ({
               savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
               customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
             }),
           })
 
@@ -527,6 +535,14 @@ const preselectedCustomArtworkLists = {
       },
     },
   ],
+}
+
+const artworkLists = {
+  totalCount: 0,
+}
+
+const preselectedArtworkLists = {
+  totalCount: 3,
 }
 
 const artworkEntity: ArtworkEntity = {
