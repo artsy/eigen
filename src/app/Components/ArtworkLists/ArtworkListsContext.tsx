@@ -24,6 +24,7 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   artwork: null,
   recentlyAddedArtworkList: null,
   selectedArtworkListIDs: [],
+  selectedTotalCount: 0,
   addingArtworkLists: [],
   removingArtworkLists: [],
 }
@@ -215,6 +216,11 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
       return {
         ...state,
         selectedArtworkListIDs: action.payload,
+      }
+    case "SET_SELECTED_TOTAL_COUNT":
+      return {
+        ...state,
+        selectedTotalCount: action.payload,
       }
     case "RESET":
       return ARTWORK_LISTS_CONTEXT_INITIAL_STATE

@@ -10,9 +10,11 @@ import { FC } from "react"
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
-  const { selectedArtworkListIDs } = state
+  const { selectedTotalCount } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
+  const totalCount =
+    selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
   const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork(artwork.id)
 
@@ -45,7 +47,7 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   return (
     <Box {...props}>
       <Text variant="xs" textAlign="center">
-        {getSelectedListsCountText(selectedArtworkListIDs.length)}
+        {getSelectedListsCountText(totalCount)}
       </Text>
 
       <Spacer y={1} />

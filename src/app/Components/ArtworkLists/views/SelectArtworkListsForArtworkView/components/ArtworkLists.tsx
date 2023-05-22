@@ -21,6 +21,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
     props.me
   )
   const savedArtworksArtworkList = data?.savedArtworksArtworkList
+  const totalSelectedArtworkListsCount = data?.artworkLists?.totalCount ?? 0
   const customArtworkLists = extractNodes(data?.customArtworkLists)
   let artworkLists = customArtworkLists
 
@@ -42,6 +43,13 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
       payload: selectedArtworkListIds,
     })
   }, [selectedArtworkListIds, dispatch])
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_SELECTED_TOTAL_COUNT",
+      payload: totalSelectedArtworkListsCount,
+    })
+  }, [totalSelectedArtworkListsCount])
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -107,6 +115,10 @@ const ArtworkListsFragment = graphql`
           ...ArtworkListItem_item @arguments(artworkID: $artworkID)
         }
       }
+    }
+
+    artworkLists: collectionsConnection(first: 0, saves: true, includesArtworkID: $artworkID) {
+      totalCount
     }
   }
 `
