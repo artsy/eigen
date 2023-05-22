@@ -1,4 +1,4 @@
-import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesion"
+import { ActionType, AddedArtworkToArtworkList } from "@artsy/cohesion"
 import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
@@ -6,6 +6,7 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ResultAction } from "app/Components/ArtworkLists/types"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
 
@@ -13,6 +14,7 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { trackEvent } = useTracking()
+  const analytics = useAnalyticsContext()
   const { selectedTotalCount } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
@@ -24,10 +26,9 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const trackAddedArtworkToArtworkLists = () => {
     const event: AddedArtworkToArtworkList = {
       action: ActionType.addedArtworkToArtworkList,
-      context_owner_id: artwork.internalID,
-      // TODO: Keep artwork slug in ArtworkEntity
-      // context_owner_slug: artwork.slug,
-      context_owner_type: OwnerType.artwork,
+      context_owner_id: analytics.contextOwnerId,
+      context_owner_slug: analytics.contextOwnerSlug,
+      context_owner_type: analytics.contextOwnerType!,
       artwork_ids: [artwork.internalID],
       owner_ids: addingArtworkListIDs,
     }
