@@ -212,7 +212,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
-    resource_class: medium
+    resource_class: large
     steps:
       - checkout
       - node/install-packages:
