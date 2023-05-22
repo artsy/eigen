@@ -308,7 +308,7 @@ describe("ArtworkGridItem", () => {
     })
 
     it("is not visible when hideSaveIcon prop is specified", () => {
-      renderWithRelay({})
+      renderWithRelay({}, { hideSaveIcon: true })
 
       expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
       expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
