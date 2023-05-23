@@ -16,14 +16,14 @@ const AddMoreButton = () => {
   return (
     <Flex>
       <Flex
-        width={ARTIST_CIRCLE_DIAMETER}
-        height={ARTIST_CIRCLE_DIAMETER}
-        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
         alignItems="center"
-        justifyContent="center"
         backgroundColor="black5"
         border="1px solid"
         borderColor="black15"
+        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+        height={ARTIST_CIRCLE_DIAMETER}
+        justifyContent="center"
+        width={ARTIST_CIRCLE_DIAMETER}
       >
         <AddIcon height={28} width={28} fill="black60" />
       </Flex>

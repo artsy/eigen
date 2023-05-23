@@ -1,7 +1,8 @@
-import { Avatar, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistGridItem_artist$key } from "__generated__/MyCollectionCollectedArtistGridItem_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { pluralize } from "app/utils/pluralize"
+import { Image } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -44,11 +45,35 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
 
   return (
     <Flex flex={1} maxWidth="50%" alignItems="center">
-      <Avatar src={artistData.image?.url || ""} initials={artistData.initials || ""} />
+      {artistData.image?.url ? (
+        <Image
+          style={{ width: 120, height: 120, borderRadius: 60 }}
+          source={{ uri: artistData.image?.url || "" }}
+        />
+      ) : (
+        <CustomArtistNoImage initials={artistData.initials || ""} />
+      )}
       <Text variant="xs" numberOfLines={2} mt={0.5}>
         {artistData.name ?? ""}
       </Text>
       {meta}
+    </Flex>
+  )
+}
+
+const CustomArtistNoImage: React.FC<{ initials: string }> = ({ initials }) => {
+  return (
+    <Flex
+      alignItems="center"
+      backgroundColor="black5"
+      border="1px solid"
+      borderColor="black15"
+      borderRadius={120 / 2}
+      height={120}
+      justifyContent="center"
+      width={120}
+    >
+      <Text variant="xl">{initials}</Text>
     </Flex>
   )
 }
