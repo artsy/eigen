@@ -86,7 +86,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   }
 
   return (
-    <Flex minHeight={minHeight}>
+    <Flex minHeight={minHeight} px={2}>
       <Flex mb={1}>
         {!!showSearchBar && (
           <MyCollectionSearchBar
