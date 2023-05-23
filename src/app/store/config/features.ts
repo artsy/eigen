@@ -78,7 +78,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
   AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
     description: "Enable New Image Component",
-    showInDevMenu: true,
     echoFlagKey: "AREnableNewOpaqueImageComponent",
   },
   AREnableConversationalBuyNow: {
@@ -89,7 +88,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: true,
     description: "Enable My Collection artworks from non-Artsy artists",
-    showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableArtworksConnectionForAuction: {
@@ -104,102 +102,85 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
   ARReorderSWAArtworkSubmissionFlow: {
     description: "Reorder SWA Artwork submission flow",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
-    showInDevMenu: true,
     readyForRelease: false,
   },
   AREnableSearchDiscoveryContentIOS: {
     description: "Display discovery content on Search tab on iOS",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentIOS",
   },
   AREnableSearchDiscoveryContentAndroid: {
     description: "Display discovery content on Search tab on Android",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableArtworkGridSaveIcon",
   },
   AREnableAndroidImagesGallery: {
     description: "Enable images gallery on Android",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableAndroidImagesGallery",
   },
   AREnableLargeArtworkRailSaveIcon: {
     description: "Enable save icon for large artwork rails",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
   AREnableConsignmentInquiry: {
     description: "Enable Sell With Artsy Inquiry",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableConsignmentInquiry",
   },
   ARShowUpcomingAuctionResultsRails: {
     description: "Show upcoming auction rails",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARShowUpcomingAuctionResultsRails",
   },
   ARShowArtQuizApp: {
     description: "Show Art Quiz App",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARShowArtQuizApp",
   },
   AREnableESOnlySearch: {
     description: "Enable ES only search",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableESOnlySearch",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
   },
   AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
   },
   AREnableNewCollectionsRail: {
     description: "Enable New Collections Rail",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableNewCollectionsRail",
   },
   AREnableCuratorsPickRail: {
     description: "Enable Curators Pick Rail",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableCuratorsPickRail",
   },
   ARImpressionsTrackingHomeRailViews: {
     description: "Enable tracking rail views on home screen",
-    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
@@ -211,19 +192,16 @@ export const features: { [key: string]: FeatureDescriptor } = {
   AREnableMyCollectionNotesField: {
     description: "Enable My Collection Notes Field",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionNotesField",
   },
   AREnableSWALandingPageMeetTheSpecialist: {
     description: "Enable MeetTheSpecialist on SWA Landing Page",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableSWALandingPageMeetTheSpecialist",
   },
   AREnableSWALandingPageTestimonials: {
     description: "Enable Testimonials on SWA Landing Page",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
   AREnableInstantViewInRoom: {
@@ -235,25 +213,21 @@ export const features: { [key: string]: FeatureDescriptor } = {
   AREnableSkeletonAnimation: {
     description: "Enable Skeleton Animation",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableSkeletonAnimation",
   },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
   AREnableDoMoreOnArtsyRail: {
     description: "Enable Do More on Artsy Rail",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableDoMoreOnArtsyRail",
   },
   AREnableMeetYourNewAdvisorRail: {
     description: "Enable Meet your New Advisor Rail",
     readyForRelease: true,
-    showInDevMenu: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
   AREnableNativeArticleView: {

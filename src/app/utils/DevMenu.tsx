@@ -1,15 +1,15 @@
 import {
-  Spacer,
-  CloseIcon,
   ChevronIcon,
-  ReloadIcon,
+  CloseIcon,
   Flex,
-  useColor,
-  Text,
-  useSpace,
-  Separator,
-  Touchable,
+  ReloadIcon,
   Screen,
+  Separator,
+  Spacer,
+  Text,
+  Touchable,
+  useColor,
+  useSpace,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -20,8 +20,8 @@ import { SearchInput } from "app/Components/SearchInput"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
-import { environment, EnvironmentKey } from "app/store/config/EnvironmentModel"
-import { DevToggleName, devToggles, FeatureName, features } from "app/store/config/features"
+import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
+import { DevToggleName, FeatureName, devToggles, features } from "app/store/config/features"
 import { Versions } from "app/store/migration"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
@@ -32,10 +32,10 @@ import { useState } from "react"
 import {
   Alert,
   AlertButton,
-  Button as RNButton,
   DevSettings,
   NativeModules,
   Platform,
+  Button as RNButton,
   ScrollView,
   TouchableHighlight,
   TouchableOpacity,
@@ -43,6 +43,7 @@ import {
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -76,15 +77,16 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
   const chevronStyle = { marginRight: space(1) }
 
+  const { top: topInset } = useSafeAreaInsets()
+
   return (
     <Screen>
-      <Flex flexDirection="row" justifyContent="space-between">
+      <Flex flexDirection="row" justifyContent="space-between" mt={`${topInset}px`}>
         <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
         </Text>
         <Buttons onClose={onClose} />
       </Flex>
-
       <ScrollView
         style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
