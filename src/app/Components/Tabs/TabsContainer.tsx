@@ -8,7 +8,6 @@ import {
 const TAB_BAR_HEIGHT = 50
 
 export interface TabsContainerProps extends CollapsibleProps {
-  renderBelowTabBar?: () => JSX.Element | null
   // This prop is more immediate than onTabChange, which waits till the
   // transition takes place
   onTabPress?: (tabName: string) => void
@@ -19,7 +18,6 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
   children,
   initialTabName,
   renderHeader,
-  renderBelowTabBar,
   tabScrollEnabled = false,
   onTabPress,
   ...tabContainerProps
@@ -68,8 +66,6 @@ export const TabsContainer: React.FC<TabsContainerProps> = ({
                 height: 1,
               }}
             />
-
-            {!!renderBelowTabBar && renderBelowTabBar()}
           </>
         )
       }}

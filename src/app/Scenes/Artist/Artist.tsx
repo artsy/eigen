@@ -6,7 +6,6 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
@@ -28,8 +27,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { MotiView } from "moti"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { ActivityIndicator, TouchableOpacity, View } from "react-native"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
@@ -60,7 +58,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
-  const [currentTab, setCurrentTab] = useState(initialTab)
 
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -90,10 +87,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  const handleTabChange = (tabName: string) => {
-    setCurrentTab(tabName)
-  }
-
   return (
     <ProvideScreenTracking
       info={{
@@ -118,24 +111,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             />
             <TabsContainer
               initialTabName={initialTab}
-              onTabPress={handleTabChange}
               renderHeader={() => {
                 return <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
-              }}
-              renderBelowTabBar={() => {
-                if (currentTab === "Artworks") {
-                  return (
-                    <MotiView
-                      from={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 100 }}
-                    >
-                      <ArtistArtworksFilterHeader artist={artistAboveTheFold!} />
-                    </MotiView>
-                  )
-                }
-
-                return null
               }}
             >
               {displayAboutSection ? (
@@ -200,7 +177,6 @@ interface ArtistQueryRendererProps {
 export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
     artist(id: $artistID) {
-      ...ArtistArtworksFilterHeader_artist
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
       internalID

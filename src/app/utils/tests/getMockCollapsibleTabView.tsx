@@ -15,8 +15,9 @@ export const getMockCollapsibleTabs = () => {
       ScrollView: React.ScrollView,
       Tab: MockedTabs,
     },
+    useCurrentTabScrollY: () => ({ value: 0 }),
     useFocusedTab: () => "SomeFocusedTab",
-    useHeaderMeasurements: () => ({ height: { value: 0 } }),
+    useHeaderMeasurements: () => ({ height: { value: 0 }, top: { value: 0 } }),
     useTabNameContext: () => "Tab",
   }
 }
