@@ -43,6 +43,8 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent?: React.ComponentType<any>
   HeaderComponent?: React.ComponentType<any>
   ListFooterComponent?: React.ComponentType<any>
+  CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
+  numColumns?: number
 }> = ({
   query,
   results: latestResults,
@@ -53,9 +55,11 @@ const AutosuggestResultsFlatList: React.FC<{
   trackResultPress,
   ListEmptyComponent = EmptyList,
   ListHeaderComponent = () => <Spacer y={2} />,
+  CustomListItemComponent,
   HeaderComponent = null,
   prependResults = [],
   ListFooterComponent,
+  numColumns = 1,
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -182,8 +186,13 @@ const AutosuggestResultsFlatList: React.FC<{
         ListFooterComponent={ListFooterComponentWithLoadingIndicator}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
+        numColumns={numColumns}
         ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
         renderItem={({ item, index }) => {
+          if (CustomListItemComponent) {
+            return <CustomListItemComponent item={item} highlight={query} />
+          }
+
           return (
             <Flex mb={2}>
               <AutosuggestSearchResult
@@ -315,6 +324,8 @@ export const AutosuggestResults: React.FC<{
   ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
   ListFooterComponent?: React.ComponentType<any>
+  CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
+  numColumns?: number
 }> = React.memo(
   ({
     query,
@@ -329,6 +340,8 @@ export const AutosuggestResults: React.FC<{
     ListHeaderComponent,
     ListEmptyComponent,
     ListFooterComponent,
+    CustomListItemComponent,
+    numColumns = 1,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -367,6 +380,8 @@ export const AutosuggestResults: React.FC<{
               ListHeaderComponent={ListHeaderComponent}
               HeaderComponent={HeaderComponent}
               ListFooterComponent={ListFooterComponent}
+              CustomListItemComponent={CustomListItemComponent}
+              numColumns={numColumns}
             />
           )
         }}
