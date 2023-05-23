@@ -1491,18 +1491,18 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   insights(
     # The specific insights to return.
     kind: [ArtistInsightKind] = [
+      HIGH_AUCTION_RECORD
+      ACTIVE_SECONDARY_MARKET
+      CRITICALLY_ACCLAIMED
+      ARTSY_VANGUARD_YEAR
       SOLO_SHOW
       GROUP_SHOW
+      BIENNIAL
+      PRIVATE_COLLECTIONS
       COLLECTED
       REVIEWED
-      BIENNIAL
-      ACTIVE_SECONDARY_MARKET
-      HIGH_AUCTION_RECORD
-      ARTSY_VANGUARD_YEAR
-      CRITICALLY_ACCLAIMED
-      RESIDENCIES
-      PRIVATE_COLLECTIONS
       AWARDS
+      RESIDENCIES
     ]
   ): [ArtistInsight!]!
 
