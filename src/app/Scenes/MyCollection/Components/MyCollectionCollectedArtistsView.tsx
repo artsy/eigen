@@ -1,6 +1,7 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
+import { MyCollectionCollectedArtistGridItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistGridItem"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
 import { ViewAsIcons } from "app/Scenes/MyCollection/Components/MyCollectionSearchBar"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
@@ -72,35 +73,72 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
     })
 
   return (
-    <FlatList
-      data={artistsAndArtworksCount}
-      renderItem={({ item }) => {
-        return (
-          <MyCollectionCollectedArtistItem
-            artworksCount={item.artworksCount}
-            // Castiing this type as ts was not able to infer it
-            artist={item.artist!}
-            // Castiing this type as ts was not able to infer it
-            key={item.artist!.internalID}
-            compact
-          />
-        )
-      }}
-      onEndReached={handleLoadMore}
-      ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
-      ListHeaderComponent={() => (
-        <Flex alignItems="flex-end">
-          <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
-        </Flex>
+    <>
+      {viewOption === "grid" ? (
+        <FlatList
+          data={artistsAndArtworksCount}
+          renderItem={({ item }) => {
+            return (
+              <MyCollectionCollectedArtistGridItem
+                artworksCount={item.artworksCount}
+                // Castiing this type as ts was not able to infer it
+                artist={item.artist!}
+                // Castiing this type as ts was not able to infer it
+                key={item.artist!.internalID}
+              />
+            )
+          }}
+          key="grid"
+          keyExtractor={(item) => "grid" + item.artist!.internalID}
+          numColumns={2}
+          onEndReached={handleLoadMore}
+          ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
+          ListHeaderComponent={() => (
+            <Flex alignItems="flex-end" mb={2}>
+              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+            </Flex>
+          )}
+          ItemSeparatorComponent={() => <Spacer y={2} x={2} />}
+          refreshControl={
+            !__TEST__ ? (
+              <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+            ) : undefined
+          }
+        />
+      ) : (
+        <FlatList
+          data={artistsAndArtworksCount}
+          key="list"
+          keyExtractor={(item) => "list" + item.artist!.internalID}
+          renderItem={({ item }) => {
+            return (
+              <MyCollectionCollectedArtistItem
+                artworksCount={item.artworksCount}
+                // Castiing this type as ts was not able to infer it
+                artist={item.artist!}
+                // Castiing this type as ts was not able to infer it
+                key={item.artist!.internalID}
+                compact
+              />
+            )
+          }}
+          onEndReached={handleLoadMore}
+          ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
+          ListHeaderComponent={() => (
+            <Flex alignItems="flex-end">
+              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+            </Flex>
+          )}
+          style={{ paddingTop: space(2) }}
+          ItemSeparatorComponent={() => <Spacer y={2} />}
+          refreshControl={
+            !__TEST__ ? (
+              <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+            ) : undefined
+          }
+        />
       )}
-      style={{ paddingTop: space(2) }}
-      ItemSeparatorComponent={() => <Spacer y={2} />}
-      refreshControl={
-        !__TEST__ ? (
-          <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
-        ) : undefined
-      }
-    />
+    </>
   )
 }
 
@@ -128,6 +166,7 @@ const collectedArtistsPaginationFragment = graphql`
           node {
             internalID
             ...MyCollectionCollectedArtistItem_artist
+            ...MyCollectionCollectedArtistGridItem_artist
           }
         }
       }
