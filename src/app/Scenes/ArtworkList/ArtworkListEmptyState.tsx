@@ -25,7 +25,10 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
 
   return (
     <Flex flex={1} mb={1}>
-      <ArtworkListHeader artworkListEntity={artworkListEntity} />
+      <ArtworkListHeader
+        artworkListEntity={artworkListEntity}
+        canRenderContextualMenuButton={!artworkList.default}
+      />
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
         <ArtworkListTitle title={artworkList.name} />

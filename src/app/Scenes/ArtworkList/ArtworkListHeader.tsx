@@ -5,13 +5,15 @@ import { goBack } from "app/system/navigation/navigate"
 import { FC, useCallback, useState } from "react"
 import { HeaderMenuArtworkListEntity } from "./types"
 
-const EditHeaderButton = () => <MoreIcon fill="black100" width={24} height={24} />
-
 export interface ArtworkListHeaderProps {
   artworkListEntity?: HeaderMenuArtworkListEntity
+  canRenderContextualMenuButton?: boolean
 }
 
-export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ artworkListEntity }) => {
+export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({
+  artworkListEntity,
+  canRenderContextualMenuButton,
+}) => {
   const [isManageViewVisible, setIsManageViewVisible] = useState(false)
 
   const openManageArtworkListView = () => {
@@ -30,7 +32,20 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ artworkListEntit
     <>
       <FancyModalHeader
         onLeftButtonPress={goBack}
-        renderRightButton={EditHeaderButton}
+        renderRightButton={() => {
+          if (canRenderContextualMenuButton) {
+            return (
+              <MoreIcon
+                fill="black100"
+                width={24}
+                height={24}
+                accessibilityLabel="Contextual Menu Button"
+              />
+            )
+          }
+
+          return <></>
+        }}
         rightButtonDisabled={!artworkListEntity}
         onRightButtonPress={openManageArtworkListView}
         hideBottomDivider

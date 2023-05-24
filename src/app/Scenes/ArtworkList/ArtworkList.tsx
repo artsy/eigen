@@ -83,6 +83,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListsProvider artworkListId={listID}>
       <ArtworkListHeader
+        canRenderContextualMenuButton={!artworkList.default}
         artworkListEntity={{
           title: artworkList.name,
           internalID: artworkList.internalID,
@@ -142,6 +143,7 @@ const artworkListFragment = graphql`
     artworkList: collection(id: $listID) {
       internalID
       name
+      default
 
       artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "ArtworkList_artworks") {
@@ -170,7 +172,7 @@ const ArtworkListPlaceholder = () => {
   const space = useSpace()
   return (
     <ProvidePlaceholderContext>
-      <ArtworkListHeader />
+      <ArtworkListHeader canRenderContextualMenuButton={true} />
 
       <Flex px={2}>
         <PlaceholderText height={20} width={200} marginVertical={space(2)} />
