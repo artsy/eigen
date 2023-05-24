@@ -1,12 +1,11 @@
-import { Screen, Separator } from "@artsy/palette-mobile"
+import { Separator } from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { TabsContainer } from "app/Components/Tabs/TabsContainer"
-import { goBack } from "app/system/navigation/navigate"
+import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -27,6 +26,7 @@ interface PartnerProps {
 }
 
 const Partner: React.FC<PartnerProps> = (props) => {
+  // @ts-ignore TODO: add initial tab prop to TabsWithHeader
   const { partner, initialTab } = props
   const { partnerType, displayFullPartnerPage } = partner
 
@@ -56,34 +56,25 @@ const Partner: React.FC<PartnerProps> = (props) => {
         context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
       }}
     >
-      <Screen>
-        <Screen.Body fullwidth>
-          <Screen.Header onBack={goBack} />
-          <TabsContainer
-            lazy
-            initialTabName={initialTab}
-            renderHeader={() => <PartnerHeader partner={partner} />}
-          >
-            <Tabs.Tab name="Overview" label="Overview">
-              <Tabs.Lazy>
-                <PartnerOverview partner={partner} />
-              </Tabs.Lazy>
-            </Tabs.Tab>
-            <Tabs.Tab name="Artworks" label="Artworks">
-              <Tabs.Lazy>
-                <ArtworkFiltersStoreProvider>
-                  <PartnerArtwork partner={partner} />
-                </ArtworkFiltersStoreProvider>
-              </Tabs.Lazy>
-            </Tabs.Tab>
-            <Tabs.Tab name="Shows" label="Shows">
-              <Tabs.Lazy>
-                <PartnerShows partner={partner} />
-              </Tabs.Lazy>
-            </Tabs.Tab>
-          </TabsContainer>
-        </Screen.Body>
-      </Screen>
+      <TabsWithHeader title={partner.name!}>
+        <Tabs.Tab name="Overview" label="Overview">
+          <Tabs.Lazy>
+            <PartnerOverview partner={partner} />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name="Artworks" label="Artworks">
+          <Tabs.Lazy>
+            <ArtworkFiltersStoreProvider>
+              <PartnerArtwork partner={partner} />
+            </ArtworkFiltersStoreProvider>
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name="Shows" label="Shows">
+          <Tabs.Lazy>
+            <PartnerShows partner={partner} />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </TabsWithHeader>
     </ProvideScreenTracking>
   )
 }
@@ -95,6 +86,7 @@ export const PartnerContainer = createRefetchContainer(
       fragment Partner_partner on Partner
       @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: true }) {
         id
+        name
         internalID
         slug
         partnerType
