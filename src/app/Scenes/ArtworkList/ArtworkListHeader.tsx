@@ -16,7 +16,7 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
   const data = useFragment(Fragment, me)
   let artworkListEntity: HeaderMenuArtworkListEntity | null = null
 
-  if (data?.artworkList) {
+  if (data?.artworkList && !data.artworkList.default) {
     artworkListEntity = {
       title: data.artworkList.name,
       internalID: data.artworkList.internalID,
@@ -36,7 +36,7 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
       <FancyModalHeader
         onLeftButtonPress={goBack}
         renderRightButton={() => {
-          if (!data?.artworkList?.default) {
+          if (artworkListEntity) {
             return (
               <MoreIcon
                 fill="black100"
