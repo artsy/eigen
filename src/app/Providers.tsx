@@ -35,6 +35,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
       ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
+      TabsContext.Provider,
       RetryErrorBoundary,
       SuspenseProvider,
       ActionSheetProvider,

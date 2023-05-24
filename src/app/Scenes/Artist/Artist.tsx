@@ -1,4 +1,4 @@
-import { Screen, ShareIcon } from "@artsy/palette-mobile"
+import { ShareIcon } from "@artsy/palette-mobile"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -21,7 +21,7 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
-import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -33,7 +33,7 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
-const INITIAL_TAB = "Artworks"
+// const INITIAL_TAB = "Artworks"
 
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -49,7 +49,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const {
     artistAboveTheFold,
     artistBelowTheFold,
-    initialTab = INITIAL_TAB,
+    // initialTab = INITIAL_TAB,
     searchCriteria,
     fetchCriteriaError,
     predefinedFilters,
@@ -97,67 +97,62 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <Screen>
-          <Screen.Body fullwidth>
-            <Screen.Header
-              onBack={goBack}
-              rightElements={
+        <TabsWithHeader
+          // TODO: implement initial tab?
+          title={artistAboveTheFold.name!}
+          headerProps={{
+            rightElements: (
+              <>
+                <TouchableOpacity onPress={handleSharePress}>
+                  <ShareIcon width={23} height={23} />
+                </TouchableOpacity>
+              </>
+            ),
+            onBack: goBack,
+          }}
+          HeaderComponent={() => <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
+        >
+          {displayAboutSection ? (
+            <Tabs.Tab name="Overview" label="Overview">
+              <Tabs.Lazy>
                 <>
-                  <TouchableOpacity onPress={handleSharePress}>
-                    <ShareIcon width={23} height={23} />
-                  </TouchableOpacity>
+                  {artistBelowTheFold ? (
+                    <ArtistAboutContainer artist={artistBelowTheFold} />
+                  ) : (
+                    <LoadingPage />
+                  )}
                 </>
-              }
-            />
-            <TabsContainer
-              initialTabName={initialTab}
-              renderHeader={() => {
-                return <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
-              }}
-            >
-              {displayAboutSection ? (
-                <Tabs.Tab name="Overview" label="Overview">
-                  <Tabs.Lazy>
-                    <>
-                      {artistBelowTheFold ? (
-                        <ArtistAboutContainer artist={artistBelowTheFold} />
-                      ) : (
-                        <LoadingPage />
-                      )}
-                    </>
-                  </Tabs.Lazy>
-                </Tabs.Tab>
-              ) : null}
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          ) : null}
 
-              <Tabs.Tab name="Artworks" label="Artworks">
-                <Tabs.Lazy>
-                  <ArtistArtworks
-                    artist={artistAboveTheFold}
-                    searchCriteria={searchCriteria}
-                    predefinedFilters={predefinedFilters}
-                  />
-                </Tabs.Lazy>
-              </Tabs.Tab>
+          <Tabs.Tab name="Artworks" label="Artworks">
+            <Tabs.Lazy>
+              <ArtistArtworks
+                artist={artistAboveTheFold}
+                searchCriteria={searchCriteria}
+                predefinedFilters={predefinedFilters}
+              />
+            </Tabs.Lazy>
+          </Tabs.Tab>
 
-              {artistAboveTheFold?.statuses?.auctionLots ? (
-                <Tabs.Tab name="Insights" label="Insights">
-                  <Tabs.Lazy>
-                    <>
-                      {artistBelowTheFold ? (
-                        <ArtistInsightsFragmentContainer
-                          artist={artistBelowTheFold}
-                          initialFilters={auctionResultsInitialFilters}
-                        />
-                      ) : (
-                        <LoadingPage />
-                      )}
-                    </>
-                  </Tabs.Lazy>
-                </Tabs.Tab>
-              ) : null}
-            </TabsContainer>
-          </Screen.Body>
-        </Screen>
+          {artistAboveTheFold?.statuses?.auctionLots ? (
+            <Tabs.Tab name="Insights" label="Insights">
+              <Tabs.Lazy>
+                <>
+                  {artistBelowTheFold ? (
+                    <ArtistInsightsFragmentContainer
+                      artist={artistBelowTheFold}
+                      initialFilters={auctionResultsInitialFilters}
+                    />
+                  ) : (
+                    <LoadingPage />
+                  )}
+                </>
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          ) : null}
+        </TabsWithHeader>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
