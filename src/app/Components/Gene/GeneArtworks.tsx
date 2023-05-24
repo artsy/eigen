@@ -2,13 +2,11 @@ import { Box, Text, SimpleMessage } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import {
-  useArtworkFilters,
-  useSelectedFiltersCount,
-} from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
+import { SubTabBar } from "app/Components/Tabs/SubTabBar"
 import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
@@ -20,15 +18,10 @@ interface GeneArtworksContainerProps {
   relay: RelayPaginationProp
 }
 
-interface GeneArtworksProps extends GeneArtworksContainerProps {
-  openFilterModal: () => void
-}
-
-export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFilterModal }) => {
+export const GeneArtworks: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const tracking = useTracking()
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
-  const selectedFiltersCount = useSelectedFiltersCount()
 
   useArtworkFilters({
     relay,
@@ -60,13 +53,6 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
 
   return (
     <>
-      {/* TODO: move this to renderBelowTabBar */}
-      <Box mx={-2}>
-        <ArtworksFilterHeader
-          selectedFiltersCount={selectedFiltersCount}
-          onFilterPress={openFilterModal}
-        />
-      </Box>
       <Box mt={1}>
         <Text variant="sm-display" color="black60" mb={2}>
           Showing {artworksTotal} works
@@ -102,7 +88,10 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
   return (
     <ArtworkFiltersStoreProvider>
       <TabScrollView disableScrollViewPanResponder>
-        <GeneArtworks {...props} openFilterModal={openFilterArtworksModal} />
+        <SubTabBar>
+          <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
+        </SubTabBar>
+        <GeneArtworks {...props} />
         <ArtworkFilterNavigator
           {...props}
           id={gene.internalID}
@@ -203,7 +192,7 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
 export const tracks = {
   clearFilters: (id: string, slug: string) => ({
     action_name: "clearFilters",
-    context_screen: Schema.ContextModules.ArtworkGrid,
+    context_screen: Schema.PageNames.GenePage,
     context_screen_owner_type: Schema.OwnerEntityTypes.Gene,
     context_screen_owner_id: id,
     context_screen_owner_slug: slug,
