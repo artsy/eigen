@@ -1,6 +1,7 @@
-import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistGridItem_artist$key } from "__generated__/MyCollectionCollectedArtistGridItem_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { pluralize } from "app/utils/pluralize"
 import { Image } from "react-native"
 import { useFragment } from "react-relay"
@@ -15,6 +16,8 @@ interface MyCollectionCollectedArtistGridItemProps {
 export const MyCollectionCollectedArtistGridItem: React.FC<
   MyCollectionCollectedArtistGridItemProps
 > = ({ artist, artworksCount, index }) => {
+  const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
+
   const artistData = useFragment<MyCollectionCollectedArtistGridItem_artist$key>(
     artistFragment,
     artist
@@ -55,20 +58,30 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
       maxWidth={isIPad ? "33%" : "50%"}
       alignItems={isIPad ? "center" : index % 2 > 0 ? "flex-end" : "flex-start"}
     >
-      <Flex alignItems="center">
-        {artistData.image?.url ? (
-          <Image
-            style={{ width: itemWidth, height: itemWidth, borderRadius: itemWidth / 2 }}
-            source={{ uri: artistData.image?.url || "" }}
-          />
-        ) : (
-          <CustomArtistNoImage initials={artistData.initials || ""} itemWidth={itemWidth} />
-        )}
-        <Text variant="xs" numberOfLines={2} mt={0.5}>
-          {artistData.name ?? ""}
-        </Text>
-        {meta}
-      </Flex>
+      <Touchable
+        onPress={() => {
+          setViewKind({
+            viewKind: "Artist",
+            id: artistData.internalID,
+            artworksCount: artworksCount,
+          })
+        }}
+      >
+        <Flex alignItems="center">
+          {artistData.image?.url ? (
+            <Image
+              style={{ width: itemWidth, height: itemWidth, borderRadius: itemWidth / 2 }}
+              source={{ uri: artistData.image?.url || "" }}
+            />
+          ) : (
+            <CustomArtistNoImage initials={artistData.initials || ""} itemWidth={itemWidth} />
+          )}
+          <Text variant="xs" numberOfLines={2} mt={0.5}>
+            {artistData.name ?? ""}
+          </Text>
+          {meta}
+        </Flex>
+      </Touchable>
     </Flex>
   )
 }

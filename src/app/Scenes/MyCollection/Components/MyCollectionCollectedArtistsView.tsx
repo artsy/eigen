@@ -95,11 +95,11 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           key="grid"
           keyExtractor={(item) => "grid" + item.artist!.internalID}
           numColumns={isIPad ? 3 : 2}
-          style={{ flex: isIPad ? 3 : 2 }}
+          style={{ flex: isIPad ? 3 : 2, paddingTop: space(2) }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
-            <Flex alignItems="flex-end" mb={2}>
+            <Flex alignItems="flex-end" pb={2}>
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}
@@ -130,7 +130,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
-            <Flex alignItems="flex-end">
+            <Flex alignItems="flex-end" pb={2}>
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}
