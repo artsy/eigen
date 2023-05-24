@@ -1,21 +1,35 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
-import PushNotification from "react-native-push-notification"
-
 jest.mock("react-native-push-notification", () => ({
   requestPermissions: jest.fn(),
 }))
 
+jest.mock("app/utils/PushNotification", () => ({
+  ...jest.requireActual("app/utils/PushNotification"),
+  getNotificationPermissionsStatus: jest.fn(),
+}))
+
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import {
+  PushAuthorizationStatus,
+  getNotificationPermissionsStatus,
+} from "app/utils/PushNotification"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
+import { Alert } from "react-native"
+import PushNotification from "react-native-push-notification"
+
 describe("requestPushNotificationsPermission", () => {
+  let alertSpy: jest.SpyInstance
+
   beforeEach(() => {
     jest.useFakeTimers({
       legacyFakeTimers: true,
-    }) // this mocks out setTimeout and other timer functions
+    })
+    alertSpy = jest.spyOn(Alert, "alert")
   })
 
   afterEach(() => {
-    jest.runAllTimers() // this runs any timers that were set
-    jest.useRealTimers() // this returns timers back to normal
+    jest.runAllTimers()
+    jest.useRealTimers()
+    jest.clearAllMocks()
   })
 
   it("does not request push permissions if push permissions were requested this session", async () => {
@@ -27,11 +41,15 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
+
     const requestPushPromise = requestPushNotificationsPermission()
 
-    jest.runOnlyPendingTimers()
-    jest.advanceTimersByTime(3000)
+    jest.runAllTimers()
+    jest.advanceTimersByTime(5000)
 
+    await new Promise(setImmediate) // Wait for next tick in the JavaScript event loop
     await requestPushPromise
 
     expect(PushNotification.requestPermissions).not.toHaveBeenCalled()
@@ -46,10 +64,13 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
+
     const requestPushPromise = requestPushNotificationsPermission()
 
-    jest.runOnlyPendingTimers()
-    jest.advanceTimersByTime(3000)
+    jest.runAllTimers()
+    jest.advanceTimersByTime(5000)
 
     await requestPushPromise
 
@@ -60,5 +81,64 @@ describe("requestPushNotificationsPermission", () => {
         .pushPermissionsRequestedThisSession
 
     expect(pushRequestedThisSession).toBe(true)
+  })
+
+  it("shows settings alert if push permissions are denied", async () => {
+    __globalStoreTestUtils__?.injectState({
+      artsyPrefs: {
+        pushPromptLogic: {
+          pushPermissionsRequestedThisSession: false,
+        },
+      },
+    })
+
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
+
+    await requestPushNotificationsPermission()
+
+    expect(alertSpy).toHaveBeenCalled()
+  })
+
+  it("does not show settings alert if seen before", async () => {
+    __globalStoreTestUtils__?.injectState({
+      artsyPrefs: {
+        pushPromptLogic: {
+          pushPermissionsRequestedThisSession: false,
+          pushNotificationSettingsPromptSeen: true,
+        },
+      },
+    })
+
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
+
+    await requestPushNotificationsPermission()
+
+    expect(alertSpy).not.toHaveBeenCalled()
+  })
+
+  it("marks settings alert as seen after showing", async () => {
+    __globalStoreTestUtils__?.injectState({
+      artsyPrefs: {
+        pushPromptLogic: {
+          pushPermissionsRequestedThisSession: false,
+          pushNotificationSettingsPromptSeen: false,
+        },
+      },
+    })
+
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
+
+    await requestPushNotificationsPermission()
+
+    expect(alertSpy).toHaveBeenCalled()
+
+    const pushSettingsAlertSeen =
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
+        .pushNotificationSettingsPromptSeen
+
+    expect(pushSettingsAlertSeen).toBe(true)
   })
 })
