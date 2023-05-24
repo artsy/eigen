@@ -37,6 +37,7 @@ describe("AuctionHouse options screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 

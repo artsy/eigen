@@ -67,6 +67,7 @@ describe(navigate, () => {
         [
           "home",
           {
+            "fullBleed": true,
             "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {
@@ -116,6 +117,7 @@ describe(navigate, () => {
       [
         "home",
         {
+          "fullBleed": true,
           "hidesBackButton": true,
           "moduleName": "Artist",
           "props": {
@@ -148,6 +150,7 @@ describe(navigate, () => {
         [
           "home",
           {
+            "fullBleed": true,
             "hidesBackButton": true,
             "moduleName": "Artist",
             "props": {

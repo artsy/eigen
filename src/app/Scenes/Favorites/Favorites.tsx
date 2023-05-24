@@ -62,11 +62,7 @@ export const Favorites: React.FC = () => {
     >
       <Screen>
         <Screen.Body fullwidth>
-          <Screen.Header
-            // title={tag?.name!}
-            // titleProps={{ alignItems: "flex-start" }}
-            onBack={goBack}
-          />
+          <Screen.Header onBack={goBack} />
           <TabsContainer
             onTabChange={fireTabSelectionAnalytics}
             renderHeader={() => {

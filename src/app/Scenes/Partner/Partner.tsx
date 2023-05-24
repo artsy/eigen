@@ -6,6 +6,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -57,7 +58,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
     >
       <Screen>
         <Screen.Body fullwidth>
-          <Screen.Header />
+          <Screen.Header onBack={goBack} />
           <TabsContainer
             lazy
             initialTabName={initialTab}

@@ -31,6 +31,7 @@ describe("ArtistInsightsAuctionResults", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 

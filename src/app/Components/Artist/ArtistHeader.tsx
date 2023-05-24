@@ -118,7 +118,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const bylineRequired = artist.nationality || artist.birthday
 
   return (
-    <Box px={2} pt={6} pb={1}>
+    <Box px={2} pb={1}>
       <Text variant="lg-display">{artist.name}</Text>
       <Spacer y={1} />
 

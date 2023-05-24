@@ -7,7 +7,7 @@ import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app
 import Biography from "app/Components/Artist/Biography"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
 import { Stack } from "app/Components/Stack"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,7 +22,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const relatedArtists = extractNodes(artist.related?.artists)
 
   return (
-    <StickyTabPageScrollView>
+    <TabScrollView>
       <Stack spacing={4} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         <ArtistSeriesMoreSeriesFragmentContainer
@@ -48,7 +48,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 

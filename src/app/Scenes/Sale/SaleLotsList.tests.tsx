@@ -33,6 +33,7 @@ describe("SaleLotsListContainer", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -86,6 +87,7 @@ describe("SaleLotsListContainer", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   })
 

@@ -27,6 +27,7 @@ export interface ArtworkFiltersModel {
   sortOptions?: FilterData[]
   filterOptions?: FilterDisplayConfig[]
   sizeMetric: Metric
+  showFilterArtworksModal: boolean
 
   applyFiltersAction: Action<this>
   selectFiltersAction: Action<this, FilterData>
@@ -38,6 +39,7 @@ export interface ArtworkFiltersModel {
   setSizeMetric: Action<this, Metric>
   setInitialFilterStateAction: Action<this, FilterArray>
   setSelectedFiltersAction: Action<this, FilterArray>
+  setShowFilterArtworksModal: Action<this, boolean>
   setSortOptions: Action<this, this["sortOptions"]>
   setFilterOptions: Action<this, this["filterOptions"]>
 }
@@ -59,6 +61,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     followedArtists: null,
   },
   sizeMetric: LOCALIZED_UNIT,
+  showFilterArtworksModal: false,
 
   /**
    * Store actions
@@ -164,6 +167,10 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
 
   setFilterOptions: action((state, payload) => {
     state.filterOptions = payload
+  }),
+
+  setShowFilterArtworksModal: action((state, payload) => {
+    state.showFilterArtworksModal = payload
   }),
 })
 
