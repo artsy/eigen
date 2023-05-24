@@ -4,7 +4,6 @@ import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -23,6 +22,8 @@ describe("Gene", () => {
           query GeneTestsQuery($geneID: String!, $input: FilterArtworksInput)
           @relay_test_operation {
             gene(id: $geneID) {
+              displayName
+              name
               slug
               ...Header_gene
               ...About_gene
@@ -34,16 +35,7 @@ describe("Gene", () => {
           if (!props?.gene) {
             return null
           }
-          return (
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <Gene geneID={geneID} gene={props.gene} />,
-                },
-              ]}
-            />
-          )
+          return <Gene geneID={geneID} gene={props.gene!} />
         }}
         variables={{
           geneID,
