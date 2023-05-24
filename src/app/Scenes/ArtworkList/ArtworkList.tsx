@@ -83,6 +83,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListsProvider artworkListId={listID}>
       <ArtworkListHeader
+        canRenderContextualMenuButton={!artworkList.default}
         artworkListEntity={{
           title: artworkList.name,
           internalID: artworkList.internalID,
@@ -142,6 +143,7 @@ const artworkListFragment = graphql`
     artworkList: collection(id: $listID) {
       internalID
       name
+      default
 
       artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "ArtworkList_artworks") {
