@@ -2,9 +2,19 @@
 
 ### Prerequisites
 
-You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
+You'll need [homebrew](https://brew.sh) [asdf](https://asdf-vm.com/guide/getting-started.html), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
-> The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/main/package.json).
+#### Setting up asdf
+
+There are instructions here: https://asdf-vm.com/guide/getting-started.html
+You will want the java, nodejs, and ruby plugins to get all of our tooling.
+```
+brew install asdf
+# configure your shell setup scripts for your shell, see asdfs instructions on the site
+asdf plugin add ruby
+asdf plugin add nodejs
+asdf plugin add java
+```
 
 ### Set up iOS
 
@@ -41,6 +51,7 @@ cd eigen
 1. Run
 
 ```
+asdf install
 yarn setup:artsy
 yarn install:all
 yarn relay
