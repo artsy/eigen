@@ -24,10 +24,6 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
   }
 
   const openManageArtworkListView = () => {
-    if (!artworkListEntity) {
-      throw new Error("You need to pass `artworkListEntity` prop")
-    }
-
     setIsManageViewVisible(true)
   }
 
