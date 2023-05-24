@@ -1,6 +1,10 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
+import PushNotification from "react-native-push-notification"
+
+jest.mock("react-native-push-notification", () => ({
+  requestPermissions: jest.fn(),
+}))
 
 describe("requestPushNotificationsPermission", () => {
   beforeEach(() => {
@@ -23,7 +27,6 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    // Act
     const requestPushPromise = requestPushNotificationsPermission()
 
     jest.runOnlyPendingTimers()
@@ -31,9 +34,31 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushPromise
 
-    // Assert
-    expect(
-      LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions
-    ).not.toHaveBeenCalled()
+    expect(PushNotification.requestPermissions).not.toHaveBeenCalled()
+  })
+
+  it("marks push requested this session after a request", async () => {
+    __globalStoreTestUtils__?.injectState({
+      artsyPrefs: {
+        pushPromptLogic: {
+          pushPermissionsRequestedThisSession: false,
+        },
+      },
+    })
+
+    const requestPushPromise = requestPushNotificationsPermission()
+
+    jest.runOnlyPendingTimers()
+    jest.advanceTimersByTime(3000)
+
+    await requestPushPromise
+
+    expect(PushNotification.requestPermissions).toHaveBeenCalled()
+
+    const pushRequestedThisSession =
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
+        .pushPermissionsRequestedThisSession
+
+    expect(pushRequestedThisSession).toBe(true)
   })
 })

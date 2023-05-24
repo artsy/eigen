@@ -1,9 +1,10 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { unsafe_getPushPromptSettings } from "app/store/GlobalStore"
+import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
+import PushNotification from "react-native-push-notification"
 
 export const requestPushNotificationsPermission = async () => {
   // TODO: how to handle unwrapping this?
   const { pushPermissionsRequestedThisSession } = unsafe_getPushPromptSettings()!
+  const { setPushPermissionsRequestedThisSession } = GlobalStore.actions.artsyPrefs.pushPromptLogic
 
   if (pushPermissionsRequestedThisSession) {
     return
@@ -11,6 +12,7 @@ export const requestPushNotificationsPermission = async () => {
 
   setTimeout(() => {
     // Logic for making request goes here
-    LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
+    PushNotification.requestPermissions()
+    setPushPermissionsRequestedThisSession(true)
   }, 3000)
 }
