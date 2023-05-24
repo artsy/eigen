@@ -1,20 +1,27 @@
 import { MoreIcon } from "@artsy/palette-mobile"
+import { ArtworkListHeader_me$key } from "__generated__/ArtworkListHeader_me.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ManageArtworkListView } from "app/Scenes/ArtworkList/ManageArtworkListView"
 import { goBack } from "app/system/navigation/navigate"
 import { FC, useCallback, useState } from "react"
+import { graphql, useFragment } from "react-relay"
 import { HeaderMenuArtworkListEntity } from "./types"
 
 export interface ArtworkListHeaderProps {
-  artworkListEntity?: HeaderMenuArtworkListEntity
-  canRenderContextualMenuButton?: boolean
+  me: ArtworkListHeader_me$key | null
 }
 
-export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({
-  artworkListEntity,
-  canRenderContextualMenuButton,
-}) => {
+export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
   const [isManageViewVisible, setIsManageViewVisible] = useState(false)
+  const data = useFragment(Fragment, me)
+  let artworkListEntity: HeaderMenuArtworkListEntity | null = null
+
+  if (data?.artworkList) {
+    artworkListEntity = {
+      title: data.artworkList.name,
+      internalID: data.artworkList.internalID,
+    }
+  }
 
   const openManageArtworkListView = () => {
     if (!artworkListEntity) {
@@ -33,7 +40,7 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         renderRightButton={() => {
-          if (canRenderContextualMenuButton) {
+          if (!data?.artworkList?.default) {
             return (
               <MoreIcon
                 fill="black100"
@@ -60,3 +67,13 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({
     </>
   )
 }
+
+const Fragment = graphql`
+  fragment ArtworkListHeader_me on Me @argumentDefinitions(listID: { type: "String!" }) {
+    artworkList: collection(id: $listID) {
+      default
+      name
+      internalID
+    }
+  }
+`
