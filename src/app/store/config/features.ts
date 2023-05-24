@@ -236,9 +236,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
   },
   AREnableArtworkLists: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Artwork Lists",
     showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
