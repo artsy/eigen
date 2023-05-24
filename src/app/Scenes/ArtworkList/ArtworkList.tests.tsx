@@ -71,10 +71,7 @@ describe("ArtworkList", () => {
         resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             ...me,
-            artworkList: {
-              ...me.artworkList,
-              default: false,
-            },
+            artworkList: customArtworkList,
           }),
         })
 
@@ -93,10 +90,9 @@ describe("ArtworkList", () => {
           Me: () => ({
             ...me,
             artworkList: {
-              ...me.artworkList,
-              default: false,
+              ...customArtworkList,
               artworks: {
-                ...me.artworkList.artworks,
+                ...customArtworkList.artworks,
                 totalCount: 0,
               },
             },
@@ -111,27 +107,38 @@ describe("ArtworkList", () => {
   })
 })
 
-const me = {
-  artworkList: {
-    internalID: "id-1",
-    name: "Saved Artworks",
-    default: true,
-    artworks: {
-      totalCount: 2,
-      edges: [
-        {
-          node: {
-            title: "Artwork Title 1",
-            internalID: "613a38d6611297000d7ccc1d",
-          },
-        },
-        {
-          node: {
-            title: "Artwork Title 2",
-            internalID: "614e4006f856a0000df1399c",
-          },
-        },
-      ],
+const artworks = {
+  totalCount: 2,
+  edges: [
+    {
+      node: {
+        title: "Artwork Title 1",
+        internalID: "613a38d6611297000d7ccc1d",
+      },
     },
-  },
+    {
+      node: {
+        title: "Artwork Title 2",
+        internalID: "614e4006f856a0000df1399c",
+      },
+    },
+  ],
+}
+
+const defaultArtworkList = {
+  internalID: "id-1",
+  name: "Saved Artworks",
+  default: true,
+  artworks,
+}
+
+const customArtworkList = {
+  internalID: "custom-artwork-list",
+  name: "Custom Artwork List",
+  default: false,
+  artworks,
+}
+
+const me = {
+  artworkList: defaultArtworkList,
 }
