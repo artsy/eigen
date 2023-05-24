@@ -1,7 +1,6 @@
 import { Flex, Text, Screen } from "@artsy/palette-mobile"
 import { AnimatedTabsHeader, HeaderProps } from "app/Components/Tabs/AnimatedTabsHeader"
 import { TabsContainer } from "app/Components/Tabs/TabsContainer"
-import { TabsContext } from "app/Components/Tabs/TabsContext"
 import { CollapsibleProps } from "react-native-collapsible-tab-view"
 
 interface TabsWithHeaderProps {
@@ -20,32 +19,30 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
   title,
 }) => {
   return (
-    <TabsContext.Provider>
-      <Screen>
-        <AnimatedTabsHeader title={title} {...headerProps} />
-        <Screen.Body fullwidth>
-          <TabsContainer
-            renderHeader={() => {
-              if (!showLargeHeaderText || !title) {
-                return null
-              }
+    <Screen>
+      <AnimatedTabsHeader title={title} {...headerProps} />
+      <Screen.Body fullwidth>
+        <TabsContainer
+          renderHeader={() => {
+            if (!showLargeHeaderText || !title) {
+              return null
+            }
 
-              return (
-                <>
-                  <Flex my={1} pl={2} justifyContent="center" alignSelf="flex-start">
-                    <Text variant="lg-display" numberOfLines={2}>
-                      {title}
-                    </Text>
-                  </Flex>
-                  {!!HeaderComponent && <HeaderComponent />}
-                </>
-              )
-            }}
-          >
-            {children}
-          </TabsContainer>
-        </Screen.Body>
-      </Screen>
-    </TabsContext.Provider>
+            return (
+              <>
+                <Flex my={1} pl={2} justifyContent="center" alignSelf="flex-start">
+                  <Text variant="lg-display" numberOfLines={2}>
+                    {title}
+                  </Text>
+                </Flex>
+                {!!HeaderComponent && <HeaderComponent />}
+              </>
+            )
+          }}
+        >
+          {children}
+        </TabsContainer>
+      </Screen.Body>
+    </Screen>
   )
 }
