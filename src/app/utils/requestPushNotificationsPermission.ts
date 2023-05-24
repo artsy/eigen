@@ -17,10 +17,49 @@ const showSettingsAlert = () => {
   )
 }
 
+const showPrepromptAlert = () => {
+  // TODO: Analytics for user disinterest and interest
+  Alert.alert(
+    "Artsy Would Like to Send You Notifications",
+    "Turn on notifications to get important updates about artists you follow.",
+    [
+      { text: "Dismiss", style: "cancel" },
+      { text: "OK", onPress: () => requestSystemPermissions() },
+    ]
+  )
+}
+
+const requestSystemPermissions = () => {
+  GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogueSeen(true)
+  // TODO: double check these permissions
+  const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
+  PushNotification.requestPermissions(permissions)
+}
+
+const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
+const shouldDisplayPrepromptAlert = () => {
+  const { pushNotificationDialogueLastSeenDate } = unsafe_getPushPromptSettings()!
+
+  const currentDate = new Date()
+
+  if (pushNotificationDialogueLastSeenDate) {
+    // we don't want to ask too often
+    // currently, we make sure at least a week has passed by since you last saw the dialogue
+    const timePassed = currentDate.getTime() - pushNotificationDialogueLastSeenDate.getTime()
+    return timePassed >= ONE_WEEK_MS
+  } else {
+    // if you've never seen one before, we'll show you ;)
+    return true
+  }
+}
+
 export const requestPushNotificationsPermission = async () => {
   // TODO: how to handle unwrapping this?
-  const { pushPermissionsRequestedThisSession, pushNotificationSettingsPromptSeen } =
-    unsafe_getPushPromptSettings()!
+  const {
+    pushPermissionsRequestedThisSession,
+    pushNotificationSettingsPromptSeen,
+    pushNotificationSystemDialogueSeen,
+  } = unsafe_getPushPromptSettings()!
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
     GlobalStore.actions.artsyPrefs.pushPromptLogic
 
@@ -41,10 +80,10 @@ export const requestPushNotificationsPermission = async () => {
   }
 
   setTimeout(() => {
-    // TODO: double check these permissions
-    const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-    PushNotification.requestPermissions(permissions)
-    setPushPermissionsRequestedThisSession(true)
+    if (!pushNotificationSystemDialogueSeen && shouldDisplayPrepromptAlert()) {
+      showPrepromptAlert()
+      setPushPermissionsRequestedThisSession(true)
+    }
     return
   }, 3000)
 }
