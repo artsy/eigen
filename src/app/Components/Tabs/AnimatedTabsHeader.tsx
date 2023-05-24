@@ -11,7 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native"
 import { TabsContext } from "app/Components/Tabs/TabsContext"
 import { isTablet } from "react-native-device-info"
-import Animated, { Easing, FadeInLeft, FadeOut } from "react-native-reanimated"
+import Animated, { Easing, FadeOut, FadeInDown } from "react-native-reanimated"
 
 export interface HeaderProps {
   animated?: boolean
@@ -42,8 +42,6 @@ export const Header: React.FC<HeaderProps> = ({
   title,
 }) => {
   const navigation = useNavigation()
-  // TODO: Remove this once we figure out if we need it or not
-  const isSelectModeActive = false
 
   const Left = () => {
     if (hideLeftElements) {
@@ -71,10 +69,6 @@ export const Header: React.FC<HeaderProps> = ({
   }
 
   const Center = () => {
-    if (isSelectModeActive) {
-      return null
-    }
-
     if (!animated) {
       return (
         <Flex width={isTablet() ? "100%" : "70%"} flex={1}>
@@ -92,13 +86,13 @@ export const Header: React.FC<HeaderProps> = ({
     return (
       <>
         <Animated.View
-          entering={FadeInLeft.duration(400).easing(Easing.out(Easing.exp))}
+          entering={FadeInDown.duration(400).easing(Easing.out(Easing.exp))}
           exiting={FadeOut.duration(400).easing(Easing.out(Easing.exp))}
           style={{
             flex: 1,
           }}
         >
-          <Flex width={isTablet() ? "100%" : "70%"}>
+          <Flex alignItems="center">
             <Text variant="md" numberOfLines={1}>
               {title}
             </Text>
