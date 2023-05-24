@@ -1,6 +1,4 @@
-import { Flex, Screen, Text } from "@artsy/palette-mobile"
-import { TabsContainer } from "app/Components/Tabs/TabsContainer"
-import { goBack } from "app/system/navigation/navigate"
+import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Tabs } from "react-native-collapsible-tab-view"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
@@ -31,6 +29,7 @@ const Tab = {
 export const Favorites: React.FC = () => {
   const tracking = useTracking()
 
+  // @ts-ignore TODO: add onChangeTab event prop to TabsWithHeader!
   const fireTabSelectionAnalytics = (selectedTab: IndexChangeEventData) => {
     let eventDetails
 
@@ -60,39 +59,23 @@ export const Favorites: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      <Screen>
-        <Screen.Body fullwidth>
-          <Screen.Header onBack={goBack} />
-          <TabsContainer
-            onTabChange={fireTabSelectionAnalytics}
-            renderHeader={() => {
-              return (
-                <Flex>
-                  <Text variant="lg-display" m={2}>
-                    Follows
-                  </Text>
-                </Flex>
-              )
-            }}
-          >
-            <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
-              <Tabs.Lazy>
-                <FavoriteArtistsQueryRenderer />
-              </Tabs.Lazy>
-            </Tabs.Tab>
-            <Tabs.Tab name={Tab.shows.name} label={Tab.shows.label}>
-              <Tabs.Lazy>
-                <FavoriteShowsQueryRenderer />
-              </Tabs.Lazy>
-            </Tabs.Tab>
-            <Tabs.Tab name={Tab.categories.name} label={Tab.categories.label}>
-              <Tabs.Lazy>
-                <FavoriteCategoriesQueryRenderer />
-              </Tabs.Lazy>
-            </Tabs.Tab>
-          </TabsContainer>
-        </Screen.Body>
-      </Screen>
+      <TabsWithHeader title="Follows">
+        <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
+          <Tabs.Lazy>
+            <FavoriteArtistsQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name={Tab.shows.name} label={Tab.shows.label}>
+          <Tabs.Lazy>
+            <FavoriteShowsQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name={Tab.categories.name} label={Tab.categories.label}>
+          <Tabs.Lazy>
+            <FavoriteCategoriesQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </TabsWithHeader>
     </ProvideScreenTracking>
   )
 }
