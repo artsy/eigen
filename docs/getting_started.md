@@ -10,6 +10,7 @@ There are instructions here: https://asdf-vm.com/guide/getting-started.html
 You will want the java, nodejs, and ruby plugins to get all of our tooling.
 ```
 brew install asdf
+# configure your shell setup scripts for your shell, see asdfs instructions on the site
 asdf plugin add ruby
 asdf plugin add nodejs
 asdf plugin add java
