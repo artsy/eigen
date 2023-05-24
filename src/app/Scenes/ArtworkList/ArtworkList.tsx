@@ -82,13 +82,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   return (
     <ArtworkListsProvider artworkListId={listID}>
-      <ArtworkListHeader
-        canRenderContextualMenuButton={!artworkList.default}
-        artworkListEntity={{
-          title: artworkList.name,
-          internalID: artworkList.internalID,
-        }}
-      />
+      <ArtworkListHeader me={queryData.me} />
       <InfiniteScrollArtworksGridContainer
         connection={data?.artworkList?.artworks}
         loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
@@ -127,6 +121,7 @@ export const artworkListScreenQuery = graphql`
       ...ArtworkList_artworksConnection
         @arguments(listID: $listID, count: $count, after: $after, sort: $sort)
       ...ArtworkListEmptyState_me @arguments(listID: $listID)
+      ...ArtworkListHeader_me @arguments(listID: $listID)
     }
   }
 `
@@ -172,7 +167,7 @@ const ArtworkListPlaceholder = () => {
   const space = useSpace()
   return (
     <ProvidePlaceholderContext>
-      <ArtworkListHeader canRenderContextualMenuButton={true} />
+      <ArtworkListHeader me={null} />
 
       <Flex px={2}>
         <PlaceholderText height={20} width={200} marginVertical={space(2)} />
