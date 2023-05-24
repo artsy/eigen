@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistGridItem_artist$key } from "__generated__/MyCollectionCollectedArtistGridItem_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { pluralize } from "app/utils/pluralize"
@@ -9,27 +9,33 @@ import { graphql } from "relay-runtime"
 interface MyCollectionCollectedArtistGridItemProps {
   artist: MyCollectionCollectedArtistGridItem_artist$key
   artworksCount: number | null
+  index: number
 }
 
 export const MyCollectionCollectedArtistGridItem: React.FC<
   MyCollectionCollectedArtistGridItemProps
-> = ({ artist, artworksCount }) => {
+> = ({ artist, artworksCount, index }) => {
   const artistData = useFragment<MyCollectionCollectedArtistGridItem_artist$key>(
     artistFragment,
     artist
   )
   const { nationality, birthday, deathday } = artistData
+  const space = useSpace()
+  const { width: screenWidth } = useScreenDimensions()
+  const isIPad = screenWidth > 700
+  const itemWidth = isIPad ? (screenWidth - space(2) * 7) / 3 : (screenWidth - space(2) * 4) / 2
 
   const getMeta = () => {
     const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
 
-    if (tombstoneText || Number.isInteger(artworksCount)) {
+    if (!!tombstoneText || Number.isInteger(artworksCount)) {
       return (
         <Flex alignItems="center">
-          <Text variant="xs" color="black60">
-            {tombstoneText}
-          </Text>
-
+          {!!tombstoneText && (
+            <Text variant="xs" color="black60">
+              {tombstoneText}
+            </Text>
+          )}
           {Number.isInteger(artworksCount) && (
             <Text variant="xs" color={artworksCount === 0 ? "black60" : "black100"}>
               {artworksCount} {pluralize("artwork", artworksCount || 0)} uploaded
@@ -44,34 +50,43 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
   const meta = getMeta()
 
   return (
-    <Flex flex={1} maxWidth="50%" alignItems="center">
-      {artistData.image?.url ? (
-        <Image
-          style={{ width: 120, height: 120, borderRadius: 60 }}
-          source={{ uri: artistData.image?.url || "" }}
-        />
-      ) : (
-        <CustomArtistNoImage initials={artistData.initials || ""} />
-      )}
-      <Text variant="xs" numberOfLines={2} mt={0.5}>
-        {artistData.name ?? ""}
-      </Text>
-      {meta}
+    <Flex
+      flex={1}
+      maxWidth={isIPad ? "33%" : "50%"}
+      alignItems={isIPad ? "center" : index % 2 > 0 ? "flex-end" : "flex-start"}
+    >
+      <Flex alignItems="center">
+        {artistData.image?.url ? (
+          <Image
+            style={{ width: itemWidth, height: itemWidth, borderRadius: itemWidth / 2 }}
+            source={{ uri: artistData.image?.url || "" }}
+          />
+        ) : (
+          <CustomArtistNoImage initials={artistData.initials || ""} itemWidth={itemWidth} />
+        )}
+        <Text variant="xs" numberOfLines={2} mt={0.5}>
+          {artistData.name ?? ""}
+        </Text>
+        {meta}
+      </Flex>
     </Flex>
   )
 }
 
-const CustomArtistNoImage: React.FC<{ initials: string }> = ({ initials }) => {
+const CustomArtistNoImage: React.FC<{ initials: string; itemWidth: number }> = ({
+  initials,
+  itemWidth,
+}) => {
   return (
     <Flex
       alignItems="center"
       backgroundColor="black5"
       border="1px solid"
       borderColor="black15"
-      borderRadius={120 / 2}
-      height={120}
+      borderRadius={itemWidth / 2}
+      width={itemWidth}
+      height={itemWidth}
       justifyContent="center"
-      width={120}
     >
       <Text variant="xl">{initials}</Text>
     </Flex>

@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { MyCollectionCollectedArtistGridItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistGridItem"
@@ -21,6 +21,8 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
   const [refreshing, setRefreshing] = useState(false)
   const space = useSpace()
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const { width: screenWidth } = useScreenDimensions()
+  const isIPad = screenWidth > 700
 
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     collectedArtistsPaginationFragment,
@@ -77,7 +79,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       {viewOption === "grid" ? (
         <FlatList
           data={artistsAndArtworksCount}
-          renderItem={({ item }) => {
+          renderItem={({ item, index }) => {
             return (
               <MyCollectionCollectedArtistGridItem
                 artworksCount={item.artworksCount}
@@ -85,12 +87,15 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
                 artist={item.artist!}
                 // Castiing this type as ts was not able to infer it
                 key={item.artist!.internalID}
+                // passing index to use for the grid layout
+                index={index}
               />
             )
           }}
           key="grid"
           keyExtractor={(item) => "grid" + item.artist!.internalID}
-          numColumns={2}
+          numColumns={isIPad ? 3 : 2}
+          style={{ flex: isIPad ? 3 : 2 }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
@@ -98,7 +103,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}
-          ItemSeparatorComponent={() => <Spacer y={2} x={2} />}
+          ItemSeparatorComponent={() => <Spacer y={2} x={4} />}
           refreshControl={
             !__TEST__ ? (
               <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
