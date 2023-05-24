@@ -172,7 +172,7 @@ const ArtworkListPlaceholder = () => {
   const space = useSpace()
   return (
     <ProvidePlaceholderContext>
-      <ArtworkListHeader />
+      <ArtworkListHeader canRenderContextualMenuButton={true} />
 
       <Flex px={2}>
         <PlaceholderText height={20} width={200} marginVertical={space(2)} />
