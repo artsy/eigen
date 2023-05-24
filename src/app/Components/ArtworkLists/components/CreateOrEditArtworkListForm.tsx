@@ -58,11 +58,6 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
       onSubmit={handleSubmit}
     >
       {(formik) => {
-        const isSaveButtonDisabled =
-          !formik.isValid ||
-          formik.values.name.length === 0 ||
-          (mode === "edit" && formik.values.name === initialValues.name)
-
         return (
           <>
             <CreateNewArtworkListInput
@@ -78,7 +73,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
 
             <Button
               block
-              disabled={isSaveButtonDisabled}
+              disabled={!formik.isValid || !formik.dirty}
               loading={formik.isSubmitting}
               onPress={formik.handleSubmit}
             >
