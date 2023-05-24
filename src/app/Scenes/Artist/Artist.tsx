@@ -110,7 +110,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             ),
             onBack: goBack,
           }}
-          HeaderComponent={() => <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
+          BelowTitleHeaderComponent={() => (
+            <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
+          )}
         >
           {displayAboutSection ? (
             <Tabs.Tab name="Overview" label="Overview">

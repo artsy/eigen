@@ -5,7 +5,7 @@ import { CollapsibleProps } from "react-native-collapsible-tab-view"
 
 interface TabsWithHeaderProps extends TabsContainerProps {
   title: string
-  HeaderComponent?: () => JSX.Element
+  BelowTitleHeaderComponent?: () => JSX.Element
   headerProps?: HeaderProps
   showLargeHeaderText?: boolean
   children: CollapsibleProps["children"]
@@ -13,7 +13,7 @@ interface TabsWithHeaderProps extends TabsContainerProps {
 
 export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
   children,
-  HeaderComponent,
+  BelowTitleHeaderComponent,
   headerProps = {},
   showLargeHeaderText = true,
   title,
@@ -37,7 +37,7 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
                     {title}
                   </Text>
                 </Flex>
-                {!!HeaderComponent && <HeaderComponent />}
+                {!!BelowTitleHeaderComponent && <BelowTitleHeaderComponent />}
               </>
             )
           }}

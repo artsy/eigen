@@ -42,7 +42,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
     >
       <TabsWithHeader
         title={title}
-        HeaderComponent={() => (
+        BelowTitleHeaderComponent={() => (
           <Flex
             px={commonPadding}
             {...(isPad
