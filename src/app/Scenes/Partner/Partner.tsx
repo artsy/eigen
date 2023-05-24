@@ -26,7 +26,6 @@ interface PartnerProps {
 }
 
 const Partner: React.FC<PartnerProps> = (props) => {
-  // @ts-ignore TODO: add initial tab prop to TabsWithHeader
   const { partner, initialTab } = props
   const { partnerType, displayFullPartnerPage } = partner
 
@@ -56,7 +55,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
         context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
       }}
     >
-      <TabsWithHeader title={partner.name!}>
+      <TabsWithHeader title={partner.name!} initialTabName={initialTab}>
         <Tabs.Tab name="Overview" label="Overview">
           <Tabs.Lazy>
             <PartnerOverview partner={partner} />

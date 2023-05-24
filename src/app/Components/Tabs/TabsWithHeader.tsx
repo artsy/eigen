@@ -1,9 +1,9 @@
 import { Flex, Text, Screen } from "@artsy/palette-mobile"
 import { AnimatedTabsHeader, HeaderProps } from "app/Components/Tabs/AnimatedTabsHeader"
-import { TabsContainer } from "app/Components/Tabs/TabsContainer"
+import { TabsContainer, TabsContainerProps } from "app/Components/Tabs/TabsContainer"
 import { CollapsibleProps } from "react-native-collapsible-tab-view"
 
-interface TabsWithHeaderProps {
+interface TabsWithHeaderProps extends TabsContainerProps {
   title: string
   HeaderComponent?: () => JSX.Element
   headerProps?: HeaderProps
@@ -17,12 +17,14 @@ export const TabsWithHeader: React.FC<TabsWithHeaderProps> = ({
   headerProps = {},
   showLargeHeaderText = true,
   title,
+  ...rest
 }) => {
   return (
     <Screen>
       <AnimatedTabsHeader title={title} {...headerProps} />
       <Screen.Body fullwidth>
         <TabsContainer
+          {...rest}
           renderHeader={() => {
             if (!showLargeHeaderText || !title) {
               return null

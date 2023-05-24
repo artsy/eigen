@@ -33,7 +33,7 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
-// const INITIAL_TAB = "Artworks"
+const INITIAL_TAB = "Artworks"
 
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -49,7 +49,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const {
     artistAboveTheFold,
     artistBelowTheFold,
-    // initialTab = INITIAL_TAB,
+    initialTab = INITIAL_TAB,
     searchCriteria,
     fetchCriteriaError,
     predefinedFilters,
@@ -98,7 +98,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     >
       <ArtworkFiltersStoreProvider>
         <TabsWithHeader
-          // TODO: implement initial tab?
+          initialTabName={initialTab}
           title={artistAboveTheFold.name!}
           headerProps={{
             rightElements: (

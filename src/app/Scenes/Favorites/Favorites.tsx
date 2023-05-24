@@ -29,7 +29,6 @@ const Tab = {
 export const Favorites: React.FC = () => {
   const tracking = useTracking()
 
-  // @ts-ignore TODO: add onChangeTab event prop to TabsWithHeader!
   const fireTabSelectionAnalytics = (selectedTab: IndexChangeEventData) => {
     let eventDetails
 
@@ -59,7 +58,7 @@ export const Favorites: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      <TabsWithHeader title="Follows">
+      <TabsWithHeader title="Follows" onTabChange={fireTabSelectionAnalytics}>
         <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
           <Tabs.Lazy>
             <FavoriteArtistsQueryRenderer />
