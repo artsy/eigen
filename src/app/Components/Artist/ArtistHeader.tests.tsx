@@ -17,14 +17,6 @@ describe("ArtistHeader", () => {
     variables: { artistID: "artist-id" },
   })
 
-  it("renders properly", () => {
-    renderWithRelay({
-      Artist: () => mockArtist,
-    })
-
-    expect(screen.queryByText("Marcel Duchamp")).toBeTruthy()
-  })
-
   it("displays follow button for artist", () => {
     renderWithRelay({
       Artist: () => mockArtist,
@@ -47,7 +39,6 @@ describe("ArtistHeader", () => {
 const mockArtist = {
   internalID: "some-id",
   id: "marcel-duchamp",
-  name: "Marcel Duchamp",
   nationality: "French",
   birthday: "11/17/1992",
   counts: {

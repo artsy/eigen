@@ -3,14 +3,12 @@ import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import {
-  useArtworkFilters,
-  useSelectedFiltersCount,
-} from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { SubTabBar } from "app/Components/Tabs/SubTabBar"
 import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -29,7 +27,6 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   const tracking = useTracking()
   const artworksTotal = tag.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
-  const selectedFiltersCount = useSelectedFiltersCount()
 
   const trackClear = () => {
     tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
@@ -59,13 +56,9 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   return (
     <>
-      {/* TODO: find a better way than neg margin to align the sort and filter */}
-      <Box mx={-2}>
-        <ArtworksFilterHeader
-          selectedFiltersCount={selectedFiltersCount}
-          onFilterPress={openFilterModal}
-        />
-      </Box>
+      <SubTabBar>
+        <TagArtworksFilterHeader openFilterArtworksModal={openFilterModal} />
+      </SubTabBar>
       <Spacer y={1} />
       <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works

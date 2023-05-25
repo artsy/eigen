@@ -1,7 +1,6 @@
-import { Screen } from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
-import { TabsContainer } from "app/Components/Tabs/TabsContainer"
-import { goBack } from "app/system/navigation/navigate"
+import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+import { TagPlaceholder } from "app/Scenes/Tag/TagPlaceholder"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -9,7 +8,6 @@ import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql, QueryRenderer } from "react-relay"
 import About from "./About"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
-import { TagPlaceholder } from "./TagPlaceholder"
 
 interface TagProps {
   tagID?: string
@@ -32,30 +30,16 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag?.slug,
       }}
     >
-      <Screen>
-        <Screen.Body fullwidth>
-          <TabsContainer
-            renderHeader={() => {
-              return (
-                <Screen.Header
-                  title={tag?.name!}
-                  titleProps={{ alignItems: "flex-start" }}
-                  onBack={goBack}
-                />
-              )
-            }}
-          >
-            <Tabs.Tab name="Artworks" label="Artworks">
-              <TagArtworksPaginationContainer tag={tag!} />
-            </Tabs.Tab>
-            {!!tag?.description ? (
-              <Tabs.Tab name="About" label="About">
-                <About tag={tag} />
-              </Tabs.Tab>
-            ) : null}
-          </TabsContainer>
-        </Screen.Body>
-      </Screen>
+      <TabsWithHeader title={tag?.name!}>
+        <Tabs.Tab name="Artworks" label="Artworks">
+          <TagArtworksPaginationContainer tag={tag!} />
+        </Tabs.Tab>
+        {!!tag?.description ? (
+          <Tabs.Tab name="About" label="About">
+            <About tag={tag} />
+          </Tabs.Tab>
+        ) : null}
+      </TabsWithHeader>
     </ProvideScreenTracking>
   )
 }
