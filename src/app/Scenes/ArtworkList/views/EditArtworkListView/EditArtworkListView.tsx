@@ -1,3 +1,4 @@
+import { ActionType, EditedArtworkList, OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
@@ -15,6 +16,7 @@ import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkLists
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { FormikHelpers } from "formik"
 import { FC } from "react"
+import { useTracking } from "react-tracking"
 import { useEditArtworkList } from "./useEditArtworkList"
 
 const NAME = "EditArtworkListView"
@@ -29,12 +31,23 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
   ...rest
 }) => {
   const toast = useArtworkListToast()
+  const { trackEvent } = useTracking()
   const bottomOffset = useArtworkListsBottomOffset(2)
   const { dismiss, dismissAll } = useBottomSheetModal()
   const [commit] = useEditArtworkList()
 
   const closeView = () => {
     dismiss(NAME)
+  }
+
+  const trackAnalytics = () => {
+    const event: EditedArtworkList = {
+      action: ActionType.editedArtworkList,
+      context_owner_type: OwnerType.saves,
+      owner_id: artworkListEntity.internalID,
+    }
+
+    trackEvent(event)
   }
 
   const handleSubmit = (
@@ -51,6 +64,7 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
       onCompleted: () => {
         helpers.setSubmitting(false)
         toast.changesSaved()
+        trackAnalytics()
         dismissAll()
       },
       onError: (error) => {
