@@ -28,7 +28,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
     >
       <Join separator={<Spacer x={1} />}>
         {data.insights.map((i: any, index: number) => (
-          <Pill key={index} disabled rounded selected={true} bg="blue10">
+          <Pill key={index} rounded badge>
             {i.label}
           </Pill>
         ))}
