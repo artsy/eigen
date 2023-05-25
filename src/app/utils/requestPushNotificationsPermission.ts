@@ -17,7 +17,7 @@ const showSettingsAlert = () => {
   )
 }
 
-const showPrepromptAlert = () => {
+const showPrepromptAlert = async () => {
   // TODO: Analytics for user disinterest and interest
   Alert.alert(
     "Artsy Would Like to Send You Notifications",
@@ -26,6 +26,10 @@ const showPrepromptAlert = () => {
       { text: "Dismiss", style: "cancel" },
       { text: "OK", onPress: () => requestSystemPermissions() },
     ]
+  )
+  const lastSeenDate = new Date(Date.now())
+  await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogueLastSeenDate(
+    lastSeenDate
   )
 }
 
