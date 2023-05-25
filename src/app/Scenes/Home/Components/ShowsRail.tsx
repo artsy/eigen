@@ -1,12 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowsRailQuery } from "__generated__/ShowsRailQuery.graphql"
 import { ShowsRail_showsConnection$key } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocationOrIpAddress } from "app/utils/hooks/useLocationOrIpAddress"
-import { RandomWidthPlaceholderText, PlaceholderBox } from "app/utils/placeholders"
+import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
@@ -116,6 +117,8 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   disableLocation = false,
   ...restProps
 }) => {
+  const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
+
   const { location, ipAddress, isLoading } = useLocationOrIpAddress(disableLocation)
 
   if (isLoading) {
@@ -124,6 +127,12 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 
   return (
     <Suspense fallback={<ShowsRailPlaceholder />}>
+      {!!visualizeLocation && (
+        <Text mx={2} color="red">
+          Location: {JSON.stringify(location)}, IP: {JSON.stringify(ipAddress)}
+        </Text>
+      )}
+
       <ShowsRail {...restProps} location={location} ipAddress={ipAddress} />
     </Suspense>
   )
