@@ -1,4 +1,5 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
+import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -13,7 +14,8 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const { artworkListId, isSavedToArtworkList, onSave, dispatch } = useArtworkListsContext()
+  const { onSave, dispatch } = useArtworkListsContext()
+  const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
@@ -29,8 +31,12 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   let isSaved = artwork.isSaved
 
   if (isArtworkListsEnabled) {
-    if (typeof artworkListId !== "undefined") {
-      isSaved = isSavedToArtworkList
+    if (artworkListID !== null) {
+      const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
+        (artworkID) => artworkID === artwork.internalID
+      )
+
+      isSaved = !isArtworkRemovedFromArtworkList
     } else {
       isSaved = artwork.isSaved || isSavedToCustomArtworkLists
     }
@@ -73,8 +79,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
-      type: "SET_ARTWORK",
-      payload: artworkEntity,
+      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
+      payload: {
+        artwork: artworkEntity,
+        artworkListID,
+      },
     })
   }
 
@@ -84,7 +93,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       return
     }
 
-    if (artworkListId || isSavedToCustomArtworkLists) {
+    if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
       return
     }
