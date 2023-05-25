@@ -45,6 +45,7 @@ export interface ArtworkListEntity {
 export type ArtworkListState = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
+  artworkListID: string | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
   selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
@@ -53,7 +54,13 @@ export type ArtworkListState = {
 
 export type ArtworkListAction =
   | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
-  | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
+  | {
+      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW"
+      payload: {
+        artwork: ArtworkEntity | null
+        artworkListID: string | null
+      }
+    }
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "RESET" }
   | {
@@ -65,7 +72,6 @@ export type ArtworkListAction =
 export interface ArtworkListsContextState {
   state: ArtworkListState
   artworkListId?: string
-  isSavedToArtworkList: boolean
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
   dispatch: Dispatch<ArtworkListAction>

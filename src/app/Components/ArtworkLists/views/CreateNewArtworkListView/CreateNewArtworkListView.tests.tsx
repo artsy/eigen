@@ -23,7 +23,6 @@ describe("CreateNewArtworkListView", () => {
         ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
         artwork: artworkEntity,
       },
-      isSavedToArtworkList: false,
       addingArtworkListIDs: [],
       removingArtworkListIDs: [],
       dispatch: noop,
