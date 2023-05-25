@@ -17,13 +17,11 @@ export const ArtQuizWelcome = () => {
         <Flex flex={1} justifyContent="center">
           <ArtsyLogoBlackIcon scale={0.75} />
           <Spacer y={2} />
-          <Text variant="xl">Art Taste Quiz</Text>
+          <Text variant="xl">What's your art taste?</Text>
           <Spacer y={2} />
-          <Text variant="md">See more of what you love.</Text>
+          <Text variant="md">Let us be your art advisor.</Text>
           <Spacer y={1} />
-          <Text variant="md">
-            Rate artworks to discover your taste profile and get recommendations tailored to you.
-          </Text>
+          <Text variant="md">Rate artworks and get recommendations tailored to you.</Text>
         </Flex>
         <Flex justifyContent="flex-end">
           <Button block onPress={() => quizStackNavigate("ArtQuizArtworks")}>

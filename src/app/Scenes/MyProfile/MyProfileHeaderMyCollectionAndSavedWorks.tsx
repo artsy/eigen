@@ -15,13 +15,13 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
-import { SafeAreaView } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { QueryRenderer, createRefetchContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileHeader } from "./MyProfileHeader"
@@ -36,11 +36,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const view = MyCollectionTabsStore.useStoreState((state) => state.view)
+  const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
 
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
         <StickyTabPage
           disableBackButtonUpdate
           tabs={compact([
@@ -79,7 +79,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           staticHeaderContent={<MyProfileHeader me={me} />}
         />
       </SafeAreaView>
-      {view !== null && <MyCollectionBottomSheetModals />}
+      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }
@@ -120,11 +120,15 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
     >
       <MyCollectionTabsStoreProvider>
         <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-          environment={defaultEnvironment}
+          environment={getRelayEnvironment()}
           query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
           render={renderWithPlaceholder({
             Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-            renderPlaceholder: () => <MyCollectionPlaceholder />,
+            renderPlaceholder: () => (
+              <SafeAreaView>
+                <MyCollectionPlaceholder />
+              </SafeAreaView>
+            ),
           })}
           variables={{}}
         />

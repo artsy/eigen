@@ -1,17 +1,20 @@
-import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ResultAction } from "app/Components/ArtworkLists/types"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { FC } from "react"
 
-export const SelectArtworkListsForArtworkFooter = () => {
+export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
-  const { selectedArtworkListIDs } = state
+  const { selectedTotalCount } = state
   const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
+  const totalCount =
+    selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
   const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork(artwork.id)
 
@@ -42,9 +45,9 @@ export const SelectArtworkListsForArtworkFooter = () => {
   }
 
   return (
-    <Box p={2}>
+    <Box {...props}>
       <Text variant="xs" textAlign="center">
-        {getSelectedListsCountText(selectedArtworkListIDs.length)}
+        {getSelectedListsCountText(totalCount)}
       </Text>
 
       <Spacer y={1} />

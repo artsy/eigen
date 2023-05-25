@@ -1,14 +1,14 @@
 import {
   Avatar,
-  MapPinIcon,
-  BriefcaseIcon,
-  SettingsIcon,
-  InstitutionIcon,
-  Flex,
   Box,
-  useColor,
+  BriefcaseIcon,
+  Flex,
+  InstitutionIcon,
+  MapPinIcon,
+  SettingsIcon,
   Text,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
@@ -32,7 +32,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   const userProfileImagePath = localImage?.path || me?.icon?.url
 
   return (
-    <Flex>
+    <Flex pt={2}>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
           <TouchableOpacity

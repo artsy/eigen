@@ -3,6 +3,7 @@ import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
@@ -75,7 +76,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         contextModule: ContextModule.upcomingAuctionsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
         hidden: !showUpcomingAuctionResultsRail,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcoming?.totalCount,
+        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsUpcoming),
         key: "upcomingAuctionLotsForYouRail",
         title: "Upcoming Auction Lots For You",
         type: "auction-results",
@@ -83,7 +84,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         contextModule: ContextModule.auctionResultsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsPast,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsPast?.totalCount,
+        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsPast),
         key: "latestAuctionResultsRail",
         prefetchUrl: "/auction-results-for-artists-you-follow",
         title: "Latest Auction Results",
@@ -196,8 +197,8 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       {
         contextModule: ContextModule.showsRail,
-        data: props.showsConnection,
-        isEmpty: isEmpty(props.showsConnection),
+        data: true,
+        isEmpty: false,
         key: "showsRail",
         title: "Shows for You",
         type: "shows",
@@ -237,7 +238,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.recentlyViewedWorksArtworkModule,
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
-    props.showsConnection,
     props.homePageBelow?.fairsModule,
     showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,

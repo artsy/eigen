@@ -1,14 +1,15 @@
 import {
-  Spacer,
-  CloseIcon,
   ChevronIcon,
-  ReloadIcon,
+  CloseIcon,
   Flex,
-  useColor,
-  Text,
-  useSpace,
+  ReloadIcon,
+  Screen,
   Separator,
+  Spacer,
+  Text,
   Touchable,
+  useColor,
+  useSpace,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -19,22 +20,22 @@ import { SearchInput } from "app/Components/SearchInput"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
-import { environment, EnvironmentKey } from "app/store/config/EnvironmentModel"
-import { DevToggleName, devToggles, FeatureName, features } from "app/store/config/features"
+import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
+import { DevToggleName, FeatureName, devToggles, features } from "app/store/config/features"
 import { Versions } from "app/store/migration"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import {
   Alert,
   AlertButton,
-  BackHandler,
-  Button as RNButton,
   DevSettings,
   NativeModules,
   Platform,
+  Button as RNButton,
   ScrollView,
   TouchableHighlight,
   TouchableOpacity,
@@ -42,6 +43,7 @@ import {
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -53,7 +55,7 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void }) => {
+export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
@@ -64,30 +66,27 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const space = useSpace()
   const toast = useToast()
 
-  useEffect(
-    useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackButton)
-
-      return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
-    }, [])
-  )
   const handleBackButton = () => {
     onClose()
     return true
   }
+
+  useBackHandler(handleBackButton)
+
   const { unleashEnv } = useUnleashEnvironment()
 
   const chevronStyle = { marginRight: space(1) }
 
+  const { top: topInset } = useSafeAreaInsets()
+
   return (
-    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py={2}>
-      <Flex flexDirection="row" justifyContent="space-between">
+    <Screen>
+      <Flex flexDirection="row" justifyContent="space-between" mt={`${topInset}px`}>
         <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
         </Text>
         <Buttons onClose={onClose} />
       </Flex>
-
       <ScrollView
         style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
@@ -274,7 +273,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           />
         </CollapseMenu>
       </ScrollView>
-    </Flex>
+    </Screen>
   )
 }
 

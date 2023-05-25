@@ -20,11 +20,11 @@ import {
   CareerHighlightBigCardSoloShow_myCollectionInfo$key,
 } from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useState } from "react"
 import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "app/utils/hooks"
 import { CareerHighlightKind, getCareerHiglight } from "./CareerHighlightCard"
 
 const CardHeader: React.FC<{

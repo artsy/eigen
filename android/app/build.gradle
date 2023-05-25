@@ -85,12 +85,6 @@ import org.apache.tools.ant.taskdefs.condition.Os
  * ]
  */
 
-project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
-]
-
-apply from: "../../node_modules/react-native/react.gradle"
-
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -119,6 +113,13 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
+// order matters here, this must be set before the react.gradle apply
+project.ext.react = [
+    entryFile: "index.android.js",
+    enableHermes: true,  // clean and rebuild if changing
+]
+
+apply from: "../../node_modules/react-native/react.gradle"
 /**
  * Whether to enable the Hermes VM.
  *
@@ -281,7 +282,7 @@ dependencies {
     api("com.squareup.okhttp3:okhttp")
     api("com.squareup.okhttp3:logging-interceptor")
 
-    implementation 'com.segment.analytics.android:analytics:4.+'
+    implementation 'com.segment.analytics.android:analytics:4.11.3'
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
 

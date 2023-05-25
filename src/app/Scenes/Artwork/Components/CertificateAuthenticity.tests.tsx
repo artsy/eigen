@@ -3,10 +3,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CertificateOfAuthenticity } from "./CertificateAuthenticity"
 
-jest.mock("app/system/navigation/navigate", () => ({
-  navigate: jest.fn(),
-}))
-
 describe("CertificateAuthenticity", () => {
   it("renders", () => {
     const { getByText } = renderWithWrappers(<CertificateOfAuthenticity />)

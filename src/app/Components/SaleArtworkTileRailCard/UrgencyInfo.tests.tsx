@@ -46,6 +46,26 @@ describe("UrgencyInfo", () => {
     expect(getByText("In progress")).toBeDefined()
   })
 
+  it.skip("calls onTimerEnd function when timer ends", () => {
+    const start = new Date(new Date().getTime()).toISOString()
+    const end = new Date(new Date().getTime() + 3 * SEC).toISOString()
+    const onTimerEndMock = jest.fn()
+    renderWithWrappers(
+      <UrgencyInfo
+        startAt={start}
+        endAt={end}
+        saleTimeZone="America/New_York"
+        onTimerEnd={onTimerEndMock}
+      />
+    )
+
+    // IRL onTimerEndMock is called once when the timer ends
+    // but since timer runs endlessly, jest timer would never exit
+    // TODO: Find better way to test this block
+    jest.runAllTimers()
+    expect(onTimerEndMock).toHaveBeenCalled()
+  })
+
   describe("text color", () => {
     it("text color is red when time is less than 1 hour", () => {
       const start = new Date(new Date().getTime() - 10).toISOString()

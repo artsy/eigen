@@ -1,5 +1,3 @@
-This update includes a number of improvements and bug fixes including:
-
-- New look for Artists on the home feed
+This update includes a number of improvements and bug fixes.
 
 Have feedback? Email us at support@artsy.net

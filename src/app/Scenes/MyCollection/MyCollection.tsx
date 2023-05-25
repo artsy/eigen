@@ -13,7 +13,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -34,12 +34,12 @@ import {
   RefreshEvents,
   refreshMyCollectionInsights,
 } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { SafeAreaView } from "react-native"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -152,7 +152,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <StickyTabPageScrollView>
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
             <Separator my={4} />
@@ -165,13 +165,12 @@ const MyCollection: React.FC<{
 
   return (
     <StickyTabPageScrollView
-      contentContainerStyle={{
-        justifyContent: "flex-start",
-      }}
+      contentContainerStyle={{ justifyContent: "flex-start" }}
       refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       innerRef={innerFlatListRef}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
+      paddingHorizontal={0}
     >
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
@@ -180,7 +179,7 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
-        <MyCollectionCollectedArtistsRail />
+        <MyCollectionCollectedArtists me={me} />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
@@ -219,6 +218,7 @@ export const MyCollectionContainer = createPaginationContainer(
           artistsCount
           artworksCount
         }
+        ...MyCollectionCollectedArtists_me
         auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
         }
@@ -317,7 +317,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex flex={1}>
@@ -325,7 +325,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={50} height={50} borderRadius={50} />
-            <Flex flex={1} justifyContent="center" ml={2}>
+            <Flex flex={1} justifyContent="center" ml={2} mt={2}>
               <PlaceholderText width={80} height={25} />
               <PlaceholderText width={100} height={15} />
             </Flex>
@@ -375,10 +375,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </SafeAreaView>
+    </Flex>
   )
 }
 
-export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
->["node"]
+export type MyCollectionArtworkEdge =
+  ExtractNodeType<InfiniteScrollArtworksGrid_myCollectionConnection$data>

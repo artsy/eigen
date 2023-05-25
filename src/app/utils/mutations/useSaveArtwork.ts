@@ -1,4 +1,3 @@
-import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { useMutation } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -17,7 +16,7 @@ export const useSaveArtwork = ({
   onCompleted,
   onError,
 }: SaveArtworkOptions) => {
-  const [commit] = useMutation(SaveArtworkMutation)
+  const [commit] = useMutation(Mutation)
   const nextSavedState = !isSaved
 
   return () => {
@@ -28,31 +27,31 @@ export const useSaveArtwork = ({
           remove: isSaved,
         },
       },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: nextSavedState,
-          },
-        },
-      },
       onCompleted: () => {
-        refreshOnArtworkSave()
         onCompleted?.(nextSavedState)
       },
-      onError: () => {
-        onError?.()
+      onError,
+      optimisticUpdater: (store) => {
+        const artwork = store.get(id)
+        artwork?.setValue(nextSavedState, "isSaved")
       },
     })
   }
 }
 
-const SaveArtworkMutation = graphql`
+const Mutation = graphql`
   mutation useSaveArtworkMutation($input: SaveArtworkInput!) {
     saveArtwork(input: $input) {
       artwork {
         id
         isSaved
+      }
+
+      me {
+        collection(id: "saved-artwork") {
+          internalID
+          ...ArtworkListItem_collection
+        }
       }
     }
   }

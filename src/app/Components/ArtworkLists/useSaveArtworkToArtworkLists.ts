@@ -2,6 +2,7 @@ import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveA
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
@@ -35,7 +36,15 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     }
   }
 
-  const saveArtworkToDefaultArtworkList = useSaveArtwork({
+  const legacySaveArtworkToDefaultArtworkList = useLegacySaveArtwork({
+    ...restOptions,
+    id: artwork.id,
+    internalID: artwork.internalID,
+    isSaved: artwork.isSaved,
+    onCompleted,
+  })
+
+  const newSaveArtworkToDefaultArtworkList = useSaveArtwork({
     ...restOptions,
     id: artwork.id,
     internalID: artwork.internalID,
@@ -43,22 +52,24 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     onCompleted: (isArtworkSaved) => {
       onCompleted?.(isArtworkSaved)
 
-      if (isArtworkListsEnabled) {
-        if (isArtworkSaved) {
-          onSave({
-            action: ResultAction.SavedToDefaultArtworkList,
-            artwork: artworkEntity,
-          })
-
-          return
-        }
-
+      if (isArtworkSaved) {
         onSave({
-          action: ResultAction.RemovedFromDefaultArtworkList,
+          action: ResultAction.SavedToDefaultArtworkList,
+          artwork: artworkEntity,
         })
+
+        return
       }
+
+      onSave({
+        action: ResultAction.RemovedFromDefaultArtworkList,
+      })
     },
   })
+
+  const saveArtworkToDefaultArtworkList = isArtworkListsEnabled
+    ? newSaveArtworkToDefaultArtworkList
+    : legacySaveArtworkToDefaultArtworkList
 
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({

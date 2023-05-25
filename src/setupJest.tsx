@@ -637,3 +637,14 @@ jest.mock("react-native-collapsible-tab-view", () => {
     require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
   return getMockCollapsibleTabs()
 })
+
+jest.mock("@react-native-community/geolocation", () => ({
+  addListener: jest.fn(),
+  getCurrentPosition: jest.fn(),
+  removeListeners: jest.fn(),
+  requestAuthorization: jest.fn(),
+  setConfiguration: jest.fn(),
+  startObserving: jest.fn(),
+  setRNConfiguration: jest.fn(),
+  stopObserving: jest.fn(),
+}))

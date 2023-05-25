@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { FC } from "react"
@@ -14,20 +14,20 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
 
       <Spacer x={1} />
 
-      <Box>
+      <Flex flex={1}>
         {!!artwork.artistNames && (
           <Text variant="sm-display" numberOfLines={1}>
             {artwork.artistNames}
           </Text>
         )}
 
-        <Text variant="sm" color="black60" numberOfLines={2}>
+        <Text variant="sm" color="black60" numberOfLines={1}>
           <Text variant="sm" color="black60" italic>
             {artwork.title}
           </Text>
-          {artwork.year && `, ${artwork.year}`}
+          {!!artwork.year && `, ${artwork.year}`}
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   )
 }

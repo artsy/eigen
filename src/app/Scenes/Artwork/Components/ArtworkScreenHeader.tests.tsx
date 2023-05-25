@@ -67,7 +67,7 @@ describe("ArtworkScreenHeader", () => {
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
-          artists: [{ name: "some-artist-name" }],
+          artistsArray: [{ name: "some-artist-name" }],
         }),
       })
 
