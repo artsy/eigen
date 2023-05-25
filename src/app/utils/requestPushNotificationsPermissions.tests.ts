@@ -14,7 +14,6 @@ import {
 } from "app/utils/PushNotification"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { Alert } from "react-native"
-import PushNotification from "react-native-push-notification"
 
 describe("requestPushNotificationsPermission", () => {
   let alertSpy: jest.SpyInstance
@@ -52,7 +51,7 @@ describe("requestPushNotificationsPermission", () => {
     await new Promise(setImmediate) // Wait for next tick in the JavaScript event loop
     await requestPushPromise
 
-    expect(PushNotification.requestPermissions).not.toHaveBeenCalled()
+    expect(alertSpy).not.toHaveBeenCalled()
   })
 
   it("marks push requested this session after a request", async () => {
@@ -60,6 +59,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
+          pushNotificationDialogueLastSeenDate: undefined,
         },
       },
     })
@@ -74,7 +74,14 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushPromise
 
-    expect(PushNotification.requestPermissions).toHaveBeenCalled()
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Dismiss", style: "cancel" },
+        { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
+      ]
+    )
 
     const pushRequestedThisSession =
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
@@ -97,7 +104,14 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushNotificationsPermission()
 
-    expect(alertSpy).toHaveBeenCalled()
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Dismiss", style: "cancel" },
+        { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
+      ]
+    )
   })
 
   it("does not show settings alert if seen before", async () => {
@@ -133,7 +147,14 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushNotificationsPermission()
 
-    expect(alertSpy).toHaveBeenCalled()
+    expect(alertSpy).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Dismiss", style: "cancel" },
+        { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
+      ]
+    )
 
     const pushSettingsAlertSeen =
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic

@@ -40,11 +40,10 @@ const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
 const shouldDisplayPrepromptAlert = () => {
   const { pushNotificationDialogueLastSeenDate } = unsafe_getPushPromptSettings()!
 
-  const currentDate = new Date()
-
   if (pushNotificationDialogueLastSeenDate) {
     // we don't want to ask too often
     // currently, we make sure at least a week has passed by since you last saw the dialogue
+    const currentDate = new Date()
     const timePassed = currentDate.getTime() - pushNotificationDialogueLastSeenDate.getTime()
     return timePassed >= ONE_WEEK_MS
   } else {
