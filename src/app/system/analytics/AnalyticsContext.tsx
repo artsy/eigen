@@ -4,7 +4,6 @@ import { FC, createContext, useContext } from "react"
 export interface AnalyticsContextProps {
   contextOwnerId?: string
   contextOwnerSlug?: string
-  // TODO: Or better to use ScreenOwnerType
   contextOwnerType?: OwnerType
 }
 
