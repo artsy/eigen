@@ -4,7 +4,6 @@ import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -128,34 +127,24 @@ export const PartnerQueryRenderer: React.FC<{
   }
 
   return (
-    <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
-        return (
-          <QueryRenderer<PartnerQuery>
-            environment={getRelayEnvironment()}
-            query={graphql`
-              query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
-                partner(id: $partnerID) {
-                  ...Partner_partner @arguments(displayArtistsSection: $displayArtistsSection)
-                }
-              }
-            `}
-            variables={{
-              partnerID,
-              displayArtistsSection: data?.partner?.displayArtistsSection ?? true,
-            }}
-            cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
-            }}
-            render={renderWithPlaceholder({
-              Container: PartnerContainer,
-              initialProps: others,
-              renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
-            })}
-          />
-        )
+    <QueryRenderer<PartnerQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
+          partner(id: $partnerID) {
+            ...Partner_partner @arguments(displayArtistsSection: $displayArtistsSection)
+          }
+        }
+      `}
+      variables={{
+        partnerID,
+        displayArtistsSection: data?.partner?.displayArtistsSection ?? true,
       }}
+      render={renderWithPlaceholder({
+        Container: PartnerContainer,
+        initialProps: others,
+        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+      })}
     />
   )
 }
