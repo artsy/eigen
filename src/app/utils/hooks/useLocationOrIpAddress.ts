@@ -8,7 +8,6 @@ export interface Location {
 
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
 
-const PUBLIC_IP_ENDPOINT = "https://api.ipify.org"
 /**
  * Returns the user's location if available, otherwise returns the user's IP address
  * Usage:
@@ -21,7 +20,7 @@ export const useLocationOrIpAddress = (disabled = false) => {
 
   const getIpAddress = async () => {
     try {
-      const response = await fetch(PUBLIC_IP_ENDPOINT)
+      const response = await fetch("https://api.ipify.org")
       const ip = await response.text()
 
       setIpAddress(ip)
