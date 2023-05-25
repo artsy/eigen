@@ -212,6 +212,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
+    resource_class: large
     steps:
       - checkout
       - node/install-packages:
@@ -232,6 +233,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
+    resource_class: small
     steps:
       - checkout
       - node/install-packages:
@@ -244,6 +246,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
+    resource_class: medium
     steps:
       - checkout
       - generate-checksums
@@ -258,6 +261,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
+    resource_class: small
     steps:
       - checkout
       - node/install-packages:
@@ -287,7 +291,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
-    resource_class: large
+    resource_class: medium
     steps:
       - checkout
       - generate-checksums
@@ -417,7 +421,7 @@ jobs:
     executor:
       name: node/default
       tag: "16.18.0"
-
+    resource_class: small
     steps:
       - checkout
       - generate-checksums

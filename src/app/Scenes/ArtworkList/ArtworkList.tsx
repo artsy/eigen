@@ -82,12 +82,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   return (
     <ArtworkListsProvider artworkListId={listID}>
-      <ArtworkListHeader
-        artworkListEntity={{
-          title: artworkList.name,
-          internalID: artworkList.internalID,
-        }}
-      />
+      <ArtworkListHeader me={queryData.me} />
       <InfiniteScrollArtworksGridContainer
         connection={data?.artworkList?.artworks}
         loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
@@ -126,6 +121,7 @@ export const artworkListScreenQuery = graphql`
       ...ArtworkList_artworksConnection
         @arguments(listID: $listID, count: $count, after: $after, sort: $sort)
       ...ArtworkListEmptyState_me @arguments(listID: $listID)
+      ...ArtworkListHeader_me @arguments(listID: $listID)
     }
   }
 `
@@ -142,6 +138,7 @@ const artworkListFragment = graphql`
     artworkList: collection(id: $listID) {
       internalID
       name
+      default
 
       artworks: artworksConnection(first: $count, after: $after, sort: $sort)
         @connection(key: "ArtworkList_artworks") {
@@ -170,7 +167,7 @@ const ArtworkListPlaceholder = () => {
   const space = useSpace()
   return (
     <ProvidePlaceholderContext>
-      <ArtworkListHeader />
+      <ArtworkListHeader me={null} />
 
       <Flex px={2}>
         <PlaceholderText height={20} width={200} marginVertical={space(2)} />

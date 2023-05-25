@@ -230,10 +230,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.126.0":
-  version "4.126.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.126.0.tgz#70ef2c62c9207780437e06b8e0b82ad02c019432"
-  integrity sha512-liqP/wwE+gB/++zGmNXCavTHJjkJ+zzDWkU7gKMfPJBZVgqt5L3XgPduQ0hypSs9BsWqYE5Ubkvy5dlVwSeuow==
+"@artsy/cohesion@4.127.0":
+  version "4.127.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.127.0.tgz#3c69923db08dbef79f7d7c83c70463578b86d3da"
+  integrity sha512-8FS/2v2Y6/BCxs56supfzLB0LOXH5CB417moUJ3jWKnZXStzfT+ecXvr6+hw8eBnkrrrW1FzsMZISDZ7oZvwdw==
   dependencies:
     core-js "3"
 
@@ -14584,6 +14584,10 @@ react-native-codegen@^0.69.2:
 "react-native-config@https://github.com/artsy/react-native-config.git#v1.4.12-artsy":
   version "1.4.11"
   resolved "https://github.com/artsy/react-native-config.git#278cbdc5f71d792f30c7474b0a0a5caab5c95551"
+
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.9.3-artsy":
+  version "1.9.3"
+  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#b51bee0ac2d5b9dd7b0ba52e30afbc12f9869256"
 
 react-native-credit-card-input@0.4.1:
   version "0.4.1"

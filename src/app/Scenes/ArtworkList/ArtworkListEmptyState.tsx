@@ -2,7 +2,6 @@ import { Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
-import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { navigate } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -18,14 +17,10 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
   const artworkList = data.artworkList!
   const isDefaultArtworkList = artworkList?.default ?? false
   const text = getText(isDefaultArtworkList)
-  const artworkListEntity: HeaderMenuArtworkListEntity = {
-    title: artworkList.name,
-    internalID: artworkList.internalID,
-  }
 
   return (
     <Flex flex={1} mb={1}>
-      <ArtworkListHeader artworkListEntity={artworkListEntity} />
+      <ArtworkListHeader me={data} />
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
         <ArtworkListTitle title={artworkList.name} />
@@ -60,6 +55,7 @@ const artworkListEmptyStateFragment = graphql`
       name
       internalID
     }
+    ...ArtworkListHeader_me @arguments(listID: $listID)
   }
 `
 

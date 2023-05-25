@@ -1,5 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { useCreateArtworkAlert_artwork$key } from "__generated__/useCreateArtworkAlert_artwork.graphql"
+import {
+  CreateArtworkAlertModal_artwork$data,
+  CreateArtworkAlertModal_artwork$key,
+} from "__generated__/CreateArtworkAlertModal_artwork.graphql"
+import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -7,19 +11,62 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact } from "lodash"
-import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
-type Artwork = useCreateArtworkAlert_artwork$key
+interface CreateArtworkAlertModalProps {
+  artwork: CreateArtworkAlertModal_artwork$key
+  visible: boolean
+  onClose: () => void
+}
 
-export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
-  const artwork = useFragment<useCreateArtworkAlert_artwork$key>(
-    ArtworkFragment,
-    artworkFragmentRef
+export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = ({
+  artwork,
+  onClose,
+  visible,
+}) => {
+  const data = useFragment<CreateArtworkAlertModalProps["artwork"]>(
+    graphql`
+      fragment CreateArtworkAlertModal_artwork on Artwork {
+        title
+        internalID
+        slug
+        artistsArray: artists {
+          internalID
+          name
+        }
+        attributionClass {
+          internalID
+        }
+        mediumType {
+          filterGene {
+            slug
+            name
+          }
+        }
+      }
+    `,
+    artwork
   )
 
-  const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-  const artistsArray = artwork.artists ?? []
+  const artworkAlert = computeArtworkAlertProps(data)
+
+  if (!artworkAlert.hasArtists) {
+    return null
+  }
+
+  return (
+    <CreateSavedSearchModal
+      visible={visible}
+      entity={artworkAlert.entity!}
+      attributes={artworkAlert.attributes!}
+      aggregations={artworkAlert.aggregations!}
+      closeModal={onClose}
+    />
+  )
+}
+
+export const computeArtworkAlertProps = (artwork: CreateArtworkAlertModal_artwork$data) => {
+  const artistsArray = artwork.artistsArray ?? []
   const hasArtists = artistsArray.length > 0
 
   if (!hasArtists) {
@@ -28,16 +75,13 @@ export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
       entity: null,
       attributes: null,
       aggregations: null,
-      showCreateArtworkAlertModal: () => null,
-      closeCreateArtworkAlertModal: () => null,
-      isCreateAlertModalVisible: false,
     }
   }
 
   let aggregations: Aggregations = []
   let additionalGeneIDs: string[] = []
 
-  const artists = compact(artwork?.artists)
+  const artists = compact(artwork?.artistsArray)
   const attributionClass = compact([artwork?.attributionClass?.internalID])
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
@@ -76,42 +120,10 @@ export const useCreateArtworkAlert = (artworkFragmentRef: Artwork) => {
     additionalGeneIDs,
   }
 
-  const showCreateArtworkAlertModal = () => {
-    setIsCreateAlertModalVisible(true)
-  }
-
-  const closeCreateArtworkAlertModal = () => {
-    setIsCreateAlertModalVisible(false)
-  }
-
   return {
     entity,
     attributes,
     aggregations,
     hasArtists,
-    showCreateArtworkAlertModal,
-    closeCreateArtworkAlertModal,
-    isCreateAlertModalVisible,
   }
 }
-
-const ArtworkFragment = graphql`
-  fragment useCreateArtworkAlert_artwork on Artwork {
-    title
-    internalID
-    slug
-    artists {
-      internalID
-      name
-    }
-    attributionClass {
-      internalID
-    }
-    mediumType {
-      filterGene {
-        slug
-        name
-      }
-    }
-  }
-`

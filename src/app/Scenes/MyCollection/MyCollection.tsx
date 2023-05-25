@@ -170,6 +170,7 @@ const MyCollection: React.FC<{
       innerRef={innerFlatListRef}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
+      paddingHorizontal={0}
     >
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
@@ -324,7 +325,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={50} height={50} borderRadius={50} />
-            <Flex flex={1} justifyContent="center" ml={2}>
+            <Flex flex={1} justifyContent="center" ml={2} mt={2}>
               <PlaceholderText width={80} height={25} />
               <PlaceholderText width={100} height={15} />
             </Flex>

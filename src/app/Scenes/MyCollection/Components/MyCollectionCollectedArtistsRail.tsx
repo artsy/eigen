@@ -57,7 +57,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   if (!collectedArtists) return <></>
 
   return (
-    <Flex mx={-2}>
+    <Flex>
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}

@@ -82,9 +82,9 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
             return (
               <MyCollectionCollectedArtistGridItem
                 artworksCount={item.artworksCount}
-                // Castiing this type as ts was not able to infer it
+                // castiing this type as ts was not able to infer it
                 artist={item.artist!}
-                // Castiing this type as ts was not able to infer it
+                // castiing this type as ts was not able to infer it
                 key={item.artist!.internalID}
                 // passing index to use for the grid layout
                 index={index}
@@ -118,9 +118,9 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
             return (
               <MyCollectionCollectedArtistItem
                 artworksCount={item.artworksCount}
-                // Castiing this type as ts was not able to infer it
+                // casting this type because typescript was not able to infer it correctly
                 artist={item.artist!}
-                // Castiing this type as ts was not able to infer it
+                // casting this type because typescript was not able to infer it correctly
                 key={item.artist!.internalID}
                 compact
               />
@@ -129,11 +129,11 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
-            <Flex alignItems="flex-end" pb={2}>
+            <Flex alignItems="flex-end" px={2}>
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}
-          style={{ paddingTop: space(2) }}
+          style={{ paddingVertical: space(2) }}
           ItemSeparatorComponent={() => <Spacer y={2} />}
           refreshControl={
             !__TEST__ ? (

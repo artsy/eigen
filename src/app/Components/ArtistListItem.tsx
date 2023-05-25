@@ -14,16 +14,17 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 
 interface Props {
   artist: ArtistListItem_artist$data
-  relay: RelayProp
   Component?: any
-  contextModule?: string
-  withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  contextModule?: string
   disableNavigation?: boolean
   onFollowFinish?: () => void
-  uploadsCount?: number | null
+  onPress?: () => void
+  relay: RelayProp
   RightButton?: JSX.Element
   showFollowButton?: boolean
+  uploadsCount?: number | null
+  withFeedback?: boolean
 }
 
 export const formatTombstoneText = (
@@ -47,16 +48,17 @@ export const formatTombstoneText = (
 }
 
 const ArtistListItem: React.FC<Props> = ({
-  withFeedback = false,
-  containerStyle = {},
-  disableNavigation,
-  relay,
   artist,
-  onFollowFinish,
+  containerStyle = {},
   contextModule,
-  uploadsCount,
+  disableNavigation,
+  onFollowFinish,
+  onPress,
+  relay,
   RightButton,
   showFollowButton = true,
+  uploadsCount,
+  withFeedback = false,
 }) => {
   const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
   const imageURl = image && image.url
@@ -118,6 +120,11 @@ const ArtistListItem: React.FC<Props> = ({
         <Touchable
           noFeedback={!withFeedback}
           onPress={() => {
+            if (onPress) {
+              onPress()
+              return
+            }
+
             if (href && !disableNavigation) {
               handleTap(href)
             }

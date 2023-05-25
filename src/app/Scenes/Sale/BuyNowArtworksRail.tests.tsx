@@ -1,42 +1,26 @@
-import { BuyNowArtworksRailTestsQuery } from "__generated__/BuyNowArtworksRailTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 
 describe("BuyNowArtworksRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<BuyNowArtworksRailTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query BuyNowArtworksRailTestsQuery($id: String!) @relay_test_operation {
-          sale(id: $id) {
-            ...BuyNowArtworksRail_sale
-          }
+  const { renderWithRelay } = setupTestWrapper({
+    Component: BuyNowArtworksRailContainer,
+    query: graphql`
+      query BuyNowArtworksRailTestsQuery($id: String!) @relay_test_operation {
+        sale(id: $id) {
+          ...BuyNowArtworksRail_sale
         }
-      `}
-      variables={{ id: "sale-id" }}
-      render={({ props }) => {
-        if (props?.sale) {
-          return <BuyNowArtworksRailContainer sale={props.sale} />
-        }
-        return null
-      }}
-    />
-  )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
+    variables: { id: "sale-id" },
   })
+
   it(`renders title "Buy now"`, () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    const { getByText } = renderWithRelay(mockProps)
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
-    const { queryAllByTestId } = renderWithWrappers(<TestRenderer />)
     const noArtworksProps = {
       Sale: () => ({
         saleArtworksConnection: {
@@ -44,7 +28,7 @@ describe("BuyNowArtworksRail", () => {
         },
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
+    const { queryAllByTestId } = renderWithRelay(noArtworksProps)
     expect(queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })
