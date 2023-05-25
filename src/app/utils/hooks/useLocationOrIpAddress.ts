@@ -1,6 +1,5 @@
 import Geolocation from "@react-native-community/geolocation"
 import { useEffect, useState } from "react"
-import { NetworkInfo } from "react-native-network-info"
 
 export interface Location {
   lat: number
@@ -9,6 +8,7 @@ export interface Location {
 
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
 
+const PUBLIC_IP_ENDPOINT = "https://api.ipify.org"
 /**
  * Returns the user's location if available, otherwise returns the user's IP address
  * Usage:
@@ -21,10 +21,10 @@ export const useLocationOrIpAddress = (disabled = false) => {
 
   const getIpAddress = async () => {
     try {
-      // Get IPv4 IP (priority: WiFi first, cellular second)
-      const ipv4Address = await NetworkInfo.getIPV4Address()
+      const response = await fetch(PUBLIC_IP_ENDPOINT)
+      const ip = await response.text()
 
-      setIpAddress(ipv4Address)
+      setIpAddress(ip)
     } catch (error) {
       console.log("Failed to get devices IP address for location.", error)
     } finally {
