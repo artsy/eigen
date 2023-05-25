@@ -16,8 +16,6 @@ export const ArtQuizTrendingCollections: React.FC<ArtQuizTrendingCollectionsProp
     viewer
   )
 
-  console.log(viewerData)
-
   return (
     <TabFlatList
       data={viewerData?.marketingCollections!}
