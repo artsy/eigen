@@ -524,8 +524,6 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
-  - react-native-network-info (5.2.1):
-    - React
   - react-native-pager-view (6.0.0):
     - React-Core
   - react-native-safe-area-context (3.4.0):
@@ -826,7 +824,6 @@ DEPENDENCIES:
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-network-info (from `../node_modules/react-native-network-info`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-shake (from `../node_modules/react-native-shake`)
@@ -1045,8 +1042,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
-  react-native-network-info:
-    :path: "../node_modules/react-native-network-info"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -1197,7 +1192,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
+  glog: 5337263514dd6f09803962437687240c5dc39aa4
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
@@ -1228,7 +1223,7 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
+  RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 3581db0757e7ff9be10718a56b3d79b6a6bd3bdf
   RCTTypeSafety: ce13e630c48340401ebfb28710959913f74b8b36
   React: cca8f2b7cce018f79847ca79847fa367b206e8a1
@@ -1255,7 +1250,6 @@ SPEC CHECKSUMS:
   react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
-  react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
   react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
