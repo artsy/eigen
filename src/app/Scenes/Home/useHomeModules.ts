@@ -18,6 +18,14 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
       {
+        contextModule: ContextModule.galleriesForYouBanner,
+        data: true,
+        isEmpty: false,
+        key: "galleriesForYouBanner",
+        title: "",
+        type: "galleriesForYouBanner",
+      },
+      {
         contextModule: ContextModule.newWorksForYouRail,
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
