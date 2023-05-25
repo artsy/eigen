@@ -2,6 +2,7 @@ import { Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/pal
 import { MyCollectionCollectedArtistGridItem_artist$key } from "__generated__/MyCollectionCollectedArtistGridItem_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { isPad } from "app/utils/hardware"
 import { pluralize } from "app/utils/pluralize"
 import { Image } from "react-native"
 import { useFragment } from "react-relay"
@@ -25,8 +26,9 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
   const { nationality, birthday, deathday } = artistData
   const space = useSpace()
   const { width: screenWidth } = useScreenDimensions()
-  const isIPad = screenWidth > 700
-  const itemWidth = isIPad ? (screenWidth - space(2) * 7) / 3 : (screenWidth - space(2) * 4) / 2
+
+  const isAPad = isPad()
+  const itemWidth = isAPad ? (screenWidth - space(2) * 7) / 3 : (screenWidth - space(2) * 4) / 2
 
   const getMeta = () => {
     const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
@@ -55,8 +57,8 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
   return (
     <Flex
       flex={1}
-      maxWidth={isIPad ? "33%" : "50%"}
-      alignItems={isIPad ? "center" : index % 2 > 0 ? "flex-end" : "flex-start"}
+      maxWidth={isAPad ? "33%" : "50%"}
+      alignItems={isAPad ? "center" : index % 2 > 0 ? "flex-end" : "flex-start"}
     >
       <Touchable
         onPress={() => {

@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { MyCollectionCollectedArtistGridItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistGridItem"
@@ -7,6 +7,7 @@ import { ViewAsIcons } from "app/Scenes/MyCollection/Components/MyCollectionSear
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { useState } from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -21,9 +22,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
   const [refreshing, setRefreshing] = useState(false)
   const space = useSpace()
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const { width: screenWidth } = useScreenDimensions()
-  const isIPad = screenWidth > 700
-
+  const isAPad = isPad()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     collectedArtistsPaginationFragment,
     me
@@ -94,8 +93,8 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           }}
           key="grid"
           keyExtractor={(item) => "grid" + item.artist!.internalID}
-          numColumns={isIPad ? 3 : 2}
-          style={{ flex: isIPad ? 3 : 2, paddingTop: space(2) }}
+          numColumns={isAPad ? 3 : 2}
+          style={{ flex: isAPad ? 3 : 2, paddingTop: space(2) }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
