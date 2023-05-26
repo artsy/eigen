@@ -5,7 +5,7 @@ import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
@@ -141,7 +141,7 @@ export class Inbox extends React.Component<Props, State> {
           testID="tabWrapper-bids"
         >
           <MyBidsContainer
-            isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids}
+            isActiveTab={!!this.props.isVisible && this.state.activeTab === Tab.bids}
             me={this.props.me}
           />
         </TabWrapper>
@@ -155,7 +155,7 @@ export class Inbox extends React.Component<Props, State> {
         >
           <ConversationsContainer
             me={this.props.me}
-            isActiveTab={this.props.isVisible && this.state.activeTab === Tab.inquiries}
+            isActiveTab={!!this.props.isVisible && this.state.activeTab === Tab.inquiries}
           />
         </TabWrapper>
       </ScrollableTabView>
@@ -203,7 +203,7 @@ export const InboxScreenQuery = graphql`
 export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={InboxScreenQuery}
       variables={{}}
       render={(...args) =>

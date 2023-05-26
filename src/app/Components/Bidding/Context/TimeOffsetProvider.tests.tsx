@@ -1,11 +1,10 @@
 import { Text } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import PropTypes from "prop-types"
 import React from "react"
-import { createMockEnvironment } from "relay-test-utils"
 import { TimeOffsetProvider } from "./TimeOffsetProvider"
 
 const SECONDS = 1000
@@ -23,7 +22,7 @@ class TestConsumer extends React.Component {
 }
 
 describe("TimeOffsetProvider", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = getMockRelayEnvironment()
 
   const TestWrapper = () => {
     return (

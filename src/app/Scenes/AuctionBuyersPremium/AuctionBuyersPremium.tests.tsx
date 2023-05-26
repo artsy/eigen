@@ -1,11 +1,10 @@
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
 describe("AuctionBuyersPremium", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = getMockRelayEnvironment()
 
   beforeEach(() => {
     mockEnvironment.mockClear()

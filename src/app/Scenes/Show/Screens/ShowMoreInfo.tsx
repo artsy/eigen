@@ -5,7 +5,7 @@ import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app
 import { ReadMore } from "app/Components/ReadMore"
 import { ShowHoursFragmentContainer as ShowHours } from "app/Scenes/Show/Components/ShowHours"
 import { ShowLocationFragmentContainer as ShowLocation } from "app/Scenes/Show/Components/ShowLocation"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { FlatList } from "react-native"
@@ -216,7 +216,7 @@ export const ShowMoreInfoFragmentContainer = createFragmentContainer(ShowMoreInf
 export const ShowMoreInfoQueryRenderer: React.FC<{ showID: string }> = ({ showID }) => {
   return (
     <QueryRenderer<ShowMoreInfoQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowMoreInfoQuery($id: String!) {
           show(id: $id) {

@@ -6,19 +6,18 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Alert } from "react-native"
-import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./SavedSearchAlertForm"
 import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 const spyAlert = jest.spyOn(Alert, "alert")
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = getMockRelayEnvironment()
 const notificationPermissions = mockFetchNotificationPermissions(false)
 
 const withoutDuplicateAlert = async () => {

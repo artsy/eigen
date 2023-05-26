@@ -5,7 +5,7 @@ import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResult
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -201,7 +201,7 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
       : AuctionResultsSorts.DATE_DESC
   return (
     <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={AuctionResultsScreenWrapperQuery}
       variables={{
         state,

@@ -1,13 +1,12 @@
 import { Text } from "@artsy/palette-mobile"
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import {
   AllowPushNotificationsBanner,
   MyProfilePushNotifications,
@@ -15,7 +14,7 @@ import {
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
 
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const env = getMockRelayEnvironment()
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {

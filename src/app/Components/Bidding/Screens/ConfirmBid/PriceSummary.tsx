@@ -2,7 +2,7 @@ import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
 import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
 import { Bid } from "app/Components/Bidding/types"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -69,7 +69,7 @@ interface PriceSummaryProps extends Partial<PriceSummaryQuery["variables"]> {
 
 export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
   <QueryRenderer<PriceSummaryQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query PriceSummaryQuery($saleArtworkId: ID!, $bidAmountMinor: Int!) {
         node(id: $saleArtworkId) {

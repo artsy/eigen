@@ -2,14 +2,13 @@ import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/Aut
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { SearchContext } from "./SearchContext"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
@@ -128,7 +127,7 @@ jest.mock("./RecentSearches", () => {
 
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const env = getMockRelayEnvironment()
 const consoleErrorMock = jest.fn()
 const whiteListErrors = [
   "Warning: An update to %s inside a test was not wrapped in act(...).",

@@ -1,15 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = getMockRelayEnvironment()
 
 describe("UploadPhotos", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (

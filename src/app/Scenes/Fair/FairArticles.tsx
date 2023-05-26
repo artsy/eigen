@@ -12,7 +12,7 @@ import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
@@ -210,7 +210,7 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
 export const FairArticlesQueryRenderer: React.FC<FairArticlesQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairArticlesQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={FAIR2_ARTICLES_QUERY}
       variables={{ id: fairID, first: FAIR2_ARTICLES_PAGE_SIZE }}
       render={renderWithLoadProgress(FairArticlesPaginationContainer)}

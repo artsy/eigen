@@ -1,15 +1,14 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
 describe("SearchArtworks", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = getMockRelayEnvironment()
 
   const TestRenderer = () => {
     return <SearchArtworksQueryRenderer keyword="keyword" />

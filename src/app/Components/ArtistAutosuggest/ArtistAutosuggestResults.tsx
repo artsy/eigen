@@ -11,7 +11,7 @@ import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   ProvidePlaceholderContext,
   PlaceholderBox,
@@ -242,7 +242,7 @@ export const ArtistAutosuggestResults: React.FC<{
               @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
   },
