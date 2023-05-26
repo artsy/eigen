@@ -14767,10 +14767,10 @@ react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view#a7f
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-shake@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.1.1.tgz#733657764b0395b26f26576bba51e2dcbcecfe89"
-  integrity sha512-h6O8LnFd3LkvoYx7O0afM6rO9fDKomZ1EyomGgKRDyFhinxYIU7Z4uPYtwA4Z1Cd3frEEKTLNKHI1Eu0MOI3Yw==
+react-native-shake@5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.3.2.tgz#ea20baab1b17d848f53663b19161d566c30ec197"
+  integrity sha512-UpcYKagxtfyQjKAiiltpip3cq/HGNTWQOHJ1BtuoNzbxh+wrGeACH1mnvIC8mONCwPGObZrY062H/yxdA3lAAA==
 
 react-native-share@8.2.1:
   version "8.2.1"
