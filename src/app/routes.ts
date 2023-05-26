@@ -180,6 +180,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/fair/:fairID/info", "FairMoreInfo"),
     addRoute("/favorites", "Favorites"),
     addRoute("/feature/:slug", "Feature"),
+    addRoute("/galleries-for-you", "GalleriesForYou"),
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/inbox", "Inbox"),
     addRoute("/inquiry/:artworkID", "Inquiry"),
