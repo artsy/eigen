@@ -15,6 +15,7 @@ import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
+import { createMockEnvironment } from "relay-test-utils"
 import {
   MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
@@ -31,9 +32,14 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-const mockEnvironment = getMockRelayEnvironment()
 
 describe("MyCollectionArtworkForm", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
@@ -62,7 +68,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("Adding a new artwork", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
@@ -507,7 +512,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("loading screens", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 

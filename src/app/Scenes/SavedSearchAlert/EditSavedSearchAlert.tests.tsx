@@ -6,14 +6,15 @@ import { extractText } from "app/utils/tests/extractText"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
 describe("EditSavedSearchAlert", () => {
-  const mockEnvironment = getMockRelayEnvironment()
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
+    mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
     )

@@ -1,12 +1,16 @@
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
 
-const mockRelayEnvironment = getMockRelayEnvironment()
-
 describe(FeatureQueryRenderer, () => {
+  let mockRelayEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockRelayEnvironment = getMockRelayEnvironment()
+  })
+
   it("renders without failing", () => {
     const tree = renderWithWrappersLEGACY(<FeatureQueryRenderer slug="anything" />)
 

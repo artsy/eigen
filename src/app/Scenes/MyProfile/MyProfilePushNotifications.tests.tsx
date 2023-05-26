@@ -7,14 +7,13 @@ import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotif
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
 import {
   AllowPushNotificationsBanner,
   MyProfilePushNotifications,
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
-
-const env = getMockRelayEnvironment()
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {
@@ -47,6 +46,12 @@ describe(SwitchMenu, () => {
 })
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    env = getMockRelayEnvironment()
+  })
+
   it("Loads until the operation resolves", () => {
     const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)

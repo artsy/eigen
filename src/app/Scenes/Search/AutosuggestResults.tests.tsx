@@ -9,6 +9,7 @@ import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecent
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { SearchContext } from "./SearchContext"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
@@ -127,7 +128,6 @@ jest.mock("./RecentSearches", () => {
 
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
-const env = getMockRelayEnvironment()
 const consoleErrorMock = jest.fn()
 const whiteListErrors = [
   "Warning: An update to %s inside a test was not wrapped in act(...).",
@@ -148,8 +148,10 @@ console.error = (...args: any[]) => {
 }
 
 describe("AutosuggestResults", () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
   beforeEach(() => {
-    env.mockClear()
+    env = getMockRelayEnvironment()
     consoleErrorMock.mockClear()
     notifyRecentSearchMock.mockClear()
     inputBlurMock.mockClear()

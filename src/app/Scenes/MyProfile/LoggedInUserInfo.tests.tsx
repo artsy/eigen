@@ -5,11 +5,16 @@ import { extractText } from "app/utils/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
-const env = getMockRelayEnvironment()
-
 describe(UserProfileQueryRenderer, () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    env = getMockRelayEnvironment()
+  })
+
   it("spins until the operation resolves", () => {
     const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)

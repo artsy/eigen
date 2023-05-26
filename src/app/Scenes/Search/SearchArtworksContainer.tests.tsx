@@ -5,18 +5,19 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
 describe("SearchArtworks", () => {
-  const mockEnvironment = getMockRelayEnvironment()
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
 
   const TestRenderer = () => {
     return <SearchArtworksQueryRenderer keyword="keyword" />
   }
-
-  beforeEach(() => {
-    mockEnvironment.mockClear()
-  })
 
   it("should render without throwing an error", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)

@@ -13,6 +13,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
 import { CreateSavedSearchAlertParams } from "./SavedSearchAlertModel"
@@ -66,11 +67,11 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
-  const mockEnvironment = getMockRelayEnvironment()
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
+    mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockClear()
   })
 

@@ -7,7 +7,7 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
-import { MockPayloadGenerator } from "relay-test-utils/"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils/"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
@@ -20,7 +20,12 @@ describe("ContactInformationForm", () => {
   afterEach(() => {
     GlobalStore.actions.artworkSubmission.submission.resetSessionState()
   })
-  const mockEnvironment = getMockRelayEnvironment()
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
   const TestRenderer = ({ isLastStep = true }: { isLastStep?: boolean }) => (
     <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep={isLastStep} />
