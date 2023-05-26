@@ -78,6 +78,11 @@ async function main() {
   const tag1 = argv._[0]
   const tag2 = argv._[1]
 
+  if (!tag1 || !tag2) {
+    console.error("Usage: yarn generateChangelog <tag1> <tag2>")
+    return
+  }
+
   const prs = await getPrsBetweenTags(tag1, tag2)
   const { changelog, prsWithoutChangelog } = await getChangelogFromPrs(prs)
 
