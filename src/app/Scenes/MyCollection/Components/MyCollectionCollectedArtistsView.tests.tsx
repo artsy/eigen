@@ -1,6 +1,7 @@
 import { MyCollectionCollectedArtistsViewTestsQuery } from "__generated__/MyCollectionCollectedArtistsViewTestsQuery.graphql"
 import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -37,13 +38,39 @@ describe("MyCollectionCollectedArtistsView", () => {
     )
   }
 
-  it("renders collected artist", async () => {
+  it("renders collected artist in a list", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       MyCollectionInfo() {
         return mockCollectedArtist
       },
     })
+
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { artworkViewOption: "list" },
+    })
+    await expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual(
+      "list"
+    )
+
+    await expect(getByText("Rhombie Sandoval")).toBeTruthy()
+    await expect(getByText("Banksy")).toBeTruthy()
+  })
+
+  it("renders collected artist in a grid", async () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      MyCollectionInfo() {
+        return mockCollectedArtist
+      },
+    })
+
+    __globalStoreTestUtils__?.injectState({
+      userPrefs: { artworkViewOption: "grid" },
+    })
+    await expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual(
+      "grid"
+    )
 
     await expect(getByText("Rhombie Sandoval")).toBeTruthy()
     await expect(getByText("Banksy")).toBeTruthy()

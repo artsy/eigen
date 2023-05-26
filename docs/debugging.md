@@ -45,17 +45,16 @@ After restarting Flipper, you should be able to see the plugin in the Plugins me
 
 Some plugins may require additional configuration or setup steps. Please consult the documentation or contact `#practice-mobile` with any questions.
 
-
 ### Debugging on device for iOS
 
 In order to debug using flipper on device for iOS you will need a tool called idb.
-Instructions for installing are here: https://github.com/facebook/idb#idb-client 
+Instructions for installing are here: https://github.com/facebook/idb#idb-client
 You will want both the `idb-companion` and the `idb-client`.
 
 Once that is installed find the path to idb:
 `$ which idb`
 
-In flipper settings make sure the debug on device toggles are set for iOS and paste the path into the 
+In flipper settings make sure the debug on device toggles are set for iOS and paste the path into the
 `IDB Binary location` field:
 ![idb-settings](https://github.com/artsy/eigen/assets/49686530/3bd26f39-bc1d-4d16-8825-477b2807126e)
 
