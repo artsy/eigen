@@ -12,6 +12,7 @@ import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridIte
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -158,26 +159,32 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   ) : null
 
   return (
-    <SaleArtworkCard onPress={handleTap}>
-      <Flex>
-        {imageDisplay}
-        <Box mt={1} width={IMAGE_CONTAINER_WIDTH}>
-          {lotNumber}
-          {artistNamesDisplay}
-          {titleAndDateDisplay}
-          {customSaleMessage ? customSaleMessageDisplay : saleMessageDisplay}
-          {!!enableNewSaleArtworkTileRailCard && (
-            <UrgencyInfo
-              startAt={startAt}
-              endAt={endAt}
-              isLiveAuction={!!saleArtwork.sale?.liveStartAt}
-              saleTimeZone={saleArtwork.sale?.timeZone ?? ""}
-              onTimerEnd={refreshRail}
-            />
-          )}
-        </Box>
-      </Flex>
-    </SaleArtworkCard>
+    <AnalyticsContextProvider
+      contextScreenOwnerId={artwork.internalID}
+      contextScreenOwnerSlug={artwork.slug}
+      contextScreenOwnerType={OwnerType.sale}
+    >
+      <SaleArtworkCard onPress={handleTap}>
+        <Flex>
+          {imageDisplay}
+          <Box mt={1} width={IMAGE_CONTAINER_WIDTH}>
+            {lotNumber}
+            {artistNamesDisplay}
+            {titleAndDateDisplay}
+            {customSaleMessage ? customSaleMessageDisplay : saleMessageDisplay}
+            {!!enableNewSaleArtworkTileRailCard && (
+              <UrgencyInfo
+                startAt={startAt}
+                endAt={endAt}
+                isLiveAuction={!!saleArtwork.sale?.liveStartAt}
+                saleTimeZone={saleArtwork.sale?.timeZone ?? ""}
+                onTimerEnd={refreshRail}
+              />
+            )}
+          </Box>
+        </Flex>
+      </SaleArtworkCard>
+    </AnalyticsContextProvider>
   )
 }
 

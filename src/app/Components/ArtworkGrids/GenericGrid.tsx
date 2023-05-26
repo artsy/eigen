@@ -3,6 +3,7 @@ import { TextProps } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import {
   PageableRouteProps,
   useNavigateToPageableRoute,
@@ -190,13 +191,20 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
+
     return (
-      <View onLayout={this.onLayout}>
-        <View style={styles.container} accessibilityLabel="Artworks Content View">
-          {artworks}
+      <AnalyticsContextProvider
+        contextScreenOwnerId={this.props.contextScreenOwnerId}
+        contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+        contextScreenOwnerType={this.props.contextScreenOwnerType}
+      >
+        <View onLayout={this.onLayout}>
+          <View style={styles.container} accessibilityLabel="Artworks Content View">
+            {artworks}
+          </View>
+          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
         </View>
-        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
-      </View>
+      </AnalyticsContextProvider>
     )
   }
 }

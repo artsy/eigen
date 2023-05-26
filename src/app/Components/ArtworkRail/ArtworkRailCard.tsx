@@ -9,6 +9,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   ArtworkActionTrackingProps,
@@ -89,6 +90,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const secondaryTextColor = dark ? "black15" : "black60"
   const backgroundColor = dark ? "black100" : "white100"
 
+  const {
+    contextModule,
+    contextScreenOwnerType,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
+    contextScreen,
+  } = restProps
+
   const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
     if (cardSize === "small") {
       return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
@@ -139,13 +148,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }, [image?.resized?.height, image?.resized?.width])
 
   const onArtworkSavedOrUnSaved = (saved: boolean) => {
-    const {
-      contextModule,
-      contextScreenOwnerType,
-      contextScreenOwnerId,
-      contextScreenOwnerSlug,
-      contextScreen,
-    } = restProps
     const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
     const params = {
       acquireable: isAcquireable,
@@ -173,7 +175,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
   return (
-    <>
+    <AnalyticsContextProvider
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+      contextScreenOwnerType={contextScreenOwnerType}
+    >
       <ContextMenuArtwork
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
@@ -310,7 +316,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
       />
-    </>
+    </AnalyticsContextProvider>
   )
 }
 

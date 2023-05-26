@@ -1,4 +1,4 @@
-import { ActionType, OwnerType, ViewedArtworkList } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
@@ -12,9 +12,10 @@ import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptySt
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { FC, Suspense, useEffect, useState } from "react"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
+import { FC, Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 
 interface ArtworkListScreenProps {
@@ -157,22 +158,17 @@ const artworkListFragment = graphql`
 `
 
 export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
-  const { trackEvent } = useTracking()
-
-  useEffect(() => {
-    const event: ViewedArtworkList = {
-      action: ActionType.viewedArtworkList,
-      context_owner_type: OwnerType.saves,
-      owner_id: props.listID,
-    }
-
-    trackEvent(event)
-  }, [props.listID, trackEvent])
-
   return (
-    <Suspense fallback={<ArtworkListPlaceholder />}>
-      <ArtworkList {...props} />
-    </Suspense>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.saves,
+        context_screen_owner_id: props.listID,
+      })}
+    >
+      <Suspense fallback={<ArtworkListPlaceholder />}>
+        <ArtworkList {...props} />
+      </Suspense>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

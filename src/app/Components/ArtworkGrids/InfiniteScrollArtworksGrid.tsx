@@ -12,6 +12,7 @@ import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__genera
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
@@ -367,7 +368,11 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
 
   return (
-    <>
+    <AnalyticsContextProvider
+      contextScreenOwnerType={contextScreenOwnerType}
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+    >
       <ScrollViewWrapper
         onScroll={(ev) => {
           onScroll?.(ev)
@@ -426,7 +431,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
       </ScrollViewWrapper>
 
       {!!FooterComponent && FooterComponent}
-    </>
+    </AnalyticsContextProvider>
   )
 }
 

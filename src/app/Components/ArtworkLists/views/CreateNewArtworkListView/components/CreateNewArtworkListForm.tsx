@@ -1,3 +1,4 @@
+import { ActionType, CreatedArtworkList } from "@artsy/cohesion"
 import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
@@ -9,12 +10,16 @@ import {
 import { ArtworkListEntity, ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { FormikHelpers } from "formik"
 import { FC } from "react"
+import { useTracking } from "react-tracking"
 
 export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
   const { dispatch } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
+  const analytics = useAnalyticsContext()
+  const { trackEvent } = useTracking()
   const [commitMutation] = useCreateNewArtworkList()
 
   const setRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
@@ -41,6 +46,18 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
     dismiss(ArtworkListsViewName.CreateNewArtworkLists)
   }
 
+  const trackAnalyticEvent = (artworkListId: string) => {
+    const event: CreatedArtworkList = {
+      action: ActionType.createdArtworkList,
+      context_owner_id: analytics.contextScreenOwnerId,
+      context_owner_slug: analytics.contextScreenOwnerSlug,
+      context_owner_type: analytics.contextScreenOwnerType!,
+      owner_id: artworkListId,
+    }
+
+    trackEvent(event)
+  }
+
   const handleSubmit = (
     values: CreateOrEditArtworkListFormValues,
     helpers: FormikHelpers<CreateOrEditArtworkListFormValues>
@@ -62,6 +79,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
         setRecentlyAddedArtworkList(result)
         preselectRecentlyAddedArtworkList(result)
         closeCurrentView()
+        trackAnalyticEvent(artworkList.internalID)
 
         helpers.setSubmitting(false)
       },
