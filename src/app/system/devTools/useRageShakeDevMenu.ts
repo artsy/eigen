@@ -18,7 +18,7 @@ export const useRageShakeDevMenu = () => {
       if (!isLoggedIn) {
         __unsafe__onboardingNavigationRef.current?.navigate("DevMenu")
       } else {
-        navigate("/dev-menu", { modal: true })
+        navigate("/dev-menu")
       }
     })
 
