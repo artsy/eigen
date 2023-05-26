@@ -15307,6 +15307,13 @@ relay-compiler@14.0.0:
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-14.0.0.tgz#03ab000c246c7c46a26b77584b345621155a770e"
   integrity sha512-1h4lwvHg5efhivqpMfG6SS4cGoCJH3BsRelihwD+GNiylBnLKArSE6zyW7LfEwSpuDfJ+l6rrRfSL8IVZwOZ0g==
 
+relay-config@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/relay-config/-/relay-config-12.0.1.tgz#852ddfe22081b837ce4d2282dffd4dbe75f34c67"
+  integrity sha512-vq7GLLsGPpb/tZr9kmfbfe5sLO1cGa67jpCp4Xtk+N98fMInCu9YIH8R/FxxUhKVPnpLQf3ecmz+s+/MjzcnTQ==
+  dependencies:
+    cosmiconfig "^5.0.5"
+
 relay-devtools-core@janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg:
   version "1.2.1"
   resolved "https://codeload.github.com/janicduplessis/relay-devtools/tar.gz/3175e77be3027d0a4ca8ae1d9f5a1ab278afa8dc"
