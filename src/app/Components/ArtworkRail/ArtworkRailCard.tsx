@@ -176,9 +176,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   return (
     <AnalyticsContextProvider
-      contextOwnerId={contextScreenOwnerId}
-      contextOwnerSlug={contextScreenOwnerSlug}
-      contextOwnerType={contextScreenOwnerType}
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+      contextScreenOwnerType={contextScreenOwnerType}
     >
       <ContextMenuArtwork
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}

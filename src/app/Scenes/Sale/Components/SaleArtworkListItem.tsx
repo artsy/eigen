@@ -61,9 +61,9 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 
   return (
     <AnalyticsContextProvider
-      contextOwnerType={OwnerType.sale}
-      contextOwnerId={artwork.internalID}
-      contextOwnerSlug={artwork.slug}
+      contextScreenOwnerType={OwnerType.sale}
+      contextScreenOwnerId={artwork.internalID}
+      contextScreenOwnerSlug={artwork.slug}
     >
       <Touchable onPress={onPress}>
         <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>

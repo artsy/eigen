@@ -1,10 +1,10 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ScreenOwnerType } from "@artsy/cohesion"
 import { FC, createContext, useContext } from "react"
 
 export interface AnalyticsContextProps {
-  contextOwnerId?: string
-  contextOwnerSlug?: string
-  contextOwnerType?: OwnerType
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
+  contextScreenOwnerType?: ScreenOwnerType
 }
 
 const AnalyticsContext = createContext<AnalyticsContextProps>({})

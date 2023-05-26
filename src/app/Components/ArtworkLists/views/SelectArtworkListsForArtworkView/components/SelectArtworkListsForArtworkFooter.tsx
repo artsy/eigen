@@ -26,9 +26,9 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const trackAddedArtworkToArtworkLists = () => {
     const event: AddedArtworkToArtworkList = {
       action: ActionType.addedArtworkToArtworkList,
-      context_owner_id: analytics.contextOwnerId,
-      context_owner_slug: analytics.contextOwnerSlug,
-      context_owner_type: analytics.contextOwnerType!,
+      context_owner_id: analytics.contextScreenOwnerId,
+      context_owner_slug: analytics.contextScreenOwnerSlug,
+      context_owner_type: analytics.contextScreenOwnerType!,
       artwork_ids: [artwork.internalID],
       owner_ids: addingArtworkListIDs,
     }

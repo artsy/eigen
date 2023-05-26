@@ -470,9 +470,9 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
   return (
     <ProvideScreenTracking info={trackingInfo}>
       <AnalyticsContextProvider
-        contextOwnerId={artworkAboveTheFold?.internalID}
-        contextOwnerSlug={artworkAboveTheFold?.slug}
-        contextOwnerType={OwnerType.artwork}
+        contextScreenOwnerId={artworkAboveTheFold?.internalID}
+        contextScreenOwnerSlug={artworkAboveTheFold?.slug}
+        contextScreenOwnerType={OwnerType.artwork}
       >
         <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
           <ArtworkStoreProvider

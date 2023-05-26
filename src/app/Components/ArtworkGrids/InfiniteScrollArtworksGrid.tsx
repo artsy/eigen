@@ -369,9 +369,9 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   return (
     <AnalyticsContextProvider
-      contextOwnerType={contextScreenOwnerType}
-      contextOwnerId={contextScreenOwnerId}
-      contextOwnerSlug={contextScreenOwnerSlug}
+      contextScreenOwnerType={contextScreenOwnerType}
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
     >
       <ScrollViewWrapper
         onScroll={(ev) => {

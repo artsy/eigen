@@ -160,9 +160,9 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   return (
     <AnalyticsContextProvider
-      contextOwnerId={artwork.internalID}
-      contextOwnerSlug={artwork.slug}
-      contextOwnerType={OwnerType.sale}
+      contextScreenOwnerId={artwork.internalID}
+      contextScreenOwnerSlug={artwork.slug}
+      contextScreenOwnerType={OwnerType.sale}
     >
       <SaleArtworkCard onPress={handleTap}>
         <Flex>

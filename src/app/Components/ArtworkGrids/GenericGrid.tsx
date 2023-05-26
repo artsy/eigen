@@ -194,9 +194,9 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
     return (
       <AnalyticsContextProvider
-        contextOwnerId={this.props.contextScreenOwnerId}
-        contextOwnerSlug={this.props.contextScreenOwnerSlug}
-        contextOwnerType={this.props.contextScreenOwnerType}
+        contextScreenOwnerId={this.props.contextScreenOwnerId}
+        contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+        contextScreenOwnerType={this.props.contextScreenOwnerType}
       >
         <View onLayout={this.onLayout}>
           <View style={styles.container} accessibilityLabel="Artworks Content View">
