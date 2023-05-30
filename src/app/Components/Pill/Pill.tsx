@@ -46,7 +46,7 @@ enum DisplayState {
   Pressed = "pressed",
   Selected = "selected",
 }
-// <Pill variant="badge" p={1} overflowX="auto" bg="white100" color="black100" children={...} />
+
 const getSize = (size: PillSize): { height: number; paddingRight: number; paddingLeft: number } => {
   switch (size) {
     case "xxs":
