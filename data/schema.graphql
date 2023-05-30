@@ -11313,6 +11313,7 @@ type Me implements Node {
     isAuction: Boolean
     last: Int
     liveSale: Boolean
+    marketable: Boolean
     page: Int
     saleID: ID
 
@@ -14908,6 +14909,7 @@ type Query {
     isAuction: Boolean
     last: Int
     liveSale: Boolean
+    marketable: Boolean
     page: Int
     saleID: ID
 
@@ -19162,6 +19164,7 @@ type Viewer {
     isAuction: Boolean
     last: Int
     liveSale: Boolean
+    marketable: Boolean
     page: Int
     saleID: ID
 
