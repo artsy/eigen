@@ -480,6 +480,8 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             ]),
             { cancelable: true }
           )
+
+          RelayCache.clearAll()
         }}
       />
       {!!showCustomURLOptions &&
