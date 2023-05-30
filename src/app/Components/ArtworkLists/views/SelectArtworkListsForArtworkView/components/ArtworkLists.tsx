@@ -16,7 +16,7 @@ interface ArtworkListsProps {
 
 type ArtworkList =
   | NonNullable<ArtworkLists_me$data["savedArtworksArtworkList"]>
-  | ExtractNodeType<ArtworkLists_me$data["savedArtworksArtworkList"]>
+  | ExtractNodeType<ArtworkLists_me$data["customArtworkLists"]>
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
