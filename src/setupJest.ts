@@ -542,15 +542,6 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-// TODO: DELETE THIS MOCK when that file is deleted.
-jest.mock("app/system/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  createEnvironment: require("relay-test-utils").createMockEnvironment,
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
-
 const { createMockEnvironment } = require("relay-test-utils")
 let mockEnvironment = createMockEnvironment()
 jest.mock("app/system/relay/defaultEnvironment", () => {
