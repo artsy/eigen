@@ -37,9 +37,9 @@ describe("MyCollectionBottomSheetModalAdd", () => {
 
   describe("Add Artworks", () => {
     it("navigates the user to add artwork screen", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
 
-      const addArworksButton = getByTestId("add-artworks")
+      const addArworksButton = getByText("Add Artworks")
 
       fireEvent(addArworksButton, "onPress")
 
