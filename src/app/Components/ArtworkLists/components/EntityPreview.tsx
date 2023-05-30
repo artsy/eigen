@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
+import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { FC } from "react"
 
@@ -11,8 +11,7 @@ interface EntityPreviewProps {
 
 export const EntityPreview: FC<EntityPreviewProps> = ({ imageURL, size = ARTWORK_IMAGE_SIZE }) => {
   if (!imageURL) {
-    // TODO: Display NoImage component
-    return <Box width={size} height={size} bg="black15" />
+    return <ArtworkListNoImage width={size} height={size} />
   }
 
   return <OpaqueImageView width={size} height={size} imageURL={imageURL} />
