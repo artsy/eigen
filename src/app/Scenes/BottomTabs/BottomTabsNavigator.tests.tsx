@@ -14,7 +14,6 @@ describe(BottomTabsNavigator, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("app/system/relay/createEnvironment").reset()
     mockEnvironment = getMockRelayEnvironment()
   })
 
