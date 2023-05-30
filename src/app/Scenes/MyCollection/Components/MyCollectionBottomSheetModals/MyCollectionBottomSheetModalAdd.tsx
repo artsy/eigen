@@ -21,17 +21,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artists"
           description="List the artists in your collection."
           onPress={() => {
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                mode: "add",
-                source: Tab.collection,
-                onSuccess: () => {
-                  // hide the bottom sheet
-                  setViewKind({ viewKind: null })
-                  popToRoot()
-                },
-              },
-            })
+            console.log("Add Artists")
           }}
           icon={<UserMultiIcon height={24} width={24} />}
           py="40px"
