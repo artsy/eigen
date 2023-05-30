@@ -24,8 +24,6 @@ export const useLocationOrIpAddress = (disabled = false) => {
       const response = await fetch("https://api.ipify.org")
       const ip = await response.text()
 
-      console.log({ ip })
-
       setIpAddress(ip)
     } catch (error) {
       console.log("Failed to get devices IP address for location.", error)
