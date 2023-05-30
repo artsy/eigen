@@ -2,7 +2,7 @@ import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { extractNodes } from "app/utils/extractNodes"
-import { FC, memo, useEffect } from "react"
+import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -24,10 +24,6 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.resized?.url ?? null
-
-  useEffect(() => {
-    console.log("[debug] rerender artwork list", artworkList.internalID)
-  })
 
   const getArtworksCountText = () => {
     if (artworkList.artworksCount === 1) {
