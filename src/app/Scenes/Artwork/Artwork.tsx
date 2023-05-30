@@ -14,6 +14,7 @@ import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } fro
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -467,18 +468,24 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
 
   return (
     <ProvideScreenTracking info={trackingInfo}>
-      <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
-        <ArtworkStoreProvider
-          runtimeModel={{
-            ...artworkModel,
-            auctionState: getInitialAuctionTimerState()!,
-          }}
-        >
-          <ArtworkListsProvider>
-            <Artwork {...props} />
-          </ArtworkListsProvider>
-        </ArtworkStoreProvider>
-      </AuctionWebsocketContextProvider>
+      <AnalyticsContextProvider
+        contextScreenOwnerId={artworkAboveTheFold?.internalID}
+        contextScreenOwnerSlug={artworkAboveTheFold?.slug}
+        contextScreenOwnerType={OwnerType.artwork}
+      >
+        <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
+          <ArtworkStoreProvider
+            runtimeModel={{
+              ...artworkModel,
+              auctionState: getInitialAuctionTimerState()!,
+            }}
+          >
+            <ArtworkListsProvider>
+              <Artwork {...props} />
+            </ArtworkListsProvider>
+          </ArtworkStoreProvider>
+        </AuctionWebsocketContextProvider>
+      </AnalyticsContextProvider>
     </ProvideScreenTracking>
   )
 }

@@ -79,9 +79,11 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
   const { top: topInset } = useSafeAreaInsets()
 
+  const androidTopInset = Platform.OS === "android" ? topInset : 0
+
   return (
     <Screen>
-      <Flex flexDirection="row" justifyContent="space-between" mt={`${topInset}px`}>
+      <Flex flexDirection="row" justifyContent="space-between" mt={`${androidTopInset}px`}>
         <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
         </Text>

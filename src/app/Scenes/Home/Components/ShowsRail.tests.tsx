@@ -1,8 +1,8 @@
 import Geolocation from "@react-native-community/geolocation"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import mockFetch from "jest-fetch-mock"
 import "react-native"
-import { NetworkInfo } from "react-native-network-info"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowsRailContainer } from "./ShowsRail"
 
@@ -11,12 +11,6 @@ jest.mock("@react-native-community/geolocation", () => ({
   getCurrentPosition: jest.fn((success, _) => {
     success({ coords: { latitude: 1, longitude: 2 } })
   }),
-}))
-
-jest.mock("react-native-network-info", () => ({
-  NetworkInfo: {
-    getIPV4Address: jest.fn(async () => "my-ip"),
-  },
 }))
 
 describe("ShowsRailContainer", () => {
@@ -38,7 +32,7 @@ describe("ShowsRailContainer", () => {
       )
 
       expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
-      expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
+      expect(mockFetch).not.toHaveBeenCalled()
 
       await flushPromiseQueue()
 
@@ -62,7 +56,7 @@ describe("ShowsRailContainer", () => {
       )
 
       expect(Geolocation.getCurrentPosition).not.toHaveBeenCalled()
-      expect(NetworkInfo.getIPV4Address).not.toHaveBeenCalled()
+      expect(mockFetch).not.toHaveBeenCalled()
 
       await flushPromiseQueue()
 

@@ -1,3 +1,4 @@
+import { ActionType, DeletedArtworkList, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
@@ -11,6 +12,7 @@ import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkLists
 import { HeaderMenuArtworkListEntity } from "app/Scenes/ArtworkList/types"
 import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
+import { useTracking } from "react-tracking"
 import { useDeleteArtworkList } from "./useDeleteArtworkList"
 
 const NAME = "deleteArtworkListView"
@@ -26,11 +28,22 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
 }) => {
   const bottomOffset = useArtworkListsBottomOffset(2)
   const toast = useArtworkListToast()
+  const { trackEvent } = useTracking()
   const { dismiss } = useBottomSheetModal()
   const [commit, isArtworkListDeleting] = useDeleteArtworkList()
 
   const closeView = () => {
     dismiss(NAME)
+  }
+
+  const trackAnalytics = () => {
+    const event: DeletedArtworkList = {
+      action: ActionType.deletedArtworkList,
+      context_owner_type: OwnerType.saves,
+      owner_id: artworkListEntity.internalID,
+    }
+
+    trackEvent(event)
   }
 
   const deleteArtworkList = () => {
@@ -42,6 +55,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
       },
       onCompleted: () => {
         toast.changesSaved()
+        trackAnalytics()
         goBack()
       },
       onError: (error) => {
