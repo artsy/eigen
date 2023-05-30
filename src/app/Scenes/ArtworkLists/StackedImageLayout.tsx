@@ -39,7 +39,7 @@ const StackImage = ({ cardWidth, url, index }: StackImageProps) => {
 
   return (
     <ArtworkListImage
-      imageWidth={cardWidth}
+      size={cardWidth}
       imageURL={url}
       position="absolute"
       top={OFFSET_BY_INDEX}

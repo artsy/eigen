@@ -14,17 +14,17 @@ export const FourUpImageLayout = ({ imageURLs, cardWidth }: FourUpImageLayoutPro
   return (
     <Box>
       <Flex flexDirection="row">
-        <ArtworkListImage imageURL={imageURLs[0]} imageWidth={rowImageWidth} />
+        <ArtworkListImage imageURL={imageURLs[0]} size={rowImageWidth} />
         <Spacer x={`${IMAGE_OFFSET}px`} />
-        <ArtworkListImage imageURL={imageURLs[1]} imageWidth={rowImageWidth} />
+        <ArtworkListImage imageURL={imageURLs[1]} size={rowImageWidth} />
       </Flex>
 
       <Spacer y={`${IMAGE_OFFSET}px`} />
 
       <Flex flexDirection="row">
-        <ArtworkListImage imageURL={imageURLs[2]} imageWidth={rowImageWidth} />
+        <ArtworkListImage imageURL={imageURLs[2]} size={rowImageWidth} />
         <Spacer x={`${IMAGE_OFFSET}px`} />
-        <ArtworkListImage imageURL={imageURLs[3]} imageWidth={rowImageWidth} />
+        <ArtworkListImage imageURL={imageURLs[3]} size={rowImageWidth} />
       </Flex>
     </Box>
   )
