@@ -63,11 +63,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   )
 }
 
-const arePropsEqual = (prevProps: ArtworkListItemProps, nextProps: ArtworkListItemProps) => {
-  return prevProps.selected === nextProps.selected
-}
-
-export const ArtworkListItem = memo(Item, arePropsEqual)
+export const ArtworkListItem = memo(Item)
 
 const ArtworkListItemFragment = graphql`
   fragment ArtworkListItem_item on Collection @argumentDefinitions(artworkID: { type: "String!" }) {
