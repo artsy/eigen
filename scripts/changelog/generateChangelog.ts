@@ -3,9 +3,13 @@
 // @ts-check
 "use strict"
 
+import { resolve } from "path"
 import Octokit, { PullsGetResponse } from "@octokit/rest"
+import { config } from "dotenv"
 import { hideBin } from "yargs/helpers"
 import yargs from "yargs/yargs"
+
+config({ path: resolve(__dirname, "../../.env.shared") })
 
 const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
 
