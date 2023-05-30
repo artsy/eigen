@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
+import { ArtworkListImage } from "app/Components/ArtworkLists/components/ArtworkListImage"
 import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
-import { ArtworkListImage } from "app/Scenes/ArtworkLists/components/ArtworkListImage"
 import { times } from "lodash"
 
 interface StackedImageLayoutProps {
