@@ -1,5 +1,6 @@
 import { FlexProps } from "@artsy/palette-mobile"
 import { ArtworkListImageBorder } from "app/Components/ArtworkLists/components/ArtworkListImageBorder"
+import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { FC } from "react"
 
@@ -13,6 +14,10 @@ export const ArtworkListImage: FC<ArtworkListImageProps & FlexProps> = ({
   imageWidth,
   ...rest
 }) => {
+  if (!imageURL) {
+    return <ArtworkListNoImage width={imageWidth} height={imageWidth} {...rest} />
+  }
+
   return (
     <ArtworkListImageBorder {...rest}>
       <OpaqueImageView imageURL={imageURL} width={imageWidth} height={imageWidth} />

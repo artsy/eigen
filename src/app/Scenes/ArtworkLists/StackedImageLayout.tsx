@@ -1,6 +1,5 @@
 import { Box } from "@artsy/palette-mobile"
 import { ArtworkListImage } from "app/Components/ArtworkLists/components/ArtworkListImage"
-import { ArtworkListNoImage } from "app/Components/ArtworkLists/components/ArtworkListNoImage"
 import { times } from "lodash"
 
 interface StackedImageLayoutProps {
@@ -38,22 +37,10 @@ export const StackedImageLayout = ({ imageURLs, cardWidth }: StackedImageLayoutP
 const StackImage = ({ cardWidth, url, index }: StackImageProps) => {
   const OFFSET_BY_INDEX = `${(IMAGE_OFFSET / 3) * index}px`
 
-  if (!url) {
-    return (
-      <ArtworkListNoImage
-        width={cardWidth}
-        height={cardWidth}
-        position="absolute"
-        top={OFFSET_BY_INDEX}
-        left={OFFSET_BY_INDEX}
-      />
-    )
-  }
-
   return (
     <ArtworkListImage
-      imageURL={url}
       imageWidth={cardWidth}
+      imageURL={url}
       position="absolute"
       top={OFFSET_BY_INDEX}
       left={OFFSET_BY_INDEX}
