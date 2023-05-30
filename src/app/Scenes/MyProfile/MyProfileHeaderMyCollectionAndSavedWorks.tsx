@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
+import { Screen } from "@artsy/palette-mobile"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { TabsContainer } from "app/Components/Tabs/TabsContainer"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -20,7 +20,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { compact } from "lodash"
+import { Tabs } from "react-native-collapsible-tab-view"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { QueryRenderer, createRefetchContainer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -39,48 +39,31 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
 
   return (
-    <>
-      <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
-        <StickyTabPage
-          disableBackButtonUpdate
-          tabs={compact([
-            {
-              title: Tab.collection,
-              content: <MyCollectionQueryRenderer />,
-              initial: true,
-            },
-            {
-              title: Tab.insights,
-              content: <MyCollectionInsightsQR />,
-              visualClues: [
-                {
-                  jsx: (
-                    <VisualClueDot
-                      style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }}
-                    />
-                  ),
-                  visualClueName: "AddedArtworkWithInsightsVisualClueDot",
-                },
-                {
-                  jsx: <VisualClueText />,
-                  visualClueName: "MyCollectionInsights",
-                },
-              ],
-            },
-            {
-              title: Tab.savedWorks,
-              content: isArtworkListsEnabled ? (
-                <ArtworkListsQR />
-              ) : (
-                <FavoriteArtworksQueryRenderer />
-              ),
-            },
-          ])}
-          staticHeaderContent={<MyProfileHeader me={me} />}
-        />
-      </SafeAreaView>
+    <Screen>
+      <TabsContainer
+        lazy
+        initialTabName={Tab.collection}
+        renderHeader={() => <MyProfileHeader me={me} />}
+      >
+        <Tabs.Tab name={Tab.collection} label={Tab.collection}>
+          <Tabs.Lazy>
+            <MyCollectionQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        {/* TODO: need to implement visual clue dot here see diff */}
+        <Tabs.Tab name={Tab.insights} label={Tab.insights}>
+          <Tabs.Lazy>
+            <MyCollectionInsightsQR />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
+          <Tabs.Lazy>
+            {isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />}
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </TabsContainer>
       {viewKind !== null && <MyCollectionBottomSheetModals />}
-    </>
+    </Screen>
   )
 }
 

@@ -3,8 +3,8 @@ import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
-import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
-import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
+// import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
+// import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
@@ -17,7 +17,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native"
-import Animated from "react-native-reanimated"
 
 export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
@@ -36,11 +35,11 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const [isFocused, setIsFocused] = useState(false)
 
-  const hasRunFocusedAnimation = useAnimatedValue(1)
+  // const hasRunFocusedAnimation = useAnimatedValue(1)
 
   const [value, setValue] = useState(searchString)
 
-  const { staticHeaderHeight } = useStickyTabPageContext()
+  // const { staticHeaderHeight } = useStickyTabPageContext()
 
   const viewOptionPreference = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
@@ -61,19 +60,19 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
 
-  Animated.useCode(
-    () =>
-      Animated.call(
-        [staticHeaderHeight, hasRunFocusedAnimation],
-        ([, hasFinishedAnimationLoop]) => {
-          if (hasFinishedAnimationLoop) {
-            return
-          }
-          hasRunFocusedAnimation.setValue(new Animated.Value(1))
-        }
-      ),
-    [isFocused]
-  )
+  // Animated.useCode(
+  //   () =>
+  //     Animated.call(
+  //       [staticHeaderHeight, hasRunFocusedAnimation],
+  //       ([, hasFinishedAnimationLoop]) => {
+  //         if (hasFinishedAnimationLoop) {
+  //           return
+  //         }
+  //         hasRunFocusedAnimation.setValue(new Animated.Value(1))
+  //       }
+  //     ),
+  //   [isFocused]
+  // )
 
   useEffect(() => {
     debouncedSetKeywordFilter(value)
@@ -89,7 +88,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             onChangeText={setValue}
             onFocus={onFocus}
             onBlur={() => {
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              // hasRunFocusedAnimation.setValue(new Animated.Value(0))
               onIsFocused?.(false)
               setIsFocused(false)
             }}
@@ -105,7 +104,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             testID="MyCollectionSearchBarInputCancelButton"
             onPress={() => {
               setValue("")
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              // hasRunFocusedAnimation.setValue(new Animated.Value(0))
 
               LayoutAnimation.configureNext({
                 ...LayoutAnimation.Presets.easeInEaseOut,
@@ -129,7 +128,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               <TouchableWithoutFeedback
                 testID="MyCollectionSearchBarNoInputTouchable"
                 onPress={() => {
-                  hasRunFocusedAnimation.setValue(new Animated.Value(0))
+                  // hasRunFocusedAnimation.setValue(new Animated.Value(0))
                   setIsFocused(true)
                   onIsFocused?.(true)
 

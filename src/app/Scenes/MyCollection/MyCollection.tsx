@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Box, Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
+// import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
@@ -8,9 +8,8 @@ import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkF
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { SubTabBar } from "app/Components/Tabs/SubTabBar"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
@@ -19,7 +18,7 @@ import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyColl
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -39,7 +38,8 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
+import { RefreshControl } from "react-native"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -58,7 +58,6 @@ const MyCollection: React.FC<{
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showSearchBar, setShowSearchBar] = useState(false)
-  const innerFlatListRef = useRef(null)
 
   const filtersCount = useSelectedFiltersCount()
 
@@ -109,35 +108,21 @@ const MyCollection: React.FC<{
   }, [me?.myCollectionConnection])
 
   // hack for tests. we should fix that.
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  // const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  //   const showNewWorksMessage =
+  //     me.myCollectionInfo?.includesPurchasedArtworks &&
+  //     !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-  const showMessages = async () => {
-    const showNewWorksMessage =
-      me.myCollectionInfo?.includesPurchasedArtworks &&
-      !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
+  // useEffect(() => {
+  //   const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
 
-    setJSX(
-      <MyCollectionStickyHeader
-        filtersCount={filtersCount}
-        hasMarketSignals={hasMarketSignals}
-        showModal={() => setIsFilterModalVisible(true)}
-        showNewWorksMessage={!!showNewWorksMessage}
-        showSeparator={!showSearchBar}
-        hasArtworks={artworks.length > 0}
-      />
-    )
-  }
-
-  useEffect(() => {
-    const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
-
-    if (renderMessages) {
-      showMessages()
-    } else {
-      // remove already set JSX
-      setJSX(null)
-    }
-  }, [artworks.length, filtersCount, showSearchBar])
+  //   if (renderMessages) {
+  //     showMessages()
+  //   } else {
+  //     // remove already set JSX
+  //     // setJSX(null)
+  //   }
+  // }, [artworks.length, filtersCount, showSearchBar])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
@@ -151,7 +136,7 @@ const MyCollection: React.FC<{
   // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
-      <StickyTabPageScrollView>
+      <TabScrollView>
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
@@ -159,19 +144,34 @@ const MyCollection: React.FC<{
             <MyCollectionZeroStateArtworks />
           </>
         )}
-      </StickyTabPageScrollView>
+      </TabScrollView>
     )
   }
 
   return (
-    <StickyTabPageScrollView
-      contentContainerStyle={{ justifyContent: "flex-start" }}
-      refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
-      innerRef={innerFlatListRef}
+    <TabScrollView
+      contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}
+      // TODO: this is displayed on pull to refresh
+      // before it was displayed under the subTabBar
+      // now with the new implementation it is under the Search Your Collection
+      // header
+      refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      paddingHorizontal={0}
     >
+      <SubTabBar>
+        <Box mx={2} backgroundColor="white100">
+          <MyCollectionStickyHeader
+            filtersCount={filtersCount}
+            hasMarketSignals={hasMarketSignals}
+            showModal={() => setIsFilterModalVisible(true)}
+            // TODO: fix logic here
+            showNewWorksMessage={!!false}
+            showSeparator={!showSearchBar}
+            hasArtworks={artworks.length > 0}
+          />
+        </Box>
+      </SubTabBar>
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         mode={FilterModalMode.Custom}
@@ -202,7 +202,7 @@ const MyCollection: React.FC<{
           Add Random Work
         </Button>
       )}
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 
@@ -295,7 +295,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
     >
       <ArtworkFiltersStoreProvider>
         <QueryRenderer<MyCollectionQuery>
-          environment={defaultEnvironment}
+          environment={getRelayEnvironment()}
           query={MyCollectionScreenQuery}
           variables={{}}
           cacheConfig={{ force: true }}

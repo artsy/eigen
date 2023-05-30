@@ -4,17 +4,16 @@ import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.grap
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useEffect, useState } from "react"
-import { Image } from "react-native"
+import { Image, NativeScrollEvent, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -74,9 +73,9 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
 
   if (artworks.length === 0) {
     return (
-      <StickyTabPageScrollView
+      <TabScrollView
         refreshControl={
-          <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
         }
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
       >
@@ -102,17 +101,35 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
             </Button>
           }
         />
-      </StickyTabPageScrollView>
+      </TabScrollView>
     )
   }
 
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const paddingToBottom = 160
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom
+  }
+
   return (
-    <StickyTabPageScrollView
-      contentContainerStyle={{ paddingVertical: space(2) }}
-      onEndReached={loadMore}
-      refreshControl={
-        <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
-      }
+    <TabScrollView
+      contentContainerStyle={{
+        marginVertical: space(2),
+        paddingHorizontal: space(1),
+      }}
+      scrollEventThrottle={400}
+      // TODO: This is not working
+      onScroll={({ nativeEvent }) => {
+        console.warn("onScroll")
+        if (isCloseToBottom(nativeEvent)) {
+          console.warn("isCloseToBottom")
+          loadMore()
+        }
+      }}
+      refreshControl={<RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />}
     >
       <GenericGrid
         artworks={artworks}
@@ -120,9 +137,9 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}
-        width={width - space(2)}
+        width={width}
       />
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 
@@ -188,7 +205,7 @@ export const FavoriteArtworksQueryRenderer = () => {
   const screen = useScreenDimensions()
   return (
     <QueryRenderer<FavoriteArtworksQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={FavoriteArtworksScreenQuery}
       variables={{
         count: 10,
@@ -197,9 +214,9 @@ export const FavoriteArtworksQueryRenderer = () => {
         Container: FavoriteArtworksContainer,
         renderPlaceholder: () => {
           return (
-            <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
+            <TabScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
               <GenericGridPlaceholder width={screen.width - 40} />
-            </StickyTabPageScrollView>
+            </TabScrollView>
           )
         },
         renderFallback: ({ retry }) => (

@@ -1,7 +1,7 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useSpace, Flex, LockIcon, Button, Text } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { Image } from "react-native"
@@ -14,48 +14,50 @@ export const MyCollectionZeroState: React.FC = () => {
   const image = require("images/my-collection-empty-state.webp")
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ justifyContent: "center", height: "100%" }}>
-      <ZeroState
-        bigTitle="Know Your Collection Better"
-        subtitle="Manage your collection online and get free market insights."
-        image={
-          <Image
-            source={image}
-            resizeMode="contain"
-            style={{
-              alignSelf: "center",
-              marginVertical: space(2),
-            }}
-          />
-        }
-        callToAction={
-          <>
-            <Button
-              testID="add-artwork-button-zero-state"
-              onPress={() => {
-                trackEvent(tracks.addCollectedArtwork())
-                navigate("my-collection/artworks/new", {
-                  passProps: {
-                    mode: "add",
-                    source: Tab.collection,
-                    onSuccess: popToRoot,
-                  },
-                })
+    <TabScrollView>
+      <Flex height="100%" justifyContent="center">
+        <ZeroState
+          bigTitle="Know Your Collection Better"
+          subtitle="Manage your collection online and get free market insights."
+          image={
+            <Image
+              source={image}
+              resizeMode="contain"
+              style={{
+                alignSelf: "center",
+                marginVertical: space(2),
               }}
-              block
-            >
-              Upload Artwork
-            </Button>
-            <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
-              <LockIcon fill="black60" />
-              <Text color="black60" pl={0.5} variant="xs">
-                My Collection is not shared with sellers.
-              </Text>
-            </Flex>
-          </>
-        }
-      />
-    </StickyTabPageScrollView>
+            />
+          }
+          callToAction={
+            <>
+              <Button
+                testID="add-artwork-button-zero-state"
+                onPress={() => {
+                  trackEvent(tracks.addCollectedArtwork())
+                  navigate("my-collection/artworks/new", {
+                    passProps: {
+                      mode: "add",
+                      source: Tab.collection,
+                      onSuccess: popToRoot,
+                    },
+                  })
+                }}
+                block
+              >
+                Upload Artwork
+              </Button>
+              <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
+                <LockIcon fill="black60" />
+                <Text color="black60" pl={0.5} variant="xs">
+                  My Collection is not shared with sellers.
+                </Text>
+              </Flex>
+            </>
+          }
+        />
+      </Flex>
+    </TabScrollView>
   )
 }
 

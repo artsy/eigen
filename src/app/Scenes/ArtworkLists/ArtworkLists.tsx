@@ -2,14 +2,14 @@ import { Flex, Spacer, Spinner, useScreenDimensions, useSpace } from "@artsy/pal
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabFlatList } from "app/Components/Tabs/TabFlatList"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { Suspense, useState } from "react"
+import { RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 /**
@@ -81,16 +81,15 @@ export const ArtworkLists = () => {
   })
 
   return (
-    <StickyTabPageFlatList
+    <TabFlatList
       contentContainerStyle={{ paddingVertical: space(2) }}
       data={artworkSections}
+      renderItem={({ item }) => item.content}
       numColumns={artworkListsColCount}
       keyExtractor={(item) => item.key}
       onEndReached={handleLoadMore}
       ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
-      refreshControl={
-        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
-      }
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
     />
   )
 }
@@ -113,9 +112,9 @@ export const ArtworkListsPlaceHolder = () => {
   const screen = useScreenDimensions()
   const space = useSpace()
   return (
-    <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: space(2) }}>
+    <TabScrollView scrollEnabled={false} style={{ paddingTop: space(2) }}>
       <GenericGridPlaceholder width={screen.width - space(4)} />
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 

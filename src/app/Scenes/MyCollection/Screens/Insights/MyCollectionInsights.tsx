@@ -1,11 +1,10 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { SubTabBar } from "app/Components/Tabs/SubTabBar"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import {
@@ -13,7 +12,7 @@ import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Suspense, useContext, useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
@@ -62,7 +61,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
     setIsRefreshing(true)
 
-    fetchQuery(defaultEnvironment, MyCollectionInsightsScreenQuery, {}).subscribe({
+    fetchQuery(getRelayEnvironment(), MyCollectionInsightsScreenQuery, {}).subscribe({
       complete: () => {
         setIsRefreshing(false)
       },
@@ -72,30 +71,30 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     })
   }
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  // const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  const showMessages = async () => {
-    const showMyCollectionInsightsIncompleteMessage =
-      showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
+  const showMyCollectionInsightsIncompleteMessage =
+    showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
+  // const showMessages = async () => {
 
-    setJSX(
-      <>
-        {!!showMyCollectionInsightsIncompleteMessage && (
-          <MyCollectionInsightsIncompleteMessage
-            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
-          />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.insights}
-          hasMarketSignals={hasMarketSignals}
-        />
-      </>
-    )
-  }
+  //   setJSX(
+  //     <>
+  //       {!!showMyCollectionInsightsIncompleteMessage && (
+  //         <MyCollectionInsightsIncompleteMessage
+  //           onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+  //         />
+  //       )}
+  //       <MyCollectionArtworkUploadMessages
+  //         sourceTab={Tab.insights}
+  //         hasMarketSignals={hasMarketSignals}
+  //       />
+  //     </>
+  //   )
+  // }
 
-  useEffect(() => {
-    showMessages()
-  }, [data.me?.myCollectionInfo?.artworksCount, areInsightsIncomplete])
+  // useEffect(() => {
+  //   showMessages()
+  // }, [data.me?.myCollectionInfo?.artworksCount, areInsightsIncomplete])
 
   const renderContent = () => {
     return (
@@ -116,18 +115,31 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   }
 
   return (
-    <StickyTabPageScrollView
-      refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
+    <TabScrollView
+      // refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
         justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
         height: myCollectionArtworksCount > 0 ? "auto" : "100%",
       }}
-      paddingHorizontal={0}
+      // paddingHorizontal={0}
     >
+      <SubTabBar>
+        <>
+          {!!showMyCollectionInsightsIncompleteMessage && (
+            <MyCollectionInsightsIncompleteMessage
+              onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+            />
+          )}
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.insights}
+            hasMarketSignals={hasMarketSignals}
+          />
+        </>
+      </SubTabBar>
       {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
-    </StickyTabPageScrollView>
+    </TabScrollView>
   )
 }
 
@@ -138,7 +150,7 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
 )
 
 export const MyCollectionInsightsPlaceHolder = () => (
-  <StickyTabPageScrollView
+  <TabScrollView
     style={{ flex: 1 }}
     contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     scrollEnabled={false}
@@ -146,7 +158,7 @@ export const MyCollectionInsightsPlaceHolder = () => (
     <Flex alignItems="center">
       <Spinner />
     </Flex>
-  </StickyTabPageScrollView>
+  </TabScrollView>
 )
 
 export const MyCollectionInsightsScreenQuery = graphql`
