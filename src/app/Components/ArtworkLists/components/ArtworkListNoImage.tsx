@@ -1,5 +1,5 @@
 import { FlexProps, NoImageIcon } from "@artsy/palette-mobile"
-import { ArtworkListImageBorder } from "app/Scenes/ArtworkLists/components/ArtworkListImageBorder"
+import { ArtworkListImageBorder } from "app/Components/ArtworkLists/components/ArtworkListImageBorder"
 import { FC } from "react"
 
 const NO_ICON_SIZE = 18
