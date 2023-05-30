@@ -13,6 +13,7 @@ import {
   RefreshEvents,
 } from "app/utils/refreshHelpers"
 import { Suspense, useEffect, useState } from "react"
+import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
@@ -116,14 +117,13 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   return (
     <TabScrollView
-      // refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
+      refreshControl={<RefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
         justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
         height: myCollectionArtworksCount > 0 ? "auto" : "100%",
       }}
-      // paddingHorizontal={0}
     >
       <SubTabBar>
         <>
