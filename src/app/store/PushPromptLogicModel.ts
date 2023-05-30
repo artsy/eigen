@@ -5,13 +5,13 @@ export interface PushPromptLogicModel {
   pushNotificationSettingsPromptSeen: boolean
   pushNotificationAppleDialogueRejected: boolean
   pushNotificationSystemDialogueSeen: boolean
-  pushNotificationDialogueLastSeenDate: Date
+  pushNotificationDialogueLastSeenTimestamp: number | null
 
   setPushPermissionsRequestedThisSession: Action<PushPromptLogicModel, boolean>
   setPushNotificationSettingsPromptSeen: Action<PushPromptLogicModel, boolean>
   setPushNotificationAppleDialogueRejected: Action<PushPromptLogicModel, boolean>
   setPushNotificationSystemDialogueSeen: Action<PushPromptLogicModel, boolean>
-  setPushNotificationDialogueLastSeenDate: Action<PushPromptLogicModel, Date>
+  setPushNotificationDialogueLastSeenTimestamp: Action<PushPromptLogicModel, number>
 }
 
 export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
@@ -19,7 +19,7 @@ export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
   pushNotificationSettingsPromptSeen: false,
   pushNotificationAppleDialogueRejected: false,
   pushNotificationSystemDialogueSeen: false,
-  pushNotificationDialogueLastSeenDate: new Date(),
+  pushNotificationDialogueLastSeenTimestamp: null,
 
   setPushPermissionsRequestedThisSession: action((state, payload) => {
     state.pushPermissionsRequestedThisSession = payload
@@ -33,7 +33,7 @@ export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
   setPushNotificationSystemDialogueSeen: action((state, payload) => {
     state.pushNotificationSystemDialogueSeen = payload
   }),
-  setPushNotificationDialogueLastSeenDate: action((state, payload) => {
-    state.pushNotificationDialogueLastSeenDate = payload
+  setPushNotificationDialogueLastSeenTimestamp: action((state, payload) => {
+    state.pushNotificationDialogueLastSeenTimestamp = payload
   }),
 })

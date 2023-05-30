@@ -60,7 +60,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
-          pushNotificationDialogueLastSeenDate: undefined,
+          pushNotificationDialogueLastSeenTimestamp: undefined,
         },
       },
     })
@@ -169,7 +169,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenDate: undefined,
+          pushNotificationDialogueLastSeenTimestamp: undefined,
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -206,7 +206,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenDate: dateMoreThanAWeekAgo,
+          pushNotificationDialogueLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -242,7 +242,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenDate: dateLessThanAWeekAgo,
+          pushNotificationDialogueLastSeenTimestamp: dateLessThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -269,7 +269,7 @@ describe("requestPushNotificationsPermission", () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
-          pushNotificationDialogueLastSeenDate: dateMoreThanAWeekAgo,
+          pushNotificationDialogueLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -279,7 +279,7 @@ describe("requestPushNotificationsPermission", () => {
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
     const currentDate = new Date("2023-05-23T00:00:00Z")
-    Date.now = jest.fn().mockReturnValue(currentDate.valueOf())
+    Date.now = jest.fn().mockReturnValue(currentDate.getTime())
 
     const requestPushPromise = requestPushNotificationsPermission()
 
@@ -299,10 +299,10 @@ describe("requestPushNotificationsPermission", () => {
     )
 
     // Now check if the pushNotificationDialogueLastSeenDate in GlobalStore was updated to the current date
-    const pushNotificationDialogueLastSeenDate =
+    const pushNotificationDialogueLastSeenTimestamp =
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
-        .pushNotificationDialogueLastSeenDate
+        .pushNotificationDialogueLastSeenTimestamp
 
-    expect(pushNotificationDialogueLastSeenDate).toEqual(currentDate)
+    expect(pushNotificationDialogueLastSeenTimestamp).toEqual(currentDate.getTime())
   })
 })

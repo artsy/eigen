@@ -27,26 +27,26 @@ const showPrepromptAlert = async () => {
       { text: "OK", onPress: () => requestSystemPermissions() },
     ]
   )
-  const lastSeenDate = new Date(Date.now())
-  await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogueLastSeenDate(
-    lastSeenDate
+  await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogueLastSeenTimestamp(
+    Date.now()
   )
 }
 
-const requestSystemPermissions = () => {
+const requestSystemPermissions = async () => {
   GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogueSeen(true)
   // TODO: double check these permissions
   const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-  PushNotification.requestPermissions(permissions)
+  await PushNotification.requestPermissions(permissions)
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
 const shouldDisplayPrepromptAlert = () => {
-  const { pushNotificationDialogueLastSeenDate } = unsafe_getPushPromptSettings()!
+  const { pushNotificationDialogueLastSeenTimestamp } = unsafe_getPushPromptSettings()!
 
-  if (pushNotificationDialogueLastSeenDate) {
+  if (pushNotificationDialogueLastSeenTimestamp) {
     // we don't want to ask too often
     // currently, we make sure at least a week has passed by since you last saw the dialogue
+    const pushNotificationDialogueLastSeenDate = new Date(pushNotificationDialogueLastSeenTimestamp)
     const currentDate = new Date()
     const timePassed = currentDate.getTime() - pushNotificationDialogueLastSeenDate.getTime()
     return timePassed >= ONE_WEEK_MS
@@ -73,6 +73,9 @@ export const requestPushNotificationsPermission = async () => {
   const permissionStatus = await getNotificationPermissionsStatus()
   if (permissionStatus === PushAuthorizationStatus.Authorized) {
     // TODO: refresh the push token
+    // We may not need to do anything here, push library should
+    // get the onRegister callback any time the app opens
+    // TEST THIS
     return
   } else if (permissionStatus === PushAuthorizationStatus.Denied) {
     if (!pushNotificationSettingsPromptSeen) {
