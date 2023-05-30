@@ -4,7 +4,7 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
-import { FC } from "react"
+import { FC, memo, useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -12,13 +12,18 @@ import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
 interface ArtworkListItemProps {
   item: ArtworkListItem_item$key
+  selected: boolean
 }
 
-export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
-  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
+const Item: FC<ArtworkListItemProps> = (props) => {
+  const { dispatch } = useArtworkListsContext()
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.resized?.url ?? null
+
+  useEffect(() => {
+    console.log("[debug] rerender artwork list", artworkList.internalID)
+  })
 
   const handleArtworkListPress = () => {
     const mode = artworkList.isSavedArtwork
@@ -45,28 +50,6 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
     return `${artworkList.artworksCount} Artworks`
   }
 
-  const checkIsArtworkListSelected = () => {
-    /**
-     * User added artwork to the previously unselected artwork list
-     * So we have to display the artwork list as *selected*
-     */
-    if (addingArtworkListIDs.includes(artworkList.internalID)) {
-      return true
-    }
-
-    /**
-     * User deleted artwork from the previously selected artwork list
-     * So we have to display the artwork list as *unselected*
-     */
-    if (removingArtworkListIDs.includes(artworkList.internalID)) {
-      return false
-    }
-
-    return artworkList.isSavedArtwork
-  }
-
-  const isSelected = checkIsArtworkListSelected()
-
   return (
     <TouchableOpacity onPress={handleArtworkListPress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
@@ -80,12 +63,18 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
             </Text>
           </Flex>
 
-          <ArtworkListItemSelectedIcon selected={isSelected} />
+          <ArtworkListItemSelectedIcon selected={props.selected} />
         </Join>
       </Flex>
     </TouchableOpacity>
   )
 }
+
+const arePropsEqual = (prevProps: ArtworkListItemProps, nextProps: ArtworkListItemProps) => {
+  return prevProps.selected === nextProps.selected
+}
+
+export const ArtworkListItem = memo(Item, arePropsEqual)
 
 const ArtworkListItemFragment = graphql`
   fragment ArtworkListItem_item on Collection @argumentDefinitions(artworkID: { type: "String!" }) {
