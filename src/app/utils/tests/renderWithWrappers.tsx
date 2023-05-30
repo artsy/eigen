@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react-native"
 import { TestProviders } from "app/Providers"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { track } from "app/utils/track"
 import { Component, Suspense } from "react"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
@@ -78,7 +78,7 @@ export const renderWithWrappers = (component: ReactElement, wrapperProps?: Wrapp
 
 export const renderWithHookWrappersTL = (
   component: ReactElement,
-  environment: Environment = defaultEnvironment
+  environment: Environment = getRelayEnvironment()
 ) => {
   const jsx = (
     <RelayEnvironmentProvider environment={environment}>

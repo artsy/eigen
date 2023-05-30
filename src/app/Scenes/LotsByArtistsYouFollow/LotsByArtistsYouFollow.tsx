@@ -3,7 +3,7 @@ import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollo
 import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -78,7 +78,7 @@ export const LotsByArtistsYouFollowFragmentContainer = createPaginationContainer
 export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<LotsByArtistsYouFollowQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={LotsByArtistsYouFollowScreenQuery}
       variables={lotsByArtistsYouFollowDefaultVariables()}
       render={renderWithPlaceholder({

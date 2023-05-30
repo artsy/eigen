@@ -2,7 +2,7 @@ import { Flex, Box, useTheme, Text, Separator } from "@artsy/palette-mobile"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -164,7 +164,7 @@ export const OrderHistoryContainer = createPaginationContainer(
 export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<OrderHistoryQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OrderHistoryQuery($count: Int!) {
           me @optionalField {

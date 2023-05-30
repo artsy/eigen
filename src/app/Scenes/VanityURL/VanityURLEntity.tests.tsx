@@ -2,6 +2,7 @@ import { Spinner } from "@artsy/palette-mobile"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner/Partner"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
@@ -25,8 +26,7 @@ describe("VanityURLEntity", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("app/system/relay/createEnvironment").reset()
-    env = require("app/system/relay/createEnvironment").defaultEnvironment
+    env = getMockRelayEnvironment()
   })
 
   it("renders a VanityURLPossibleRedirect when 404", () => {

@@ -4,7 +4,7 @@ import { RequestConditionReportQuery } from "__generated__/RequestConditionRepor
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { Modal } from "app/Components/Modal"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Component } from "react"
 import { View } from "react-native"
@@ -154,7 +154,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
 }> = ({ artworkID }) => {
   return (
     <QueryRenderer<RequestConditionReportQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       variables={{ artworkID }}
       query={graphql`
         query RequestConditionReportQuery($artworkID: String!) {

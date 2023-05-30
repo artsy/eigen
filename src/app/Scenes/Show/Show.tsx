@@ -5,7 +5,8 @@ import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -14,7 +15,6 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 import { ShowContextCardFragmentContainer as ShowContextCard } from "./Components/ShowContextCard"
@@ -166,7 +166,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
 export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowQuery($showID: String!) {
           show(id: $showID) @principalField {

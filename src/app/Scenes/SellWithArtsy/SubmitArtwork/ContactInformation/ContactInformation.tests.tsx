@@ -3,11 +3,11 @@ import { fireEvent } from "@testing-library/react-native"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { updateConsignSubmission } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils/"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
@@ -20,7 +20,12 @@ describe("ContactInformationForm", () => {
   afterEach(() => {
     GlobalStore.actions.artworkSubmission.submission.resetSessionState()
   })
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
   const TestRenderer = ({ isLastStep = true }: { isLastStep?: boolean }) => (
     <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep={isLastStep} />

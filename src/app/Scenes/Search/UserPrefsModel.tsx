@@ -1,7 +1,7 @@
 import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
 import { fetchQuery, graphql } from "relay-runtime"
@@ -98,7 +98,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
 
 const fetchMe = async () => {
   const result = await fetchQuery<UserPrefsModelQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query UserPrefsModelQuery {
         me {

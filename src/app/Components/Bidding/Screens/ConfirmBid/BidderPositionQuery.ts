@@ -1,10 +1,10 @@
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
-import { defaultEnvironment as environment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { fetchQuery, graphql } from "relay-runtime"
 
 export const bidderPositionQuery = (bidderPositionID: string) => {
   return fetchQuery<BidderPositionQuery>(
-    environment,
+    getRelayEnvironment(),
     graphql`
       query BidderPositionQuery($bidderPositionID: String!) {
         me {

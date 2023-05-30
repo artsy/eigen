@@ -5,7 +5,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -217,7 +217,7 @@ export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: strin
 }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
           viewingRoom(id: $viewingRoomID) {
