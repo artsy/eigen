@@ -2,6 +2,8 @@ import BottomSheet from "@gorhom/bottom-sheet"
 import { fireEvent } from "@testing-library/react-native"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionBottomSheetModalAdd", () => {
@@ -23,19 +25,31 @@ describe("MyCollectionBottomSheetModalAdd", () => {
 
       fireEvent(addArtistsButton, "onPress")
 
-      // TODO: Add this test later
+      expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
+        passProps: {
+          mode: "add",
+          source: Tab.collection,
+          onSuccess: expect.anything(),
+        },
+      })
     })
   })
 
   describe("Add Artworks", () => {
     it("navigates the user to add artwork screen", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      const addArworksButton = getByText("Add Artworks")
+      const addArworksButton = getByTestId("add-artworks")
 
       fireEvent(addArworksButton, "onPress")
 
-      // TODO: Add this test later
+      expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
+        passProps: {
+          mode: "add",
+          source: Tab.collection,
+          onSuccess: expect.anything(),
+        },
+      })
     })
   })
 })

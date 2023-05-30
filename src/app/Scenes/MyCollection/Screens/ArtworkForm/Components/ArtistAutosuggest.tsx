@@ -1,10 +1,11 @@
-import { Spacer, Flex, Box, Text, Touchable, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Touchable, Button, AddIcon } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
+import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { normalizeText } from "app/utils/normalizeText"
@@ -116,6 +117,29 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 )
               }
+              CreateNewArtistComponent={() => (
+                <Touchable
+                  onPress={() => onSkipPress?.(trimmedQuery)}
+                  testID="autosuggest-search-result-add-new-artist"
+                >
+                  <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+                    <Flex
+                      alignItems="center"
+                      backgroundColor="black5"
+                      border="1px solid"
+                      borderColor="black15"
+                      borderRadius={IMAGE_SIZE / 2}
+                      height={IMAGE_SIZE}
+                      justifyContent="center"
+                      width={IMAGE_SIZE}
+                    >
+                      <AddIcon height={IMAGE_SIZE / 2} width={IMAGE_SIZE / 2} fill="black60" />
+                    </Flex>
+                    <Spacer x={1} />
+                    <Text variant="xs">Create New Artist</Text>
+                  </Flex>
+                </Touchable>
+              )}
             />
           </Box>
         ) : (

@@ -42,6 +42,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListEmptyComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   HeaderComponent?: React.ComponentType<any>
+  CreateNewArtistComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -54,6 +55,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent = () => <Spacer y={2} />,
   HeaderComponent = null,
   prependResults = [],
+  CreateNewArtistComponent,
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -131,7 +133,7 @@ const AutosuggestResultsFlatList: React.FC<{
       []
     const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
 
-    return filteredEdges
+    return filteredEdges.length === 0 ? [] : [...filteredEdges, {} as any] // add a dummy node as the last array entry to trigger the "Create New Artist" component
   }, [results.current, prependResults])
 
   const allNodes = [...prependResults, ...nodes]
@@ -176,6 +178,9 @@ const AutosuggestResultsFlatList: React.FC<{
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
         renderItem={({ item, index }) => {
+          if (index === allNodes.indexOf(allNodes[allNodes.length - 1])) {
+            return !!CreateNewArtistComponent ? <CreateNewArtistComponent /> : <></>
+          }
           return (
             <Flex mb={2}>
               <AutosuggestSearchResult
@@ -306,6 +311,7 @@ export const AutosuggestResults: React.FC<{
   HeaderComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
+  CreateNewArtistComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
@@ -319,6 +325,7 @@ export const AutosuggestResults: React.FC<{
     HeaderComponent,
     ListHeaderComponent,
     ListEmptyComponent,
+    CreateNewArtistComponent,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -356,6 +363,7 @@ export const AutosuggestResults: React.FC<{
               ListEmptyComponent={ListEmptyComponent}
               ListHeaderComponent={ListHeaderComponent}
               HeaderComponent={HeaderComponent}
+              CreateNewArtistComponent={CreateNewArtistComponent}
             />
           )
         }}
