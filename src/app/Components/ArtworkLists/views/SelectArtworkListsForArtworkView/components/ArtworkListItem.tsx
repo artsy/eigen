@@ -1,8 +1,6 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
-import { ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC, memo, useEffect } from "react"
 import { TouchableOpacity } from "react-native"
@@ -10,13 +8,19 @@ import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
+export interface PressedArtworkListItem {
+  internalID: string
+  name: string
+  isSavedArtwork: boolean
+}
+
 interface ArtworkListItemProps {
   item: ArtworkListItem_item$key
   selected: boolean
+  onPress: (item: PressedArtworkListItem) => void
 }
 
 const Item: FC<ArtworkListItemProps> = (props) => {
-  const { dispatch } = useArtworkListsContext()
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.resized?.url ?? null
@@ -24,23 +28,6 @@ const Item: FC<ArtworkListItemProps> = (props) => {
   useEffect(() => {
     console.log("[debug] rerender artwork list", artworkList.internalID)
   })
-
-  const handleArtworkListPress = () => {
-    const mode = artworkList.isSavedArtwork
-      ? ArtworkListMode.RemovingArtworkList
-      : ArtworkListMode.AddingArtworkList
-
-    dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST",
-      payload: {
-        mode,
-        artworkList: {
-          internalID: artworkList.internalID,
-          name: artworkList.name,
-        },
-      },
-    })
-  }
 
   const getArtworksCountText = () => {
     if (artworkList.artworksCount === 1) {
@@ -50,8 +37,18 @@ const Item: FC<ArtworkListItemProps> = (props) => {
     return `${artworkList.artworksCount} Artworks`
   }
 
+  const handlePress = () => {
+    const result: PressedArtworkListItem = {
+      internalID: artworkList.internalID,
+      name: artworkList.name,
+      isSavedArtwork: artworkList.isSavedArtwork,
+    }
+
+    props.onPress(result)
+  }
+
   return (
-    <TouchableOpacity onPress={handleArtworkListPress}>
+    <TouchableOpacity onPress={handlePress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
           <ArtworkListImagePreview imageURL={imageURL} />
