@@ -9,30 +9,31 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
+import {
+  AutosuggestResult,
+  AutosuggestResults,
+} from "app/Components/AutosuggestResults/AutosuggestResults"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
-import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
+import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
 import { sortBy } from "lodash"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 
-interface MyCollectionAddCollectedArtistsAutosuggestProps {
-  onResultPress: (result: AutosuggestResult) => void
-  newCollectedArtistsIds: Set<string>
-}
-
-export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<
-  MyCollectionAddCollectedArtistsAutosuggestProps
-> = ({ onResultPress, newCollectedArtistsIds }) => {
+export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => {
   const [query, setQuery] = useState("")
   const trimmedQuery = query.trimStart()
+
+  const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
+    (actions) => actions.addOrRemoveArtist
+  )
 
   const searchProviderValues = useSearchProviderValues(query.trimStart())
 
@@ -93,14 +94,12 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<
               entities={["ARTIST"]}
               showResultType={false}
               showQuickNavigationButtons={false}
-              onResultPress={onResultPress}
+              onResultPress={(result) => addOrRemoveArtist(result.internalID!)}
               HeaderComponent={HeaderComponent}
               numColumns={isTablet ? 5 : 3}
               CustomListItemComponent={(props) => (
                 <CollectedArtistListItem
                   {...props}
-                  onResultPress={onResultPress}
-                  isSelected={newCollectedArtistsIds.has(props.item.internalID!)}
                   disabled={oldCollectedArtistsIds.has(props.item.internalID!)}
                 />
               )}
@@ -174,23 +173,22 @@ const ARTIST_LIST_ITEM_HEIGHT = 100
 const CollectedArtistListItem: React.FC<{
   disabled?: boolean
   highlight: string
-  isSelected: boolean
   item: AutosuggestResult
-  onResultPress: (result: AutosuggestResult) => void
-}> = ({ disabled = false, highlight, isSelected: isSelectedProp, item: artist, onResultPress }) => {
+}> = ({ disabled = false, highlight, item: artist }) => {
   const isTablet = isPad()
-  const [isSelected, setIsSelected] = useState(isSelectedProp)
+  const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
+
+  const [isSelected, setIsSelected] = useState(artistIds.has(artist.internalID!))
+
+  const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
+    (actions) => actions.addOrRemoveArtist
+  )
 
   const handlePress = () => {
     LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.linear, duration: 200 })
     setIsSelected(!isSelected)
+    addOrRemoveArtist(artist.internalID!)
   }
-
-  useEffect(() => {
-    if (isSelectedProp !== isSelected) {
-      onResultPress(artist)
-    }
-  }, [isSelected])
 
   return (
     <Flex alignItems="center" width={isTablet ? "20%" : "33%"} mt={2}>
@@ -203,10 +201,12 @@ const CollectedArtistListItem: React.FC<{
           size="md"
         ></Avatar>
         <Spacer y={0.5} />
+
         <ResultWithHighlight
           displayLabel={artist.displayLabel!}
           numberOfLines={2}
           highlight={highlight}
+          textAlign="center"
         />
       </Touchable>
     </Flex>

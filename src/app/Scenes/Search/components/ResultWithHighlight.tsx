@@ -6,12 +6,13 @@ export const ResultWithHighlight: React.FC<{
   displayLabel: string
   highlight?: string
   numberOfLines?: number
-}> = ({ displayLabel, highlight, numberOfLines = 1 }) => {
+  textAlign?: "center" | "end" | "justify" | "left" | "match-parent" | "right" | "start"
+}> = ({ displayLabel, highlight, numberOfLines = 1, textAlign }) => {
   const matches = match(displayLabel, highlight!)
   const parts = parse(displayLabel, matches)
 
   return (
-    <Text variant="xs" numberOfLines={numberOfLines}>
+    <Text variant="xs" numberOfLines={numberOfLines} textAlign={textAlign}>
       {parts.map((part, i) => (
         <Text
           key={i}

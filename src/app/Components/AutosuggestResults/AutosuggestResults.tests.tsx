@@ -2,6 +2,8 @@ import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/Aut
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
+import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
@@ -11,8 +13,6 @@ import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
-import { SearchContext } from "./SearchContext"
-import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 
 const FixturePage1: AutosuggestResultsQuery$rawResponse = {
   results: {

@@ -1,6 +1,6 @@
 import { Spacer, Flex } from "@artsy/palette-mobile"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { TouchableWithoutFeedback } from "react-native"
 

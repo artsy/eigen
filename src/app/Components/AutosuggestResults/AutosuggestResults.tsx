@@ -3,9 +3,15 @@ import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
+import {
+  OnResultPress,
+  TrackResultPress,
+  AutosuggestSearchResult,
+} from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -13,12 +19,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { FlatList, Keyboard } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import {
-  AutosuggestSearchResult,
-  OnResultPress,
-  TrackResultPress,
-} from "./components/AutosuggestSearchResult"
-import { AutosuggestResultsPlaceholder } from "./components/placeholders/AutosuggestResultsPlaceholder"
 
 export type AutosuggestResult = NonNullable<
   NonNullable<
