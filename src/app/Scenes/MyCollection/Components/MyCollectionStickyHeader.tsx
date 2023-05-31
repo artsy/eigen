@@ -68,11 +68,12 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   return (
     <>
       {!!enableCollectedArtists && (
-        <Flex pb={0}>
+        <Flex>
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
       {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
+      {!!enableCollectedArtists && <Spacer y={2} />}
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}

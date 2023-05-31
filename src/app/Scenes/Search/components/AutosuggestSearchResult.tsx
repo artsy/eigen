@@ -7,8 +7,8 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { Pill } from "app/Components/Pill"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import {

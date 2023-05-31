@@ -1,6 +1,6 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"

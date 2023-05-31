@@ -1,10 +1,13 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
+import {
+  AutosuggestResult,
+  AutosuggestResults,
+} from "app/Components/AutosuggestResults/AutosuggestResults"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
-import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
 import { ARTWORKS_PILL, objectTabByContextModule, TOP_PILL, tracks } from "./constants"

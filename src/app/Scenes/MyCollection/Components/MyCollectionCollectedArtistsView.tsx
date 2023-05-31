@@ -130,7 +130,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}
-          style={{ paddingVertical: space(2) }}
+          style={{ paddingBottom: space(2) }}
           ItemSeparatorComponent={() => <Spacer y={2} />}
           refreshControl={
             !__TEST__ ? (
