@@ -1,24 +1,26 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
 describe("UploadPhotos", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
       <UploadPhotos handlePress={jest.fn()} isLastStep={isLastStep} />
     </RelayEnvironmentProvider>
   )
 
-  beforeEach(() => mockEnvironment.mockClear())
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
 
   it("renders correct explanation for upload photos form", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)

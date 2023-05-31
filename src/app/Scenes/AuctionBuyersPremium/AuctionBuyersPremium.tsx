@@ -3,7 +3,7 @@ import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQue
 import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
@@ -123,7 +123,7 @@ export const AuctionBuyersPremiumQueryRenderer: FC<AuctionBuyersPremiumQueryRend
 }) => {
   return (
     <QueryRenderer<AuctionBuyersPremiumQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       variables={{ saleID }}
       query={graphql`
         query AuctionBuyersPremiumQuery($saleID: String!) {

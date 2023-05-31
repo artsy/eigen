@@ -7,7 +7,7 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { TabFlatList } from "app/Components/Tabs/TabFlatList"
 import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Component } from "react"
@@ -156,7 +156,7 @@ const FavoriteShowsContainer = createPaginationContainer(
 export const FavoriteShowsQueryRenderer = () => {
   return (
     <QueryRenderer<FavoriteShowsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FavoriteShowsQuery {
           me {

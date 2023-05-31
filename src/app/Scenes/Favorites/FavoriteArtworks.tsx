@@ -8,7 +8,7 @@ import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTa
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
@@ -188,7 +188,7 @@ export const FavoriteArtworksQueryRenderer = () => {
   const screen = useScreenDimensions()
   return (
     <QueryRenderer<FavoriteArtworksQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={FavoriteArtworksScreenQuery}
       variables={{
         count: 10,

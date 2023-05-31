@@ -7,7 +7,7 @@ import {
 import { CitySectionList_city$data } from "__generated__/CitySectionList_city.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { BucketKey } from "app/Scenes/Map/bucketCityResults"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -251,7 +251,7 @@ export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({
 
   return (
     <QueryRenderer<CitySectionListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CitySectionListQuery(
           $citySlug: String!

@@ -2,7 +2,7 @@ import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { CitySavedList_city$data } from "__generated__/CitySavedList_city.graphql"
 import { CitySavedList_me$data } from "__generated__/CitySavedList_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -160,7 +160,7 @@ interface CitySavedListProps {
 export const CitySavedListQueryRenderer: React.FC<CitySavedListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CitySavedListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CitySavedListQuery($citySlug: String!) {
           me {

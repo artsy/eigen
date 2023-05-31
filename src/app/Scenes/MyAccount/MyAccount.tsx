@@ -5,7 +5,7 @@ import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -233,7 +233,7 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
 export const MyAccountQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountQuery {
           me {

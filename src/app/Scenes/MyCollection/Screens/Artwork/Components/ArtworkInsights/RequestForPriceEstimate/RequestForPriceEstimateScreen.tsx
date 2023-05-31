@@ -4,12 +4,12 @@ import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForP
 import { Toast } from "app/Components/Toast/Toast"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { Environment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { commitMutation, graphql } from "relay-runtime"
-import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
@@ -125,7 +125,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
           backgroundColor: "red100",
         })
       }
-      requestForPriceEstimateMutation(defaultEnvironment, onCompleted, onError, input)
+      requestForPriceEstimateMutation(getRelayEnvironment(), onCompleted, onError, input)
     },
     validationSchema: ValidationSchema,
   })

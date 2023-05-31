@@ -1,5 +1,5 @@
 import { useImageSearchQuery } from "__generated__/useImageSearchQuery.graphql"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
 import { Platform } from "react-native"
@@ -66,7 +66,7 @@ export const useImageSearch = () => {
       })
 
       const response = await fetchQuery<useImageSearchQuery>(
-        defaultEnvironment,
+        getRelayEnvironment(),
         graphql`
           query useImageSearchQuery($file: Upload!) {
             reverseImageSearch(image: $file) {

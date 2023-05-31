@@ -1,9 +1,9 @@
 import { useTheme } from "@artsy/palette-mobile"
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { SafeAreaInsets } from "app/utils/hooks"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { SafeAreaInsets } from "app/utils/hooks"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 
 // Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.
@@ -24,7 +24,7 @@ export const MapRenderer: React.FC<{
 
   return (
     <QueryRenderer<MapRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         # Don't rename this query without also updating the generate-cities-cache.js script.
         query MapRendererQuery($citySlug: String!, $maxInt: Int!) {
