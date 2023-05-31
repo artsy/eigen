@@ -3,7 +3,7 @@ import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -16,11 +16,13 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
+import { useMemo } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { QueryRenderer, createRefetchContainer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -32,50 +34,53 @@ export enum Tab {
   insights = "Insights",
 }
 
-export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
+interface Props {
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
-}> = ({ me }) => {
+  initialTab: Tab
+}
+
+interface MyProfileTabProps {
+  initialTab?: Tab
+}
+
+export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ me, initialTab }) => {
   const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
+  const tabs: TabProps[] = compact([
+    {
+      title: Tab.collection,
+      content: <MyCollectionQueryRenderer />,
+    },
+    {
+      title: Tab.insights,
+      content: <MyCollectionInsightsQR />,
+      visualClues: [
+        {
+          jsx: <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />,
+          visualClueName: "AddedArtworkWithInsightsVisualClueDot",
+        },
+        {
+          jsx: <VisualClueText />,
+          visualClueName: "MyCollectionInsights",
+        },
+      ],
+    },
+    {
+      title: Tab.savedWorks,
+      content: isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />,
+    },
+  ])
+
+  tabs.forEach((tab) => {
+    tab.initial = tab.title === initialTab
+  })
 
   return (
     <>
       <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
         <StickyTabPage
           disableBackButtonUpdate
-          tabs={compact([
-            {
-              title: Tab.collection,
-              content: <MyCollectionQueryRenderer />,
-              initial: true,
-            },
-            {
-              title: Tab.insights,
-              content: <MyCollectionInsightsQR />,
-              visualClues: [
-                {
-                  jsx: (
-                    <VisualClueDot
-                      style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }}
-                    />
-                  ),
-                  visualClueName: "AddedArtworkWithInsightsVisualClueDot",
-                },
-                {
-                  jsx: <VisualClueText />,
-                  visualClueName: "MyCollectionInsights",
-                },
-              ],
-            },
-            {
-              title: Tab.savedWorks,
-              content: isArtworkListsEnabled ? (
-                <ArtworkListsQR />
-              ) : (
-                <FavoriteArtworksQueryRenderer />
-              ),
-            },
-          ])}
+          tabs={tabs}
           staticHeaderContent={<MyProfileHeader me={me} />}
         />
       </SafeAreaView>
@@ -114,9 +119,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
 `
 
 export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
+  const tabProps = useMyProfileTabProps()
+  const key = useMemo(() => `${Date.now()}`, [tabProps])
+  const initialTab = tabProps?.initialTab ?? Tab.collection
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
+      key={key}
     >
       <MyCollectionTabsStoreProvider>
         <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
@@ -129,10 +139,21 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
                 <MyCollectionPlaceholder />
               </SafeAreaView>
             ),
+            initialProps: {
+              initialTab,
+            },
           })}
           variables={{}}
         />
       </MyCollectionTabsStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
+}
+
+const useMyProfileTabProps = () => {
+  const tabProps = GlobalStore.useAppState((state) => {
+    return state.bottomTabs.sessionState.tabProps.profile
+  })
+
+  return tabProps as MyProfileTabProps | undefined
 }
