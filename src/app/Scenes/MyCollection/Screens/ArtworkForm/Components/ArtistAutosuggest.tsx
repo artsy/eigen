@@ -117,29 +117,33 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 )
               }
-              ListFooterComponent={() => (
-                <Touchable
-                  onPress={() => onSkipPress?.(trimmedQuery)}
-                  testID="autosuggest-search-result-add-new-artist"
-                >
-                  <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-                    <Flex
-                      alignItems="center"
-                      backgroundColor="black5"
-                      border="1px solid"
-                      borderColor="black15"
-                      borderRadius={IMAGE_SIZE / 2}
-                      height={IMAGE_SIZE}
-                      justifyContent="center"
-                      width={IMAGE_SIZE}
-                    >
-                      <AddIcon height={IMAGE_SIZE / 2} width={IMAGE_SIZE / 2} fill="black60" />
+              ListFooterComponent={() =>
+                !onlyShowCollectedArtists ? (
+                  <Touchable
+                    onPress={() => onSkipPress?.(trimmedQuery)}
+                    testID="autosuggest-search-result-add-new-artist"
+                  >
+                    <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+                      <Flex
+                        alignItems="center"
+                        backgroundColor="black5"
+                        border="1px solid"
+                        borderColor="black15"
+                        borderRadius={IMAGE_SIZE / 2}
+                        height={IMAGE_SIZE}
+                        justifyContent="center"
+                        width={IMAGE_SIZE}
+                      >
+                        <AddIcon height={IMAGE_SIZE / 2} width={IMAGE_SIZE / 2} fill="black60" />
+                      </Flex>
+                      <Spacer x={1} />
+                      <Text variant="xs">Create New Artist</Text>
                     </Flex>
-                    <Spacer x={1} />
-                    <Text variant="xs">Create New Artist</Text>
-                  </Flex>
-                </Touchable>
-              )}
+                  </Touchable>
+                ) : (
+                  <></>
+                )
+              }
             />
           </Box>
         ) : (

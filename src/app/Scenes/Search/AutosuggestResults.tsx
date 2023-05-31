@@ -142,6 +142,10 @@ const AutosuggestResultsFlatList: React.FC<{
   const hasMoreResults =
     results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
 
+  const noResults = results.current && allNodes.length === 0
+
+  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
+
   const ListFooterComponentWithLoadingIndicator = useMemo(() => {
     return () => (
       <Flex pb={6} height={250}>
@@ -150,15 +154,11 @@ const AutosuggestResultsFlatList: React.FC<{
             <Spinner />
           </Flex>
         ) : (
-          allNodes.length > 0 && !!ListFooterComponent && <ListFooterComponent />
+          !noResults && !!ListFooterComponent && <ListFooterComponent />
         )}
       </Flex>
     )
-  }, [hasMoreResults, ListFooterComponent])
-
-  const noResults = results.current && allNodes.length === 0
-
-  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
+  }, [hasMoreResults, noResults, ListFooterComponent])
 
   if (shouldShowLoadingPlaceholder) {
     return (
