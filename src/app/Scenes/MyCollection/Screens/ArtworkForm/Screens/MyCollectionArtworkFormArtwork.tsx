@@ -10,7 +10,7 @@ import { ArtworkAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { omit, pickBy } from "lodash"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
@@ -126,7 +126,7 @@ const fetchArtwork = async (
   artworkID: string
 ): Promise<MyCollectionArtworkFormArtworkQuery["response"]["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query MyCollectionArtworkFormArtworkQuery($artworkID: String!) {
         artwork(id: $artworkID) {

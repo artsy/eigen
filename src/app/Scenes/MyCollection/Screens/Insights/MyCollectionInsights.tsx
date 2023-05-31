@@ -5,7 +5,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import {
@@ -62,7 +62,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
     setIsRefreshing(true)
 
-    fetchQuery(defaultEnvironment, MyCollectionInsightsScreenQuery, {}).subscribe({
+    fetchQuery(getRelayEnvironment(), MyCollectionInsightsScreenQuery, {}).subscribe({
       complete: () => {
         setIsRefreshing(false)
       },
