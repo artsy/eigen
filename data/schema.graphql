@@ -3745,6 +3745,26 @@ type CollectorProfileType {
   userInterests: [UserInterest]!
 }
 
+# A connection to a list of items.
+type CollectorProfileTypeConnection {
+  # A list of edges.
+  edges: [CollectorProfileTypeEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type CollectorProfileTypeEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: CollectorProfileType
+}
+
 # Represents either an action or a potential failure
 union CommerceActionOrFailureUnion = CommerceOrderRequiresAction | CommerceOrderWithMutationFailure
 
@@ -14298,6 +14318,18 @@ type Query {
   # A collector profile.
   collectorProfile(userID: String): CollectorProfileType
 
+  # A list of collector profiles that have sent an inquiry to a partner
+  collectorProfilesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    partnerID: ID
+
+    # Term used for searching collector profiles
+    term: String
+  ): CollectorProfileTypeConnection
+
   # Find balance of an account associated with a setup intent
   commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
 
@@ -18732,6 +18764,18 @@ type Viewer {
 
   # A collector profile.
   collectorProfile(userID: String): CollectorProfileType
+
+  # A list of collector profiles that have sent an inquiry to a partner
+  collectorProfilesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    partnerID: ID
+
+    # Term used for searching collector profiles
+    term: String
+  ): CollectorProfileTypeConnection
 
   # A conversation, usually between a user and a partner
   conversation(
