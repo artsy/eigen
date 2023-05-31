@@ -10,7 +10,7 @@
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, RCTBridgeDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, RCTBridgeDelegate, UNUserNotificationCenterDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 
