@@ -13257,8 +13257,17 @@ type PartnerCategory {
 
     # Indicates tier 3/4 for gallery, 2 for institution
     eligibleForSecondaryBucket: Boolean
+
+    # Exclude partners the user follows (only effective when `include_partners_with_followed_artists` is set to true).
+    excludeFollowedPartners: Boolean
     hasFullProfile: Boolean
     ids: [String]
+
+    # If true, will only return partners that list artists that the user follows
+    includePartnersWithFollowedArtists: Boolean
+
+    # An IP address, will be used to lookup location
+    ip: String
 
     # Coordinates to find partners closest to
     near: String
@@ -13482,6 +13491,7 @@ enum PartnerShowPartnerType {
 enum PartnersSortType {
   CREATED_AT_ASC
   CREATED_AT_DESC
+  DISTANCE
   PUBLISHED_AT_DESC
   RANDOM_SCORE_DESC
   RELATIVE_SIZE_ASC
@@ -14520,8 +14530,17 @@ type Query {
 
     # Indicates tier 3/4 for gallery, 2 for institution
     eligibleForSecondaryBucket: Boolean
+
+    # Exclude partners the user follows (only effective when `include_partners_with_followed_artists` is set to true).
+    excludeFollowedPartners: Boolean
     hasFullProfile: Boolean
     ids: [String]
+
+    # If true, will only return partners that list artists that the user follows
+    includePartnersWithFollowedArtists: Boolean
+
+    # An IP address, will be used to lookup location
+    ip: String
 
     # Coordinates to find partners closest to
     near: String
@@ -14804,8 +14823,17 @@ type Query {
 
     # Indicates an active subscription
     eligibleForListing: Boolean
+
+    # Exclude partners the user follows (only effective when `include_partners_with_followed_artists` is set to true).
+    excludeFollowedPartners: Boolean
     first: Int
     ids: [String]
+
+    # If true, will only return partners that list artists that the user follows
+    includePartnersWithFollowedArtists: Boolean
+
+    # An IP address, will be used to lookup location
+    ip: String
     last: Int
 
     # Coordinates to find partners closest to
@@ -18834,8 +18862,17 @@ type Viewer {
 
     # Indicates tier 3/4 for gallery, 2 for institution
     eligibleForSecondaryBucket: Boolean
+
+    # Exclude partners the user follows (only effective when `include_partners_with_followed_artists` is set to true).
+    excludeFollowedPartners: Boolean
     hasFullProfile: Boolean
     ids: [String]
+
+    # If true, will only return partners that list artists that the user follows
+    includePartnersWithFollowedArtists: Boolean
+
+    # An IP address, will be used to lookup location
+    ip: String
 
     # Coordinates to find partners closest to
     near: String
@@ -19078,8 +19115,17 @@ type Viewer {
 
     # Indicates an active subscription
     eligibleForListing: Boolean
+
+    # Exclude partners the user follows (only effective when `include_partners_with_followed_artists` is set to true).
+    excludeFollowedPartners: Boolean
     first: Int
     ids: [String]
+
+    # If true, will only return partners that list artists that the user follows
+    includePartnersWithFollowedArtists: Boolean
+
+    # An IP address, will be used to lookup location
+    ip: String
     last: Int
 
     # Coordinates to find partners closest to
