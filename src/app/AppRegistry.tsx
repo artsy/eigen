@@ -14,6 +14,7 @@ import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
@@ -340,6 +341,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   About: reactModule(About),
+  AddMyCollectionArtist: reactModule(AddMyCollectionArtist, { hidesBackButton: true }),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
