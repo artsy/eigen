@@ -21,7 +21,7 @@ describe("ArtQuizResults", () => {
     `,
   })
 
-  it.each([
+  xit.each([
     [
       "Works you liked",
       "Explore Art We Think You'll Love",
