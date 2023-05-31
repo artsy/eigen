@@ -42,7 +42,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListEmptyComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   HeaderComponent?: React.ComponentType<any>
-  CreateNewArtistComponent?: React.ComponentType<any>
+  ListFooterComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -55,7 +55,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent = () => <Spacer y={2} />,
   HeaderComponent = null,
   prependResults = [],
-  CreateNewArtistComponent,
+  ListFooterComponent,
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -133,7 +133,7 @@ const AutosuggestResultsFlatList: React.FC<{
       []
     const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
 
-    return filteredEdges.length === 0 ? [] : [...filteredEdges, {} as any] // add a dummy node as the last array entry to trigger the "Create New Artist" component
+    return filteredEdges
   }, [results.current, prependResults])
 
   const allNodes = [...prependResults, ...nodes]
@@ -142,13 +142,19 @@ const AutosuggestResultsFlatList: React.FC<{
   const hasMoreResults =
     results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
 
-  const ListFooterComponent = useMemo(() => {
+  const ListFooterComponentWithLoadingIndicator = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={4} pb={6} height={250}>
-        {hasMoreResults ? <Spinner /> : null}
+      <Flex pb={6} height={250}>
+        {hasMoreResults ? (
+          <Flex justifyContent="center" pb={6}>
+            <Spinner />
+          </Flex>
+        ) : (
+          allNodes.length > 0 && !!ListFooterComponent && <ListFooterComponent />
+        )}
       </Flex>
     )
-  }, [hasMoreResults])
+  }, [hasMoreResults, ListFooterComponent])
 
   const noResults = results.current && allNodes.length === 0
 
@@ -173,14 +179,11 @@ const AutosuggestResultsFlatList: React.FC<{
         initialNumToRender={isPad() ? 24 : 12}
         data={allNodes}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={ListFooterComponent}
+        ListFooterComponent={ListFooterComponentWithLoadingIndicator}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
         renderItem={({ item, index }) => {
-          if (index === allNodes.indexOf(allNodes[allNodes.length - 1])) {
-            return !!CreateNewArtistComponent ? <CreateNewArtistComponent /> : <></>
-          }
           return (
             <Flex mb={2}>
               <AutosuggestSearchResult
@@ -311,7 +314,7 @@ export const AutosuggestResults: React.FC<{
   HeaderComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
-  CreateNewArtistComponent?: React.ComponentType<any>
+  ListFooterComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
@@ -325,7 +328,7 @@ export const AutosuggestResults: React.FC<{
     HeaderComponent,
     ListHeaderComponent,
     ListEmptyComponent,
-    CreateNewArtistComponent,
+    ListFooterComponent,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -363,7 +366,7 @@ export const AutosuggestResults: React.FC<{
               ListEmptyComponent={ListEmptyComponent}
               ListHeaderComponent={ListHeaderComponent}
               HeaderComponent={HeaderComponent}
-              CreateNewArtistComponent={CreateNewArtistComponent}
+              ListFooterComponent={ListFooterComponent}
             />
           )
         }}

@@ -117,7 +117,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 )
               }
-              CreateNewArtistComponent={() => (
+              ListFooterComponent={() => (
                 <Touchable
                   onPress={() => onSkipPress?.(trimmedQuery)}
                   testID="autosuggest-search-result-add-new-artist"
