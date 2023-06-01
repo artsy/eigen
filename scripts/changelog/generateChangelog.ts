@@ -5,6 +5,7 @@
 
 import { resolve } from "path"
 import Octokit, { PullsGetResponse } from "@octokit/rest"
+import chalk from "chalk"
 import { config } from "dotenv"
 import { hideBin } from "yargs/helpers"
 import yargs from "yargs/yargs"
@@ -119,19 +120,23 @@ async function main() {
   const tag2 = argv._[1]
 
   if (!tag1 || !tag2) {
-    console.error("Usage: yarn generateChangelog <tag1> <tag2>")
+    console.error(chalk.bold.red("Usage: yarn generateChangelog <tag1> <tag2>"))
     return
   }
 
   const prs = await getPrsBetweenTags(tag1, tag2)
   const { changelog, prsWithoutChangelog } = await getChangelogFromPrs(prs)
 
-  console.log(changelog)
+  console.log(chalk.bold.green("\nPRs with changelog entries:"))
+  console.log(chalk.green(changelog))
 
-  console.log("\nPRs without changelog entries:")
+  console.log(chalk.bold.yellow("\nPRs without changelog entries:"))
   for (const pr of prsWithoutChangelog) {
-    console.log(`PR #${pr.number}: ${pr.title}`)
+    console.log(chalk.yellow(`PR #${pr.number}: ${pr.title}`))
   }
 }
+
+// const g = (text) => chalk.bold.green(text)
+// const r = (text) => chalk.bold.red(text)
 
 main().catch((err) => console.error(err))
