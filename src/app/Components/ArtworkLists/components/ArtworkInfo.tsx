@@ -1,7 +1,7 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { FC } from "react"
+import { ArtworkListImagePreview } from "./ArtworkListImagePreview"
 
 interface ArtworkInfoProps {
   artwork: ArtworkEntity
@@ -10,7 +10,7 @@ interface ArtworkInfoProps {
 export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
-      <EntityPreview imageURL={artwork.imageURL} />
+      <ArtworkListImagePreview imageURL={artwork.imageURL} />
 
       <Spacer x={1} />
 

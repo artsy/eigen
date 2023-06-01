@@ -1,20 +1,26 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
-import { ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
+import { ArtworkLists_me$key, ArtworkLists_me$data } from "__generated__/ArtworkLists_me.graphql"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
-import { FC, useEffect, useState } from "react"
+import { ExtractNodeType } from "app/utils/relayHelpers"
+import { FC, useCallback, useEffect, useState } from "react"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { ArtworkListItem } from "./ArtworkListItem"
+import { ArtworkListItem, PressedArtworkListItem } from "./ArtworkListItem"
 import { ArtworkListsLoadingIndicator } from "./ArtworkListsLoadingIndicator"
 
 interface ArtworkListsProps {
   me: ArtworkLists_me$key | null
 }
 
+type ArtworkList =
+  | NonNullable<ArtworkLists_me$data["savedArtworksArtworkList"]>
+  | ExtractNodeType<ArtworkLists_me$data["customArtworkLists"]>
+
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const [refreshing, setRefreshing] = useState(false)
-  const { dispatch } = useArtworkListsContext()
+  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
@@ -56,6 +62,43 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
     loadNext(10)
   }
 
+  const checkIsArtworkListSelected = (artworkList: ArtworkList) => {
+    /**
+     * User added artwork to the previously unselected artwork list
+     * So we have to display the artwork list as *selected*
+     */
+    if (addingArtworkListIDs.includes(artworkList.internalID)) {
+      return true
+    }
+
+    /**
+     * User deleted artwork from the previously selected artwork list
+     * So we have to display the artwork list as *unselected*
+     */
+    if (removingArtworkListIDs.includes(artworkList.internalID)) {
+      return false
+    }
+
+    return artworkList.isSavedArtwork
+  }
+
+  const handleArtworkListPress = useCallback((artworkList: PressedArtworkListItem) => {
+    const mode = artworkList.isSavedArtwork
+      ? ArtworkListMode.RemovingArtworkList
+      : ArtworkListMode.AddingArtworkList
+
+    dispatch({
+      type: "ADD_OR_REMOVE_ARTWORK_LIST",
+      payload: {
+        mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
+        },
+      },
+    })
+  }, [])
+
   return (
     <BottomSheetFlatList
       data={artworkLists}
@@ -63,7 +106,13 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
       onRefresh={handleRefresh}
       refreshing={refreshing}
       renderItem={({ item }) => {
-        return <ArtworkListItem item={item} />
+        return (
+          <ArtworkListItem
+            item={item}
+            selected={checkIsArtworkListSelected(item)}
+            onPress={handleArtworkListPress}
+          />
+        )
       }}
       onEndReached={handleLoadMore}
       ListFooterComponent={<ArtworkListsLoadingIndicator visible={hasNext} />}

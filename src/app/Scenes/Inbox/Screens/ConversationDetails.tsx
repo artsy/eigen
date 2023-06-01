@@ -9,7 +9,7 @@ import { AttachmentListFragmentContainer } from "app/Scenes/Inbox/Components/Con
 import { SellerReplyEstimateFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/SellerReplyEstimate"
 import { ShippingFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Shipping"
 import { Support } from "app/Scenes/Inbox/Components/Conversations/Support"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ScrollView } from "react-native"
@@ -92,7 +92,7 @@ export const ConversationDetailsQueryRenderer: React.FC<{
 }> = ({ conversationID }) => {
   return (
     <QueryRenderer<ConversationDetailsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ConversationDetailsQuery($conversationID: String!) {
           me {

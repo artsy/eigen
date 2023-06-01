@@ -9,7 +9,7 @@ import { HeaderButton } from "app/Components/HeaderButton"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
 import { NavigationalTabs, TabsType } from "app/Components/Tabs"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -326,7 +326,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
 export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

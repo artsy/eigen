@@ -5,7 +5,7 @@ import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwor
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import React, { useState } from "react"
@@ -112,7 +112,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
       }}
     >
       <QueryRenderer<MakeOfferModalQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query MakeOfferModalQuery($artworkID: String!) {
             artwork(id: $artworkID) {

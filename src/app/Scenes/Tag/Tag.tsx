@@ -5,7 +5,7 @@ import About from "app/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
 import Header from "app/Scenes/Tag/TagHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { View } from "react-native"
@@ -88,7 +88,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<TagQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {

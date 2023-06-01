@@ -19,7 +19,7 @@ import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyColl
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -295,7 +295,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
     >
       <ArtworkFiltersStoreProvider>
         <QueryRenderer<MyCollectionQuery>
-          environment={defaultEnvironment}
+          environment={getRelayEnvironment()}
           query={MyCollectionScreenQuery}
           variables={{}}
           cacheConfig={{ force: true }}

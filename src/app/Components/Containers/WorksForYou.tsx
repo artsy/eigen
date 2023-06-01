@@ -8,7 +8,7 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import Notification from "app/Components/WorksForYou/Notification"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { track } from "app/utils/track"
@@ -195,7 +195,7 @@ export const WorksForYouScreenQuery = graphql`
 export const WorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<WorksForYouQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={WorksForYouScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(WorksForYouContainer)}

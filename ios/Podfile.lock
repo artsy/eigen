@@ -510,7 +510,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.4.0):
     - React-Core
-  - react-native-shake (5.1.1):
+  - react-native-shake (5.3.2):
     - React
   - react-native-slider (4.2.1):
     - React-Core
@@ -1225,7 +1225,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
-  react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
+  react-native-shake: 62aa5681863203090a087842da70183c442b97f8
   react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
   react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb

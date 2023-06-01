@@ -8,7 +8,7 @@ import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTa
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
@@ -160,7 +160,7 @@ const FavoriteArtistsContainer = createPaginationContainer(
 export const FavoriteArtistsQueryRenderer = () => {
   return (
     <QueryRenderer<FavoriteArtistsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FavoriteArtistsQuery {
           me {

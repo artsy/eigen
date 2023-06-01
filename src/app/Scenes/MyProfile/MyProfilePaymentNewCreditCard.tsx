@@ -4,7 +4,7 @@ import { Input, InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select/SelectV2"
 import { Stack } from "app/Components/Stack"
 import { MyAccountFieldEditScreen } from "app/Scenes/MyAccount/Components/MyAccountFieldEditScreen"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, action, computed, Computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
@@ -226,7 +226,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 const saveCreditCard = (token: string) => {
   return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>(
     (resolve, reject) => {
-      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
+      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(getRelayEnvironment(), {
         mutation: graphql`
           mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {

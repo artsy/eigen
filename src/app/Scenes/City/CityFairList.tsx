@@ -3,7 +3,7 @@ import { CityFairListQuery } from "__generated__/CityFairListQuery.graphql"
 import { CityFairList_city$data } from "__generated__/CityFairList_city.graphql"
 import Spinner from "app/Components/Spinner"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
@@ -170,7 +170,7 @@ interface CityFairListProps {
 export const CityFairListQueryRenderer: React.FC<CityFairListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CityFairListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CityFairListQuery($citySlug: String!) {
           city(slug: $citySlug) {

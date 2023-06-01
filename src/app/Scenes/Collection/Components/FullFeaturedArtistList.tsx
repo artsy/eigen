@@ -3,7 +3,7 @@ import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistLis
 import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
@@ -82,7 +82,7 @@ export const CollectionFullFeaturedArtistListQueryRenderer: React.FC<{ collectio
   collectionID,
 }) => (
   <QueryRenderer<FullFeaturedArtistListQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query FullFeaturedArtistListQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {

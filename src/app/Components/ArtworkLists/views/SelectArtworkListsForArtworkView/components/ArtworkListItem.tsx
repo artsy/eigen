@@ -1,41 +1,29 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkListItem_item$key } from "__generated__/ArtworkListItem_item.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { EntityPreview } from "app/Components/ArtworkLists/components/EntityPreview"
-import { ArtworkListMode } from "app/Components/ArtworkLists/types"
+import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { extractNodes } from "app/utils/extractNodes"
-import { FC } from "react"
+import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
-interface ArtworkListItemProps {
-  item: ArtworkListItem_item$key
+export interface PressedArtworkListItem {
+  internalID: string
+  name: string
+  isSavedArtwork: boolean
 }
 
-export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
-  const { addingArtworkListIDs, removingArtworkListIDs, dispatch } = useArtworkListsContext()
+interface ArtworkListItemProps {
+  item: ArtworkListItem_item$key
+  selected: boolean
+  onPress: (item: PressedArtworkListItem) => void
+}
+
+const Item: FC<ArtworkListItemProps> = (props) => {
   const artworkList = useFragment(ArtworkListItemFragment, props.item)
   const nodes = extractNodes(artworkList.artworksConnection)
   const imageURL = nodes[0]?.image?.resized?.url ?? null
-
-  const handleArtworkListPress = () => {
-    const mode = artworkList.isSavedArtwork
-      ? ArtworkListMode.RemovingArtworkList
-      : ArtworkListMode.AddingArtworkList
-
-    dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST",
-      payload: {
-        mode,
-        artworkList: {
-          internalID: artworkList.internalID,
-          name: artworkList.name,
-        },
-      },
-    })
-  }
 
   const getArtworksCountText = () => {
     if (artworkList.artworksCount === 1) {
@@ -45,33 +33,21 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
     return `${artworkList.artworksCount} Artworks`
   }
 
-  const checkIsArtworkListSelected = () => {
-    /**
-     * User added artwork to the previously unselected artwork list
-     * So we have to display the artwork list as *selected*
-     */
-    if (addingArtworkListIDs.includes(artworkList.internalID)) {
-      return true
+  const handlePress = () => {
+    const result: PressedArtworkListItem = {
+      internalID: artworkList.internalID,
+      name: artworkList.name,
+      isSavedArtwork: artworkList.isSavedArtwork,
     }
 
-    /**
-     * User deleted artwork from the previously selected artwork list
-     * So we have to display the artwork list as *unselected*
-     */
-    if (removingArtworkListIDs.includes(artworkList.internalID)) {
-      return false
-    }
-
-    return artworkList.isSavedArtwork
+    props.onPress(result)
   }
 
-  const isSelected = checkIsArtworkListSelected()
-
   return (
-    <TouchableOpacity onPress={handleArtworkListPress}>
+    <TouchableOpacity onPress={handlePress}>
       <Flex py={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
-          <EntityPreview imageURL={imageURL} />
+          <ArtworkListImagePreview imageURL={imageURL} />
 
           <Flex flex={1}>
             <Text variant="xs">{artworkList.name}</Text>
@@ -80,12 +56,14 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = (props) => {
             </Text>
           </Flex>
 
-          <ArtworkListItemSelectedIcon selected={isSelected} />
+          <ArtworkListItemSelectedIcon selected={props.selected} />
         </Join>
       </Flex>
     </TouchableOpacity>
   )
 }
+
+export const ArtworkListItem = memo(Item)
 
 const ArtworkListItemFragment = graphql`
   fragment ArtworkListItem_item on Collection @argumentDefinitions(artworkID: { type: "String!" }) {

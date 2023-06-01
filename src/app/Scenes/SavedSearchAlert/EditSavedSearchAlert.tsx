@@ -12,7 +12,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -173,7 +173,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
       render={renderWithPlaceholder({
         render: (relayProps: SavedSearchAlertQuery["response"]) => (
           <QueryRenderer<EditSavedSearchAlertQuery>
-            environment={defaultEnvironment}
+            environment={getRelayEnvironment()}
             query={graphql`
               query EditSavedSearchAlertQuery($artistIDs: [String]) {
                 viewer {
