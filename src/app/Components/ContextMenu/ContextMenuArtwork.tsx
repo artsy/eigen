@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
@@ -19,6 +20,7 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
+  dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
 }
 
@@ -26,6 +28,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artwork,
   children,
   haptic = true,
+  dark = false,
   onCreateAlertActionPress,
 }) => {
   const { trackEvent } = useTracking()
@@ -33,6 +36,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const enableContextMenu = useFeatureFlag("AREnableArtworkContextMenu")
   const isIOS = Platform.OS === "ios"
+  const color = useColor()
 
   const { title, href, artists, slug, internalID, id, isHangable, image } = artwork
 
@@ -143,6 +147,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       actions={contextActions}
       onPress={handleContextPress}
       previewPadding={20}
+      previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       disabled={!shouldDisplayContextMenu}
     >
       {children}
