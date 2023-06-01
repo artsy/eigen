@@ -136,7 +136,5 @@ async function main() {
   }
 }
 
-// const g = (text) => chalk.bold.green(text)
-// const r = (text) => chalk.bold.red(text)
 
 main().catch((err) => console.error(err))
