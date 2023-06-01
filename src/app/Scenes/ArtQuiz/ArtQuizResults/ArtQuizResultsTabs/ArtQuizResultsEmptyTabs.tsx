@@ -1,11 +1,11 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingArtists"
 import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
 import { navigate } from "app/system/navigation/navigate"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const ArtQuizResultsEmptyTabs = () => {
@@ -15,7 +15,7 @@ export const ArtQuizResultsEmptyTabs = () => {
   )
 
   return (
-    <TabsWithHeader
+    <Tabs.TabsWithHeader
       title="Explore Your Quiz Results"
       lazy
       headerProps={{
@@ -37,7 +37,7 @@ export const ArtQuizResultsEmptyTabs = () => {
           <ArtQuizTrendingArtists viewer={queryResult.viewer} />
         </Tabs.Lazy>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </Tabs.TabsWithHeader>
   )
 }
 

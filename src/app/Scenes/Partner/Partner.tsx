@@ -1,16 +1,15 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
@@ -38,17 +37,17 @@ const Partner: React.FC<PartnerProps> = (props) => {
           context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
         }}
       >
-        <TabsWithHeader
+        <Tabs.TabsWithHeader
           title={partner.name!}
           initialTabName={initialTab}
           BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} />}
         >
           <Tabs.Tab name="Overview" label="Overview">
-            <TabScrollView>
+            <Tabs.ScrollView>
               <PartnerSubscriberBanner partner={partner} />
-            </TabScrollView>
+            </Tabs.ScrollView>
           </Tabs.Tab>
-        </TabsWithHeader>
+        </Tabs.TabsWithHeader>
       </ProvideScreenTracking>
     )
   }
@@ -62,7 +61,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
         context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
       }}
     >
-      <TabsWithHeader title={partner.name!} initialTabName={initialTab}>
+      <Tabs.TabsWithHeader title={partner.name!} initialTabName={initialTab}>
         <Tabs.Tab name="Overview" label="Overview">
           <Tabs.Lazy>
             <PartnerOverview partner={partner} />
@@ -80,7 +79,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
             <PartnerShows partner={partner} />
           </Tabs.Lazy>
         </Tabs.Tab>
-      </TabsWithHeader>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }

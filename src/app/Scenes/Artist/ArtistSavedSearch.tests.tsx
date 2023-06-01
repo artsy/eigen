@@ -10,21 +10,6 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-jest.mock("app/Components/Tabs/TabsContainer", () => {
-  const React = require("react-native")
-
-  return {
-    TabsContainer: (props: any) => {
-      return (
-        <React.View>
-          {props.renderBelowTabBar?.() ?? null}
-          {props.children}
-        </React.View>
-      )
-    },
-  }
-})
-
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 
 describe("Saved search banner on artist screen", () => {

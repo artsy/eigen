@@ -1,8 +1,8 @@
-import { Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Tabs, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtworksFragment_artwork$key } from "__generated__/ArtQuizExploreArtworksFragment_artwork.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { graphql, useFragment } from "react-relay"
 
 export const ArtQuizExploreArtworks = ({
@@ -20,7 +20,7 @@ export const ArtQuizExploreArtworks = ({
   const dimensions = useScreenDimensions()
 
   return (
-    <TabScrollView
+    <Tabs.ScrollView
       contentContainerStyle={{
         marginVertical: space(2),
         paddingHorizontal: space(1),
@@ -39,7 +39,7 @@ export const ArtQuizExploreArtworks = ({
           We don't have any recommendations for you at this time.
         </Text>
       )}
-    </TabScrollView>
+    </Tabs.ScrollView>
   )
 }
 

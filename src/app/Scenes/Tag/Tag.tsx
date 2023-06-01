@@ -1,10 +1,10 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { TagPlaceholder } from "app/Scenes/Tag/TagPlaceholder"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { graphql, QueryRenderer } from "react-relay"
 import About from "./About"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
@@ -30,7 +30,7 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag?.slug,
       }}
     >
-      <TabsWithHeader title={tag?.name!}>
+      <Tabs.TabsWithHeader title={tag?.name!}>
         <Tabs.Tab name="Artworks" label="Artworks">
           <TagArtworksPaginationContainer tag={tag!} />
         </Tabs.Tab>
@@ -39,7 +39,7 @@ export const Tag: React.FC<TagProps> = (props) => {
             <About tag={tag} />
           </Tabs.Tab>
         ) : null}
-      </TabsWithHeader>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }

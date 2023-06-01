@@ -1,4 +1,4 @@
-import { Box, Text, SimpleMessage } from "@artsy/palette-mobile"
+import { Box, Text, SimpleMessage, Tabs } from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -6,8 +6,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
-import { SubTabBar } from "app/Components/Tabs/SubTabBar"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -87,10 +86,10 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <TabScrollView disableScrollViewPanResponder>
-        <SubTabBar>
+      <Tabs.ScrollView disableScrollViewPanResponder>
+        <Tabs.SubTabBar>
           <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
-        </SubTabBar>
+        </Tabs.SubTabBar>
         <GeneArtworks {...props} />
         <ArtworkFilterNavigator
           {...props}
@@ -101,7 +100,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Gene}
         />
-      </TabScrollView>
+      </Tabs.ScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }

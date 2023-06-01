@@ -237,17 +237,19 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.29":
-  version "11.0.29"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.29.tgz#c377b7b955e8fb3fd9b84d370ef00120a323cbb2"
-  integrity sha512-bnFnoYLnlJ5bIxAUlNYb2lhBXsq3ssmJHaNUv1XhRH6hU874fQKozycOYLsOlBBCDQhS0hrW2pzlvCCIT0zaQQ==
+"@artsy/palette-mobile@11.0.30":
+  version "11.0.30"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.30.tgz#e9f96c491853f9bb7330f0f29c8bbfd22a1627fd"
+  integrity sha512-q3K3btVdx/gbl8GI7NSvPkrhLyC6Ki3UizNvX/naYhGilFjzSt8J/qYexMY+kHTyzPu112QipBpGx61tyLAV0Q==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
     lodash "^4.17.21"
+    moti "^0.25.3"
     react-nanny "^2.15.0"
+    react-native-collapsible-tab-view "^6.1.4"
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
@@ -12987,6 +12989,13 @@ moti@0.24.2:
   dependencies:
     framer-motion "^6.5.1"
 
+moti@^0.25.3:
+  version "0.25.3"
+  resolved "https://registry.yarnpkg.com/moti/-/moti-0.25.3.tgz#022213cb1fc545d13245daeeaed31940050b80c0"
+  integrity sha512-n6YR56i+tQdIuiOfspeCCvNR8vAJtPdfclt4998rX6S6kQn+/5DmfBWkOneN63JFTWM/oYnZHwwpF4z4LUXohQ==
+  dependencies:
+    framer-motion "^6.5.1"
+
 mout@^1.0.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/mout/-/mout-1.2.4.tgz#9ffd261c4d6509e7ebcbf6b641a89b36ecdf8155"
@@ -14515,7 +14524,7 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-collapsible-tab-view@6.1.4:
+react-native-collapsible-tab-view@^6.1.4:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-6.1.4.tgz#011c8abab29d9229a22caa287395f0081fae644e"
   integrity sha512-eGGAdze91WgXOrd+8wPsd18YxdrQvp8WlR4bv7GjgGwkzM72Ka7esz3GhHeDb6F6MxDYAvwfgm2Q4kDLvxaRTw==

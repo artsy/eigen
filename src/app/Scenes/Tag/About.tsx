@@ -1,6 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Tabs, Text } from "@artsy/palette-mobile"
 import { About_tag$data } from "__generated__/About_tag.graphql"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
 
@@ -14,11 +13,11 @@ const About: React.FC<AboutProps> = ({ tag }) => {
   }
 
   return (
-    <TabScrollView>
+    <Tabs.ScrollView>
       <Flex flex={1} alignItems="center" pt={2}>
         <Text variant="sm">{removeMarkdown(tag.description)}</Text>
       </Flex>
-    </TabScrollView>
+    </Tabs.ScrollView>
   )
 }
 

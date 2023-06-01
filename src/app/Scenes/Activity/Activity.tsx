@@ -1,10 +1,11 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import { Tabs } from "@artsy/palette-mobile"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
 import { useMarkNotificationsAsSeen } from "app/Scenes/Activity/hooks/useMarkNotificationsAsSeen"
 import { Suspense } from "react"
-import { OnTabChangeCallback, Tabs } from "react-native-collapsible-tab-view"
+import { OnTabChangeCallback } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
@@ -50,7 +51,7 @@ export const Activity = () => {
   }
 
   return (
-    <TabsWithHeader title="Activity" onTabChange={handleTabPress}>
+    <Tabs.TabsWithHeader title="Activity" onTabChange={handleTabPress}>
       <Tabs.Tab name="All" label="All">
         <Tabs.Lazy>
           <ActivityContainer type="all" />
@@ -61,7 +62,7 @@ export const Activity = () => {
           <ActivityContainer type="alerts" />
         </Tabs.Lazy>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </Tabs.TabsWithHeader>
   )
 }
 
