@@ -220,10 +220,10 @@ export enum SlugType {
   FairID = "fairID",
 }
 
-export function getPartnerSlug(slug: string) {
-  const regex = /partner\//
+const partnerRegex = /partner\//
 
-  if (regex.test(slug)) {
+export function getPartnerSlug(slug: string) {
+  if (partnerRegex.test(slug)) {
     return slug
   }
 
