@@ -221,7 +221,9 @@ export enum SlugType {
 }
 
 export function navigateToPartner(slug: string) {
-  navigate(slug, { passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID } })
+  navigate(`partner/${slug}`, {
+    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+  })
 }
 
 /**
