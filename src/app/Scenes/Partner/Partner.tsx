@@ -1,9 +1,9 @@
-import { Separator } from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
+import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -38,9 +38,17 @@ const Partner: React.FC<PartnerProps> = (props) => {
           context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
         }}
       >
-        <PartnerHeader partner={partner} />
-        <Separator my={2} />
-        <PartnerSubscriberBanner partner={partner} />
+        <TabsWithHeader
+          title={partner.name!}
+          initialTabName={initialTab}
+          BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} />}
+        >
+          <Tabs.Tab name="Overview" label="Overview">
+            <TabScrollView>
+              <PartnerSubscriberBanner partner={partner} />
+            </TabScrollView>
+          </Tabs.Tab>
+        </TabsWithHeader>
       </ProvideScreenTracking>
     )
   }
