@@ -15,7 +15,7 @@ interface PartnerCardProps {
 }
 
 export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQuestions }) => {
-  const handleTap = (href: string) => navigateToPartner(href)
+  const handleTap = (slug: string) => navigateToPartner(slug)
 
   const partner = artwork.partner!
 
@@ -47,7 +47,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
           <Spacer y={1} />
         </>
       )}
-      <TouchableWithoutFeedback onPress={() => handleTap(partner.href!)}>
+      <TouchableWithoutFeedback onPress={() => handleTap(partner.slug!)}>
         <EntityHeader
           name={partner.name!}
           meta={locationNames || undefined}
@@ -76,7 +76,6 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         name
         slug
         id
-        href
         initials
         profile {
           id
