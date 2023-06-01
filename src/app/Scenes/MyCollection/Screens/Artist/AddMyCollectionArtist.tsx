@@ -1,19 +1,13 @@
-import { ArtsyKeyboardAvoidingView, Flex, Input, Join, Spacer, Button } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Flex, Join, Spacer, Button } from "@artsy/palette-mobile"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Input } from "app/Components/Input"
 import { popToRoot } from "app/system/navigation/navigate"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import * as Yup from "yup"
-
-interface AddMyCollectionArtistScreenProps {
-  name: string
-  nationality: string
-  birthYear: string
-  deathYear: string
-}
 
 export interface NewMyCollectionArtistFormikSchema {
   name: string
@@ -29,7 +23,7 @@ const validationSchema = Yup.object().shape({
   deathYear: Yup.string().trim(),
 })
 
-export const AddMyCollectionArtist: React.FC<AddMyCollectionArtistScreenProps> = () => {
+export const AddMyCollectionArtist: React.FC = () => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const ScrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
@@ -85,7 +79,7 @@ export const AddMyCollectionArtist: React.FC<AddMyCollectionArtistScreenProps> =
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
-          <Flex p={2} backgroundColor="red">
+          <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
               <Input
                 accessibilityLabel="Artist Name"
@@ -148,7 +142,12 @@ export const AddMyCollectionArtist: React.FC<AddMyCollectionArtistScreenProps> =
                   </Flex>
                 </Join>
               </Flex>
-              <Button flex={1} disabled={!touched} onPress={handleSubmit}>
+              <Button
+                flex={1}
+                disabled={!touched}
+                onPress={handleSubmit}
+                testID="submit-add-artist-button"
+              >
                 Add Artist
               </Button>
             </Join>
