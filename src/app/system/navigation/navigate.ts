@@ -224,10 +224,10 @@ export function getPartnerSlug(slug: string) {
   const regex = /partner\//
 
   if (regex.test(slug)) {
-    return slug.replace(regex, "")
+    return slug
   }
 
-  return slug
+  return `partner/${slug}`
 }
 
 export function navigateToPartner(slug: string) {

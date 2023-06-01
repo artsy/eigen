@@ -313,11 +313,11 @@ describe(navigate, () => {
 describe("getPartnerSlug", () => {
   it('should remove "partner/" if it exists in the slug', () => {
     const slug = "partner/my-partner"
-    expect(getPartnerSlug(slug)).toBe("my-partner")
+    expect(getPartnerSlug(slug)).toBe("partner/my-partner")
   })
 
   it('should not modify the slug if "partner/" is not present', () => {
     const slug = "my-partner"
-    expect(getPartnerSlug(slug)).toBe(slug)
+    expect(getPartnerSlug(slug)).toBe(`partner/${slug}`)
   })
 })
