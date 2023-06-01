@@ -23,6 +23,8 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onSkipPress,
 }) => {
   const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
   const trimmedQuery = artistQuery.trimStart()
@@ -118,8 +120,10 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                 )
               }
               ListFooterComponent={() =>
-                !onlyShowCollectedArtists ? (
+                !onlyShowCollectedArtists && !!enableCollectedArtists ? (
                   <Touchable
+                    accessibilityLabel="Create New Artist"
+                    haptic
                     onPress={() => onSkipPress?.(trimmedQuery)}
                     testID="autosuggest-search-result-add-new-artist"
                   >
