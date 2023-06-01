@@ -147,6 +147,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       actions={contextActions}
       onPress={handleContextPress}
       previewPadding={20}
+      hideShadows={true}
       previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       disabled={!shouldDisplayContextMenu}
     >
