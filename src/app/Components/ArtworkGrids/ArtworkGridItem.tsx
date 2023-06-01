@@ -208,6 +208,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   return (
     <>
       <ContextMenuArtwork
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
       >

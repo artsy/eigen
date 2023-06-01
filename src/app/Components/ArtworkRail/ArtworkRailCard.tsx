@@ -179,6 +179,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <ContextMenuArtwork
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         dark={dark}
         artwork={artwork}

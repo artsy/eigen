@@ -1,3 +1,4 @@
+import { ContextModule, ActionType, ScreenOwnerType, LongPressedArtwork } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
@@ -22,6 +23,8 @@ interface ContextMenuArtworkProps {
   onCreateAlertActionPress: () => void
   dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
+  contextScreenOwnerType?: ScreenOwnerType
+  contextModule?: ContextModule
 }
 
 export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
@@ -30,6 +33,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   haptic = true,
   dark = false,
   onCreateAlertActionPress,
+  contextScreenOwnerType,
+  contextModule,
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
@@ -135,7 +140,32 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress
 
+    if (contextModule && contextScreenOwnerType) {
+      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
+    }
+
     onPressToCall?.()
+  }
+
+  const handleContextCancel: ContextMenuProps["onCancel"] = () => {
+    // There is not an event for callback for when context menu shows so instead track
+    // the 2 possibilities, an action was taken or the menu was cancelled
+    if (contextModule && contextScreenOwnerType) {
+      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
+    }
+  }
+
+  const tracks = {
+    longPressedArtwork: (
+      contextModule: ContextModule,
+      screenOwnerType: ScreenOwnerType,
+      artworkId: string
+    ): LongPressedArtwork => ({
+      action: ActionType.longPressedArtwork,
+      context_module: contextModule,
+      context_screen_owner_type: screenOwnerType,
+      context_screen_owner_id: artworkId,
+    }),
   }
 
   if (!shouldDisplayContextMenu) {
@@ -146,6 +176,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     <ContextMenu
       actions={contextActions}
       onPress={handleContextPress}
+      onCancel={handleContextCancel}
       previewPadding={20}
       hideShadows={true}
       previewBackgroundColor={!!dark ? color("black100") : color("white100")}
