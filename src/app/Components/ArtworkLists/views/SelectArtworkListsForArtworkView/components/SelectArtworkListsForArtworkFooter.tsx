@@ -1,7 +1,6 @@
 import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ResultAction } from "app/Components/ArtworkLists/types"
 import { useSavePendingArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSavePendingArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { FC } from "react"
@@ -19,10 +18,10 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
     try {
       await save()
 
-      dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
       onSave({
         action: ResultAction.ModifiedArtworkLists,
       })
+      dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
     } catch {
       return
     }
