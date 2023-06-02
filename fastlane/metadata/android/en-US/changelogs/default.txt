@@ -1,3 +1,5 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
+
+  - Performance improvements
 
 Have feedback? Email us at support@artsy.net
