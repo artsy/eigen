@@ -74,6 +74,7 @@ export interface ArtworkListsContextState {
   artworkListId?: string
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
+  hasChanges: boolean
   dispatch: Dispatch<ArtworkListAction>
   reset: () => void
   onSave: (result: SaveResult) => void
