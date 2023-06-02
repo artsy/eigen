@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import {
@@ -8,7 +9,6 @@ import {
 } from "app/Components/ArtworkFilter"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -77,7 +77,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <TabScrollView
+      <Tabs.ScrollView
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60, paddingHorizontal: 20 }}
         onScrollEndDrag={onScrollEndDrag}
       >
@@ -100,7 +100,8 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             initialFilters={initialFilters}
           />
         </View>
-      </TabScrollView>
+      </Tabs.ScrollView>
+
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         id={artist.internalID}

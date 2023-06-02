@@ -1,4 +1,4 @@
-import { ShareIcon } from "@artsy/palette-mobile"
+import { ShareIcon, Tabs } from "@artsy/palette-mobile"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -21,7 +21,6 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -29,7 +28,6 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { ActivityIndicator, TouchableOpacity, View } from "react-native"
-import { Tabs } from "react-native-collapsible-tab-view"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -97,7 +95,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <TabsWithHeader
+        <Tabs.TabsWithHeader
           initialTabName={initialTab}
           title={artistAboveTheFold.name!}
           headerProps={{
@@ -154,7 +152,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
               </Tabs.Lazy>
             </Tabs.Tab>
           ) : null}
-        </TabsWithHeader>
+        </Tabs.TabsWithHeader>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )

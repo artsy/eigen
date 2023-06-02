@@ -1,8 +1,8 @@
-import { Spacer, Flex, Box, Text, useSpace } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, useSpace, Tabs } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
+
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
@@ -102,7 +102,7 @@ export const PartnerShows: React.FC<{
   }
 
   return (
-    <TabFlatList
+    <Tabs.FlatList
       contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
       data={sections}
       renderItem={({ item }) => item.content}

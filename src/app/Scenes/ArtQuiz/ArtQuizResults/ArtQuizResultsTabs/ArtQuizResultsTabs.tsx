@@ -1,14 +1,14 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
 import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtists"
 import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtworks"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { useState } from "react"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {
@@ -28,7 +28,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
     activeTab !== "worksYouLiked" ? "Explore Art We Think You'll Love" : "Explore Your Quiz Results"
 
   return (
-    <TabsWithHeader
+    <Tabs.TabsWithHeader
       title={title}
       tabScrollEnabled
       lazy
@@ -72,7 +72,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
           <ArtQuizExploreArtists savedArtworks={savedArtworks} />
         </Tabs.Lazy>
       </Tabs.Tab>
-    </TabsWithHeader>
+    </Tabs.TabsWithHeader>
   )
 }
 

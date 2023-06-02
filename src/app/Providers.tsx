@@ -1,8 +1,7 @@
-import { Theme, Spinner, ScreenDimensionsProvider } from "@artsy/palette-mobile"
+import { Theme, Spinner, ScreenDimensionsProvider, Tabs } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
-import { TabsContext } from "app/Components/Tabs/TabsContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -35,7 +34,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
       ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
-      TabsContext.Provider,
+      Tabs.TabsProvider,
       RetryErrorBoundary,
       SuspenseProvider,
       ActionSheetProvider,
@@ -64,7 +63,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean }> = ({
       ScreenDimensionsProvider,
       !skipRelay && RelayDefaultEnvProvider,
       Theme,
-      TabsContext.Provider,
+      Tabs.TabsProvider,
       PopoverMessageProvider,
       ShareSheetProvider,
       ToastProvider,

@@ -1,5 +1,6 @@
 // Note: test renderer must be required after react-native.
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
+import { Tabs } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import About from "./About"
@@ -41,8 +42,8 @@ it("renders without throwing a error", () => {
   }
 
   renderWithWrappersLEGACY(
-    <TabsWithHeader title="test">
+    <Tabs.TabsWithHeader title="test">
       <About gene={gene as any} />
-    </TabsWithHeader>
+    </Tabs.TabsWithHeader>
   )
 })

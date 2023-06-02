@@ -1,8 +1,8 @@
-import { useSpace } from "@artsy/palette-mobile"
+import { Tabs, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizLikedArtworks_artworks$key } from "__generated__/ArtQuizLikedArtworks_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { useScreenDimensions } from "app/utils/hooks"
 import { graphql, useFragment } from "react-relay"
 
@@ -20,7 +20,7 @@ export const ArtQuizLikedArtworks = ({
   const dimensions = useScreenDimensions()
 
   return (
-    <TabScrollView
+    <Tabs.ScrollView
       contentContainerStyle={{
         marginVertical: space(2),
         paddingHorizontal: space(1),
@@ -33,7 +33,7 @@ export const ArtQuizLikedArtworks = ({
         artistNamesTextStyle={{ weight: "regular" }}
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}
       />
-    </TabScrollView>
+    </Tabs.ScrollView>
   )
 }
 

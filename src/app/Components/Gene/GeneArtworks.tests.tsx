@@ -1,6 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -26,9 +27,9 @@ describe("GeneArtworks", () => {
         render={({ props }) => {
           if (props?.gene) {
             return (
-              <TabsWithHeader title="test">
+              <Tabs.TabsWithHeader title="test">
                 <GeneArtworksPaginationContainer gene={props.gene} />
-              </TabsWithHeader>
+              </Tabs.TabsWithHeader>
             )
           }
 

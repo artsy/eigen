@@ -1,11 +1,10 @@
-import { Spacer, ClassTheme } from "@artsy/palette-mobile"
+import { Spacer, ClassTheme, Tabs } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -62,7 +61,7 @@ class Artists extends React.Component<Props, State> {
 
     if (rows.length === 0) {
       return (
-        <TabScrollView
+        <Tabs.ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshingFromPull}
@@ -74,14 +73,14 @@ class Artists extends React.Component<Props, State> {
             title="You haven’t followed any artists yet"
             subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
           />
-        </TabScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
       <ClassTheme>
         {({ space }) => (
-          <TabFlatList
+          <Tabs.FlatList
             data={rows}
             onEndReached={this.loadMore}
             contentContainerStyle={{ marginVertical: space(1) }}

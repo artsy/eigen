@@ -1,6 +1,6 @@
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+import { Tabs } from "@artsy/palette-mobile"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
@@ -58,7 +58,7 @@ export const Favorites: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      <TabsWithHeader title="Follows" onTabChange={fireTabSelectionAnalytics}>
+      <Tabs.TabsWithHeader title="Follows" onTabChange={fireTabSelectionAnalytics}>
         <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
           <Tabs.Lazy>
             <FavoriteArtistsQueryRenderer />
@@ -74,7 +74,7 @@ export const Favorites: React.FC = () => {
             <FavoriteCategoriesQueryRenderer />
           </Tabs.Lazy>
         </Tabs.Tab>
-      </TabsWithHeader>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }

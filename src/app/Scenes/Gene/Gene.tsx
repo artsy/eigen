@@ -1,16 +1,16 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Tabs } from "@artsy/palette-mobile"
 import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
 import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
-import { TabsWithHeader } from "app/Components/Tabs/TabsWithHeader"
+
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Dimensions } from "react-native"
-import { Tabs } from "react-native-collapsible-tab-view"
+
 import { graphql, QueryRenderer } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
@@ -40,7 +40,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
         context_screen_owner_slug: gene.slug,
       }}
     >
-      <TabsWithHeader
+      <Tabs.TabsWithHeader
         title={title}
         BelowTitleHeaderComponent={() => (
           <Flex
@@ -66,7 +66,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
             <About gene={gene} />
           </Tabs.Lazy>
         </Tabs.Tab>
-      </TabsWithHeader>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }

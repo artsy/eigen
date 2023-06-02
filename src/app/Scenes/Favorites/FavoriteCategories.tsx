@@ -1,11 +1,10 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -63,7 +62,7 @@ export class Categories extends React.Component<Props, State> {
 
     if (rows.length === 0) {
       return (
-        <TabScrollView
+        <Tabs.ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshingFromPull}
@@ -75,12 +74,12 @@ export class Categories extends React.Component<Props, State> {
             title="You’re not following any categories yet"
             subtitle="Find a few categories to help improve your artwork recommendations."
           />
-        </TabScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
-      <TabFlatList
+      <Tabs.FlatList
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
         data={rows}

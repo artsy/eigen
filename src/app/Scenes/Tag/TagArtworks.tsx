@@ -1,4 +1,4 @@
-import { Spacer, Box, Text, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, SimpleMessage, Tabs } from "@artsy/palette-mobile"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
@@ -6,8 +6,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { SubTabBar } from "app/Components/Tabs/SubTabBar"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
@@ -56,9 +54,9 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   return (
     <>
-      <SubTabBar>
+      <Tabs.SubTabBar>
         <TagArtworksFilterHeader openFilterArtworksModal={openFilterModal} />
-      </SubTabBar>
+      </Tabs.SubTabBar>
       <Spacer y={1} />
       <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works
@@ -92,7 +90,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <TabScrollView keyboardShouldPersistTaps="handled">
+      <Tabs.ScrollView keyboardShouldPersistTaps="handled">
         <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
@@ -103,7 +101,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Tag}
         />
-      </TabScrollView>
+      </Tabs.ScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }

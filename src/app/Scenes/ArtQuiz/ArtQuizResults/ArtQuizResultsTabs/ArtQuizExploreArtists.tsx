@@ -1,6 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtists_artworks$key } from "__generated__/ArtQuizExploreArtists_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
+
 import { ArtQuizArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizArtist"
 import { graphql, useFragment } from "react-relay"
 
@@ -15,7 +16,7 @@ export const ArtQuizExploreArtists = ({
   )
 
   return (
-    <TabFlatList
+    <Tabs.FlatList
       data={artworks}
       initialNumToRender={2}
       renderItem={({ item }) => {

@@ -1,6 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingCollections_viewer$key } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
+
 import { ArtQuizTrendingCollection } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollection"
 import { graphql, useFragment } from "react-relay"
 
@@ -17,7 +18,7 @@ export const ArtQuizTrendingCollections: React.FC<ArtQuizTrendingCollectionsProp
   )
 
   return (
-    <TabFlatList
+    <Tabs.FlatList
       data={viewerData?.marketingCollections!}
       initialNumToRender={2}
       keyExtractor={(item, index) => String(item?.internalID || index)}

@@ -1,11 +1,10 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -63,7 +62,7 @@ export class Shows extends Component<Props, State> {
 
     if (!shows.length) {
       return (
-        <TabScrollView
+        <Tabs.ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshingFromPull}
@@ -75,12 +74,12 @@ export class Shows extends Component<Props, State> {
             title="You haven’t saved any shows yet"
             subtitle="When you save shows, they will show up here for future use."
           />
-        </TabScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
-      <TabFlatList
+      <Tabs.FlatList
         data={shows}
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}

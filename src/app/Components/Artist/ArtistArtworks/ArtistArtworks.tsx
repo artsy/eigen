@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Message } from "@artsy/palette-mobile"
+import { Spacer, Box, Message, Tabs } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -15,8 +15,7 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { SubTabBar } from "app/Components/Tabs/SubTabBar"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -36,10 +35,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     useShowArtworksFilterModal({ artist })
 
   return (
-    <TabScrollView keyboardShouldPersistTaps="handled">
-      <SubTabBar>
+    <Tabs.ScrollView keyboardShouldPersistTaps="handled">
+      <Tabs.SubTabBar>
         <ArtistArtworksFilterHeader artist={artist!} />
-      </SubTabBar>
+      </Tabs.SubTabBar>
 
       <ArtistArtworksContainer
         {...props}
@@ -58,7 +57,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
-    </TabScrollView>
+    </Tabs.ScrollView>
   )
 }
 

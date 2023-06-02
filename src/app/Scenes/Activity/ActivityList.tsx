@@ -1,9 +1,8 @@
-import { Flex, Spinner, Separator } from "@artsy/palette-mobile"
+import { Flex, Spinner, Separator, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
-import { TabFlatList } from "app/Components/Tabs/TabFlatList"
-import { TabScrollView } from "app/Components/Tabs/TabScrollView"
+
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
@@ -75,18 +74,18 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     const headerOffset = -(headerMeasurements.height.value as number) ?? 0
 
     return (
-      <TabScrollView
+      <Tabs.ScrollView
         refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       >
         <Flex flex={1} justifyContent="center" top={headerOffset}>
           <ActivityEmptyView type={type} />
         </Flex>
-      </TabScrollView>
+      </Tabs.ScrollView>
     )
   }
 
   return (
-    <TabFlatList
+    <Tabs.FlatList
       ListHeaderComponent={() => {
         return (
           <Flex py={1} mx={-2}>
