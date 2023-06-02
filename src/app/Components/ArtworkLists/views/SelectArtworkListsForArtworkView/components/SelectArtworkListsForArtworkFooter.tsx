@@ -6,26 +6,17 @@ import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constant
 import { FC } from "react"
 
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { selectedTotalCount } = state
   const totalCount =
     selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
-  const { save, inProgress } = useSavePendingArtworkListsChanges()
-
-  const handleSave = async () => {
-    try {
-      await save()
-
-      onSave({
-        action: ResultAction.ModifiedArtworkLists,
-      })
+  const { save, inProgress } = useSavePendingArtworkListsChanges({
+    onCompleted: () => {
       dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
-    } catch {
-      return
-    }
-  }
+    },
+  })
 
   return (
     <Box {...props}>
@@ -40,7 +31,7 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
         block
         disabled={!state.hasUnsavedChanges}
         loading={inProgress}
-        onPress={handleSave}
+        onPress={save}
       >
         Save
       </Button>
