@@ -463,7 +463,7 @@ PODS:
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
     - React-Core
-  - react-native-context-menu-view (1.9.3):
+  - react-native-context-menu-view (1.9.4):
     - React
   - react-native-cookies (6.0.11):
     - React-Core
@@ -1214,7 +1214,7 @@ SPEC CHECKSUMS:
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
-  react-native-context-menu-view: 340f2730e7bb9f753bee1009dc329b932fab57cf
+  react-native-context-menu-view: 861f485145780f7b6f9dfbb6296e61c5424131ca
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-fbsdk-next: e5ea39f1b0f1e76deeb2538275559706f3b79e82
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc

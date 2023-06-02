@@ -169,8 +169,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
-  const color = useColor()
-
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
@@ -181,16 +179,19 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       contextScreenOwnerType={contextScreenOwnerType}
     >
       <ContextMenuArtwork
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        dark={dark}
         artwork={artwork}
       >
         <TouchableHighlight
-          underlayColor={color("white100")}
+          underlayColor={backgroundColor}
           activeOpacity={0.8}
           onPress={onPress}
           testID={testID}
         >
-          <Flex>
+          <Flex backgroundColor={backgroundColor}>
             <ArtworkRailCardImage
               containerWidth={containerWidth}
               image={image}
@@ -210,10 +211,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               style={{
                 height: fontScale * getTextHeightByArtworkSize(size),
               }}
+              backgroundColor={backgroundColor}
               flexDirection="row"
               justifyContent="space-between"
             >
-              <Flex flex={1}>
+              <Flex flex={1} backgroundColor={backgroundColor}>
                 {!!lotLabel && (
                   <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                     Lot {lotLabel}
