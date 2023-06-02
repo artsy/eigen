@@ -22,6 +22,7 @@ describe("Ways to Buy Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -61,6 +62,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -97,6 +99,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -122,6 +125,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -158,6 +162,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 

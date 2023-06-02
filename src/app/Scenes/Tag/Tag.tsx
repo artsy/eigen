@@ -1,28 +1,17 @@
-import { Flex, useTheme } from "@artsy/palette-mobile"
-import { TagQuery } from "__generated__/TagQuery.graphql"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import About from "app/Components/Tag/About"
-import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
-import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
-import Header from "app/Scenes/Tag/TagHeader"
+import { Tabs } from "@artsy/palette-mobile"
+import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
+import { TagPlaceholder } from "app/Scenes/Tag/TagPlaceholder"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { View } from "react-native"
-import DeviceInfo from "react-native-device-info"
+
 import { graphql, QueryRenderer } from "react-relay"
-
-const isHandset = DeviceInfo.getDeviceType() === "Handset"
-const commonPadding = isHandset ? 20 : 40
-
-const TABS = {
-  ARTWORKS: "Artworks",
-  ABOUT: "About",
-}
+import About from "./About"
+import { TagArtworksPaginationContainer } from "./TagArtworks"
 
 interface TagProps {
   tagID?: string
-  tag: NonNullable<TagQuery["response"]["tag"]>
+  tag: TagQuery$data["tag"]
 }
 
 interface TagQueryRendererProps {
@@ -31,37 +20,6 @@ interface TagQueryRendererProps {
 
 export const Tag: React.FC<TagProps> = (props) => {
   const { tag, tagID } = props
-  const { color } = useTheme()
-
-  const tabs: TabProps[] = [
-    {
-      title: TABS.ARTWORKS,
-      content: <TagArtworksPaginationContainer tag={tag} />,
-    },
-  ]
-
-  if (tag.description) {
-    tabs.push({
-      title: TABS.ABOUT,
-      content: <About tag={tag} />,
-    })
-  }
-
-  const headerContent = (
-    <View
-      style={{
-        backgroundColor: color("white100"),
-        paddingLeft: commonPadding,
-        paddingRight: commonPadding,
-        justifyContent: "center",
-        alignSelf: isHandset ? "auto" : "center",
-      }}
-    >
-      <Header tag={tag} />
-    </View>
-  )
-
-  const stickyHeaderContentProp = tabs.length === 1 ? { stickyHeaderContent: <></> } : {}
 
   return (
     <ProvideScreenTracking
@@ -69,16 +27,19 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen: Schema.PageNames.TagPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Tag,
         context_screen_owner_id: tagID,
-        context_screen_owner_slug: tag.slug,
+        context_screen_owner_slug: tag?.slug,
       }}
     >
-      <Flex flex={1}>
-        <StickyTabPage
-          staticHeaderContent={headerContent}
-          {...stickyHeaderContentProp}
-          tabs={tabs}
-        />
-      </Flex>
+      <Tabs.TabsWithHeader title={tag?.name!}>
+        <Tabs.Tab name="Artworks" label="Artworks">
+          <TagArtworksPaginationContainer tag={tag!} />
+        </Tabs.Tab>
+        {!!tag?.description ? (
+          <Tabs.Tab name="About" label="About">
+            <About tag={tag} />
+          </Tabs.Tab>
+        ) : null}
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }
@@ -93,9 +54,9 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {
             slug
+            name
             description
             ...About_tag
-            ...TagHeader_tag
             ...TagArtworks_tag @arguments(input: $input)
           }
         }

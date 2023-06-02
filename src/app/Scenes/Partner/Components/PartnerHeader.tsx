@@ -22,10 +22,7 @@ const PartnerHeader: React.FC<{
 
   return (
     <>
-      <Box px={2} pb={1} pt={6}>
-        <Text variant="lg-display" mb={1}>
-          {partner.name}
-        </Text>
+      <Box px={2} pb={1}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Stack spacing={0.5}>
             {!!eligibleArtworks && (
@@ -41,7 +38,7 @@ const PartnerHeader: React.FC<{
           )}
         </Flex>
       </Box>
-      {firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
+      {!!firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
     </>
   )
 }
@@ -49,7 +46,6 @@ const PartnerHeader: React.FC<{
 export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
   partner: graphql`
     fragment PartnerHeader_partner on Partner {
-      name
       profile {
         # Only fetch something so we can see if the profile exists.
         name

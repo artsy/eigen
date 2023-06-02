@@ -99,13 +99,13 @@ export const ToastComponent = ({
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
 
       <Flex flex={1}>
-        <Text variant="xs" color="white100">
+        <Text variant="sm-display" color="white100">
           {message}
         </Text>
       </Flex>
 
       {!!cta && (
-        <Text variant="xs" color="white100" underline>
+        <Text variant="sm-display" color="white100" underline>
           {cta}
         </Text>
       )}

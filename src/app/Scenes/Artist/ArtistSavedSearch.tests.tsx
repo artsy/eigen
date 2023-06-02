@@ -51,6 +51,7 @@ describe("Saved search banner on artist screen", () => {
         artistID="ignored"
         environment={environment as unknown as RelayModernEnvironment}
         searchCriteriaID={searchCriteriaID}
+        initialTab="Artworks"
       />
     )
 

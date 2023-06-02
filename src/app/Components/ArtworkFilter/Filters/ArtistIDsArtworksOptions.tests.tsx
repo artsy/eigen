@@ -78,6 +78,7 @@ describe("Artist options screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
     const { getAllByA11yState } = renderWithWrappers(
@@ -106,6 +107,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -129,6 +131,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -166,6 +169,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -196,6 +200,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -216,6 +221,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: 10,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -249,6 +255,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 

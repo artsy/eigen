@@ -146,7 +146,6 @@ const PartnerCardArtwork: PartnerCard_artwork$data = {
     name: "Test Gallery",
     slug: "12345",
     id: "12345",
-    href: "",
     initials: "TG",
     profile: {
       id: "12345",

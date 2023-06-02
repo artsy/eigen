@@ -9,7 +9,7 @@ module.exports = {
   setupFilesAfterEnv: [
     "jest-extended",
     "@testing-library/jest-native/extend-expect",
-    "./src/setupJest.ts",
+    "./src/setupJest.tsx",
   ],
   testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
   testEnvironment: "jest-environment-jsdom",

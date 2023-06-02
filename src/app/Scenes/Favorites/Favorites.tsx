@@ -1,42 +1,44 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import DarkNavigationButton from "app/Components/Buttons/DarkNavigationButton"
-
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageTabBar } from "app/Components/StickyTabPage/StickyTabPageTabBar"
-import { useIsStaging } from "app/utils/hooks/useIsStaging"
+import { Tabs } from "@artsy/palette-mobile"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { compact } from "lodash"
-import { View, ViewProps } from "react-native"
+
+import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
 import { FavoriteShowsQueryRenderer } from "./FavoriteShows"
 
-export enum Tab {
-  works = "Works",
-  artists = "Artists",
-  shows = "Shows",
-  categories = "Categories",
-}
+const Tab = {
+  works: {
+    label: "Works",
+    name: "works",
+  },
+  artists: {
+    label: "Artists",
+    name: "artists",
+  },
+  shows: {
+    label: "Shows",
+    name: "shows",
+  },
+  categories: {
+    label: "Categories",
+    name: "categories",
+  },
+} as const
 
-interface Props extends ViewProps {
-  initialTab: Tab
-}
-
-export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
+export const Favorites: React.FC = () => {
   const tracking = useTracking()
-  const isStaging = useIsStaging()
 
-  const fireTabSelectionAnalytics = (selectedTab: Tab) => {
+  const fireTabSelectionAnalytics = (selectedTab: IndexChangeEventData) => {
     let eventDetails
 
-    if (selectedTab === Tab.works) {
+    if (selectedTab.tabName === Tab.works.name) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsWorks }
-    } else if (selectedTab === Tab.artists) {
+    } else if (selectedTab.tabName === Tab.artists.name) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsArtists }
-    } else if (selectedTab === Tab.categories) {
+    } else if (selectedTab.tabName === Tab.categories.name) {
       eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsCategories }
-    } else if (selectedTab === Tab.shows) {
+    } else if (selectedTab.tabName === Tab.shows.name) {
       eventDetails = {
         action_name: Schema.ActionNames.SavesAndFollowsShows,
         context_screen: Schema.PageNames.SavesAndFollows,
@@ -49,34 +51,6 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
     })
   }
 
-  const tabs: TabProps[] = compact([
-    {
-      title: Tab.artists,
-      content: <FavoriteArtistsQueryRenderer />,
-    },
-    {
-      title: Tab.shows,
-      content: <FavoriteShowsQueryRenderer />,
-    },
-    {
-      title: Tab.categories,
-      content: <FavoriteCategoriesQueryRenderer />,
-    },
-  ])
-
-  // default to first tab for initialTab
-  let finalInitialTab = tabs[0].title
-  if (tabs.find((tab) => (tab.title as Tab) === initialTab)) {
-    finalInitialTab = initialTab
-  } else {
-    console.warn("Specified Initial Tab is not available in tabs array.")
-  }
-
-  // Set initial Tab
-  tabs.forEach((tab) => {
-    tab.initial = tab.title === finalInitialTab
-  })
-
   return (
     <ProvideScreenTracking
       info={{
@@ -84,32 +58,23 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
         context_screen_owner_type: null,
       }}
     >
-      <View style={{ flex: 1 }}>
-        <StickyTabPage
-          tabs={tabs}
-          staticHeaderContent={<StickyHeaderContent />}
-          stickyHeaderContent={
-            <StickyTabPageTabBar
-              onTabPress={({ label }) => {
-                fireTabSelectionAnalytics(label as Tab)
-              }}
-            />
-          }
-        />
-        {!!isStaging && (
-          <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />
-        )}
-      </View>
+      <Tabs.TabsWithHeader title="Follows" onTabChange={fireTabSelectionAnalytics}>
+        <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
+          <Tabs.Lazy>
+            <FavoriteArtistsQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name={Tab.shows.name} label={Tab.shows.label}>
+          <Tabs.Lazy>
+            <FavoriteShowsQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name={Tab.categories.name} label={Tab.categories.label}>
+          <Tabs.Lazy>
+            <FavoriteCategoriesQueryRenderer />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
-  )
-}
-
-const StickyHeaderContent: React.FC = ({}) => {
-  return (
-    <Flex mt={4}>
-      <Text variant="lg-display" m={2}>
-        Follows
-      </Text>
-    </Flex>
   )
 }

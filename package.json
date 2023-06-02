@@ -33,6 +33,7 @@
     "flip_table_extreme": "./scripts/flip-table-extreme",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
+    "generate-changelog": "ts-node scripts/changelog/generateChangelog.ts",
     "navigate-to-route": "./scripts/navigate-to-route",
     "navigate-to-route-android": "./scripts/navigate-to-route-android",
     "init-metaflags": "jq -Rn '{ startStorybook: false }' | sponge metaflags.json",
@@ -102,8 +103,8 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.129.0",
-    "@artsy/palette-mobile": "11.0.29",
+    "@artsy/cohesion": "4.130.0",
+    "@artsy/palette-mobile": "11.0.30",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",
@@ -179,7 +180,7 @@
     "react-native-keychain": "8.0.0",
     "react-native-linear-gradient": "2.6.2",
     "react-native-localize": "2.0.1",
-    "react-native-pager-view": "6.0.0",
+    "react-native-pager-view": "6.2.0",
     "react-native-push-notification": "8.1.1",
     "react-native-reanimated": "2.13.0",
     "react-native-reanimated-zoom": "0.3.3",
@@ -327,7 +328,6 @@
     "redux-flipper": "2.0.2",
     "redux-logger": "3.0.6",
     "relay-compiler": "14.0.0",
-    "relay-config": "12.0.1",
     "relay-runtime": "14.1.0",
     "relay-test-utils": "14.1.0",
     "rimraf": "3.0.2",
@@ -336,8 +336,9 @@
     "sponge": "0.1.0",
     "tmp": "0.2.1",
     "ts-node": "8.4.1",
-    "typescript": "5.0.4",
-    "vscode-apollo-relay": "1.5.2"
+    "typescript": "5.1.3",
+    "vscode-apollo-relay": "1.5.2",
+    "yargs": "17.7.2"
   },
   "resolutions": {
     "@types/relay-runtime": "14.1.3",

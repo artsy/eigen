@@ -1,9 +1,9 @@
 import { Box, CheckIcon, ChevronIcon } from "@artsy/palette-mobile"
-import { Tab, TabsProps } from "app/Components/Tabs"
+import { Tab, TabsProps } from "app/Components/LegacyTabs"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useState } from "react"
 import { TouchableOpacity, LayoutRectangle } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
-import { TabBarContainer } from "./TabBarContainer"
+import { TabBarContainer } from "./LegacyTabBarContainer"
 
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen with

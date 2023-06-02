@@ -42,6 +42,7 @@ describe("Materials Options Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 

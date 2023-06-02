@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import Articles from "app/Components/Artist/Articles/Articles"
 import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
@@ -7,7 +8,6 @@ import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app
 import Biography from "app/Components/Artist/Biography"
 import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
 import { Stack } from "app/Components/Stack"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,7 +22,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const relatedArtists = extractNodes(artist.related?.artists)
 
   return (
-    <StickyTabPageScrollView>
+    <Tabs.ScrollView>
       <Stack spacing={4} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         <ArtistSeriesMoreSeriesFragmentContainer
@@ -48,7 +48,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
         {!!articles.length && <Articles articles={articles} />}
         {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
       </Stack>
-    </StickyTabPageScrollView>
+    </Tabs.ScrollView>
   )
 }
 
