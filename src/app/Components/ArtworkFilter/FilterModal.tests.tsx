@@ -73,6 +73,7 @@ const initialState: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  showFilterArtworksModal: false,
   sizeMetric: "cm",
 }
 
@@ -124,6 +125,7 @@ describe("Filter modal", () => {
       ],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -151,6 +153,7 @@ describe("Filter modal", () => {
       ],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -224,6 +227,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -250,6 +254,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -276,6 +281,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -324,6 +330,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -359,6 +366,7 @@ describe("Clearing filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -387,6 +395,7 @@ describe("Clearing filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -458,6 +467,7 @@ describe("Applying filters on Artworks", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -523,6 +533,7 @@ describe("Applying filters on Artworks", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 

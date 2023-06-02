@@ -66,5 +66,6 @@ const initialFilterData: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  showFilterArtworksModal: false,
   sizeMetric: "cm",
 }

@@ -47,6 +47,7 @@ describe("Year Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 

@@ -1,17 +1,12 @@
-import { Spacer, Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, useSpace, Tabs } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
-import {
-  StickyTabPageFlatList,
-  StickyTabPageFlatListContext,
-  StickyTabSection,
-} from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { TabEmptyState } from "app/Components/TabEmptyState"
+
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import React, { useContext, useState } from "react"
-import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
+import { useState } from "react"
+import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRail"
@@ -27,48 +22,36 @@ interface ShowGridItemProps {
   itemIndex: number
 }
 
-class ShowGridItem extends React.Component<ShowGridItemProps> {
-  onPress = () => {
-    const { show } = this.props
+const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
+  const { show, itemIndex } = props
+  const space = useSpace()
+
+  const onPress = () => {
     navigate(`/show/${show.slug}`)
   }
 
-  render() {
-    const { show, itemIndex } = this.props
-    const showImageURL = show.coverImage && show.coverImage.url
+  const showImageURL = show?.coverImage?.url
 
-    return (
-      <ClassTheme>
-        {({ space }) => {
-          const styles =
-            itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
-          return (
-            <GridItem key={show.id}>
-              <TouchableWithoutFeedback onPress={this.onPress}>
-                <Box style={styles}>
-                  {showImageURL ? (
-                    <BackgroundImage
-                      key={show.id}
-                      resizeMode="cover"
-                      source={{ uri: showImageURL }}
-                    />
-                  ) : (
-                    <EmptyImage />
-                  )}
-                  <Spacer y={0.5} />
-                  <Text variant="sm">{show.name}</Text>
-                  <Text variant="sm" color="black60">
-                    {show.exhibitionPeriod}
-                  </Text>
-                </Box>
-              </TouchableWithoutFeedback>
-              <Spacer y={2} />
-            </GridItem>
-          )
-        }}
-      </ClassTheme>
-    )
-  }
+  const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+  return (
+    <GridItem key={show.id}>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Box style={styles}>
+          {showImageURL ? (
+            <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
+          ) : (
+            <EmptyImage />
+          )}
+          <Spacer y={0.5} />
+          <Text variant="sm">{show.name}</Text>
+          <Text variant="sm" color="black60">
+            {show.exhibitionPeriod}
+          </Text>
+        </Box>
+      </TouchableWithoutFeedback>
+      <Spacer y={2} />
+    </GridItem>
+  )
 }
 
 export const PartnerShows: React.FC<{
@@ -76,12 +59,12 @@ export const PartnerShows: React.FC<{
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)
-
+  const space = useSpace()
   const recentShows = extractNodes(partner.recentShows).filter((show) => show.isDisplayable)
 
   const pastShows = extractNodes(partner.pastShows).filter((show) => show.isDisplayable)
 
-  const sections: StickyTabSection[] = []
+  const sections = []
 
   if (recentShows.length) {
     sections.push({
@@ -118,48 +101,37 @@ export const PartnerShows: React.FC<{
     }
   }
 
-  const tabContext = useContext(StickyTabPageFlatListContext)
-
-  const tabIsActive = Boolean(useNativeValue(tabContext.tabIsActive, 0))
-
   return (
-    <ClassTheme>
-      {({ space }) => (
-        <View style={{ flex: 1 }}>
-          <StickyTabPageFlatList
-            data={sections}
-            // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
-            onEndReachedThreshold={tabIsActive ? 1 : 0}
-            // render up to the first chunk on initial mount
-            initialNumToRender={
-              sections.findIndex((section) => section.key.startsWith("chunk")) + 1
-            }
-            windowSize={tabIsActive ? 5 : 1}
-            onEndReached={() => {
-              if (isLoadingMore || !relay.hasMore()) {
-                return
-              }
-              setIsLoadingMore(true)
-              relay.loadMore(PAGE_SIZE, (error) => {
-                if (error) {
-                  // FIXME: Handle error
-                  console.error("PartnerShows.tsx", error.message)
-                }
-                setIsLoadingMore(false)
-              })
-            }}
-            refreshing={isLoadingMore}
-            contentContainerStyle={{ paddingTop: 20 }}
-            ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
-            ListFooterComponent={
-              <Flex alignItems="center" justifyContent="center" height={space(6)}>
-                {isLoadingMore ? <ActivityIndicator /> : null}
-              </Flex>
-            }
-          />
-        </View>
-      )}
-    </ClassTheme>
+    <Tabs.FlatList
+      contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+      data={sections}
+      renderItem={({ item }) => item.content}
+      // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
+      onEndReachedThreshold={1}
+      // render up to the first chunk on initial mount
+      initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
+      windowSize={5}
+      onEndReached={() => {
+        if (isLoadingMore || !relay.hasMore()) {
+          return
+        }
+        setIsLoadingMore(true)
+        relay.loadMore(PAGE_SIZE, (error) => {
+          if (error) {
+            // FIXME: Handle error
+            console.error("PartnerShows.tsx", error.message)
+          }
+          setIsLoadingMore(false)
+        })
+      }}
+      refreshing={isLoadingMore}
+      ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
+      ListFooterComponent={
+        <Flex alignItems="center" justifyContent="center" height={space(6)}>
+          {isLoadingMore ? <ActivityIndicator /> : null}
+        </Flex>
+      }
+    />
   )
 }
 

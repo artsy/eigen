@@ -24,6 +24,7 @@ describe("Sort Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -88,6 +89,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -116,6 +118,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -158,6 +161,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -193,6 +197,7 @@ describe("Sort Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -216,6 +221,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 
@@ -241,6 +247,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        showFilterArtworksModal: false,
         sizeMetric: "cm",
       }
 

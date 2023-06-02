@@ -50,6 +50,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -107,6 +108,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
             total: null,
             followedArtists: null,
           },
+          showFilterArtworksModal: false,
           sizeMetric: "cm",
         }
 

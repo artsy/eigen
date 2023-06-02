@@ -337,15 +337,21 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Activity: reactModule(Activity, {
+    fullBleed: true,
     hidesBackButton: true,
   }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
-  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
+  ArtQuizResults: reactModule(ArtQuizResults, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Article: reactModule(ArticleScreen),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
-  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
+  Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
+    ArtistScreenQuery,
+  ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
@@ -414,11 +420,17 @@ export const modules = defineModules({
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  Favorites: reactModule(Favorites),
+  Favorites: reactModule(Favorites, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(GeneQueryRenderer),
+  Gene: reactModule(GeneQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
   }),
@@ -473,7 +485,10 @@ export const modules = defineModules({
   NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  Partner: reactModule(PartnerQueryRenderer),
+  Partner: reactModule(PartnerQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   PartnerLocations: reactModule(PartnerLocations),
   PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
   PrivacyRequest: reactModule(PrivacyRequest),
@@ -511,7 +526,7 @@ export const modules = defineModules({
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
   Storybook: reactModule(StorybookUIRoot),
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
-  Tag: reactModule(TagQueryRenderer),
+  Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   UpcomingAuctionResults: reactModule(AuctionResultsUpcomingQueryRenderer, {}, [
     AuctionResultsUpcomingPrefetchQuery,

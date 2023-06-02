@@ -1,19 +1,14 @@
-import { Spacer, Box, Text, Separator, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, SimpleMessage, Tabs } from "@artsy/palette-mobile"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import {
-  useArtworkFilters,
-  useSelectedFiltersCount,
-} from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { Schema } from "app/utils/track"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -30,9 +25,6 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   const tracking = useTracking()
   const artworksTotal = tag.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
-  const selectedFiltersCount = useSelectedFiltersCount()
-
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const trackClear = () => {
     tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
@@ -44,22 +36,9 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
     componentPath: "Tag/TagArtworks",
   })
 
-  useEffect(() => {
-    setJSX(
-      <Box backgroundColor="white">
-        <Spacer y={1} />
-        <Separator />
-        <ArtworksFilterHeader
-          selectedFiltersCount={selectedFiltersCount}
-          onFilterPress={openFilterModal}
-        />
-      </Box>
-    )
-  }, [artworksTotal, openFilterModal])
-
   if (initialArtworksTotal.current === 0) {
     return (
-      <Box mt={1}>
+      <Box pt={2}>
         <SimpleMessage>There aren’t any works available in the tag at this time.</SimpleMessage>
       </Box>
     )
@@ -67,7 +46,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   if (artworksTotal === 0) {
     return (
-      <Box pt={1}>
+      <Box pt={2}>
         <FilteredArtworkGridZeroState id={tag.id} slug={tag.slug} trackClear={trackClear} />
       </Box>
     )
@@ -75,6 +54,9 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   return (
     <>
+      <Tabs.SubTabBar>
+        <TagArtworksFilterHeader openFilterArtworksModal={openFilterModal} />
+      </Tabs.SubTabBar>
       <Spacer y={1} />
       <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works
@@ -108,7 +90,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
+      <Tabs.ScrollView keyboardShouldPersistTaps="handled">
         <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
@@ -119,7 +101,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Tag}
         />
-      </StickyTabPageScrollView>
+      </Tabs.ScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }

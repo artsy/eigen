@@ -14,7 +14,7 @@ export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = (
   const title = hasFairPartnership ? fairPartner : churnedPartner
 
   return (
-    <Box px={2}>
+    <Box pt={2}>
       <SimpleMessage>
         {title} Are you a representative of {name}?{" "}
         <LinkText

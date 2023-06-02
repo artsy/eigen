@@ -1,30 +1,30 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingCollections_viewer$key } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+
 import { ArtQuizTrendingCollection } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollection"
 import { graphql, useFragment } from "react-relay"
 
-export const ArtQuizTrendingCollections = ({
-  viewer,
-}: {
+interface ArtQuizTrendingCollectionsProps {
   viewer: ArtQuizResultsEmptyTabsQuery$data["viewer"]
+}
+
+export const ArtQuizTrendingCollections: React.FC<ArtQuizTrendingCollectionsProps> = ({
+  viewer,
 }) => {
   const viewerData = useFragment<ArtQuizTrendingCollections_viewer$key>(
     artQuizTrendingCollectionsFragment,
     viewer
   )
 
-  const marketingCollections = viewerData?.marketingCollections?.map((collection) => ({
-    key: collection?.internalID!,
-    content: <ArtQuizTrendingCollection collectionData={collection} />,
-  }))
-
   return (
-    <StickyTabPageFlatList
-      style={{ paddingHorizontal: 0 }}
-      data={marketingCollections!}
+    <Tabs.FlatList
+      data={viewerData?.marketingCollections!}
       initialNumToRender={2}
-      keyExtractor={(item, index) => String(item?.collection?.internalID || index)}
+      keyExtractor={(item, index) => String(item?.internalID || index)}
+      renderItem={({ item, index }) => {
+        return <ArtQuizTrendingCollection collectionData={item} key={index} />
+      }}
     />
   )
 }

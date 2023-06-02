@@ -2,7 +2,6 @@ import { Spacer, Flex, useColor, Text, Separator, Button } from "@artsy/palette-
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -40,16 +39,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
         <Separator my={1} borderColor={separatorColor} />
-        <MenuItem
-          title="Follows"
-          onPress={() =>
-            navigate("favorites", {
-              passProps: {
-                initialTab: Tab.artists,
-              },
-            })
-          }
-        />
+        <MenuItem title="Follows" onPress={() => navigate("favorites")} />
         <Separator my={1} borderColor={separatorColor} />
         {!!showOrderHistory && (
           <>

@@ -9,10 +9,10 @@ import {
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -127,7 +127,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
               )
             })}
 
-            {shouldDisplayCounts && (
+            {!!shouldDisplayCounts && (
               <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
                 + {remainingArtworksCount}
               </Text>

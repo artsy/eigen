@@ -1,19 +1,17 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
 import React from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -60,20 +58,13 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.genes, (node) => node.gene!).map(
-      (gene) => ({
-        key: gene.id,
-        content: (
-          <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />
-        ),
-      })
-    )
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes)
 
     if (rows.length === 0) {
       return (
-        <StickyTabPageScrollView
+        <Tabs.ScrollView
           refreshControl={
-            <StickTabPageRefreshControl
+            <RefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -83,12 +74,12 @@ export class Categories extends React.Component<Props, State> {
             title="You’re not following any categories yet"
             subtitle="Find a few categories to help improve your artwork recommendations."
           />
-        </StickyTabPageScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
-      <StickyTabPageFlatList
+      <Tabs.FlatList
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
         data={rows}
@@ -96,7 +87,7 @@ export class Categories extends React.Component<Props, State> {
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={
-          <StickTabPageRefreshControl
+          <RefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />
@@ -106,6 +97,16 @@ export class Categories extends React.Component<Props, State> {
             <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
           ) : null
         }
+        renderItem={({ item }) => {
+          return (
+            <SavedItemRow
+              square_image
+              href={item.gene?.href!}
+              image={item.gene?.image!}
+              name={item.gene?.name!}
+            />
+          )
+        }}
       />
     )
   }

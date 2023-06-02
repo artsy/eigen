@@ -1,17 +1,16 @@
-import { Spacer, ClassTheme } from "@artsy/palette-mobile"
+import { Spacer, ClassTheme, Tabs } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -58,24 +57,13 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, (node) => node.artist!).map(
-      (artist) => ({
-        key: artist.id,
-        content: (
-          <ArtistListItem
-            artist={artist}
-            withFeedback
-            containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }}
-          />
-        ),
-      })
-    )
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists)
 
     if (rows.length === 0) {
       return (
-        <StickyTabPageScrollView
+        <Tabs.ScrollView
           refreshControl={
-            <StickTabPageRefreshControl
+            <RefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -85,20 +73,20 @@ class Artists extends React.Component<Props, State> {
             title="You haven’t followed any artists yet"
             subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
           />
-        </StickyTabPageScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
       <ClassTheme>
         {({ space }) => (
-          <StickyTabPageFlatList
+          <Tabs.FlatList
             data={rows}
             onEndReached={this.loadMore}
-            contentContainerStyle={{ paddingVertical: space(2) }}
+            contentContainerStyle={{ marginVertical: space(1) }}
             onEndReachedThreshold={0.2}
             refreshControl={
-              <StickTabPageRefreshControl
+              <RefreshControl
                 refreshing={this.state.refreshingFromPull}
                 onRefresh={this.handleRefresh}
               />
@@ -110,6 +98,15 @@ class Artists extends React.Component<Props, State> {
                 <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
               ) : null
             }
+            renderItem={({ item }) => {
+              return (
+                <ArtistListItem
+                  artist={item.artist!}
+                  withFeedback
+                  containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }}
+                />
+              )
+            }}
           />
         )}
       </ClassTheme>

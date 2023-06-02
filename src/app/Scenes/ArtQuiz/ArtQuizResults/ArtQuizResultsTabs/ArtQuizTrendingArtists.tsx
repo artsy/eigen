@@ -1,6 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingArtists_viewer$key } from "__generated__/ArtQuizTrendingArtists_viewer.graphql"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+
 import { ArtQuizArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizArtist"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
@@ -17,17 +18,14 @@ export const ArtQuizTrendingArtists = ({
 
   const artists = extractNodes(viewerData?.curatedTrendingArtists)
 
-  const artistSections = artists.map((artist) => ({
-    key: artist.internalID,
-    content: <ArtQuizArtist artistData={artist} />,
-  }))
-
   return (
-    <StickyTabPageFlatList
-      style={{ paddingHorizontal: 0 }}
-      data={artistSections!}
+    <Tabs.FlatList
+      data={artists}
       initialNumToRender={2}
-      keyExtractor={(item, index) => String(item?.collection?.internalID || index)}
+      keyExtractor={(item, index) => String(item?.internalID || index)}
+      renderItem={({ item, index }) => {
+        return <ArtQuizArtist artistData={item} key={index} />
+      }}
     />
   )
 }
