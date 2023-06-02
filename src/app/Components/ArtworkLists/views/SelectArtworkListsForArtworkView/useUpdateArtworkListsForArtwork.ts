@@ -18,16 +18,14 @@ type Response = NonNullable<
 export type ArtworkListEntity =
   | Response["addedToArtworkLists"]
   | Response["removedFromArtworkLists"]
-type MutationResult = [
-  (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => Disposable,
-  boolean
-]
+export type MutationConfig = UseMutationConfig<useUpdateArtworkListsForArtworkMutation>
+type MutationResult = [(config: MutationConfig) => Disposable, boolean]
 
 export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResult => {
   const [initialCommit, isInProgress] =
     useMutation<useUpdateArtworkListsForArtworkMutation>(SaveArtworkListsMutation)
 
-  const commit = (config: UseMutationConfig<useUpdateArtworkListsForArtworkMutation>) => {
+  const commit = (config: MutationConfig) => {
     return initialCommit({
       ...config,
       updater: updater(artworkID),
