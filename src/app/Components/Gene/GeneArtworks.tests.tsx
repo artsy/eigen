@@ -1,19 +1,16 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 describe("GeneArtworks", () => {
   const geneID = "gene-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
+  const environment = getMockRelayEnvironment()
 
   const TestRenderer = () => {
     return (
@@ -30,14 +27,9 @@ describe("GeneArtworks", () => {
         render={({ props }) => {
           if (props?.gene) {
             return (
-              <StickyTabPage
-                tabs={[
-                  {
-                    title: "test",
-                    content: <GeneArtworksPaginationContainer gene={props.gene} />,
-                  },
-                ]}
-              />
+              <Tabs.TabsWithHeader title="test">
+                <GeneArtworksPaginationContainer gene={props.gene} />
+              </Tabs.TabsWithHeader>
             )
           }
 

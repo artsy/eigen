@@ -10,7 +10,6 @@ import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsCo
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
-import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
@@ -626,46 +625,38 @@ export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
   ...others
 }) => {
   return (
-    <>
-      <RetryErrorBoundaryLegacy
-        render={() => {
+    <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+      environment={environment || getRelayEnvironment()}
+      above={{
+        query: ArtworkScreenQuery,
+        variables: { artworkID },
+      }}
+      below={{
+        query: graphql`
+          query ArtworkBelowTheFoldQuery($artworkID: String!) {
+            artwork(id: $artworkID) {
+              ...Artwork_artworkBelowTheFold
+            }
+          }
+        `,
+        variables: { artworkID },
+      }}
+      render={{
+        renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
+        renderComponent: ({ above, below }) => {
           return (
-            <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-              environment={environment || getRelayEnvironment()}
-              above={{
-                query: ArtworkScreenQuery,
-                variables: { artworkID },
-              }}
-              below={{
-                query: graphql`
-                  query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                    artwork(id: $artworkID) {
-                      ...Artwork_artworkBelowTheFold
-                    }
-                  }
-                `,
-                variables: { artworkID },
-              }}
-              render={{
-                renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
-                renderComponent: ({ above, below }) => {
-                  return (
-                    <ArtworkContainer
-                      {...others}
-                      artworkAboveTheFold={above.artwork}
-                      artworkBelowTheFold={below?.artwork ?? null}
-                      me={above.me}
-                    />
-                  )
-                },
-              }}
-              fetchPolicy="store-and-network"
-              cacheConfig={{ force: true }}
+            <ArtworkContainer
+              {...others}
+              artworkAboveTheFold={above.artwork}
+              artworkBelowTheFold={below?.artwork ?? null}
+              me={above.me}
             />
           )
-        }}
-      />
-    </>
+        },
+      }}
+      fetchPolicy="store-and-network"
+      cacheConfig={{ force: true }}
+    />
   )
 }
 

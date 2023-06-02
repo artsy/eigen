@@ -1,7 +1,6 @@
 import { Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ScrollableTab } from "app/Components/ScrollableTabBar"
-import TabBar from "app/Components/TabBar"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { EventEmitter } from "app/Scenes/Map/EventEmitter"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
@@ -15,6 +14,7 @@ import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
+import TabBar from "./Components/LegacyTabBar"
 import { cityTabs } from "./cityTabs"
 
 interface Props {

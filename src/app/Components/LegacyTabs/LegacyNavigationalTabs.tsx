@@ -1,11 +1,11 @@
 import { Box } from "@artsy/palette-mobile"
-import { Tab, TabsProps } from "app/Components/Tabs"
+import { Tab, TabsProps } from "app/Components/LegacyTabs"
 import { VisualClueName } from "app/store/config/visualClues"
 import { useScreenDimensions } from "app/utils/hooks"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
-import { TabBarContainer } from "./TabBarContainer"
+import { TabBarContainer } from "./LegacyTabBarContainer"
 
 /**
  * Renders a list of tabs. Evenly-spaces them across the screen with

@@ -220,8 +220,22 @@ export enum SlugType {
   FairID = "fairID",
 }
 
+const partnerRegex = /partner\//
+
+export function getPartnerSlug(slug: string) {
+  if (partnerRegex.test(slug)) {
+    return slug
+  }
+
+  return `partner/${slug}`
+}
+
 export function navigateToPartner(slug: string) {
-  navigate(slug, { passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID } })
+  const href = getPartnerSlug(slug)
+
+  navigate(href, {
+    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+  })
 }
 
 /**

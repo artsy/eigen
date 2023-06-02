@@ -623,6 +623,12 @@ jest.mock("@gorhom/bottom-sheet", () => ({
   ...require("@gorhom/bottom-sheet/mock"),
 }))
 
+jest.mock("react-native-collapsible-tab-view", () => {
+  const getMockCollapsibleTabs =
+    require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
+  return getMockCollapsibleTabs()
+})
+
 jest.mock("@react-native-community/geolocation", () => ({
   addListener: jest.fn(),
   getCurrentPosition: jest.fn(),

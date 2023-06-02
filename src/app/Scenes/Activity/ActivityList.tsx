@@ -1,16 +1,12 @@
-import { Flex, Spinner, Separator } from "@artsy/palette-mobile"
+import { Flex, Spinner, Separator, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import {
-  StickyTabPageFlatList,
-  StickyTabPageFlatListContext,
-  StickyTabSection,
-} from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+
 import { extractNodes } from "app/utils/extractNodes"
-import { useContext, useEffect, useState } from "react"
+import { useState } from "react"
+import { RefreshControl } from "react-native"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
@@ -25,15 +21,19 @@ interface ActivityListProps {
 }
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
+  const headerMeasurements = useHeaderMeasurements()
   const [refreshing, setRefreshing] = useState(false)
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
     ActivityQuery,
     ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
+
   const meData = useFragment(meFragment, me)
+
   const hasUnreadNotifications = (meData?.unreadNotificationsCount ?? 0) > 0
   const notificationsNodes = extractNodes(data?.notificationsConnection)
+
   const notifications = notificationsNodes.filter((notification) => {
     if (isArtworksBasedNotification(notification.notificationType)) {
       const artworksCount = notification.artworks?.totalCount ?? 0
@@ -42,7 +42,8 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
     return true
   })
-  const sections: StickyTabSection[] = notifications.map((notification) => ({
+
+  const sections = notifications.map((notification) => ({
     key: notification.internalID,
     content: <ActivityItem item={notification} />,
   }))
@@ -68,42 +69,41 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     )
   }
 
-  useEffect(() => {
-    setJSX(
-      <>
-        <ActivityMarkAllAsReadSection hasUnreadNotifications={hasUnreadNotifications} />
-        <Separator />
-      </>
-    )
-  }, [hasUnreadNotifications])
-
   if (notifications.length === 0) {
+    // In order to center content, we need to offset the stickytabs header height
+    const headerOffset = -(headerMeasurements.height.value as number) ?? 0
+
     return (
-      <StickyTabPageScrollView
-        contentContainerStyle={{
-          // Extend the container flex when there are no artworks for accurate vertical centering
-          flexGrow: 1,
-          justifyContent: "center",
-          height: "100%",
-        }}
-        refreshControl={
-          <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
-        }
+      <Tabs.ScrollView
+        refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       >
-        <ActivityEmptyView type={type} />
-      </StickyTabPageScrollView>
+        <Flex flex={1} justifyContent="center" top={headerOffset}>
+          <ActivityEmptyView type={type} />
+        </Flex>
+      </Tabs.ScrollView>
     )
   }
 
   return (
-    <StickyTabPageFlatList
+    <Tabs.FlatList
+      ListHeaderComponent={() => {
+        return (
+          <Flex py={1} mx={-2}>
+            <ActivityMarkAllAsReadSection
+              hasUnreadNotifications={hasUnreadNotifications}
+              px={2}
+              mb={1}
+            />
+            <Separator />
+          </Flex>
+        )
+      }}
       data={sections}
       keyExtractor={(item) => `${type}-${item.key}`}
       ItemSeparatorComponent={() => <Separator />}
       onEndReached={handleLoadMore}
-      refreshControl={
-        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
-      }
+      renderItem={({ item }) => <>{item.content}</>}
+      refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       ListFooterComponent={
         isLoadingNext ? (
           <Flex my={2} alignItems="center" justifyContent="center">

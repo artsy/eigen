@@ -25,7 +25,7 @@ export const ArtQuizTrendingCollection = ({
 
   return (
     <Flex pt={2}>
-      <Flex px={2}>
+      <Flex>
         <Text variant="md">{collection?.title}</Text>
         <ReadMore
           content={collection?.descriptionMarkdown!}

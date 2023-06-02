@@ -42,6 +42,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListEmptyComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   HeaderComponent?: React.ComponentType<any>
+  ListFooterComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -54,6 +55,7 @@ const AutosuggestResultsFlatList: React.FC<{
   ListHeaderComponent = () => <Spacer y={2} />,
   HeaderComponent = null,
   prependResults = [],
+  ListFooterComponent,
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -140,17 +142,23 @@ const AutosuggestResultsFlatList: React.FC<{
   const hasMoreResults =
     results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
 
-  const ListFooterComponent = useMemo(() => {
-    return () => (
-      <Flex justifyContent="center" p={4} pb={6} height={250}>
-        {hasMoreResults ? <Spinner /> : null}
-      </Flex>
-    )
-  }, [hasMoreResults])
-
   const noResults = results.current && allNodes.length === 0
 
   const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
+
+  const ListFooterComponentWithLoadingIndicator = useMemo(() => {
+    return () => (
+      <Flex pb={6} height={250}>
+        {hasMoreResults ? (
+          <Flex justifyContent="center" pb={6}>
+            <Spinner />
+          </Flex>
+        ) : (
+          !noResults && !!ListFooterComponent && <ListFooterComponent />
+        )}
+      </Flex>
+    )
+  }, [hasMoreResults, noResults, ListFooterComponent])
 
   if (shouldShowLoadingPlaceholder) {
     return (
@@ -171,7 +179,7 @@ const AutosuggestResultsFlatList: React.FC<{
         initialNumToRender={isPad() ? 24 : 12}
         data={allNodes}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={ListFooterComponent}
+        ListFooterComponent={ListFooterComponentWithLoadingIndicator}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
@@ -306,6 +314,7 @@ export const AutosuggestResults: React.FC<{
   HeaderComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
+  ListFooterComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
@@ -319,6 +328,7 @@ export const AutosuggestResults: React.FC<{
     HeaderComponent,
     ListHeaderComponent,
     ListEmptyComponent,
+    ListFooterComponent,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -356,6 +366,7 @@ export const AutosuggestResults: React.FC<{
               ListEmptyComponent={ListEmptyComponent}
               ListHeaderComponent={ListHeaderComponent}
               HeaderComponent={HeaderComponent}
+              ListFooterComponent={ListFooterComponent}
             />
           )
         }}

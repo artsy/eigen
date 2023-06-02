@@ -1,6 +1,5 @@
 import { ArtworkIcon, Flex, Separator, Text, UserMultiIcon } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
-
 import { MenuItem } from "app/Components/MenuItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"

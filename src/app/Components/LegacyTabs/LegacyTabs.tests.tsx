@@ -2,7 +2,7 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { LayoutRectangle, TouchableOpacity, Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { StepTabs, Tab } from "./index"
-import { ActiveTabBorder, TabBarContainer } from "./TabBarContainer"
+import { ActiveTabBorder, TabBarContainer } from "./LegacyTabBarContainer"
 
 const tabLayouts: LayoutRectangle[] = [
   {
