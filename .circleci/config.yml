@@ -453,14 +453,6 @@ workflows:
     jobs:
       - check-flags
 
-  update-changelog-workflow:
-    jobs:
-      - update-changelog:
-          filters:
-            branches:
-              only:
-                - main
-
   release-ios-app-workflow:
     jobs:
       - release-ios-app:
