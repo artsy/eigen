@@ -7,8 +7,7 @@ import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constant
 import { FC } from "react"
 
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs, hasChanges, onSave } =
-    useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { selectedTotalCount } = state
   const totalCount =
@@ -37,7 +36,13 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
 
       <Spacer y={1} />
 
-      <Button width="100%" block disabled={!hasChanges} loading={inProgress} onPress={handleSave}>
+      <Button
+        width="100%"
+        block
+        disabled={!state.hasUnsavedChanges}
+        loading={inProgress}
+        onPress={handleSave}
+      >
         Save
       </Button>
     </Box>
