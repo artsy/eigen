@@ -11,12 +11,12 @@ import { FC } from "react"
 import { useTracking } from "react-tracking"
 
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs, hasChanges, onSave } =
+    useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
   const { selectedTotalCount } = state
-  const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const artwork = state.artwork!
   const totalCount =
     selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
