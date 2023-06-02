@@ -3,7 +3,6 @@
 #import "ARDefaults.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
-API_AVAILABLE(ios(11.0))
 @interface ARAugmentedFloorBasedVIRViewController ()
 @property (nonatomic, strong) ARSCNView *sceneView;
 @end

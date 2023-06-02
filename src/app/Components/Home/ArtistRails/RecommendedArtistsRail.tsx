@@ -8,7 +8,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { memo, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
@@ -182,7 +182,7 @@ export const tracks = {
 
 const followOrUnfollowArtist = (followArtist: ArtistCard_artist$data) => {
   return new Promise<void>((resolve, reject) => {
-    commitMutation<RecommendedArtistsRailFollowMutation>(defaultEnvironment, {
+    commitMutation<RecommendedArtistsRailFollowMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation RecommendedArtistsRailFollowMutation($input: FollowArtistInput!) {
           followArtist(input: $input) {

@@ -1,11 +1,11 @@
-import { Flex, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -13,7 +13,6 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Button } from "app/Components/Button"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
@@ -330,7 +329,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
 export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<MyProfilePushNotificationsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyProfilePushNotificationsQuery {
           me {

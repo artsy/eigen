@@ -1,291 +1,349 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import Artwork from "./ArtworkGridItem"
 
-const ArtworkWithProviders = (props: any) => {
-  return (
-    <ArtworkFiltersStoreProvider>
-      <Artwork {...props} />
-    </ArtworkFiltersStoreProvider>
-  )
-}
-
-describe("tracking", () => {
-  afterEach(() => {
-    jest.clearAllMocks()
-    __globalStoreTestUtils__?.reset()
-  })
-
-  it("sends an event when trackTap is passed", () => {
-    const trackTap = jest.fn()
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork trackTap={trackTap} artwork={artworkProps({}) as any} itemIndex={1} />
-    )
-
-    const touchableArtwork = getByTestId("artworkGridItem-Some Kind of Dinosaur")
-    fireEvent(touchableArtwork, "onPress")
-    expect(trackTap).toBeCalledWith("cool-artwork", 1)
-  })
-
-  it("sends a tracking event when contextScreenOwnerType is included", () => {
-    const { getByTestId } = renderWithHookWrappersTL(
-      <ArtworkWithProviders
-        artwork={artworkProps({})}
-        contextScreenOwnerType={OwnerType.artist}
-        contextScreenOwnerId="abc124"
-        contextScreenOwnerSlug="andy-warhol"
-        itemIndex={0}
-      />
-    )
-    const touchableArtwork = getByTestId("artworkGridItem-Some Kind of Dinosaur")
-    fireEvent(touchableArtwork, "onPress")
-    expect(mockTrackEvent).toBeCalledWith({
-      action: "tappedMainArtworkGrid",
-      context_module: "artworkGrid",
-      context_screen_owner_id: "abc124",
-      context_screen_owner_slug: "andy-warhol",
-      context_screen_owner_type: "artist",
-      destination_screen_owner_id: "abc1234",
-      destination_screen_owner_slug: "cool-artwork",
-      destination_screen_owner_type: "artwork",
-      position: 0,
-      sort: "-decayed_merch",
-      type: "thumbnail",
-    })
-  })
-})
-
-describe("recent searches", () => {
-  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
-
-  afterEach(() => {
-    __globalStoreTestUtils__?.reset()
-  })
-
-  it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-    renderWithHookWrappersTL(
-      <ArtworkWithProviders
-        artwork={artworkProps({})}
-        contextScreenOwnerType={OwnerType.artist}
-        contextScreenOwnerId="abc124"
-        contextScreenOwnerSlug="andy-warhol"
-        itemIndex={0}
-        updateRecentSearchesOnTap
-      />
-    )
-
-    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
-
-    expect(getRecentSearches()).toEqual([
-      {
-        type: "AUTOSUGGEST_RESULT_TAPPED",
-        props: {
-          imageUrl: "artsy.net/image-url",
-          href: "/artwork/mikael-olson-some-kind-of-dinosaur",
-          slug: "cool-artwork",
-          displayLabel: "undefined, Some Kind of Dinosaur (2015)",
-          __typename: "Artwork",
-          displayType: "Artwork",
-        },
-      },
-    ])
-  })
-
-  it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-    renderWithHookWrappersTL(
-      <ArtworkWithProviders
-        artwork={artworkProps({})}
-        contextScreenOwnerType={OwnerType.artist}
-        contextScreenOwnerId="abc124"
-        contextScreenOwnerSlug="andy-warhol"
-        itemIndex={0}
-      />
-    )
-
-    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
-
-    expect(getRecentSearches()).toEqual([])
-  })
-})
-
-describe("in an open sale", () => {
-  it("renders without throwing an error with current bid", () => {
-    const saleArtwork = {
-      currentBid: { display: "$200" },
-      sale: {
-        isClosed: false,
-      },
-    }
-    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
-  })
-
-  it("safely handles a missing sale_artwork", () => {
-    const props = artworkProps({ saleArtwork: null }) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps({})
-    props.saleArtwork = null
-    renderWithHookWrappersTL(<Artwork artwork={props as any} />)
-  })
-})
-
-describe("in a closed sale", () => {
-  it("renders without throwing an error without any price information", () => {
-    const saleArtwork = {
-      sale: {
-        isClosed: true,
-      },
-    }
-    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
-  })
-
-  it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
-    const saleArtwork = {
-      currentBid: { display: "$200" },
-      sale: {
-        isClosed: false,
-        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-      },
-    }
-    renderWithHookWrappersTL(<Artwork artwork={artworkProps({ saleArtwork }) as any} />)
-  })
-
-  it("does not show the partner name if hidePartner is set to true", () => {
-    const saleArtwork = {
-      currentBid: { display: "$200" },
-      sale: {
-        isClosed: false,
-        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-      },
-    }
-    const { getByText } = renderWithHookWrappersTL(
-      <Artwork artwork={artworkProps({ saleArtwork }) as any} hidePartner />
-    )
-
-    expect(() => getByText("partner")).toThrow()
-  })
-
-  it("shows the partner name if hidePartner is set to false", () => {
-    const saleArtwork = {
-      currentBid: { display: "$200" },
-      sale: {
-        isClosed: false,
-        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-      },
-    }
-    const { getByText } = renderWithHookWrappersTL(
-      <Artwork artwork={artworkProps({ saleArtwork }) as any} hidePartner={false} />
-    )
-
-    expect(getByText("partner")).toBeTruthy()
-  })
-})
-
-describe("cascading end times", () => {
-  it("shows the LotCloseInfo component when the sale has cascading end times", () => {
-    const saleArtwork = {
-      lotLabel: "Lot 1",
-      lotID: "123",
-      sale: {
-        isClosed: false,
-        cascadingEndTimeIntervalMinutes: 1,
-        startAt: "2020-11-23T12:41:37.960Z",
-        endAt: "2050-11-23T12:41:37.960Z",
-        extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
-      },
-      endAt: "2050-11-23T12:41:37.960Z",
-      startAt: "2050-11-23T12:41:37.960Z",
-    }
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel artwork={artworkProps({ saleArtwork }) as any} />
-    )
-
-    expect(getByTestId("lot-close-info")).toBeTruthy()
-  })
-
-  it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
-    const saleArtwork = {
-      lotLabel: "Lot 1",
-      sale: {
-        isClosed: true,
-      },
-    }
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel artwork={artworkProps({ saleArtwork }) as any} />
-    )
-    expect(() => getByTestId("lot-close-info")).toThrow()
-  })
-})
-
-describe("save artworks", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkGridSaveIcon: true })
-  })
-
-  it("favourites works", () => {
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel artwork={artworkProps({}) as any} />
-    )
-
-    expect(getByTestId("empty-heart-icon")).toBeTruthy()
-
-    const saveButton = getByTestId("save-artwork-icon")
-
-    fireEvent(saveButton, "onPress")
-
-    waitFor(() => {
-      expect(getByTestId("filled-heart-icon")).toBeTruthy()
-    })
-  })
-
-  it("is not visible when hideSaveIcon prop is specified", () => {
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork hideSaveIcon artwork={artworkProps({}) as any} />
-    )
-
-    expect(() => getByTestId("empty-heart-icon")).toThrow()
-  })
-})
-
-const artworkProps = ({
-  isSaved = false,
-  saleArtwork = null,
-}: {
-  isSaved?: boolean
-  saleArtwork?:
-    | {
-        currentBid?: { display: string }
-        sale?: { isClosed: boolean; cascadingEndTimeIntervalMinutes?: number }
+describe("ArtworkGridItem", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtworkGridItemTestsQuery>({
+    Component: (props) => (
+      <ArtworkFiltersStoreProvider>
+        <Artwork {...props} artwork={props.artwork!} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query ArtworkGridItemTestsQuery @relay_test_operation {
+        artwork(id: "the-artwork") {
+          ...ArtworkGridItem_artwork
+        }
       }
-    | null
-    | undefined
-}) => {
-  return {
-    title: "Some Kind of Dinosaur",
-    date: "2015",
-    saleMessage: "Contact For Price",
-    sale: {
-      isAuction: true,
-      isClosed: saleArtwork == null,
-      displayTimelyAt: "ends in 6d",
-      endAt: "2020-08-26T02:50:09+00:00",
-      cascadingEndTimeIntervalMinutes: saleArtwork?.sale?.cascadingEndTimeIntervalMinutes || null,
-      ...saleArtwork?.sale,
-    },
-    isSaved,
-    saleArtwork,
-    image: {
-      url: "artsy.net/image-url",
-      aspectRatio: 0.74,
-    },
-    artistsNames: "Mikael Olson",
-    partner: {
-      name: "partner",
-    },
-    id: "mikael-olson-some-kind-of-dinosaur",
-    href: "/artwork/mikael-olson-some-kind-of-dinosaur",
-    slug: "cool-artwork",
-    internalID: "abc1234",
-  }
+    `,
+  })
+
+  describe("tracking", () => {
+    const trackTap = jest.fn()
+
+    afterEach(() => {
+      jest.clearAllMocks()
+      __globalStoreTestUtils__?.reset()
+    })
+
+    it("sends an event when trackTap is passed", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+          }),
+        },
+        { itemIndex: 1, trackTap }
+      )
+
+      const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+      fireEvent.press(touchableArtwork)
+
+      expect(trackTap).toBeCalledWith("cool-artwork", 1)
+    })
+
+    it("sends a tracking event when contextScreenOwnerType is included", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+            internalID: "abc1234",
+          }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+        }
+      )
+
+      const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+      fireEvent.press(touchableArtwork)
+
+      expect(mockTrackEvent).toBeCalledWith({
+        action: "tappedMainArtworkGrid",
+        context_module: "artworkGrid",
+        context_screen_owner_id: "abc124",
+        context_screen_owner_slug: "andy-warhol",
+        context_screen_owner_type: "artist",
+        destination_screen_owner_id: "abc1234",
+        destination_screen_owner_slug: "cool-artwork",
+        destination_screen_owner_type: "artwork",
+        position: 0,
+        sort: "-decayed_merch",
+        type: "thumbnail",
+      })
+    })
+  })
+
+  describe("recent searches", () => {
+    const getRecentSearches = () =>
+      __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
+
+    afterEach(() => {
+      __globalStoreTestUtils__?.reset()
+    })
+
+    it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+            internalID: "abc1234",
+            href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+            image: {
+              url: "artsy.net/image-url",
+            },
+            artistNames: "Mikael Olson",
+            date: 2015,
+          }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+          updateRecentSearchesOnTap: true,
+        }
+      )
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+
+      expect(getRecentSearches()).toEqual([
+        {
+          type: "AUTOSUGGEST_RESULT_TAPPED",
+          props: {
+            imageUrl: "artsy.net/image-url",
+            href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+            slug: "cool-artwork",
+            displayLabel: "Mikael Olson, Some Kind of Dinosaur (2015)",
+            __typename: "Artwork",
+            displayType: "Artwork",
+          },
+        },
+      ])
+    })
+
+    it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({ title: "Some Kind of Dinosaur" }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+        }
+      )
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+
+      expect(getRecentSearches()).toEqual([])
+    })
+  })
+
+  describe("in an open sale", () => {
+    it("safely handles a missing sale_artwork", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          saleArtwork: null,
+          title: "Some Kind of Dinosaur",
+        }),
+      })
+
+      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+    })
+  })
+
+  describe("in a closed sale", () => {
+    it("renders without throwing an error without any price information", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          sale: {
+            isClosed: true,
+          },
+          realizedPrice: null,
+          title: "Some Kind of Dinosaur",
+        }),
+      })
+
+      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
+    })
+
+    it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          title: "Some Kind of Dinosaur",
+          sale: {
+            isClosed: false,
+            isAuction: true,
+          },
+          saleArtwork: {
+            currentBid: { display: "$200" },
+            counts: {
+              bidderPositions: 1,
+            },
+          },
+          realizedPrice: null,
+        }),
+      })
+
+      expect(screen.queryByText("$200 (1 bid)")).toBeOnTheScreen()
+    })
+
+    it("does not show the partner name if hidePartner is set to true", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            saleArtwork: {
+              currentBid: { display: "$200" },
+            },
+            sale: {
+              isClosed: false,
+              isAuction: true,
+            },
+            partner: {
+              name: "partner",
+            },
+          }),
+        },
+        {
+          hidePartner: true,
+        }
+      )
+
+      expect(() => screen.getByText("partner")).toThrow()
+    })
+
+    it("shows the partner name if hidePartner is set to false", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            partner: {
+              name: "partner",
+            },
+          }),
+        },
+        { hidePartner: false }
+      )
+
+      expect(screen.queryByText("partner")).toBeOnTheScreen()
+    })
+  })
+
+  describe("cascading end times", () => {
+    it("shows the LotCloseInfo component when the sale has cascading end times", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            sale: {
+              isClosed: false,
+              isAuction: true,
+              cascadingEndTimeIntervalMinutes: 1,
+              startAt: "2020-11-23T12:41:37.960Z",
+              extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
+              endAt: "2050-11-23T12:41:37.960Z",
+            },
+            saleArtwork: {
+              lotLabel: "1",
+              lotID: "123",
+            },
+          }),
+        },
+        { showLotLabel: true }
+      )
+
+      expect(screen.queryByText("Lot 1")).toBeOnTheScreen()
+      expect(screen.queryByTestId("lot-close-info")).toBeOnTheScreen()
+    })
+
+    it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            sale: {
+              isClosed: true,
+              isAuction: true,
+              cascadingEndTimeIntervalMinutes: null,
+            },
+            saleArtwork: {
+              lotLabel: "Lot 1",
+            },
+          }),
+        },
+        {}
+      )
+
+      expect(screen.queryByTestId("lot-close-info")).toBeFalsy()
+    })
+  })
+
+  describe("save artworks", () => {
+    it("favourites works", async () => {
+      renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByTestId("empty-heart-icon")).toBeTruthy()
+      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+
+      fireEvent.press(screen.getByTestId("save-artwork-icon"))
+
+      expect(screen.queryByTestId("filled-heart-icon")).toBeTruthy()
+      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
+    })
+
+    it("is not visible when hideSaveIcon prop is specified", () => {
+      renderWithRelay({}, { hideSaveIcon: true })
+
+      expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
+      expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
+    })
+  })
+})
+
+const artwork = {
+  title: "Some Kind of Dinosaur",
+  date: "2015",
+  saleMessage: "Contact For Price",
+  sale: {
+    isAuction: true,
+    isClosed: true,
+    endAt: "2020-08-26T02:50:09+00:00",
+    cascadingEndTimeIntervalMinutes: null,
+  },
+  isSaved: false,
+  saleArtwork: null,
+  image: {
+    url: "artsy.net/image-url",
+    aspectRatio: 0.74,
+  },
+  artistNames: "Mikael Olson",
+  partner: {
+    name: "partner",
+  },
+  id: "mikael-olson-some-kind-of-dinosaur",
+  href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+  slug: "cool-artwork",
+  internalID: "abc1234",
+  preview: {
+    url: "artsy.net/image-url",
+  },
+  customArtworkLists: {
+    totalCount: 0,
+  },
 }

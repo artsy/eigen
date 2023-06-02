@@ -177,7 +177,7 @@ lane :ship_beta_android_play_store do
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android:hermes")
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -207,7 +207,7 @@ lane :ship_beta_android_firebase do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android:hermes")
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -373,7 +373,7 @@ lane :upload_sentry_artifacts do |options|
     bundle_path = 'dist/main.jsbundle'
     outfile = '~/main.jsbundle'
   else
-    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android:hermes
+    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
     source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
     bundle_path = 'android/app/src/main/assets/index.android.bundle'
     outfile = '~/index.android.bundle'
@@ -423,25 +423,15 @@ lane :upload_sentry_artifacts do |options|
   end
 
   begin
-    sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
-                        sentry_cli_path: sentry_cli_path,
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         version: sentry_release_name,
-                         dist: dist_version,
-                         file: bundle_path,
-                         file_url: outfile)
-    puts "Uploaded source js for #{project_slug}"
-
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
                           sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,
                             dist: dist_version,
-                            sourcemap: source_map_path,
+                            sourcemap: [bundle_path, source_map_path],
                             rewrite: true)
-    puts "Uploaded js.map for #{project_slug}"
+    puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
       message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
       puts message
@@ -560,33 +550,6 @@ lane :create_next_app_version do |options|
     precheck_include_in_app_purchases: false,
   )
 end
-
-lane :check_if_app_is_pending_developer_release do |options|
-
-  # There seems to be some delta between spaceship + deliver token format
-   token = Spaceship::ConnectAPI::Token.create(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false
-  )
-
-  Spaceship::ConnectAPI.token = token
-
-  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
-  version = app.get_pending_release_app_store_version
-
-  unless version.nil?
-    message = <<~MSG
-    🎉 The iOS App has been approved in App Store Connect and is now pending developer release
-    In order to release the app, follow the instructions here
-    https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md#release-to-app-store
-  MSG
-  slack(message: message, default_payloads: [])
-  end
-end
-
 
 lane :check_flags do
   sh('yarn check-flags')

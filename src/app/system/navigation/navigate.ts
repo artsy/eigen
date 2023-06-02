@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { Severity, addBreadcrumb } from "@sentry/react-native"
-import { AppModule, modules, ViewOptions } from "app/AppRegistry"
+import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
@@ -144,7 +144,10 @@ export const navigationEvents = new EventEmitter()
 export function switchTab(tab: BottomTabType, props?: object) {
   // root tabs are only mounted once so cannot be tracked
   // like other screens manually track screen views here
-  postEventToProviders(tracks.tabScreenView(tab))
+  // home handles this on its own since it is default tab
+  if (tab !== "home") {
+    postEventToProviders(tracks.tabScreenView(tab))
+  }
 
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
@@ -217,8 +220,22 @@ export enum SlugType {
   FairID = "fairID",
 }
 
+const partnerRegex = /partner\//
+
+export function getPartnerSlug(slug: string) {
+  if (partnerRegex.test(slug)) {
+    return slug
+  }
+
+  return `partner/${slug}`
+}
+
 export function navigateToPartner(slug: string) {
-  navigate(slug, { passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID } })
+  const href = getPartnerSlug(slug)
+
+  navigate(href, {
+    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+  })
 }
 
 /**

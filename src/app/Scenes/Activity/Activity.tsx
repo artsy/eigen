@@ -1,12 +1,11 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Flex } from "@artsy/palette-mobile"
+import { Tabs } from "@artsy/palette-mobile"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+
 import { useMarkNotificationsAsSeen } from "app/Scenes/Activity/hooks/useMarkNotificationsAsSeen"
-import { goBack } from "app/system/navigation/navigate"
 import { Suspense } from "react"
+import { OnTabChangeCallback } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
@@ -16,6 +15,14 @@ import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityProps {
   type: NotificationType
+}
+
+export const ActivityContainer: React.FC<ActivityProps> = (props) => {
+  return (
+    <Suspense fallback={<ActivityTabPlaceholder />}>
+      <ActivityContent {...props} />
+    </Suspense>
+  )
 }
 
 export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
@@ -36,48 +43,26 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   return <ActivityList viewer={queryData.viewer} me={queryData.me} type={type} />
 }
 
-export const ActivityContainer: React.FC<ActivityProps> = (props) => {
-  return (
-    <Suspense fallback={<ActivityTabPlaceholder />}>
-      <ActivityContent {...props} />
-    </Suspense>
-  )
-}
-
 export const Activity = () => {
   const tracking = useTracking()
 
-  const tabs: TabProps[] = [
-    {
-      title: "All",
-      content: <ActivityContainer type="all" />,
-      initial: true,
-    },
-    {
-      title: "Alerts",
-      content: <ActivityContainer type="alerts" />,
-    },
-  ]
-
-  const handleTabPress = (tabIndex: number) => {
-    const tab = tabs[tabIndex]
-    tracking.trackEvent(tracks.clickedActivityPanelTab(tab.title))
+  const handleTabPress: OnTabChangeCallback = (data) => {
+    tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
   }
 
   return (
-    <Flex flex={1}>
-      <StickyTabPage
-        tabs={tabs}
-        staticHeaderContent={
-          <FancyModalHeader onLeftButtonPress={goBack} hideBottomDivider>
-            Activity
-          </FancyModalHeader>
-        }
-        disableBackButtonUpdate
-        shouldTrackEventOnTabClick={false}
-        onTabPress={handleTabPress}
-      />
-    </Flex>
+    <Tabs.TabsWithHeader title="Activity" onTabChange={handleTabPress}>
+      <Tabs.Tab name="All" label="All">
+        <Tabs.Lazy>
+          <ActivityContainer type="all" />
+        </Tabs.Lazy>
+      </Tabs.Tab>
+      <Tabs.Tab name="Alerts" label="Alerts">
+        <Tabs.Lazy>
+          <ActivityContainer type="alerts" />
+        </Tabs.Lazy>
+      </Tabs.Tab>
+    </Tabs.TabsWithHeader>
   )
 }
 

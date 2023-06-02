@@ -194,9 +194,9 @@
         @"action_name" : @"Cancel",
         @"context_screen"  : analyticsContext
     }];
-    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
+    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #endif
 }
 

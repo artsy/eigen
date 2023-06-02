@@ -8,11 +8,11 @@ import {
   Separator,
   Join,
   Message,
+  Button,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { Button } from "app/Components/Button"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
@@ -25,9 +25,10 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useEffect, useState } from "react"
@@ -141,7 +142,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         </FancyModalHeader>
 
         <AbandonFlowModal
-          isVisible={showAbandonModal && modalType === "edit"}
+          isVisible={!!showAbandonModal && modalType === "edit"}
           title="Leave without saving?"
           subtitle="Changes you have made so far will not be saved."
           leaveButtonTitle="Leave Without Saving"
@@ -156,7 +157,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image
-                  source={require("images/info.png")}
+                  source={require("images/info.webp")}
                   style={{ tintColor: color("black100") }}
                 />
               )}

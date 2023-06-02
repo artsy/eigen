@@ -7,12 +7,12 @@
 
 + (BOOL)isPad
 {
-    return UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPhone;
+    return [[UIDevice currentDevice] userInterfaceIdiom] != UIUserInterfaceIdiomPhone;
 }
 
 + (BOOL)isPhone
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone;
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
 }
 
 + (NSString *)modelName

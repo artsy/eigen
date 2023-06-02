@@ -1,8 +1,7 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, Button } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
-import { Button } from "app/Components/Button"
 import {
   ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
   ArtworkAttributionClassFAQ,

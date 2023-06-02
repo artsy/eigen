@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkHeaderTestsQuery } from "__generated__/ArtworkHeaderTestsQuery.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkHeaderFragmentContainer, VisibilityLevels } from "./ArtworkHeader"
@@ -14,7 +15,9 @@ const mockRefetch = jest.fn()
 describe("ArtworkHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkHeaderTestsQuery>({
     Component: ({ artwork }) => (
-      <ArtworkHeaderFragmentContainer artwork={artwork!} refetchArtwork={mockRefetch} />
+      <ArtworkListsProvider>
+        <ArtworkHeaderFragmentContainer artwork={artwork!} refetchArtwork={mockRefetch} />
+      </ArtworkListsProvider>
     ),
     query: graphql`
       query ArtworkHeaderTestsQuery @relay_test_operation {

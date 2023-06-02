@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 export type PageableScreenEntity = {
-  Component: JSX.Element
+  Component: React.FC
   name: string
 }
 

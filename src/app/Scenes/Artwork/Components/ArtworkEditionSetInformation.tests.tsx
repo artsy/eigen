@@ -1,7 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
-import { ArtworkStore, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "app/Scenes/Artwork/ArtworkStore"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -19,7 +19,8 @@ describe("ArtworkEditionSetInformation", () => {
       if (props?.artwork) {
         return (
           <ArtworkStoreProvider
-            initialData={{
+            runtimeModel={{
+              ...artworkModel,
               selectedEditionId: artwork.editionSets[0].internalID,
             }}
           >

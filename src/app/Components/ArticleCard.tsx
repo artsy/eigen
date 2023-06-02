@@ -2,8 +2,8 @@ import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
@@ -23,11 +23,20 @@ interface ArticleCardProps extends ViewProps {
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
+  const enableNativeArticleView = useFeatureFlag("AREnableNativeArticleView")
+
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
-    navigate(article.href!)
+
+    // TODO: We need to switch on the type of article here, as we'll want to redirect
+    // feature articles into the webview and standard articles to native.
+    if (enableNativeArticleView) {
+      navigate(`/article2/${article.internalID}}`)
+    } else {
+      navigate(article.href!)
+    }
   }
 
   const { space } = useTheme()

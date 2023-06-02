@@ -49,7 +49,7 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
           <HomeFeedOnboardingCard
             title="Manage your collection"
             subtitle="Get powerful market insights about artworks you own."
-            image={require("images/homefeed-my-collection-inboarding-0.jpg")}
+            image={require("images/homefeed-my-collection-inboarding-0.webp")}
             buttonText="Explore My Collection"
             onPress={() => {
               setIsMyCollectionModalVisible(true)
@@ -66,7 +66,7 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Sell with Artsy"
           subtitle="Get the best sales options for artworks from your collection."
-          image={require("images/homefeed-my-collection-inboarding-1.jpg")}
+          image={require("images/homefeed-my-collection-inboarding-1.webp")}
           buttonText="Learn more"
           onPress={() => {
             switchTab("sell")

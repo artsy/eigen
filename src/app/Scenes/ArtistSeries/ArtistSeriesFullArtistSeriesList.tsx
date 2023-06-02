@@ -3,7 +3,7 @@ import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
 import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -78,7 +78,7 @@ export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID:
 }) => {
   return (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistSeriesFullArtistSeriesListQuery($artistID: String!) {
           artist(id: $artistID) {

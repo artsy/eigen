@@ -1,4 +1,4 @@
-import { Spacer, useSpace } from "@artsy/palette-mobile"
+import { Spacer, useSpace, Button } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -8,15 +8,14 @@ import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTa
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button } from "app/Components/Button"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   me: FavoriteArtworks_me$data
@@ -88,7 +87,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
             <>
               <Spacer y={1} />
               <Image
-                source={require("images/SavesEmptyStateImage.jpg")}
+                source={require("images/SavesEmptyStateImage.webp")}
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",
@@ -189,7 +188,7 @@ export const FavoriteArtworksQueryRenderer = () => {
   const screen = useScreenDimensions()
   return (
     <QueryRenderer<FavoriteArtworksQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={FavoriteArtworksScreenQuery}
       variables={{
         count: 10,

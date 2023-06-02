@@ -3,6 +3,7 @@ import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/Artw
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -37,6 +38,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -46,7 +48,12 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <AdditionalGeneIDsOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )
@@ -85,6 +92,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -111,6 +119,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -142,6 +151,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 

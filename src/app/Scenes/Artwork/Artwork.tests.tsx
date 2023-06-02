@@ -2,7 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import {
@@ -15,12 +15,12 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
-import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { Artwork, ArtworkPageableScreen } from "./Artwork"
@@ -50,25 +50,20 @@ describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
-    // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
-    // use suspense and one of the containers in our tree is suspending itself only in tests :|
-    <Suspense fallback={() => null}>
-      <ModalStack>
-        <ArtworkPageableScreen
-          isVisible={isVisible}
-          artworkID="ignored"
-          environment={environment}
-          tracking={{ trackEvent: jest.fn() } as any}
-          onLoad={onLoad}
-          pageableSlugs={[]}
-        />
-      </ModalStack>
-    </Suspense>
+    <ModalStack>
+      <ArtworkPageableScreen
+        isVisible={isVisible}
+        artworkID="ignored"
+        environment={environment}
+        tracking={{ trackEvent: jest.fn() } as any}
+        onLoad={onLoad}
+        pageableSlugs={[]}
+      />
+    </ModalStack>
   )
 
   beforeEach(() => {
-    require("app/system/relay/createEnvironment").reset()
-    environment = require("app/system/relay/createEnvironment").defaultEnvironment
+    environment = getMockRelayEnvironment()
   })
 
   afterEach(() => {
@@ -82,8 +77,7 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
 
     await flushPromiseQueue()
-
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeaderFragmentContainer)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
@@ -102,7 +96,7 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeaderFragmentContainer)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
@@ -314,8 +308,6 @@ describe("Artwork", () => {
         return { slug: "my-special-artwork" }
       },
     })
-
-    resolveMostRecentRelayOperation(environment)
 
     navigationEvents.emit("modalDismissed")
 

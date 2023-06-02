@@ -1,4 +1,4 @@
-import { InfoCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { InfoCircleIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
@@ -10,11 +10,10 @@ import { updateConversation } from "app/Scenes/Inbox/Components/Conversations/Up
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { View } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -278,7 +277,7 @@ export const ConversationQueryRenderer: React.FC<{
   const { conversationID, navigator } = props
   return (
     <QueryRenderer<ConversationQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ConversationQuery($conversationID: String!) {
           me {

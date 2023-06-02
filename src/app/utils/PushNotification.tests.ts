@@ -69,7 +69,6 @@ describe("Push Notification Tests", () => {
       mockFetchJsonOnce({}, 201)
 
       await Push.saveToken("pushnotificationtoken")
-      await flushPromiseQueue()
       expect(mockFetch).toHaveBeenCalledTimes(1)
     })
 

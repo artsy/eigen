@@ -1,4 +1,13 @@
-import { Spacer, EyeOpenedIcon, Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  EyeOpenedIcon,
+  Flex,
+  Box,
+  Text,
+  Separator,
+  Touchable,
+  Button,
+} from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -7,10 +16,11 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Button } from "app/Components/Button"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -21,7 +31,6 @@ import {
   useQueryLoader,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
@@ -38,6 +47,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
+  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
+
   const { height: screenHeight } = useScreenDimensions()
 
   const { trackEvent } = useTracking()
@@ -50,7 +61,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       widthIn,
       heightIn,
       selectedArtwork.slug,
-      selectedArtwork.id
+      selectedArtwork.id,
+      enableInstantVIR
     )
   }
 

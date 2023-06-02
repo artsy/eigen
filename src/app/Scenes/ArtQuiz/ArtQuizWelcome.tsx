@@ -1,9 +1,8 @@
-import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
+import { Spacer, Flex, LegacyScreen, Text, ArtsyLogoBlackIcon, Button } from "@artsy/palette-mobile"
 import { useNavigation, NavigationProp } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button } from "app/Components/Button"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 
 export const ArtQuizWelcome = () => {
@@ -13,18 +12,16 @@ export const ArtQuizWelcome = () => {
   const { navigate: quizStackNavigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
 
   return (
-    <Screen>
-      <Screen.Body>
+    <LegacyScreen>
+      <LegacyScreen.Body>
         <Flex flex={1} justifyContent="center">
           <ArtsyLogoBlackIcon scale={0.75} />
           <Spacer y={2} />
-          <Text variant="xl">Art Taste Quiz</Text>
+          <Text variant="xl">What's your art taste?</Text>
           <Spacer y={2} />
-          <Text variant="md">See more of what you love.</Text>
+          <Text variant="md">Let us be your art advisor.</Text>
           <Spacer y={1} />
-          <Text variant="md">
-            Rate artworks to discover your taste profile and get recommendations tailored to you.
-          </Text>
+          <Text variant="md">Rate artworks and get recommendations tailored to you.</Text>
         </Flex>
         <Flex justifyContent="flex-end">
           <Button block onPress={() => quizStackNavigate("ArtQuizArtworks")}>
@@ -42,7 +39,7 @@ export const ArtQuizWelcome = () => {
             Skip
           </Button>
         </Flex>
-      </Screen.Body>
-    </Screen>
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }

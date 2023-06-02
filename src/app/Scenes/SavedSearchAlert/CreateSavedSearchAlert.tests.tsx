@@ -4,9 +4,10 @@ import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/Artwor
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -41,6 +42,7 @@ const initialData: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  showFilterArtworksModal: false,
   sizeMetric: "cm",
 }
 
@@ -66,17 +68,22 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
+    mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockClear()
   })
 
   const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <CreateSavedSearchAlert visible params={{ ...defaultParams, ...params }} />
       </ArtworkFiltersStoreProvider>
     )

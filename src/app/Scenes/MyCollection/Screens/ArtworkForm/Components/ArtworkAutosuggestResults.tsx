@@ -1,17 +1,16 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Button } from "@artsy/palette-mobile"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FadeIn } from "app/Components/FadeIn"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { trim } from "lodash"
-import { Button } from "app/Components/Button"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer$data
@@ -132,7 +131,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
 }> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (
     <QueryRenderer<ArtworkAutosuggestResultsContainerQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtworkAutosuggestResultsContainerQuery(
           $count: Int!

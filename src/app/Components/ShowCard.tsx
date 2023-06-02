@@ -1,8 +1,9 @@
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "@artsy/palette-mobile"
+import { compact } from "lodash"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -22,6 +23,17 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
     navigate(show.href!)
   }
 
+  const showCity = getShowCity({
+    showName: show.name,
+    showCity: show.city,
+    partnerCities: show.partner?.cities,
+    externalPartnerCity: show.partner?.city,
+  })
+
+  const formattedDate = `${show.formattedStartAt}-${show.formattedEndAt}`
+
+  const formattedCityAndDate = compact([showCity, formattedDate]).join(" • ")
+
   return (
     <Flex width={WIDTH}>
       <Touchable haptic onPress={onTap}>
@@ -32,13 +44,47 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
             {show.name}
           </Text>
           <Text color="black60">{show.partner?.name}</Text>
-          <Text color="black60">
-            {show.formattedStartAt} - {show.formattedEndAt}
-          </Text>
+          <Text>{formattedCityAndDate}</Text>
         </Flex>
       </Touchable>
     </Flex>
   )
+}
+
+export const getShowCity = ({
+  showName,
+  showCity,
+  partnerCities,
+  externalPartnerCity,
+}: {
+  showName: ShowCard_show$data["name"]
+  showCity: ShowCard_show$data["city"]
+  partnerCities: NonNullable<ShowCard_show$data["partner"]>["cities"]
+  externalPartnerCity: NonNullable<ShowCard_show$data["partner"]>["city"]
+}) => {
+  if (showCity) {
+    return showCity
+  }
+
+  if (!showName) {
+    return null
+  }
+
+  if (partnerCities?.length) {
+    const matchingCity = partnerCities.find((partnerCity) => {
+      if (partnerCity) {
+        return showName.toLowerCase().includes(partnerCity?.toLowerCase())
+      }
+    })
+
+    return matchingCity ? toTitleCase(matchingCity) : null
+  }
+
+  if (externalPartnerCity && showName.toLowerCase().includes(externalPartnerCity?.toLowerCase())) {
+    return toTitleCase(externalPartnerCity)
+  }
+
+  return null
 }
 
 export const ShowCardContainer = createFragmentContainer(ShowCard, {
@@ -51,12 +97,15 @@ export const ShowCardContainer = createFragmentContainer(ShowCard, {
       metaImage {
         url(version: "small")
       }
+      city
       partner {
         ... on Partner {
           name
+          cities
         }
         ... on ExternalPartner {
           name
+          city
         }
       }
     }

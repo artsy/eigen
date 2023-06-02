@@ -1,4 +1,4 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Platform } from "react-native"
 
 export const useSearchDiscoveryContentEnabled = () => {

@@ -3,10 +3,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CertificateOfAuthenticity } from "./CertificateAuthenticity"
 
-jest.mock("app/system/navigation/navigate", () => ({
-  navigate: jest.fn(),
-}))
-
 describe("CertificateAuthenticity", () => {
   it("renders", () => {
     const { getByText } = renderWithWrappers(<CertificateOfAuthenticity />)
@@ -24,7 +20,7 @@ describe("CertificateAuthenticity", () => {
 
     fireEvent.press(getByText("Help Center"))
     expect(navigate).toHaveBeenCalledWith(
-      "https://support.artsy.net/hc/en-us/articles/360058123933-What-Counts-as-an-Artwork-s-Proof-of-Authenticity-"
+      "https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
     )
   })
 })

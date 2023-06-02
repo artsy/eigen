@@ -1,7 +1,7 @@
 import { Flex, useSpace, Text } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -60,7 +60,7 @@ export const AnimatedTooltip: React.FC = () => {
           hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
           onPress={() => setIsTooltipVisible(false)}
         >
-          <Image source={require("images/close-x.png")} />
+          <Image source={require("images/close-x.webp")} />
         </TouchableOpacity>
       </Flex>
     </AnimatedFlex>

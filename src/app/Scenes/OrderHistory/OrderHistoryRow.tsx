@@ -1,11 +1,10 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
-import { Button } from "app/Components/Button"
 import { Image, Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

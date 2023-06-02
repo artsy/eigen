@@ -1,3 +1,4 @@
+import { Button } from "@artsy/palette-mobile"
 import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
@@ -10,7 +11,6 @@ import { Markdown } from "app/Components/Markdown"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -36,8 +36,8 @@ const messageForPollingTimeout = {
 }
 
 const Icons: Record<string, ImageRequireSource> = {
-  WINNING: require("images/circle-check-green.png"),
-  PENDING: require("images/circle-exclamation.png"),
+  WINNING: require("images/circle-check-green.webp"),
+  PENDING: require("images/circle-exclamation.webp"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -99,7 +99,7 @@ export class BidResult extends React.Component<BidResultProps> {
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20 source={Icons[status] || require("images/circle-x-red.png")} />
+              <Icon20 source={Icons[status] || require("images/circle-x-red.webp")} />
               <Title mt={2} mb={6}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title

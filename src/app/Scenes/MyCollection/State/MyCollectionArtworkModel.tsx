@@ -21,6 +21,7 @@ export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistDisplayName?: string
+  isP1Artist?: boolean
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
   date: string

@@ -6,7 +6,10 @@ import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/Art
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { isPad } from "app/utils/hardware"
-import { Schema } from "app/utils/track"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
 
@@ -23,13 +26,12 @@ interface CommonArtworkRailProps {
   onEndReachedThreshold?: number
   size: ArtworkCardSize
   showSaveIcon?: boolean
-  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
   onMorePress?: () => void
   viewabilityConfig?: ViewabilityConfig | undefined
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
 }
 
-export interface ArtworkRailProps extends CommonArtworkRailProps {
+export interface ArtworkRailProps extends CommonArtworkRailProps, ArtworkActionTrackingProps {
   artworks: LargeArtworkRail_artworks$data | SmallArtworkRail_artworks$data
   onPress?: (
     artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
@@ -50,12 +52,13 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   dark = false,
   artworks,
   showSaveIcon = false,
-  trackingContextScreenOwnerType,
   viewabilityConfig,
   onViewableItemsChanged,
   onMorePress,
+  ...otherProps
 }) => {
   const isTablet = isPad()
+  const trackingProps = extractArtworkActionTrackingProps(otherProps)
 
   return (
     <PrefetchFlatList
@@ -81,6 +84,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
+          testID={`artwork-${item.slug}`}
+          {...trackingProps}
           artwork={item}
           showPartnerName={showPartnerName}
           hideArtistName={hideArtistName}
@@ -90,7 +95,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           }}
           showSaveIcon={showSaveIcon}
           size={size}
-          trackingContextScreenOwnerType={trackingContextScreenOwnerType}
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}

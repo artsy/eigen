@@ -4,7 +4,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { Image, TouchableOpacity } from "react-native"
 
 export const CityGuideCTA: React.FC = () => {
-  const cityGuideMapImage = require("images/city-guide-bg.png")
+  const cityGuideMapImage = require("images/city-guide-bg.webp")
   const color = useColor()
   return (
     <Flex>

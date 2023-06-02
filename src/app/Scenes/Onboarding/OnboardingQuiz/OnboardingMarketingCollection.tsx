@@ -1,14 +1,12 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Button, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
-import { Button } from "app/Components/Button"
-import { Screen } from "app/Components/Screen"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { images, MarketingCollectionHeader } from "./Components/MarketingCollectionHeader"
 
 export type OnboardingMarketingCollectionSlug =
@@ -41,13 +39,14 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
   }
 
   return (
-    <Screen>
-      <Screen.Background>
+    <LegacyScreen>
+      <LegacyScreen.Background>
         <MarketingCollectionHeader
           collectionSlug={slug}
           description={description}
           marketingCollection={marketingCollection!}
         />
+        <Spacer y={2} />
         <InfiniteScrollArtworksGrid
           // we are deliberately limiting the number of artworks shown in these grids
           loadMore={() => null}
@@ -60,8 +59,8 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
             Explore More on Artsy
           </Button>
         </Flex>
-      </Screen.Background>
-    </Screen>
+      </LegacyScreen.Background>
+    </LegacyScreen>
   )
 }
 

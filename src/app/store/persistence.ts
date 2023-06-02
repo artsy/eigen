@@ -90,10 +90,12 @@ export async function unpersist(): Promise<DeepPartial<State<GlobalStoreModel>>>
 export const persistenceMiddleware: Middleware = (store) => {
   const throttledPersist = throttle(persist, 1000, { leading: false, trailing: true })
   return (next) => (action) => {
-    next(action)
+    const result = next(action)
     // use requestAnimationFrame to make doubly sure we avoid blocking UI updates
     requestAnimationFrame(() => {
       throttledPersist(store.getState())
     })
+
+    return result
   }
 }

@@ -149,7 +149,7 @@ describe("ConversationCTA", () => {
         },
       })
       expectReviewOfferButton(wrapper, {
-        bg: "copper100",
+        bg: "orange150",
         strings: ["Offer Received"],
         Icon: AlertCircleFillIcon,
       })
@@ -191,7 +191,7 @@ describe("ConversationCTA", () => {
       })
 
       expectReviewOfferButton(wrapper, {
-        bg: "copper100",
+        bg: "orange150",
         strings: ["Counteroffer Received", "Confirm Total"],
         Icon: AlertCircleFillIcon,
       })
@@ -219,7 +219,7 @@ describe("ConversationCTA", () => {
       })
 
       expectReviewOfferButton(wrapper, {
-        bg: "copper100",
+        bg: "orange150",
         strings: ["Offer Accepted", "Confirm total"],
         Icon: AlertCircleFillIcon,
       })

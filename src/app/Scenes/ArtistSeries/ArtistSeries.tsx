@@ -14,7 +14,7 @@ import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/A
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -180,7 +180,7 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ArtistSeriesQuery($artistSeriesID: ID!) {
             artistSeries(id: $artistSeriesID) {

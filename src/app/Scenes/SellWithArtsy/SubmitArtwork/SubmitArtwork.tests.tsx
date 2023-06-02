@@ -5,11 +5,11 @@ import {
   updateConsignSubmission,
 } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { STEPS, SubmitArtwork, SubmitSWAArtworkFlow } from "./SubmitArtwork"
 
 jest.mock("../mutations/updateConsignSubmissionMutation", () => ({
@@ -24,6 +24,12 @@ const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 
 describe(SubmitArtwork, () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
   describe("Steps CTA Buttons", () => {
     it('Displays "Save & Continue" if Accordion Step is not the last and "Submit Artwork" if last', () => {
       const { queryByText: queryByText1 } = renderWithWrappers(
@@ -50,10 +56,6 @@ describe(SubmitArtwork, () => {
   })
 
   describe("Submission Flow", () => {
-    const mockEnvironment = defaultEnvironment as unknown as ReturnType<
-      typeof createMockEnvironment
-    >
-
     afterEach(() => {
       GlobalStore.actions.artworkSubmission.submission.resetSessionState()
     })
@@ -203,10 +205,6 @@ describe(SubmitArtwork, () => {
   })
 
   describe("Submission VisualClues", () => {
-    const mockEnvironment = defaultEnvironment as unknown as ReturnType<
-      typeof createMockEnvironment
-    >
-
     let addClueSpy = jest
       .spyOn(GlobalStore.actions.visualClue, "addClue")
       .mockImplementation(() => null)

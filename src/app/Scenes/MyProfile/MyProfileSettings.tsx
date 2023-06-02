@@ -1,11 +1,10 @@
-import { Spacer, Flex, useColor, Text, Separator } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
+import { Spacer, Flex, useColor, Text, Separator, Button } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { Tab } from "app/Scenes/Favorites/Favorites"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Alert, ScrollView } from "react-native"
 
 interface MyProfileSettingsProps {
@@ -14,7 +13,6 @@ interface MyProfileSettingsProps {
 
 export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
-  const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
 
   const color = useColor()
@@ -41,16 +39,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
         <Separator my={1} borderColor={separatorColor} />
-        <MenuItem
-          title="Follows"
-          onPress={() =>
-            navigate("favorites", {
-              passProps: {
-                initialTab: Tab.artists,
-              },
-            })
-          }
-        />
+        <MenuItem title="Follows" onPress={() => navigate("favorites")} />
         <Separator my={1} borderColor={separatorColor} />
         {!!showOrderHistory && (
           <>
@@ -63,16 +52,6 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         {!!darkModeSupport && (
           <>
             <MenuItem title="Dark Mode" onPress={() => navigate("settings/dark-mode")} />
-            <Separator my={1} borderColor={separatorColor} />
-          </>
-        )}
-
-        {!!showSavedAddresses && (
-          <>
-            <MenuItem
-              title="Saved Addresses"
-              onPress={() => navigate("my-profile/saved-addresses")}
-            />
             <Separator my={1} borderColor={separatorColor} />
           </>
         )}

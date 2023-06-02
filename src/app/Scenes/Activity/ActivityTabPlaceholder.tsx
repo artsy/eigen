@@ -1,5 +1,4 @@
-import { Spacer, Flex, Box, Separator } from "@artsy/palette-mobile"
-import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
+import { Spacer, Flex, Box, Separator, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Fragment } from "react"
@@ -24,14 +23,11 @@ const ActivityItemPlaceholder = () => {
 }
 
 export const ActivityTabPlaceholder = () => {
-  const { staticHeaderHeight, stickyHeaderHeight } = useStickyTabPageContext()
-  const headerHeight = Animated.add(staticHeaderHeight ?? 0, stickyHeaderHeight ?? 0)
-
   return (
     <Flex flex={1}>
       <Animated.View
         style={{
-          height: headerHeight ?? 0,
+          height: NAVBAR_HEIGHT * 2,
         }}
       />
 

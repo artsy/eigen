@@ -1,6 +1,5 @@
-import { CloseIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { CloseIcon, Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { Button } from "app/Components/Button"
 import { Input, InputTitle } from "app/Components/Input"
 import { Pill } from "app/Components/Pill"
 import {

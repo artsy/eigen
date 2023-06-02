@@ -6,6 +6,7 @@ import {
   tappedEntityGroup,
   RailViewed,
   ItemViewed,
+  Screen,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 
@@ -20,6 +21,13 @@ type ValidHomeDestination =
   | OwnerType.gene
 
 export default class HomeAnalytics {
+  static homeScreenViewed(): Screen {
+    return {
+      context_screen_owner_type: OwnerType.home,
+      action: ActionType.screen,
+    }
+  }
+
   // Auction events
 
   static auctionHeaderTapEvent(): TappedEntityGroup {

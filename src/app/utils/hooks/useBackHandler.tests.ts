@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { BackHandler } from "react-native"
-import { useBackHandler } from "./useBackHandler"
+import { useBackHandler, useAndroidGoBack } from "./useBackHandler"
 
 jest.mock("react-native", () => ({
   BackHandler: {
@@ -9,7 +9,7 @@ jest.mock("react-native", () => ({
   },
 }))
 
-describe("useBackHandler", () => {
+describe("useBackHandler Hooks", () => {
   const addEventListenerMock = BackHandler.addEventListener as jest.Mock
   const removeEventListenerMock = BackHandler.removeEventListener as jest.Mock
 
@@ -17,45 +17,68 @@ describe("useBackHandler", () => {
     jest.clearAllMocks()
   })
 
-  it("should add back press listener on mount", () => {
-    const handler = jest.fn()
+  describe("useBackHandler", () => {
+    it("should add back press listener on mount", () => {
+      const handler = jest.fn()
 
-    renderHook((props) => useBackHandler(props.handler), {
-      initialProps: { handler },
+      renderHook((props) => useBackHandler(props.handler), {
+        initialProps: { handler },
+      })
+
+      expect(addEventListenerMock).toBeCalledTimes(1)
+      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
     })
 
-    expect(addEventListenerMock).toBeCalledTimes(1)
-    expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+    it("should resubscribe when passed handler will change", () => {
+      const handler = jest.fn()
+      const handler2 = jest.fn()
+
+      const { rerender } = renderHook((props) => useBackHandler(props.handler), {
+        initialProps: { handler },
+      })
+
+      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+
+      rerender({ handler: handler2 })
+
+      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler2)
+    })
+
+    it("should remove back press listener on unmount", () => {
+      const handler = jest.fn()
+
+      const { unmount } = renderHook((props) => useBackHandler(props.handler), {
+        initialProps: { handler },
+      })
+
+      expect(removeEventListenerMock).toBeCalledTimes(0)
+
+      unmount()
+
+      expect(removeEventListenerMock).toBeCalledTimes(1)
+      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+    })
   })
 
-  it("should resubscribe when passed handler will change", () => {
-    const handler = jest.fn()
-    const handler2 = jest.fn()
+  describe("useAndroidGoBack", () => {
+    it("should add back press listener on screen mount", () => {
+      renderHook(() => useAndroidGoBack())
 
-    const { rerender } = renderHook((props) => useBackHandler(props.handler), {
-      initialProps: { handler },
+      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
+      expect(removeEventListenerMock).toHaveBeenCalledTimes(0)
     })
 
-    expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+    it("should remove back press listener on screen unmount", () => {
+      const { unmount } = renderHook(() => useAndroidGoBack())
 
-    rerender({ handler: handler2 })
+      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
+      expect(removeEventListenerMock).toHaveBeenCalledTimes(0)
 
-    expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
-    expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler2)
-  })
+      unmount()
 
-  it("should remove back press listener on unmount", () => {
-    const handler = jest.fn()
-
-    const { unmount } = renderHook((props) => useBackHandler(props.handler), {
-      initialProps: { handler },
+      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
+      expect(removeEventListenerMock).toHaveBeenCalledTimes(1)
     })
-
-    expect(removeEventListenerMock).toBeCalledTimes(0)
-
-    unmount()
-
-    expect(removeEventListenerMock).toBeCalledTimes(1)
-    expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
   })
 })

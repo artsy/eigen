@@ -5,6 +5,7 @@ import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -18,16 +19,18 @@ describe("MyCollection", () => {
     Component: (props) => {
       if (props?.me) {
         return (
-          <ArtworkFiltersStoreProvider>
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <MyCollectionContainer me={props.me} />,
-                },
-              ]}
-            />
-          </ArtworkFiltersStoreProvider>
+          <MyCollectionTabsStoreProvider>
+            <ArtworkFiltersStoreProvider>
+              <StickyTabPage
+                tabs={[
+                  {
+                    title: "test",
+                    content: <MyCollectionContainer me={props.me} />,
+                  },
+                ]}
+              />
+            </ArtworkFiltersStoreProvider>
+          </MyCollectionTabsStoreProvider>
         )
       }
       return null
@@ -53,6 +56,11 @@ describe("MyCollection", () => {
         Me: () => ({
           myCollectionConnection: {
             edges: [],
+          },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artistsCount: 0,
+            artworksCount: 0,
           },
         }),
       })

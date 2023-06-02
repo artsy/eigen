@@ -7,9 +7,9 @@ import {
   UserSingleIcon,
   Flex,
   Text,
+  Button,
+  Touchable,
 } from "@artsy/palette-mobile"
-import { Button } from "app/Components/Button"
-import { Touchable } from "@artsy/palette-mobile"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 
@@ -96,7 +96,7 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
           </Button>
         </Flex>
 
-        <Image source={require("images/career-highlights-promo-background-image.jpg")} />
+        <Image source={require("images/career-highlights-promo-background-image.webp")} />
       </Flex>
     </Touchable>
   )

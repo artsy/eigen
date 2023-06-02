@@ -1,9 +1,8 @@
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { GraphQLSingularResponse } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
 import { HomeQueryRenderer } from "./Home"
 
 jest.mock("app/Components/Home/ArtistRails/ArtistRail", () => ({
@@ -19,11 +18,11 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = getMockRelayEnvironment()
 
 describe(HomeQueryRenderer, () => {
   const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<HomeQueryRenderer />, mockEnvironment)
+    const tree = renderWithWrappers(<HomeQueryRenderer environment={mockEnvironment} />)
 
     mockMostRecentOperation("HomeAboveTheFoldQuery", {
       errors: [],

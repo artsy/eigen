@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { Spacer, bullet, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
+  FilterArray,
   filterArtworksParams,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -20,26 +21,38 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
   relay: RelayPaginationProp
   scrollToTop: () => void
+  initialFilters?: FilterArray
 }
 
-const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
+const ArtistInsightsAuctionResults: React.FC<Props> = ({
+  artist,
+  relay,
+  scrollToTop,
+  initialFilters,
+}) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setInitialFilterStateAction
+  )
+  const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.applyFiltersAction
+  )
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFilterTypeAction
   )
@@ -103,6 +116,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   useEffect(() => {
     setFilterTypeAction("auctionResult")
+
+    if (Array.isArray(initialFilters)) {
+      setInitialFilterStateAction(initialFilters)
+      applyFiltersAction()
+    }
   }, [])
 
   const getSortDescription = useCallback(() => {

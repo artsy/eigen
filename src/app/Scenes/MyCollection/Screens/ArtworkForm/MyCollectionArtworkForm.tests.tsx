@@ -10,7 +10,7 @@ import {
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -32,9 +32,14 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("MyCollectionArtworkForm", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
@@ -47,7 +52,9 @@ describe("MyCollectionArtworkForm", () => {
         mockEnvironment
       )
 
-      act(() => GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any))
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any)
+
+      await flushPromiseQueue()
 
       expect(getByTestId("TitleInput").props.value).toBe("Morons")
       expect(getByTestId("DateInput").props.value).toBe("2007")
@@ -61,7 +68,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("Adding a new artwork", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
@@ -109,6 +115,8 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+        await flushPromiseQueue()
+
         fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
@@ -504,7 +512,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("loading screens", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 

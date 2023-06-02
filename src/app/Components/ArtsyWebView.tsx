@@ -3,18 +3,17 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
-import {
-  getCurrentEmissionState,
-  GlobalStore,
-  useDevToggle,
-  useEnvironment,
-} from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
+import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
@@ -63,6 +62,7 @@ export const ArtsyWebViewPage = ({
   const ref = useRef<WebViewWithShareTitleUrl>(null)
 
   const tracking = useTracking()
+
   const handleArticleShare = async () => {
     const uri = url.startsWith("/") ? webURL + url : url
     /*
@@ -70,6 +70,7 @@ export const ArtsyWebViewPage = ({
      */
     const shareUrl = ref.current?.shareTitleUrl || uri
     tracking.trackEvent(tracks.share(shareUrl))
+
     try {
       await Share.open({ url: shareUrl })
     } catch (error) {
@@ -79,13 +80,28 @@ export const ArtsyWebViewPage = ({
     }
   }
 
-  const handleGoBack = () => (backAction ? backAction() : goBack(backProps))
+  const handleGoBack = () => {
+    if (backAction) {
+      backAction()
+    } else {
+      goBack(backProps)
+    }
+  }
 
-  const onRightButtonPress = () =>
-    showShareButton ? handleArticleShare() : useRightCloseButton ? handleGoBack() : null
+  const onRightButtonPress = () => {
+    if (showShareButton) {
+      handleArticleShare()
+    } else if (useRightCloseButton) {
+      handleGoBack()
+    }
+  }
 
   return (
-    <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
+    <Flex
+      flex={1}
+      pt={isPresentedModally && Platform.OS !== "android" ? 0 : `${saInsets.top}px`}
+      backgroundColor="white"
+    >
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}
@@ -146,6 +162,12 @@ export const ArtsyWebView = forwardRef<
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
+  // Debounce calls just in case multiple stopLoading calls are made in a row
+  const stopLoading = debounce(() => {
+    innerRef.current?.stopLoading()
+    innerRef.current?.goBack()
+  }, 500)
+
   return (
     <Flex flex={1}>
       <WebView
@@ -194,6 +216,8 @@ export const ArtsyWebView = forwardRef<
           ) {
             innerRef.current!.shareTitleUrl = targetURL
             return
+          } else {
+            stopLoading()
           }
 
           // In case of a webview presented modally, if the targetURL is a tab View,

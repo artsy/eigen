@@ -26,7 +26,7 @@ export const CollectorsNetwork: React.FC = () => {
             </Flex>
           </Flex>
           <Image
-            source={require("images/world-map.png")}
+            source={require("images/world-map.webp")}
             style={{ width: "70%", height: "100%" }}
             resizeMode="contain"
           />
@@ -56,7 +56,7 @@ export const CollectorsNetwork: React.FC = () => {
         </Flex>
       </Flex>
       <Image
-        source={require("images/world-map.png")}
+        source={require("images/world-map.webp")}
         style={{ width: "100%" }}
         resizeMode="contain"
       />

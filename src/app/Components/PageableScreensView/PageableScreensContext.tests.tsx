@@ -7,8 +7,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("PageableScreensContext", () => {
   const screens = [
-    { name: "screen1", Component: <Text>Screen 1</Text> },
-    { name: "screen2", Component: <Text>Screen 2</Text> },
+    { name: "screen1", Component: () => <Text>Screen 1</Text> },
+    { name: "screen2", Component: () => <Text>Screen 2</Text> },
   ]
 
   it("yields the correct context values on render", (done) => {

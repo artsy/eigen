@@ -4,7 +4,7 @@ import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -38,6 +38,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
               hasMore={() => false}
               pageSize={PAGE_SIZE}
               contextScreenOwnerType={OwnerType.newWorksForYou}
+              contextScreen={OwnerType.newWorksForYou as string}
               HeaderComponent={<Spacer y={2} />}
               shouldAddPadding
               showLoadingSpinner
@@ -148,7 +149,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   version: versionProp,
 }) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
@@ -161,20 +161,23 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
       return
     }
 
-    maybeReportExperimentVariant({
-      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-      enabled: worksForYouRecommendationsModel.enabled,
-      variantName: worksForYouRecommendationsModel.variant,
-      payload: worksForYouRecommendationsModel.payload,
-      context_owner_type: OwnerType.newWorksForYou,
-      context_owner_screen: OwnerType.newWorksForYou,
-      storeContext: true,
-    })
-  }, [])
+    // We would like to trigger the tracking only if the experiment is enabled
+    if (worksForYouRecommendationsModel.enabled) {
+      maybeReportExperimentVariant({
+        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+        enabled: worksForYouRecommendationsModel.enabled,
+        variantName: worksForYouRecommendationsModel.variant,
+        payload: worksForYouRecommendationsModel.payload,
+        context_owner_type: OwnerType.newWorksForYou,
+        context_owner_screen: OwnerType.newWorksForYou,
+        storeContext: true,
+      })
+    }
+  }, [worksForYouRecommendationsModel.enabled])
 
   return (
     <QueryRenderer<NewWorksForYouQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={NewWorksForYouScreenQuery}
       variables={{
         version,

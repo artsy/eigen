@@ -1,4 +1,4 @@
-import { Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { Flex, useTheme, Text, useSpace } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
@@ -155,49 +155,62 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex flexDirection="row">
-              <Flex mr={1}>
-                <TouchableWithoutFeedback
-                  testID="MyCollectionSearchListIconTouchable"
-                  onPress={() => onViewOptionChange("list")}
-                  hitSlop={{
-                    top: space(1),
-                    bottom: space(1),
-                    left: space(1),
-                    right: space(1),
-                  }}
-                >
-                  <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                    <ListViewIcon
-                      color={viewOption === "list" ? "black100" : "black30"}
-                      width={18}
-                      height={18}
-                    />
-                  </Flex>
-                </TouchableWithoutFeedback>
-              </Flex>
-              <TouchableWithoutFeedback
-                testID="MyCollectionSearchGridIconTouchable"
-                onPress={() => onViewOptionChange("grid")}
-                hitSlop={{
-                  top: space(1),
-                  bottom: space(1),
-                  left: space(1),
-                  right: space(1),
-                }}
-              >
-                <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                  <GridViewIcon
-                    color={viewOption === "grid" ? "black100" : "black30"}
-                    width={18}
-                    height={18}
-                  />
-                </Flex>
-              </TouchableWithoutFeedback>
-            </Flex>
+            <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
           </Flex>
         </Flex>
       )}
     </Flex>
+  )
+}
+
+export const ViewAsIcons: React.FC<{
+  onViewOptionChange: (viewOption: ViewOption) => void
+  viewOption: ViewOption
+}> = ({ onViewOptionChange, viewOption }) => {
+  const space = useSpace()
+
+  return (
+    <>
+      <Flex flexDirection="row">
+        <Flex mr={1}>
+          <TouchableWithoutFeedback
+            testID="MyCollectionSearchListIconTouchable"
+            onPress={() => onViewOptionChange("list")}
+            hitSlop={{
+              top: space(1),
+              bottom: space(1),
+              left: space(1),
+              right: space(1),
+            }}
+          >
+            <Flex width={30} height={30} alignItems="center" justifyContent="center">
+              <ListViewIcon
+                color={viewOption === "list" ? "black100" : "black30"}
+                width={18}
+                height={18}
+              />
+            </Flex>
+          </TouchableWithoutFeedback>
+        </Flex>
+        <TouchableWithoutFeedback
+          testID="MyCollectionSearchGridIconTouchable"
+          onPress={() => onViewOptionChange("grid")}
+          hitSlop={{
+            top: space(1),
+            bottom: space(1),
+            left: space(1),
+            right: space(1),
+          }}
+        >
+          <Flex width={30} height={30} alignItems="center" justifyContent="center">
+            <GridViewIcon
+              color={viewOption === "grid" ? "black100" : "black30"}
+              width={18}
+              height={18}
+            />
+          </Flex>
+        </TouchableWithoutFeedback>
+      </Flex>
+    </>
   )
 }

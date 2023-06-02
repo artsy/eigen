@@ -7,11 +7,11 @@ describe("PageableScreensView", () => {
   const screens = [
     {
       name: "screen1",
-      Component: <Text>Screen 1</Text>,
+      Component: () => <Text>Screen 1</Text>,
     },
     {
       name: "screen2",
-      Component: <Text>Screen 2</Text>,
+      Component: () => <Text>Screen 2</Text>,
     },
   ]
 

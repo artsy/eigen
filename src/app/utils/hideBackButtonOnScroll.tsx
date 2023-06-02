@@ -68,6 +68,7 @@ export function useUpdateShouldHideBackButton() {
         unsafe__getSelectedTab()
       )
   } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useContext(LegacyBackButtonContext).updateShouldHideBackButton
   }
 }

@@ -1,9 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, useSpace, BackButton } from "@artsy/palette-mobile"
+import { Flex, useSpace, BackButton, Button } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"
-import { Button } from "app/Components/Button"
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -48,11 +47,14 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
   const isLastStep = children.length - 1 === activeStep
 
   useEffect(() => {
+    if (!isVisible) {
+      return
+    }
     if (isLastStep) {
       trackEvent(tracks.myCollectionOnboardingCompleted())
     }
     trackEvent(tracks.screen(activeStep.toString()))
-  }, [activeStep])
+  }, [activeStep, isVisible])
 
   useEffect(() => {
     if (!isVisible) {

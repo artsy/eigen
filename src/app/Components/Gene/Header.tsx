@@ -1,8 +1,8 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box } from "@artsy/palette-mobile"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import { Header_gene$data } from "__generated__/Header_gene.graphql"
-import { Schema, Track, track as _track } from "app/utils/track"
 import { FollowButton } from "app/Components/Button/FollowButton"
+import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -21,22 +21,6 @@ const track: Track<Props, State> = _track
 @track()
 class Header extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
-
-  render() {
-    const { gene } = this.props
-    const title = gene.displayName || gene.name || ""
-
-    return (
-      <>
-        <Box marginTop={6} justifyContent="center">
-          <Text variant="lg-display" numberOfLines={2}>
-            {title}
-          </Text>
-        </Box>
-        {this.renderFollowButton()}
-      </>
-    )
-  }
 
   @track((props) => ({
     action_name: props.gene.isFollowed
@@ -131,7 +115,7 @@ class Header extends React.Component<Props, State> {
     })
   }
 
-  renderFollowButton() {
+  render() {
     if (this.props.shortForm) {
       return null
     }
@@ -156,8 +140,6 @@ export default createFragmentContainer(Header, {
       slug
       id
       isFollowed
-      name
-      displayName
     }
   `,
 })

@@ -1,6 +1,5 @@
-import { Spacer, Flex, Text, Spinner, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Spinner, Touchable, Button } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Button } from "app/Components/Button"
 import { Input } from "app/Components/Input"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -280,10 +279,10 @@ interface LinkAccountButtonProps {
 export function LinkAccountButton({ onPress, provider, loading }: LinkAccountButtonProps) {
   const titleizedProvider = capitalize(provider)
   const imageSources: Record<OAuthProvider, ImageSourcePropType> = {
-    facebook: require(`images/facebook.png`),
-    google: require(`images/google.png`),
-    email: require(`images/email.png`),
-    apple: require(`images/apple.png`),
+    facebook: require(`images/facebook.webp`),
+    google: require(`images/google.webp`),
+    email: require(`images/email.webp`),
+    apple: require(`images/apple.webp`),
   }
   return (
     <Button

@@ -1,7 +1,8 @@
 import { Box } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "app/utils/useGlobalState"
@@ -9,7 +10,6 @@ import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "rea
 import { FlatList, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StaticHeaderContainer } from "./StaticHeaderContainer"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
@@ -88,6 +88,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   // It's not involved in any conditionals. We're reasonably confident it will be deterministic, and
   // the alternative (making the hook take in an array of tabs) gets very complicated very quickly.
   const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
 

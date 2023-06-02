@@ -1,4 +1,4 @@
-import { useIsStaging } from "app/store/GlobalStore"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useEffect } from "react"
 import Config from "react-native-config"
 import SiftReactNative from "sift-react-native"

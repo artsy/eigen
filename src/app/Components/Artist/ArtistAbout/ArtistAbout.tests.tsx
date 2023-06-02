@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import Biography from "app/Components/Artist/Biography"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -12,14 +11,7 @@ describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
     Component: ({ artist }) => (
       <ModalStack>
-        <StickyTabPage
-          tabs={[
-            {
-              title: "test",
-              content: <ArtistAboutContainer artist={artist!} />,
-            },
-          ]}
-        />
+        <ArtistAboutContainer artist={artist!} />
       </ModalStack>
     ),
     query: graphql`

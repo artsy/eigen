@@ -1,7 +1,7 @@
 import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
 import { fetchQuery, graphql } from "relay-runtime"
@@ -21,7 +21,7 @@ const DEFAULT_CURRENCY =
     (currencies as unknown as string[]).includes(userCurrency)
   ) as Currency) ?? "USD"
 const DEFAULT_METRIC = "in"
-const DEFAULT_VIEW_OPTION = "grid"
+export const DEFAULT_VIEW_OPTION = "grid"
 export const DEFAULT_PRICE_RANGE = "*-*"
 
 // please update this when adding new user preferences
@@ -30,18 +30,21 @@ export interface UserPrefsModel {
   metric: Metric | ""
   priceRange: string
   artworkViewOption: ViewOption
+  artistViewOption: ViewOption
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
   setPriceRange: Action<this, string>
   fetchRemoteUserPrefs: Thunk<UserPrefsModel>
   didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
   setArtworkViewOption: Action<this, ViewOption>
+  setArtistViewOption: Action<this, ViewOption>
 }
 
 export const getUserPrefsModel = (): UserPrefsModel => ({
   currency: DEFAULT_CURRENCY,
   metric: DEFAULT_METRIC,
   artworkViewOption: DEFAULT_VIEW_OPTION,
+  artistViewOption: DEFAULT_VIEW_OPTION,
   priceRange: DEFAULT_PRICE_RANGE,
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
@@ -88,11 +91,14 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   setArtworkViewOption: action((state, viewOption) => {
     state.artworkViewOption = viewOption
   }),
+  setArtistViewOption: action((state, viewOption) => {
+    state.artworkViewOption = viewOption
+  }),
 })
 
 const fetchMe = async () => {
   const result = await fetchQuery<UserPrefsModelQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query UserPrefsModelQuery {
         me {

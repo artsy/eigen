@@ -390,7 +390,7 @@ const CGFloat MARGIN = 10;
 
 - (BOOL)shouldAutorotate
 {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

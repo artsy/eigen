@@ -20,9 +20,10 @@ import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myC
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { storeLocalImage } from "app/utils/LocalImageStore"
+import { addClue, setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual, reverse } from "lodash"
@@ -137,7 +138,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     try {
       // Adding tracking after a successfully adding an artwork
       if (props.mode === "add") {
-        trackEvent(tracks.saveCollectedArtwork(values.artistIds[0]))
+        trackEvent(
+          tracks.saveCollectedArtwork(
+            values.artistIds[0],
+            values.artistSearchResult?.targetSupply?.isP1
+          )
+        )
       }
 
       setIsArtworkSaved(true)
@@ -437,13 +443,15 @@ const tracks = {
     context_owner_type: OwnerType.myCollectionArtwork,
     platform: "mobile",
   }),
-  saveCollectedArtwork: (artistId: string): SaveCollectedArtwork => ({
+  saveCollectedArtwork: (
+    artistId: string,
+    isP1Artist: boolean | null | undefined
+  ): SaveCollectedArtwork => ({
     action: ActionType.saveCollectedArtwork,
     context_module: ContextModule.myCollectionHome,
     context_owner_type: OwnerType.myCollection,
     artist_id: artistId,
-    // TODO: Get data from artist.
-    is_p1_artist: false,
+    is_p1_artist: isP1Artist ?? false,
     platform: "mobile",
   }),
 }

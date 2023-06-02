@@ -6,14 +6,15 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
-import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -22,16 +23,17 @@ import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
-import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -65,7 +67,6 @@ interface ArtworkProps {
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
-
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
@@ -404,6 +405,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
             </Box>
           )
         }}
+        keyExtractor={({ key }) => key}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
@@ -466,15 +468,24 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
 
   return (
     <ProvideScreenTracking info={trackingInfo}>
-      <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
-        <ArtworkStoreProvider
-          initialData={{
-            auctionState: getInitialAuctionTimerState(),
-          }}
-        >
-          <Artwork {...props} />
-        </ArtworkStoreProvider>
-      </AuctionWebsocketContextProvider>
+      <AnalyticsContextProvider
+        contextScreenOwnerId={artworkAboveTheFold?.internalID}
+        contextScreenOwnerSlug={artworkAboveTheFold?.slug}
+        contextScreenOwnerType={OwnerType.artwork}
+      >
+        <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
+          <ArtworkStoreProvider
+            runtimeModel={{
+              ...artworkModel,
+              auctionState: getInitialAuctionTimerState()!,
+            }}
+          >
+            <ArtworkListsProvider>
+              <Artwork {...props} />
+            </ArtworkListsProvider>
+          </ArtworkStoreProvider>
+        </AuctionWebsocketContextProvider>
+      </AnalyticsContextProvider>
     </ProvideScreenTracking>
   )
 }
@@ -614,46 +625,38 @@ export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
   ...others
 }) => {
   return (
-    <>
-      <RetryErrorBoundaryLegacy
-        render={() => {
+    <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+      environment={environment || getRelayEnvironment()}
+      above={{
+        query: ArtworkScreenQuery,
+        variables: { artworkID },
+      }}
+      below={{
+        query: graphql`
+          query ArtworkBelowTheFoldQuery($artworkID: String!) {
+            artwork(id: $artworkID) {
+              ...Artwork_artworkBelowTheFold
+            }
+          }
+        `,
+        variables: { artworkID },
+      }}
+      render={{
+        renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
+        renderComponent: ({ above, below }) => {
           return (
-            <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-              environment={environment || getRelayEnvironment()}
-              above={{
-                query: ArtworkScreenQuery,
-                variables: { artworkID },
-              }}
-              below={{
-                query: graphql`
-                  query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                    artwork(id: $artworkID) {
-                      ...Artwork_artworkBelowTheFold
-                    }
-                  }
-                `,
-                variables: { artworkID },
-              }}
-              render={{
-                renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
-                renderComponent: ({ above, below }) => {
-                  return (
-                    <ArtworkContainer
-                      {...others}
-                      artworkAboveTheFold={above.artwork}
-                      artworkBelowTheFold={below?.artwork ?? null}
-                      me={above.me}
-                    />
-                  )
-                },
-              }}
-              fetchPolicy="store-and-network"
-              cacheConfig={{ force: true }}
+            <ArtworkContainer
+              {...others}
+              artworkAboveTheFold={above.artwork}
+              artworkBelowTheFold={below?.artwork ?? null}
+              me={above.me}
             />
           )
-        }}
-      />
-    </>
+        },
+      }}
+      fetchPolicy="store-and-network"
+      cacheConfig={{ force: true }}
+    />
   )
 }
 
@@ -672,21 +675,25 @@ export const ArtworkPageableScreen: React.FC<ArtworkPageableScreenProps> = (prop
 
   const pageableSlugs = props.pageableSlugs ?? []
 
-  const screens = pageableSlugs.map((slug) => ({
-    name: slug,
-    Component: (
-      <ArtworkQueryRenderer
-        {...props}
-        artworkID={slug}
-        onLoad={(props) => setArtworkProps(props)}
-      />
-    ),
-  }))
+  const screens = useMemo(() => {
+    return pageableSlugs.map((slug) => ({
+      name: slug,
+      Component: () => (
+        <ArtworkQueryRenderer
+          {...props}
+          artworkID={slug}
+          onLoad={(props) => {
+            setArtworkProps(props)
+          }}
+        />
+      ),
+    }))
+  }, [JSON.stringify(pageableSlugs)])
 
   return (
     <>
-      {artworkProps?.artworkAboveTheFold && (
-        <ArtworkScreenHeaderFragmentContainer artwork={artworkProps.artworkAboveTheFold} />
+      {!!artworkProps?.artworkAboveTheFold && (
+        <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
       )}
       {/*
         Check to see if we're within the context of an artwork rail and show pager view.

@@ -13,6 +13,7 @@ import {
   showsToGeoCityShow,
 } from "app/utils/convertCityToGeoJSON"
 import { extractNodes } from "app/utils/extractNodes"
+import { SafeAreaInsets } from "app/utils/hooks"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
@@ -21,7 +22,6 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs" // TODO: get rid of this, and then remove `react-spring` from eigen.
-import { SafeAreaInsets } from "app/utils/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -564,7 +564,7 @@ export class GlobalMap extends React.Component<Props, State> {
         {({ color }) => (
           <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
             <LoadingScreen
-              source={require("images/map-bg.png")}
+              source={require("images/map-bg.webp")}
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />

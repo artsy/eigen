@@ -1,6 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import PropTypes from "prop-types"
@@ -23,7 +23,7 @@ class TestConsumer extends React.Component {
 }
 
 describe("TimeOffsetProvider", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestWrapper = () => {
     return (
@@ -34,7 +34,7 @@ describe("TimeOffsetProvider", () => {
   }
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
+    mockEnvironment = getMockRelayEnvironment()
     Date.now = jest.fn(() => DATE_NOW)
   })
 

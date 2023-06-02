@@ -2,7 +2,7 @@ import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/Aut
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
@@ -128,7 +128,6 @@ jest.mock("./RecentSearches", () => {
 
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 const consoleErrorMock = jest.fn()
 const whiteListErrors = [
   "Warning: An update to %s inside a test was not wrapped in act(...).",
@@ -149,8 +148,10 @@ console.error = (...args: any[]) => {
 }
 
 describe("AutosuggestResults", () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
   beforeEach(() => {
-    env.mockClear()
+    env = getMockRelayEnvironment()
     consoleErrorMock.mockClear()
     notifyRecentSearchMock.mockClear()
     inputBlurMock.mockClear()

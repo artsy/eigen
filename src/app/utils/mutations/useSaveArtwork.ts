@@ -1,7 +1,13 @@
-import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
-import { Schema } from "app/utils/track"
 import { useMutation } from "react-relay"
 import { graphql } from "relay-runtime"
+
+export interface SaveArtworkOptions {
+  id: string
+  internalID: string
+  isSaved: boolean | null
+  onCompleted?: (isSaved: boolean) => void
+  onError?: () => void
+}
 
 export const useSaveArtwork = ({
   id,
@@ -9,16 +15,9 @@ export const useSaveArtwork = ({
   isSaved,
   onCompleted,
   onError,
-  contextScreen,
-}: {
-  id: string
-  internalID: string
-  isSaved: boolean | null
-  onCompleted?: () => void
-  onError?: () => void
-  contextScreen?: Schema.OwnerEntityTypes
-}) => {
-  const [commit] = useMutation(SaveArtworkMutation)
+}: SaveArtworkOptions) => {
+  const [commit] = useMutation(Mutation)
+  const nextSavedState = !isSaved
 
   return () => {
     commit({
@@ -28,31 +27,31 @@ export const useSaveArtwork = ({
           remove: isSaved,
         },
       },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: !isSaved,
-          },
-        },
-      },
       onCompleted: () => {
-        refreshOnArtworkSave(contextScreen)
-        onCompleted?.()
+        onCompleted?.(nextSavedState)
       },
-      onError: () => {
-        onError?.()
+      onError,
+      optimisticUpdater: (store) => {
+        const artwork = store.get(id)
+        artwork?.setValue(nextSavedState, "isSaved")
       },
     })
   }
 }
 
-const SaveArtworkMutation = graphql`
+const Mutation = graphql`
   mutation useSaveArtworkMutation($input: SaveArtworkInput!) {
     saveArtwork(input: $input) {
       artwork {
         id
         isSaved
+      }
+
+      me {
+        collection(id: "saved-artwork") {
+          internalID
+          ...ArtworkListItem_collection
+        }
       }
     }
   }

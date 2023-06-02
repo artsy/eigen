@@ -5,21 +5,21 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
+import { extractNodes, isConnectionEmpty } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface AuctionResultsRailProps {
   auctionResults: AuctionResultsRail_auctionResults$key
-  contextModule: ContextModule
+  contextModule: ContextModule | string
   title: string
 }
 
 export const getDetailsByContextModule = (
-  contextModule: ContextModule
+  contextModule: ContextModule | string
 ): { viewAllUrl: string; browseAllButtonText: string } => {
   switch (contextModule) {
     case ContextModule.upcomingAuctionsRail:
@@ -49,7 +49,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
       (auctionResult) => auctionResult
     )
 
-    if (!auctionResults || auctionResults?.totalCount === 0) {
+    if (isConnectionEmpty(auctionResults)) {
       return null
     }
 
@@ -94,7 +94,6 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
 
 const meFragment = graphql`
   fragment AuctionResultsRail_auctionResults on AuctionResultConnection {
-    totalCount
     edges {
       node {
         ...AuctionResultListItem_auctionResult
@@ -105,14 +104,14 @@ const meFragment = graphql`
 `
 
 const tracks = {
-  tappedHeader: (contextModule: ContextModule) => ({
+  tappedHeader: (contextModule: ContextModule | string) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.upcomingAuctions,
     type: "header",
   }),
-  tappedViewAll: (contextModule: ContextModule) => ({
+  tappedViewAll: (contextModule: ContextModule | string) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,

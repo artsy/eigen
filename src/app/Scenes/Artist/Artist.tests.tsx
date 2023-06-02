@@ -1,5 +1,6 @@
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -49,7 +50,7 @@ describe("Artist", () => {
   )
 
   it("returns an empty state if artist has no artworks", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
     const emptyTitle = "No works available by the artist at this time"
     const emptyMessage = "Create an Alert to receive notifications when new works are added"
 
@@ -74,7 +75,7 @@ describe("Artist", () => {
   })
 
   it("should render Artworks tab by default", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -96,7 +97,7 @@ describe("Artist", () => {
   })
 
   it("returns Overview tab if artist has metadata", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -116,7 +117,7 @@ describe("Artist", () => {
   })
 
   it("returns Overview tab if artist has only articles", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -136,7 +137,7 @@ describe("Artist", () => {
   })
 
   it("returns three tabs if artist has metadata, works, and auction results", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -157,7 +158,7 @@ describe("Artist", () => {
   })
 
   it("hides Artist insights tab when there are no auction results", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -176,10 +177,12 @@ describe("Artist", () => {
     expect(queryByText("Insights")).toBeFalsy()
   })
 
-  it("tracks a page view", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("tracks a page view", async () => {
+    renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
+
+    await flushPromiseQueue()
 
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, {

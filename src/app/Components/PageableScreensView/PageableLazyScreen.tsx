@@ -18,7 +18,11 @@ export const PageableLazyScreen: React.FC<PageableLazyScreenProps> = ({ screen, 
   }, [shouldRender])
 
   if (canMount) {
-    return <Flex flex={1}>{screen.Component}</Flex>
+    return (
+      <Flex flex={1}>
+        <screen.Component />
+      </Flex>
+    )
   }
 
   return (
