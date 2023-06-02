@@ -1,18 +1,17 @@
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button } from "app/Components/Button"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
@@ -71,7 +70,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     : "Select a price range"
 
   return (
-    <PageWithSimpleHeader title="Account">
+    <PageWithSimpleHeader title="Account Settings">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem
           title="Email"
@@ -115,7 +114,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/facebook.png`)}
+                      source={require(`images/facebook.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -142,7 +141,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/google.png`)}
+                      source={require(`images/google.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -169,7 +168,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`images/apple.png`)}
+                        source={require(`images/apple.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
@@ -234,7 +233,7 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
 export const MyAccountQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountQuery {
           me {

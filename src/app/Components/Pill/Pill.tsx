@@ -19,30 +19,32 @@ import styled from "styled-components/native"
 type PillSize = "xxs" | "xs" | "sm"
 
 export interface PillProps extends FlexProps {
+  badge?: boolean
+  block?: boolean
   children: React.ReactNode
-  size?: PillSize
-  onPress?: PressableProps["onPress"]
-  rounded?: boolean
+  disabled?: boolean
+  highlightEnabled?: boolean
   Icon?: React.FC<IconProps>
   iconPosition?: "left" | "right"
-  disabled?: boolean
-  selected?: boolean
   imageUrl?: string
-  highlightEnabled?: boolean
-  block?: boolean
+  onPress?: PressableProps["onPress"]
   pressablePros?: Omit<
     PressableProps,
     "style" | "disabled" | "onPress" | "onPressIn" | "onPressOut"
   >
+  rounded?: boolean
+  selected?: boolean
+  size?: PillSize
   /** Allows for overriding the pill style when in different states */
   stateStyle?: { [key in DisplayState]?: ReturnType<typeof useStyleForState> }
 }
 
 enum DisplayState {
+  Badge = "badge",
+  Disabled = "disabled",
   Enabled = "enabled",
   Pressed = "pressed",
   Selected = "selected",
-  Disabled = "disabled",
 }
 
 const getSize = (size: PillSize): { height: number; paddingRight: number; paddingLeft: number } => {
@@ -69,18 +71,19 @@ const getSize = (size: PillSize): { height: number; paddingRight: number; paddin
 }
 
 export const Pill: React.FC<PillProps> = ({
-  size = "xxs",
-  selected = false,
+  badge,
+  block = false,
+  children,
+  disabled,
+  highlightEnabled = false,
   Icon,
   iconPosition = "left",
   imageUrl,
   onPress,
-  children,
-  disabled,
-  rounded,
-  highlightEnabled = false,
-  block = false,
   pressablePros = {},
+  rounded,
+  selected = false,
+  size = "xxs",
   stateStyle,
   ...rest
 }) => {
@@ -96,6 +99,8 @@ export const Pill: React.FC<PillProps> = ({
     displayState = DisplayState.Selected
   } else if (disabled) {
     displayState = DisplayState.Disabled
+  } else if (badge) {
+    displayState = DisplayState.Badge
   }
 
   const handlePress = (event: GestureResponderEvent) => {
@@ -200,6 +205,13 @@ const useStyleForState = (
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     }
+    case DisplayState.Badge: {
+      desiredStyleForState = stateStyle?.badge
+      retval.textColor = desiredStyleForState?.textColor ?? color("blue100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("blue10")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("blue10")
+      break
+    }
     default: {
       assertNever(state)
     }
@@ -209,7 +221,7 @@ const useStyleForState = (
 }
 
 const Container = styled(Flex)<PillProps>`
-  border-width: 1;
+  border-width: 1px;
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`

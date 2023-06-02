@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { BackButton, useTheme } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { MediumOptions } from "app/Scenes/PriceDatabase/components/MediumOptions"
@@ -9,6 +10,7 @@ import {
   PriceDatabaseSearchInitialValues,
   priceDatabaseValidationSchema,
 } from "app/Scenes/PriceDatabase/validation"
+import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { FormikProvider, useFormik } from "formik"
@@ -22,6 +24,8 @@ export type PriceDatabaseNavigationStack = {
 const Stack = createStackNavigator<PriceDatabaseNavigationStack>()
 
 export const PriceDatabase = () => {
+  const { space } = useTheme()
+
   const handleSubmit = () => {}
 
   const formik = useFormik<PriceDatabaseSearchModel>({
@@ -29,6 +33,7 @@ export const PriceDatabase = () => {
     initialErrors: {},
     onSubmit: handleSubmit,
     validationSchema: () => priceDatabaseValidationSchema,
+    validateOnMount: true,
   })
 
   return (
@@ -37,6 +42,8 @@ export const PriceDatabase = () => {
         context_screen_owner_type: OwnerType.priceDatabase,
       })}
     >
+      <BackButton onPress={() => goBack()} style={{ top: space(2), left: space(2), zIndex: 100 }} />
+
       <FormikProvider value={formik}>
         <NavigationContainer independent>
           <Stack.Navigator

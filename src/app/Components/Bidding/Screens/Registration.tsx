@@ -1,4 +1,4 @@
-import { Flex, Box, Text, LinkText, Checkbox } from "@artsy/palette-mobile"
+import { Flex, Box, Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import {
   RegistrationCreateBidderMutation,
@@ -16,14 +16,13 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import {
@@ -519,7 +518,7 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
         Register to bid
       </FancyModalHeader>
       <QueryRenderer<RegistrationQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query RegistrationQuery($saleID: String!) {
             sale(id: $saleID) {

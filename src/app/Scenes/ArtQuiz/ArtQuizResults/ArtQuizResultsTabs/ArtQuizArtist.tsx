@@ -5,12 +5,12 @@ import {
   ArtQuizArtist_artist$key,
 } from "__generated__/ArtQuizArtist_artist.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { FollowButton } from "app/Components/Button/FollowButton"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
@@ -46,7 +46,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           navigate(`/artist/${artist?.slug}`)
         }}
       >
-        <Flex px={2} flexDirection="row" justifyContent="space-between">
+        <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
             <Text variant="lg-display">{artist?.name}</Text>
             <Text variant="lg-display" color="black60">
@@ -61,7 +61,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           </Flex>
         </Flex>
         <Spacer y={1} />
-        <Flex px={2}>
+        <Flex>
           <ReadMore
             content={artist?.biographyBlurb?.text!}
             maxChars={textLimit}
@@ -71,12 +71,14 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           />
         </Flex>
         <Spacer y={2} />
-        <SmallArtworkRail
-          artworks={artworks}
-          onPress={(artwork) => {
-            navigate(artwork?.href!)
-          }}
-        />
+        <Flex mx={-2}>
+          <SmallArtworkRail
+            artworks={artworks}
+            onPress={(artwork) => {
+              navigate(artwork?.href!)
+            }}
+          />
+        </Flex>
       </TouchableOpacity>
     </Flex>
   )

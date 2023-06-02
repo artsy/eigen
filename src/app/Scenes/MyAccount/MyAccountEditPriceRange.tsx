@@ -1,9 +1,9 @@
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPriceRange_me.graphql"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { Select, SelectOption } from "app/Components/Select"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Select, SelectOption } from "app/Components/Select"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import {
@@ -79,7 +79,7 @@ export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccoun
 export const MyAccountEditPriceRangeQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountEditPriceRangeQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountEditPriceRangeQuery {
           me {

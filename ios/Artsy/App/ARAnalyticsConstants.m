@@ -7,8 +7,6 @@ NSString *const ARAnalyticsNotificationReceived = @"notification received";
 NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 NSString *const ARAnalyticsPushNotificationsRequested = @"push notifications requested";
 
-NSString *const ARAnalyticsDeepLinkOpened = @"Deep link opened";
-
 NSString *const ARAnalyticsPushNotificationLocal = @"Artsy notification prompt response";
 NSString *const ARAnalyticsPushNotificationApple = @"Apple notification prompt response";
 

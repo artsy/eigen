@@ -7,12 +7,11 @@ import {
   updateConsignSubmission,
 } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
@@ -27,7 +26,7 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = getMockRelayEnvironment()
 
 describe("ArtworkDetails", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (

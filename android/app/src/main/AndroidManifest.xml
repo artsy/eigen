@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
@@ -45,7 +47,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:exported="true" android:windowSoftInputMode="adjustResize" />
+        <activity
+          android:name=".MainActivity"
+          android:label="@string/app_name"
+          android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+          android:launchMode="singleTask"
+          android:windowSoftInputMode="adjustResize"
+          android:exported="true"
+        />
 
         <activity android:name="com.zoontek.rnbootsplash.RNBootSplashActivity" android:theme="@style/BootTheme" android:launchMode="singleTask" android:exported="true">
             <intent-filter>
@@ -110,7 +119,6 @@
                 <data android:pathPrefix="/my-account" />
                 <data android:pathPrefix="/my-collection" />
                 <data android:pathPrefix="/my-profile" />
-                <data android:pathPrefix="/my-profile/saved-addresses" />
                 <data android:pathPrefix="/new-for-you" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
@@ -119,6 +127,7 @@
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
+                <data android:pathPrefix="/tag" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
                 <data android:pathPrefix="/upcoming-auction-results" />

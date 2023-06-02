@@ -6,7 +6,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
@@ -238,6 +238,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
             node {
               imageUrl
               href
+
               displayLabel
               __typename
               ... on SearchableItem {
@@ -248,6 +249,9 @@ const AutosuggestResultsContainer = createPaginationContainer(
               ... on Artist {
                 counts {
                   artworks
+                }
+                targetSupply {
+                  isP1
                 }
                 formattedNationalityAndBirthday
                 internalID
@@ -367,7 +371,7 @@ export const AutosuggestResults: React.FC<{
               @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
   },

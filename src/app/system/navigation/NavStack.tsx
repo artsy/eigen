@@ -2,11 +2,11 @@ import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@reac
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
+import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { isPad } from "app/utils/hardware"
+import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/hooks"
 import { createContext, useState } from "react"
 import { View } from "react-native"
-import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/hooks"
-import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { BackButton } from "./BackButton"
 
 const Stack = createNativeStackNavigator()

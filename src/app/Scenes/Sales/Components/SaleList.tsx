@@ -1,10 +1,9 @@
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { useScreenDimensions } from "app/utils/hooks"
 import { isEmpty } from "lodash"
 import { View } from "react-native"
-
 import { FragmentRef } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import SaleListItem from "./SaleListItem"
 
 export const SaleList: React.FC<{

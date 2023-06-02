@@ -1,14 +1,21 @@
-import { Spacer, Box, useSpace, Text, Join, SimpleMessage } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Box,
+  useSpace,
+  Text,
+  Join,
+  SimpleMessage,
+  Button,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { useEnvironment } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Button } from "app/Components/Button"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -203,7 +210,7 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
 export const FairArticlesQueryRenderer: React.FC<FairArticlesQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairArticlesQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={FAIR2_ARTICLES_QUERY}
       variables={{ id: fairID, first: FAIR2_ARTICLES_PAGE_SIZE }}
       render={renderWithLoadProgress(FairArticlesPaginationContainer)}

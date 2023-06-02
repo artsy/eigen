@@ -1,8 +1,8 @@
-import { ArtsyLogoBlackIcon, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Button, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Button } from "app/Components/Button"
+import { useScreenDimensions } from "app/utils/hooks"
 import { Suspense, useEffect } from "react"
 import { Image } from "react-native"
 import Animated, {
@@ -16,7 +16,6 @@ import Animated, {
 } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -49,23 +48,41 @@ const OnboardingWelcome = () => {
     .easing(Easing.out(Easing.quad))
 
   const onboardingImages = [
-    require("images/OnboardingImage0AdesinaPaintingOfRechel.jpg"),
-    require("images/OnboardingImage1KatzYellowFlags.jpg"),
-    require("images/OnboardingImage2SuperFutureKidHazyDaisy2022.jpg"),
-    require("images/OnboardingImage3WangTheSnowflakeThatComesAlive.jpg"),
-    require("images/OnboardingImage4AndyWarholCow.jpg"),
+    require("images/OnboardingImage0AdesinaPaintingOfRechel.webp"),
+    require("images/OnboardingImage1KatzYellowFlags.webp"),
+    require("images/OnboardingImage2SuperFutureKidHazyDaisy2022.webp"),
+    require("images/OnboardingImage3WangTheSnowflakeThatComesAlive.webp"),
+    require("images/OnboardingImage4AndyWarholCow.webp"),
   ]
 
   const { width: screenWidth } = useScreenDimensions()
   const screenHeight = "100%"
 
   const fadeOutAnimationsArr = [
-    useAnimatedStyle(() => ({ opacity: opacity.value - 1 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 2 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 3 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 4 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 5 })),
-    useAnimatedStyle(() => ({ opacity: opacity.value - 6 })),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 1 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 2 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 3 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 4 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 5 }
+    }),
+    useAnimatedStyle(() => {
+      "worklet"
+      return { opacity: opacity.value - 6 }
+    }),
   ]
 
   useEffect(() => {

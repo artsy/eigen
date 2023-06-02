@@ -7,6 +7,7 @@ import {
 import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { GlobalStore } from "app/store/GlobalStore"
 import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
 import { NavStack } from "./NavStack"
@@ -22,10 +23,14 @@ const Stack = createStackNavigator()
  */
 export const ModalStack: React.FC = ({ children }) => {
   const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
+  const { setSessionState: setNavigationReady } = GlobalStore.actions
   return (
     <NavigationContainer
       ref={__unsafe_mainModalStackRef}
       initialState={initialState}
+      onReady={() => {
+        setNavigationReady({ isNavigationReady: true })
+      }}
       onStateChange={() => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 

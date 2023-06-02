@@ -1,18 +1,18 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Button, FlexProps } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMarkAllAsReadSectionMutation.graphql"
-import { Button } from "app/Components/Button"
 import { useMutation } from "react-relay"
 import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
 import { notificationTypes } from "./types"
 import { getNotificationTypes } from "./utils/getNotificationTypes"
 
-interface ActivityMarkAllAsReadSectionProps {
+interface ActivityMarkAllAsReadSectionProps extends FlexProps {
   hasUnreadNotifications: boolean
 }
 
 export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSectionProps> = ({
   hasUnreadNotifications,
+  ...flexProps
 }) => {
   const label = hasUnreadNotifications ? "New notifications" : "No new notifications"
   const [commit, mutationInProgress] =
@@ -48,8 +48,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
       alignItems="center"
       justifyContent="space-between"
       backgroundColor="white"
-      py={1}
-      px={2}
+      {...flexProps}
     >
       <Text variant="xs" color={hasUnreadNotifications ? "brand" : "black60"}>
         {label}

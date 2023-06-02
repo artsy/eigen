@@ -8,7 +8,7 @@ import { MenuItem } from "app/Components/MenuItem"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { saleStatus } from "app/Scenes/Sale/helpers"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderText, PlaceholderBox } from "app/utils/placeholders"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -251,7 +251,7 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
 export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: saleID }) => {
   return (
     <QueryRenderer<SaleInfoQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleInfoQueryRendererQuery($saleID: String!) {
           sale(id: $saleID) {

@@ -3,7 +3,7 @@ import { IMutableContext } from "unleash-proxy-client"
 import { getUnleashClient } from "./unleashClient"
 
 export function updateExperimentsContext(newContext: IMutableContext) {
-  const client = getUnleashClient()
+  const client = getUnleashClient({ userId: newContext.userId })
   return client.updateContext(newContext)
 }
 
@@ -11,6 +11,6 @@ export function updateExperimentsContext(newContext: IMutableContext) {
 // we will make sure to throttle it.
 export const forceFetchToggles = throttle(unthrottledForceFetch, 2000, { trailing: false })
 function unthrottledForceFetch(unleashEnv: "production" | "staging") {
-  const client = getUnleashClient(unleashEnv)
+  const client = getUnleashClient({ env: unleashEnv })
   client.start()
 }

@@ -1,4 +1,4 @@
-import { Spacer, Box, Separator } from "@artsy/palette-mobile"
+import { Spacer, Box, Separator, Button } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -6,14 +6,13 @@ import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Ar
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import styled from "styled-components/native"
 
 const isPad = Dimensions.get("window").width > 700
@@ -280,7 +279,7 @@ export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
 export const InquiryQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
     <QueryRenderer<InquiryQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InquiryQuery($artworkID: String!) {
           artwork(id: $artworkID) {

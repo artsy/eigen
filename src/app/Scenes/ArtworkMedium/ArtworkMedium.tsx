@@ -1,13 +1,13 @@
-import { Spacer, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "app/Components/Button"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artwork: ArtworkMedium_artwork$data
@@ -15,6 +15,7 @@ interface Props {
 
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
   const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
 
   return (
     <ScrollView>
@@ -70,7 +71,7 @@ export const ArtworkMediumQueryRenderer: React.FC<{
 }> = (props) => {
   return (
     <QueryRenderer<ArtworkMediumQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={ARTWORK_MEDIUM_QUERY}
       variables={{ id: props.artworkID }}
       render={renderWithLoadProgress(ArtworkMediumFragmentContainer, props)}

@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -6,6 +7,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { MultiSelectOptionScreen } from "app/Components/ArtworkFilter/Filters/MultiSelectOption"
+import { ArtworkFilterApplyButton } from "app/Components/ArtworkFilter/components/ArtworkFilterApplyButton"
 import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFormikContext } from "formik"
@@ -33,13 +35,22 @@ export const SizesOptions: React.FC<OptionsScreenProps> = ({ navigation }) => {
   }
 
   return (
-    <MultiSelectOptionScreen
-      onSelect={selectOption}
-      filterHeaderText={FilterDisplayName.sizes}
-      filterOptions={options}
-      isSelected={(item) => values.sizes.includes(item.paramValue as string)}
-      navigation={navigation}
-    />
+    <Flex flex={1}>
+      <MultiSelectOptionScreen
+        onSelect={selectOption}
+        filterHeaderText={FilterDisplayName.sizes}
+        filterOptions={options}
+        isSelected={(item) => values.sizes.includes(item.paramValue as string)}
+        navigation={navigation}
+      />
+
+      <ArtworkFilterApplyButton
+        disabled={false}
+        onPress={navigation.goBack}
+        buttonText="Apply"
+        pb={2}
+      />
+    </Flex>
   )
 }
 
@@ -50,7 +61,7 @@ export const sizesInCm = [
 ]
 
 export const sizesInInches = [
-  { displayText: "Small (under 16in)", name: "SMALL", paramName: FilterParamName.sizes },
-  { displayText: "Medium (16 – 40in)", name: "MEDIUM", paramName: FilterParamName.sizes },
-  { displayText: "Large (over 40in)", name: "LARGE", paramName: FilterParamName.sizes },
+  { displayText: "Small (under 16in)", paramValue: "SMALL", paramName: FilterParamName.sizes },
+  { displayText: "Medium (16 – 40in)", paramValue: "MEDIUM", paramName: FilterParamName.sizes },
+  { displayText: "Large (over 40in)", paramValue: "LARGE", paramName: FilterParamName.sizes },
 ]

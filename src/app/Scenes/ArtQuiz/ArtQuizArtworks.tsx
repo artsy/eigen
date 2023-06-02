@@ -1,12 +1,11 @@
 import {
   Touchable,
   Flex,
-  Screen,
   Text,
-  BackButton,
   useScreenDimensions,
   useSpace,
   ScreenDimensionsProvider,
+  Screen,
 } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
@@ -168,18 +167,10 @@ const ArtQuizArtworksScreen = () => {
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Flex
-          height={44}
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          px={2}
-        >
-          <Flex>
-            <BackButton onPress={handleOnBack} />
-          </Flex>
-          <Text>{`${activeCardIndex + 1}/${artworks.length}`}</Text>
+      <Screen.Header
+        onBack={handleOnBack}
+        title={`${activeCardIndex + 1}/${artworks.length}`}
+        rightElements={
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
@@ -187,8 +178,9 @@ const ArtQuizArtworksScreen = () => {
               </Text>
             </Flex>
           </Touchable>
-        </Flex>
-      </Screen.RawHeader>
+        }
+      />
+
       <Screen.Body>
         <FancySwiper
           cards={artworkCards}

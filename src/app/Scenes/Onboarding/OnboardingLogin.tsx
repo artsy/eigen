@@ -1,6 +1,5 @@
-import { Spacer, Flex, Box, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useColor, Text, Touchable, Button } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Button } from "app/Components/Button"
 import { Input } from "app/Components/Input"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"

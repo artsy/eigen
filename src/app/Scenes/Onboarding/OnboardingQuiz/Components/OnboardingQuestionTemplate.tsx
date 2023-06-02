@@ -1,12 +1,19 @@
-import { Spacer, CheckCircleFillIcon, Flex, Box, ProgressBar, Text } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  CheckCircleFillIcon,
+  Flex,
+  Box,
+  ProgressBar,
+  Text,
+  Button,
+  LegacyScreen,
+} from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { Button } from "app/Components/Button"
-import { Screen } from "app/Components/Screen"
 import { FC, useCallback, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
@@ -83,9 +90,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
   return (
-    <Screen>
-      <Screen.Header onBack={handleBack} onSkip={onDone} />
-      <Screen.Body>
+    <LegacyScreen>
+      <LegacyScreen.Header onBack={handleBack} onSkip={onDone} />
+      <LegacyScreen.Body>
         <Box pt={2}>
           <ProgressBar progress={progress} />
         </Box>
@@ -119,10 +126,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <Button block disabled={isDisabled} onPress={handleNext}>
             Next
           </Button>
-          <Screen.SafeBottomPadding />
+          <LegacyScreen.SafeBottomPadding />
         </Flex>
-      </Screen.Body>
-    </Screen>
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }
 

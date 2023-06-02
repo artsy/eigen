@@ -1,14 +1,14 @@
-import { Spacer, Box, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses$data
@@ -16,6 +16,7 @@ interface Props {
 
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {
   const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
 
   return (
     <ScrollView>
@@ -77,7 +78,7 @@ export const ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY = graphql`
 export const ArtworkAttributionClassFAQQueryRenderer: React.FC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY}
       variables={{}}
       render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer, props)}

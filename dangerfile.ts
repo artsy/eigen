@@ -104,10 +104,10 @@ export const useWebPs = (fileNames: string[]) => {
   }
 }
 ;(async function () {
-  // const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
+  const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
 
   preventUsingMoment()
   preventUsingTestRenderer()
   verifyRemainingDevWork()
-  // useWebPs(newCreatedFileNames)
+  useWebPs(newCreatedFileNames)
 })()

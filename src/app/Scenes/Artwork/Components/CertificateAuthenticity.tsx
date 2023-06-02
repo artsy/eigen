@@ -1,11 +1,12 @@
-import { Spacer, Box, Text, Join } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Join, Button } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Button } from "app/Components/Button"
-import { ScrollView } from "react-native"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { ScrollView } from "react-native"
 
 export const CertificateOfAuthenticity: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
 
   return (
     <ScrollView>
@@ -29,7 +30,7 @@ export const CertificateOfAuthenticity: React.FC = () => {
               underline
               onPress={() =>
                 navigate(
-                  "https://support.artsy.net/hc/en-us/articles/360058123933-What-Counts-as-an-Artwork-s-Proof-of-Authenticity-"
+                  "https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
                 )
               }
             >

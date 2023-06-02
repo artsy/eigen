@@ -1,4 +1,5 @@
-import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Alert } from "react-native"
 import { Middleware } from "react-relay-network-modern/node8"
 

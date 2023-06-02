@@ -3,6 +3,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -21,6 +22,7 @@ describe("Ways to Buy Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -29,7 +31,12 @@ describe("Ways to Buy Options Screen", () => {
   }: {
     initialData?: ArtworkFiltersState
   }) => (
-    <ArtworkFiltersStoreProvider initialData={initialData}>
+    <ArtworkFiltersStoreProvider
+      runtimeModel={{
+        ...getArtworkFiltersModel(),
+        ...initialData,
+      }}
+    >
       <WaysToBuyOptionsScreen {...getEssentialProps()} />
     </ArtworkFiltersStoreProvider>
   )
@@ -55,6 +62,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -91,6 +99,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -116,6 +125,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -152,6 +162,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 

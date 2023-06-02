@@ -14,14 +14,14 @@ import {
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
-import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { navigate, popParentViewController } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _, { times } from "lodash"
@@ -470,56 +470,48 @@ export const SaleQueryRenderer: React.FC<{
   }, [])
 
   return (
-    <RetryErrorBoundaryLegacy
-      render={() => {
-        return (
-          <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-            environment={environment || getRelayEnvironment()}
-            above={{
-              query: SaleScreenQuery,
-              variables: { saleID, saleSlug: saleID },
-            }}
-            below={
-              enableArtworksConnection
-                ? {
-                    query: SaleScreenBelowNewQuery,
-                    variables: {
-                      saleID,
-                      // @ts-ignore
-                      input: {
-                        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-                        priceRange: "",
-                      },
-                    },
-                  }
-                : {
-                    query: SaleScreenBelowQuery,
-                    variables: { saleID },
-                  }
-            }
-            render={({ props, error }) => {
-              if (error) {
-                if (__DEV__) {
-                  console.error(error)
-                } else {
-                  captureMessage(error.stack!)
-                }
-                return <LoadFailureView />
-              }
-              if (!props?.above.me || !props.above.sale) {
-                return <SalePlaceholder />
-              }
-              return (
-                <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
-              )
-            }}
-            cacheConfig={{
-              force: true,
-            }}
-            fetchPolicy="store-and-network"
-          />
-        )
+    <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
+      environment={environment || getRelayEnvironment()}
+      above={{
+        query: SaleScreenQuery,
+        variables: { saleID, saleSlug: saleID },
       }}
+      below={
+        enableArtworksConnection
+          ? {
+              query: SaleScreenBelowNewQuery,
+              variables: {
+                saleID,
+                // @ts-ignore
+                input: {
+                  sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                  priceRange: "",
+                },
+              },
+            }
+          : {
+              query: SaleScreenBelowQuery,
+              variables: { saleID },
+            }
+      }
+      render={({ props, error }) => {
+        if (error) {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(error.stack!)
+          }
+          return <LoadFailureView />
+        }
+        if (!props?.above.me || !props.above.sale) {
+          return <SalePlaceholder />
+        }
+        return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
+      }}
+      cacheConfig={{
+        force: true,
+      }}
+      fetchPolicy="store-and-network"
     />
   )
 }

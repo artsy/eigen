@@ -12,7 +12,8 @@ import {
   OPTION_TOP_AUCTION_LOTS,
   OPTION_THE_ART_TASTE_QUIZ,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"
@@ -132,5 +133,5 @@ export const OnboardingQuestionThree = () => {
 }
 
 const ACTION = "SET_ANSWER_THREE"
-const QUESTION = "Almost done! What would you like to see first?"
+const QUESTION = "Almost done! Now select some artworks and artists to tailor Artsy to your tastes."
 const SUBTITLE = "Choose one to start exploring."

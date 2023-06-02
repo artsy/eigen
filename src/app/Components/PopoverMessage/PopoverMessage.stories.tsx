@@ -1,6 +1,6 @@
+import { Button } from "@artsy/palette-mobile"
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Button } from "app/Components/Button"
 import { DataList, List } from "app/storybook/helpers"
 import { PopoverMessageItem, PopoverMessageType } from "./PopoverMessage"
 import { usePopoverMessage } from "./popoverMessageHooks"

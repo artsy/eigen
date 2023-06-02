@@ -20,7 +20,7 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
 
   useEffect(() => {
     if (isHydrated) {
-      const client = getUnleashClient(unleashEnv, userId)
+      const client = getUnleashClient({ env: unleashEnv, userId })
 
       client.on("initialized", () => {
         if (__DEV__) {

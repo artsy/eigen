@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Input } from "app/Components/Input"
@@ -103,6 +104,7 @@ describe("PriceRangeOptions", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -118,7 +120,12 @@ describe("PriceRangeOptions", () => {
 
   const getTree = () => {
     return renderWithWrappers(
-      <ArtworkFiltersStoreProvider initialData={INITIAL_DATA}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...INITIAL_DATA,
+        }}
+      >
         <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>
     )

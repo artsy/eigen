@@ -1,14 +1,13 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { BorderBox, Flex, Text } from "@artsy/palette-mobile"
+import { BorderBox, Flex, Text, Button } from "@artsy/palette-mobile"
 import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
 import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { Button } from "app/Components/Button"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -113,7 +112,7 @@ export const PurchaseModalQueryRenderer: React.FC<{
       }}
     >
       <QueryRenderer<PurchaseModalQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query PurchaseModalQuery($artworkID: String!) {
             artwork(id: $artworkID) {

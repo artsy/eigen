@@ -3,6 +3,7 @@ import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/Artw
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"
@@ -33,12 +34,18 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
   const TestWrapper = ({ initialData = INITIAL_DATA }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <ArtistNationalitiesOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

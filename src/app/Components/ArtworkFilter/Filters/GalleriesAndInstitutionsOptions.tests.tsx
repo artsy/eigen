@@ -2,6 +2,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -41,6 +42,7 @@ describe("Galleries and Institutions Options Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    showFilterArtworksModal: false,
     sizeMetric: "cm",
   }
 
@@ -50,7 +52,12 @@ describe("Galleries and Institutions Options Screen", () => {
     initialData?: ArtworkFiltersState
   }) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <GalleriesAndInstitutionsOptionsScreen {...getEssentialProps()} />
       </ArtworkFiltersStoreProvider>
     )

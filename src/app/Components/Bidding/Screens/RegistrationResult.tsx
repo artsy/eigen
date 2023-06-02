@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, Button } from "@artsy/palette-mobile"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
@@ -7,7 +7,6 @@ import { Markdown } from "app/Components/Markdown"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
-import { Button } from "app/Components/Button"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
@@ -25,10 +24,10 @@ export enum RegistrationStatus {
 }
 
 const Icons = {
-  RegistrationStatusComplete: require("images/circle-check-green.png"),
-  RegistrationStatusPending: require("images/circle-exclamation.png"),
-  RegistrationStatusNetworkError: require("images/circle-x-red.png"),
-  RegistrationStatusError: require("images/circle-x-red.png"),
+  RegistrationStatusComplete: require("images/circle-check-green.webp"),
+  RegistrationStatusPending: require("images/circle-exclamation.webp"),
+  RegistrationStatusNetworkError: require("images/circle-x-red.webp"),
+  RegistrationStatusError: require("images/circle-x-red.webp"),
 }
 
 const registrationCompleteMessage = {

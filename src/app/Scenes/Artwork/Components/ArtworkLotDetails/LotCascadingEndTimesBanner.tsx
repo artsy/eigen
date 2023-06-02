@@ -8,7 +8,7 @@ interface LotCascadingEndTimesBannerProps {
 }
 
 const CASCADING_AUCTION_HELP_ARTICLE_LINK =
-  "https://support.artsy.net/hc/en-us/articles/4831514125975-What-is-cascade-bidding-and-how-does-it-work"
+  "https://support.artsy.net/s/article/What-is-cascade-and-popcorn-bidding-and-how-does-it-work"
 
 export const LotCascadingEndTimesBanner: React.FC<LotCascadingEndTimesBannerProps> = ({ sale }) => {
   const data = useFragment(lotCascadingEndTimesBannerFragment, sale)

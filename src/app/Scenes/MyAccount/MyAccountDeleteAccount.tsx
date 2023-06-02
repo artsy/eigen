@@ -1,12 +1,11 @@
-import { Spacer, GenomeIcon, AuctionIcon, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, GenomeIcon, AuctionIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
-import { Button } from "app/Components/Button"
 import { Input } from "app/Components/Input"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React, { useState } from "react"
@@ -150,7 +149,7 @@ export const MyAccountDeleteAccountFragmentContainer = createFragmentContainer(
 export const MyAccountDeleteAccountQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyAccountDeleteAccountQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountDeleteAccountQuery {
           me {

@@ -1,6 +1,7 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { NavStack } from "app/system/navigation/NavStack"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
@@ -13,8 +14,7 @@ describe(BottomTabsNavigator, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("app/system/relay/createEnvironment").reset()
-    mockEnvironment = require("app/system/relay/createEnvironment").defaultEnvironment
+    mockEnvironment = getMockRelayEnvironment()
   })
 
   it("shows the current tab content", async () => {
