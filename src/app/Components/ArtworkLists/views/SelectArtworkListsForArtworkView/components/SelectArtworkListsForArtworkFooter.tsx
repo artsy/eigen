@@ -1,69 +1,32 @@
-import { ActionType, AddedArtworkToArtworkList } from "@artsy/cohesion"
 import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
-import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ResultAction } from "app/Components/ArtworkLists/types"
-import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import { useSavePendingArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSavePendingArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
-import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { FC } from "react"
-import { useTracking } from "react-tracking"
 
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, hasChanges, onSave } =
     useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
-  const { trackEvent } = useTracking()
-  const analytics = useAnalyticsContext()
   const { selectedTotalCount } = state
-  const artwork = state.artwork!
   const totalCount =
     selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
-  const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork(artwork.id)
+  const { save, inProgress } = useSavePendingArtworkListsChanges()
 
-  const trackAddedArtworkToArtworkLists = () => {
-    const event: AddedArtworkToArtworkList = {
-      action: ActionType.addedArtworkToArtworkList,
-      context_owner_id: analytics.contextScreenOwnerId,
-      context_owner_slug: analytics.contextScreenOwnerSlug,
-      context_owner_type: analytics.contextScreenOwnerType!,
-      artwork_ids: [artwork.internalID],
-      owner_ids: addingArtworkListIDs,
+  const handleSave = async () => {
+    try {
+      await save()
+
+      dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
+      onSave({
+        action: ResultAction.ModifiedArtworkLists,
+      })
+    } catch {
+      return
     }
-
-    trackEvent(event)
-  }
-
-  const handleSave = () => {
-    commit({
-      variables: {
-        artworkID: artwork.internalID,
-        input: {
-          artworkIDs: [artwork.internalID],
-          addToCollectionIDs: addingArtworkListIDs,
-          removeFromCollectionIDs: removingArtworkListIDs,
-        },
-      },
-      onCompleted: () => {
-        if (addingArtworkListIDs.length > 0) {
-          trackAddedArtworkToArtworkLists()
-        }
-
-        dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
-        onSave({
-          action: ResultAction.ModifiedArtworkLists,
-        })
-      },
-      onError: (error) => {
-        if (__DEV__) {
-          console.error(error)
-        } else {
-          captureMessage(error?.stack!)
-        }
-      },
-    })
   }
 
   return (
@@ -74,13 +37,7 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
 
       <Spacer y={1} />
 
-      <Button
-        width="100%"
-        block
-        disabled={!hasChanges}
-        loading={mutationInProgress}
-        onPress={handleSave}
-      >
+      <Button width="100%" block disabled={!hasChanges} loading={inProgress} onPress={handleSave}>
         Save
       </Button>
     </Box>
