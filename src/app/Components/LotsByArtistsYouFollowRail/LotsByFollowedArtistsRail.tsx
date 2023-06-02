@@ -58,9 +58,13 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
     })
   }
 
-  const refreshDebounce = lodash.debounce(() => {
-    relay.refetchConnection(PAGE_SIZE)
-  }, 3000)
+  const refreshDebounce = lodash.debounce(
+    () => {
+      relay.refetchConnection(PAGE_SIZE)
+    },
+    // 10 secs, hopefully the timely_at on the lots in the backend has been updated
+    10000
+  )
 
   const doRefresh = () => {
     refreshDebounce()
@@ -110,7 +114,7 @@ export const LotsByFollowedArtistsRailContainer = memo(
             after: $cursor
             includeArtworksByFollowedArtists: true
             excludeClosedLots: true
-            sort: "end_at"
+            sort: "timely_at"
             isAuction: true
             liveSale: true
           ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {

@@ -230,10 +230,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.129.0":
-  version "4.129.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.129.0.tgz#6a45feb4fdd14fb8ed0641259c431182f288cdf7"
-  integrity sha512-fwOqWhL5InmrTpl6KD890Sd6ZumgmzMN5n0jCu1vNLTJhMBOvoKGQFSe5LhX/wWGs7VAOPQYlR73y7F+crx4Ww==
+"@artsy/cohesion@4.130.0":
+  version "4.130.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.130.0.tgz#e1b6b01999e7f94eeff206f006f33e3305c5df84"
+  integrity sha512-NVq9ZTqvjvYeALMOxARERmucT/F+oyzGeWiTbifDufbp9BAsD585c7GWsjDTwWFeiGx/M3L5bJjxfPYrdxde+w==
   dependencies:
     core-js "3"
 
@@ -16956,10 +16956,10 @@ typescript-memoize@^1.0.0-alpha.3:
   dependencies:
     core-js "2.4.1"
 
-typescript@5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
-  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+typescript@5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.3.tgz#8d84219244a6b40b6fb2b33cc1c062f715b9e826"
+  integrity sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==
 
 typical@^4.0.0:
   version "4.0.0"
@@ -18103,6 +18103,19 @@ yargs-parser@^21.1.1:
   version "21.1.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-21.1.1.tgz#9096bceebf990d21bb31fa9516e0ede294a77d35"
   integrity sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==
+
+yargs@17.7.2:
+  version "17.7.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.7.2.tgz#991df39aca675a192b816e1e0363f9d75d2aa269"
+  integrity sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==
+  dependencies:
+    cliui "^8.0.1"
+    escalade "^3.1.1"
+    get-caller-file "^2.0.5"
+    require-directory "^2.1.1"
+    string-width "^4.2.3"
+    y18n "^5.0.5"
+    yargs-parser "^21.1.1"
 
 yargs@^15.1.0, yargs@^15.3.1:
   version "15.4.1"
