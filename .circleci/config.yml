@@ -69,27 +69,6 @@ commands:
       - run:
           name: Compile query map
           command: yarn relay
-  bundle-js:
-    steps:
-      - restore_cache:
-          keys:
-            - v11-js_bundle-{{ checksum ".manifests/js_bundle" }}
-      - restore_cache:
-          keys:
-            - v10-metro-{{ checksum ".manifests/js_transform" }}
-      - run:
-          name: Bundle javascript
-          command: ls dist/main.jsbundle || yarn bundle:ios
-      - save_cache:
-          key: v10-metro-{{ checksum ".manifests/js_transform" }}
-          paths:
-            - .cache/metro
-      - save_cache:
-          key: v11-js_bundle-{{ checksum ".manifests/js_bundle" }}
-          paths:
-            - dist/main.jsbundle
-            - dist/main.jsbundle.map
-            - dist/assets
   install-gems:
     steps:
       - restore_cache:
@@ -309,7 +288,6 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - bundle-js
       - run:
           name: Generate app_build manifest
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
