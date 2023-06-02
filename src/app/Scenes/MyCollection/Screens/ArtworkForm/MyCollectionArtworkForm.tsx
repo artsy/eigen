@@ -13,6 +13,7 @@ import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollection
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
@@ -23,6 +24,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { storeLocalImage } from "app/utils/LocalImageStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { addClue, setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
@@ -59,6 +61,11 @@ export type ArtworkFormScreen = {
     onDelete(): void
     onHeaderBackButtonPress(): void
   }
+  AddMyCollectionArtist: {
+    mode: ArtworkFormMode
+    clearForm(): void
+    onHeaderBackButtonPress(): void
+  }
   ArtworkFormMain: {
     mode: ArtworkFormMode
     isSubmission?: boolean
@@ -84,6 +91,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
@@ -271,6 +279,17 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
                 onDelete,
                 clearForm,
                 mode: props.mode,
+                onHeaderBackButtonPress,
+              }}
+            />
+          )}
+          {!!enableCollectedArtists && props.mode === "add" && (
+            <Stack.Screen
+              name="AddMyCollectionArtist"
+              component={AddMyCollectionArtist} // TODO: Rename this component
+              initialParams={{
+                mode: props.mode,
+                clearForm,
                 onHeaderBackButtonPress,
               }}
             />

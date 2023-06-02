@@ -1,8 +1,9 @@
 import { ArtsyKeyboardAvoidingView, Flex, Join, Spacer, Button } from "@artsy/palette-mobile"
+import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
-import { popToRoot } from "app/system/navigation/navigate"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
@@ -23,7 +24,9 @@ const validationSchema = Yup.object().shape({
   deathYear: Yup.string().trim(),
 })
 
-export const AddMyCollectionArtist: React.FC = () => {
+export const AddMyCollectionArtist: React.FC<
+  StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
+> = ({ route /* navigation */ }) => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const ScrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
@@ -43,7 +46,7 @@ export const AddMyCollectionArtist: React.FC = () => {
         deathYear: "",
       },
       initialErrors: {},
-      onSubmit: () => console.log("Submit Add New Artist"),
+      onSubmit: () => console.log("Submit Add New Artist"), // save artist to the store and navigate
       validationSchema: validationSchema,
     })
   const touched = useHasBeenTrue(dirty)
@@ -59,7 +62,9 @@ export const AddMyCollectionArtist: React.FC = () => {
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={dirty ? () => setShowAbandonModal(true) : () => popToRoot()}
+          onLeftButtonPress={
+            dirty ? () => setShowAbandonModal(true) : route.params.onHeaderBackButtonPress
+          }
           hideBottomDivider
         >
           Add New Artist

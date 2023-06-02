@@ -1,10 +1,33 @@
+import { Route } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { fireEvent } from "@testing-library/react-native"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import { ArtworkFormMode } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("AddMyCollectionArtist", () => {
-  const TestRenderer = () => <AddMyCollectionArtist />
+  const mockNav: Partial<StackNavigationProp<{}>> = {
+    addListener: jest.fn(),
+  }
+  const mockRoute: Route<
+    "AddMyCollectionArtist",
+    {
+      mode: ArtworkFormMode
+      clearForm(): void
+      onHeaderBackButtonPress(): void
+    }
+  > = {
+    key: "AddMyCollectionArtist",
+    name: "AddMyCollectionArtist",
+    params: {
+      mode: "add",
+      clearForm: jest.fn(),
+      onHeaderBackButtonPress: jest.fn(),
+    },
+  }
+
+  const TestRenderer = () => <AddMyCollectionArtist navigation={mockNav as any} route={mockRoute} />
 
   it("renders the form with the right name", () => {
     const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
