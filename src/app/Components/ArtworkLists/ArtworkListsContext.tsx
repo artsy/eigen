@@ -159,13 +159,11 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
   const addingArtworkListIDs = state.addingArtworkLists.map((entity) => entity.internalID)
   const removingArtworkListIDs = state.removingArtworkLists.map((entity) => entity.internalID)
-  const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
   const value: ArtworkListsContextState = {
     state,
     artworkListId,
     addingArtworkListIDs,
     removingArtworkListIDs,
-    hasChanges,
     dispatch,
     reset,
     onSave,
