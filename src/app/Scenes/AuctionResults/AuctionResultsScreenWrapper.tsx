@@ -161,7 +161,6 @@ const AuctionResultsScreenWrapperQuery = graphql`
 
 export enum AuctionResultsState {
   PAST = "PAST",
-  UPCOMING = "UPCOMING",
   ALL = "ALL",
 }
 
@@ -174,8 +173,6 @@ const getTitleByState = (state: AuctionResultsState) => {
   switch (state) {
     case AuctionResultsState.PAST:
       return "Latest Auction Results"
-    case AuctionResultsState.UPCOMING:
-      return "Upcoming Auction Lots For You"
     case AuctionResultsState.ALL:
       return "Latest Auction Results"
   }
@@ -185,8 +182,6 @@ const getDescriptionByState = (state: AuctionResultsState) => {
   switch (state) {
     case AuctionResultsState.PAST:
       return "See auction results for the artists you follow"
-    case AuctionResultsState.UPCOMING:
-      return "Discover upcoming auctions for artists you follow"
     case AuctionResultsState.ALL:
       return "See auction results for the artists you follow"
   }
@@ -195,17 +190,13 @@ const getDescriptionByState = (state: AuctionResultsState) => {
 export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
-  const sort =
-    state === AuctionResultsState.UPCOMING
-      ? AuctionResultsSorts.DATE_ASC
-      : AuctionResultsSorts.DATE_DESC
   return (
     <QueryRenderer<AuctionResultsScreenWrapperContainerQuery>
       environment={getRelayEnvironment()}
       query={AuctionResultsScreenWrapperQuery}
       variables={{
         state,
-        sort,
+        sort: AuctionResultsSorts.DATE_DESC,
       }}
       cacheConfig={{
         force: true,
@@ -222,7 +213,7 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
         },
         initialProps: {
           state,
-          sort,
+          sort: AuctionResultsSorts.DATE_DESC,
         },
       })}
     />

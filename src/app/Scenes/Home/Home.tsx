@@ -508,19 +508,6 @@ export const HomeFragmentContainer = memo(
               }
             }
           }
-
-          auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
-            first: 12
-            state: UPCOMING
-            sort: DATE_ASC
-          ) {
-            ...AuctionResultsRail_auctionResults
-            edges {
-              node {
-                internalID
-              }
-            }
-          }
         }
       `,
       articlesConnection: graphql`

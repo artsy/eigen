@@ -144,11 +144,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableConsignmentInquiry",
   },
-  ARShowUpcomingAuctionResultsRails: {
-    description: "Show upcoming auction rails",
-    readyForRelease: true,
-    echoFlagKey: "ARShowUpcomingAuctionResultsRails",
-  },
   ARShowArtQuizApp: {
     description: "Show Art Quiz App",
     readyForRelease: true,
