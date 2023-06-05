@@ -1,32 +1,23 @@
 import { OwnerType } from "@artsy/cohesion"
 import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
-import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
-import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
-import {
-  MyCollectionPlaceholder,
-  MyCollectionQueryRenderer,
-} from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
 import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import { useMemo } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { QueryRenderer, createRefetchContainer } from "react-relay"
-import { graphql } from "relay-runtime"
-import { MyProfileHeader } from "./MyProfileHeader"
+import { MyProfileHeaderQueryRenderer } from "./MyProfileHeader"
 
 export enum Tab {
   collection = "My Collection",
@@ -35,7 +26,6 @@ export enum Tab {
 }
 
 interface Props {
-  me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
   initialTab: Tab
 }
 
@@ -43,7 +33,7 @@ interface MyProfileTabProps {
   initialTab?: Tab
 }
 
-export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ me, initialTab }) => {
+export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
   const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const tabs: TabProps[] = compact([
@@ -81,7 +71,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ me, 
         <StickyTabPage
           disableBackButtonUpdate
           tabs={tabs}
-          staticHeaderContent={<MyProfileHeader me={me} />}
+          staticHeaderContent={<MyProfileHeaderQueryRenderer />}
         />
       </SafeAreaView>
       {viewKind !== null && <MyCollectionBottomSheetModals />}
@@ -90,33 +80,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ me, 
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
-
-export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
-  MyProfileHeaderMyCollectionAndSavedWorks,
-  {
-    me: graphql`
-      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
-        ...MyProfileHeader_me
-        ...AuctionResultsForArtistsYouCollectRail_me
-      }
-    `,
-  },
-  graphql`
-    query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery {
-      me {
-        ...MyProfileHeaderMyCollectionAndSavedWorks_me
-      }
-    }
-  `
-)
-
-export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyProfileHeaderMyCollectionAndSavedWorksQuery {
-    me @optionalField {
-      ...MyProfileHeaderMyCollectionAndSavedWorks_me
-    }
-  }
-`
 
 export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   const tabProps = useMyProfileTabProps()
@@ -129,22 +92,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
       key={key}
     >
       <MyCollectionTabsStoreProvider>
-        <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-          environment={getRelayEnvironment()}
-          query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
-          render={renderWithPlaceholder({
-            Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-            renderPlaceholder: () => (
-              <SafeAreaView>
-                <MyCollectionPlaceholder />
-              </SafeAreaView>
-            ),
-            initialProps: {
-              initialTab,
-            },
-          })}
-          variables={{}}
-        />
+        <MyProfileHeaderMyCollectionAndSavedWorks initialTab={initialTab} />
       </MyCollectionTabsStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
