@@ -317,33 +317,11 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <Flex>
-      {/* collector's info */}
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
-        <Flex flex={1}>
-          <Spacer y={2} />
-          {/* icon, name, time joined */}
-          <Flex flexDirection="row">
-            <PlaceholderBox width={50} height={50} borderRadius={50} />
-            <Flex flex={1} justifyContent="center" ml={2} mt={2}>
-              <PlaceholderText width={80} height={25} />
-              <PlaceholderText width={100} height={15} />
-            </Flex>
-            {/* settings icon */}
-            <PlaceholderBox width={20} height={20} />
-          </Flex>
-          <Spacer y={1} />
-        </Flex>
-      </Flex>
-      <Spacer y={4} />
-      {/* tabs */}
-      <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="25%" height={22} />
-        <PlaceholderText width="25%" height={22} />
-        <PlaceholderText width="25%" height={22} />
-      </Flex>
-      <Spacer y={1} />
-      <Separator />
+    <StickyTabPageScrollView
+      contentContainerStyle={{ justifyContent: "flex-start" }}
+      paddingHorizontal={0}
+    >
+      {/* <Separator /> */}
       <Spacer y={1} />
       {/* Sort & Filter  */}
       <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
@@ -356,7 +334,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
-        <Flex mx={2} width="100%">
+        <Flex width="100%">
           {times(4).map((i) => (
             <Flex key={i} my={0.5} flexDirection="row">
               <Flex>
@@ -375,7 +353,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </Flex>
+    </StickyTabPageScrollView>
   )
 }
 
