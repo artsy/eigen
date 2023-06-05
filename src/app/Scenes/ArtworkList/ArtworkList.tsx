@@ -41,7 +41,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
       count: PAGE_SIZE,
       sort: DEFAULT_SORT_OPTION,
     },
-    { fetchPolicy: "store-and-network" }
+    { fetchPolicy: "network-only" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
