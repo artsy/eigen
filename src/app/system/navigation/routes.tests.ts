@@ -55,6 +55,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Artwork Lists", () => {
+    expect(matchRoute("/artwork-lists")).toMatchInlineSnapshot(`
+      {
+        "module": "MyProfile",
+        "params": {
+          "initialTab": "Saves",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Artist", () => {
     expect(matchRoute("/artist/banksy")).toMatchInlineSnapshot(`
       {

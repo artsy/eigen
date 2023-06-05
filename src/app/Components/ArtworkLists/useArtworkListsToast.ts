@@ -45,7 +45,7 @@ export const useArtworkListToast = () => {
       backgroundColor: "green100",
       cta: "View Saves",
       onPress: () => {
-        navigate(`/artwork-lists`)
+        navigate("/artwork-lists")
       },
     })
   }

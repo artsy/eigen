@@ -8,6 +8,7 @@ import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyC
 import {
   LOCAL_PROFILE_ICON_PATH_KEY,
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+  Tab,
 } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, storeLocalImage } from "app/utils/LocalImageStore"
@@ -44,7 +45,12 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         `}
         render={({ props, error }) => {
           if (props?.me) {
-            return <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer me={props?.me} />
+            return (
+              <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer
+                me={props?.me}
+                initialTab={Tab.collection}
+              />
+            )
           } else if (error) {
             console.log(error)
           }
