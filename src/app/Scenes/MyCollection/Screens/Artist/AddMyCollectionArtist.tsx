@@ -148,8 +148,9 @@ export const AddMyCollectionArtist: React.FC<
                 </Join>
               </Flex>
               <Button
-                flex={1}
+                accessibilityLabel="Submit Add Artist"
                 disabled={!touched}
+                flex={1}
                 onPress={handleSubmit}
                 testID="submit-add-artist-button"
               >
