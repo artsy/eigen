@@ -1,31 +1,25 @@
 import { Flex, Tabs } from "@artsy/palette-mobile"
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
-
 import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtists"
 import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtworks"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
 import { useState } from "react"
-
 import { graphql, useFragment } from "react-relay"
 
-enum Tab {
-  worksYouLiked = "Works you liked",
-  exploreWorks = "Works for You",
-  exploreArtists = "Artists for You",
-}
+type TabName = "worksYouLiked" | "exploreWorks" | "exploreArtists"
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
   const queryResult = useFragment<ArtQuizResultsTabs_me$key>(artQuizResultsTabsFragment, me)?.quiz
 
-  const [activeTab, setActiveTab] = useState<string>("worksYouLiked")
+  const [activeTab, setActiveTab] = useState<TabName>("worksYouLiked")
 
   const savedArtworks = queryResult?.savedArtworks!
   const recommendedArtworks = queryResult?.recommendedArtworks!
   const title =
-    activeTab !== "worksYouLiked" ? "Explore Art We Think You'll Love" : "Explore Your Quiz Results"
+    activeTab === "worksYouLiked" ? "Explore Your Quiz Results" : "Explore Art We Think You'll Love"
 
   return (
     <Tabs.TabsWithHeader
@@ -36,10 +30,10 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
         onBack: () => navigate("/"),
       }}
       onTabPress={(tabName) => {
-        setActiveTab(tabName)
+        setActiveTab(tabName as TabName)
       }}
       onTabChange={({ tabName }) => {
-        setActiveTab(tabName)
+        setActiveTab(tabName as TabName)
       }}
       BelowTitleHeaderComponent={() => {
         if (activeTab === "worksYouLiked") {
@@ -57,17 +51,17 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
         )
       }}
     >
-      <Tabs.Tab name="worksYouLiked" label={Tab.worksYouLiked}>
+      <Tabs.Tab name="worksYouLiked" label="Works you liked">
         <Tabs.Lazy>
           <ArtQuizLikedArtworks savedArtworks={savedArtworks} />
         </Tabs.Lazy>
       </Tabs.Tab>
-      <Tabs.Tab name="worksForYou" label={Tab.exploreWorks}>
+      <Tabs.Tab name="worksForYou" label="Works for You">
         <Tabs.Lazy>
           <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />
         </Tabs.Lazy>
       </Tabs.Tab>
-      <Tabs.Tab name="artistsForYou" label={Tab.exploreArtists}>
+      <Tabs.Tab name="artistsForYou" label="Artists for You">
         <Tabs.Lazy>
           <ArtQuizExploreArtists savedArtworks={savedArtworks} />
         </Tabs.Lazy>

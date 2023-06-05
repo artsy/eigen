@@ -103,7 +103,7 @@ class Artists extends React.Component<Props, State> {
                 <ArtistListItem
                   artist={item.artist!}
                   withFeedback
-                  containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }}
+                  containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(0.5) }}
                 />
               )
             }}

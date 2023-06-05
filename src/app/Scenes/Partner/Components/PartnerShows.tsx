@@ -103,7 +103,7 @@ export const PartnerShows: React.FC<{
 
   return (
     <Tabs.FlatList
-      contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20 }}
+      contentContainerStyle={{ paddingHorizontal: space(2), paddingTop: space(2) }}
       data={sections}
       renderItem={({ item }) => item.content}
       // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
