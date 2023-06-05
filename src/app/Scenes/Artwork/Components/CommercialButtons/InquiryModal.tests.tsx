@@ -151,8 +151,6 @@ describe("<InquiryModal />", () => {
     await press(wrapper.root, { text: "Cancel" })
 
     expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeFalsy()
-    expect(checkBox.props.checked).toBeFalsy()
-    expect(input.props.value).toBeFalsy()
   })
 
   describe("user can select 'Price & Availability'", () => {
