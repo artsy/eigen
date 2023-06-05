@@ -1,3 +1,4 @@
+import { useSaveArtworkMutation } from "__generated__/useSaveArtworkMutation.graphql"
 import { useRef } from "react"
 import { useMutation } from "react-relay"
 import { Disposable, RecordSourceSelectorProxy, graphql } from "relay-runtime"
@@ -19,7 +20,7 @@ export const useSaveArtwork = ({
   onError,
   optimisticUpdater,
 }: SaveArtworkOptions) => {
-  const [commit] = useMutation(Mutation)
+  const [commit] = useMutation<useSaveArtworkMutation>(Mutation)
   const prevCommit = useRef<Disposable | null>(null)
   const nextSavedState = !isSaved
 
@@ -34,10 +35,8 @@ export const useSaveArtwork = ({
 
     prevCommit.current = commit({
       variables: {
-        input: {
-          artworkID: internalID,
-          remove: isSaved,
-        },
+        artworkID: internalID,
+        remove: isSaved,
       },
       onCompleted: () => {
         clearPrevCommit()
@@ -58,8 +57,8 @@ export const useSaveArtwork = ({
 }
 
 const Mutation = graphql`
-  mutation useSaveArtworkMutation($input: SaveArtworkInput!) {
-    saveArtwork(input: $input) {
+  mutation useSaveArtworkMutation($artworkID: String!, $remove: Boolean) {
+    saveArtwork(input: { artworkID: $artworkID, remove: $remove }) {
       artwork {
         id
         isSaved
@@ -68,6 +67,7 @@ const Mutation = graphql`
       me {
         collection(id: "saved-artwork") {
           internalID
+          isSavedArtwork(artworkID: $artworkID)
           ...ArtworkListItem_collection
         }
       }
