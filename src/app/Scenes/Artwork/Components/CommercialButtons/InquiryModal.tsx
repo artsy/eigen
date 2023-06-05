@@ -4,6 +4,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { Input } from "app/Components/Input"
+import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { SubmitInquiryRequest } from "app/Scenes/Artwork/Components/Mutation/SubmitInquiryRequest"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -154,10 +155,19 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const [loading, setLoading] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
-  const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
+  const setMessage = useCallback(
+    (message: string) => dispatch({ type: "setMessage", payload: message }),
+    [dispatch]
+  )
   const [mutationSuccessful, setMutationSuccessful] = useState(false)
+
+  const getAutomatedMessages = () => {
+    return AUTOMATED_MESSAGES[Math.floor(Math.random() * AUTOMATED_MESSAGES.length)]
+  }
+
   const resetAndExit = () => {
     dispatch({ type: "resetForm", payload: null })
+    setMessage(getAutomatedMessages())
     toggleVisibility()
   }
 
@@ -174,6 +184,10 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       owner_slug: artwork.slug,
     })
   }
+
+  useEffect(() => {
+    setMessage(getAutomatedMessages())
+  }, [setMessage])
 
   useEffect(() => {
     if (mutationSuccessful) {
@@ -240,7 +254,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           resetAndExit()
         }}
         rightButtonText="Send"
-        rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
+        rightButtonDisabled={state.inquiryQuestions.length === 0}
         onRightButtonPress={sendInquiry}
       >
         {state.inquiryType}
