@@ -1,5 +1,5 @@
 import { useMutation } from "react-relay"
-import { graphql } from "relay-runtime"
+import { RecordSourceSelectorProxy, graphql } from "relay-runtime"
 
 export interface SaveArtworkOptions {
   id: string
@@ -7,6 +7,7 @@ export interface SaveArtworkOptions {
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
   onError?: () => void
+  optimisticUpdater?: (isSaved: boolean, store: RecordSourceSelectorProxy) => void
 }
 
 export const useSaveArtwork = ({
@@ -15,6 +16,7 @@ export const useSaveArtwork = ({
   isSaved,
   onCompleted,
   onError,
+  optimisticUpdater,
 }: SaveArtworkOptions) => {
   const [commit] = useMutation(Mutation)
   const nextSavedState = !isSaved
@@ -34,6 +36,8 @@ export const useSaveArtwork = ({
       optimisticUpdater: (store) => {
         const artwork = store.get(id)
         artwork?.setValue(nextSavedState, "isSaved")
+
+        optimisticUpdater?.(nextSavedState, store)
       },
     })
   }
