@@ -49,6 +49,32 @@ Following this sequence of steps, minor changes made to JS code would visibly ho
 
 When the terminal window automatically pops up and executes `yarn start`, let it run, and do not close it. And when you are done for the day and want to start developing the following day, remember to open Xcode and boot it from there, and not manually in the terminal. This will lead to a vastly better developer experience.
 
+## Node not found compilation issues
+
+When compiling if you see an error like:
+
+`Command PhaseScriptExecution failed with a nonzero exit code ...[Codegen] [Error] Could not find node. It looks like that the .xcode.env or .xcode.env.local : command not found`
+
+It means xcode cannot find your node installation. It reads this from a file called .xcode.env in the ios/ directory.
+
+We mostly use asdf and if this is not working correctly it probably means something in your local setup is interfering with Xcode reading node.
+
+As a workaround you can run this script:
+
+`./scripts/setup-xcode-local-node.sh`
+
+This will write your local node path to a file in ios/ .xcode.env.local. It should look something like this
+
+`export NODE_BINARY=/Users/brianbeckerle/.asdf/shims/node`
+
+If it still does not compile or the file looks incorrect you can paste the path output from this command:
+
+`$ which node`
+
+into that same .xcode.env.local file.
+
+The .xcode.env.local file is not checked in so can be specific to your setup.
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
