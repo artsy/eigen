@@ -219,7 +219,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         Edit Profile
       </FancyModalHeader>
 
-      {showCompleteYourProfileBanner && (
+      {!!showCompleteYourProfileBanner && (
         <Message
           variant="info"
           title="Complete your profile and make a great impression"
