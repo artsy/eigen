@@ -1,6 +1,10 @@
 import { ActionType, AddedArtworkToArtworkList } from "@artsy/cohesion"
-import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
-import { useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  BottomSheetFooter,
+  BottomSheetFooterProps,
+  useBottomSheetModal,
+} from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ResultAction } from "app/Components/ArtworkLists/types"
@@ -10,7 +14,13 @@ import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
 
-export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
+const STICKY_BOTTOM_CONTENT_HEIGHT = 120
+
+export const StickyBottomContentPlaceholder = () => {
+  return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} />
+}
+
+export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooterPosition }) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { trackEvent } = useTracking()
@@ -67,23 +77,25 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   }
 
   return (
-    <Box {...props}>
-      <Text variant="xs" textAlign="center">
-        {getSelectedListsCountText(totalCount)}
-      </Text>
+    <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
+      <Box bg="white100" height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} justifyContent="center">
+        <Text variant="xs" textAlign="center">
+          {getSelectedListsCountText(totalCount)}
+        </Text>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
 
-      <Button
-        width="100%"
-        block
-        disabled={!hasChanges}
-        loading={mutationInProgress}
-        onPress={handleSave}
-      >
-        Save
-      </Button>
-    </Box>
+        <Button
+          width="100%"
+          block
+          disabled={!hasChanges}
+          loading={mutationInProgress}
+          onPress={handleSave}
+        >
+          Save
+        </Button>
+      </Box>
+    </BottomSheetFooter>
   )
 }
 
