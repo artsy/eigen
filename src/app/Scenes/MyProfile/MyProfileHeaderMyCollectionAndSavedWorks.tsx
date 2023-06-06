@@ -1,8 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs, VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
+import { Tabs } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
-import { TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -16,7 +15,6 @@ import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHead
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { compact } from "lodash"
 import { useMemo } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 
@@ -37,31 +35,6 @@ interface MyProfileTabProps {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
   const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const tabs: TabProps[] = compact([
-    {
-      title: Tab.collection,
-      content: <MyCollectionQueryRenderer />,
-    },
-    {
-      title: Tab.insights,
-      content: <MyCollectionInsightsQR />,
-      visualClues: [
-        {
-          jsx: <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />,
-          visualClueName: "AddedArtworkWithInsightsVisualClueDot",
-        },
-        {
-          jsx: <VisualClueText />,
-          visualClueName: "MyCollectionInsights",
-        },
-      ],
-    },
-  ])
-
-  tabs.forEach((tab) => {
-    tab.initial = tab.title === initialTab
-  })
-
   return (
     <>
       <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
