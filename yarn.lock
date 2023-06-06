@@ -237,10 +237,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.34":
-  version "11.0.34"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.34.tgz#d910d86272ac9d0b8258a22a5101bab9c5b7b9d7"
-  integrity sha512-mWt/u6fHkvRpbd5Z+0aN9D86vOm0XinyLBSjTdYZaEk3K8/iVjgHXYH0U4PybUJPERNula0fF3cDYgmtIoJ0KA==
+"@artsy/palette-mobile@11.0.35":
+  version "11.0.35"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.35.tgz#eba551a335775e2b67cc1365948b0deb167ac07e"
+  integrity sha512-hlmrDeex37pgAhL/Rc6ORlypqVBSCpNKWLlj/jZw2YiB1q9ykui7TIdLluqKjayQoKhnoKwROSyQQD9Idtf7Bg==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
