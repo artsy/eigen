@@ -10,7 +10,7 @@ import {
 } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/StickyBottomContent"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 
-const SNAP_POINTS = ["50%", "95%"]
+const SNAP_POINTS = ["60%", "95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
   const { reset } = useArtworkListsContext()
