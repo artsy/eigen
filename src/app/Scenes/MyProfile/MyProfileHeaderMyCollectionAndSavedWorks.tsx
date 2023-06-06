@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs } from "@artsy/palette-mobile"
+import { Tabs, VisualClueDot } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
@@ -41,6 +41,16 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
         <TabsContainer
           initialTabName={initialTab}
           renderHeader={() => <MyProfileHeaderQueryRenderer />}
+          indicators={[
+            {
+              tabName: Tab.insights,
+              Component: () => {
+                return (
+                  <VisualClueDot style={{ left: -5, alignSelf: "flex-start", marginTop: 15 }} />
+                )
+              },
+            },
+          ]}
         >
           <Tabs.Tab name={Tab.collection} label={Tab.collection}>
             <Tabs.Lazy>
