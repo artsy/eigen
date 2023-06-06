@@ -1,7 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
+import { Tabs, VisualClueDot, VisualClueText } from "@artsy/palette-mobile"
+import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -11,13 +12,13 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import { useMemo } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { MyProfileHeaderQueryRenderer } from "./MyProfileHeader"
 
 export enum Tab {
   collection = "My Collection",
@@ -55,10 +56,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
         },
       ],
     },
-    {
-      title: Tab.savedWorks,
-      content: isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />,
-    },
   ])
 
   tabs.forEach((tab) => {
@@ -68,11 +65,26 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
   return (
     <>
       <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
-        <StickyTabPage
-          disableBackButtonUpdate
-          tabs={tabs}
-          staticHeaderContent={<MyProfileHeaderQueryRenderer />}
-        />
+        <TabsContainer
+          initialTabName={initialTab}
+          renderHeader={() => <MyProfileHeaderQueryRenderer />}
+        >
+          <Tabs.Tab name={Tab.collection} label={Tab.collection}>
+            <Tabs.Lazy>
+              <MyCollectionQueryRenderer />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+          <Tabs.Tab name={Tab.insights} label={Tab.insights}>
+            <Tabs.Lazy>
+              <MyCollectionInsightsQR />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+          <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
+            <Tabs.Lazy>
+              {isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />}
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </TabsContainer>
       </SafeAreaView>
       {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>

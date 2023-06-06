@@ -8,11 +8,11 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { Schema } from "app/utils/track"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface AuctionResultsForArtistsYouCollectRailProps {
   me: AuctionResultsForArtistsYouCollectRail_me$key
@@ -45,6 +45,8 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
       <FlatList
         data={auctionResultsData}
         listKey="artist-auction-results"
+        nestedScrollEnabled={false}
+        scrollEnabled={false}
         renderItem={({ item, index }) => (
           <AuctionResultListItemFragmentContainer
             auctionResult={item}
