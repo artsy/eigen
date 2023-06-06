@@ -73,6 +73,8 @@ If it still does not compile or the file looks incorrect you can paste the path 
 
 into that same .xcode.env.local file.
 
+The .xcode.env.local file is not checked in so can be specific to your setup.
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
