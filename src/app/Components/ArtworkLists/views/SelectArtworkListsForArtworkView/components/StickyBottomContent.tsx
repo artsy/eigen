@@ -8,20 +8,24 @@ import {
 import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ResultAction } from "app/Components/ArtworkLists/types"
+import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
 
-const STICKY_BOTTOM_CONTENT_HEIGHT = 120
+const STICKY_BOTTOM_CONTENT_HEIGHT = 100
 
 export const StickyBottomContentPlaceholder = () => {
-  return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} />
+  const bottomOffset = useArtworkListsBottomOffset(2)
+
+  return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT + bottomOffset} />
 }
 
 export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooterPosition }) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
+  const bottomOffset = useArtworkListsBottomOffset(2)
   const { dismiss } = useBottomSheetModal()
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
@@ -78,22 +82,26 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
 
   return (
     <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-      <Box bg="white100" height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} justifyContent="center">
-        <Text variant="xs" textAlign="center">
-          {getSelectedListsCountText(totalCount)}
-        </Text>
+      <Box bg="white100">
+        <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} pt={2}>
+          <Text variant="xs" textAlign="center">
+            {getSelectedListsCountText(totalCount)}
+          </Text>
 
-        <Spacer y={1} />
+          <Spacer y={1} />
 
-        <Button
-          width="100%"
-          block
-          disabled={!hasChanges}
-          loading={mutationInProgress}
-          onPress={handleSave}
-        >
-          Save
-        </Button>
+          <Button
+            width="100%"
+            block
+            disabled={!hasChanges}
+            loading={mutationInProgress}
+            onPress={handleSave}
+          >
+            Save
+          </Button>
+        </Box>
+
+        <Box height={bottomOffset} />
       </Box>
     </BottomSheetFooter>
   )
