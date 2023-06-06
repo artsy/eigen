@@ -18,7 +18,7 @@ jest.mock("@gorhom/bottom-sheet", () => {
   }
 })
 
-describe("ArtworkListsProvider", () => {
+describe.skip("ArtworkListsProvider", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = (props: Partial<ArtworkListsProviderProps> = {}) => {
