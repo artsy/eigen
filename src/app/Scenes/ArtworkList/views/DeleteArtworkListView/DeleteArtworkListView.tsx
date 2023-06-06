@@ -88,7 +88,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
         <Spacer y={1} />
 
         <Button block variant="outline" onPress={closeView}>
-          Cancel
+          Back
         </Button>
       </Flex>
     </AutoHeightBottomSheet>
