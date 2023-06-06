@@ -1,11 +1,21 @@
-import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
-import { useBottomSheetModal } from "@gorhom/bottom-sheet"
+import { Box, Button, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  BottomSheetFooter,
+  BottomSheetFooterProps,
+  useBottomSheetModal,
+} from "@gorhom/bottom-sheet"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { useSavePendingArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSavePendingArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { FC } from "react"
 
-export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
+const STICKY_BOTTOM_CONTENT_HEIGHT = 120
+
+export const StickyBottomContentPlaceholder = () => {
+  return <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} />
+}
+
+export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooterPosition }) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const { selectedTotalCount } = state
@@ -19,23 +29,25 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
   })
 
   return (
-    <Box {...props}>
-      <Text variant="xs" textAlign="center">
-        {getSelectedListsCountText(totalCount)}
-      </Text>
+    <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
+      <Box bg="white100" height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} justifyContent="center">
+        <Text variant="xs" textAlign="center">
+          {getSelectedListsCountText(totalCount)}
+        </Text>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
 
-      <Button
-        width="100%"
-        block
-        disabled={!state.hasUnsavedChanges}
-        loading={inProgress}
-        onPress={save}
-      >
-        Save
-      </Button>
-    </Box>
+        <Button
+          width="100%"
+          block
+          disabled={!state.hasUnsavedChanges}
+          loading={inProgress}
+          onPress={save}
+        >
+          Save
+        </Button>
+      </Box>
+    </BottomSheetFooter>
   )
 }
 
