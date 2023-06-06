@@ -26,9 +26,9 @@ const validationSchema = Yup.object().shape({
 
 export const AddMyCollectionArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ route /* navigation */ }) => {
+> = ({ route }) => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
-  const ScrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
   const nationalityInputRef = useRef<Input>(null)
   const birthYearInputRef = useRef<Input>(null)
@@ -52,6 +52,7 @@ export const AddMyCollectionArtist: React.FC<
   const touched = useHasBeenTrue(dirty)
 
   const handleOnChangeText = (field: keyof NewMyCollectionArtistFormikSchema, text: string) => {
+    // hide error when the user starts to type again
     if (errors[field]) {
       validateField(field)
     }
@@ -80,7 +81,7 @@ export const AddMyCollectionArtist: React.FC<
         />
 
         <ScrollView
-          ref={ScrollViewRef}
+          ref={scrollViewRef}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
         >
@@ -140,7 +141,7 @@ export const AddMyCollectionArtist: React.FC<
                       onChangeText={(text) => handleOnChangeText("deathYear", text)}
                       placeholder="Death Year"
                       ref={deathYearInputRef}
-                      returnKeyType="next"
+                      returnKeyType="done"
                       title="Death Year"
                       value={values.deathYear}
                     />
