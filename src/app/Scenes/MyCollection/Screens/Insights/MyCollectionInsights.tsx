@@ -1,6 +1,5 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
@@ -13,7 +12,7 @@ import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Suspense, useContext, useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
@@ -37,6 +36,9 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   )
 
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
+
+  const showMyCollectionInsightsIncompleteMessage =
+    showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
 
   const hasMarketSignals = !!data.me?.auctionResults?.totalCount
 
@@ -72,31 +74,6 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     })
   }
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
-  const showMessages = async () => {
-    const showMyCollectionInsightsIncompleteMessage =
-      showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
-
-    setJSX(
-      <>
-        {!!showMyCollectionInsightsIncompleteMessage && (
-          <MyCollectionInsightsIncompleteMessage
-            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
-          />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.insights}
-          hasMarketSignals={hasMarketSignals}
-        />
-      </>
-    )
-  }
-
-  useEffect(() => {
-    showMessages()
-  }, [data.me?.myCollectionInfo?.artworksCount, areInsightsIncomplete])
-
   const renderContent = () => {
     return (
       <>
@@ -126,6 +103,17 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       }}
       paddingHorizontal={0}
     >
+      <>
+        {!!showMyCollectionInsightsIncompleteMessage && (
+          <MyCollectionInsightsIncompleteMessage
+            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+          />
+        )}
+        <MyCollectionArtworkUploadMessages
+          sourceTab={Tab.insights}
+          hasMarketSignals={hasMarketSignals}
+        />
+      </>
       {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
     </StickyTabPageScrollView>
   )

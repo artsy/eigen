@@ -9,7 +9,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -39,7 +38,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -58,6 +57,7 @@ const MyCollection: React.FC<{
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showSearchBar, setShowSearchBar] = useState(false)
+  const [showNewWorksMessage, setShowNewWorksMessage] = useState(false)
   const innerFlatListRef = useRef(null)
 
   const filtersCount = useSelectedFiltersCount()
@@ -108,34 +108,19 @@ const MyCollection: React.FC<{
     relay.loadMore(100)
   }, [me?.myCollectionConnection])
 
-  // hack for tests. we should fix that.
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
-  const showMessages = async () => {
-    const showNewWorksMessage =
+  const checkForNewMessages = async () => {
+    const newWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-    setJSX(
-      <MyCollectionStickyHeader
-        filtersCount={filtersCount}
-        hasMarketSignals={hasMarketSignals}
-        showModal={() => setIsFilterModalVisible(true)}
-        showNewWorksMessage={!!showNewWorksMessage}
-        showSeparator={!showSearchBar}
-        hasArtworks={artworks.length > 0}
-      />
-    )
+    setShowNewWorksMessage(!!newWorksMessage)
   }
 
   useEffect(() => {
     const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
 
     if (renderMessages) {
-      showMessages()
-    } else {
-      // remove already set JSX
-      setJSX(null)
+      checkForNewMessages()
     }
   }, [artworks.length, filtersCount, showSearchBar])
 
@@ -172,6 +157,14 @@ const MyCollection: React.FC<{
       keyboardShouldPersistTaps="handled"
       paddingHorizontal={0}
     >
+      <MyCollectionStickyHeader
+        filtersCount={filtersCount}
+        hasMarketSignals={hasMarketSignals}
+        showModal={() => setIsFilterModalVisible(true)}
+        showNewWorksMessage={!!showNewWorksMessage}
+        showSeparator={!showSearchBar}
+        hasArtworks={artworks.length > 0}
+      />
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         mode={FilterModalMode.Custom}
