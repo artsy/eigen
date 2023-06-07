@@ -1,11 +1,7 @@
-jest.unmock("react-relay")
-const mockGetLocationDetails = jest.fn()
-const mockGetLocationPredictions = jest.fn()
-
-jest.mock("app/utils/googleMaps", () => ({
-  getLocationPredictions: mockGetLocationPredictions,
-  getLocationDetails: mockGetLocationDetails,
-}))
+// jest.mock("app/utils/googleMaps", () => ({
+//   getLocationPredictions: mockGetLocationPredictions,
+//   getLocationDetails: mockGetLocationDetails,
+// }))
 
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
