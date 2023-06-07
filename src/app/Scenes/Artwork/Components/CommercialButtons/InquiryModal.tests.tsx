@@ -1,8 +1,3 @@
-// jest.mock("app/utils/googleMaps", () => ({
-//   getLocationPredictions: mockGetLocationPredictions,
-//   getLocationDetails: mockGetLocationDetails,
-// }))
-
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
