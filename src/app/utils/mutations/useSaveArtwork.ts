@@ -29,8 +29,6 @@ export const useSaveArtwork = ({
   }
 
   return () => {
-    let optimisticUpdaterCalledBefore = false
-
     if (prevCommit.current !== null) {
       prevCommit.current.dispose()
     }
@@ -49,21 +47,10 @@ export const useSaveArtwork = ({
         onError?.(error)
       },
       optimisticUpdater: (store) => {
-        /**
-         * `optimisticUpdater` can be called twice for the same mutation
-         * this hack helps prevent this from happening
-         *
-         * See this PR for more info: https://github.com/artsy/eigen/pull/8815
-         */
-        if (optimisticUpdaterCalledBefore) {
-          return
-        }
-
         const artwork = store.get(id)
         artwork?.setValue(nextSavedState, "isSaved")
 
         optimisticUpdater?.(nextSavedState, store)
-        optimisticUpdaterCalledBefore = true
       },
     })
   }

@@ -5,6 +5,7 @@ import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { useRef } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
@@ -17,6 +18,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
+  const prevSavedState = useRef(artwork.isSaved)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -42,6 +44,8 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     }
   }
 
+  // console.log("[debug] isSaved", isSaved)
+
   const legacySaveArtworkToDefaultArtworkList = useLegacySaveArtwork({
     ...restOptions,
     id: artwork.id,
@@ -57,6 +61,12 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     isSaved: artwork.isSaved,
     onCompleted,
     optimisticUpdater: (isArtworkSaved) => {
+      if (prevSavedState.current === isArtworkSaved) {
+        return
+      }
+
+      prevSavedState.current = isArtworkSaved
+
       if (isArtworkSaved) {
         onSave({
           action: ResultAction.SavedToDefaultArtworkList,
