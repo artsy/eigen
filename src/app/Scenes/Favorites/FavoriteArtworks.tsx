@@ -4,7 +4,6 @@ import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.grap
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -77,7 +76,10 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
         refreshControl={
           <RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
         }
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
+        contentContainerStyle={{
+          marginHorizontal: space(2),
+          flexGrow: 1,
+        }}
       >
         <ZeroState
           bigTitle="Keep track of artworks you love"
@@ -123,7 +125,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
 
   return (
     <Tabs.FlatList
-      contentContainerStyle={{ paddingVertical: space(2) }}
+      contentContainerStyle={{ marginVertical: space(2), marginHorizontal: space(2) }}
       data={data}
       onEndReached={loadMore}
       renderItem={({ item }) => item.content}
@@ -204,9 +206,9 @@ export const FavoriteArtworksQueryRenderer = () => {
         Container: FavoriteArtworksContainer,
         renderPlaceholder: () => {
           return (
-            <StickyTabPageScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
+            <Tabs.ScrollView scrollEnabled={false} style={{ paddingTop: 20 }}>
               <GenericGridPlaceholder width={screen.width - 40} />
-            </StickyTabPageScrollView>
+            </Tabs.ScrollView>
           )
         },
         renderFallback: ({ retry }) => (

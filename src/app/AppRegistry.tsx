@@ -459,9 +459,11 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
-    MyCollectionArtworkScreenQuery,
-  ]),
+  MyCollectionArtwork: reactModule(
+    MyCollectionArtworkScreen,
+    { fullBleed: true, hidesBackButton: true },
+    [MyCollectionArtworkScreenQuery]
+  ),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,

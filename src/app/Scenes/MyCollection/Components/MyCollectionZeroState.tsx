@@ -1,7 +1,6 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { useSpace, Flex, LockIcon, Button, Text } from "@artsy/palette-mobile"
+import { useSpace, Flex, LockIcon, Button, Text, Tabs } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { Image } from "react-native"
@@ -14,7 +13,7 @@ export const MyCollectionZeroState: React.FC = () => {
   const image = require("images/my-collection-empty-state.webp")
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ justifyContent: "center", height: "100%" }}>
+    <Tabs.ScrollView contentContainerStyle={{ justifyContent: "center", height: "100%" }}>
       <ZeroState
         bigTitle="Know Your Collection Better"
         subtitle="Manage your collection online and get free market insights."
@@ -55,7 +54,7 @@ export const MyCollectionZeroState: React.FC = () => {
           </>
         }
       />
-    </StickyTabPageScrollView>
+    </Tabs.ScrollView>
   )
 }
 
