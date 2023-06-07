@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
-import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -12,6 +11,7 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -32,7 +32,7 @@ interface MyProfileTabProps {
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
-  const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { showVisualClue } = useVisualClue()
 
