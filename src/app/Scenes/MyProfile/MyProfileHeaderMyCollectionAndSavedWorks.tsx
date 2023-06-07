@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs } from "@artsy/palette-mobile"
-import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
+import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
 import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
 import { ArtworkListsQR } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
@@ -13,10 +12,10 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useMemo } from "react"
-import { SafeAreaView } from "react-native-safe-area-context"
 
 export enum Tab {
   collection = "My Collection",
@@ -35,30 +34,46 @@ interface MyProfileTabProps {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
   const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
+  const { showVisualClue } = useVisualClue()
+
+  // Check if there's new content
+  const indicators = []
+  if (showVisualClue("AddedArtworkWithInsightsVisualClueDot")) {
+    indicators.push({
+      tabName: Tab.insights,
+      Component: () => {
+        return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
+      },
+    })
+  }
+
   return (
     <>
-      <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
-        <TabsContainer
-          initialTabName={initialTab}
-          renderHeader={() => <MyProfileHeaderQueryRenderer />}
-        >
-          <Tabs.Tab name={Tab.collection} label={Tab.collection}>
-            <Tabs.Lazy>
-              <MyCollectionQueryRenderer />
-            </Tabs.Lazy>
-          </Tabs.Tab>
-          <Tabs.Tab name={Tab.insights} label={Tab.insights}>
-            <Tabs.Lazy>
-              <MyCollectionInsightsQR />
-            </Tabs.Lazy>
-          </Tabs.Tab>
-          <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
-            <Tabs.Lazy>
-              {isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />}
-            </Tabs.Lazy>
-          </Tabs.Tab>
-        </TabsContainer>
-      </SafeAreaView>
+      <Screen>
+        <Screen.Body fullwidth>
+          <Tabs
+            initialTabName={initialTab}
+            renderHeader={() => <MyProfileHeaderQueryRenderer />}
+            indicators={indicators}
+          >
+            <Tabs.Tab name={Tab.collection} label={Tab.collection}>
+              <Tabs.Lazy>
+                <MyCollectionQueryRenderer />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+            <Tabs.Tab name={Tab.insights} label={Tab.insights}>
+              <Tabs.Lazy>
+                <MyCollectionInsightsQR />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+            <Tabs.Tab name={Tab.savedWorks} label={Tab.savedWorks}>
+              <Tabs.Lazy>
+                {isArtworkListsEnabled ? <ArtworkListsQR /> : <FavoriteArtworksQueryRenderer />}
+              </Tabs.Lazy>
+            </Tabs.Tab>
+          </Tabs>
+        </Screen.Body>
+      </Screen>
       {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
