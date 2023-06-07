@@ -20,17 +20,10 @@ export interface ArtworkEntity {
   imageURL: string | null
 }
 
-export type SaveResult =
-  | {
-      action: ResultAction.SavedToDefaultArtworkList
-      artwork: ArtworkEntity
-    }
-  | {
-      action: ResultAction.RemovedFromDefaultArtworkList
-    }
-  | {
-      action: ResultAction.ModifiedArtworkLists
-    }
+export type SaveResult = {
+  action: ResultAction
+  artwork: ArtworkEntity
+}
 
 export enum ArtworkListMode {
   AddingArtworkList = "addingArtworkLists",

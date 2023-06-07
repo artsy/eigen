@@ -69,6 +69,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
       onSave({
         action: ResultAction.RemovedFromDefaultArtworkList,
+        artwork: artworkEntity,
       })
     },
   })
