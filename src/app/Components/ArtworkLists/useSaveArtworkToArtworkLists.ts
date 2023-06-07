@@ -5,7 +5,6 @@ import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
-import { useRef } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
@@ -18,7 +17,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
-  const prevSavedState = useRef<boolean | null>(null)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -57,20 +55,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    onCompleted: (...args) => {
-      prevSavedState.current = null
-      onCompleted?.(...args)
-    },
-    onError: (error) => {
-      prevSavedState.current = null
-      restOptions.onError?.(error)
-    },
-    optimisticUpdater: (isArtworkSaved) => {
-      if (prevSavedState.current === isArtworkSaved) {
+    onCompleted,
+    optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
+      if (isCalledBefore) {
         return
       }
-
-      prevSavedState.current = isArtworkSaved
 
       if (isArtworkSaved) {
         onSave({
@@ -87,10 +76,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     },
   })
 
-  const saveArtworkToDefaultArtworkList = isArtworkListsEnabled
-    ? newSaveArtworkToDefaultArtworkList
-    : legacySaveArtworkToDefaultArtworkList
-
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
       type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
@@ -103,7 +88,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const saveArtworkToLists = () => {
     if (!isArtworkListsEnabled) {
-      saveArtworkToDefaultArtworkList()
+      legacySaveArtworkToDefaultArtworkList()
       return
     }
 
@@ -112,7 +97,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       return
     }
 
-    saveArtworkToDefaultArtworkList()
+    newSaveArtworkToDefaultArtworkList()
   }
 
   return {
