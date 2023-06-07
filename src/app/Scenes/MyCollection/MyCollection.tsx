@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { MyCollectionFetchAuctionResultsQuery } from "__generated__/MyCollectionFetchAuctionResultsQuery.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -40,7 +41,13 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
+import {
+  QueryRenderer,
+  RelayPaginationProp,
+  createPaginationContainer,
+  fetchQuery,
+  graphql,
+} from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
@@ -55,6 +62,7 @@ const MyCollection: React.FC<{
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
+  const [hasMarketSignals, setHasMarketSignals] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [showSearchBar, setShowSearchBar] = useState(false)
@@ -66,8 +74,6 @@ const MyCollection: React.FC<{
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
-
-  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const toast = useToast()
 
@@ -88,6 +94,25 @@ const MyCollection: React.FC<{
         console.error(err)
       }
     })
+
+    // No need to fetch the data again if we already know the user has at least one signal
+    if (!hasMarketSignals) {
+      fetchQuery<MyCollectionFetchAuctionResultsQuery>(
+        getRelayEnvironment(),
+        FetchAuctionResultsQuery,
+        {}
+      )
+        .toPromise()
+        .then((res) => {
+          if (res?.me?.auctionResults?.totalCount) {
+            setHasMarketSignals(true)
+          }
+        })
+        .catch((err) => {
+          // Failing siltently here to keep this as a breadcrumb for now
+          console.log(err)
+        })
+    }
   }
 
   const notifyMyCollectionInsightsTab = () => {
@@ -219,9 +244,6 @@ export const MyCollectionContainer = createPaginationContainer(
           artworksCount
         }
         ...MyCollectionCollectedArtists_me
-        auctionResults: myCollectionAuctionResults(first: 3) {
-          totalCount
-        }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
@@ -277,6 +299,16 @@ export const MyCollectionContainer = createPaginationContainer(
     `,
   }
 )
+
+export const FetchAuctionResultsQuery = graphql`
+  query MyCollectionFetchAuctionResultsQuery {
+    me {
+      auctionResults: myCollectionAuctionResults(first: 3) {
+        totalCount
+      }
+    }
+  }
+`
 
 export const MyCollectionScreenQuery = graphql`
   query MyCollectionQuery {
