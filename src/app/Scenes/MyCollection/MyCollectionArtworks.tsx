@@ -10,13 +10,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
-import {
-  Alert,
-  InteractionManager,
-  LayoutAnimation,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from "react-native"
+import { Alert, InteractionManager } from "react-native"
 
 import { RelayPaginationProp, graphql } from "react-relay"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
@@ -28,20 +22,12 @@ import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 interface MyCollectionArtworksProps {
   me: MyCollection_me$data
   relay: RelayPaginationProp
-  showSearchBar: boolean
-  setShowSearchBar: (show: boolean) => void
 }
 
-export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
-  me,
-  relay,
-  showSearchBar,
-  setShowSearchBar,
-}) => {
+export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, relay }) => {
   const { height: screenHeight } = useScreenDimensions()
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
-  const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
 
   const [keywordFilter, setKeywordFilter] = useState("")
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
@@ -64,31 +50,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     cleanLocalImages()
   }, [])
 
-  // Make Search Bar visible when user scrolls to top
-  const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (showSearchBar) {
-      return
-    }
-
-    if (initialScrollPosition === -1) {
-      setInitialScrollPosition(nativeEvent.contentOffset.y)
-      return
-    }
-
-    if (nativeEvent.contentOffset.y < initialScrollPosition) {
-      LayoutAnimation.configureNext({
-        ...LayoutAnimation.Presets.easeInEaseOut,
-        duration: 200,
-      })
-
-      setShowSearchBar(true)
-    }
-  }
-
   return (
     <Flex minHeight={minHeight} px={2}>
       <Flex mb={1}>
-        {!!showSearchBar && (
+        {artworks.length > 4 && (
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}
@@ -155,8 +120,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 keywordFilter
               )
             }
-            scrollEventThrottle={100}
-            onScroll={handleScroll}
           />
         ) : (
           <MyCollectionArtworkList
@@ -172,8 +135,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 keywordFilter
               )
             }
-            scrollEventThrottle={100}
-            onScroll={handleScroll}
           />
         )
       ) : (

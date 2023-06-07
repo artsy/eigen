@@ -1,10 +1,9 @@
-import { Spacer, useSpace, Button } from "@artsy/palette-mobile"
+import { Button, Spacer, Tabs, useSpace } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
@@ -14,8 +13,8 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useEffect, useState } from "react"
-import { Image } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { Image, RefreshControl } from "react-native"
+import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 
 interface Props {
   me: FavoriteArtworks_me$data
@@ -74,9 +73,9 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
 
   if (artworks.length === 0) {
     return (
-      <StickyTabPageScrollView
+      <Tabs.ScrollView
         refreshControl={
-          <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
         }
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
       >
@@ -102,27 +101,35 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
             </Button>
           }
         />
-      </StickyTabPageScrollView>
+      </Tabs.ScrollView>
     )
   }
 
+  const data = [
+    {
+      content: (
+        <GenericGrid
+          artworks={artworks}
+          isLoading={fetchingMoreData}
+          hidePartner
+          artistNamesTextStyle={{ weight: "regular" }}
+          saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+          width={width - space(2)}
+        />
+      ),
+      key: "grid",
+    },
+  ]
+
   return (
-    <StickyTabPageScrollView
+    <Tabs.FlatList
       contentContainerStyle={{ paddingVertical: space(2) }}
+      data={data}
       onEndReached={loadMore}
-      refreshControl={
-        <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
-      }
-    >
-      <GenericGrid
-        artworks={artworks}
-        isLoading={fetchingMoreData}
-        hidePartner
-        artistNamesTextStyle={{ weight: "regular" }}
-        saleInfoTextStyle={{ weight: "medium", color: "black100" }}
-        width={width - space(2)}
-      />
-    </StickyTabPageScrollView>
+      renderItem={({ item }) => item.content}
+      keyExtractor={({ key }) => key}
+      refreshControl={<RefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />}
+    />
   )
 }
 

@@ -1,9 +1,8 @@
-import { Flex, useTheme, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, INPUT_HEIGHT, Text, useSpace, useTheme } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
-import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -40,8 +39,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const [value, setValue] = useState(searchString)
 
-  const { staticHeaderHeight } = useStickyTabPageContext()
-
   const viewOptionPreference = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const [viewOption, setViewOption] = useState(viewOptionPreference)
@@ -61,26 +58,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
 
-  Animated.useCode(
-    () =>
-      Animated.call(
-        [staticHeaderHeight, hasRunFocusedAnimation],
-        ([, hasFinishedAnimationLoop]) => {
-          if (hasFinishedAnimationLoop) {
-            return
-          }
-          hasRunFocusedAnimation.setValue(new Animated.Value(1))
-        }
-      ),
-    [isFocused]
-  )
-
   useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
 
   return (
-    <Flex>
+    <Flex height={INPUT_HEIGHT} justifyContent="center">
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
           <Input
@@ -123,7 +106,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           </TouchableOpacity>
         </Flex>
       ) : (
-        <Flex my={1}>
+        <Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flex={1} mr={1} justifyContent="center">
               <TouchableWithoutFeedback

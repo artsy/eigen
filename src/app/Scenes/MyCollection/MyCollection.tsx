@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Button, Flex, Separator, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Separator, Spacer, Tabs } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionFetchAuctionResultsQuery } from "__generated__/MyCollectionFetchAuctionResultsQuery.graphql"
@@ -9,9 +9,6 @@ import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkF
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
@@ -40,7 +37,8 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
+import { RefreshControl } from "react-native"
 import {
   QueryRenderer,
   RelayPaginationProp,
@@ -65,8 +63,7 @@ const MyCollection: React.FC<{
   const [hasMarketSignals, setHasMarketSignals] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [showSearchBar, setShowSearchBar] = useState(false)
-  const innerFlatListRef = useRef(null)
+  const [showNewWorksMessage, setShowNewWorksMessage] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
 
@@ -133,36 +130,21 @@ const MyCollection: React.FC<{
     relay.loadMore(100)
   }, [me?.myCollectionConnection])
 
-  // hack for tests. we should fix that.
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
-  const showMessages = async () => {
-    const showNewWorksMessage =
+  const checkForNewMessages = async () => {
+    const newWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-    setJSX(
-      <MyCollectionStickyHeader
-        filtersCount={filtersCount}
-        hasMarketSignals={hasMarketSignals}
-        showModal={() => setIsFilterModalVisible(true)}
-        showNewWorksMessage={!!showNewWorksMessage}
-        showSeparator={!showSearchBar}
-        hasArtworks={artworks.length > 0}
-      />
-    )
+    setShowNewWorksMessage(!!newWorksMessage)
   }
 
   useEffect(() => {
     const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
 
     if (renderMessages) {
-      showMessages()
-    } else {
-      // remove already set JSX
-      setJSX(null)
+      checkForNewMessages()
     }
-  }, [artworks.length, filtersCount, showSearchBar])
+  }, [artworks.length, filtersCount])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
@@ -176,7 +158,7 @@ const MyCollection: React.FC<{
   // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
-      <StickyTabPageScrollView>
+      <Tabs.ScrollView>
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
@@ -184,36 +166,41 @@ const MyCollection: React.FC<{
             <MyCollectionZeroStateArtworks />
           </>
         )}
-      </StickyTabPageScrollView>
+      </Tabs.ScrollView>
     )
   }
 
   return (
-    <StickyTabPageScrollView
-      contentContainerStyle={{ justifyContent: "flex-start" }}
-      refreshControl={<StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
-      innerRef={innerFlatListRef}
+    <Tabs.ScrollView
+      contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}
+      refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      paddingHorizontal={0}
     >
+      <Tabs.SubTabBar>
+        <MyCollectionStickyHeader
+          filtersCount={filtersCount}
+          hasMarketSignals={hasMarketSignals}
+          showModal={() => setIsFilterModalVisible(true)}
+          showNewWorksMessage={!!showNewWorksMessage}
+          hasArtworks={artworks.length > 0}
+        />
+      </Tabs.SubTabBar>
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         mode={FilterModalMode.Custom}
         closeModal={() => setIsFilterModalVisible(false)}
         exitModal={() => setIsFilterModalVisible(false)}
       />
+
+      <Spacer y={1} />
+
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
         <MyCollectionCollectedArtists me={me} />
       ) : null}
 
       {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
-        <MyCollectionArtworks
-          me={me}
-          relay={relay}
-          showSearchBar={showSearchBar}
-          setShowSearchBar={setShowSearchBar}
-        />
+        <MyCollectionArtworks me={me} relay={relay} />
       ) : null}
       {!!showDevAddButton && (
         <Button
@@ -227,7 +214,7 @@ const MyCollection: React.FC<{
           Add Random Work
         </Button>
       )}
-    </StickyTabPageScrollView>
+    </Tabs.ScrollView>
   )
 }
 
@@ -349,10 +336,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
-    <StickyTabPageScrollView
-      contentContainerStyle={{ justifyContent: "flex-start" }}
-      paddingHorizontal={0}
-    >
+    <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
       {/* <Separator /> */}
       <Spacer y={1} />
       {/* Sort & Filter  */}
@@ -385,7 +369,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </StickyTabPageScrollView>
+    </Tabs.ScrollView>
   )
 }
 
