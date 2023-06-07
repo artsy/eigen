@@ -9,7 +9,11 @@ export interface SaveArtworkOptions {
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
   onError?: (error: Error) => void
-  optimisticUpdater?: (isSaved: boolean, store: RecordSourceSelectorProxy) => void
+  optimisticUpdater?: (
+    isSaved: boolean,
+    store: RecordSourceSelectorProxy,
+    optimisticUpdaterCalledBefore: boolean
+  ) => void
 }
 
 export const useSaveArtwork = ({
@@ -29,6 +33,8 @@ export const useSaveArtwork = ({
   }
 
   return () => {
+    let optimisticUpdaterCalledBefore = false
+
     if (prevCommit.current !== null) {
       prevCommit.current.dispose()
     }
@@ -50,7 +56,8 @@ export const useSaveArtwork = ({
         const artwork = store.get(id)
         artwork?.setValue(nextSavedState, "isSaved")
 
-        optimisticUpdater?.(nextSavedState, store)
+        optimisticUpdater?.(nextSavedState, store, optimisticUpdaterCalledBefore)
+        optimisticUpdaterCalledBefore = true
       },
     })
   }
