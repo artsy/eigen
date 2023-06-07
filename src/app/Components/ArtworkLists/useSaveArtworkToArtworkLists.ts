@@ -18,7 +18,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
-  const prevSavedState = useRef(artwork.isSaved)
+  const didHandled = useRef(false)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
@@ -44,8 +44,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     }
   }
 
-  // console.log("[debug] isSaved", isSaved)
-
   const legacySaveArtworkToDefaultArtworkList = useLegacySaveArtwork({
     ...restOptions,
     id: artwork.id,
@@ -59,13 +57,20 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    onCompleted,
+    onCompleted: (...args) => {
+      didHandled.current = false
+      onCompleted?.(...args)
+    },
+    onError: (error) => {
+      didHandled.current = false
+      restOptions.onError?.(error)
+    },
     optimisticUpdater: (isArtworkSaved) => {
-      if (prevSavedState.current === isArtworkSaved) {
+      if (didHandled.current) {
         return
       }
 
-      prevSavedState.current = isArtworkSaved
+      didHandled.current = true
 
       if (isArtworkSaved) {
         onSave({
