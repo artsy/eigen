@@ -9,7 +9,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { StickyHeaderPage } from "app/Components/StickyHeaderPage"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
@@ -74,6 +73,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         context_screen_owner_id: artistSeries.internalID,
       }}
     >
+      {/* FIXME: Need to do this */}
       <StickyHeaderPage
         headerContent={
           <>

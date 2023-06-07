@@ -1,7 +1,7 @@
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, { useImperativeHandle, useMemo, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import Animated from "react-native-reanimated"
-import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
 export interface Disappearable {
   disappear(): Promise<void>
