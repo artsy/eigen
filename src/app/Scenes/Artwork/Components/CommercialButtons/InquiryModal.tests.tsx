@@ -29,14 +29,16 @@ const initialState = {
 }
 
 const { renderWithRelay } = setupTestWrapper<InquiryModalTestsQuery>({
-  Component: (props, componentProps) => (
-    <ArtworkInquiryContext.Provider
-      value={{ state: initialState, dispatch: mockDispatch }}
-      {...componentProps}
-    >
-      <FakeApp {...props} />
-    </ArtworkInquiryContext.Provider>
-  ),
+  Component: (props) => {
+    return (
+      <ArtworkInquiryContext.Provider
+        value={{ state: initialState, dispatch: mockDispatch }}
+        {...props}
+      >
+        <FakeApp {...props} />
+      </ArtworkInquiryContext.Provider>
+    )
+  },
   query: graphql`
     query InquiryModalTestsQuery @relay_test_operation {
       artwork(id: "pumpkins") {
@@ -119,7 +121,6 @@ describe("user can select checkboxes", () => {
       }),
     })
 
-    // screen.debug()
     const checkbox = screen.getByTestId("checkbox-shipping_quote")
     fireEvent.press(checkbox)
 
@@ -158,15 +159,25 @@ describe("user can select checkboxes", () => {
 
 describe("when submiting an inquiry", () => {
   it("it shows error message on failed inquiry", async () => {
-    const { env } = renderWithRelay({
-      Artwork: () => ({
-        inquiryQuestions: [
-          { internalID: "price_and_availability", question: "Price & Availability" },
-          { internalID: "shipping_quote", question: "Shipping" },
-          { internalID: "condition_and_provenance", question: "Condition & Provance" },
-        ],
-      }),
-    })
+    const { env } = renderWithRelay(
+      {
+        Artwork: () => ({
+          inquiryQuestions: [
+            { internalID: "price_and_availability", question: "Price & Availability" },
+            { internalID: "shipping_quote", question: "Shipping" },
+            { internalID: "condition_and_provenance", question: "Condition & Provance" },
+          ],
+        }),
+      },
+      {
+        value: {
+          state: {
+            inquiryQuestions: ["test"],
+          },
+          dispatch: mockDispatch,
+        },
+      }
+    )
 
     const checkbox = screen.getByTestId("checkbox-shipping_quote")
 
@@ -175,8 +186,12 @@ describe("when submiting an inquiry", () => {
 
     fireEvent.press(sendButton)
     rejectMostRecentRelayOperation(env, new Error())
+
     await flushPromiseQueue()
-    expect(screen.getByText("Sorry, we were unable to send this message.")).toBeOnTheScreen()
+
+    expect(
+      screen.getByText("Sorry, we were unable to send this message. Please try again.")
+    ).toBeOnTheScreen()
   })
 })
 
