@@ -45,6 +45,19 @@ if (__DEV__) {
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
 
+if (Platform.OS === "ios") {
+  // Polyfills required to use Intl with Hermes engine for iOS
+  require("@formatjs/intl-getcanonicallocales/polyfill").default
+  require("@formatjs/intl-locale/polyfill").default
+  require("@formatjs/intl-pluralrules/polyfill").default
+  require("@formatjs/intl-pluralrules/locale-data/en").default
+  require("@formatjs/intl-numberformat/polyfill").default
+  require("@formatjs/intl-numberformat/locale-data/en").default
+  require("@formatjs/intl-datetimeformat/polyfill").default
+  require("@formatjs/intl-datetimeformat/locale-data/en").default
+  require("@formatjs/intl-datetimeformat/add-all-tz").default
+}
+
 setupFlipper()
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)

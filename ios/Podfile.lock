@@ -199,6 +199,7 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
+  - hermes-engine (0.69.10)
   - Interstellar/Core (2.0.0)
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
@@ -256,6 +257,12 @@ PODS:
     - DoubleConversion
     - fmt (~> 6.2.1)
     - glog
+  - RCT-Folly/Futures (2021.06.28.00-v2):
+    - boost
+    - DoubleConversion
+    - fmt (~> 6.2.1)
+    - glog
+    - libevent
   - RCTRequired (0.69.10)
   - RCTTypeSafety (0.69.10):
     - FBLazyVector (= 0.69.10)
@@ -433,6 +440,17 @@ PODS:
     - React-logger (= 0.69.10)
     - React-perflogger (= 0.69.10)
     - React-runtimeexecutor (= 0.69.10)
+  - React-hermes (0.69.10):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - RCT-Folly/Futures (= 2021.06.28.00-v2)
+    - React-cxxreact (= 0.69.10)
+    - React-jsi (= 0.69.10)
+    - React-jsiexecutor (= 0.69.10)
+    - React-jsinspector (= 0.69.10)
+    - React-perflogger (= 0.69.10)
   - React-jsi (0.69.10):
     - boost (= 1.76.0)
     - DoubleConversion
@@ -757,11 +775,13 @@ DEPENDENCIES:
   - FXBlurView (= 1.6.4)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (= 5.0.2)
+  - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JSDecoupledAppDelegate
   - JWTDecode (= 2.0.0)
+  - libevent (~> 2.1.12)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
@@ -787,6 +807,7 @@ DEPENDENCIES:
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
+  - React-hermes (from `../node_modules/react-native/ReactCommon/hermes`)
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
@@ -957,6 +978,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/FLKAutoLayout.git
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  hermes-engine:
+    :podspec: "../node_modules/react-native/sdks/hermes/hermes-engine.podspec"
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/artsy/Interstellar.git
@@ -985,6 +1008,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/CoreModules"
   React-cxxreact:
     :path: "../node_modules/react-native/ReactCommon/cxxreact"
+  React-hermes:
+    :path: "../node_modules/react-native/ReactCommon/hermes"
   React-jsi:
     :path: "../node_modules/react-native/ReactCommon/jsi"
   React-jsiexecutor:
@@ -1173,6 +1198,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  hermes-engine: 46f6bed4e9c43d15a3a9b72c9650e07d566bec6c
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -1207,6 +1233,7 @@ SPEC CHECKSUMS:
   React-Core: 550b694774bc778b5c7bf7608fc12a484e01ec05
   React-CoreModules: c332d5b416cb3ccf972e7af79d496498a700e073
   React-cxxreact: c5c4106bfd2d0cee80b848e33b7ff4e35a721b16
+  React-hermes: de1fb6030b67206c990f9e33596605f7579dc03e
   React-jsi: 6ff3fb9b9764a499c959e0096c0d384fa2b4beef
   React-jsiexecutor: 388f1c99404c848141d7ea162f61233d04829ede
   React-jsinspector: a4463b3411b8b9b37153255ef694a84c77ba3c7f
@@ -1283,6 +1310,6 @@ SPEC CHECKSUMS:
   Yoga: d24d6184b6b85f742536bd93bd07d69d7b9bb4c1
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 6c5fe7d4d6fc66f6041c326674dc5cb5759dc80f
+PODFILE CHECKSUM: d7802ab816bd45141783671dcaf393f2a878fd83
 
 COCOAPODS: 1.11.3

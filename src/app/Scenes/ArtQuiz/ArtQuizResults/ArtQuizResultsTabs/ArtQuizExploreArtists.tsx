@@ -17,18 +17,20 @@ export const ArtQuizExploreArtists = ({
 
   return (
     <Tabs.FlatList
+      key="ArtQuizExplorArtists"
       data={artworks}
       initialNumToRender={2}
       renderItem={({ item }) => {
         return <ArtQuizArtist artistData={item.artist} />
       }}
-      keyExtractor={(item, index) => String(item?.artist?.internalID || index)}
+      keyExtractor={(item) => item.internalID as string}
     />
   )
 }
 
 const artQuizExploreArtistsFragment = graphql`
   fragment ArtQuizExploreArtists_artworks on Artwork @relay(plural: true) {
+    internalID
     artist {
       internalID
       ...ArtQuizArtist_artist

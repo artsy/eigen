@@ -1,9 +1,27 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
+
+jest.mock("@artsy/palette-mobile", () => {
+  const palette = jest.requireActual("@artsy/palette-mobile")
+  return {
+    ...palette,
+    Tabs: {
+      ...palette.Tabs,
+      TabsWithHeader: (props: any) => {
+        // Simulate the tab change event by calling the prop immediately
+        if (props.onTabChange) {
+          props.onTabChange({ tabName: "Alerts" })
+        }
+        return <>{props.children}</>
+      },
+    },
+  }
+})
 
 describe("Activity", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -87,21 +105,20 @@ describe("Activity", () => {
     expect(screen.queryByText("Notification Three")).toBeNull()
   })
 
-  // fit("should track event when the tab is tapped", () => {
-  //   const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+  it("should track event when the tab is tapped", () => {
+    const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
 
-  //   // TODO: Fix this test
-  //   fireEvent.press(getByText("Alerts"))
+    fireEvent.press(getByText("Alerts"))
 
-  //   expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-  //     [
-  //       {
-  //         "action": "clickedActivityPanelTab",
-  //         "tab_name": "Alerts",
-  //       },
-  //     ]
-  //   `)
-  // })
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "clickedActivityPanelTab",
+          "tab_name": "Alerts",
+        },
+      ]
+    `)
+  })
 })
 
 const notifications = {

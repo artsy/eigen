@@ -1,6 +1,7 @@
 import { Tabs } from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
 import { TagPlaceholder } from "app/Scenes/Tag/TagPlaceholder"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -30,7 +31,7 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag?.slug,
       }}
     >
-      <Tabs.TabsWithHeader title={tag?.name!}>
+      <Tabs.TabsWithHeader title={tag?.name!} headerProps={{ onBack: goBack }}>
         <Tabs.Tab name="Artworks" label="Artworks">
           <TagArtworksPaginationContainer tag={tag!} />
         </Tabs.Tab>

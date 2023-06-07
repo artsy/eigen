@@ -4,6 +4,7 @@ import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -41,6 +42,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
           title={partner.name!}
           initialTabName={initialTab}
           BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} />}
+          headerProps={{ onBack: goBack }}
         >
           <Tabs.Tab name="Overview" label="Overview">
             <Tabs.ScrollView>
@@ -61,7 +63,11 @@ const Partner: React.FC<PartnerProps> = (props) => {
         context_screen_owner_type: Schema.OwnerEntityTypes.Partner,
       }}
     >
-      <Tabs.TabsWithHeader title={partner.name!} initialTabName={initialTab}>
+      <Tabs.TabsWithHeader
+        title={partner.name!}
+        initialTabName={initialTab}
+        headerProps={{ onBack: goBack }}
+      >
         <Tabs.Tab name="Overview" label="Overview">
           <Tabs.Lazy>
             <PartnerOverview partner={partner} />

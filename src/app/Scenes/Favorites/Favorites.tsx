@@ -1,4 +1,5 @@
 import { Tabs } from "@artsy/palette-mobile"
+import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
@@ -58,7 +59,11 @@ export const Favorites: React.FC = () => {
         context_screen_owner_type: null,
       }}
     >
-      <Tabs.TabsWithHeader title="Follows" onTabChange={fireTabSelectionAnalytics}>
+      <Tabs.TabsWithHeader
+        title="Follows"
+        onTabChange={fireTabSelectionAnalytics}
+        headerProps={{ onBack: goBack }}
+      >
         <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
           <Tabs.Lazy>
             <FavoriteArtistsQueryRenderer />

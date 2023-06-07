@@ -78,7 +78,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       {viewOption === "grid" ? (
         <FlatList
           data={artistsAndArtworksCount}
-          renderItem={({ item, index }) => {
+          renderItem={({ item }) => {
             return (
               <MyCollectionCollectedArtistGridItem
                 artworksCount={item.artworksCount}
@@ -86,8 +86,6 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
                 artist={item.artist!}
                 // castiing this type as ts was not able to infer it
                 key={item.artist!.internalID}
-                // passing index to use for the grid layout
-                index={index}
               />
             )
           }}
@@ -98,7 +96,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
-            <Flex alignItems="flex-end" pb={2}>
+            <Flex alignItems="flex-end" pb={2} px={2}>
               <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
             </Flex>
           )}

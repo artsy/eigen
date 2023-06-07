@@ -11,12 +11,11 @@ import { graphql } from "relay-runtime"
 interface MyCollectionCollectedArtistGridItemProps {
   artist: MyCollectionCollectedArtistGridItem_artist$key
   artworksCount: number | null
-  index: number
 }
 
 export const MyCollectionCollectedArtistGridItem: React.FC<
   MyCollectionCollectedArtistGridItemProps
-> = ({ artist, artworksCount, index }) => {
+> = ({ artist, artworksCount }) => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
 
   const artistData = useFragment<MyCollectionCollectedArtistGridItem_artist$key>(
@@ -55,11 +54,7 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
   const meta = getMeta()
 
   return (
-    <Flex
-      flex={1}
-      maxWidth={isAPad ? "33%" : "50%"}
-      alignItems={isAPad ? "center" : index % 2 > 0 ? "flex-end" : "flex-start"}
-    >
+    <Flex flex={1} maxWidth={isAPad ? "33%" : "50%"} alignItems="center">
       <Touchable
         onPress={() => {
           setViewKind({

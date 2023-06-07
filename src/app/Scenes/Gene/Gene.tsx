@@ -5,6 +5,7 @@ import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
 import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
+import { goBack } from "app/system/navigation/navigate"
 
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -55,6 +56,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
             <Header gene={gene} shortForm={false} />
           </Flex>
         )}
+        headerProps={{ onBack: goBack }}
       >
         <Tabs.Tab name="Works" label="Works">
           <Tabs.Lazy>

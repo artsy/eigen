@@ -1,7 +1,7 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPagePlaceholder } from "app/Components/StickyTabPage/StickyTabPagePlaceholder"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -132,21 +132,9 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 }
 
 export const MyCollectionInsightsQR: React.FC<{}> = () => (
-  <Suspense fallback={<MyCollectionInsightsPlaceHolder />}>
+  <Suspense fallback={<StickyTabPagePlaceholder />}>
     <MyCollectionInsights />
   </Suspense>
-)
-
-export const MyCollectionInsightsPlaceHolder = () => (
-  <StickyTabPageScrollView
-    style={{ flex: 1 }}
-    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-    scrollEnabled={false}
-  >
-    <Flex alignItems="center">
-      <Spinner />
-    </Flex>
-  </StickyTabPageScrollView>
 )
 
 export const MyCollectionInsightsScreenQuery = graphql`
