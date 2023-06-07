@@ -50,6 +50,7 @@ export type ArtworkListState = {
   selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
+  hasUnsavedChanges: boolean
 }
 
 export type ArtworkListAction =
@@ -68,6 +69,7 @@ export type ArtworkListAction =
       payload: { mode: ArtworkListMode; artworkList: ArtworkListEntity }
     }
   | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
+  | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
 
 export interface ArtworkListsContextState {
   state: ArtworkListState
