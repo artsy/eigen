@@ -1,13 +1,14 @@
 import { useSaveArtworkMutation } from "__generated__/useSaveArtworkMutation.graphql"
+import { useRef } from "react"
 import { useMutation } from "react-relay"
-import { RecordSourceSelectorProxy, graphql } from "relay-runtime"
+import { Disposable, RecordSourceSelectorProxy, graphql } from "relay-runtime"
 
 export interface SaveArtworkOptions {
   id: string
   internalID: string
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
-  onError?: () => void
+  onError?: (error: Error) => void
   optimisticUpdater?: (isSaved: boolean, store: RecordSourceSelectorProxy) => void
 }
 
@@ -20,20 +21,33 @@ export const useSaveArtwork = ({
   optimisticUpdater,
 }: SaveArtworkOptions) => {
   const [commit] = useMutation<useSaveArtworkMutation>(Mutation)
+  const prevCommit = useRef<Disposable | null>(null)
   const nextSavedState = !isSaved
+
+  const clearPrevCommit = () => {
+    prevCommit.current = null
+  }
 
   return () => {
     let optimisticUpdaterCalledBefore = false
 
-    commit({
+    if (prevCommit.current !== null) {
+      prevCommit.current.dispose()
+    }
+
+    prevCommit.current = commit({
       variables: {
         artworkID: internalID,
         remove: isSaved,
       },
       onCompleted: () => {
+        clearPrevCommit()
         onCompleted?.(nextSavedState)
       },
-      onError,
+      onError: (error) => {
+        clearPrevCommit()
+        onError?.(error)
+      },
       optimisticUpdater: (store) => {
         /**
          * `optimisticUpdater` can be called twice for the same mutation
