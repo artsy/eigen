@@ -28,6 +28,7 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   selectedTotalCount: 0,
   addingArtworkLists: [],
   removingArtworkLists: [],
+  hasUnsavedChanges: false,
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -107,6 +108,8 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   }
 
   const onSave = (result: SaveResult) => {
+    dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
+
     if (state.artworkListID !== null) {
       if (result.action !== ResultAction.ModifiedArtworkLists) {
         throw new Error("You should pass `ModifiedArtworkLists` action")
@@ -207,18 +210,20 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
       const artworkLists = state[mode]
       // eslint-disable-next-line no-case-declarations
       const ids = artworkLists.map((artworkList) => artworkList.internalID)
+      // eslint-disable-next-line no-case-declarations
+      const updatedState = { ...state }
 
       if (ids.includes(artworkList.internalID)) {
-        return {
-          ...state,
-          [mode]: artworkLists.filter((entity) => entity.internalID !== artworkList.internalID),
-        }
+        updatedState[mode] = artworkLists.filter(
+          (entity) => entity.internalID !== artworkList.internalID
+        )
+      } else {
+        updatedState[mode] = [...artworkLists, artworkList]
       }
 
-      return {
-        ...state,
-        [mode]: [...artworkLists, artworkList],
-      }
+      updatedState.hasUnsavedChanges = hasChanges(updatedState)
+
+      return updatedState
     case "SET_SELECTED_TOTAL_COUNT":
       return {
         ...state,
@@ -226,6 +231,11 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
       }
     case "RESET":
       return ARTWORK_LISTS_CONTEXT_INITIAL_STATE
+    case "SET_UNSAVED_CHANGES":
+      return {
+        ...state,
+        hasUnsavedChanges: action.payload,
+      }
     default:
       return state
   }
@@ -233,4 +243,8 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
 
 const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkListEntity[]) => {
   return artworkLists.find((artworkList) => artworkList.internalID === artworkListID)
+}
+
+const hasChanges = (state: ArtworkListState) => {
+  return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
 }
