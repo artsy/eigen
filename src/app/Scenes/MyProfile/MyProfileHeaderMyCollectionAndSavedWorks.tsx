@@ -13,6 +13,7 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useMemo } from "react"
@@ -35,22 +36,26 @@ interface MyProfileTabProps {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
   const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
+  const { showVisualClue } = useVisualClue()
+
+  // Check if there's new content
+  const indicators = []
+  if (showVisualClue("AddedArtworkWithInsightsVisualClueDot")) {
+    indicators.push({
+      tabName: Tab.insights,
+      Component: () => {
+        return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
+      },
+    })
+  }
+
   return (
     <>
       <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
         <TabsContainer
           initialTabName={initialTab}
           renderHeader={() => <MyProfileHeaderQueryRenderer />}
-          indicators={[
-            {
-              tabName: Tab.insights,
-              Component: () => {
-                return (
-                  <VisualClueDot style={{ left: -5, alignSelf: "flex-start", marginTop: 15 }} />
-                )
-              },
-            },
-          ]}
+          indicators={indicators}
         >
           <Tabs.Tab name={Tab.collection} label={Tab.collection}>
             <Tabs.Lazy>
