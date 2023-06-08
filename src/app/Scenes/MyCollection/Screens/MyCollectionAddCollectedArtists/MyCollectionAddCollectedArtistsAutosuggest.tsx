@@ -107,7 +107,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
               showQuickNavigationButtons={false}
               onResultPress={(result) => addOrRemoveArtist(result.internalID!)}
               HeaderComponent={HeaderComponent}
-              numColumns={isTablet ? 5 : 3}
+              numColumns={isTablet ? 5 : 2}
               CustomListItemComponent={(props) => (
                 <CollectedArtistListItem
                   {...props}
@@ -202,15 +202,18 @@ const CollectedArtistListItem: React.FC<{
   }
 
   return (
-    <Flex alignItems="center" width={isTablet ? "20%" : "33%"} mt={2}>
+    <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
       <Touchable onPress={handlePress} disabled={disabled}>
         {!!(isSelected || !!disabled) && <Overlay disabled={disabled} />}
 
-        <Avatar
-          src={artist.imageUrl || undefined}
-          initials={artist.initials || undefined}
-          size="md"
-        ></Avatar>
+        <Flex width="100%" alignItems="center">
+          <Avatar
+            src={artist.imageUrl || undefined}
+            initials={artist.initials || undefined}
+            size="md"
+          />
+        </Flex>
+
         <Spacer y={0.5} />
 
         <ResultWithHighlight
