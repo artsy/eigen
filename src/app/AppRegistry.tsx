@@ -353,7 +353,10 @@ export const modules = defineModules({
   ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
-  ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
+  ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Artwork: reactModule(
     ArtworkPageableScreen,
     {
@@ -459,9 +462,11 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
-    MyCollectionArtworkScreenQuery,
-  ]),
+  MyCollectionArtwork: reactModule(
+    MyCollectionArtworkScreen,
+    { fullBleed: true, hidesBackButton: true },
+    [MyCollectionArtworkScreenQuery]
+  ),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,

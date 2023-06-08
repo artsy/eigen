@@ -3,7 +3,6 @@ import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
-import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
@@ -196,4 +195,10 @@ export const ViewAsIcons: React.FC<{
       </Flex>
     </>
   )
+}
+
+export function useAnimatedValue(init: number) {
+  return useMemo(() => {
+    return new Animated.Value(init)
+  }, [])
 }

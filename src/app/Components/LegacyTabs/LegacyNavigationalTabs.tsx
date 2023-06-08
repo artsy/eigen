@@ -1,8 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { Tab, TabsProps } from "app/Components/LegacyTabs"
-import { VisualClueName } from "app/store/config/visualClues"
 import { useScreenDimensions } from "app/utils/hooks"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
 import { TabBarContainer } from "./LegacyTabBarContainer"
@@ -19,27 +17,13 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
 
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
-      {tabs.map(({ label, visualClues }, index) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { showVisualClue } = useVisualClue()
-
-        const { jsx } =
-          visualClues?.find(({ visualClueName: name }) => showVisualClue(name as VisualClueName)) ??
-          {}
-
+      {tabs.map(({ label }, index) => {
         return (
           <Box minWidth={tabWidth} key={label + index}>
             <Tab
               variant="xs"
               label={label}
-              superscript={jsx}
               onPress={() => {
-                if (visualClues) {
-                  visualClues.forEach(({ visualClueName: name }) => {
-                    setVisualClueAsSeen(name)
-                  })
-                }
-
                 onTabPress(label, index)
               }}
               active={activeTab === index}

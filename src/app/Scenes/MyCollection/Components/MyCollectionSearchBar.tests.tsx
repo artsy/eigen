@@ -1,5 +1,4 @@
 import { fireEvent } from "@testing-library/react-native"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { MyCollectionSearchBar, MyCollectionSearchBarProps } from "./MyCollectionSearchBar"
@@ -11,16 +10,7 @@ describe("MyCollectionSearchBar", () => {
   }
 
   const renderWithStickyTabPage = (props: Partial<MyCollectionSearchBarProps> = {}) =>
-    renderWithWrappers(
-      <StickyTabPage
-        tabs={[
-          {
-            title: "My Collection",
-            content: <MyCollectionSearchBar {...defaultProps} {...props} />,
-          },
-        ]}
-      />
-    )
+    renderWithWrappers(<MyCollectionSearchBar {...defaultProps} {...props} />)
 
   it("renders input when clicking on the search bar text", () => {
     const { queryByTestId } = renderWithStickyTabPage({})
