@@ -44,8 +44,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     }
   }
 
-  // console.log("[debug] isSaved", isSaved)
-
   const legacySaveArtworkToDefaultArtworkList = useLegacySaveArtwork({
     ...restOptions,
     id: artwork.id,
