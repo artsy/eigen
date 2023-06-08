@@ -1,4 +1,4 @@
-import { Flex, useColor, Text, Touchable, Spacer } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Touchable, Box } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -102,10 +102,9 @@ export const ToastComponent = ({
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
 
       {!!imageURL && (
-        <>
+        <Box borderWidth={1} borderColor="white100" mr={1}>
           <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
-          <Spacer x={1} />
-        </>
+        </Box>
       )}
 
       <Flex flex={1}>
