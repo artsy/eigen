@@ -16,9 +16,15 @@ export interface Image {
   width?: number
   imageVersions?: string[]
 }
-
+export interface CustomArtist {
+  name: string
+  nationality?: string
+  birthYear?: string
+  deathYear?: string
+}
 export interface ArtworkFormValues {
   artist: string
+  customArtist: CustomArtist | null
   artistIds: string[]
   artistDisplayName?: string
   isP1Artist?: boolean
@@ -44,7 +50,8 @@ export interface ArtworkFormValues {
 }
 
 export const initialFormValues: ArtworkFormValues = {
-  artist: "",
+  artist: "ff",
+  customArtist: null,
   artistIds: [],
   artistDisplayName: undefined,
   artistSearchResult: null,
@@ -132,6 +139,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       "artist",
       "artistIds",
       "artistSearchResult",
+      "customArtist",
     ])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }

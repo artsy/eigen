@@ -18,6 +18,7 @@ import { Input } from "app/Components/Input"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
+import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistCustomArtist"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
@@ -168,6 +169,8 @@ export const MyCollectionArtworkFormMain: React.FC<
             <Join separator={<Spacer y={1} />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
+              ) : formik.values.customArtist ? (
+                <ArtistCustomArtist artist={formik.values.customArtist} />
               ) : (
                 <Input
                   title="Artist"

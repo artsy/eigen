@@ -4,6 +4,7 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
@@ -26,8 +27,12 @@ const validationSchema = Yup.object().shape({
 
 export const AddMyCollectionArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ route }) => {
+> = ({ route, navigation }) => {
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
+
   const [showAbandonModal, setShowAbandonModal] = useState(false)
+
   const scrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
   const nationalityInputRef = useRef<Input>(null)
@@ -46,7 +51,16 @@ export const AddMyCollectionArtist: React.FC<
         deathYear: "",
       },
       initialErrors: {},
-      onSubmit: () => console.log("Submit Add New Artist"), // save artist to the store and navigate
+      onSubmit: () => {
+        requestAnimationFrame(() => {
+          GlobalStore.actions.myCollection.artwork.updateFormValues({
+            customArtist: values,
+            metric: preferredMetric,
+            pricePaidCurrency: preferredCurrency,
+          })
+          navigation.navigate("ArtworkFormMain", { ...route.params })
+        })
+      },
       validationSchema: validationSchema,
     })
   const touched = useHasBeenTrue(dirty)

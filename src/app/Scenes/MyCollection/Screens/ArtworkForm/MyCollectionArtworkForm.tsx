@@ -64,6 +64,7 @@ export type ArtworkFormScreen = {
   AddMyCollectionArtist: {
     mode: ArtworkFormMode
     clearForm(): void
+    onDelete(): void
     onHeaderBackButtonPress(): void
   }
   ArtworkFormMain: {
