@@ -37,7 +37,7 @@ export interface SavedSearchAlertFormProps {
   onUpdateEmailPreferencesPress?: () => void
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
-  navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
+  navigation?: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {

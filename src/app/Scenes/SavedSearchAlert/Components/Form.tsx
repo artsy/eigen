@@ -34,7 +34,7 @@ interface FormProps {
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
   onRemovePill: (pill: SavedSearchPill) => void
-  navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
+  navigation?: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -143,7 +143,9 @@ export const Form: React.FC<FormProps> = (props) => {
         accessibilityLabel="Artist Series List Item"
         accessibilityRole="button"
         underlayColor="black5"
-        onPress={() => navigation.navigate("CreateSavedSearchAlertPriceRangeScreen")}
+        onPress={() =>
+          !!navigation && navigation.navigate("CreateSavedSearchAlertPriceRangeScreen")
+        }
       >
         <Flex flexDirection="row" alignItems="center" py={1}>
           <Flex flex={1}>
