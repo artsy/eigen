@@ -240,9 +240,8 @@ const CollectedArtistListItem: React.FC<{
   return (
     <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
       <Touchable onPress={handlePress} disabled={disabled}>
-        {!!(isSelected || !!disabled) && <Overlay disabled={disabled} />}
-
         <Flex width="100%" alignItems="center">
+          {!!(isSelected || !!disabled) && <Overlay disabled={disabled} />}
           <Avatar
             src={artist.imageUrl || undefined}
             initials={artist.initials || undefined}
