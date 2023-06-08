@@ -1,10 +1,8 @@
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { pluralize } from "app/utils/pluralize"
-import { Suspense } from "react"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
@@ -15,9 +13,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         <Text textAlign="center">Add Artists You Collect</Text>
       </FancyModalHeader>
       <Flex flex={1} px={2}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <MyCollectionAddCollectedArtistsAutosuggest />
-        </Suspense>
+        <MyCollectionAddCollectedArtistsAutosuggest />
       </Flex>
       <Spacer y={4} />
       <Flex
