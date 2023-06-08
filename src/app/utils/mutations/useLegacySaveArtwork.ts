@@ -7,7 +7,7 @@ interface LegacySaveArtworkOptions {
   internalID: string
   isSaved: boolean | null
   onCompleted?: (isSaved: boolean) => void
-  onError?: () => void
+  onError?: (error: Error) => void
 }
 
 export const useLegacySaveArtwork = ({
@@ -40,9 +40,7 @@ export const useLegacySaveArtwork = ({
         refreshOnArtworkSave()
         onCompleted?.(nextSavedState)
       },
-      onError: () => {
-        onError?.()
-      },
+      onError,
     })
   }
 }
