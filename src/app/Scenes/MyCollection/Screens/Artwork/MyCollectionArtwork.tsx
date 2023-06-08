@@ -88,12 +88,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
               </TouchableOpacity>
             }
           />
-          {/* <FancyModalHeader
-            onLeftButtonPress={goBack}
-            rightButtonText="Edit"
-            onRightButtonPress={handleEdit}
-            hideBottomDivider
-          /> */}
           {!!shouldShowInsightsTab ? (
             <Tabs renderHeader={() => <MyCollectionArtworkHeader artwork={data.artwork!} />}>
               {!!shouldShowInsightsTab && (
