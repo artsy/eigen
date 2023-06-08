@@ -194,6 +194,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-account/edit-phone", "MyAccountEditPhone"),
     addRoute("/my-account/edit-price-range", "MyAccountEditPriceRange"),
     addRoute("/my-collection", "MyCollection"),
+    addRoute("/my-collection/artists/new", "AddMyCollectionArtist"),
     addRoute("/my-collection/artwork/:artworkId", "MyCollectionArtwork"),
     addRoute("/my-collection/artwork/:artworkID/price-estimate", "RequestForPriceEstimateScreen"),
     addRoute(

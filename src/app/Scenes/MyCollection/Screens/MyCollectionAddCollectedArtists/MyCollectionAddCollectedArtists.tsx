@@ -15,7 +15,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         <Text textAlign="center">Add Artists You Collect</Text>
       </FancyModalHeader>
       <Flex flex={1} px={2}>
-        <Suspense fallback={LoadingSpinner}>
+        <Suspense fallback={<LoadingSpinner />}>
           <MyCollectionAddCollectedArtistsAutosuggest />
         </Suspense>
       </Flex>

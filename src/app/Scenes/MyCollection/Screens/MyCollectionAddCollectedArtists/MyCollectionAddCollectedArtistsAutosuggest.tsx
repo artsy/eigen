@@ -15,9 +15,11 @@ import {
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
@@ -54,6 +56,15 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const isTablet = isPad()
 
+  const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
+    passProps: {
+      handleBackButtonPress: goBack,
+      onSubmit: () => {
+        // do nothing
+      },
+    },
+  }
+
   const HeaderComponent = () => (
     <>
       <Flex flexDirection="row" mt={1} mb={2}>
@@ -62,7 +73,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
         </Text>
         <Touchable
           onPress={() => {
-            // navigate to create custom artist screen
+            navigate("/my-collection/artists/new", navigationProps)
           }}
           testID="my-collection-artwork-form-artist-skip-button"
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
@@ -109,7 +120,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
                   <Button
                     variant="outline"
                     onPress={() => {
-                      // navigate to create custom artist screen
+                      navigate("/my-collection/artists/new", navigationProps)
                     }}
                     mt={4}
                     block

@@ -13,7 +13,10 @@ import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollection
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import {
+  AddMyCollectionArtist,
+  NewMyCollectionArtistFormikSchema,
+} from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
@@ -62,9 +65,13 @@ export type ArtworkFormScreen = {
     onHeaderBackButtonPress(): void
   }
   AddMyCollectionArtist: {
-    mode: ArtworkFormMode
-    clearForm(): void
-    onHeaderBackButtonPress(): void
+    // AddMyCollectionArtist is available as a global route as well and in order to make sure
+    // sent props are captured the same way using the route prop, we are intentionally setting the props
+    props: {
+      handleBackButtonPress(): void
+      name?: string
+      onSubmit(artistInput: NewMyCollectionArtistFormikSchema): void
+    }
   }
   ArtworkFormMain: {
     mode: ArtworkFormMode
@@ -288,9 +295,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
               name="AddMyCollectionArtist"
               component={AddMyCollectionArtist} // TODO: Rename this component
               initialParams={{
-                mode: props.mode,
-                clearForm,
-                onHeaderBackButtonPress,
+                props: {
+                  mode: props.mode,
+                  clearForm,
+                  onHeaderBackButtonPress,
+                },
               }}
             />
           )}

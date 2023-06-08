@@ -43,7 +43,17 @@ export const MyCollectionArtworkFormArtist: React.FC<
     GlobalStore.actions.myCollection.artwork.resetForm()
 
     if (enableCollectedArtists) {
-      navigation.navigate("AddMyCollectionArtist", { ...route.params })
+      navigation.navigate("AddMyCollectionArtist", {
+        props: {
+          name: artistDisplayName,
+          onSubmit: () => {
+            // do nothing
+          },
+          handleBackButtonPress: () => {
+            navigation.goBack()
+          },
+        },
+      })
     } else {
       requestAnimationFrame(() => {
         GlobalStore.actions.myCollection.artwork.updateFormValues({
