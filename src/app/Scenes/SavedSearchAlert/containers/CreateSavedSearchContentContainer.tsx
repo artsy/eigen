@@ -96,6 +96,7 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
         isLoading={loading || refetching}
         onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
         userAllowsEmails={userAllowsEmails}
+        navigation={navigation}
         {...other}
       />
     </Box>

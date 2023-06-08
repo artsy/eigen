@@ -6,6 +6,7 @@ import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
 } from "./SavedSearchAlertModel"
+import { CreateSavedSearchAlertPriceRangeScreen } from "./screens/CreateSavedSearchAlertPriceRangeScreen"
 import { CreateSavedSearchAlertScreen } from "./screens/CreateSavedSearchAlertScreen"
 import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
@@ -33,6 +34,10 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
               initialParams={params}
             />
             <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+            <Stack.Screen
+              name="CreateSavedSearchAlertPriceRangeScreen"
+              component={CreateSavedSearchAlertPriceRangeScreen}
+            />
           </Stack.Navigator>
         </Box>
       </FancyModal>

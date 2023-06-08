@@ -1,5 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
@@ -9,6 +10,7 @@ import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
 import {
+  CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchPill,
@@ -35,6 +37,7 @@ export interface SavedSearchAlertFormProps {
   onUpdateEmailPreferencesPress?: () => void
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
+  navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 }
 
 export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props) => {
@@ -45,6 +48,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     contentContainerStyle,
     onComplete,
     onDeleteComplete,
+    navigation,
     ...other
   } = props
   const isUpdateForm = !!savedSearchAlertId
@@ -257,6 +261,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           onToggleEmailNotification={handleToggleEmailNotification}
           onRemovePill={handleRemovePill}
           shouldShowEmailWarning={shouldShowEmailWarning}
+          navigation={navigation}
           {...other}
         />
       </ScrollView>

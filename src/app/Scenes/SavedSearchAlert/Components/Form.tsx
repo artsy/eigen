@@ -1,8 +1,19 @@
-import { CloseIcon, Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import {
+  CloseIcon,
+  Spacer,
+  Flex,
+  Box,
+  Text,
+  Button,
+  ArrowRightIcon,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
 import { Pill } from "app/Components/Pill"
 import {
+  CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchPill,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -23,6 +34,7 @@ interface FormProps {
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
   onRemovePill: (pill: SavedSearchPill) => void
+  navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -38,6 +50,7 @@ export const Form: React.FC<FormProps> = (props) => {
     onTogglePushNotification,
     onToggleEmailNotification,
     onRemovePill,
+    navigation,
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
@@ -125,6 +138,23 @@ export const Form: React.FC<FormProps> = (props) => {
           ))}
         </Flex>
       </Box>
+      <Spacer y={2} />
+      <Touchable
+        accessibilityLabel="Artist Series List Item"
+        accessibilityRole="button"
+        underlayColor="black5"
+        onPress={() => navigation.navigate("CreateSavedSearchAlertPriceRangeScreen")}
+      >
+        <Flex flexDirection="row" alignItems="center" py={1}>
+          <Flex flex={1}>
+            <Text variant="sm-display">Set price range you are interested in</Text>
+          </Flex>
+          <Flex alignSelf="center" mt={0.5}>
+            <ArrowRightIcon />
+          </Flex>
+        </Flex>
+      </Touchable>
+      <Spacer y={4} />
       <SavedSearchAlertSwitch
         label="Mobile Alerts"
         onChange={onTogglePushNotification}
