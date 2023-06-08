@@ -68,7 +68,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const HeaderComponent = () => (
     <>
-      <Flex flexDirection="row" mt={1} mb={2}>
+      <Flex flexDirection="row" mt={1}>
         <Text variant="xs" color="black60">
           Can't find the artist?{" "}
         </Text>
