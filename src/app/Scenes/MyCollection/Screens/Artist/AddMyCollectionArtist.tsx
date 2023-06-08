@@ -1,5 +1,5 @@
-import { ArtsyKeyboardAvoidingView, Flex, Join, Spacer, Button } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
@@ -23,10 +23,9 @@ const validationSchema = Yup.object().shape({
   birthYear: Yup.string().trim(),
   deathYear: Yup.string().trim(),
 })
+export const AddMyCollectionArtist: React.FC<{}> = () => {
+  const route = useRoute<RouteProp<ArtworkFormScreen, "AddMyCollectionArtist">>()
 
-export const AddMyCollectionArtist: React.FC<
-  StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ route }) => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const scrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
@@ -46,7 +45,9 @@ export const AddMyCollectionArtist: React.FC<
         deathYear: "",
       },
       initialErrors: {},
-      onSubmit: () => console.log("Submit Add New Artist"), // save artist to the store and navigate
+      onSubmit: () => {
+        route.params.props.onSubmit(values)
+      },
       validationSchema: validationSchema,
     })
   const touched = useHasBeenTrue(dirty)
@@ -64,7 +65,7 @@ export const AddMyCollectionArtist: React.FC<
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           onLeftButtonPress={
-            dirty ? () => setShowAbandonModal(true) : route.params.onHeaderBackButtonPress
+            dirty ? () => setShowAbandonModal(true) : route.params.props.handleBackButtonPress
           }
           hideBottomDivider
         >
@@ -148,6 +149,8 @@ export const AddMyCollectionArtist: React.FC<
                   </Flex>
                 </Join>
               </Flex>
+              <Spacer y={1} />
+
               <Button
                 accessibilityLabel="Submit Add Artist"
                 disabled={!touched}
