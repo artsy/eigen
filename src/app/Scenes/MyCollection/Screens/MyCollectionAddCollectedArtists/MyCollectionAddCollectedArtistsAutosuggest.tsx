@@ -24,7 +24,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
-import { sortBy } from "lodash"
+import { sortBy, times } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
@@ -201,24 +201,18 @@ const MyCollectionAddCollectedArtistsAutosuggestPlaceholder: React.FC<{}> = ({})
     </Flex>
   )
 
+  const Row = () => (
+    <Flex flexDirection="row">
+      <Circle />
+      <Circle />
+    </Flex>
+  )
+
   return (
     <ProvidePlaceholderContext>
-      <Flex flexDirection="row">
-        <Circle />
-        <Circle />
-      </Flex>
-      <Flex flexDirection="row">
-        <Circle />
-        <Circle />
-      </Flex>
-      <Flex flexDirection="row">
-        <Circle />
-        <Circle />
-      </Flex>
-      <Flex flexDirection="row">
-        <Circle />
-        <Circle />
-      </Flex>
+      {times(isTablet ? 10 : 4).map((i) => (
+        <Row key={i} />
+      ))}
     </ProvidePlaceholderContext>
   )
 }
