@@ -50,7 +50,7 @@ export interface ArtworkFormValues {
 }
 
 export const initialFormValues: ArtworkFormValues = {
-  artist: "ff",
+  artist: "",
   customArtist: null,
   artistIds: [],
   artistDisplayName: undefined,
