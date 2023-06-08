@@ -3,7 +3,6 @@
  * tabs are used everywhere.
  */
 
-import { TabVisualClues } from "app/Components/StickyTabPage/StickyTabPage"
 import { ContentTabs } from "./ContentTabs"
 import { NavigationalTabs } from "./LegacyNavigationalTabs"
 import { StepTabs } from "./LegacyStepTabs"
@@ -17,7 +16,6 @@ export type TabsType = Array<{
   label: string
   superscript?: string
   completed?: boolean
-  visualClues?: TabVisualClues
 }>
 
 export interface TabsProps {
