@@ -25,7 +25,7 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
 
   const Wrapper = props.renderWithoutScrollView ? Flex : Tabs.ScrollView
   return (
-    <Wrapper style={{ paddingHorizontal: space(2) }}>
+    <Wrapper style={!!props.renderWithoutScrollView && { paddingHorizontal: space(2) }}>
       <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={4}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
