@@ -30,36 +30,38 @@ const INITIAL_BATCH_SIZE = 32
 const SUBSEQUENT_BATCH_SIZE = 64
 
 const AutosuggestResultsFlatList: React.FC<{
-  query: string
-  prependResults?: AutosuggestResult[]
   // if results are null that means we are waiting on a response from MP
-  results: AutosuggestResults_results$data | null
-  relay: RelayPaginationProp
-  showResultType?: boolean
-  showQuickNavigationButtons?: boolean
-  onResultPress?: OnResultPress
-  trackResultPress?: TrackResultPress
-  ListEmptyComponent?: React.ComponentType<any>
-  ListHeaderComponent?: React.ComponentType<any>
-  HeaderComponent?: React.ComponentType<any>
-  ListFooterComponent?: React.ComponentType<any>
   CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
+  CustomPlaceholderComponent?: React.ComponentType<any>
+  HeaderComponent?: React.ComponentType<any>
+  ListEmptyComponent?: React.ComponentType<any>
+  ListFooterComponent?: React.ComponentType<any>
+  ListHeaderComponent?: React.ComponentType<any>
   numColumns?: number
+  onResultPress?: OnResultPress
+  prependResults?: AutosuggestResult[]
+  query: string
+  relay: RelayPaginationProp
+  results: AutosuggestResults_results$data | null
+  showQuickNavigationButtons?: boolean
+  showResultType?: boolean
+  trackResultPress?: TrackResultPress
 }> = ({
-  query,
-  results: latestResults,
-  relay,
-  showResultType = false,
-  showQuickNavigationButtons,
-  onResultPress,
-  trackResultPress,
-  ListEmptyComponent = EmptyList,
-  ListHeaderComponent = () => <Spacer y={2} />,
   CustomListItemComponent,
+  CustomPlaceholderComponent,
   HeaderComponent = null,
-  prependResults = [],
+  ListEmptyComponent = EmptyList,
   ListFooterComponent,
+  ListHeaderComponent = () => <Spacer y={2} />,
   numColumns = 1,
+  onResultPress,
+  prependResults = [],
+  query,
+  relay,
+  results: latestResults,
+  showQuickNavigationButtons,
+  showResultType = false,
+  trackResultPress,
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -169,7 +171,11 @@ const AutosuggestResultsFlatList: React.FC<{
       <ProvidePlaceholderContext>
         {!!HeaderComponent && <HeaderComponent />}
         {!!ListHeaderComponent && <ListHeaderComponent />}
-        <AutosuggestResultsPlaceholder showResultType={showResultType} />
+        {CustomPlaceholderComponent ? (
+          <CustomPlaceholderComponent />
+        ) : (
+          <AutosuggestResultsPlaceholder showResultType={showResultType} />
+        )}
       </ProvidePlaceholderContext>
     )
   }
@@ -312,36 +318,38 @@ const AutosuggestResultsContainer = createPaginationContainer(
 )
 
 export const AutosuggestResults: React.FC<{
-  query: string
+  CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
+  CustomPlaceholderComponent: React.ComponentType<any>
   entities?: AutosuggestResultsQuery["variables"]["entities"]
-  prependResults?: any[]
-  showResultType?: boolean
-  showQuickNavigationButtons?: boolean
-  showOnRetryErrorMessage?: boolean
-  onResultPress?: OnResultPress
-  trackResultPress?: TrackResultPress
   HeaderComponent?: React.ComponentType<any>
-  ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
   ListFooterComponent?: React.ComponentType<any>
-  CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
+  ListHeaderComponent?: React.ComponentType<any>
   numColumns?: number
+  onResultPress?: OnResultPress
+  prependResults?: any[]
+  query: string
+  showOnRetryErrorMessage?: boolean
+  showQuickNavigationButtons?: boolean
+  showResultType?: boolean
+  trackResultPress?: TrackResultPress
 }> = React.memo(
   ({
-    query,
+    CustomListItemComponent,
+    CustomPlaceholderComponent,
     entities,
-    prependResults,
-    showResultType,
-    showQuickNavigationButtons,
-    showOnRetryErrorMessage,
-    onResultPress,
-    trackResultPress,
     HeaderComponent,
-    ListHeaderComponent,
     ListEmptyComponent,
     ListFooterComponent,
-    CustomListItemComponent,
+    ListHeaderComponent,
     numColumns = 1,
+    onResultPress,
+    prependResults,
+    query,
+    showOnRetryErrorMessage,
+    showQuickNavigationButtons,
+    showResultType,
+    trackResultPress,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -381,6 +389,7 @@ export const AutosuggestResults: React.FC<{
               HeaderComponent={HeaderComponent}
               ListFooterComponent={ListFooterComponent}
               CustomListItemComponent={CustomListItemComponent}
+              CustomPlaceholderComponent={CustomPlaceholderComponent}
               numColumns={numColumns}
             />
           )

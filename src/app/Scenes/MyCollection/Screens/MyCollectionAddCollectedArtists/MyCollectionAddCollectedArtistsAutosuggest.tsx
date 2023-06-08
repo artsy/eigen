@@ -23,6 +23,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { sortBy } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
@@ -129,6 +130,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
                   </Button>
                 </Flex>
               )}
+              CustomPlaceholderComponent={MyCollectionAddCollectedArtistsAutosuggestPlaceholder}
             />
           </Box>
         ) : null}
@@ -180,6 +182,46 @@ export const filterArtistsByKeyword = (
 }
 
 const ARTIST_LIST_ITEM_HEIGHT = 100
+
+const MyCollectionAddCollectedArtistsAutosuggestPlaceholder: React.FC<{}> = ({}) => {
+  const isTablet = isPad()
+
+  const Circle = () => (
+    <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
+      {/* <PlaceholderBox width={100} height={100} borderRadius={50} backgroundColor="black10"></PlaceholderBox> */}
+      <PlaceholderBox
+        height={ARTIST_LIST_ITEM_HEIGHT}
+        width={ARTIST_LIST_ITEM_HEIGHT}
+        borderRadius={ARTIST_LIST_ITEM_HEIGHT / 2}
+      />
+
+      <Spacer y={1} />
+
+      <PlaceholderText height={18} width={50 + Math.random() * 50} />
+    </Flex>
+  )
+
+  return (
+    <ProvidePlaceholderContext>
+      <Flex flexDirection="row">
+        <Circle />
+        <Circle />
+      </Flex>
+      <Flex flexDirection="row">
+        <Circle />
+        <Circle />
+      </Flex>
+      <Flex flexDirection="row">
+        <Circle />
+        <Circle />
+      </Flex>
+      <Flex flexDirection="row">
+        <Circle />
+        <Circle />
+      </Flex>
+    </ProvidePlaceholderContext>
+  )
+}
 
 const CollectedArtistListItem: React.FC<{
   disabled?: boolean
