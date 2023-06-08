@@ -294,13 +294,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             <Stack.Screen
               name="AddMyCollectionArtist"
               component={AddMyCollectionArtist} // TODO: Rename this component
-              initialParams={{
-                props: {
-                  mode: props.mode,
-                  clearForm,
-                  onHeaderBackButtonPress,
-                },
-              }}
             />
           )}
           <Stack.Screen

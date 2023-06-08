@@ -319,7 +319,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
 
 export const AutosuggestResults: React.FC<{
   CustomListItemComponent?: React.FC<{ item: AutosuggestResult; highlight: string }>
-  CustomPlaceholderComponent: React.ComponentType<any>
+  CustomPlaceholderComponent?: React.ComponentType<any>
   entities?: AutosuggestResultsQuery["variables"]["entities"]
   HeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
