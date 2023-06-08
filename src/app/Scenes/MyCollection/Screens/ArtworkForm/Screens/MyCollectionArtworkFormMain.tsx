@@ -41,6 +41,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
 > = ({ route, navigation }) => {
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
+  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
@@ -89,8 +90,6 @@ export const MyCollectionArtworkFormMain: React.FC<
     artworkState.sessionState.formValues,
     artworkState.sessionState.dirtyFormCheckValues,
   ])
-
-  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
   const isFormDirty = () => {
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
