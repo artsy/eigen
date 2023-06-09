@@ -33,7 +33,7 @@ export interface CreateSavedSearchAlertProps {
 
 export type CreateSavedSearchAlertNavigationStack = {
   CreateSavedSearchAlert: CreateSavedSearchAlertParams
-  CreateSavedSearchAlertPriceRangeScreen: undefined
+  CreateAlertPriceRangeScreen: undefined
   EmailPreferences: undefined
 }
 

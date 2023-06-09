@@ -13,6 +13,13 @@ interface SavedSearchModel {
   entity: SavedSearchEntity
   dirty: boolean
 
+  setValueToAttributesByKeyAction: Action<
+    this,
+    {
+      key: SearchCriteria
+      value: string | number | boolean
+    }
+  >
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
@@ -35,6 +42,11 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
+
+  setValueToAttributesByKeyAction: action((state, payload) => {
+    //@ts-ignore
+    state.attributes[payload.key] = payload.value
+  }),
 
   removeValueFromAttributesByKeyAction: action((state, payload) => {
     const prevValue = state.attributes[payload.key]

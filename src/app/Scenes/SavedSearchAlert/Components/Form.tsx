@@ -8,7 +8,7 @@ import {
   ArrowRightIcon,
   Touchable,
 } from "@artsy/palette-mobile"
-import { StackNavigationProp } from "@react-navigation/stack"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
 import { Pill } from "app/Components/Pill"
@@ -34,7 +34,6 @@ interface FormProps {
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
   onRemovePill: (pill: SavedSearchPill) => void
-  navigation?: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -50,10 +49,11 @@ export const Form: React.FC<FormProps> = (props) => {
     onTogglePushNotification,
     onToggleEmailNotification,
     onRemovePill,
-    navigation,
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
@@ -140,12 +140,10 @@ export const Form: React.FC<FormProps> = (props) => {
       </Box>
       <Spacer y={2} />
       <Touchable
-        accessibilityLabel="Artist Series List Item"
+        accessibilityLabel="Set price range"
         accessibilityRole="button"
         underlayColor="black5"
-        onPress={() =>
-          !!navigation && navigation.navigate("CreateSavedSearchAlertPriceRangeScreen")
-        }
+        onPress={() => navigation.navigate("CreateAlertPriceRangeScreen")}
       >
         <Flex flexDirection="row" alignItems="center" py={1}>
           <Flex flex={1}>

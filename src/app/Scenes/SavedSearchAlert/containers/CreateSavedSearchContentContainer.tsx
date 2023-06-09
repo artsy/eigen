@@ -1,5 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/core"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
@@ -33,7 +34,9 @@ interface CreateSavedSearchAlertContentProps
 }
 
 const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
-  const { viewer, loading, relay, navigation, onClosePress, ...other } = props
+  const { viewer, loading, relay, onClosePress, ...other } = props
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
@@ -96,7 +99,6 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
         isLoading={loading || refetching}
         onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
         userAllowsEmails={userAllowsEmails}
-        navigation={navigation}
         {...other}
       />
     </Box>
