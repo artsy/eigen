@@ -72,11 +72,13 @@ When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes
 
 #### When can we remove this:
 
-When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes or when we migrate to the new tab component from palette. It's only used on inbox and city components right now.
 
 #### Explanation/Context:
 
 When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+The second part of the the patch is to fix a crash on android https://github.com/artsy/eigen/pull/8847
 
 ## react-native-image-crop-picker getRootVC patch
 
