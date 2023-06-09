@@ -57,6 +57,13 @@ export const useSaveArtwork = ({
         artwork?.setValue(nextSavedState, "isSaved")
 
         optimisticUpdater?.(nextSavedState, store, optimisticUpdaterCalledBefore)
+
+        /**
+         * `optimisticUpdater` can be called twice for the same mutation
+         * this flag will help us detect this
+         *
+         * See this PR for more info: https://github.com/artsy/eigen/pull/8815
+         */
         optimisticUpdaterCalledBefore = true
       },
     })
