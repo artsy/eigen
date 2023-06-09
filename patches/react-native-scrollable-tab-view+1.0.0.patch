@@ -41,3 +41,19 @@ index 1500b2d..63b528f 100644
      renderTab: PropTypes.func,
      underlineStyle: ViewPropTypes.style,
      onScroll: PropTypes.func,
+diff --git a/node_modules/react-native-scrollable-tab-view/index.js b/node_modules/react-native-scrollable-tab-view/index.js
+index 5996ff7..22a91d8 100644
+--- a/node_modules/react-native-scrollable-tab-view/index.js
++++ b/node_modules/react-native-scrollable-tab-view/index.js
+@@ -15,7 +15,10 @@ const {
+ 
+ const ViewPagerAndroid = require('@react-native-community/viewpager');
+ const TimerMixin = require('react-timer-mixin');
+-const ViewPager = require('@react-native-community/viewpager');
++let ViewPager = require("react-native-pager-view")
++if (typeof ViewPager === "object" && typeof ViewPager.default === "function") {
++  ViewPager = ViewPager.default
++}
+ 
+ const SceneComponent = require('./SceneComponent');
+ const DefaultTabBar = require('./DefaultTabBar');
