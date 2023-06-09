@@ -372,8 +372,6 @@ jobs:
           command: ./scripts/deploy-if-beta-branch-ios
 
   build-test-app-android:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
       - image: cimg/android:2023.06.1-node
     resource_class: large
