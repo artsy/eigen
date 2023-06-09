@@ -10,7 +10,7 @@ interface MyCollectionCollectedArtistsRailProps {
   me: MyCollectionCollectedArtistsRail_me$key
 }
 
-export const ARTIST_CIRCLE_DIAMETER = 70
+export const ARTIST_CIRCLE_DIAMETER = 100
 
 const AddMoreButton = () => {
   return (
@@ -98,8 +98,8 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
   const data = useFragment(artistFragment, artist)
 
   return (
-    <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
-      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="sm" />
+    <Flex mr={2} width={ARTIST_CIRCLE_DIAMETER}>
+      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="md" />
       <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
         {data.name}
       </Text>
