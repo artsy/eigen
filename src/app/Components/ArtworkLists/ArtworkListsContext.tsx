@@ -55,40 +55,55 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   })
   const toast = useArtworkListToast()
 
-  const showToastForAddedLists = (artworkLists: ArtworkListEntity[]) => {
+  const showToastForAddedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
-      toast.addedToSingleArtworkList(artworkLists[0])
+      toast.addedToSingleArtworkList({
+        artwork,
+        artworkList: artworkLists[0],
+      })
       return
     }
 
-    return toast.addedToMultipleArtworkLists(artworkLists)
+    return toast.addedToMultipleArtworkLists({
+      artwork,
+      artworkLists,
+    })
   }
 
-  const showToastForRemovedLists = (artworkLists: ArtworkListEntity[]) => {
+  const showToastForRemovedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
-      toast.removedFromSingleArtworkList(artworkLists[0])
+      toast.removedFromSingleArtworkList({
+        artwork,
+        artworkList: artworkLists[0],
+      })
       return
     }
 
-    return toast.removedFromMultipleArtworkLists(artworkLists)
+    return toast.removedFromMultipleArtworkLists({
+      artwork,
+      artworkLists,
+    })
   }
 
   const modifiedArtworkLists = (
+    artwork: ArtworkEntity,
     addedArtworkLists: ArtworkListEntity[],
     removedArtworkLists: ArtworkListEntity[]
   ) => {
     if (addedArtworkLists.length > 0 && removedArtworkLists.length > 0) {
-      toast.changesSaved()
+      toast.changesSaved({
+        artwork,
+      })
       return
     }
 
     if (addedArtworkLists.length > 0) {
-      showToastForAddedLists(addedArtworkLists)
+      showToastForAddedLists(artwork, addedArtworkLists)
       return
     }
 
     if (removedArtworkLists.length > 0) {
-      showToastForRemovedLists(removedArtworkLists)
+      showToastForRemovedLists(artwork, removedArtworkLists)
       return
     }
   }
@@ -104,7 +119,10 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
       })
     }
 
-    toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+    toast.savedToDefaultArtworkList({
+      artwork,
+      onToastPress: openSelectArtworkListsForArtworkView,
+    })
   }
 
   const onSave = (result: SaveResult) => {
@@ -128,7 +146,9 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         dispatchArtworkSavedStateChanged(state.artwork!.internalID)
       }
 
-      toast.changesSaved()
+      toast.changesSaved({
+        artwork: result.artwork,
+      })
 
       return
     }
@@ -139,12 +159,15 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
-      toast.removedFromDefaultArtworkList()
+      toast.removedFromDefaultArtworkList({
+        artwork: result.artwork,
+      })
+
       return
     }
 
     if (result.action === ResultAction.ModifiedArtworkLists) {
-      modifiedArtworkLists(state.addingArtworkLists, state.removingArtworkLists)
+      modifiedArtworkLists(result.artwork, state.addingArtworkLists, state.removingArtworkLists)
       return
     }
 
