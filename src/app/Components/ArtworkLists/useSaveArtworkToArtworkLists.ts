@@ -55,8 +55,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    onCompleted: (isArtworkSaved) => {
-      onCompleted?.(isArtworkSaved)
+    onCompleted,
+    optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
+      if (isCalledBefore) {
+        return
+      }
 
       if (isArtworkSaved) {
         onSave({
@@ -74,10 +77,6 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     },
   })
 
-  const saveArtworkToDefaultArtworkList = isArtworkListsEnabled
-    ? newSaveArtworkToDefaultArtworkList
-    : legacySaveArtworkToDefaultArtworkList
-
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
       type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
@@ -90,7 +89,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const saveArtworkToLists = () => {
     if (!isArtworkListsEnabled) {
-      saveArtworkToDefaultArtworkList()
+      legacySaveArtworkToDefaultArtworkList()
       return
     }
 
@@ -99,7 +98,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       return
     }
 
-    saveArtworkToDefaultArtworkList()
+    newSaveArtworkToDefaultArtworkList()
   }
 
   return {
