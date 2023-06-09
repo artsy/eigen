@@ -196,9 +196,3 @@ export const ViewAsIcons: React.FC<{
     </>
   )
 }
-
-// export function useAnimatedValue(init: number) {
-//   return useMemo(() => {
-//     return new Animated.Value(init)
-//   }, [])
-// }

@@ -121,7 +121,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         })}
         renderItem={({ item: artist, index }) => {
           return (
-            // <Disappearable ref={(ref) => (artist._disappearable = ref)}>
             <View style={{ flexDirection: "row" }}>
               <ArtistCard
                 artist={artist as any}
@@ -139,7 +138,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               />
               {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
             </View>
-            // </Disappearable>
           )
         }}
       />
