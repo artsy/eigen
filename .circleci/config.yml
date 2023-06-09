@@ -103,7 +103,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v14-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v15-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -111,7 +111,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v14-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v15-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -131,7 +131,7 @@ commands:
       - setup-env-file
       - restore_cache:
           keys:
-            - v8-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -147,7 +147,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v3-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v4-app_build_android-{{ checksum ".manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -156,7 +156,7 @@ commands:
           name: Build App
           command: ./scripts/ci-android
       - save_cache:
-          key: v3-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v4-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -312,7 +312,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v10-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -349,7 +349,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v10-test-success-{{ checksum ".manifests/native_code" }}
+          key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -388,7 +388,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v8-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
