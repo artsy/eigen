@@ -98,7 +98,7 @@ export const MyCollectionArtworkFormMain: React.FC<
     if (modalType === "add") {
       return Object.getOwnPropertyNames(formValues).find(
         (key) =>
-          !["pricePaidCurrency", "metric", "photos"].includes(key) &&
+          !["pricePaidCurrency", "metric", "photos", "customArtist"].includes(key) &&
           !key.startsWith("artist") &&
           (formValues as { [key: string]: any })[key]
       )
@@ -123,6 +123,26 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const handleCategory = (category: string) => {
     formik.handleChange("category")(category)
+  }
+
+  const ArtistField = () => {
+    if (formik.values.artistSearchResult) {
+      return <ArtistSearchResult result={formik.values.artistSearchResult} />
+    } else if (formik.values.customArtist) {
+      return <ArtistCustomArtist artist={formik.values.customArtist} />
+    } else
+      return (
+        <Input
+          title="Artist"
+          placeholder="Artist"
+          onChangeText={formik.handleChange("artistDisplayName")}
+          onBlur={formik.handleBlur("artistDisplayName")}
+          testID="ArtistDisplayNameInput"
+          required
+          accessibilityLabel="Artist Name"
+          value={formikValues.artistDisplayName}
+        />
+      )
   }
 
   return (
@@ -165,23 +185,8 @@ export const MyCollectionArtworkFormMain: React.FC<
           )}
 
           <Flex p={2}>
-            <Join separator={<Spacer y={1} />}>
-              {formik.values.artistSearchResult ? (
-                <ArtistSearchResult result={formik.values.artistSearchResult} />
-              ) : formik.values.customArtist ? (
-                <ArtistCustomArtist artist={formik.values.customArtist} />
-              ) : (
-                <Input
-                  title="Artist"
-                  placeholder="Artist"
-                  onChangeText={formik.handleChange("artistDisplayName")}
-                  onBlur={formik.handleBlur("artistDisplayName")}
-                  testID="ArtistDisplayNameInput"
-                  required
-                  accessibilityLabel="Artist Name"
-                  value={formikValues.artistDisplayName}
-                />
-              )}
+            <Join separator={<Spacer y={2} />}>
+              <ArtistField />
               <Input
                 title="Title"
                 placeholder="Title"

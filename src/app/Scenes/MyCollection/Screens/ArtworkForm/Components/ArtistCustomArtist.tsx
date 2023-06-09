@@ -1,23 +1,10 @@
 import { Avatar, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { CustomArtist } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { take } from "lodash"
+import { Initials } from "app/Scenes/MyCollection/utils/convertNameToInitials"
 
 export const ArtistCustomArtist: React.FC<{
   artist: CustomArtist
 }> = ({ artist }) => {
-  const Initials = (string = "", length = 3) => {
-    if (!string) return null
-
-    // FIXME: Expected 1 arguments, but got 2.
-    // @ts-ignore
-    const letters = take(string.match(/\b[A-Z]/g, ""), length)
-    if (letters.length >= 1) return letters.join("").toUpperCase()
-
-    // FIXME: Expected 1 arguments, but got 2.
-    // @ts-ignore
-    return take(string.match(/\b\w/g, ""), length).join("").toUpperCase()
-  }
-
   return (
     <Flex flexDirection="row" alignItems="center">
       <Avatar initials={Initials(artist.name) || ""} size="xs" />
