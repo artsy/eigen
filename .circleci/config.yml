@@ -47,12 +47,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v13-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v13-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -201,6 +201,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
+          cache-version: "v2"
           pkg-manager: yarn
       - run-relay-compiler
       - run:
@@ -222,6 +223,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
+          cache-version: "v2"
           pkg-manager: yarn
       - run-relay-compiler
       - run:
