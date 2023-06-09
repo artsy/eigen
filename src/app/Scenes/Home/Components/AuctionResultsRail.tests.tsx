@@ -88,18 +88,11 @@ describe("AuctionResultsRailFragmentContainer", () => {
 })
 
 describe(getDetailsByContextModule, () => {
-  it("returns the correct details for the upcoming auction results rail", () => {
-    const details = getDetailsByContextModule(ContextModule.upcomingAuctionsRail)
-    expect(details).toEqual({
-      viewAllUrl: "/upcoming-auction-results",
-      browseAllButtonText: "Browse All Auctions",
-    })
-  })
-
   it("returns the correct details for the past auction results rail", () => {
     const details = getDetailsByContextModule(ContextModule.auctionResultsRail)
     expect(details).toEqual({
       viewAllUrl: "/auction-results-for-artists-you-follow",
+      destinationScreen: "auctionResultsForArtistsYouFollow",
       browseAllButtonText: "Browse All Results",
     })
   })

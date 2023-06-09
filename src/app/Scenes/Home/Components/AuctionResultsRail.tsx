@@ -20,17 +20,13 @@ interface AuctionResultsRailProps {
 
 export const getDetailsByContextModule = (
   contextModule: ContextModule | string
-): { viewAllUrl: string; browseAllButtonText: string } => {
+): { viewAllUrl: string; browseAllButtonText: string; destinationScreen: OwnerType } => {
   switch (contextModule) {
-    case ContextModule.upcomingAuctionsRail:
-      return {
-        viewAllUrl: "/upcoming-auction-results",
-        browseAllButtonText: "Browse All Auctions",
-      }
     case ContextModule.auctionResultsRail:
       return {
         viewAllUrl: "/auction-results-for-artists-you-follow",
         browseAllButtonText: "Browse All Results",
+        destinationScreen: OwnerType.auctionResultsForArtistsYouFollow,
       }
     default:
       throw "Unknown ContextModule"
@@ -39,7 +35,8 @@ export const getDetailsByContextModule = (
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
-    const { viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
+    const { viewAllUrl, browseAllButtonText, destinationScreen } =
+      getDetailsByContextModule(contextModule)
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -54,7 +51,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
     }
 
     const handleMorePress = () => {
-      trackEvent(tracks.tappedViewAll(contextModule))
+      trackEvent(tracks.tappedViewAll(contextModule, destinationScreen))
       navigate(viewAllUrl)
     }
 
@@ -64,7 +61,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
           <SectionTitle
             title={title}
             onPress={() => {
-              trackEvent(tracks.tappedHeader(contextModule))
+              trackEvent(tracks.tappedHeader(contextModule, destinationScreen))
               navigate(viewAllUrl)
             }}
           />
@@ -104,18 +101,18 @@ const meFragment = graphql`
 `
 
 const tracks = {
-  tappedHeader: (contextModule: ContextModule | string) => ({
+  tappedHeader: (contextModule: ContextModule | string, destinationScreen: OwnerType) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    destination_screen_owner_type: destinationScreen,
     type: "header",
   }),
-  tappedViewAll: (contextModule: ContextModule | string) => ({
+  tappedViewAll: (contextModule: ContextModule | string, destinationScreen: OwnerType) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    destination_screen_owner_type: destinationScreen,
     type: "viewAll",
   }),
 }

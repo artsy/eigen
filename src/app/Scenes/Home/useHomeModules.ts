@@ -10,7 +10,6 @@ import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
-  const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
@@ -72,15 +71,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "meetYourNewAdvisor",
       },
       // Below-The-Fold Modules
-      {
-        contextModule: ContextModule.upcomingAuctionsRail,
-        data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
-        hidden: !showUpcomingAuctionResultsRail,
-        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsUpcoming),
-        key: "upcomingAuctionLotsForYouRail",
-        title: "Upcoming Auction Lots For You",
-        type: "auction-results",
-      },
       {
         contextModule: ContextModule.auctionResultsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsPast,
@@ -239,7 +229,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
     props.homePageBelow?.fairsModule,
-    showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
     enableMeetYourNewAdvisoryRail,
