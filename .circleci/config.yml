@@ -70,13 +70,15 @@ commands:
       - run:
           name: Compile query map
           command: yarn relay
+  install-ruby:
+    steps:
+      - ruby/install:
+          version: "2.7"
   install-gems:
     steps:
       - restore_cache:
           keys:
             - v7-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
-      - ruby/install:
-          version: "2.7"
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -145,6 +147,7 @@ commands:
       - install-node-modules
       - run-relay-compiler
       - update-echo
+      - install-ruby
       - install-gems
   build-app-android:
     steps:
