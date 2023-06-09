@@ -50,7 +50,9 @@ const Item: FC<ArtworkListItemProps> = (props) => {
           <ArtworkListImagePreview imageURL={imageURL} />
 
           <Flex flex={1}>
-            <Text variant="xs">{artworkList.name}</Text>
+            <Text variant="xs" numberOfLines={1}>
+              {artworkList.name}
+            </Text>
             <Text variant="xs" color="black60">
               {getArtworksCountText()}
             </Text>
