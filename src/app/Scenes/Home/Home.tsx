@@ -51,6 +51,7 @@ import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
@@ -212,6 +213,10 @@ const Home = memo((props: HomeProps) => {
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
       const trackingProps = extractArtworkActionTrackingProps(item)
+
+      if (true) {
+        return <HeroUnitsRail test={props.homePageAbove?.heroUnits} />
+      }
 
       if (!item.data) {
         return <></>
@@ -525,6 +530,11 @@ export const HomeFragmentContainer = memo(
           ...NewWorksForYouRail_artworkConnection
         }
       `,
+      heroUnits: graphql`
+        fragment Home_heroUnits on HeroUnitConnection {
+          ...HeroUnitsRail_heroUnitsConnection
+        }
+      `,
       emergingPicks: graphql`
         fragment Home_emergingPicks on MarketingCollection {
           ...MarketingCollectionRail_marketingCollection
@@ -740,6 +750,9 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             }
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
+            }
+            heroUnits: heroUnitsConnection(first: 10, private: true) {
+              ...HeroUnitsRail_heroUnitsConnection
             }
           }
         `,
