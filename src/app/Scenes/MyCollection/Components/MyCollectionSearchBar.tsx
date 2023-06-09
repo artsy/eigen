@@ -3,6 +3,7 @@ import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
@@ -15,7 +16,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native"
-import Animated from "react-native-reanimated"
 
 export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
@@ -71,7 +71,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             onChangeText={setValue}
             onFocus={onFocus}
             onBlur={() => {
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              hasRunFocusedAnimation.setValue(0)
               onIsFocused?.(false)
               setIsFocused(false)
             }}
@@ -87,7 +87,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             testID="MyCollectionSearchBarInputCancelButton"
             onPress={() => {
               setValue("")
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              hasRunFocusedAnimation.setValue(0)
 
               LayoutAnimation.configureNext({
                 ...LayoutAnimation.Presets.easeInEaseOut,
@@ -111,7 +111,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               <TouchableWithoutFeedback
                 testID="MyCollectionSearchBarNoInputTouchable"
                 onPress={() => {
-                  hasRunFocusedAnimation.setValue(new Animated.Value(0))
+                  hasRunFocusedAnimation.setValue(0)
                   setIsFocused(true)
                   onIsFocused?.(true)
 
@@ -197,8 +197,8 @@ export const ViewAsIcons: React.FC<{
   )
 }
 
-export function useAnimatedValue(init: number) {
-  return useMemo(() => {
-    return new Animated.Value(init)
-  }, [])
-}
+// export function useAnimatedValue(init: number) {
+//   return useMemo(() => {
+//     return new Animated.Value(init)
+//   }, [])
+// }
