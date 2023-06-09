@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
+  ruby: circleci/ruby@2.0.1
 
 commands:
   await-previous-builds:
@@ -74,6 +75,8 @@ commands:
       - restore_cache:
           keys:
             - v8-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+      - ruby/install:
+          version: "2.7"
       - run:
           name: Bundle install
           command: bundle check || bundle install
