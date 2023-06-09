@@ -12,9 +12,9 @@ import * as Yup from "yup"
 
 export interface NewMyCollectionArtistFormikSchema {
   name: string
-  nationality: string
-  birthYear: string
-  deathYear: string
+  nationality?: string
+  birthYear?: string
+  deathYear?: string
 }
 
 const validationSchema = Yup.object().shape({
