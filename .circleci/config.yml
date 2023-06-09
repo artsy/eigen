@@ -201,6 +201,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
+          cache-version: "v2"
           pkg-manager: yarn
       - run-relay-compiler
       - run:
@@ -222,6 +223,7 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
+          cache-version: "v2"
           pkg-manager: yarn
       - run-relay-compiler
       - run:
