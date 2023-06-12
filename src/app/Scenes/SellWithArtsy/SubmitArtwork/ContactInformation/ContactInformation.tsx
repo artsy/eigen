@@ -4,7 +4,7 @@ import { ContactInformation_me$data } from "__generated__/ContactInformation_me.
 import { CTAButton } from "app/Components/Button/CTAButton"
 import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Formik } from "formik"
 import { noop } from "lodash"
 import React, { useState } from "react"
@@ -107,7 +107,7 @@ export const ContactInformationQueryRenderer: React.FC<{
 }> = ({ handlePress, isLastStep }) => {
   return (
     <QueryRenderer<ContactInformationQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ContactInformationQueryRendererQuery {
           me {

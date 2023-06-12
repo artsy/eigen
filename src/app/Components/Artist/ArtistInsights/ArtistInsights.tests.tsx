@@ -1,5 +1,5 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -8,13 +8,22 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistInsightsFragmentContainer } from "./ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
+jest.mock("react-native-collapsible-tab-view", () => {
+  const getMockCollapsibleTabs =
+    require("app/utils/tests/getMockCollapsibleTabView").getMockCollapsibleTabs
+  return {
+    ...getMockCollapsibleTabs(),
+    useFocusedTab: () => "Insights",
+  }
+})
+
 const trackEvent = useTracking().trackEvent
 
 describe("ArtistInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
-  const TestRenderer = ({ tabIndex = 0 }) => (
+  const TestRenderer = () => (
     <QueryRenderer<ArtistInsightsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -29,18 +38,7 @@ describe("ArtistInsights", () => {
         if (!props?.artist) {
           return null
         }
-        return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: (
-                  <ArtistInsightsFragmentContainer artist={props.artist} tabIndex={tabIndex} />
-                ),
-              },
-            ]}
-          />
-        )
+        return <ArtistInsightsFragmentContainer artist={props.artist} />
       }}
     />
   )
@@ -51,20 +49,18 @@ describe("ArtistInsights", () => {
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
   })
 
-  it("tracks an auction page view when artist insights is current tab", (done) => {
-    renderWithWrappersLEGACY(<TestRenderer tabIndex={0} />)
+  it("tracks an auction page view when artist insights is current tab", async () => {
+    renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
-    setImmediate(() => {
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "screen",
-        context_screen_owner_id: "internalID-1",
-        context_screen_owner_slug: "slug-1",
-        context_screen_owner_type: "artistAuctionResults",
-      })
+    await flushPromiseQueue()
 
-      done()
+    expect(trackEvent).toHaveBeenCalledWith({
+      action: "screen",
+      context_screen_owner_id: "internalID-1",
+      context_screen_owner_slug: "slug-1",
+      context_screen_owner_type: "artistAuctionResults",
     })
   })
 })

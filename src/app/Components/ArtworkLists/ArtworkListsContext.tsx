@@ -1,9 +1,10 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
+import { dispatchArtworkSavedStateChanged } from "app/Components/ArtworkLists/ArtworkListEvents"
 import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
-import { createContext, FC, useCallback, useContext, useReducer, useState } from "react"
+import { createContext, FC, useCallback, useContext, useReducer } from "react"
 import {
   ArtworkEntity,
   ArtworkListAction,
@@ -22,10 +23,12 @@ export interface ArtworkListsProviderProps {
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   createNewArtworkListViewVisible: false,
   artwork: null,
+  artworkListID: null,
   recentlyAddedArtworkList: null,
-  selectedArtworkListIDs: [],
+  selectedTotalCount: 0,
   addingArtworkLists: [],
   removingArtworkLists: [],
+  hasUnsavedChanges: false,
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -46,47 +49,61 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   artworkListId,
   artwork,
 }) => {
-  const [isSavedToArtworkList, setIsSavedToArtworkList] = useState(!!artworkListId)
   const [state, dispatch] = useReducer(reducer, {
     ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
   })
   const toast = useArtworkListToast()
 
-  const showToastForAddedLists = (artworkLists: ArtworkListEntity[]) => {
+  const showToastForAddedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
-      toast.addedToSingleArtworkList(artworkLists[0])
+      toast.addedToSingleArtworkList({
+        artwork,
+        artworkList: artworkLists[0],
+      })
       return
     }
 
-    return toast.addedToMultipleArtworkLists(artworkLists)
+    return toast.addedToMultipleArtworkLists({
+      artwork,
+      artworkLists,
+    })
   }
 
-  const showToastForRemovedLists = (artworkLists: ArtworkListEntity[]) => {
+  const showToastForRemovedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
-      toast.removedFromSingleArtworkList(artworkLists[0])
+      toast.removedFromSingleArtworkList({
+        artwork,
+        artworkList: artworkLists[0],
+      })
       return
     }
 
-    return toast.removedFromMultipleArtworkLists(artworkLists)
+    return toast.removedFromMultipleArtworkLists({
+      artwork,
+      artworkLists,
+    })
   }
 
   const modifiedArtworkLists = (
+    artwork: ArtworkEntity,
     addedArtworkLists: ArtworkListEntity[],
     removedArtworkLists: ArtworkListEntity[]
   ) => {
     if (addedArtworkLists.length > 0 && removedArtworkLists.length > 0) {
-      toast.changesSaved()
+      toast.changesSaved({
+        artwork,
+      })
       return
     }
 
     if (addedArtworkLists.length > 0) {
-      showToastForAddedLists(addedArtworkLists)
+      showToastForAddedLists(artwork, addedArtworkLists)
       return
     }
 
     if (removedArtworkLists.length > 0) {
-      showToastForRemovedLists(removedArtworkLists)
+      showToastForRemovedLists(artwork, removedArtworkLists)
       return
     }
   }
@@ -94,30 +111,44 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   const savedToDefaultArtworkList = (artwork: ArtworkEntity) => {
     const openSelectArtworkListsForArtworkView = () => {
       dispatch({
-        type: "SET_ARTWORK",
-        payload: artwork,
+        type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
+        payload: {
+          artwork,
+          artworkListID: null,
+        },
       })
     }
 
-    toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
+    toast.savedToDefaultArtworkList({
+      artwork,
+      onToastPress: openSelectArtworkListsForArtworkView,
+    })
   }
 
   const onSave = (result: SaveResult) => {
-    if (artworkListId) {
+    dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
+
+    if (state.artworkListID !== null) {
       if (result.action !== ResultAction.ModifiedArtworkLists) {
         throw new Error("You should pass `ModifiedArtworkLists` action")
       }
 
-      const isArtworkListAdded = isArtworkListsIncludes(artworkListId, state.addingArtworkLists)
-      const isArtworkListRemoved = isArtworkListsIncludes(artworkListId, state.removingArtworkLists)
+      const isArtworkListAdded = isArtworkListsIncludes(
+        state.artworkListID,
+        state.addingArtworkLists
+      )
+      const isArtworkListRemoved = isArtworkListsIncludes(
+        state.artworkListID,
+        state.removingArtworkLists
+      )
 
-      if (isArtworkListAdded) {
-        setIsSavedToArtworkList(true)
-      } else if (isArtworkListRemoved) {
-        setIsSavedToArtworkList(false)
+      if (isArtworkListAdded || isArtworkListRemoved) {
+        dispatchArtworkSavedStateChanged(state.artwork!.internalID)
       }
 
-      toast.changesSaved()
+      toast.changesSaved({
+        artwork: result.artwork,
+      })
 
       return
     }
@@ -128,12 +159,15 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
-      toast.removedFromDefaultArtworkList()
+      toast.removedFromDefaultArtworkList({
+        artwork: result.artwork,
+      })
+
       return
     }
 
     if (result.action === ResultAction.ModifiedArtworkLists) {
-      modifiedArtworkLists(state.addingArtworkLists, state.removingArtworkLists)
+      modifiedArtworkLists(result.artwork, state.addingArtworkLists, state.removingArtworkLists)
       return
     }
 
@@ -151,7 +185,6 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   const value: ArtworkListsContextState = {
     state,
     artworkListId,
-    isSavedToArtworkList,
     addingArtworkListIDs,
     removingArtworkListIDs,
     dispatch,
@@ -182,10 +215,11 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         createNewArtworkListViewVisible: action.payload,
       }
-    case "SET_ARTWORK":
+    case "OPEN_SELECT_ARTWORK_LISTS_VIEW":
       return {
         ...state,
-        artwork: action.payload,
+        artwork: action.payload.artwork,
+        artworkListID: action.payload.artworkListID,
       }
     case "SET_RECENTLY_ADDED_ARTWORK_LIST":
       return {
@@ -199,25 +233,32 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
       const artworkLists = state[mode]
       // eslint-disable-next-line no-case-declarations
       const ids = artworkLists.map((artworkList) => artworkList.internalID)
+      // eslint-disable-next-line no-case-declarations
+      const updatedState = { ...state }
 
       if (ids.includes(artworkList.internalID)) {
-        return {
-          ...state,
-          [mode]: artworkLists.filter((entity) => entity.internalID !== artworkList.internalID),
-        }
+        updatedState[mode] = artworkLists.filter(
+          (entity) => entity.internalID !== artworkList.internalID
+        )
+      } else {
+        updatedState[mode] = [...artworkLists, artworkList]
       }
 
+      updatedState.hasUnsavedChanges = hasChanges(updatedState)
+
+      return updatedState
+    case "SET_SELECTED_TOTAL_COUNT":
       return {
         ...state,
-        [mode]: [...artworkLists, artworkList],
-      }
-    case "SET_SELECTED_ARTWORK_LIST_IDS":
-      return {
-        ...state,
-        selectedArtworkListIDs: action.payload,
+        selectedTotalCount: action.payload,
       }
     case "RESET":
       return ARTWORK_LISTS_CONTEXT_INITIAL_STATE
+    case "SET_UNSAVED_CHANGES":
+      return {
+        ...state,
+        hasUnsavedChanges: action.payload,
+      }
     default:
       return state
   }
@@ -225,4 +266,8 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
 
 const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkListEntity[]) => {
   return artworkLists.find((artworkList) => artworkList.internalID === artworkListID)
+}
+
+const hasChanges = (state: ArtworkListState) => {
+  return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
 }

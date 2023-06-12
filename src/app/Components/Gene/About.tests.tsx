@@ -1,7 +1,7 @@
 // Note: test renderer must be required after react-native.
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+
+import { Tabs } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
 
 import About from "./About"
 
@@ -42,13 +42,8 @@ it("renders without throwing a error", () => {
   }
 
   renderWithWrappersLEGACY(
-    <StickyTabPage
-      tabs={[
-        {
-          title: "test",
-          content: <About gene={gene as any} />,
-        },
-      ]}
-    />
+    <Tabs.TabsWithHeader title="test">
+      <About gene={gene as any} />
+    </Tabs.TabsWithHeader>
   )
 })

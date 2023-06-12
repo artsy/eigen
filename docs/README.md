@@ -5,6 +5,7 @@
 ## Getting Started
 
 - [Getting Started](getting_started.md)
+- [I have eigen installed but haven't run it in a while](setting_up_eigen_after_long_time.md)
 - [Troubleshooting](troubleshooting.md)
 
 ## Meandering Around

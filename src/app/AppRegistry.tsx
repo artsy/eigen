@@ -55,10 +55,6 @@ import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
-import {
-  AuctionResultsUpcomingPrefetchQuery,
-  AuctionResultsUpcomingQueryRenderer,
-} from "./Scenes/AuctionResults/AuctionResultsUpcoming"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
@@ -110,7 +106,6 @@ import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileEditFormScreen } from "./Scenes/MyProfile/MyProfileEditForm"
-import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
@@ -145,11 +140,11 @@ import {
 import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
-import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
+import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
-  SegmentTrackingProvider,
   SEGMENT_TRACKING_PROVIDER,
+  SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
 
 LogBox.ignoreLogs([
@@ -337,18 +332,34 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Activity: reactModule(Activity, {
+    fullBleed: true,
     hidesBackButton: true,
   }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
-  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
+  ArtQuizResults: reactModule(ArtQuizResults, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Article: reactModule(ArticleScreen),
-  Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
-  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
+  Articles: reactModule(
+    ArticlesScreen,
+    {
+      fullBleed: true,
+      hidesBackButton: true,
+    },
+    [ArticlesScreenQuery]
+  ),
+  Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
+    ArtistScreenQuery,
+  ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
-  ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
+  ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Artwork: reactModule(
     ArtworkPageableScreen,
     {
@@ -408,17 +419,23 @@ export const modules = defineModules({
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
   DevMenuOld: reactModule(DevMenuOld, { alwaysPresentModally: true }),
-  DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
+  DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  Favorites: reactModule(Favorites),
+  Favorites: reactModule(Favorites, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  Gene: reactModule(GeneQueryRenderer),
+  Gene: reactModule(GeneQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
   }),
@@ -448,9 +465,11 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
-    MyCollectionArtworkScreenQuery,
-  ]),
+  MyCollectionArtwork: reactModule(
+    MyCollectionArtworkScreen,
+    { fullBleed: true, hidesBackButton: true },
+    [MyCollectionArtworkScreenQuery]
+  ),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,
@@ -458,7 +477,7 @@ export const modules = defineModules({
       isRootViewForTabName: "profile",
       fullBleed: true,
     },
-    [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
+    [MyCollectionScreenQuery]
   ),
   MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
@@ -473,7 +492,10 @@ export const modules = defineModules({
   NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  Partner: reactModule(PartnerQueryRenderer),
+  Partner: reactModule(PartnerQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   PartnerLocations: reactModule(PartnerLocations),
   PriceDatabase: reactModule(PriceDatabase, { hidesBackButton: true }),
   PrivacyRequest: reactModule(PrivacyRequest),
@@ -511,11 +533,8 @@ export const modules = defineModules({
   SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
   Storybook: reactModule(StorybookUIRoot),
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
-  Tag: reactModule(TagQueryRenderer),
+  Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
-  UpcomingAuctionResults: reactModule(AuctionResultsUpcomingQueryRenderer, {}, [
-    AuctionResultsUpcomingPrefetchQuery,
-  ]),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),

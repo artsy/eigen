@@ -1,51 +1,27 @@
 import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
-import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ResultAction } from "app/Components/ArtworkLists/types"
-import { useUpdateArtworkListsForArtwork } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import { useSavePendingArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSavePendingArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { FC } from "react"
 
 export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
+  const { state, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
-  const { selectedArtworkListIDs } = state
-  const hasChanges = addingArtworkListIDs.length !== 0 || removingArtworkListIDs.length !== 0
-  const artwork = state.artwork!
+  const { selectedTotalCount } = state
+  const totalCount =
+    selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
-  const [commit, mutationInProgress] = useUpdateArtworkListsForArtwork(artwork.id)
-
-  const handleSave = () => {
-    commit({
-      variables: {
-        artworkID: artwork.internalID,
-        input: {
-          artworkIDs: [artwork.internalID],
-          addToCollectionIDs: addingArtworkListIDs,
-          removeFromCollectionIDs: removingArtworkListIDs,
-        },
-      },
-      onCompleted: () => {
-        dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
-        onSave({
-          action: ResultAction.ModifiedArtworkLists,
-        })
-      },
-      onError: (error) => {
-        if (__DEV__) {
-          console.error(error)
-        } else {
-          captureMessage(error?.stack!)
-        }
-      },
-    })
-  }
+  const { save, inProgress } = useSavePendingArtworkListsChanges({
+    onCompleted: () => {
+      dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
+    },
+  })
 
   return (
     <Box {...props}>
       <Text variant="xs" textAlign="center">
-        {getSelectedListsCountText(selectedArtworkListIDs.length)}
+        {getSelectedListsCountText(totalCount)}
       </Text>
 
       <Spacer y={1} />
@@ -53,9 +29,9 @@ export const SelectArtworkListsForArtworkFooter: FC<BoxProps> = (props) => {
       <Button
         width="100%"
         block
-        disabled={!hasChanges}
-        loading={mutationInProgress}
-        onPress={handleSave}
+        disabled={!state.hasUnsavedChanges}
+        loading={inProgress}
+        onPress={save}
       >
         Save
       </Button>

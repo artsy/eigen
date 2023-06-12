@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
@@ -9,18 +8,9 @@ import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtw
 describe("PartnerArtwork", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerArtworkTestsQuery>({
     Component: (props) => (
-      <StickyTabPage
-        tabs={[
-          {
-            title: "test",
-            content: (
-              <ArtworkFiltersStoreProvider>
-                <PartnerArtwork partner={props.partner!} />
-              </ArtworkFiltersStoreProvider>
-            ),
-          },
-        ]}
-      />
+      <ArtworkFiltersStoreProvider>
+        <PartnerArtwork partner={props.partner!} />
+      </ArtworkFiltersStoreProvider>
     ),
     query: graphql`
       query PartnerArtworkTestsQuery @relay_test_operation {

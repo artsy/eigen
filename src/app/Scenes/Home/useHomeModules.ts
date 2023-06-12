@@ -3,13 +3,13 @@ import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { isOnboardingVisible } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeModule, HomeProps } from "app/Scenes/Home/Home"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
-  const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
@@ -72,18 +72,9 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       // Below-The-Fold Modules
       {
-        contextModule: ContextModule.upcomingAuctionsRail,
-        data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
-        hidden: !showUpcomingAuctionResultsRail,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcoming?.totalCount,
-        key: "upcomingAuctionLotsForYouRail",
-        title: "Upcoming Auction Lots For You",
-        type: "auction-results",
-      },
-      {
         contextModule: ContextModule.auctionResultsRail,
         data: props.meBelow?.auctionResultsByFollowedArtistsPast,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsPast?.totalCount,
+        isEmpty: isConnectionEmpty(props.meBelow?.auctionResultsByFollowedArtistsPast),
         key: "latestAuctionResultsRail",
         prefetchUrl: "/auction-results-for-artists-you-follow",
         title: "Latest Auction Results",
@@ -238,7 +229,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
     props.homePageBelow?.fairsModule,
-    showUpcomingAuctionResultsRail,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
     enableMeetYourNewAdvisoryRail,

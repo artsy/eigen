@@ -3,75 +3,72 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-import Artwork, { ArtworkProps } from "./ArtworkGridItem"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import Artwork from "./ArtworkGridItem"
 
 describe("ArtworkGridItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = getMockRelayEnvironment()
-  })
-
-  const TestRenderer = (props: Omit<ArtworkProps, "artwork">) => {
-    const data = useLazyLoadQuery<ArtworkGridItemTestsQuery>(query, {})
-
-    if (!data.artwork) {
-      return null
-    }
-
-    return (
+  const { renderWithRelay } = setupTestWrapper<ArtworkGridItemTestsQuery>({
+    Component: (props) => (
       <ArtworkFiltersStoreProvider>
-        <Artwork {...props} artwork={data.artwork} />
+        <Artwork {...props} artwork={props.artwork!} />
       </ArtworkFiltersStoreProvider>
-    )
-  }
-
-  afterEach(() => {
-    jest.clearAllMocks()
-    __globalStoreTestUtils__?.reset()
+    ),
+    query: graphql`
+      query ArtworkGridItemTestsQuery @relay_test_operation {
+        artwork(id: "the-artwork") {
+          ...ArtworkGridItem_artwork
+        }
+      }
+    `,
   })
 
   describe("tracking", () => {
-    it("sends an event when trackTap is passed", async () => {
-      const trackTap = jest.fn()
-      renderWithHookWrappersTL(<TestRenderer trackTap={trackTap} itemIndex={1} />, mockEnvironment)
+    const trackTap = jest.fn()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artwork,
-      })
+    afterEach(() => {
+      jest.clearAllMocks()
+      __globalStoreTestUtils__?.reset()
+    })
 
-      await flushPromiseQueue()
+    it("sends an event when trackTap is passed", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+          }),
+        },
+        { itemIndex: 1, trackTap }
+      )
 
-      fireEvent.press(screen.getByText("Some Kind of Dinosaur"))
+      const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+      fireEvent.press(touchableArtwork)
 
       expect(trackTap).toBeCalledWith("cool-artwork", 1)
     })
 
-    it("sends a tracking event when contextScreenOwnerType is included", async () => {
-      renderWithHookWrappersTL(
-        <TestRenderer
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId="abc124"
-          contextScreenOwnerSlug="andy-warhol"
-          itemIndex={0}
-        />,
-        mockEnvironment
+    it("sends a tracking event when contextScreenOwnerType is included", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+            internalID: "abc1234",
+          }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+        }
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artwork,
-      })
-
-      await flushPromiseQueue()
-
-      fireEvent.press(screen.getByText("Some Kind of Dinosaur"))
+      const touchableArtwork = screen.getByTestId("artworkGridItem-Some Kind of Dinosaur")
+      fireEvent.press(touchableArtwork)
 
       expect(mockTrackEvent).toBeCalledWith({
         action: "tappedMainArtworkGrid",
@@ -90,29 +87,38 @@ describe("ArtworkGridItem", () => {
   })
 
   describe("recent searches", () => {
-    const getRecentSearches = () => {
-      return __globalStoreTestUtils__?.getCurrentState().search.recentSearches ?? []
-    }
+    const getRecentSearches = () =>
+      __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
 
-    it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", async () => {
-      renderWithHookWrappersTL(
-        <TestRenderer
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId="abc124"
-          contextScreenOwnerSlug="andy-warhol"
-          itemIndex={0}
-          updateRecentSearchesOnTap
-        />,
-        mockEnvironment
+    afterEach(() => {
+      __globalStoreTestUtils__?.reset()
+    })
+
+    it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            title: "Some Kind of Dinosaur",
+            slug: "cool-artwork",
+            internalID: "abc1234",
+            href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+            image: {
+              url: "artsy.net/image-url",
+            },
+            artistNames: "Mikael Olson",
+            date: 2015,
+          }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+          updateRecentSearchesOnTap: true,
+        }
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artwork,
-      })
-
-      await flushPromiseQueue()
-
-      fireEvent.press(screen.getByText("Some Kind of Dinosaur"))
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(getRecentSearches()).toEqual([
         {
@@ -129,245 +135,164 @@ describe("ArtworkGridItem", () => {
       ])
     })
 
-    it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", async () => {
-      renderWithHookWrappersTL(
-        <TestRenderer
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId="abc124"
-          contextScreenOwnerSlug="andy-warhol"
-          itemIndex={0}
-        />,
-        mockEnvironment
+    it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({ title: "Some Kind of Dinosaur" }),
+        },
+        {
+          contextScreenOwnerType: OwnerType.artist,
+          contextScreenOwnerId: "abc124",
+          contextScreenOwnerSlug: "andy-warhol",
+          itemIndex: 0,
+        }
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artwork,
-      })
-
-      await flushPromiseQueue()
-
-      fireEvent.press(screen.getByText("Some Kind of Dinosaur"))
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
       expect(getRecentSearches()).toEqual([])
     })
   })
 
   describe("in an open sale", () => {
-    it("renders without throwing an error with current bid", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      const saleArtwork = {
-        currentBid: { display: "$200" },
-        sale: {
-          isClosed: false,
-        },
-      }
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("safely handles a missing sale_artwork", () => {
+      renderWithRelay({
         Artwork: () => ({
-          ...artwork,
-          saleArtwork,
-          sale: {
-            ...artwork.sale,
-            ...saleArtwork.sale,
-          },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(screen.getByText("Some Kind of Dinosaur")).toBeTruthy()
-    })
-
-    it("safely handles a missing saleArtwork", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      // Passing in empty saleArtwork prop to trigger "sale is live" code
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          ...artwork,
           saleArtwork: null,
+          title: "Some Kind of Dinosaur",
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.getByText("Some Kind of Dinosaur")).toBeTruthy()
+      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
   })
 
-  it("renders without throwing an error without any price information in a closed sale", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    const saleArtwork = {
-      sale: {
-        isClosed: true,
-      },
-    }
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork,
-        sale: {
-          ...artwork.sale,
-          ...saleArtwork.sale,
-        },
-      }),
-    })
-
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Some Kind of Dinosaur")).toBeTruthy()
-  })
-
-  it("renders without throwing an error when an auction is about to open, but not closed or finished", async () => {
-    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    const saleArtwork = {
-      currentBid: { display: "$200" },
-      sale: {
-        isClosed: false,
-        // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-      },
-    }
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        ...artwork,
-        saleArtwork,
-        sale: {
-          ...artwork.sale,
-          ...saleArtwork.sale,
-        },
-      }),
-    })
-
-    await flushPromiseQueue()
-
-    expect(screen.getByText("Some Kind of Dinosaur")).toBeTruthy()
-  })
-
-  describe("partner name", () => {
-    it("does not show it if hidePartner is set to true", async () => {
-      renderWithHookWrappersTL(<TestRenderer hidePartner />, mockEnvironment)
-
-      const saleArtwork = {
-        currentBid: { display: "$200" },
-        sale: {
-          isClosed: false,
-          // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-        },
-      }
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+  describe("in a closed sale", () => {
+    it("renders without throwing an error without any price information", () => {
+      renderWithRelay({
         Artwork: () => ({
-          ...artwork,
-          saleArtwork,
           sale: {
-            ...artwork.sale,
-            ...saleArtwork.sale,
+            isClosed: true,
           },
+          realizedPrice: null,
+          title: "Some Kind of Dinosaur",
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(screen.queryByText("partner")).toBeNull()
+      expect(screen.queryByText("Some Kind of Dinosaur")).toBeOnTheScreen()
     })
 
-    it("shows it if hidePartner is set to false", async () => {
-      renderWithHookWrappersTL(<TestRenderer hidePartner={false} />, mockEnvironment)
-
-      const saleArtwork = {
-        currentBid: { display: "$200" },
-        sale: {
-          isClosed: false,
-          // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
-        },
-      }
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
+      renderWithRelay({
         Artwork: () => ({
-          ...artwork,
-          saleArtwork,
+          title: "Some Kind of Dinosaur",
           sale: {
-            ...artwork.sale,
-            ...saleArtwork.sale,
+            isClosed: false,
+            isAuction: true,
           },
+          saleArtwork: {
+            currentBid: { display: "$200" },
+            counts: {
+              bidderPositions: 1,
+            },
+          },
+          realizedPrice: null,
         }),
       })
 
-      await flushPromiseQueue()
+      expect(screen.queryByText("$200 (1 bid)")).toBeOnTheScreen()
+    })
 
-      expect(screen.queryByText("partner")).toBeTruthy()
+    it("does not show the partner name if hidePartner is set to true", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            saleArtwork: {
+              currentBid: { display: "$200" },
+            },
+            sale: {
+              isClosed: false,
+              isAuction: true,
+            },
+            partner: {
+              name: "partner",
+            },
+          }),
+        },
+        {
+          hidePartner: true,
+        }
+      )
+
+      expect(() => screen.getByText("partner")).toThrow()
+    })
+
+    it("shows the partner name if hidePartner is set to false", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            partner: {
+              name: "partner",
+            },
+          }),
+        },
+        { hidePartner: false }
+      )
+
+      expect(screen.queryByText("partner")).toBeOnTheScreen()
     })
   })
 
   describe("cascading end times", () => {
-    it("shows the LotCloseInfo component when the sale has cascading end times", async () => {
-      renderWithHookWrappersTL(<TestRenderer showLotLabel />, mockEnvironment)
-
-      const saleArtwork = {
-        lotLabel: "Lot 1",
-        lotID: "123",
-        sale: {
-          isClosed: false,
-          cascadingEndTimeIntervalMinutes: 1,
-          startAt: "2020-11-23T12:41:37.960Z",
-          endAt: "2050-11-23T12:41:37.960Z",
-          extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
+    it("shows the LotCloseInfo component when the sale has cascading end times", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            sale: {
+              isClosed: false,
+              isAuction: true,
+              cascadingEndTimeIntervalMinutes: 1,
+              startAt: "2020-11-23T12:41:37.960Z",
+              extendedBiddingEndAt: "2051-11-23T12:41:37.960Z",
+              endAt: "2050-11-23T12:41:37.960Z",
+            },
+            saleArtwork: {
+              lotLabel: "1",
+              lotID: "123",
+            },
+          }),
         },
-        endAt: "2050-11-23T12:41:37.960Z",
-        startAt: "2050-11-23T12:41:37.960Z",
-      }
+        { showLotLabel: true }
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          ...artwork,
-          saleArtwork,
-          sale: {
-            ...artwork.sale,
-            ...saleArtwork.sale,
-          },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(screen.getByTestId("lot-close-info")).toBeTruthy()
+      expect(screen.queryByText("Lot 1")).toBeOnTheScreen()
+      expect(screen.queryByTestId("lot-close-info")).toBeOnTheScreen()
     })
 
-    it("does not show the LotCloseInfo component when the sale does not have cascading end times", async () => {
-      renderWithHookWrappersTL(<TestRenderer showLotLabel />, mockEnvironment)
-
-      const saleArtwork = {
-        lotLabel: "Lot 1",
-        sale: {
-          isClosed: true,
+    it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
+      renderWithRelay(
+        {
+          Artwork: () => ({
+            sale: {
+              isClosed: true,
+              isAuction: true,
+              cascadingEndTimeIntervalMinutes: null,
+            },
+            saleArtwork: {
+              lotLabel: "Lot 1",
+            },
+          }),
         },
-      }
+        {}
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          ...artwork,
-          saleArtwork,
-          sale: {
-            ...artwork.sale,
-            ...saleArtwork.sale,
-          },
-        }),
-      })
-
-      expect(screen.queryByTestId("lot-close-info")).toBeNull()
+      expect(screen.queryByTestId("lot-close-info")).toBeFalsy()
     })
   })
 
   describe("save artworks", () => {
     it("favourites works", async () => {
-      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -383,7 +308,7 @@ describe("ArtworkGridItem", () => {
     })
 
     it("is not visible when hideSaveIcon prop is specified", () => {
-      renderWithHookWrappersTL(<TestRenderer hideSaveIcon />, mockEnvironment)
+      renderWithRelay({}, { hideSaveIcon: true })
 
       expect(screen.queryByTestId("empty-heart-icon")).toBeNull()
       expect(screen.queryByTestId("filled-heart-icon")).toBeNull()
@@ -422,11 +347,3 @@ const artwork = {
     totalCount: 0,
   },
 }
-
-const query = graphql`
-  query ArtworkGridItemTestsQuery {
-    artwork(id: "artworkID") {
-      ...ArtworkGridItem_artwork
-    }
-  }
-`

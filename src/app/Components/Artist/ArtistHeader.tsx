@@ -1,4 +1,4 @@
-import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
+import { bullet, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
@@ -118,10 +118,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const bylineRequired = artist.nationality || artist.birthday
 
   return (
-    <Box px={2} pt={6} pb={1}>
-      <Text variant="lg-display">{artist.name}</Text>
-      <Spacer y={1} />
-
+    <Box px={2} pb={1}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flex={1}>
           {!!bylineRequired && (

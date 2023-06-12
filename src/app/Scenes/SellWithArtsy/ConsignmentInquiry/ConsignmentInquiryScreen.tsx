@@ -5,7 +5,7 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
@@ -124,7 +124,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
         })
       }
 
-      createConsignmentInquiry(defaultEnvironment, onCompleted, onError, input)
+      createConsignmentInquiry(getRelayEnvironment(), onCompleted, onError, input)
     },
     validationSchema: ValidationSchema,
   })

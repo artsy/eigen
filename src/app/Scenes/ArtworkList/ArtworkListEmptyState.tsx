@@ -8,26 +8,22 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
   me: ArtworkListEmptyState_me$key
-  title: string
   refreshControl: JSX.Element
 }
 
-export const ArtworkListEmptyState = ({
-  me,
-  title,
-  refreshControl,
-}: ArtworkListEmptyStateProps) => {
-  const fragmentData = useFragment(artworkListEmptyStateFragment, me)
+export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptyStateProps) => {
+  const data = useFragment(artworkListEmptyStateFragment, me)
 
-  const isDefaultArtworkList = fragmentData.artworkList?.default ?? false
+  const artworkList = data.artworkList!
+  const isDefaultArtworkList = artworkList?.default ?? false
   const text = getText(isDefaultArtworkList)
 
   return (
     <Flex flex={1} mb={1}>
-      <ArtworkListHeader />
+      <ArtworkListHeader me={data} />
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
-        <ArtworkListTitle title={title} />
+        <ArtworkListTitle title={artworkList.name} />
 
         <Separator borderColor="black10" mt={1} />
 
@@ -56,7 +52,10 @@ const artworkListEmptyStateFragment = graphql`
   fragment ArtworkListEmptyState_me on Me @argumentDefinitions(listID: { type: "String!" }) {
     artworkList: collection(id: $listID) {
       default
+      name
+      internalID
     }
+    ...ArtworkListHeader_me @arguments(listID: $listID)
   }
 `
 

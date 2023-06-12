@@ -3,9 +3,9 @@ import {
   ArtsyLogoBlackIcon,
   Box,
   Flex,
+  Join,
   Spacer,
   SpacingUnitDSValueNumber,
-  Join,
 } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
@@ -71,9 +71,9 @@ import {
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import React, {
+  RefObject,
   createRef,
   memo,
-  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -89,7 +89,7 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -335,7 +335,9 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "shows":
-          return <ShowsRailContainer title={item.title} withLocation={!enableShowsForYouLocation} />
+          return (
+            <ShowsRailContainer title={item.title} disableLocation={!enableShowsForYouLocation} />
+          )
         case "auction-results":
           return (
             <AuctionResultsRail
@@ -499,17 +501,12 @@ export const HomeFragmentContainer = memo(
             first: 12
             state: PAST
           ) {
-            totalCount
             ...AuctionResultsRail_auctionResults
-          }
-
-          auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
-            first: 12
-            state: UPCOMING
-            sort: DATE_ASC
-          ) {
-            totalCount
-            ...AuctionResultsRail_auctionResults
+            edges {
+              node {
+                internalID
+              }
+            }
           }
         }
       `,

@@ -56,6 +56,7 @@ describe("SizesOptionsScreen", () => {
       total: null,
       followedArtists: null,
     },
+    showFilterArtworksModal: false,
     sizeMetric: "in",
   }
 

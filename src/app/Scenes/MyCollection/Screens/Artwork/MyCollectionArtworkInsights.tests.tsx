@@ -1,5 +1,4 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
@@ -11,19 +10,10 @@ describe("MyCollectionArtworkInsights", () => {
         return null
       }
       return (
-        <StickyTabPage
-          tabs={[
-            {
-              title: "test",
-              content: (
-                <MyCollectionArtworkInsights
-                  me={props.me}
-                  marketPriceInsights={props.marketPriceInsights}
-                  artwork={props?.artwork}
-                />
-              ),
-            },
-          ]}
+        <MyCollectionArtworkInsights
+          me={props.me}
+          marketPriceInsights={props.marketPriceInsights}
+          artwork={props?.artwork}
         />
       )
     },

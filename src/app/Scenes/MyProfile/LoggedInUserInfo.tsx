@@ -2,7 +2,7 @@ import { Box, Text } from "@artsy/palette-mobile"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
 import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -29,7 +29,7 @@ const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
 
 export const UserProfileQueryRenderer: React.FC = () => (
   <QueryRenderer<LoggedInUserInfoQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query LoggedInUserInfoQuery {
         me {

@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -7,8 +7,8 @@ import {
 } from "app/Components/ArtworkFilter"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
+
 import { get } from "app/utils/get"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -33,7 +33,7 @@ export const PartnerArtwork: React.FC<{
 
   return (
     <>
-      <StickyTabPageScrollView>
+      <Tabs.ScrollView>
         <Spacer y={2} />
 
         {artworksCount > 0 ? (
@@ -45,7 +45,7 @@ export const PartnerArtwork: React.FC<{
         ) : (
           <TabEmptyState text={emptyText} />
         )}
-      </StickyTabPageScrollView>
+      </Tabs.ScrollView>
 
       <AnimatedArtworkFilterButton
         isVisible

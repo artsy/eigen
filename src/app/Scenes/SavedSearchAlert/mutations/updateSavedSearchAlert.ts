@@ -1,7 +1,7 @@
 import { updateSavedSearchAlertMutation } from "__generated__/updateSavedSearchAlertMutation.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchAlertFormValues } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const updateSavedSearchAlert = (
@@ -16,7 +16,7 @@ export const updateSavedSearchAlert = (
   }
 
   return new Promise((resolve, reject) => {
-    commitMutation<updateSavedSearchAlertMutation>(defaultEnvironment, {
+    commitMutation<updateSavedSearchAlertMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation updateSavedSearchAlertMutation($input: UpdateSavedSearchInput!) {
           updateSavedSearch(input: $input) {

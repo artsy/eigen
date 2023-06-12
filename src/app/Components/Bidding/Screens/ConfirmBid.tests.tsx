@@ -13,7 +13,7 @@ import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -109,7 +109,7 @@ describe("ConfirmBid", () => {
     const component = mountConfirmBidComponent(initialProps)
 
     expect(component.root.findAllByType(Spinner).length).toEqual(1)
-    ;(defaultEnvironment as any).mock.resolveMostRecentOperation(() => ({
+    getMockRelayEnvironment().mock.resolveMostRecentOperation(() => ({
       data: {
         node: {
           __typename: "SaleArtwork",

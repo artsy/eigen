@@ -8,6 +8,7 @@ import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/M
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
@@ -15,6 +16,8 @@ import { useTracking } from "react-tracking"
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ route, navigation }) => {
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -39,14 +42,18 @@ export const MyCollectionArtworkFormArtist: React.FC<
   const handleSkipPress = async (artistDisplayName: string) => {
     GlobalStore.actions.myCollection.artwork.resetForm()
 
-    requestAnimationFrame(() => {
-      GlobalStore.actions.myCollection.artwork.updateFormValues({
-        artistDisplayName,
-        metric: preferredMetric,
-        pricePaidCurrency: preferredCurrency,
+    if (enableCollectedArtists) {
+      navigation.navigate("AddMyCollectionArtist", { ...route.params })
+    } else {
+      requestAnimationFrame(() => {
+        GlobalStore.actions.myCollection.artwork.updateFormValues({
+          artistDisplayName,
+          metric: preferredMetric,
+          pricePaidCurrency: preferredCurrency,
+        })
+        navigation.navigate("ArtworkFormMain", { ...route.params })
       })
-      navigation.navigate("ArtworkFormMain", { ...route.params })
-    })
+    }
   }
 
   return (

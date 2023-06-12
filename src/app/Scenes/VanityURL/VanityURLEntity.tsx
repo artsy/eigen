@@ -4,7 +4,7 @@ import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntit
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner/Partner"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { View } from "react-native"
@@ -67,7 +67,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
   } else {
     return (
       <QueryRenderer<VanityURLEntityQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query VanityURLEntityQuery($id: String!) {
             vanityURLEntity(id: $id) {

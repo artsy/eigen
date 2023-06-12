@@ -10,20 +10,20 @@ interface MyCollectionCollectedArtistsRailProps {
   me: MyCollectionCollectedArtistsRail_me$key
 }
 
-export const ARTIST_CIRCLE_DIAMETER = 70
+export const ARTIST_CIRCLE_DIAMETER = 100
 
 const AddMoreButton = () => {
   return (
     <Flex>
       <Flex
-        width={ARTIST_CIRCLE_DIAMETER}
-        height={ARTIST_CIRCLE_DIAMETER}
-        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
         alignItems="center"
-        justifyContent="center"
         backgroundColor="black5"
         border="1px solid"
         borderColor="black15"
+        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+        height={ARTIST_CIRCLE_DIAMETER}
+        justifyContent="center"
+        width={ARTIST_CIRCLE_DIAMETER}
       >
         <AddIcon height={28} width={28} fill="black60" />
       </Flex>
@@ -57,7 +57,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   if (!collectedArtists) return <></>
 
   return (
-    <Flex mx={-2}>
+    <Flex>
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -99,7 +99,7 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
 
   return (
     <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
-      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="sm" />
+      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="md" />
       <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
         {data.name}
       </Text>

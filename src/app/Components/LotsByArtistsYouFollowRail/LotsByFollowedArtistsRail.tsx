@@ -35,9 +35,9 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
-  const hasArtworks = artworks?.length
+  const hasSaleArtworks = artworks?.some((artwork) => artwork?.saleArtwork)
 
-  if (!hasArtworks) {
+  if (!hasSaleArtworks) {
     return null
   }
 
@@ -58,9 +58,13 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
     })
   }
 
-  const refreshDebounce = lodash.debounce(() => {
-    relay.refetchConnection(PAGE_SIZE)
-  }, 3000)
+  const refreshDebounce = lodash.debounce(
+    () => {
+      relay.refetchConnection(PAGE_SIZE)
+    },
+    // 10 secs, hopefully the timely_at on the lots in the backend has been updated
+    10000
+  )
 
   const doRefresh = () => {
     refreshDebounce()
@@ -78,19 +82,25 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
         data={artworks}
         initialNumToRender={isTablet ? 10 : 5}
         windowSize={3}
-        renderItem={({ item: artwork }) => (
-          <SaleArtworkTileRailCardContainer
-            onPress={() => {
-              navigateToPageableRoute(artwork.href!)
-            }}
-            saleArtwork={artwork.saleArtwork!}
-            useSquareAspectRatio
-            useCustomSaleMessage
-            contextScreenOwnerType={OwnerType.sale}
-            cardSize={cardSize}
-            refreshRail={doRefresh}
-          />
-        )}
+        renderItem={({ item: artwork }) => {
+          if (!artwork?.saleArtwork) {
+            return null
+          }
+
+          return (
+            <SaleArtworkTileRailCardContainer
+              onPress={() => {
+                navigateToPageableRoute(artwork.href!)
+              }}
+              saleArtwork={artwork.saleArtwork!}
+              useSquareAspectRatio
+              useCustomSaleMessage
+              contextScreenOwnerType={OwnerType.sale}
+              cardSize={cardSize}
+              refreshRail={doRefresh}
+            />
+          )
+        }}
         keyExtractor={(item) => item.id}
         onScroll={isCloseToEdge(fetchNextPage)}
       />
@@ -110,7 +120,7 @@ export const LotsByFollowedArtistsRailContainer = memo(
             after: $cursor
             includeArtworksByFollowedArtists: true
             excludeClosedLots: true
-            sort: "end_at"
+            sort: "timely_at"
             isAuction: true
             liveSale: true
           ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {

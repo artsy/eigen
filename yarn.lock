@@ -230,24 +230,27 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.126.0":
-  version "4.126.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.126.0.tgz#70ef2c62c9207780437e06b8e0b82ad02c019432"
-  integrity sha512-liqP/wwE+gB/++zGmNXCavTHJjkJ+zzDWkU7gKMfPJBZVgqt5L3XgPduQ0hypSs9BsWqYE5Ubkvy5dlVwSeuow==
+"@artsy/cohesion@4.130.0":
+  version "4.130.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.130.0.tgz#e1b6b01999e7f94eeff206f006f33e3305c5df84"
+  integrity sha512-NVq9ZTqvjvYeALMOxARERmucT/F+oyzGeWiTbifDufbp9BAsD585c7GWsjDTwWFeiGx/M3L5bJjxfPYrdxde+w==
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.29":
-  version "11.0.29"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.29.tgz#c377b7b955e8fb3fd9b84d370ef00120a323cbb2"
-  integrity sha512-bnFnoYLnlJ5bIxAUlNYb2lhBXsq3ssmJHaNUv1XhRH6hU874fQKozycOYLsOlBBCDQhS0hrW2pzlvCCIT0zaQQ==
+"@artsy/palette-mobile@11.0.40":
+  version "11.0.40"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.40.tgz#e0dc4b0b12c0c4522a20e615f56e287d76099dc6"
+  integrity sha512-dRwTJjMyo16Y8VmLsR8Fswhs0Xdpy+tY3i4LlGiG2W8ni5rt8yNm19k8HW0sF2MQW74sz97ArNnmMQbMJdZB/Q==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
     lodash "^4.17.21"
+    moti "^0.25.3"
     react-nanny "^2.15.0"
+    react-native-collapsible-tab-view "^6.1.4"
+    react-native-pager-view "^6.2.0"
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
@@ -7630,19 +7633,12 @@ credit-card-type@^5.0.0:
   resolved "https://registry.yarnpkg.com/credit-card-type/-/credit-card-type-5.0.4.tgz#2dd9df280411ce2bb91ed95ac31e814605717aed"
   integrity sha1-LdnfKAQRziu5Htlawx6BRgVxeu0=
 
-cross-fetch@^3.0.4:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
-  integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
+cross-fetch@^3.0.4, cross-fetch@^3.1.5:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.6.tgz#bae05aa31a4da760969756318feeee6e70f15d6c"
+  integrity sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==
   dependencies:
-    node-fetch "2.6.1"
-
-cross-fetch@^3.1.5:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
-  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
-  dependencies:
-    node-fetch "2.6.7"
+    node-fetch "^2.6.11"
 
 cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
@@ -8118,6 +8114,11 @@ deprecation@^2.0.0, deprecation@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/deprecation/-/deprecation-2.3.1.tgz#6368cbdb40abf3373b525ac87e4a260c3a700919"
   integrity sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==
+
+dequal@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-1.0.0.tgz#41c6065e70de738541c82cdbedea5292277a017e"
+  integrity sha512-/Nd1EQbQbI9UbSHrMiKZjFLrXSnU328iQdZKPQf78XQI6C+gutkFUeoHpG5J08Ioa6HeRbRNFpSIclh1xyG0mw==
 
 destroy@~1.0.4:
   version "1.0.4"
@@ -13062,6 +13063,13 @@ moti@0.24.2:
   dependencies:
     framer-motion "^6.5.1"
 
+moti@^0.25.3:
+  version "0.25.3"
+  resolved "https://registry.yarnpkg.com/moti/-/moti-0.25.3.tgz#022213cb1fc545d13245daeeaed31940050b80c0"
+  integrity sha512-n6YR56i+tQdIuiOfspeCCvNR8vAJtPdfclt4998rX6S6kQn+/5DmfBWkOneN63JFTWM/oYnZHwwpF4z4LUXohQ==
+  dependencies:
+    framer-motion "^6.5.1"
+
 mout@^1.0.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/mout/-/mout-1.2.4.tgz#9ffd261c4d6509e7ebcbf6b641a89b36ecdf8155"
@@ -13185,11 +13193,6 @@ node-fetch@2.6.0:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
   integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
 
-node-fetch@2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
-  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
-
 node-fetch@2.6.7, node-fetch@^2.0.0-alpha.8, node-fetch@^2.2.0, node-fetch@^2.3.0, node-fetch@^2.6.0, node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
@@ -13204,6 +13207,13 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.6.11:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -14588,9 +14598,20 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-collapsible-tab-view@^6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-6.1.4.tgz#011c8abab29d9229a22caa287395f0081fae644e"
+  integrity sha512-eGGAdze91WgXOrd+8wPsd18YxdrQvp8WlR4bv7GjgGwkzM72Ka7esz3GhHeDb6F6MxDYAvwfgm2Q4kDLvxaRTw==
+  dependencies:
+    use-deep-compare "^1.1.0"
+
 "react-native-config@https://github.com/artsy/react-native-config.git#v1.4.12-artsy":
   version "1.4.11"
   resolved "https://github.com/artsy/react-native-config.git#278cbdc5f71d792f30c7474b0a0a5caab5c95551"
+
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.9.4-artsy":
+  version "1.9.4"
+  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#c4e103dd31040a72e1be00ff52d97d5902321285"
 
 react-native-credit-card-input@0.4.1:
   version "0.4.1"
@@ -14720,15 +14741,10 @@ react-native-modal-selector@^2.1.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-network-info@5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-network-info/-/react-native-network-info-5.2.1.tgz#b701f10d4ed1aeadcfe77b197328d1ae846f6d3a"
-  integrity sha512-iam74xXtrSqqZurCl1/bSjZ9jXcsJY84g7brx1/4uVGCY26c6m+4CArHNSHOsz5ATg2NQT+81sjNy0KlCPyK4g==
-
-react-native-pager-view@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.0.0.tgz#e3706da1bb7e55bcd2644d770d36c8dd14b48690"
-  integrity sha512-0qUMUmA/Lhv76F+fbCcYB+iuODH6Lp6E1EYlXw+GM3Ns3FaKFtBaVYXKQSfNhqnTUg9YEOY3HuX+ZMKBSHwNbA==
+react-native-pager-view@6.2.0, react-native-pager-view@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.2.0.tgz#51380d93fbe47f6380dc71d613a787bf27a4ca37"
+  integrity sha512-pf9OnL/Tkr+5s4Gjmsn7xh91PtJLDa6qxYa/bmtUhd/+s4cQdWQ8DIFoOFghwZIHHHwVdWtoXkp6HtpjN+r20g==
 
 react-native-push-notification@8.1.1:
   version "8.1.1"
@@ -14775,10 +14791,10 @@ react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view#a7f
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-shake@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.1.1.tgz#733657764b0395b26f26576bba51e2dcbcecfe89"
-  integrity sha512-h6O8LnFd3LkvoYx7O0afM6rO9fDKomZ1EyomGgKRDyFhinxYIU7Z4uPYtwA4Z1Cd3frEEKTLNKHI1Eu0MOI3Yw==
+react-native-shake@5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.3.2.tgz#ea20baab1b17d848f53663b19161d566c30ec197"
+  integrity sha512-UpcYKagxtfyQjKAiiltpip3cq/HGNTWQOHJ1BtuoNzbxh+wrGeACH1mnvIC8mONCwPGObZrY062H/yxdA3lAAA==
 
 react-native-share@8.2.1:
   version "8.2.1"
@@ -15314,13 +15330,6 @@ relay-compiler@14.0.0:
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-14.0.0.tgz#03ab000c246c7c46a26b77584b345621155a770e"
   integrity sha512-1h4lwvHg5efhivqpMfG6SS4cGoCJH3BsRelihwD+GNiylBnLKArSE6zyW7LfEwSpuDfJ+l6rrRfSL8IVZwOZ0g==
-
-relay-config@12.0.1:
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/relay-config/-/relay-config-12.0.1.tgz#852ddfe22081b837ce4d2282dffd4dbe75f34c67"
-  integrity sha512-vq7GLLsGPpb/tZr9kmfbfe5sLO1cGa67jpCp4Xtk+N98fMInCu9YIH8R/FxxUhKVPnpLQf3ecmz+s+/MjzcnTQ==
-  dependencies:
-    cosmiconfig "^5.0.5"
 
 relay-devtools-core@janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg:
   version "1.2.1"
@@ -17014,10 +17023,10 @@ typescript-memoize@^1.0.0-alpha.3:
   dependencies:
     core-js "2.4.1"
 
-typescript@5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
-  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+typescript@5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.3.tgz#8d84219244a6b40b6fb2b33cc1c062f715b9e826"
+  integrity sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==
 
 typical@^4.0.0:
   version "4.0.0"
@@ -17252,6 +17261,13 @@ use-composed-ref@^1.0.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/use-composed-ref/-/use-composed-ref-1.2.1.tgz#9bdcb5ccd894289105da2325e1210079f56bf849"
   integrity sha512-6+X1FLlIcjvFMAeAD/hcxDT8tmyrWnbSPMU0EnxQuDLIxokuFzWliXBiYZuGIx+mrAMLBw0WFfCkaPw8ebzAhw==
+
+use-deep-compare@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/use-deep-compare/-/use-deep-compare-1.1.0.tgz#85580dde751f68400bf6ef7e043c7f986595cef8"
+  integrity sha512-6yY3zmKNCJ1jjIivfZMZMReZjr8e6iC6Uqtp701jvWJ6ejC/usXD+JjmslZDPJQgX8P4B1Oi5XSLHkOLeYSJsA==
+  dependencies:
+    dequal "1.0.0"
 
 use-isomorphic-layout-effect@^1.0.0:
   version "1.1.2"

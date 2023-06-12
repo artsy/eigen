@@ -6,7 +6,7 @@ BUNDLE_DIR="dist"
 react-native bundle \
 --dev false \
 --platform ios \
---entry-file index.tests.ios.js \
+--entry-file index.ios.js \
 --reset-cache \
 --assets-dest $BUNDLE_DIR \
 --bundle-output $BUNDLE_DIR/main.jsbundle \

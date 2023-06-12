@@ -35,7 +35,7 @@ export const ConsignmentInquiryForm: React.FC<{
     return backListener
   }, [canPopScreen, dirty, navigation])
 
-  const ScrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
   const phoneInputRef = useRef<Input>(null)
@@ -62,7 +62,7 @@ export const ConsignmentInquiryForm: React.FC<{
   // for this function
   const showMessageInputFully = () => {
     requestAnimationFrame(() => {
-      ScrollViewRef.current?.scrollToEnd()
+      scrollViewRef.current?.scrollToEnd()
     })
   }
 
@@ -75,7 +75,7 @@ export const ConsignmentInquiryForm: React.FC<{
 
   return (
     <ScrollView
-      ref={ScrollViewRef}
+      ref={scrollViewRef}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
     >

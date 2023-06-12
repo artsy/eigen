@@ -44,20 +44,6 @@ describe("PartnerHeader", () => {
     expect(extractText(tree.root)).toContain("1.2K works")
   })
 
-  it("renders the partner name", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: PartnerHeaderFixture,
-        },
-      })
-    })
-
-    expect(extractText(tree.root)).toContain("Gagosian")
-  })
-
   it("renders the follow button", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {

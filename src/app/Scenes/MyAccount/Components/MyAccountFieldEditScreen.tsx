@@ -2,6 +2,7 @@ import { Text } from "@artsy/palette-mobile"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack } from "app/system/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {
   Alert,
@@ -13,7 +14,6 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void

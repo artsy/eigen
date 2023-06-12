@@ -43,7 +43,6 @@ interface MyCollectionStickyHeaderProps {
   hasMarketSignals: boolean
   showModal: () => void
   showNewWorksMessage: boolean
-  showSeparator: boolean
 }
 
 export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> = ({
@@ -52,7 +51,6 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   hasMarketSignals,
   showModal,
   showNewWorksMessage,
-  showSeparator,
 }) => {
   const { showVisualClue } = useVisualClue()
 
@@ -74,9 +72,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
-      {!!showArtworkFilters && (
-        <Filters filtersCount={filtersCount} showModal={showModal} showSeparator={showSeparator} />
-      )}
+      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}
@@ -267,42 +263,32 @@ const AnimatedPill: React.FC<{
   )
 }
 
-const Filters = ({
-  filtersCount,
-  showModal,
-  showSeparator,
-}: {
-  filtersCount: number
-  showModal: () => void
-  showSeparator: boolean
-}) => {
+const Filters = ({ filtersCount, showModal }: { filtersCount: number; showModal: () => void }) => {
   const { trackEvent } = useTracking()
 
   return (
-    <ArtworksFilterHeader
-      selectedFiltersCount={filtersCount}
-      onFilterPress={showModal}
-      showSeparator={showSeparator}
-    >
-      <Button
-        data-test-id="add-artwork-button-non-zero-state"
-        haptic
-        onPress={async () => {
-          navigate("my-collection/artworks/new", {
-            passProps: {
-              mode: "add",
-              source: Tab.collection,
-              onSuccess: popToRoot,
-            },
-          })
-          trackEvent(tracks.addCollectedArtwork())
-        }}
-        size="small"
-        variant="fillDark"
-      >
-        Upload Artwork
-      </Button>
-    </ArtworksFilterHeader>
+    <Flex px={2} backgroundColor="white100">
+      <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={showModal}>
+        <Button
+          data-test-id="add-artwork-button-non-zero-state"
+          haptic
+          onPress={async () => {
+            navigate("my-collection/artworks/new", {
+              passProps: {
+                mode: "add",
+                source: Tab.collection,
+                onSuccess: popToRoot,
+              },
+            })
+            trackEvent(tracks.addCollectedArtwork())
+          }}
+          size="small"
+          variant="fillDark"
+        >
+          Upload Artwork
+        </Button>
+      </ArtworksFilterHeader>
+    </Flex>
   )
 }
 

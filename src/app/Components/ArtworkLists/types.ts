@@ -20,17 +20,10 @@ export interface ArtworkEntity {
   imageURL: string | null
 }
 
-export type SaveResult =
-  | {
-      action: ResultAction.SavedToDefaultArtworkList
-      artwork: ArtworkEntity
-    }
-  | {
-      action: ResultAction.RemovedFromDefaultArtworkList
-    }
-  | {
-      action: ResultAction.ModifiedArtworkLists
-    }
+export type SaveResult = {
+  action: ResultAction
+  artwork: ArtworkEntity
+}
 
 export enum ArtworkListMode {
   AddingArtworkList = "addingArtworkLists",
@@ -45,27 +38,35 @@ export interface ArtworkListEntity {
 export type ArtworkListState = {
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
+  artworkListID: string | null
   recentlyAddedArtworkList: RecentlyAddedArtworkList | null
-  selectedArtworkListIDs: string[]
+  selectedTotalCount: number
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
+  hasUnsavedChanges: boolean
 }
 
 export type ArtworkListAction =
   | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
-  | { type: "SET_ARTWORK"; payload: ArtworkEntity | null }
+  | {
+      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW"
+      payload: {
+        artwork: ArtworkEntity | null
+        artworkListID: string | null
+      }
+    }
   | { type: "SET_RECENTLY_ADDED_ARTWORK_LIST"; payload: RecentlyAddedArtworkList | null }
   | { type: "RESET" }
   | {
       type: "ADD_OR_REMOVE_ARTWORK_LIST"
       payload: { mode: ArtworkListMode; artworkList: ArtworkListEntity }
     }
-  | { type: "SET_SELECTED_ARTWORK_LIST_IDS"; payload: string[] }
+  | { type: "SET_SELECTED_TOTAL_COUNT"; payload: number }
+  | { type: "SET_UNSAVED_CHANGES"; payload: boolean }
 
 export interface ArtworkListsContextState {
   state: ArtworkListState
   artworkListId?: string
-  isSavedToArtworkList: boolean
   addingArtworkListIDs: string[]
   removingArtworkListIDs: string[]
   dispatch: Dispatch<ArtworkListAction>

@@ -46,7 +46,7 @@ if (__DEV__) {
 }
 
 if (Platform.OS === "ios") {
-  // Polyfills required to use Intl with Hermes engine
+  // Polyfills required to use Intl with Hermes engine for iOS
   require("@formatjs/intl-getcanonicallocales/polyfill").default
   require("@formatjs/intl-locale/polyfill").default
   require("@formatjs/intl-pluralrules/polyfill").default

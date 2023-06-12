@@ -10,7 +10,7 @@ import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -129,7 +129,7 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
 > = (props) => {
   return (
     <QueryRenderer<CreateSavedSearchContentContainerQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CreateSavedSearchContentContainerQuery {
           viewer {

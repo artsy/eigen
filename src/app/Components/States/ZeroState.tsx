@@ -20,15 +20,16 @@ export const ZeroState = (props: ZeroStateProps) => {
           <Text
             variant="sm"
             lineHeight="20px"
-            style={{ maxWidth: "80%" }}
+            style={{ maxWidth: "90%" }}
             color={color("black100")}
+            textAlign="center"
           >
             {title}
           </Text>
         )}
 
         {!!bigTitle && (
-          <Text variant="sm-display" style={{ textAlign: "center" }} color={color("black100")}>
+          <Text variant="sm-display" textAlign="center" color={color("black100")}>
             {bigTitle}
           </Text>
         )}
@@ -37,6 +38,7 @@ export const ZeroState = (props: ZeroStateProps) => {
       <Flex>
         {!!subtitle && (
           <Text
+            mt={0.5}
             variant={bigTitle ? "xs" : "sm"}
             style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
             textAlign="center"

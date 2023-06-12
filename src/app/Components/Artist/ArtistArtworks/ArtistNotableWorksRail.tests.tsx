@@ -57,7 +57,7 @@ describe("Notable Works Rail", () => {
   })
 })
 
-const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] = {
+const artistMockData = {
   id: "an-id",
   internalID: "an-id",
   slug: "a-slug",
@@ -77,7 +77,12 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           isSaved: false,
           date: "2020",
           partner: null,
+          artists: [{ id: "", name: "Alex Katz" }],
+          widthCm: 50,
+          heightCm: 50,
+          isHangable: false,
           image: {
+            url: "",
             resized: {
               src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
               srcSet:
@@ -113,9 +118,14 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
+          artists: [{ id: "", name: "Alex Katz" }],
+          widthCm: 50,
+          heightCm: 50,
+          isHangable: false,
           date: "2020",
           partner: null,
           image: {
+            url: "",
             resized: {
               src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
               srcSet:
@@ -154,11 +164,16 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           isOfferable: true,
           id: "another-another-id-3",
           isSaved: false,
+          artists: [{ id: "", name: "Alex Katz" }],
+          widthCm: 50,
+          heightCm: 50,
+          isHangable: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
           partner: null,
           image: {
+            url: "",
             resized: {
               src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
               srcSet:

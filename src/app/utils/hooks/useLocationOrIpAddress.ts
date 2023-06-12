@@ -1,6 +1,6 @@
 import Geolocation from "@react-native-community/geolocation"
-import { useState, useEffect } from "react"
-import { NetworkInfo } from "react-native-network-info"
+import { useEffect, useState } from "react"
+import { PermissionsAndroid, Platform } from "react-native"
 
 export interface Location {
   lat: number
@@ -14,43 +14,60 @@ Geolocation.setRNConfiguration({ skipPermissionRequests: true })
  * Usage:
  *   const { isLoading, location, ip } = useLocationOrIpAddress()
  */
-export const useLocationOrIpAddress = () => {
-  const [isLoading, setIsLoading] = useState(true)
+export const useLocationOrIpAddress = (disabled = false) => {
+  const [isLoading, setIsLoading] = useState(!disabled)
   const [location, setLocation] = useState<Location | null>(null)
   const [ipAddress, setIpAddress] = useState<string | null>(null)
 
   const getIpAddress = async () => {
     try {
-      // Get IPv4 IP (priority: WiFi first, cellular second)
-      const ipv4Address = await NetworkInfo.getIPV4Address()
+      const response = await fetch("https://api.ipify.org")
+      const ip = await response.text()
 
-      setIpAddress(ipv4Address)
+      setIpAddress(ip)
     } catch (error) {
-      console.error("Failed to get IPv4 address.", error)
+      console.log("Failed to get devices IP address for location.", error)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const getLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({ lat: position.coords.latitude, lng: position.coords.longitude })
+  const getLocation = async () => {
+    let granted = false
 
-        setIsLoading(false)
-      },
-      (error) => {
-        console.error("Failed to get current position. Falling back to IP address", error)
-        // Get IP address as a fallback
-        getIpAddress()
-      },
-      { timeout: 15000, maximumAge: 10000 }
-    )
+    // Check if we have location permissions for Android to avoid the app crashing
+    if (Platform.OS === "android") {
+      granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+    } else {
+      granted = true
+    }
+
+    if (granted) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({ lat: position.coords.latitude, lng: position.coords.longitude })
+
+          setIsLoading(false)
+        },
+        (error) => {
+          console.log("Couldn't get device's location. Falling back to IP address", error)
+          // Get IP address as a fallback
+          getIpAddress()
+        },
+        { timeout: 15000, maximumAge: 10000 }
+      )
+    } else {
+      getIpAddress()
+    }
   }
 
   useEffect(() => {
+    if (disabled) {
+      return
+    }
+
     getLocation()
-  }, [])
+  }, [disabled])
 
   return { isLoading, location, ipAddress }
 }

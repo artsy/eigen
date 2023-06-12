@@ -1,4 +1,3 @@
-import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
 import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -8,7 +7,7 @@ import { createMockEnvironment } from "relay-test-utils"
 describe("ArtworkLists", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = () => withStickyTabPage(ArtworkLists)
+  const TestRenderer = () => <ArtworkLists />
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
