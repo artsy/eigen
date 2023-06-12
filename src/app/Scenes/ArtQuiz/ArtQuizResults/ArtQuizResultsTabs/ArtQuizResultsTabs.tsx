@@ -6,7 +6,7 @@ import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQui
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { navigate } from "app/system/navigation/navigate"
-import { useState } from "react"
+import React, { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 type TabName = "worksYouLiked" | "exploreWorks" | "exploreArtists"
@@ -24,32 +24,14 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
   return (
     <Tabs.TabsWithHeader
       title={title}
-      tabScrollEnabled
       lazy
       headerProps={{
         onBack: () => navigate("/"),
       }}
-      onTabPress={(tabName) => {
-        setActiveTab(tabName as TabName)
-      }}
       onTabChange={({ tabName }) => {
         setActiveTab(tabName as TabName)
       }}
-      BelowTitleHeaderComponent={() => {
-        if (activeTab === "worksYouLiked") {
-          return (
-            <Flex mb={1}>
-              <ArtQuizResultsTabsHeader subtitle="We think you’ll enjoy these recommendations based on your likes. Keep saving and following to continue tailoring Artsy to you." />
-            </Flex>
-          )
-        }
-
-        return (
-          <Flex mb={1}>
-            <ArtQuizResultsTabsHeader subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love." />
-          </Flex>
-        )
-      }}
+      BelowTitleHeaderComponent={() => <BelowHeaderComponent activeTab={activeTab} />}
     >
       <Tabs.Tab name="worksYouLiked" label="Works you liked">
         <Tabs.Lazy>
@@ -69,6 +51,22 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
     </Tabs.TabsWithHeader>
   )
 }
+
+const BelowHeaderComponent: React.FC<{ activeTab: TabName }> = React.memo((props) => {
+  if (props.activeTab === "worksYouLiked") {
+    return (
+      <Flex mb={1}>
+        <ArtQuizResultsTabsHeader subtitle="We think you’ll enjoy these recommendations based on your likes. Keep saving and following to continue tailoring Artsy to you." />
+      </Flex>
+    )
+  }
+
+  return (
+    <Flex mb={1}>
+      <ArtQuizResultsTabsHeader subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love." />
+    </Flex>
+  )
+})
 
 const artQuizResultsTabsFragment = graphql`
   fragment ArtQuizResultsTabs_me on Me {
