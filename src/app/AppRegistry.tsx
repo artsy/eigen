@@ -14,6 +14,7 @@ import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { MyCollectionArtistsCollectedOnboarding } from "app/Scenes/MyCollection/Components/MyCollectionArtistsCollectedOnboarding"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
@@ -471,6 +472,12 @@ export const modules = defineModules({
     [MyCollectionArtworkScreenQuery]
   ),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
+  MyCollectionArtistsCollectedOnboarding: reactModule(MyCollectionArtistsCollectedOnboarding, {
+    hidesBackButton: true,
+    fullBleed: true,
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
   MyProfile: reactModule(
     MyProfile,
     {
