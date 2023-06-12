@@ -1,8 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
@@ -13,7 +14,6 @@ import { screen } from "app/utils/track/helpers"
 import _ from "lodash"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 interface ArticlesListProps {
   articles: ArticleCard_article$data[]
   isLoading: () => boolean
@@ -44,8 +44,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
       })}
     >
       <Flex flexDirection="column" justifyContent="space-between" height="100%">
-        <Separator />
-        <FlatList
+        <Screen.FlatList
           numColumns={numColumns}
           key={`${numColumns}`}
           ListHeaderComponent={() => <ArticlesHeader title={title} />}
@@ -121,42 +120,45 @@ export const ArticlesPlaceholder = () => {
   const numColumns = useNumColumns()
 
   return (
-    <ProvidePlaceholderContext>
-      <Flex
-        testID="articles-screen-placeholder"
-        flexDirection="column"
-        justifyContent="space-between"
-        height="100%"
-        pb="8px"
-      >
-        <Separator />
-        <FlatList
-          numColumns={numColumns}
-          key={`${numColumns}`}
-          ListHeaderComponent={() => <ArticlesHeader />}
-          data={_.times(6)}
-          keyExtractor={(item) => `${item}-${numColumns}`}
-          renderItem={({ item }) => {
-            return (
-              <ArticlesListItem index={item} key={item}>
-                <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
-                <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
-                <RandomWidthPlaceholderText
-                  height={18}
-                  minWidth={200}
-                  maxWidth={200}
-                  marginTop={1}
-                />
-                <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-                <Spacer y={2} />
-              </ArticlesListItem>
-            )
-          }}
-          ItemSeparatorComponent={() => <Spacer y={4} />}
-          onEndReachedThreshold={1}
-        />
-      </Flex>
-    </ProvidePlaceholderContext>
+    <Screen>
+      <Screen.AnimatedHeader title="Artsy Editorial" />
+      <Screen.Body fullwidth>
+        <ProvidePlaceholderContext>
+          <Flex
+            testID="articles-screen-placeholder"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100%"
+          >
+            <FlatList
+              numColumns={numColumns}
+              key={`${numColumns}`}
+              ListHeaderComponent={() => <ArticlesHeader />}
+              data={_.times(6)}
+              keyExtractor={(item) => `${item}-${numColumns}`}
+              renderItem={({ item }) => {
+                return (
+                  <ArticlesListItem index={item} key={item}>
+                    <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
+                    <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
+                    <RandomWidthPlaceholderText
+                      height={18}
+                      minWidth={200}
+                      maxWidth={200}
+                      marginTop={1}
+                    />
+                    <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
+                    <Spacer y={2} />
+                  </ArticlesListItem>
+                )
+              }}
+              ItemSeparatorComponent={() => <Spacer y={4} />}
+              onEndReachedThreshold={1}
+            />
+          </Flex>
+        </ProvidePlaceholderContext>
+      </Screen.Body>
+    </Screen>
   )
 }
 
@@ -172,7 +174,7 @@ export const tracks = {
 }
 
 export const ArticlesHeader = ({ title = "" }) => (
-  <Text mx={2} variant="lg-display" mb={1} mt={6}>
+  <Text mx={2} variant="lg-display" mb={2}>
     {title}
   </Text>
 )

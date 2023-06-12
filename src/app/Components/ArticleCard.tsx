@@ -4,6 +4,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { DateTime } from "luxon"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
@@ -77,8 +78,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             {article.thumbnailTitle}
           </Text>
           {!!article.byline && (
-            <Text color="black60" variant="xs">
+            <Text color="black100" variant="xs">
               {article.byline}
+            </Text>
+          )}
+          {!!article.publishedAt && (
+            <Text color="black60" variant="xs">
+              {DateTime.fromISO(article.publishedAt).toFormat("MMM d, yyyy")}
             </Text>
           )}
         </Flex>
@@ -93,6 +99,7 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
       internalID
       slug
       href
+      publishedAt
       thumbnailImage {
         url(version: "large")
       }

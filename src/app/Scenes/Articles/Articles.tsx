@@ -1,5 +1,7 @@
+import { Screen } from "@artsy/palette-mobile"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -33,15 +35,20 @@ export const Articles: React.FC = () => {
   const articles = extractNodes(data.articlesConnection)
 
   return (
-    <ArticlesList
-      articles={articles as any}
-      isLoading={() => isLoadingNext}
-      hasMore={() => hasNext}
-      title="Artsy Editorial"
-      refreshing={refreshing}
-      handleLoadMore={handleLoadMore}
-      handleRefresh={handleRefresh}
-    />
+    <Screen>
+      <Screen.AnimatedHeader onBack={goBack} title="Artsy Editorial" />
+      <Screen.Body fullwidth>
+        <ArticlesList
+          articles={articles as any}
+          isLoading={() => isLoadingNext}
+          hasMore={() => hasNext}
+          title="Artsy Editorial"
+          refreshing={refreshing}
+          handleLoadMore={handleLoadMore}
+          handleRefresh={handleRefresh}
+        />
+      </Screen.Body>
+    </Screen>
   )
 }
 
