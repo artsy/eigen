@@ -44,6 +44,11 @@ export const savedSearchModel: SavedSearchModel = {
   },
 
   setValueToAttributesByKeyAction: action((state, payload) => {
+    // set form dirty on price update
+    if (payload.key === "priceRange" && state.attributes[payload.key] !== payload.value) {
+      state.dirty = true
+    }
+
     //@ts-ignore
     state.attributes[payload.key] = payload.value
   }),
