@@ -143,7 +143,7 @@ export const Form: React.FC<FormProps> = (props) => {
         accessibilityLabel="Set price range"
         accessibilityRole="button"
         underlayColor="black5"
-        onPress={() => navigation.navigate("CreateAlertPriceRangeScreen")}
+        onPress={() => navigation.navigate("AlertPriceRangeScreen")}
       >
         <Flex flexDirection="row" alignItems="center" py={1}>
           <Flex flex={1}>

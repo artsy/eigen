@@ -15,11 +15,9 @@ const getInputValue = (value: PriceRange[number]) => {
   return value === "*" || value === 0 ? "" : value.toString()
 }
 
-export const CreateAlertPriceRangeScreen = () => {
+export const AlertPriceRangeScreen = () => {
   const navigation =
-    useNavigation<
-      NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateAlertPriceRangeScreen">
-    >()
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRangeScreen">>()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
