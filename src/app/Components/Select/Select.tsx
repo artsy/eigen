@@ -13,7 +13,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TextInput, TouchableOpacity } from "react-native"
+import { FlatList, InteractionManager, TextInput, TouchableOpacity } from "react-native"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -78,7 +78,10 @@ export const Select = <ValueType,>({
 
   const open = async () => {
     await blurAllOtherInputs()
-    setShowingModal(true)
+
+    InteractionManager.runAfterInteractions(() => {
+      setShowingModal(true)
+    })
   }
 
   const close = () => {
