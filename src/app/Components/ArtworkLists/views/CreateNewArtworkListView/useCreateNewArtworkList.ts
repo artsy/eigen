@@ -20,7 +20,18 @@ export const useCreateNewArtworkList = (): Response => {
       ...config,
       onCompleted: (data, errors) => {
         const response = data.createCollection?.responseOrError
-        const errorMessage = response?.mutationError?.message
+
+        // use generic error message by default
+        let errorMessage = "Something went wrong."
+
+        // if there is a specific error message for the name field, use that instead
+        const nameErrorMessage = response?.mutationError?.fieldErrors?.find(
+          (e) => e?.name === "name"
+        )
+
+        if (nameErrorMessage) {
+          errorMessage = nameErrorMessage.message
+        }
 
         if (errorMessage) {
           const error = new Error(errorMessage)
@@ -83,7 +94,10 @@ const CreateNewArtworkListMutation = graphql`
 
         ... on CreateCollectionFailure {
           mutationError {
-            message
+            fieldErrors {
+              name
+              message
+            }
           }
         }
       }
