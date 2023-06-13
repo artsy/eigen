@@ -75,7 +75,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ disableLocation, location,
 }
 
 const ShowsQuery = graphql`
-  query ShowsRailQuery($near: Near, $includeShowsNearIpBasedLocation: String) {
+  query ShowsRailQuery($near: Near, $includeShowsNearIpBasedLocation: Boolean) {
     me {
       showsConnection(
         first: 20
