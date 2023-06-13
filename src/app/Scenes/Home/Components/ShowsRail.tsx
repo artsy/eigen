@@ -6,7 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { Location, useLocationOrIpAddress } from "app/utils/hooks/useLocationOrIpAddress"
+import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense } from "react"
@@ -15,18 +15,20 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ShowsRailProps {
+  disableLocation: boolean
   location?: Location | null
-  ipAddress?: string | null
   title: string
 }
 
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
-export const ShowsRail: React.FC<ShowsRailProps> = ({ location, ipAddress, title }) => {
+export const ShowsRail: React.FC<ShowsRailProps> = ({ disableLocation, location, title }) => {
   const tracking = useTracking()
 
-  const queryVariables = location ? { near: location } : { ip: ipAddress }
+  const queryVariables = location
+    ? { near: location }
+    : { includeShowsNearIpBasedLocation: !disableLocation && !location }
 
   const queryData = useLazyLoadQuery<ShowsRailQuery>(ShowsQuery, queryVariables)
 
@@ -73,10 +75,14 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ location, ipAddress, title
 }
 
 const ShowsQuery = graphql`
-  query ShowsRailQuery($near: Near, $ip: String) {
+  query ShowsRailQuery($near: Near, $includeShowsNearIpBasedLocation: Boolean) {
     me {
-      showsConnection(first: 20, near: $near, ip: $ip, status: RUNNING_AND_UPCOMING)
-        @optionalField {
+      showsConnection(
+        first: 20
+        near: $near
+        includeShowsNearIpBasedLocation: $includeShowsNearIpBasedLocation
+        status: RUNNING_AND_UPCOMING
+      ) @optionalField {
         ...ShowsRail_showsConnection
       }
     }
@@ -119,7 +125,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
-  const { location, ipAddress, isLoading } = useLocationOrIpAddress(disableLocation)
+  const { location, isLoading } = useLocation(disableLocation)
 
   if (isLoading) {
     return <ShowsRailPlaceholder />
@@ -129,11 +135,11 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
     <Suspense fallback={<ShowsRailPlaceholder />}>
       {!!visualizeLocation && (
         <Text mx={2} color="red">
-          Location: {JSON.stringify(location)}, IP: {JSON.stringify(ipAddress)}
+          Location: {JSON.stringify(location)}
         </Text>
       )}
 
-      <ShowsRail {...restProps} location={location} ipAddress={ipAddress} />
+      <ShowsRail {...restProps} location={location} disableLocation={disableLocation} />
     </Suspense>
   )
 }
