@@ -1,8 +1,8 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollection_section$key } from "__generated__/ArticleSectionImageCollection_section.graphql"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
-import { Fragment } from "react"
+import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -15,18 +15,35 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
 }) => {
   const data = useFragment(ArticleSectionImageCollectionQuery, section)
 
+  if (!data?.figures?.length) {
+    return null
+  }
+
   return (
     <>
-      <Text>{data.layout}</Text>
+      {/* TODO: Feature articles */}
+      {/* <Text>{data.layout}</Text> */}
 
-      {data?.figures?.map((figure, index) => {
-        return (
-          <Fragment key={index}>
-            <ArticleSectionImageCollectionImage figure={figure} />
-            <ArticleSectionImageCollectionCaption figure={figure} />
-          </Fragment>
-        )
-      })}
+      <FlatList
+        horizontal
+        pagingEnabled
+        scrollEnabled={data?.figures?.length > 1}
+        showsHorizontalScrollIndicator={false}
+        data={data.figures}
+        renderItem={({ item, index }) => {
+          return (
+            <Flex
+              key={`ImageCollection-${index}`}
+              flexDirection="column"
+              justifyContent="center"
+              mr={0.5}
+            >
+              <ArticleSectionImageCollectionImage figure={item} />
+              <ArticleSectionImageCollectionCaption figure={item} />
+            </Flex>
+          )
+        }}
+      />
     </>
   )
 }

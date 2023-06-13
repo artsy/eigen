@@ -1,28 +1,32 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ArticleBody_article$key } from "__generated__/ArticleBody_article.graphql"
-import { ArticleByline } from "app/Scenes/Article/Components/ArticleByline"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
-import { ArticleNewsSource } from "app/Scenes/Article/Components/ArticleNewsSource"
 import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+
+// TODO: Feature articles
+// import { ArticleByline } from "app/Scenes/Article/Components/ArticleByline"
+// import { ArticleNewsSource } from "app/Scenes/Article/Components/ArticleNewsSource"
+// import { ArticlesRail } from "app/Scenes/Home/Components/ArticlesRail"
 
 interface ArticleBodyProps {
   article: ArticleBody_article$key
 }
 
 export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
-  const articleData = useFragment(ArticleBodyQuery, article)
+  const data = useFragment(ArticleBodyQuery, article)
 
   return (
     <>
-      <ArticleHero article={articleData} />
-      <ArticleByline article={articleData} />
-      <ArticleNewsSource article={articleData} />
+      <ArticleHero article={data} />
 
-      {articleData.sections.map((section, index) => {
+      <Spacer y={2} />
+
+      {data.sections.map((section, index) => {
         return (
           <>
-            <ArticleSection key={index} section={section} />
+            <ArticleSection key={`section-${index}`} section={section} />
           </>
         )
       })}

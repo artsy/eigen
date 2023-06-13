@@ -34,7 +34,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
     // TODO: We need to switch on the type of article here, as we'll want to redirect
     // feature articles into the webview and standard articles to native.
     if (enableNativeArticleView) {
-      navigate(`/article2/${article.internalID}}`)
+      navigate(`/article2/${article.internalID}`)
     } else {
       navigate(article.href!)
     }

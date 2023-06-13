@@ -1,5 +1,5 @@
-import { Text } from "@artsy/palette-mobile"
 import { ArticleSectionText_section$key } from "__generated__/ArticleSectionText_section.graphql"
+import { HTML } from "app/Components/HTML"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -9,7 +9,12 @@ interface ArticleSectionTextProps {
 
 export const ArticleSectionText: React.FC<ArticleSectionTextProps> = ({ section }) => {
   const data = useFragment(ArticleSectionTextQuery, section)
-  return <Text>{data.body}</Text>
+
+  if (!data.body) {
+    return null
+  }
+
+  return <HTML html={data.body} />
 }
 
 const ArticleSectionTextQuery = graphql`
