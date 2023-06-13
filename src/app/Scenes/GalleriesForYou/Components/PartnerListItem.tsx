@@ -108,19 +108,7 @@ const PartnerListItemFragment = graphql`
       internalID
       isFollowed
       image {
-        url(version: "large")
-      }
-    }
-  }
-`
-
-const FollowProfileMutation = graphql`
-  mutation PartnerListItemFollowProfileMutation($input: FollowProfileInput!) {
-    followProfile(input: $input) {
-      profile {
-        id
-        internalID
-        isFollowed
+        url(version: ["large", "medium"])
       }
     }
   }
