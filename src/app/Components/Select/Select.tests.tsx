@@ -6,6 +6,11 @@ import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { Select } from "./Select"
 
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
+}))
+
 const options = [
   {
     label: "Option 1",
