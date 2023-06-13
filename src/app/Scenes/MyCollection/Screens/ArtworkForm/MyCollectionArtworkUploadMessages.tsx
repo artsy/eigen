@@ -26,14 +26,18 @@ export const MyCollectionArtworkUploadMessages: React.FC<
     `AddedArtworkWithoutInsightsMessage_${tabPrefix}`
   )
 
+  if (!showAddedArtworkWithInsightsMessage && !showAddedArtworkWithoutInsightsMessage) {
+    return null
+  }
+
   return (
-    <Flex px={2}>
-      {!!showAddedArtworkWithInsightsMessage && (
+    <Flex>
+      {!showAddedArtworkWithInsightsMessage && (
         <AddedArtworkWithInsightsMessage
           onClose={() => setVisualClueAsSeen(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}
         />
       )}
-      {!!showAddedArtworkWithoutInsightsMessage &&
+      {!showAddedArtworkWithoutInsightsMessage &&
         (hasMarketSignals ? (
           <AddedArtworkWithoutInsightsMessage
             onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
