@@ -2,8 +2,9 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { GalleriesForYouQuery } from "__generated__/GalleriesForYouQuery.graphql"
 import { GalleriesForYou_partnersConnection$key } from "__generated__/GalleriesForYou_partnersConnection.graphql"
-import { GalleryListItem } from "app/Scenes/GalleriesForYou/Components/GalleryListItem"
+import { PartnerListItem } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
+import { Location, useLocationOrIpAddress } from "app/utils/hooks/useLocationOrIpAddress"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -14,8 +15,13 @@ import { ActivityIndicator, FlatList } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
-export const GalleriesForYou: React.FC = () => {
-  const queryData = useLazyLoadQuery<GalleriesForYouQuery>(GalleriesForYouScreenQuery, {})
+interface GalleriesForYouProps {
+  location: Location | null
+}
+export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
+  const queryData = useLazyLoadQuery<GalleriesForYouQuery>(GalleriesForYouScreenQuery, {
+    near: location && `${location?.lat},${location?.lng}`,
+  })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     GalleriesForYouQuery,
@@ -28,24 +34,19 @@ export const GalleriesForYou: React.FC = () => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        // TODO: Add screen name
-        context_screen_owner_type: OwnerType.articles,
-      })}
+      info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
-      <Flex mb={4}>
-        {/* TODO: User Prefetch Flatlist */}
+      <Flex>
         <FlatList
           data={partners}
           ListHeaderComponent={<GalleriesForYouHeader />}
           refreshControl={RefreshControl}
+          onEndReached={() => loadNext(galleriesForYouQueryVariables.count)}
           renderItem={({ item }) => {
-            return <GalleryListItem partner={item} />
+            return <PartnerListItem partner={item} />
           }}
           ItemSeparatorComponent={() => <Spacer y={4} />}
-          onEndReached={() => loadNext(galleriesForYouQueryVariables.count)}
           ListFooterComponent={() => (
-            // TODO: Fix loading indicator
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -62,16 +63,25 @@ export const GalleriesForYou: React.FC = () => {
   )
 }
 
-export const GalleriesForYouScreen: React.FC = () => (
-  <Suspense fallback={<GalleriesForYouPlaceholder />}>
-    <GalleriesForYou />
-  </Suspense>
-)
+export const GalleriesForYouScreen: React.FC = () => {
+  const { location, isLoading } = useLocationOrIpAddress()
+
+  if (isLoading) {
+    return <GalleriesForYouPlaceholder />
+  }
+
+  return (
+    <Suspense fallback={<GalleriesForYouPlaceholder />}>
+      <GalleriesForYou location={location} />
+    </Suspense>
+  )
+}
 
 const GalleriesForYouHeader = () => (
-  <Flex mx={2} mb={4} mt={6}>
+  <Flex mx={2} mb={4} mt={6} mr={4}>
     <Text variant="lg-display">Galleries For You</Text>
-    <Text variant="sm">Find galleries in your area with artists you follow.</Text>
+
+    <Text variant="sm-display">Find galleries in your area with artists you follow.</Text>
   </Flex>
 )
 
@@ -87,10 +97,10 @@ const GalleriesForYouPlaceholder = () => {
         <Flex mx={2} mt={1}>
           {times(5).map((i) => {
             return (
-              <Flex mb={2} key={i}>
+              <Flex mb={4} key={i}>
                 <PlaceholderBox height={(width - space(4)) / 1.33} />
                 <Spacer y={1} />
-                <PlaceholderBox height={40} />
+                <PlaceholderBox height={60} />
               </Flex>
             )
           })}
@@ -103,21 +113,25 @@ const GalleriesForYouPlaceholder = () => {
 const partnersConnectionFragment = graphql`
   fragment GalleriesForYou_partnersConnection on Query
   @refetchable(queryName: "GalleriesForYouRefetchQuery")
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+  @argumentDefinitions(
+    near: { type: "String" }
+    count: { type: "Int", defaultValue: 10 }
+    after: { type: "String" }
+  ) {
     partnersConnection(
       first: $count
       after: $after
       eligibleForListing: true
       defaultProfilePublic: true
       sort: RANDOM_SCORE_DESC
-      near: "52.53,  13.39"
+      near: $near
       type: GALLERY
     ) @connection(key: "GalleriesForYou_partnersConnection") {
       totalCount
       edges {
         node {
           internalID
-          ...GalleryListItem_partner
+          ...PartnerListItem_partner
         }
       }
     }
@@ -129,7 +143,7 @@ export const galleriesForYouQueryVariables = {
 }
 
 const GalleriesForYouScreenQuery = graphql`
-  query GalleriesForYouQuery($count: Int, $after: String) {
-    ...GalleriesForYou_partnersConnection @arguments(count: $count, after: $after)
+  query GalleriesForYouQuery($near: String, $count: Int, $after: String) {
+    ...GalleriesForYou_partnersConnection @arguments(near: $near, count: $count, after: $after)
   }
 `

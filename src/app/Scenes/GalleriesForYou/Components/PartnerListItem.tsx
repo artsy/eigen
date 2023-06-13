@@ -6,7 +6,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { GalleryListItem_partner$key } from "__generated__/GalleryListItem_partner.graphql"
+import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -14,15 +14,15 @@ import { isPad } from "app/utils/hardware"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { graphql, useFragment } from "react-relay"
 
-interface GalleryListItemProps {
-  partner: GalleryListItem_partner$key
+interface PartnerListItemProps {
+  partner: PartnerListItem_partner$key
   onPress?(): void
   onFollow?: () => void
 }
 
 const MAX_WIDTH = 295
 
-export const GalleryListItem: React.FC<GalleryListItemProps> = ({ partner, onPress, onFollow }) => {
+export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPress, onFollow }) => {
   const isTablet = isPad()
   const space = useSpace()
 
@@ -31,7 +31,7 @@ export const GalleryListItem: React.FC<GalleryListItemProps> = ({ partner, onPre
   const width = isTablet ? MAX_WIDTH : screenWidth
 
   const { internalID, locationsConnection, name, profile } = useFragment(
-    GalleryListItemFragment,
+    PartnerListItemFragment,
     partner
   )
 
@@ -91,8 +91,8 @@ export const GalleryListItem: React.FC<GalleryListItemProps> = ({ partner, onPre
   )
 }
 
-const GalleryListItemFragment = graphql`
-  fragment GalleryListItem_partner on Partner {
+const PartnerListItemFragment = graphql`
+  fragment PartnerListItem_partner on Partner {
     internalID
     name
     initials
@@ -115,7 +115,7 @@ const GalleryListItemFragment = graphql`
 `
 
 const FollowProfileMutation = graphql`
-  mutation GalleryListItemFollowProfileMutation($input: FollowProfileInput!) {
+  mutation PartnerListItemFollowProfileMutation($input: FollowProfileInput!) {
     followProfile(input: $input) {
       profile {
         id
