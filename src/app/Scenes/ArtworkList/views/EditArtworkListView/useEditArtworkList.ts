@@ -18,7 +18,16 @@ export const useEditArtworkList = (): Response => {
           return config.onCompleted?.(data, errors)
         }
 
-        const errorMessage = response?.mutationError?.message
+        // use generic error message by default
+        let errorMessage = "Something went wrong."
+
+        // if there is a specific error message for the name field, use that instead
+        const nameErrorMessage = response?.mutationError?.fieldErrors?.find(
+          (e) => e?.name === "name"
+        )
+        if (nameErrorMessage) {
+          errorMessage = nameErrorMessage.message
+        }
 
         if (errorMessage) {
           const error = new Error(errorMessage)
@@ -44,8 +53,10 @@ const EditArtworkListMutation = graphql`
         }
         ... on UpdateCollectionFailure {
           mutationError {
-            message
-            statusCode
+            fieldErrors {
+              name
+              message
+            }
           }
         }
       }
