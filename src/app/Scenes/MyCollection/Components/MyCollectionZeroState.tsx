@@ -13,7 +13,11 @@ export const MyCollectionZeroState: React.FC = () => {
   const image = require("images/my-collection-empty-state.webp")
 
   return (
-    <Tabs.ScrollView contentContainerStyle={{ justifyContent: "center", height: "100%" }}>
+    <Tabs.ScrollView
+      contentContainerStyle={{
+        paddingTop: space(4),
+      }}
+    >
       <ZeroState
         bigTitle="Know Your Collection Better"
         subtitle="Manage your collection online and get free market insights."
