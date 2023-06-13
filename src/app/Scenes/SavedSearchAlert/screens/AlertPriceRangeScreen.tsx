@@ -95,16 +95,8 @@ export const AlertPriceRangeScreen = () => {
             descriptionColor="black100"
           />
         </Flex>
-        <Spacer y={4} />
-        <Flex mx={2}>
-          <Text variant="sm">Recent price ranges</Text>
-        </Flex>
-        <Flex m={2} p={2} alignItems="center" backgroundColor="black5">
-          <Text variant="sm-display" color="black60">
-            Your recent price ranges will show here
-          </Text>
-        </Flex>
       </ScrollView>
+      <Spacer y={2} />
       <Flex m={2}>
         <Button block onPress={handleOnButtonPress}>
           Set Price Range
