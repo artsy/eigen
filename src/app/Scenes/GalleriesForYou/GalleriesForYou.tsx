@@ -4,7 +4,7 @@ import { GalleriesForYouQuery } from "__generated__/GalleriesForYouQuery.graphql
 import { GalleriesForYou_partnersConnection$key } from "__generated__/GalleriesForYou_partnersConnection.graphql"
 import { PartnerListItem } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
-import { Location, useLocationOrIpAddress } from "app/utils/hooks/useLocationOrIpAddress"
+import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -21,6 +21,7 @@ interface GalleriesForYouProps {
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
   const queryData = useLazyLoadQuery<GalleriesForYouQuery>(GalleriesForYouScreenQuery, {
     near: location && `${location?.lat},${location?.lng}`,
+    includePartnersNearIpBasedLocation: !location,
   })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -64,7 +65,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 }
 
 export const GalleriesForYouScreen: React.FC = () => {
-  const { location, isLoading } = useLocationOrIpAddress()
+  const { location, isLoading } = useLocation()
 
   if (isLoading) {
     return <GalleriesForYouPlaceholder />
@@ -114,6 +115,7 @@ const partnersConnectionFragment = graphql`
   fragment GalleriesForYou_partnersConnection on Query
   @refetchable(queryName: "GalleriesForYouRefetchQuery")
   @argumentDefinitions(
+    includePartnersNearIpBasedLocation: { type: "Boolean" }
     near: { type: "String" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
@@ -122,6 +124,7 @@ const partnersConnectionFragment = graphql`
       first: $count
       after: $after
       eligibleForListing: true
+      includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
       defaultProfilePublic: true
       sort: RANDOM_SCORE_DESC
       near: $near
@@ -143,7 +146,18 @@ export const galleriesForYouQueryVariables = {
 }
 
 const GalleriesForYouScreenQuery = graphql`
-  query GalleriesForYouQuery($near: String, $count: Int, $after: String) {
-    ...GalleriesForYou_partnersConnection @arguments(near: $near, count: $count, after: $after)
+  query GalleriesForYouQuery(
+    $includePartnersNearIpBasedLocation: Boolean
+    $near: String
+    $count: Int
+    $after: String
+  ) {
+    ...GalleriesForYou_partnersConnection
+      @arguments(
+        includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+        near: $near
+        count: $count
+        after: $after
+      )
   }
 `

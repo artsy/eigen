@@ -88,7 +88,7 @@ export const tracks = {
 // export const GalleriesForYouBannerContainer: React.FC<GalleriesForYouBannerContainerProps> = (
 //   props
 // ) => {
-//   const { location, ipAddress, isLoading } = useLocationOrIpAddress()
+//   const { location, ipAddress, isLoading } = useLocation()
 
 //   if (isLoading) {
 //     return <GalleriesForYouBannerPlaceholder />
