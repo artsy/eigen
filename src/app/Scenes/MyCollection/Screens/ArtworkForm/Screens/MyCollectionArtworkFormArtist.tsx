@@ -1,6 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
@@ -14,9 +15,8 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 
-export const MyCollectionArtworkFormArtist: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
-> = ({ navigation }) => {
+export const MyCollectionArtworkFormArtist: React.FC<{}> = () => {
+  const navigation = useNavigation<StackNavigationProp<ArtworkFormScreen, "ArtworkFormArtist">>()
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const tracking = useTracking()

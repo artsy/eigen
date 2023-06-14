@@ -1,5 +1,6 @@
 import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
@@ -24,9 +25,10 @@ const validationSchema = Yup.object().shape({
   deathYear: Yup.string().trim().max(4, "Death year is invalid"),
 })
 
-export const AddMyCollectionArtist: React.FC<
-  StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ navigation }) => {
+export const AddMyCollectionArtist: React.FC<{}> = () => {
+  const navigation =
+    useNavigation<StackNavigationProp<ArtworkFormScreen, "AddMyCollectionArtist">>()
+
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
@@ -54,7 +56,7 @@ export const AddMyCollectionArtist: React.FC<
           customArtist: values,
           metric: preferredMetric,
         })
-        navigation.navigate("ArtworkFormMain")
+        navigation.navigate("ArtworkFormArtwork")
       },
       validationSchema: validationSchema,
     })

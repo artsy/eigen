@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
-import { StackScreenProps } from "@react-navigation/stack"
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
@@ -17,9 +18,9 @@ import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { fetchQuery, graphql } from "relay-runtime"
 
-export const MyCollectionArtworkFormArtwork: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
-> = ({ navigation }) => {
+export const MyCollectionArtworkFormArtwork: React.FC<{}> = () => {
+  const navigation = useNavigation<StackNavigationProp<ArtworkFormScreen, "ArtworkFormArtwork">>()
+
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()

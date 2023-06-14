@@ -338,6 +338,7 @@ export const modules = defineModules({
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkFormScreen, {
     hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {

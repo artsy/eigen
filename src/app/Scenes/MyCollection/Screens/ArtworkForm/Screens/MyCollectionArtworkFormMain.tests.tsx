@@ -1,9 +1,7 @@
-import { Route } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
-import { ArtworkFormMode } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
@@ -39,9 +37,6 @@ jest.mock("app/utils/requestPhotos", () => ({
 
 describe("AddEditArtwork", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
-  const mockNav: Partial<StackNavigationProp<{}>> = {
-    addListener: jest.fn(),
-  }
 
   beforeEach(() => {
     useFormikContextMock.mockImplementation(() => ({
@@ -61,26 +56,17 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Add", () => {
-    const mockRoute: Route<
-      "ArtworkFormMain",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkFormMain",
-      name: "ArtworkFormMain",
-      params: {
-        mode: "add",
-        clearForm: jest.fn(),
-        onDelete: jest.fn(),
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
     const artworkForm = (
-      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+      <MyCollectionArtworkStore.Provider
+        runtimeModel={{
+          mode: "add",
+          artwork: {
+            internalID: "id",
+          },
+        }}
+      >
+        <MyCollectionArtworkFormMain />
+      </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     const expected = [FancyModalHeader, CategoryPicker, Dimensions]
@@ -94,26 +80,17 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Edit", () => {
-    const mockRoute: Route<
-      "ArtworkFormMain",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkFormMain",
-      name: "ArtworkFormMain",
-      params: {
-        mode: "edit",
-        clearForm: jest.fn(),
-        onDelete: jest.fn(),
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
     const artworkForm = (
-      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+      <MyCollectionArtworkStore.Provider
+        runtimeModel={{
+          mode: "edit",
+          artwork: {
+            internalID: "id",
+          },
+        }}
+      >
+        <MyCollectionArtworkFormMain />
+      </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
@@ -123,27 +100,19 @@ describe("AddEditArtwork", () => {
   })
 
   it("fires clear form on header Clear button click", () => {
-    const mockClearForm = jest.fn()
-    const mockRoute: Route<
-      "ArtworkFormMain",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkFormMain",
-      name: "ArtworkFormMain",
-      params: {
-        mode: "edit",
-        clearForm: mockClearForm,
-        onDelete: jest.fn(),
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
+    const mockDelete = jest.fn()
+
     const artworkForm = (
-      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+      <MyCollectionArtworkStore.Provider
+        runtimeModel={{
+          onDelete: mockDelete,
+          artwork: {
+            internalID: "id",
+          },
+        }}
+      >
+        <MyCollectionArtworkFormMain />
+      </MyCollectionArtworkStore.Provider>
     )
     // make form dirty
     __globalStoreTestUtils__?.injectState({
@@ -162,7 +131,9 @@ describe("AddEditArtwork", () => {
     })
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
-    expect(mockClearForm).toHaveBeenCalled()
+    expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
+    const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
+    callback(0) // confirm discard
   })
 
   it("fires formik's handleSubmit on complete button click", () => {
@@ -176,26 +147,21 @@ describe("AddEditArtwork", () => {
         photos: [],
       },
     }))
-    const mockRoute: Route<
-      "ArtworkFormMain",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkFormMain",
-      name: "ArtworkFormMain",
-      params: {
-        mode: "edit",
-        clearForm: jest.fn(),
-        onDelete: jest.fn(),
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
+
+    const mockDelete = jest.fn()
+
     const artworkForm = (
-      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+      <MyCollectionArtworkStore.Provider
+        runtimeModel={{
+          onDelete: mockDelete,
+          mode: "edit",
+          artwork: {
+            internalID: "id",
+          },
+        }}
+      >
+        <MyCollectionArtworkFormMain />
+      </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
@@ -203,29 +169,21 @@ describe("AddEditArtwork", () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it("fires delete artwork action on delete button click", () => {
+  it("fires delete artwork action on delete button click", async () => {
     const mockDelete = jest.fn()
-    const mockRoute: Route<
-      "ArtworkFormMain",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkFormMain",
-      name: "ArtworkFormMain",
-      params: {
-        mode: "edit",
-        clearForm: jest.fn(),
-        onDelete: mockDelete,
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
 
     const artworkForm = (
-      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+      <MyCollectionArtworkStore.Provider
+        runtimeModel={{
+          onDelete: mockDelete,
+          mode: "edit",
+          artwork: {
+            internalID: "id",
+          },
+        }}
+      >
+        <MyCollectionArtworkFormMain />
+      </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })

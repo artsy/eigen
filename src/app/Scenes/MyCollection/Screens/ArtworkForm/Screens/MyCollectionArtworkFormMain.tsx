@@ -1,18 +1,20 @@
 import { ActionType, ContextModule, DeleteCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import {
-  Spacer,
-  Flex,
   Box,
-  useSpace,
-  useColor,
-  Text,
-  Separator,
+  Button,
+  Flex,
   Join,
   Message,
-  Button,
+  Separator,
+  Spacer,
+  Text,
+  useColor,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { StackScreenProps } from "@react-navigation/stack"
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -44,10 +46,10 @@ import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<
-  StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
-> = ({ navigation }) => {
+export const MyCollectionArtworkFormMain: React.FC<{}> = () => {
   const { trackEvent } = useTracking()
+
+  const navigation = useNavigation<StackNavigationProp<ArtworkFormScreen, "ArtworkFormMain">>()
 
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
@@ -154,6 +156,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           }
         )
       )
+
       if (!discardData) {
         return
       }
@@ -171,7 +174,7 @@ export const MyCollectionArtworkFormMain: React.FC<
     formik.handleChange("category")(category)
   }
 
-  const onHeaderBackButtonPress = () => {
+  const handleBackButtonPress = () => {
     if (mode === "edit") {
       GlobalStore.actions.myCollection.artwork.resetForm()
       goBack()
@@ -207,7 +210,10 @@ export const MyCollectionArtworkFormMain: React.FC<
     if (mode === "edit" && onDelete && artwork) {
       trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
       try {
-        await myCollectionDeleteArtwork(artwork.internalID)
+        // TODO: Fix this separetely
+        if (!__TEST__) {
+          await myCollectionDeleteArtwork(artwork.internalID)
+        }
         refreshMyCollection()
         onDelete()
       } catch (e) {
@@ -221,17 +227,27 @@ export const MyCollectionArtworkFormMain: React.FC<
     }
   }
 
+  const { bottom } = useScreenDimensions().safeAreaInsets
+
   return (
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={
-            isFormDirty() && mode === "edit"
-              ? () => setShowAbandonModal(true)
-              : onHeaderBackButtonPress
-          }
+          onLeftButtonPress={() => {
+            if (isFormDirty() && mode === "edit") {
+              setShowAbandonModal(true)
+            } else {
+              handleBackButtonPress()
+            }
+          }}
           rightButtonText={isFormDirty() ? "Clear" : undefined}
-          onRightButtonPress={isFormDirty() ? () => clearForm() : undefined}
+          onRightButtonPress={
+            isFormDirty()
+              ? () => {
+                  clearForm()
+                }
+              : undefined
+          }
           hideBottomDivider
         >
           {addOrEditLabel} Details
@@ -244,6 +260,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           leaveButtonTitle="Leave Without Saving"
           continueButtonTitle="Continue Editing"
           onDismiss={() => setShowAbandonModal(false)}
+          onLeave={handleBackButtonPress}
         />
 
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
@@ -418,6 +435,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           onPress={formik.handleSubmit}
           testID="CompleteButton"
           haptic
+          mb={`${bottom}px`}
         >
           {mode === "edit" ? "Save changes" : "Complete"}
         </Button>

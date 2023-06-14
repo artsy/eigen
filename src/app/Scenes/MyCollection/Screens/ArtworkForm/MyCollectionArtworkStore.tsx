@@ -1,12 +1,11 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { ArtworkFormMode } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Action, action, createContextStore } from "easy-peasy"
 
 interface MyCollectionArtworkStoreModel {
   mode: ArtworkFormMode
   onSuccess: () => void
-  source: Tab
+  source: "My Collection" | "Saves" | "Insights"
   onDelete: () => void
   artwork: Omit<MyCollectionArtwork_sharedProps$data, " $refType"> | null
 
@@ -16,7 +15,7 @@ interface MyCollectionArtworkStoreModel {
 const MyCollectionArtworkStoreModel: MyCollectionArtworkStoreModel = {
   mode: "add",
   onSuccess: () => {},
-  source: Tab.collection,
+  source: "My Collection",
   onDelete: () => {},
   artwork: null,
   setState: action((state, payload) => {
