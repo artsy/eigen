@@ -1,6 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-  - Create lists to manage and organize your saved artworks.
   - Smoother animations when you move between tabs.
 
 Have feedback? Email us at support@artsy.net

@@ -1,8 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-  - Create lists to manage and organize your saved artworks.
   - Smoother animations when you move between tabs.
-  - Long press on any artwork image to quickly access save, share, view in room, and create an alert.
   - Performance improvements
 
 Have feedback? Email us at support@artsy.net
