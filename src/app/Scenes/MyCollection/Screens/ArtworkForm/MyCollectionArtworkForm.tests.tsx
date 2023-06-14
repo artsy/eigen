@@ -397,6 +397,7 @@ describe("MyCollectionArtworkForm", () => {
 
         const formValues: ArtworkFormValues = {
           artist: "some-artist",
+          customArtist: null,
           artistIds: ["some-artist-id"],
           artistSearchResult: {
             imageUrl: null,

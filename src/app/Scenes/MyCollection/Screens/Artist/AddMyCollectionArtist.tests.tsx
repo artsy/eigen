@@ -15,6 +15,7 @@ describe("AddMyCollectionArtist", () => {
     {
       mode: ArtworkFormMode
       clearForm(): void
+      onDelete(): void
       onHeaderBackButtonPress(): void
     }
   > = {
@@ -23,6 +24,7 @@ describe("AddMyCollectionArtist", () => {
     params: {
       mode: "add",
       clearForm: jest.fn(),
+      onDelete: jest.fn(),
       onHeaderBackButtonPress: jest.fn(),
     },
   }

@@ -26,6 +26,7 @@ describe("MyCollectionArtworkModel", () => {
           sessionState: {
             formValues: {
               artist: "some-artist",
+              customArtist: { name: "some-custom-artist" },
               artistIds: ["some-artist-id-0", "some-artist-id-1"],
               artistSearchResult: null,
               category: "some-category",
@@ -55,6 +56,7 @@ describe("MyCollectionArtworkModel", () => {
     const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     const expectedInitialFormValues = {
       artist: "",
+      customArtist: null,
       artistDisplayName: undefined,
       artistIds: [],
       artworkLocation: "",
