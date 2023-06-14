@@ -56,7 +56,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
           customArtist: values,
           metric: preferredMetric,
         })
-        navigation.navigate("ArtworkFormArtwork")
+        navigation.navigate("ArtworkFormMain")
       },
       validationSchema: validationSchema,
     })
