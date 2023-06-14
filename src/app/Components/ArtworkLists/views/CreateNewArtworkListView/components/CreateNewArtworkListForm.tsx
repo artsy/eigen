@@ -70,18 +70,21 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       },
       onCompleted: (data) => {
         const response = data.createCollection?.responseOrError
-        const artworkList = response?.collection!
-        const result: ArtworkListEntity = {
-          name: artworkList.name,
-          internalID: artworkList.internalID,
+
+        if (response?.__typename === "CreateCollectionSuccess") {
+          const artworkList = response?.collection!
+          const result: ArtworkListEntity = {
+            name: artworkList.name,
+            internalID: artworkList.internalID,
+          }
+
+          setRecentlyAddedArtworkList(result)
+          preselectRecentlyAddedArtworkList(result)
+          closeCurrentView()
+          trackAnalyticEvent(artworkList.internalID)
+
+          helpers.setSubmitting(false)
         }
-
-        setRecentlyAddedArtworkList(result)
-        preselectRecentlyAddedArtworkList(result)
-        closeCurrentView()
-        trackAnalyticEvent(artworkList.internalID)
-
-        helpers.setSubmitting(false)
       },
       onError: (error) => {
         helpers.setFieldError("name", error.message)
