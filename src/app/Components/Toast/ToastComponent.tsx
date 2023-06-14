@@ -1,5 +1,6 @@
-import { Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Touchable, Box } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useState } from "react"
@@ -11,6 +12,7 @@ const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 const MIDDLE_TOAST_SIZE = 120
 const EDGE_TOAST_HEIGHT = 60
+const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 const TABBAR_HEIGHT = 50
@@ -30,6 +32,7 @@ export const ToastComponent = ({
   backgroundColor = "black100",
   duration = "short",
   cta,
+  imageURL,
 }: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
@@ -95,8 +98,14 @@ export const ToastComponent = ({
   }
 
   const innerTopBottom = (
-    <Flex flex={1} flexDirection="row" alignItems="center" mx={2}>
+    <Flex flex={1} flexDirection="row" alignItems="center" mx={1}>
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
+
+      {!!imageURL && (
+        <Box borderWidth={1} borderColor="white100" mr={1}>
+          <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
+        </Box>
+      )}
 
       <Flex flex={1}>
         <Text variant="sm-display" color="white100">
@@ -105,7 +114,7 @@ export const ToastComponent = ({
       </Flex>
 
       {!!cta && (
-        <Text variant="sm-display" color="white100" underline>
+        <Text variant="sm-display" color="white100" ml={1} underline>
           {cta}
         </Text>
       )}

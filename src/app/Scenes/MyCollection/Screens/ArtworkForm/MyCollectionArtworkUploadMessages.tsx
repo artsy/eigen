@@ -27,7 +27,7 @@ export const MyCollectionArtworkUploadMessages: React.FC<
   )
 
   return (
-    <Flex>
+    <Flex px={2}>
       {!!showAddedArtworkWithInsightsMessage && (
         <AddedArtworkWithInsightsMessage
           onClose={() => setVisualClueAsSeen(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}

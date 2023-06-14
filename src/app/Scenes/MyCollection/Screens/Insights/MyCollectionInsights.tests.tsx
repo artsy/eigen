@@ -1,4 +1,3 @@
-import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -8,7 +7,7 @@ import { MyCollectionInsights } from "./MyCollectionInsights"
 describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = () => withStickyTabPage(MyCollectionInsights)
+  const TestRenderer = () => <MyCollectionInsights />
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

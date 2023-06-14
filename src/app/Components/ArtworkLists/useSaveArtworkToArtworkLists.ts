@@ -2,7 +2,7 @@ import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveA
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
-import { useCheckIfArtworkListsEnabled } from "app/Components/ArtworkLists/useCheckIfArtworkListsEnabled"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
@@ -13,7 +13,7 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const isArtworkListsEnabled = useCheckIfArtworkListsEnabled()
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
@@ -55,8 +55,11 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    onCompleted: (isArtworkSaved) => {
-      onCompleted?.(isArtworkSaved)
+    onCompleted,
+    optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
+      if (isCalledBefore) {
+        return
+      }
 
       if (isArtworkSaved) {
         onSave({
@@ -69,13 +72,10 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
       onSave({
         action: ResultAction.RemovedFromDefaultArtworkList,
+        artwork: artworkEntity,
       })
     },
   })
-
-  const saveArtworkToDefaultArtworkList = isArtworkListsEnabled
-    ? newSaveArtworkToDefaultArtworkList
-    : legacySaveArtworkToDefaultArtworkList
 
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
@@ -89,7 +89,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const saveArtworkToLists = () => {
     if (!isArtworkListsEnabled) {
-      saveArtworkToDefaultArtworkList()
+      legacySaveArtworkToDefaultArtworkList()
       return
     }
 
@@ -98,7 +98,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       return
     }
 
-    saveArtworkToDefaultArtworkList()
+    newSaveArtworkToDefaultArtworkList()
   }
 
   return {

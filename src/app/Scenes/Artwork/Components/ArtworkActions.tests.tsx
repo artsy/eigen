@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkActionsTestQuery } from "__generated__/ArtworkActionsTestQuery.graphql"
-import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -141,6 +140,7 @@ describe("ArtworkActions", () => {
     it("should trigger save mutation when user presses save button", () => {
       const { env } = renderWithRelay({
         Artwork: () => ({
+          ...artworkActionsArtwork,
           isSaved: false,
         }),
       })
@@ -150,13 +150,14 @@ describe("ArtworkActions", () => {
       fireEvent.press(screen.getByLabelText("Save artwork"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "useLegacySaveArtworkMutation"
+        "useSaveArtworkMutation"
       )
     })
 
     it("should track save event when user saves and artwork successfully", () => {
       const { env } = renderWithRelay({
         Artwork: () => ({
+          ...artworkActionsArtwork,
           isSaved: false,
         }),
       })
@@ -178,7 +179,7 @@ describe("ArtworkActions", () => {
   })
 })
 
-const artworkActionsArtwork: ArtworkActions_artwork$data = {
+const artworkActionsArtwork = {
   id: "artwork12345",
   slug: "andreas-rod-prinzknecht",
   image: {
@@ -187,6 +188,7 @@ const artworkActionsArtwork: ArtworkActions_artwork$data = {
   isHangable: true,
   heightCm: 10,
   widthCm: 10,
-  " $fragmentType": "ArtworkActions_artwork",
-  " $fragmentSpreads": null as any,
+  customArtworkLists: {
+    totalCount: 0,
+  },
 }

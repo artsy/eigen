@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Separator, Screen } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -9,17 +9,18 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { StickyHeaderPage } from "app/Components/StickyHeaderPage"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import React, { useState } from "react"
+import { ScrollView } from "react-native-gesture-handler"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -74,8 +75,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         context_screen_owner_id: artistSeries.internalID,
       }}
     >
-      <StickyHeaderPage
-        headerContent={
+      <Screen>
+        <Screen.Header onBack={goBack} />
+        <ScrollView keyboardShouldPersistTaps="handled" stickyHeaderIndices={[1]}>
           <>
             <Flex px={2}>
               <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
@@ -84,9 +86,33 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
             </Flex>
             <Separator mt={2} />
           </>
-        }
-        footerContent={
-          artistSeriesTotalCount !== 0 ? (
+          {/* sticky ~ START ~ If you are rearanging the contents of the scrollview
+          make sure to adjust the stickyHeaderIndices to reflect which one
+          is the sticky component */}
+          <Flex backgroundColor="white">
+            <ArtworksFilterHeader
+              selectedFiltersCount={selectedFiltersCount}
+              onFilterPress={openFilterArtworksModal}
+            />
+          </Flex>
+
+          {/* sticky ~ END */}
+          <Flex px={2} mt={2}>
+            <Text variant="sm-display" color="black60" mb={2}>
+              Showing {artworksTotal} works
+            </Text>
+            <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+            <ArtworkFilterNavigator
+              {...props}
+              visible={isFilterArtworksModalVisible}
+              id={artistSeries.internalID}
+              slug={artistSeries.slug}
+              mode={FilterModalMode.ArtistSeries}
+              exitModal={handleFilterArtworksModal}
+              closeModal={closeFilterArtworksModal}
+            />
+          </Flex>
+          {artistSeriesTotalCount !== 0 ? (
             <>
               <Separator mb={1} />
               <Box pb={2} px={2}>
@@ -100,34 +126,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                 />
               </Box>
             </>
-          ) : undefined
-        }
-        stickyHeaderContent={
-          <Flex backgroundColor="white">
-            <ArtworksFilterHeader
-              selectedFiltersCount={selectedFiltersCount}
-              onFilterPress={openFilterArtworksModal}
-            />
-          </Flex>
-        }
-        keyboardShouldPersistTaps="handled"
-      >
-        <Flex px={2} mt={2}>
-          <Text variant="sm-display" color="black60" mb={2}>
-            Showing {artworksTotal} works
-          </Text>
-          <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-          <ArtworkFilterNavigator
-            {...props}
-            visible={isFilterArtworksModalVisible}
-            id={artistSeries.internalID}
-            slug={artistSeries.slug}
-            mode={FilterModalMode.ArtistSeries}
-            exitModal={handleFilterArtworksModal}
-            closeModal={closeFilterArtworksModal}
-          />
-        </Flex>
-      </StickyHeaderPage>
+          ) : undefined}
+        </ScrollView>
+      </Screen>
     </ProvideScreenTracking>
   )
 }
@@ -156,21 +157,24 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
 const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   return (
-    <Box>
-      <Box px={2} pt={1}>
-        {/* Series header image */}
-        <PlaceholderBox height={180} width={180} alignSelf="center" />
+    <Screen>
+      <Screen.Header />
+      <Box>
+        <Box px={2}>
+          {/* Series header image */}
+          <PlaceholderBox height={180} width={180} alignSelf="center" />
+          <Spacer y={2} />
+          {/* Artist Series name */}
+          <PlaceholderText width={220} />
+          {/* Artist series info */}
+          <PlaceholderText width={190} />
+          <PlaceholderText width={190} />
+        </Box>
         <Spacer y={2} />
-        {/* Artist Series name */}
-        <PlaceholderText width={220} />
-        {/* Artist series info */}
-        <PlaceholderText width={190} />
-        <PlaceholderText width={190} />
+        {/* masonry grid */}
+        <PlaceholderGrid />
       </Box>
-      <Spacer y={2} />
-      {/* masonry grid */}
-      <PlaceholderGrid />
-    </Box>
+    </Screen>
   )
 }
 

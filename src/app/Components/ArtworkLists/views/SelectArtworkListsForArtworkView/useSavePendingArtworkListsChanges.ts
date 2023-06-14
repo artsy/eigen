@@ -49,6 +49,7 @@ export const useSavePendingArtworkListsChanges = (options?: Options) => {
 
         onSave({
           action: ResultAction.ModifiedArtworkLists,
+          artwork,
         })
 
         options?.onCompleted?.(...args)

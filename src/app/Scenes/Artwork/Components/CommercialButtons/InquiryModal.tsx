@@ -240,7 +240,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   }
 
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
+    <FancyModal
+      visible={modalIsVisible}
+      onBackgroundPressed={() => resetAndExit()}
+      testID="inquiry-modal"
+    >
       <FancyModalHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {

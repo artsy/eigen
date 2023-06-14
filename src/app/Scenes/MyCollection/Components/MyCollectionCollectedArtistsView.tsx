@@ -1,6 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { MyCollectionCollectedArtistGridItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistGridItem"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
 import { ViewAsIcons } from "app/Scenes/MyCollection/Components/MyCollectionSearchBar"
@@ -9,7 +8,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { useState } from "react"
-import { FlatList, LayoutAnimation } from "react-native"
+import { FlatList, LayoutAnimation, RefreshControl } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface MyCollectionCollectedArtistsViewProps {
@@ -103,7 +102,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           ItemSeparatorComponent={() => <Spacer y={2} x={4} />}
           refreshControl={
             !__TEST__ ? (
-              <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+              <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
             ) : undefined
           }
         />
@@ -135,7 +134,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           ItemSeparatorComponent={() => <Spacer y={2} />}
           refreshControl={
             !__TEST__ ? (
-              <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+              <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
             ) : undefined
           }
         />

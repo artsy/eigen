@@ -1,6 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -31,16 +30,7 @@ describe("TagArtworks", () => {
           if (!props?.tag) {
             return null
           }
-          return (
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <TagArtworksPaginationContainer tag={props.tag} />,
-                },
-              ]}
-            />
-          )
+          return <TagArtworksPaginationContainer tag={props.tag} />
         }}
         variables={{
           tagID,

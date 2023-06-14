@@ -7202,7 +7202,7 @@ type CreateFeaturedLinkFailure {
 
 input CreateFeaturedLinkMutationInput {
   clientMutationId: String
-  description: String!
+  description: String
   href: String!
   sourceBucket: String
   sourceKey: String
@@ -13886,12 +13886,32 @@ type Profile {
   slug: ID!
 }
 
+# A connection to a list of items.
+type ProfileConnection {
+  # A list of edges.
+  edges: [ProfileEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
 type ProfileCounts {
   follows(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
   ): FormattedNumber
+}
+
+# An edge in a connection.
+type ProfileEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Profile
 }
 
 union ProfileOwnerType = Fair | FairOrganizer | Partner
@@ -14651,7 +14671,10 @@ type Query {
     first: Int
     last: Int
 
-    # If present, will search by term
+    # If true will include inactive hero units.
+    private: Boolean = false
+
+    # If present will search by term.
     term: String
   ): HeroUnitConnection
   highlights: Highlights
@@ -14957,6 +14980,18 @@ type Query {
     # The slug or ID of the Profile
     id: String!
   ): Profile
+
+  # A list of Profiles
+  profilesConnection(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+
+    # If present, will search by term
+    term: String
+  ): ProfileConnection
 
   # Static set of recently sold artworks for the SWA landing page
   recentlySoldArtworks(
@@ -19001,7 +19036,10 @@ type Viewer {
     first: Int
     last: Int
 
-    # If present, will search by term
+    # If true will include inactive hero units.
+    private: Boolean = false
+
+    # If present will search by term.
     term: String
   ): HeroUnitConnection
   highlights: Highlights
@@ -19248,6 +19286,18 @@ type Viewer {
     # The slug or ID of the Profile
     id: String!
   ): Profile
+
+  # A list of Profiles
+  profilesConnection(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+
+    # If present, will search by term
+    term: String
+  ): ProfileConnection
 
   # Static set of recently sold artworks for the SWA landing page
   recentlySoldArtworks(

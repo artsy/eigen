@@ -48,9 +48,9 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
   const color = useColor()
   const tracking = useTracking()
-  const artwork = saleArtwork.artwork!
-  const extendedBiddingEndAt = saleArtwork.extendedBiddingEndAt
-  const lotEndAt = saleArtwork.endAt
+  const artwork = saleArtwork?.artwork!
+  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
+  const lotEndAt = saleArtwork?.endAt
   const endAt = extendedBiddingEndAt ?? lotEndAt ?? saleArtwork.sale?.endAt ?? ""
   const startAt = saleArtwork.sale?.liveStartAt ?? saleArtwork.sale?.startAt ?? ""
 

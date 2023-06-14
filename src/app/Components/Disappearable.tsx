@@ -1,18 +1,20 @@
+import { useAnimatedValue } from "app/Scenes/MyCollection/Components/MyCollectionSearchBar"
 import React, { useImperativeHandle, useMemo, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import Animated from "react-native-reanimated"
-import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
 export interface Disappearable {
   disappear(): Promise<void>
 }
+
 export const Disappearable = React.forwardRef<
   Disappearable,
   React.PropsWithChildren<{ animateScale?: boolean }>
 >(({ children, animateScale = true }, ref) => {
   const opacity = useAnimatedValue(1)
   const scale = animateScale
-    ? useMemo(() => {
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useMemo(() => {
         return Animated.interpolateNode(opacity, {
           inputRange: [0, 1],
           outputRange: [0.92, 1],

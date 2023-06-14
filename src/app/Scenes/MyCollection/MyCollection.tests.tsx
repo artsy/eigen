@@ -2,8 +2,6 @@ import { fireEvent, RenderResult, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -21,14 +19,7 @@ describe("MyCollection", () => {
         return (
           <MyCollectionTabsStoreProvider>
             <ArtworkFiltersStoreProvider>
-              <StickyTabPage
-                tabs={[
-                  {
-                    title: "test",
-                    content: <MyCollectionContainer me={props.me} />,
-                  },
-                ]}
-              />
+              <MyCollectionContainer me={props.me} />
             </ArtworkFiltersStoreProvider>
           </MyCollectionTabsStoreProvider>
         )
@@ -106,7 +97,6 @@ describe("MyCollection", () => {
   describe("collection is not empty", () => {
     it("renders without throwing an error", () => {
       const tree = renderWithRelay()
-      expect(tree.UNSAFE_getByType(StickyTabPageScrollView)).toBeDefined()
       expect(tree.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })

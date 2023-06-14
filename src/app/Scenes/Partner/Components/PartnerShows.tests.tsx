@@ -1,5 +1,4 @@
 import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { cloneDeep } from "lodash"
 import { graphql } from "react-relay"
@@ -11,16 +10,7 @@ describe("PartnerShows", () => {
       if (!props?.partner) {
         return null
       }
-      return (
-        <StickyTabPage
-          tabs={[
-            {
-              title: "test",
-              content: <PartnerShows partner={props.partner} />,
-            },
-          ]}
-        />
-      )
+      return <PartnerShows partner={props.partner} />
     },
     query: graphql`
       query PartnerShowsTestsQuery @raw_response_type {

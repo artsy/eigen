@@ -1,7 +1,6 @@
 import { Spacer, Tabs } from "@artsy/palette-mobile"
 import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_partner.graphql"
 import { ReadMore } from "app/Components/ReadMore"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 
 import { PartnerArtistsList } from "app/Scenes/Partner/Components/PartnerArtistsList"
@@ -16,9 +15,9 @@ export const PartnerOverview: React.FC<{
 
   if (!aboutText && !cities) {
     return (
-      <StickyTabPageScrollView>
+      <Tabs.ScrollView>
         <TabEmptyState text="There is no information for this gallery yet" />
-      </StickyTabPageScrollView>
+      </Tabs.ScrollView>
     )
   }
 

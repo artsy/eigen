@@ -55,10 +55,6 @@ import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
-import {
-  AuctionResultsUpcomingPrefetchQuery,
-  AuctionResultsUpcomingQueryRenderer,
-} from "./Scenes/AuctionResults/AuctionResultsUpcoming"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
@@ -144,11 +140,11 @@ import {
 import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
-import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
+import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
-  SegmentTrackingProvider,
   SEGMENT_TRACKING_PROVIDER,
+  SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
 
 LogBox.ignoreLogs([
@@ -347,13 +343,23 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   Article: reactModule(ArticleScreen),
-  Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
+  Articles: reactModule(
+    ArticlesScreen,
+    {
+      fullBleed: true,
+      hidesBackButton: true,
+    },
+    [ArticlesScreenQuery]
+  ),
   Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
     ArtistScreenQuery,
   ]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
-  ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
+  ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Artwork: reactModule(
     ArtworkPageableScreen,
     {
@@ -459,9 +465,11 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
-    MyCollectionArtworkScreenQuery,
-  ]),
+  MyCollectionArtwork: reactModule(
+    MyCollectionArtworkScreen,
+    { fullBleed: true, hidesBackButton: true },
+    [MyCollectionArtworkScreenQuery]
+  ),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,
@@ -527,9 +535,6 @@ export const modules = defineModules({
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
-  UpcomingAuctionResults: reactModule(AuctionResultsUpcomingQueryRenderer, {}, [
-    AuctionResultsUpcomingPrefetchQuery,
-  ]),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),

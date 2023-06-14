@@ -243,7 +243,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/storybook", "Storybook"),
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/unlisted-artworks-faq", "UnlistedArtworksFAQScreen"),
-    addRoute("/upcoming-auction-results", "UpcomingAuctionResults"),
     addRoute("/user/conversations/:conversationID", "Conversation"),
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/viewing-room/:viewing_room_id", "ViewingRoom"),
