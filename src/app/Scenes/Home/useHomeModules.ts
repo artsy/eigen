@@ -18,16 +18,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
   return useMemo(() => {
     const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
-      // TODO: Remove this
-      {
-        contextModule: ContextModule.galleriesForYouBanner,
-        data: true,
-        isEmpty: false,
-        key: "galleriesForYouBanner",
-        title: "",
-        type: "galleriesForYouBanner",
-        hidden: !enableGalleriesForYou,
-      },
       {
         contextModule: ContextModule.newWorksForYouRail,
         contextScreen: "home",
