@@ -338,6 +338,7 @@ export const updateArtwork = async (
   const {
     photos,
     artistSearchResult,
+    customArtist,
     pricePaidDollars,
     pricePaidCurrency,
     artistDisplayName,
@@ -358,9 +359,17 @@ export const updateArtwork = async (
   }
 
   if (props.mode === "add") {
+    let artistsData
+
+    if (artistDisplayName) {
+      artistsData = [{ displayName: artistDisplayName }]
+    } else if (customArtist) {
+      artistsData = [{ displayName: customArtist.name }]
+    } else artistsData = undefined
+
     const response = await myCollectionCreateArtwork({
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
-      artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
+      artists: artistsData,
       artworkLocation: others.artworkLocation,
       attributionClass: others.attributionClass || undefined,
       category: others.category,

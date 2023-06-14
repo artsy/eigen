@@ -86,17 +86,20 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   return (
     <Tabs.ScrollView
       refreshControl={<RefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
     >
       <Tabs.SubTabBar>
-        {!!showMyCollectionInsightsIncompleteMessage && (
-          <MyCollectionInsightsIncompleteMessage
-            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+        <Flex px={2}>
+          {!!showMyCollectionInsightsIncompleteMessage && (
+            <MyCollectionInsightsIncompleteMessage
+              onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+            />
+          )}
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.insights}
+            hasMarketSignals={hasMarketSignals}
           />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.insights}
-          hasMarketSignals={hasMarketSignals}
-        />
+        </Flex>
       </Tabs.SubTabBar>
       <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
 

@@ -32,12 +32,12 @@ export const MyCollectionArtworkUploadMessages: React.FC<
 
   return (
     <Flex>
-      {!showAddedArtworkWithInsightsMessage && (
+      {!!showAddedArtworkWithInsightsMessage && (
         <AddedArtworkWithInsightsMessage
           onClose={() => setVisualClueAsSeen(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}
         />
       )}
-      {!showAddedArtworkWithoutInsightsMessage &&
+      {!!showAddedArtworkWithoutInsightsMessage &&
         (hasMarketSignals ? (
           <AddedArtworkWithoutInsightsMessage
             onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}

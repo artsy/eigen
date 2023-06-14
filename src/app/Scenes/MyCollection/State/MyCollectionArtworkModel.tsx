@@ -1,6 +1,7 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
@@ -19,6 +20,7 @@ export interface Image {
 
 export interface ArtworkFormValues {
   artist: string
+  customArtist: MyCollectionCustomArtistSchema | null
   artistIds: string[]
   artistDisplayName?: string
   isP1Artist?: boolean
@@ -45,6 +47,7 @@ export interface ArtworkFormValues {
 
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
+  customArtist: null,
   artistIds: [],
   artistDisplayName: undefined,
   artistSearchResult: null,
@@ -132,6 +135,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       "artist",
       "artistIds",
       "artistSearchResult",
+      "customArtist",
     ])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }

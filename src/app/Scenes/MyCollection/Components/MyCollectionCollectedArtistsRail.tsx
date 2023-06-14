@@ -67,7 +67,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
-          paddingVertical: space(2),
+          marginVertical: space(1),
           marginHorizontal: space(2),
         }}
         ListFooterComponent={
