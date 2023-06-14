@@ -137,21 +137,46 @@ describe("ArtworkActions", () => {
   })
 
   describe("Save button", () => {
-    it("should trigger save mutation when user presses save button", () => {
-      const { env } = renderWithRelay({
-        Artwork: () => ({
-          ...artworkActionsArtwork,
-          isSaved: false,
-        }),
+    // TODO: remove skip when lists feature flag is readyForRelease: true
+    describe.skip("whith lists feature flag enabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: true })
+      it("should trigger save mutation when user presses save button", () => {
+        const { env } = renderWithRelay({
+          Artwork: () => ({
+            ...artworkActionsArtwork,
+            isSaved: false,
+          }),
+        })
+
+        expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
+        fireEvent.press(screen.getByLabelText("Save artwork"))
+
+        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useSaveArtworkMutation"
+        )
       })
+    })
 
-      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+    describe("whith lists feature flag disabled", () => {
+      it("should trigger save mutation when user presses save button", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: false })
 
-      fireEvent.press(screen.getByLabelText("Save artwork"))
+        const { env } = renderWithRelay({
+          Artwork: () => ({
+            ...artworkActionsArtwork,
+            isSaved: false,
+          }),
+        })
 
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "useSaveArtworkMutation"
-      )
+        expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
+        fireEvent.press(screen.getByLabelText("Save artwork"))
+
+        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+          "useLegacySaveArtworkMutation"
+        )
+      })
     })
 
     it("should track save event when user saves and artwork successfully", () => {
