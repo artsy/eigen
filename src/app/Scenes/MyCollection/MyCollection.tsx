@@ -13,6 +13,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -335,6 +336,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const enableCollectedArtists = useFeatureFlag("AREnableCollectedArtists")
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
@@ -351,7 +353,26 @@ export const MyCollectionPlaceholder: React.FC = () => {
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
-        <Flex width="100%">
+        <Flex width="100%" px={2}>
+          <Flex my={0.5} flexDirection="row">
+            {!!enableCollectedArtists
+              ? times(4).map((i) => (
+                  <Flex key={i} mr={1}>
+                    <Flex>
+                      <PlaceholderBox
+                        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                        key={i}
+                        width={ARTIST_CIRCLE_DIAMETER}
+                        height={ARTIST_CIRCLE_DIAMETER}
+                      />
+                    </Flex>
+                    <Flex mt={1}>
+                      <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+                    </Flex>
+                  </Flex>
+                ))
+              : null}
+          </Flex>
           {times(4).map((i) => (
             <Flex key={i} my={0.5} flexDirection="row">
               <Flex>

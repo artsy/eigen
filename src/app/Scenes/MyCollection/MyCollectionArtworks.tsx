@@ -121,12 +121,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-              localSortAndFilterArtworks(
-                artworks,
-                appliedFiltersState,
-                filterOptions,
-                keywordFilter
-              )
+              localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, query)
             }
           />
         ) : (
@@ -136,12 +131,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
             loadMore={relay.loadMore}
             isLoading={relay.isLoading}
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-              localSortAndFilterArtworks(
-                artworks,
-                appliedFiltersState,
-                filterOptions,
-                keywordFilter
-              )
+              localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, query)
             }
           />
         )

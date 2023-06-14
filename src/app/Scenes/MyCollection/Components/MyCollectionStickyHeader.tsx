@@ -112,7 +112,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         alignItems="center"
         flexDirection="row"
         justifyContent="space-between"
-        py={1}
+        py={2}
         style={{ paddingHorizontal: space(2) }}
       >
         <AnimatedCloseIcon closeIconRef={closeIconRef} />
@@ -316,7 +316,7 @@ const ArtworkFilters: React.FC<FiltersProps> = (props) => {
   }, [query])
 
   return (
-    <Flex backgroundColor="white100" flexDirection="row">
+    <Flex backgroundColor="white100" flexDirection="row" pb={1}>
       <Input
         testID="MyCollectionSearchBarInput"
         placeholder="Search Your Artworks"
