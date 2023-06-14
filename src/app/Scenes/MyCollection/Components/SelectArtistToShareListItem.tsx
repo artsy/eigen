@@ -20,14 +20,7 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       withFeedback
       showFollowButton={false}
       onPress={() => {}}
-      RightButton={
-        <Checkbox
-          mr={1}
-          checked={true}
-          onPress={() => console.log("pressed")}
-          testID="ArtworkFilterOptionCheckboxItemCheckbox"
-        />
-      }
+      RightButton={<Checkbox mr={1} checked={true} onPress={() => console.log("pressed")} />}
     />
   )
 }
