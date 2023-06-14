@@ -61,7 +61,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
   return (
     <Flex minHeight={minHeight} px={2}>
       <Flex mb={1}>
-        {artworks.length > 4 && (
+        {!enableCollectedArtists && artworks.length > 4 && (
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}

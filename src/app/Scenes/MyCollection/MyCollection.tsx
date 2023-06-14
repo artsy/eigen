@@ -194,8 +194,6 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
 
-      <Spacer y={1} />
-
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
         <MyCollectionCollectedArtists me={me} />
       ) : null}

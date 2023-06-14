@@ -72,14 +72,14 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
-    <Flex px={2}>
+    <Flex px={2} backgroundColor="white100">
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}
         hasMarketSignals={hasMarketSignals}
       />
       {!!enableCollectedArtists && (
-        <Flex pb={0}>
+        <Flex>
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
@@ -112,7 +112,8 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         alignItems="center"
         flexDirection="row"
         justifyContent="space-between"
-        style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
+        py={1}
+        style={{ paddingHorizontal: space(2) }}
       >
         <AnimatedCloseIcon closeIconRef={closeIconRef} />
 
@@ -164,7 +165,6 @@ const AnimatedCloseIcon: React.FC<{
       left={space(2)}
       position="absolute"
       ref={closeIconRef}
-      top={space(2)}
       // Allow the first pill to capture touches when the X button is hidden
       zIndex={selectedTab !== null ? 1 : -1}
     >
@@ -314,8 +314,9 @@ const ArtworkFilters: React.FC<FiltersProps> = (props) => {
     // We're making the update here to avoid having a laggy experience when typing
     setKeyword(query)
   }, [query])
+
   return (
-    <Flex py={1} backgroundColor="white100" flexDirection="row">
+    <Flex backgroundColor="white100" flexDirection="row">
       <Input
         testID="MyCollectionSearchBarInput"
         placeholder="Search Your Artworks"
@@ -356,8 +357,12 @@ const Messages: React.FC<{
   showNewWorksMessage: boolean
   showSubmissionMessage: boolean
 }> = ({ hasMarketSignals, showNewWorksMessage, showSubmissionMessage }) => {
+  if (!hasMarketSignals && !showNewWorksMessage && !showSubmissionMessage) {
+    return null
+  }
+
   return (
-    <>
+    <Flex>
       {!!showNewWorksMessage && (
         <PurchasedArtworkAddedMessage
           onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
@@ -372,7 +377,7 @@ const Messages: React.FC<{
         sourceTab={Tab.collection}
         hasMarketSignals={hasMarketSignals}
       />
-    </>
+    </Flex>
   )
 }
 
