@@ -80,29 +80,3 @@ export const tracks = {
     type: "header",
   }),
 }
-
-// interface GalleriesForYouBannerContainerProps {
-//   mb?: SpacingUnit
-// }
-
-// export const GalleriesForYouBannerContainer: React.FC<GalleriesForYouBannerContainerProps> = (
-//   props
-// ) => {
-//   const { location, ipAddress, isLoading } = useLocation()
-
-//   if (isLoading) {
-//     return <GalleriesForYouBannerPlaceholder />
-//   }
-
-//   return (
-//     <Suspense fallback={<GalleriesForYouBannerPlaceholder />}>
-//       <GalleriesForYouBanner {...props} location={location} ipAddress={ipAddress} />
-//     </Suspense>
-//   )
-// }
-
-// const GalleriesForYouBannerPlaceholder: React.FC = () => {
-//   const { width } = useScreenDimensions()
-
-//   return <PlaceholderBox width={width} height={width / IMAGE_ASPECT_RATIO} />
-// }

@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { GalleriesForYouQuery } from "__generated__/GalleriesForYouQuery.graphql"
-import { GalleriesForYou_partnersConnection$key } from "__generated__/GalleriesForYou_partnersConnection.graphql"
+import { GalleriesForYouScreenQuery } from "__generated__/GalleriesForYouScreenQuery.graphql"
+import { GalleriesForYouScreen_partnersConnection$key } from "__generated__/GalleriesForYouScreen_partnersConnection.graphql"
 import { PartnerListItem } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
@@ -12,26 +12,29 @@ import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Suspense } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
-import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface GalleriesForYouProps {
   location: Location | null
 }
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
-  const queryData = useLazyLoadQuery<GalleriesForYouQuery>(GalleriesForYouScreenQuery, {
+  const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, {
     near: location && `${location?.lat},${location?.lng}`,
     includePartnersNearIpBasedLocation: !location,
   })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
-    GalleriesForYouQuery,
-    GalleriesForYou_partnersConnection$key
+    GalleriesForYouScreenQuery,
+    GalleriesForYouScreen_partnersConnection$key
   >(partnersConnectionFragment, queryData)
 
   const RefreshControl = useRefreshControl(refetch)
 
   const partners = extractNodes(data.partnersConnection)
+
+  if (!partners.length) {
+    return <NoGalleries />
+  }
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -42,10 +45,11 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
           data={partners}
           ListHeaderComponent={<GalleriesForYouHeader />}
           refreshControl={RefreshControl}
-          onEndReached={() => loadNext(galleriesForYouQueryVariables.count)}
+          onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
           renderItem={({ item }) => {
             return <PartnerListItem partner={item} />
           }}
+          keyExtractor={(item) => item.internalID}
           ItemSeparatorComponent={() => <Spacer y={4} />}
           ListFooterComponent={() => (
             <Flex
@@ -78,7 +82,58 @@ export const GalleriesForYouScreen: React.FC = () => {
   )
 }
 
-const GalleriesForYouHeader = () => (
+const partnersConnectionFragment = graphql`
+  fragment GalleriesForYouScreen_partnersConnection on Query
+  @refetchable(queryName: "GalleriesForYouRefetchQuery")
+  @argumentDefinitions(
+    includePartnersNearIpBasedLocation: { type: "Boolean" }
+    near: { type: "String" }
+    count: { type: "Int", defaultValue: 10 }
+    after: { type: "String" }
+  ) {
+    partnersConnection(
+      first: $count
+      after: $after
+      eligibleForListing: true
+      includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+      defaultProfilePublic: true
+      sort: RANDOM_SCORE_DESC
+      near: $near
+      type: GALLERY
+    ) @connection(key: "GalleriesForYouScreen_partnersConnection") {
+      totalCount
+      edges {
+        node {
+          internalID
+          ...PartnerListItem_partner
+        }
+      }
+    }
+  }
+`
+
+export const GalleriesForYouQueryVariables = {
+  count: 10,
+}
+
+const GalleriesForYouQuery = graphql`
+  query GalleriesForYouScreenQuery(
+    $includePartnersNearIpBasedLocation: Boolean
+    $near: String
+    $count: Int
+    $after: String
+  ) {
+    ...GalleriesForYouScreen_partnersConnection
+      @arguments(
+        includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+        near: $near
+        count: $count
+        after: $after
+      )
+  }
+`
+
+const GalleriesForYouHeader: React.FC = () => (
   <Flex mx={2} mb={4} mt={6} mr={4}>
     <Text variant="lg-display">Galleries For You</Text>
 
@@ -86,13 +141,13 @@ const GalleriesForYouHeader = () => (
   </Flex>
 )
 
-const GalleriesForYouPlaceholder = () => {
+const GalleriesForYouPlaceholder: React.FC = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
   return (
     <ProvidePlaceholderContext>
-      <Flex>
+      <Flex testID="PlaceholderGrid">
         <GalleriesForYouHeader />
 
         <Flex mx={2} mt={1}>
@@ -111,53 +166,10 @@ const GalleriesForYouPlaceholder = () => {
   )
 }
 
-const partnersConnectionFragment = graphql`
-  fragment GalleriesForYou_partnersConnection on Query
-  @refetchable(queryName: "GalleriesForYouRefetchQuery")
-  @argumentDefinitions(
-    includePartnersNearIpBasedLocation: { type: "Boolean" }
-    near: { type: "String" }
-    count: { type: "Int", defaultValue: 10 }
-    after: { type: "String" }
-  ) {
-    partnersConnection(
-      first: $count
-      after: $after
-      eligibleForListing: true
-      includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
-      defaultProfilePublic: true
-      sort: RANDOM_SCORE_DESC
-      near: $near
-      type: GALLERY
-    ) @connection(key: "GalleriesForYou_partnersConnection") {
-      totalCount
-      edges {
-        node {
-          internalID
-          ...PartnerListItem_partner
-        }
-      }
-    }
-  }
-`
+const NoGalleries: React.FC = () => (
+  <Flex>
+    <GalleriesForYouHeader />
 
-export const galleriesForYouQueryVariables = {
-  count: 10,
-}
-
-const GalleriesForYouScreenQuery = graphql`
-  query GalleriesForYouQuery(
-    $includePartnersNearIpBasedLocation: Boolean
-    $near: String
-    $count: Int
-    $after: String
-  ) {
-    ...GalleriesForYou_partnersConnection
-      @arguments(
-        includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
-        near: $near
-        count: $count
-        after: $after
-      )
-  }
-`
+    <Text>We couldn’t find any galleries.</Text>
+  </Flex>
+)
