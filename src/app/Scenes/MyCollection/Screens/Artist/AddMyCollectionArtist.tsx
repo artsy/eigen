@@ -61,6 +61,10 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
     handleChange(field)(text)
   }
 
+  const handleGoBack = route.params.props.handleBackButtonPress
+    ? route.params.props.handleBackButtonPress
+    : goBack
+
   return (
     <>
       <ArtsyKeyboardAvoidingView>
@@ -71,12 +75,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
               return
             }
 
-            if (route.params.props.handleBackButtonPress) {
-              route.params.props.handleBackButtonPress()
-              return
-            }
-
-            goBack()
+            handleGoBack()
           }}
           hideBottomDivider
         >
@@ -90,6 +89,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
           leaveButtonTitle="Leave Without Saving"
           continueButtonTitle="Continue Editing"
           onDismiss={() => setShowAbandonModal(false)}
+          onLeave={handleGoBack}
         />
 
         <ScrollView

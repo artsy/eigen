@@ -15,7 +15,7 @@ import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   AddMyCollectionArtist,
-  MyCollectionPersonalArtistSchema,
+  MyCollectionCustomArtistSchema,
 } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
@@ -70,7 +70,7 @@ export type ArtworkFormScreen = {
     props: {
       handleBackButtonPress?(): void
       name?: string
-      onSubmit(artistInput: MyCollectionPersonalArtistSchema): void
+      onSubmit(artistInput: MyCollectionCustomArtistSchema): void
     }
   }
   ArtworkFormMain: {
