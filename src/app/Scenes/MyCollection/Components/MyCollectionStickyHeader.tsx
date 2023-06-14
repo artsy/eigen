@@ -3,14 +3,21 @@ import {
   AddIcon,
   Button,
   CloseIcon,
+  FilterIcon,
   Flex,
+  Input,
   Spacer,
+  Text,
   Touchable,
+  TouchableHighlightColor,
+  bullet,
   useSpace,
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+// import { Input } from "app/Components/Input"
 import { Pill } from "app/Components/Pill"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import {
@@ -28,7 +35,7 @@ import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { debounce } from "lodash"
 import { MotiView } from "moti"
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useTracking } from "react-tracking"
 
 // CONSTANTS
@@ -65,19 +72,19 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
-    <>
-      {!!enableCollectedArtists && (
-        <Flex pb={0} px={2}>
-          <MainStickyHeader hasArtworks={hasArtworks} />
-        </Flex>
-      )}
-      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
+    <Flex px={2}>
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}
         hasMarketSignals={hasMarketSignals}
       />
-    </>
+      {!!enableCollectedArtists && (
+        <Flex pb={0}>
+          <MainStickyHeader hasArtworks={hasArtworks} />
+        </Flex>
+      )}
+      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
+    </Flex>
   )
 }
 
@@ -251,11 +258,24 @@ const AnimatedPill: React.FC<{
   )
 }
 
-const Filters = ({ filtersCount, showModal }: { filtersCount: number; showModal: () => void }) => {
+interface FiltersProps {
+  filtersCount: number
+  showModal: () => void
+}
+
+const Filters: React.FC<FiltersProps> = (props) => {
   const { trackEvent } = useTracking()
 
+  const { showModal, filtersCount } = props
+
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
+  if (enableCollectedArtists) {
+    return <ArtworkFilters {...props} />
+  }
+
   return (
-    <Flex px={2} backgroundColor="white100">
+    <Flex backgroundColor="white100">
       <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={showModal}>
         <Button
           data-test-id="add-artwork-button-non-zero-state"
@@ -276,6 +296,57 @@ const Filters = ({ filtersCount, showModal }: { filtersCount: number; showModal:
           Upload Artwork
         </Button>
       </ArtworksFilterHeader>
+    </Flex>
+  )
+}
+
+const ArtworkFilters: React.FC<FiltersProps> = (props) => {
+  const space = useSpace()
+  const { showModal, filtersCount } = props
+  const keyword = MyCollectionArtworksKeywordStore.useStoreState((state) => state.keyword)
+  const [query, setQuery] = useState(keyword)
+
+  const setKeyword = debounce(
+    MyCollectionArtworksKeywordStore.useStoreActions((actions) => actions.setKeyword)
+  )
+
+  useEffect(() => {
+    // We're making the update here to avoid having a laggy experience when typing
+    setKeyword(query)
+  }, [query])
+  return (
+    <Flex py={1} backgroundColor="white100" flexDirection="row">
+      <Input
+        testID="MyCollectionSearchBarInput"
+        placeholder="Search Your Artworks"
+        onChangeText={setQuery}
+        enableClearButton
+        value={query}
+        returnKeyType="done"
+        // fontSize={16}
+        autoCorrect={false}
+        style={{
+          marginLeft: space(2),
+        }}
+      />
+
+      <Flex px={2} justifyContent="center">
+        <TouchableHighlightColor
+          haptic
+          onPress={showModal}
+          testID="sort-and-filter-button"
+          render={({ color }) => (
+            <Flex flexDirection="row" alignItems="center">
+              <FilterIcon fill={color} width="24px" height="24px" />
+              {filtersCount > 0 && (
+                <Text variant="xs" color="blue100">
+                  {` ${bullet} ${filtersCount}`}
+                </Text>
+              )}
+            </Flex>
+          )}
+        />
+      </Flex>
     </Flex>
   )
 }

@@ -3,11 +3,13 @@ import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
@@ -29,7 +31,13 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
 
+  const keyword = MyCollectionArtworksKeywordStore.useStoreState((state) => state.keyword)
   const [keywordFilter, setKeywordFilter] = useState("")
+
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
+  const query = enableCollectedArtists ? keyword : keywordFilter
+
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -43,7 +51,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me, 
     artworks as any,
     appliedFiltersState,
     filterOptions,
-    keywordFilter
+    query
   )
 
   useEffect(() => {

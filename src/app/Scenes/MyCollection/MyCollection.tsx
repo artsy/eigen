@@ -11,6 +11,7 @@ import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtwork
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
@@ -312,22 +313,24 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         context_screen_owner_type: OwnerType.myCollection,
       })}
     >
-      <ArtworkFiltersStoreProvider>
-        <QueryRenderer<MyCollectionQuery>
-          environment={getRelayEnvironment()}
-          query={MyCollectionScreenQuery}
-          variables={{}}
-          cacheConfig={{ force: true }}
-          render={renderWithPlaceholder({
-            Container: MyCollectionContainer,
-            renderPlaceholder: () => <MyCollectionPlaceholder />,
-            renderFallback: ({ retry }) => (
-              // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-              <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
-            ),
-          })}
-        />
-      </ArtworkFiltersStoreProvider>
+      <MyCollectionArtworksKeywordStore.Provider>
+        <ArtworkFiltersStoreProvider>
+          <QueryRenderer<MyCollectionQuery>
+            environment={getRelayEnvironment()}
+            query={MyCollectionScreenQuery}
+            variables={{}}
+            cacheConfig={{ force: true }}
+            render={renderWithPlaceholder({
+              Container: MyCollectionContainer,
+              renderPlaceholder: () => <MyCollectionPlaceholder />,
+              renderFallback: ({ retry }) => (
+                // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+                <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
+              ),
+            })}
+          />
+        </ArtworkFiltersStoreProvider>
+      </MyCollectionArtworksKeywordStore.Provider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
