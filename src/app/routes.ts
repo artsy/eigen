@@ -208,6 +208,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       "/my-collection/onboarding/artists-collected",
       "MyCollectionArtistsCollectedOnboarding"
     ),
+    addRoute(
+      "/my-collection/onboarding/artists-collected/share-settings",
+      "MyCollectionArtistsCollectedOnboardingArtistsShareSettings"
+    ),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/my-profile/payment", "MyProfilePayment"),

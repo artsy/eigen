@@ -15,6 +15,7 @@ import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { MyCollectionArtistsCollectedOnboarding } from "app/Scenes/MyCollection/Components/MyCollectionArtistsCollectedOnboarding"
+import { MyCollectionArtistsCollectedOnboardingArtistsShareSettings } from "app/Scenes/MyCollection/Components/MyCollectionArtistsCollectedOnboardingArtistsShareSettings"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
@@ -478,6 +479,11 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
+  MyCollectionArtistsCollectedOnboardingArtistsShareSettings: reactModule(
+    MyCollectionArtistsCollectedOnboardingArtistsShareSettings,
+    { hidesBackButton: true, hidesBottomTabs: true }
+  ),
+
   MyProfile: reactModule(
     MyProfile,
     {

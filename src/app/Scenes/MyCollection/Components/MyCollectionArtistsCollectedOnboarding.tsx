@@ -1,4 +1,5 @@
 import { Text, Flex, Button, useColor, useSpace } from "@artsy/palette-mobile"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Image, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -38,16 +39,10 @@ export const MyCollectionArtistsCollectedOnboarding: React.FC<{}> = () => {
             my={2}
             block
             onPress={() => {
-              console.warn("TODO: add navigtion in a separate ticket")
-              /* navigate("", {
-              passProps: {
-                onSuccess: () => {
-                  // Since the career highlights screen is a modal, we need to dismiss it after
-                  // saving the artwork.
-                  dismissModal()
-                },
-              },
-            }) */
+              dismissModal()
+              requestAnimationFrame(() => {
+                navigate("/my-collection/onboarding/artists-collected/share-settings", {})
+              })
             }}
           >
             Select Artists to Share

@@ -1,4 +1,4 @@
-import { ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { AvatarSize, ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
@@ -14,6 +14,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 
 interface Props {
   artist: ArtistListItem_artist$data
+  avatarSize?: AvatarSize
   Component?: any
   containerStyle?: StyleProp<ViewStyle>
   contextModule?: string
@@ -49,6 +50,7 @@ export const formatTombstoneText = (
 
 const ArtistListItem: React.FC<Props> = ({
   artist,
+  avatarSize = "sm",
   containerStyle = {},
   contextModule,
   disableNavigation,
@@ -140,7 +142,7 @@ const ArtistListItem: React.FC<Props> = ({
                 meta={meta}
                 imageUrl={imageURl ?? undefined}
                 initials={initials ?? undefined}
-                avatarSize="sm"
+                avatarSize={avatarSize}
                 RightButton={RightButton}
               />
             </Flex>
