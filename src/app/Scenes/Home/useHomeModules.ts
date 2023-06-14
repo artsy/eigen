@@ -10,6 +10,7 @@ import { useMemo } from "react"
 import ReactAppboy from "react-native-appboy-sdk"
 
 export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
+  const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
@@ -79,6 +80,15 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         prefetchUrl: "/auction-results-for-artists-you-follow",
         title: "Latest Auction Results",
         type: "auction-results",
+      },
+      {
+        contextModule: ContextModule.galleriesForYouBanner,
+        data: true,
+        isEmpty: false,
+        key: "galleriesForYouBanner",
+        title: "",
+        type: "galleriesForYouBanner",
+        hidden: !enableGalleriesForYou,
       },
       {
         contextModule: ContextModule.articleRail,

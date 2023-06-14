@@ -259,6 +259,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableShowsForYouLocation",
   },
+  AREnableGalleriesForYou: {
+    description: "Enable Galleries For You",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableGalleriesForYou",
+  },
 }
 
 export interface DevToggleDescriptor {

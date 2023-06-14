@@ -34,6 +34,7 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { ContentCards } from "app/Scenes/Home/Components/ContentCards"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
+import { GalleriesForYouBanner } from "app/Scenes/Home/Components/GalleriesForYouBanner"
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
@@ -300,6 +301,8 @@ const Home = memo((props: HomeProps) => {
               scrollRef={scrollRefs.current[index]}
             />
           )
+        case "galleriesForYouBanner":
+          return <GalleriesForYouBanner />
         case "lotsByFollowedArtists":
           return (
             <LotsByFollowedArtistsRailContainer
