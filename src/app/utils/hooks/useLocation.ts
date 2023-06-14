@@ -37,9 +37,13 @@ export const useLocation = (disabled = false) => {
         },
         (error) => {
           console.log("Couldn't get device's location.", error)
+
+          setIsLoading(false)
         },
         { timeout: 3000, maximumAge: 10000 }
       )
+    } else {
+      setIsLoading(false)
     }
   }
 
