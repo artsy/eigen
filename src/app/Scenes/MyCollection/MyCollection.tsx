@@ -11,7 +11,9 @@ import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtwork
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
@@ -193,8 +195,6 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
 
-      <Spacer y={1} />
-
       {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
         <MyCollectionCollectedArtists me={me} />
       ) : null}
@@ -312,28 +312,31 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         context_screen_owner_type: OwnerType.myCollection,
       })}
     >
-      <ArtworkFiltersStoreProvider>
-        <QueryRenderer<MyCollectionQuery>
-          environment={getRelayEnvironment()}
-          query={MyCollectionScreenQuery}
-          variables={{}}
-          cacheConfig={{ force: true }}
-          render={renderWithPlaceholder({
-            Container: MyCollectionContainer,
-            renderPlaceholder: () => <MyCollectionPlaceholder />,
-            renderFallback: ({ retry }) => (
-              // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-              <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
-            ),
-          })}
-        />
-      </ArtworkFiltersStoreProvider>
+      <MyCollectionArtworksKeywordStore.Provider>
+        <ArtworkFiltersStoreProvider>
+          <QueryRenderer<MyCollectionQuery>
+            environment={getRelayEnvironment()}
+            query={MyCollectionScreenQuery}
+            variables={{}}
+            cacheConfig={{ force: true }}
+            render={renderWithPlaceholder({
+              Container: MyCollectionContainer,
+              renderPlaceholder: () => <MyCollectionPlaceholder />,
+              renderFallback: ({ retry }) => (
+                // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+                <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
+              ),
+            })}
+          />
+        </ArtworkFiltersStoreProvider>
+      </MyCollectionArtworksKeywordStore.Provider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const enableCollectedArtists = useFeatureFlag("AREnableCollectedArtists")
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
@@ -350,7 +353,26 @@ export const MyCollectionPlaceholder: React.FC = () => {
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
-        <Flex width="100%">
+        <Flex width="100%" px={2}>
+          <Flex my={0.5} flexDirection="row">
+            {!!enableCollectedArtists
+              ? times(4).map((i) => (
+                  <Flex key={i} mr={1}>
+                    <Flex>
+                      <PlaceholderBox
+                        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                        key={i}
+                        width={ARTIST_CIRCLE_DIAMETER}
+                        height={ARTIST_CIRCLE_DIAMETER}
+                      />
+                    </Flex>
+                    <Flex mt={1}>
+                      <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+                    </Flex>
+                  </Flex>
+                ))
+              : null}
+          </Flex>
           {times(4).map((i) => (
             <Flex key={i} my={0.5} flexDirection="row">
               <Flex>
