@@ -117,7 +117,8 @@ jest.mock("lodash", () => ({
 
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 
-jest.mock("./RecentSearches", () => {
+// app/Scenes/Search/RecentSearches.tsx
+jest.mock("app/Scenes/Search/RecentSearches", () => {
   const notifyRecentSearch = jest.fn()
   return {
     useRecentSearches() {
@@ -126,7 +127,8 @@ jest.mock("./RecentSearches", () => {
   }
 })
 
-const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
+const notifyRecentSearchMock = require("app/Scenes/Search/RecentSearches").useRecentSearches()
+  .notifyRecentSearch
 
 const consoleErrorMock = jest.fn()
 const whiteListErrors = [
