@@ -1,11 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  DeleteCollectedArtwork,
-  OwnerType,
-  SaveCollectedArtwork,
-} from "@artsy/cohesion"
-import { useActionSheet } from "@expo/react-native-action-sheet"
+import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
@@ -17,14 +10,11 @@ import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/Ad
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import { isEqual } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
@@ -44,31 +34,10 @@ export type ArtworkFormMode = "add" | "edit"
 // The react-navigation folks have written code that relies on the more permissive `type` behaviour.
 
 export type ArtworkFormScreen = {
-  ArtworkFormArtist: {
-    mode: ArtworkFormMode
-    clearForm(): void
-    onDelete(): void
-    onHeaderBackButtonPress(): void
-  }
-  ArtworkFormArtwork: {
-    mode: ArtworkFormMode
-    clearForm(): void
-    onDelete(): void
-    onHeaderBackButtonPress(): void
-  }
-  AddMyCollectionArtist: {
-    mode: ArtworkFormMode
-    clearForm(): void
-    onDelete(): void
-    onHeaderBackButtonPress(): void
-  }
-  ArtworkFormMain: {
-    mode: ArtworkFormMode
-    isSubmission?: boolean
-    clearForm(): void
-    onDelete(): void
-    onHeaderBackButtonPress(): void
-  }
+  ArtworkFormArtist: undefined
+  ArtworkFormArtwork: undefined
+  AddMyCollectionArtist: undefined
+  ArtworkFormMain: undefined
   AddPhotos: undefined
 }
 
@@ -96,9 +65,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
-  const { mode, onSuccess, onDelete, artwork } = MyCollectionArtworkStore.useStoreState(
-    (state) => state
-  )
+  const { mode, onSuccess } = MyCollectionArtworkStore.useStoreState((state) => state)
 
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
   // sent through the react-navigation system)
@@ -108,8 +75,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const [loading, setLoading] = useState<boolean>(false)
   const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
   const [savingArtworkModalDisplayText, setSavingArtworkModalDisplayText] = useState<string>("")
-
-  const { showActionSheetWithOptions } = useActionSheet()
 
   const handleSubmit = async (values: ArtworkFormValues) => {
     if (loading) {
@@ -183,75 +148,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     validationSchema: artworkSchema,
   })
 
-  const handleDelete = async () => {
-    if (mode === "edit" && onDelete && artwork) {
-      setLoading(true)
-      trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
-      try {
-        await myCollectionDeleteArtwork(artwork.internalID)
-        refreshMyCollection()
-        onDelete()
-      } catch (e) {
-        if (__DEV__) {
-          console.error(e)
-        } else {
-          captureException(e)
-        }
-        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-      } finally {
-        setLoading(false)
-      }
-    }
-  }
-
-  const clearForm = async () => {
-    const formIsDirty = !isEqual(formValuesRef.current, dirtyFormCheckValues)
-
-    if (formIsDirty) {
-      const discardData = await new Promise((resolve) =>
-        showActionSheetWithOptions(
-          {
-            title: "Do you want to discard your changes?",
-            options: ["Discard", "Keep editing"],
-            destructiveButtonIndex: 0,
-            cancelButtonIndex: 1,
-            useModal: true,
-          },
-          (buttonIndex) => {
-            if (buttonIndex === 0) {
-              resolve(true)
-            }
-          }
-        )
-      )
-      if (!discardData) {
-        return
-      }
-    }
-
-    if (mode === "edit") {
-      // Reset the form with the initial values from the artwork
-      GlobalStore.actions.myCollection.artwork.updateFormValues(dirtyFormCheckValues)
-    } else {
-      GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
-    }
-  }
-
-  const onHeaderBackButtonPress = () => {
-    const currentRoute = navContainerRef.current?.getCurrentRoute()
-    const isFirstScreen =
-      mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
-
-    // clear and exit the form if we're on the first screen
-    if (isFirstScreen) {
-      GlobalStore.actions.myCollection.artwork.resetForm()
-      goBack()
-      return
-    }
-
-    navContainerRef.current?.goBack()
-  }
-
   return (
     <NavigationContainer independent ref={navContainerRef}>
       <FormikProvider value={formik}>
@@ -264,51 +160,18 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           }}
         >
           {mode === "add" && (
-            <Stack.Screen
-              name="ArtworkFormArtist"
-              component={MyCollectionArtworkFormArtist}
-              initialParams={{ onDelete: handleDelete, clearForm, onHeaderBackButtonPress }}
-            />
+            <Stack.Screen name="ArtworkFormArtist" component={MyCollectionArtworkFormArtist} />
           )}
           {mode === "add" && (
-            <Stack.Screen
-              name="ArtworkFormArtwork"
-              component={MyCollectionArtworkFormArtwork}
-              initialParams={{
-                onDelete,
-                clearForm,
-                mode: mode,
-                onHeaderBackButtonPress,
-              }}
-            />
+            <Stack.Screen name="ArtworkFormArtwork" component={MyCollectionArtworkFormArtwork} />
           )}
           {!!enableCollectedArtists && mode === "add" && (
             <Stack.Screen
               name="AddMyCollectionArtist"
               component={AddMyCollectionArtist} // TODO: Rename this component
-              initialParams={{
-                mode: mode,
-                clearForm,
-                onHeaderBackButtonPress,
-              }}
             />
           )}
-          <Stack.Screen
-            name="ArtworkFormMain"
-            component={MyCollectionArtworkFormMain}
-            initialParams={{
-              onDelete,
-              clearForm,
-              mode: mode,
-              onHeaderBackButtonPress,
-              isSubmission: (() => {
-                if (mode === "edit" && artwork) {
-                  return !!artwork.consignmentSubmission?.displayText
-                }
-                return false
-              })(),
-            }}
-          />
+          <Stack.Screen name="ArtworkFormMain" component={MyCollectionArtworkFormMain} />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
         {mode === "add" ? (
@@ -336,14 +199,6 @@ export const MyCollectionArtworkFormScreen: React.FC<MyCollectionArtworkFormProp
 const Stack = createStackNavigator<ArtworkFormScreen>()
 
 const tracks = {
-  deleteCollectedArtwork: (internalID: string, slug: string): DeleteCollectedArtwork => ({
-    action: ActionType.deleteCollectedArtwork,
-    context_module: ContextModule.myCollectionArtwork,
-    context_owner_id: internalID,
-    context_owner_slug: slug,
-    context_owner_type: OwnerType.myCollectionArtwork,
-    platform: "mobile",
-  }),
   saveCollectedArtwork: (
     artistId: string,
     isP1Artist: boolean | null | undefined

@@ -1,4 +1,4 @@
-import { ArtsyKeyboardAvoidingView, Flex, Join, Spacer, Button } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
 
 export const AddMyCollectionArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
@@ -54,7 +54,7 @@ export const AddMyCollectionArtist: React.FC<
           customArtist: values,
           metric: preferredMetric,
         })
-        navigation.navigate("ArtworkFormMain", { ...route.params })
+        navigation.navigate("ArtworkFormMain")
       },
       validationSchema: validationSchema,
     })
@@ -67,13 +67,15 @@ export const AddMyCollectionArtist: React.FC<
     handleChange(field)(text)
   }
 
+  const handleBackPress = () => {
+    navigation.goBack()
+  }
+
   return (
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={
-            dirty ? () => setShowAbandonModal(true) : route.params.onHeaderBackButtonPress
-          }
+          onLeftButtonPress={dirty ? () => setShowAbandonModal(true) : handleBackPress}
           hideBottomDivider
         >
           Add New Artist
