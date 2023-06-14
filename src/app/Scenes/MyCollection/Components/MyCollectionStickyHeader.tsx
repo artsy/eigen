@@ -15,7 +15,6 @@ import {
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-// import { Input } from "app/Components/Input"
 import { Pill } from "app/Components/Pill"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
@@ -89,8 +88,6 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 }
 
 export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
-  const space = useSpace()
-
   const closeIconRef = useRef(null)
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
@@ -108,13 +105,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   return (
     <>
-      <Flex
-        alignItems="center"
-        flexDirection="row"
-        justifyContent="space-between"
-        py={2}
-        style={{ paddingHorizontal: space(2) }}
-      >
+      <Flex alignItems="center" flexDirection="row" justifyContent="space-between" p={2}>
         <AnimatedCloseIcon closeIconRef={closeIconRef} />
 
         {/* Pills */}
@@ -324,7 +315,6 @@ const ArtworkFilters: React.FC<FiltersProps> = (props) => {
         enableClearButton
         value={query}
         returnKeyType="done"
-        // fontSize={16}
         autoCorrect={false}
         style={{
           marginLeft: space(2),
