@@ -4,7 +4,6 @@ import { Image, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const MyCollectionArtistsCollectedOnboarding: React.FC<{}> = () => {
-  // const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
   const insets = useSafeAreaInsets()
   const color = useColor()
   const space = useSpace()
@@ -39,6 +38,7 @@ export const MyCollectionArtistsCollectedOnboarding: React.FC<{}> = () => {
             my={2}
             block
             onPress={() => {
+              console.warn("TODO: add navigtion in a separate ticket")
               /* navigate("", {
               passProps: {
                 onSuccess: () => {

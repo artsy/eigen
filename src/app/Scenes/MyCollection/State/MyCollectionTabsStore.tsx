@@ -19,6 +19,8 @@ export interface MyCollectionTabsStoreModel {
   artworksCount: number | null
   setSelectedTab: Action<this, CollectedTab>
   setViewKind: Action<this, ViewPayload>
+  setCollectedArtistsOnboardingAsSeen: Action<this, void>
+  wasCollectedArtistsOnboardingSeen: boolean | undefined
 }
 
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
@@ -26,6 +28,7 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   viewKind: null,
   id: null,
   artworksCount: null,
+  wasCollectedArtistsOnboardingSeen: undefined,
   setSelectedTab: action((state, payload) => {
     state.selectedTab = payload
   }),
@@ -47,6 +50,10 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
         state.artworksCount = payload.artworksCount
         break
     }
+  }),
+  setCollectedArtistsOnboardingAsSeen: action((state) => {
+    console.log("setCollectedArtistsOnboardingAsSeen")
+    state.wasCollectedArtistsOnboardingSeen = true
   }),
 }
 
