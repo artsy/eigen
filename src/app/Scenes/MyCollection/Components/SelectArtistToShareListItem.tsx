@@ -1,3 +1,4 @@
+import { Checkbox } from "@artsy/palette-mobile"
 import { SelectArtistToShareListItem_artist$key } from "__generated__/SelectArtistToShareListItem_artist.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useFragment } from "react-relay"
@@ -18,7 +19,15 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       avatarSize="xs"
       withFeedback
       showFollowButton={false}
-      RightButton={<></>}
+      onPress={() => {}}
+      RightButton={
+        <Checkbox
+          mr={1}
+          checked={true}
+          onPress={() => console.log("pressed")}
+          testID="ArtworkFilterOptionCheckboxItemCheckbox"
+        />
+      }
     />
   )
 }
