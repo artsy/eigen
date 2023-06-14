@@ -15,7 +15,7 @@ import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   AddMyCollectionArtist,
-  NewMyCollectionArtistFormikSchema,
+  MyCollectionPersonalArtistSchema,
 } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
@@ -68,9 +68,9 @@ export type ArtworkFormScreen = {
     // AddMyCollectionArtist is available as a global route as well and in order to make sure
     // sent props are captured the same way using the route prop, we are intentionally setting the props
     props: {
-      handleBackButtonPress(): void
+      handleBackButtonPress?(): void
       name?: string
-      onSubmit(artistInput: NewMyCollectionArtistFormikSchema): void
+      onSubmit(artistInput: MyCollectionPersonalArtistSchema): void
     }
   }
   ArtworkFormMain: {

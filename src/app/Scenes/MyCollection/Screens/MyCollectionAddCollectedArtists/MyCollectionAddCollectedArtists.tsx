@@ -7,6 +7,11 @@ import { pluralize } from "app/utils/pluralize"
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
 
+  const handleSubmit = () => {
+    // Save collected artists
+    // Save personal artists
+  }
+
   return (
     <Flex flex={1}>
       <FancyModalHeader hideBottomDivider>
@@ -26,9 +31,9 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         left={0}
         backgroundColor="white100"
       >
-        <Button block disabled={artistIds.size === 0}>
+        <Button block disabled={artistIds.length === 0} onPress={handleSubmit}>
           <Text color="white100">
-            Add Selected {pluralize(`Artist`, artistIds.size)} • {artistIds.size}
+            Add Selected {pluralize(`Artist`, artistIds.length)} • {artistIds.length}
           </Text>
         </Button>
       </Flex>

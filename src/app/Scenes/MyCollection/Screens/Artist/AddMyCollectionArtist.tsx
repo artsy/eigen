@@ -4,13 +4,14 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { goBack } from "app/system/navigation/navigate"
 import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import * as Yup from "yup"
 
-export interface NewMyCollectionArtistFormikSchema {
+export interface MyCollectionCustomArtistSchema {
   name: string
   nationality: string
   birthYear: string
@@ -34,7 +35,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
   const deathYearInputRef = useRef<Input>(null)
 
   const { handleSubmit, validateField, handleChange, dirty, values, errors } =
-    useFormik<NewMyCollectionArtistFormikSchema>({
+    useFormik<MyCollectionCustomArtistSchema>({
       enableReinitialize: true,
       validateOnChange: true,
       validateOnBlur: true,
@@ -52,7 +53,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
     })
   const touched = useHasBeenTrue(dirty)
 
-  const handleOnChangeText = (field: keyof NewMyCollectionArtistFormikSchema, text: string) => {
+  const handleOnChangeText = (field: keyof MyCollectionCustomArtistSchema, text: string) => {
     // hide error when the user starts to type again
     if (errors[field]) {
       validateField(field)
@@ -64,9 +65,19 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={
-            dirty ? () => setShowAbandonModal(true) : route.params.props.handleBackButtonPress
-          }
+          onLeftButtonPress={() => {
+            if (dirty) {
+              setShowAbandonModal(true)
+              return
+            }
+
+            if (route.params.props.handleBackButtonPress) {
+              route.params.props.handleBackButtonPress()
+              return
+            }
+
+            goBack()
+          }}
           hideBottomDivider
         >
           Add New Artist

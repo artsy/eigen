@@ -17,7 +17,6 @@ import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
-import { enableMapSet } from "immer"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
@@ -45,9 +44,6 @@ if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
-
-// Required in order to use sets inside easy-peasy stores
-enableMapSet()
 
 if (Platform.OS === "ios") {
   // Polyfills required to use Intl with Hermes engine for iOS

@@ -1,22 +1,34 @@
+import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { Action, action, createContextStore } from "easy-peasy"
+import { isEqual } from "lodash"
 
 export interface MyCollectionAddCollectedArtistsStoreModel {
-  artistIds: Set<string>
+  artistIds: Array<string>
+  customArtists: Array<MyCollectionCustomArtistSchema>
   addOrRemoveArtist: Action<this, string>
+  addCustomArtist: Action<this, MyCollectionCustomArtistSchema>
 }
 
 export const MyCollectionAddCollectedArtistsStore =
   createContextStore<MyCollectionAddCollectedArtistsStoreModel>({
-    artistIds: new Set(),
+    artistIds: [],
+    customArtists: [],
     addOrRemoveArtist: action((state, artistId) => {
       const next = new Set(state.artistIds)
-      if (state.artistIds.has(artistId)) {
+      if (next.has(artistId)) {
         // Remove artist
         next.delete(artistId)
       } else {
         // Add artist
         next.add(artistId)
       }
-      state.artistIds = next
+      state.artistIds = Array.from(next)
+    }),
+    addCustomArtist: action((state, artist) => {
+      // Do not allow duplicate artists to be added
+      if (state.customArtists.find((a) => isEqual(a, artist))) {
+        return
+      }
+      state.customArtists.push(artist)
     }),
   })

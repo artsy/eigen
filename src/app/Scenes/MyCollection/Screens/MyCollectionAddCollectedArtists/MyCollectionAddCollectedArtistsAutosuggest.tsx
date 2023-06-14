@@ -19,7 +19,7 @@ import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/M
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
@@ -51,7 +51,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
     "displayLabel",
   ])
 
-  const oldCollectedArtistsIds = new Set(collectedArtists.map((artist) => artist.internalID))
+  const oldCollectedArtistsIds = collectedArtists.map((artist) => artist.internalID)
 
   const showResults = trimmedQuery.length > 2
 
@@ -59,7 +59,6 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
     passProps: {
-      handleBackButtonPress: goBack,
       onSubmit: () => {
         // do nothing
       },
@@ -112,7 +111,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
               CustomListItemComponent={(props) => (
                 <CollectedArtistListItem
                   {...props}
-                  disabled={oldCollectedArtistsIds.has(props.item.internalID!)}
+                  disabled={oldCollectedArtistsIds.includes(props.item.internalID!)}
                 />
               )}
               ListEmptyComponent={() => (
@@ -225,7 +224,7 @@ const CollectedArtistListItem: React.FC<{
   const isTablet = isPad()
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
 
-  const [isSelected, setIsSelected] = useState(artistIds.has(artist.internalID!))
+  const [isSelected, setIsSelected] = useState(artistIds.includes(artist.internalID!))
 
   const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
     (actions) => actions.addOrRemoveArtist

@@ -475,7 +475,12 @@ export const modules = defineModules({
     { fullBleed: true, hidesBackButton: true },
     [MyCollectionArtworkScreenQuery]
   ),
-  MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen),
+  MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
+    screenOptions: {
+      gestureEnabled: false,
+    },
+    hidesBottomTabs: true,
+  }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,
