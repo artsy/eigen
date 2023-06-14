@@ -10,7 +10,6 @@ import {
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Pill } from "app/Components/Pill"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
@@ -68,7 +67,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   return (
     <>
       {!!enableCollectedArtists && (
-        <Flex pb={0}>
+        <Flex pb={0} px={2}>
           <MainStickyHeader hasArtworks={hasArtworks} />
         </Flex>
       )}
@@ -133,16 +132,6 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
           <Touchable
-            onPress={() => {
-              console.log("Search button pressed")
-            }}
-            haptic
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <SearchIcon width={24} height={24} />
-          </Touchable>
-          <Spacer x={PILL_PADDING} />
-          <Touchable
             onPress={showAddToMyCollectionBottomSheet}
             haptic
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -191,7 +180,6 @@ const AnimatedCloseIcon: React.FC<{
             borderWidth="1px"
             height={PILL_DIAMETER}
             justifyContent="center"
-            px={2}
             width={PILL_DIAMETER}
           >
             <CloseIcon />
