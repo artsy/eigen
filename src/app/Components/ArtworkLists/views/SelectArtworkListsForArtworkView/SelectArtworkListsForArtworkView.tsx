@@ -12,7 +12,7 @@ import { useSavePendingArtworkListsChanges } from "app/Components/ArtworkLists/v
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useCallback } from "react"
 
-const SNAP_POINTS = ["60%", "95%"]
+const SNAP_POINTS = ["95%"]
 
 export const SelectArtworkListsForArtworkView = () => {
   const { state, reset } = useArtworkListsContext()
