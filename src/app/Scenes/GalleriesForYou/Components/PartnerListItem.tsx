@@ -70,7 +70,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
         <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
           <Flex mr={1} flexShrink={1}>
             <Text variant="sm">{name}</Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm-display" color="black60">
               {cities}
             </Text>
           </Flex>
