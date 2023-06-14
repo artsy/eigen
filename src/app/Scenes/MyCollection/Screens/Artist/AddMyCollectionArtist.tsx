@@ -4,7 +4,7 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -12,29 +12,32 @@ import * as Yup from "yup"
 
 export interface NewMyCollectionArtistFormikSchema {
   name: string
-  nationality: string
-  birthYear: string
-  deathYear: string
+  nationality?: string
+  birthYear?: string
+  deathYear?: string
 }
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().trim().required("Name field is required").min(1, "Name field is required"),
   nationality: Yup.string().trim(),
-  birthYear: Yup.string().trim(),
-  deathYear: Yup.string().trim(),
+  birthYear: Yup.string().trim().max(4, "Birth year is invalid"),
+  deathYear: Yup.string().trim().max(4, "Death year is invalid"),
 })
 
 export const AddMyCollectionArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "AddMyCollectionArtist">
-> = ({ route }) => {
+> = ({ route, navigation }) => {
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
+
   const [showAbandonModal, setShowAbandonModal] = useState(false)
+
   const scrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
   const nationalityInputRef = useRef<Input>(null)
   const birthYearInputRef = useRef<Input>(null)
   const deathYearInputRef = useRef<Input>(null)
 
-  const { handleSubmit, validateField, handleChange, dirty, values, errors } =
+  const { handleSubmit, validateField, handleChange, dirty, isValid, values, errors } =
     useFormik<NewMyCollectionArtistFormikSchema>({
       enableReinitialize: true,
       validateOnChange: true,
@@ -46,10 +49,15 @@ export const AddMyCollectionArtist: React.FC<
         deathYear: "",
       },
       initialErrors: {},
-      onSubmit: () => console.log("Submit Add New Artist"), // save artist to the store and navigate
+      onSubmit: () => {
+        GlobalStore.actions.myCollection.artwork.updateFormValues({
+          customArtist: values,
+          metric: preferredMetric,
+        })
+        navigation.navigate("ArtworkFormMain", { ...route.params })
+      },
       validationSchema: validationSchema,
     })
-  const touched = useHasBeenTrue(dirty)
 
   const handleOnChangeText = (field: keyof NewMyCollectionArtistFormikSchema, text: string) => {
     // hide error when the user starts to type again
@@ -72,18 +80,18 @@ export const AddMyCollectionArtist: React.FC<
         </FancyModalHeader>
 
         <AbandonFlowModal
-          isVisible={!!showAbandonModal}
-          title="Leave without saving?"
-          subtitle="Changes you have made so far will not be saved."
-          leaveButtonTitle="Leave Without Saving"
           continueButtonTitle="Continue Editing"
+          isVisible={!!showAbandonModal}
+          leaveButtonTitle="Leave Without Saving"
           onDismiss={() => setShowAbandonModal(false)}
+          subtitle="Changes you have made so far will not be saved."
+          title="Leave without saving?"
         />
 
         <ScrollView
-          ref={scrollViewRef}
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
+          ref={scrollViewRef}
         >
           <Flex p={2}>
             <Join separator={<Spacer y={2} />}>
@@ -94,6 +102,7 @@ export const AddMyCollectionArtist: React.FC<
                 onBlur={() => validateField("name")}
                 onChange={() => handleChange}
                 onChangeText={(text) => handleOnChangeText("name", text)}
+                onSubmitEditing={() => nationalityInputRef.current?.focus()}
                 placeholder="Artist Name"
                 ref={nameInputRef}
                 required
@@ -108,6 +117,7 @@ export const AddMyCollectionArtist: React.FC<
                 onBlur={() => validateField("nationality")}
                 onChange={() => handleChange}
                 onChangeText={(text) => handleOnChangeText("nationality", text)}
+                onSubmitEditing={() => birthYearInputRef.current?.focus()}
                 placeholder="Nationality"
                 ref={nationalityInputRef}
                 returnKeyType="next"
@@ -121,12 +131,13 @@ export const AddMyCollectionArtist: React.FC<
                       accessibilityLabel="Birth Year"
                       autoCorrect={false}
                       error={errors.birthYear}
+                      keyboardType="numeric"
+                      maxLength={4}
                       onBlur={() => validateField("birthYear")}
                       onChange={() => handleChange}
                       onChangeText={(text) => handleOnChangeText("birthYear", text)}
                       placeholder="Birth Year"
                       ref={birthYearInputRef}
-                      returnKeyType="next"
                       title="Birth Year"
                       value={values.birthYear}
                     />
@@ -136,12 +147,13 @@ export const AddMyCollectionArtist: React.FC<
                       accessibilityLabel="Death Year"
                       autoCorrect={false}
                       error={errors.deathYear}
+                      keyboardType="numeric"
+                      maxLength={4}
                       onBlur={() => validateField("deathYear")}
                       onChange={() => handleChange}
                       onChangeText={(text) => handleOnChangeText("deathYear", text)}
                       placeholder="Death Year"
                       ref={deathYearInputRef}
-                      returnKeyType="done"
                       title="Death Year"
                       value={values.deathYear}
                     />
@@ -150,7 +162,7 @@ export const AddMyCollectionArtist: React.FC<
               </Flex>
               <Button
                 accessibilityLabel="Submit Add Artist"
-                disabled={!touched}
+                disabled={!dirty || !isValid}
                 flex={1}
                 onPress={handleSubmit}
                 testID="submit-add-artist-button"

@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
 import { MyCollectionCollectedArtistGridItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistGridItem"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
@@ -19,7 +19,6 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
   me,
 }) => {
   const [refreshing, setRefreshing] = useState(false)
-  const space = useSpace()
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
   const isAPad = isPad()
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
@@ -74,6 +73,9 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   return (
     <>
+      <Flex alignItems="flex-end" pb={2} px={2}>
+        <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+      </Flex>
       {viewOption === "grid" ? (
         <FlatList
           data={artistsAndArtworksCount}
@@ -91,14 +93,8 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           key="grid"
           keyExtractor={(item) => "grid" + item.artist!.internalID}
           numColumns={isAPad ? 3 : 2}
-          style={{ flex: isAPad ? 3 : 2, paddingTop: space(2) }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
-          ListHeaderComponent={() => (
-            <Flex alignItems="flex-end" pb={2} px={2}>
-              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
-            </Flex>
-          )}
           ItemSeparatorComponent={() => <Spacer y={2} x={4} />}
           refreshControl={
             !__TEST__ ? (
@@ -125,12 +121,6 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
-          ListHeaderComponent={() => (
-            <Flex alignItems="flex-end" px={2}>
-              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
-            </Flex>
-          )}
-          style={{ paddingVertical: space(2) }}
           ItemSeparatorComponent={() => <Spacer y={2} />}
           refreshControl={
             !__TEST__ ? (
