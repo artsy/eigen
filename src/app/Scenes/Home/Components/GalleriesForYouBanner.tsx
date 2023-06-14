@@ -55,7 +55,7 @@ export const GalleriesForYouBanner: React.FC<GalleriesForYouBannerProps> = ({ mb
                 </Text>
               </Flex>
 
-              <Flex mt={0.5}>
+              <Flex mt={0.5} backgroundColor="green">
                 <Button variant="outlineLight" size="small" onPress={handlePress}>
                   Explore
                 </Button>

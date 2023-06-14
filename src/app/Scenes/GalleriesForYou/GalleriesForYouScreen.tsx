@@ -2,8 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { GalleriesForYouScreenQuery } from "__generated__/GalleriesForYouScreenQuery.graphql"
 import { GalleriesForYouScreen_partnersConnection$key } from "__generated__/GalleriesForYouScreen_partnersConnection.graphql"
-import { PartnerListItem } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
+import {
+  MAX_PARTNER_LIST_ITEM_WIDTH,
+  PartnerListItem,
+} from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -142,21 +146,25 @@ const GalleriesForYouHeader: React.FC = () => (
 )
 
 const GalleriesForYouPlaceholder: React.FC = () => {
-  const { width } = useScreenDimensions()
+  const isTablet = isPad()
   const space = useSpace()
+
+  const { width: screenWidth } = useScreenDimensions()
+
+  const width = (isTablet ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
 
   return (
     <ProvidePlaceholderContext>
       <Flex testID="PlaceholderGrid">
         <GalleriesForYouHeader />
 
-        <Flex mx={2} mt={1}>
+        <Flex px={2} mt={1} mx="auto">
           {times(5).map((i) => {
             return (
               <Flex mb={4} key={i}>
-                <PlaceholderBox height={(width - space(4)) / 1.33} />
+                <PlaceholderBox width={width} height={width / 1.33} />
                 <Spacer y={1} />
-                <PlaceholderBox height={60} />
+                <PlaceholderBox width={width} height={60} />
               </Flex>
             )
           })}
