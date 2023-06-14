@@ -12,7 +12,7 @@ import {
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useVisualClue } from "app/utils/hooks/useVisualClue"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useMemo } from "react"
@@ -38,7 +38,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
 
   // Check if there's new content
   const indicators = []
-  if (showVisualClue("AddedArtworkWithInsightsVisualClueDot")) {
+  if (showVisualClue("MyCollectionInsights")) {
     indicators.push({
       tabName: Tab.insights,
       Component: () => {
@@ -55,6 +55,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
             initialTabName={initialTab}
             renderHeader={() => <MyProfileHeaderQueryRenderer />}
             indicators={indicators}
+            onTabPress={(tabName) => {
+              if (tabName === Tab.insights) {
+                setVisualClueAsSeen("MyCollectionInsights")
+              }
+            }}
           >
             <Tabs.Tab name={Tab.collection} label={Tab.collection}>
               <Tabs.Lazy>
