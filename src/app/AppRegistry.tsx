@@ -15,6 +15,8 @@ import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
@@ -341,6 +343,9 @@ export const modules = defineModules({
     hidesBackButton: true,
     hidesBottomTabs: true,
   }),
+  AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
+    hidesBackButton: true,
+  }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
@@ -475,6 +480,12 @@ export const modules = defineModules({
     { fullBleed: true, hidesBackButton: true },
     [MyCollectionArtworkScreenQuery]
   ),
+  MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
+    screenOptions: {
+      gestureEnabled: false,
+    },
+    hidesBottomTabs: true,
+  }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,

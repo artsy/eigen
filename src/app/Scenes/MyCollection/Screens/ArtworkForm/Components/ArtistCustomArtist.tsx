@@ -1,9 +1,9 @@
 import { Avatar, Spacer, Flex, Text } from "@artsy/palette-mobile"
-import { NewMyCollectionArtistFormikSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { Initials } from "app/Scenes/MyCollection/utils/convertNameToInitials"
 
 export const ArtistCustomArtist: React.FC<{
-  artist: NewMyCollectionArtistFormikSchema
+  artist: MyCollectionCustomArtistSchema
 }> = ({ artist }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
