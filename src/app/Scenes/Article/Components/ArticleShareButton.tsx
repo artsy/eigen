@@ -28,7 +28,7 @@ export const ArticleShareButton: React.FC<ArticleShareButtonProps> = (props) => 
   }
 
   return (
-    <TouchableOpacity onPress={handleSharePress} hitSlop={DEFAULT_HIT_SLOP}>
+    <TouchableOpacity onPress={handleSharePress} hitSlop={DEFAULT_HIT_SLOP} testID="shareButton">
       <ShareIcon fill="black100" width="25px" height="25px" top="2px" />
     </TouchableOpacity>
   )

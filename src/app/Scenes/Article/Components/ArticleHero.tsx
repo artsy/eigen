@@ -1,6 +1,5 @@
-import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleHero_article$key } from "__generated__/ArticleHero_article.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { DateTime } from "luxon"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -15,13 +14,12 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
 
   return (
     <>
-      {!!data.hero?.image?.resized?.src && (
+      {!!data.hero?.image?.url && (
         <>
-          <OpaqueImageView
-            imageURL={data.hero.image.resized.src}
-            aspectRatio={data.hero.image.aspectRatio}
+          <Image
             width={width}
-            useRawURL
+            src={data.hero.image.url}
+            aspectRatio={data.hero.image.aspectRatio}
           />
 
           <Spacer y={2} />
@@ -58,19 +56,11 @@ const ArticleHeroFragment = graphql`
     vertical
     byline
     publishedAt
-    layout
     hero {
       ... on ArticleFeatureSection {
-        layout
-        embed
-        media
         image {
           aspectRatio
           url
-          resized(width: 900) {
-            src
-            srcSet
-          }
         }
       }
     }

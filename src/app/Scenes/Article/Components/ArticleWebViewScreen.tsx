@@ -16,7 +16,7 @@ export const ArticleWebViewScreen: React.FC<ArticleWebViewScreenProps> = ({ arti
   }
 
   return (
-    <Screen>
+    <Screen testID="ArticleWebViewScreen">
       <Screen.Header title={data.title ?? ""} onBack={goBack} />
       <Screen.Body>
         <ArtsyWebView url={data.href} />

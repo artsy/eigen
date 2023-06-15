@@ -77,7 +77,7 @@ export const articleScreenQuery = graphql`
       ...ArticleShareButton_article
       ...ArticleWebViewScreen_article
       ...ArticleBody_article
-      ...ArticleRelatedArticlesRail_articles
+      ...ArticleRelatedArticlesRail_article
 
       href
       layout
@@ -91,7 +91,7 @@ export const articleScreenQuery = graphql`
 
 const Placeholder: React.FC = () => {
   return (
-    <Screen>
+    <Screen testID="ArticleScreenPlaceholder">
       <Screen.Header rightElements={<ArticleShareButton article={null as any} />} onBack={goBack} />
 
       <Screen.Body fullwidth>
@@ -99,11 +99,8 @@ const Placeholder: React.FC = () => {
           <Flex px={2}>
             <Join separator={<Spacer y={0.5} />}>
               <SkeletonText variant="xs">Art Vertical</SkeletonText>
-
               <SkeletonText variant="lg-display">Some Placeholder Title that wraps</SkeletonText>
-
               <SkeletonText variant="sm-display">Some Author</SkeletonText>
-
               <SkeletonText variant="xs" mt={1}>
                 September 1st, 2021
               </SkeletonText>

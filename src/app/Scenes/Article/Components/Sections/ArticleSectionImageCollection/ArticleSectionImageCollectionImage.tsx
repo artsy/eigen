@@ -1,8 +1,5 @@
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollectionImage_figure$key } from "__generated__/ArticleSectionImageCollectionImage_figure.graphql"
-import { MotiView } from "moti"
-import { useState } from "react"
-import FastImage from "react-native-fast-image"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -13,34 +10,15 @@ interface ArticleSectionImageCollectionImageProps {
 export const ArticleSectionImageCollectionImage: React.FC<
   ArticleSectionImageCollectionImageProps
 > = ({ figure }) => {
-  const [loading, setLoading] = useState(true)
   const { width } = useScreenDimensions()
 
   const data = useFragment(ArticleSectionImageCollectionImageQuery, figure)
 
-  if (!data.image?.resized?.src) {
+  if (!data.image?.url) {
     return null
   }
 
-  const dimensions = { width, height: width / data.image.aspectRatio }
-
-  return (
-    <Flex position="relative">
-      <MotiView animate={{ opacity: loading ? 1 : 0 }} style={{ position: "absolute", zIndex: 1 }}>
-        <Flex {...dimensions} backgroundColor="black10" />
-      </MotiView>
-
-      <FastImage
-        style={dimensions}
-        onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
-        source={{
-          uri: data.image.resized.src,
-          priority: FastImage.priority.normal,
-        }}
-      />
-    </Flex>
-  )
+  return <Image src={data.image.url} width={width} aspectRatio={data.image.aspectRatio} />
 }
 
 const ArticleSectionImageCollectionImageQuery = graphql`
@@ -48,33 +26,27 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleImageSection {
       id
       image {
-        resized(width: 1000) {
-          src
-          width
-          height
-        }
+        url
+        width
+        height
         aspectRatio
       }
     }
     ... on Artwork {
       id
       image {
-        resized(width: 1000) {
-          src
-          width
-          height
-        }
+        url
+        width
+        height
         aspectRatio
       }
     }
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        resized(width: 1000) {
-          src
-          width
-          height
-        }
+        url
+        width
+        height
         aspectRatio
       }
     }

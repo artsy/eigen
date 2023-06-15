@@ -19,10 +19,6 @@ export const ArticleSectionImageCollectionCaption: React.FC<
     return null
   }
 
-  if (!!data.caption) {
-    return null
-  }
-
   return (
     <HTML
       html={data.caption as string}

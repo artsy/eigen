@@ -1,11 +1,11 @@
 import { Flex, FlexProps, Spacer, useSpace } from "@artsy/palette-mobile"
-import { ArticleRelatedArticlesRail_articles$key } from "__generated__/ArticleRelatedArticlesRail_articles.graphql"
+import { ArticleRelatedArticlesRail_article$key } from "__generated__/ArticleRelatedArticlesRail_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArticlesRailProps extends FlexProps {
-  relatedArticles: ArticleRelatedArticlesRail_articles$key
+  relatedArticles: ArticleRelatedArticlesRail_article$key
 }
 
 export const ArticleRelatedArticlesRail: React.FC<ArticlesRailProps> = ({
@@ -36,7 +36,7 @@ export const ArticleRelatedArticlesRail: React.FC<ArticlesRailProps> = ({
 }
 
 const relatedArticlesRailQuery = graphql`
-  fragment ArticleRelatedArticlesRail_articles on Article {
+  fragment ArticleRelatedArticlesRail_article on Article {
     internalID
     slug
     relatedArticles {

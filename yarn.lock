@@ -237,10 +237,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.1.0":
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.1.0.tgz#c30e52de328e7490f0223ce9f751e852b7219ebb"
-  integrity sha512-WT0xWq83Nc6op/2d3Ku1g5jgTDxYqy63NzeKVXCH0XIQMMALTcysjcbRcPuPu5nNzO621ILxRRpqD6M+Dh3X4w==
+"@artsy/palette-mobile@11.2.0":
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.2.0.tgz#70403aca414712c2873872e795d5087d4b19f99b"
+  integrity sha512-2da5ZkNZ6Cuwi7U4MOKog2Tm74AvpKxUQ5tP4CgS4Q7YyO+mboeAgYavrguQ70xMKDjatPDEsn9oqagu7Ve+Dw==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -250,6 +250,7 @@
     moti "^0.25.3"
     react-nanny "^2.15.0"
     react-native-collapsible-tab-view "^6.1.4"
+    react-native-fast-image "^8.6.3"
     react-native-pager-view "^6.2.0"
     react-spring "8.0.23"
     styled-system "^5.1.5"
@@ -14733,7 +14734,7 @@ react-native-device-info@10.3.0:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.3.0.tgz#6bab64d84d3415dd00cc446c73ec5e2e61fddbe7"
   integrity sha512-/ziZN1sA1REbJTv5mQZ4tXggcTvSbct+u5kCaze8BmN//lbxcTvWsU6NQd4IihLt89VkbX+14IGc9sVApSxd/w==
 
-react-native-fast-image@8.6.3:
+react-native-fast-image@8.6.3, react-native-fast-image@^8.6.3:
   version "8.6.3"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
   integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
