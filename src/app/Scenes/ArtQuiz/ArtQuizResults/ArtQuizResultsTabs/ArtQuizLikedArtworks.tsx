@@ -22,6 +22,7 @@ export const ArtQuizLikedArtworks = ({
   return (
     <Tabs.ScrollView
       contentContainerStyle={{
+        paddingBottom: space(4),
         marginVertical: space(2),
         paddingHorizontal: space(1),
       }}

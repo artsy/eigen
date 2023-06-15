@@ -3,6 +3,7 @@ import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.gra
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
@@ -17,11 +18,13 @@ describe("MyCollection", () => {
     Component: (props) => {
       if (props?.me) {
         return (
-          <MyCollectionTabsStoreProvider>
-            <ArtworkFiltersStoreProvider>
-              <MyCollectionContainer me={props.me} />
-            </ArtworkFiltersStoreProvider>
-          </MyCollectionTabsStoreProvider>
+          <MyCollectionArtworksKeywordStore.Provider>
+            <MyCollectionTabsStoreProvider>
+              <ArtworkFiltersStoreProvider>
+                <MyCollectionContainer me={props.me} />
+              </ArtworkFiltersStoreProvider>
+            </MyCollectionTabsStoreProvider>
+          </MyCollectionArtworksKeywordStore.Provider>
         )
       }
       return null

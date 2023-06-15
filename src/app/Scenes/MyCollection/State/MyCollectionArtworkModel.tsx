@@ -1,5 +1,6 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { NewMyCollectionArtistFormikSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
@@ -19,6 +20,7 @@ export interface Image {
 
 export interface ArtworkFormValues {
   artist: string
+  customArtist: NewMyCollectionArtistFormikSchema | null
   artistIds: string[]
   artistDisplayName?: string
   isP1Artist?: boolean
@@ -45,6 +47,7 @@ export interface ArtworkFormValues {
 
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
+  customArtist: null,
   artistIds: [],
   artistDisplayName: undefined,
   artistSearchResult: null,
@@ -132,6 +135,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       "artist",
       "artistIds",
       "artistSearchResult",
+      "customArtist",
     ])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }

@@ -79,47 +79,39 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     })
   }
 
-  const renderContent = () => {
-    return (
-      <>
-        <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
-
-        {!!hasMarketSignals /* || average sale price data */ && (
-          <>
-            <CareerHighlightsRail me={data.me!} />
-            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
-            <MedianAuctionPriceRail me={data.me} />
-            {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
-            <ActivateMoreMarketInsightsBanner />
-          </>
-        )}
-      </>
-    )
+  if (myCollectionArtworksCount === 0) {
+    return <MyCollectionInsightsEmptyState />
   }
 
   return (
     <Tabs.ScrollView
       refreshControl={<RefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
-      contentContainerStyle={{
-        // Extend the container flex when there are no artworks for accurate vertical centering
-        flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
-        justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
-        height: myCollectionArtworksCount > 0 ? "auto" : "100%",
-        paddingHorizontal: 0,
-      }}
+      contentContainerStyle={{ paddingHorizontal: 0 }}
     >
       <Tabs.SubTabBar>
-        {!!showMyCollectionInsightsIncompleteMessage && (
-          <MyCollectionInsightsIncompleteMessage
-            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+        <Flex px={2}>
+          {!!showMyCollectionInsightsIncompleteMessage && (
+            <MyCollectionInsightsIncompleteMessage
+              onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+            />
+          )}
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.insights}
+            hasMarketSignals={hasMarketSignals}
           />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.insights}
-          hasMarketSignals={hasMarketSignals}
-        />
+        </Flex>
       </Tabs.SubTabBar>
-      {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
+      <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
+
+      {!!hasMarketSignals /* || average sale price data */ && (
+        <>
+          <CareerHighlightsRail me={data.me!} />
+          <AuctionResultsForArtistsYouCollectRail me={data.me!} />
+          <MedianAuctionPriceRail me={data.me} />
+          {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
+          <ActivateMoreMarketInsightsBanner />
+        </>
+      )}
     </Tabs.ScrollView>
   )
 }

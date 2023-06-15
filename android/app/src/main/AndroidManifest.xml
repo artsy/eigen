@@ -108,6 +108,7 @@
                 <data android:pathPrefix="/favorites" />
                 <data android:pathPrefix="/feature" />
                 <data android:pathPrefix="/galleries" />
+                <data android:pathPrefix="/galleries-for-you" />
                 <data android:pathPrefix="/gallery" />
                 <data android:pathPrefix="/gene" />
                 <data android:pathPrefix="/identity-verification-faq" />

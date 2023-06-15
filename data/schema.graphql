@@ -11597,9 +11597,14 @@ type Me implements Node {
     before: String
     first: Int
 
-    # An IP address, will be used to lookup location
+    # Include shows near the user's location based on the IP address
+    includeShowsNearIpBasedLocation: Boolean = false
+
+    # When set, this IP address will be used to look up the location, instead of the request's IP address.
     ip: String
     last: Int
+
+    # Include shows within a radius of the provided location
     near: Near
     sort: ShowSorts
 
@@ -13314,11 +13319,14 @@ type PartnerCategory {
     hasFullProfile: Boolean
     ids: [String]
 
+    # If true, will only return partners that are located near the user's location based on the IP address.
+    includePartnersNearIpBasedLocation: Boolean = false
+
     # If true, will only return partners that list artists that the user follows
     includePartnersWithFollowedArtists: Boolean
 
-    # An IP address, will be used to lookup location
-    ip: String
+    # Max distance to use when geo-locating partners, defaults to 75km.
+    maxDistance: Int
 
     # Coordinates to find partners closest to
     near: String
@@ -14619,11 +14627,14 @@ type Query {
     hasFullProfile: Boolean
     ids: [String]
 
+    # If true, will only return partners that are located near the user's location based on the IP address.
+    includePartnersNearIpBasedLocation: Boolean = false
+
     # If true, will only return partners that list artists that the user follows
     includePartnersWithFollowedArtists: Boolean
 
-    # An IP address, will be used to lookup location
-    ip: String
+    # Max distance to use when geo-locating partners, defaults to 75km.
+    maxDistance: Int
 
     # Coordinates to find partners closest to
     near: String
@@ -14915,12 +14926,15 @@ type Query {
     first: Int
     ids: [String]
 
+    # If true, will only return partners that are located near the user's location based on the IP address.
+    includePartnersNearIpBasedLocation: Boolean = false
+
     # If true, will only return partners that list artists that the user follows
     includePartnersWithFollowedArtists: Boolean
-
-    # An IP address, will be used to lookup location
-    ip: String
     last: Int
+
+    # Max distance to use when geo-locating partners, defaults to 75km.
+    maxDistance: Int
 
     # Coordinates to find partners closest to
     near: String
@@ -18984,11 +18998,14 @@ type Viewer {
     hasFullProfile: Boolean
     ids: [String]
 
+    # If true, will only return partners that are located near the user's location based on the IP address.
+    includePartnersNearIpBasedLocation: Boolean = false
+
     # If true, will only return partners that list artists that the user follows
     includePartnersWithFollowedArtists: Boolean
 
-    # An IP address, will be used to lookup location
-    ip: String
+    # Max distance to use when geo-locating partners, defaults to 75km.
+    maxDistance: Int
 
     # Coordinates to find partners closest to
     near: String
@@ -19240,12 +19257,15 @@ type Viewer {
     first: Int
     ids: [String]
 
+    # If true, will only return partners that are located near the user's location based on the IP address.
+    includePartnersNearIpBasedLocation: Boolean = false
+
     # If true, will only return partners that list artists that the user follows
     includePartnersWithFollowedArtists: Boolean
-
-    # An IP address, will be used to lookup location
-    ip: String
     last: Int
+
+    # Max distance to use when geo-locating partners, defaults to 75km.
+    maxDistance: Int
 
     # Coordinates to find partners closest to
     near: String
