@@ -113,9 +113,12 @@ const partnersConnectionFragment = graphql`
       first: $count
       after: $after
       eligibleForListing: true
+      excludeFollowedPartners: true
       includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+      includePartnersWithFollowedArtists: true
       defaultProfilePublic: true
-      sort: RANDOM_SCORE_DESC
+      sort: DISTANCE
+      maxDistance: 6371 # Earth radius in km to get all results (https://en.wikipedia.org/wiki/Earth_radius?useskin=vector#Mean_radius)
       near: $near
       type: GALLERY
     ) @connection(key: "GalleriesForYouScreen_partnersConnection") {
@@ -195,6 +198,6 @@ const NoGalleries: React.FC = () => (
   <Flex>
     <GalleriesForYouHeader />
 
-    <Text>We couldn’t find any galleries.</Text>
+    <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
   </Flex>
 )
