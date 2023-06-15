@@ -13,6 +13,7 @@ import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { MyCollectionArtistsCollectedOnboarding } from "app/Scenes/MyCollection/Components/MyCollectionArtistsCollectedOnboarding"
 import { MyCollectionArtistsCollectedOnboardingArtistsShareSettings } from "app/Scenes/MyCollection/Components/MyCollectionArtistsCollectedOnboardingArtistsShareSettings"
@@ -101,7 +102,7 @@ import {
   MyCollectionArtworkScreenQuery,
 } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithArtsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
-import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkFormScreen } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
@@ -338,7 +339,10 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   About: reactModule(About),
-  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
+  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkFormScreen, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
@@ -434,6 +438,7 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
+  GalleriesForYou: reactModule(GalleriesForYouScreen),
   Gene: reactModule(GeneQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,

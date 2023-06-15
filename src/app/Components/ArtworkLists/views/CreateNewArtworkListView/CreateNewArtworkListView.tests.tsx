@@ -117,7 +117,12 @@ describe("CreateNewArtworkListView", () => {
             responseOrError: {
               __typename: "CreateCollectionFailure",
               mutationError: {
-                message: errorMessage,
+                fieldErrors: [
+                  {
+                    name: "name",
+                    message: errorMessage,
+                  },
+                ],
               },
             },
           },

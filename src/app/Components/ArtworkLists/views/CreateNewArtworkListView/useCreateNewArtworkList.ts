@@ -20,16 +20,27 @@ export const useCreateNewArtworkList = (): Response => {
       ...config,
       onCompleted: (data, errors) => {
         const response = data.createCollection?.responseOrError
-        const errorMessage = response?.mutationError?.message
 
-        if (errorMessage) {
-          const error = new Error(errorMessage)
-          config.onError?.(error)
+        if (response?.__typename === "CreateCollectionFailure") {
+          // use generic error message by default
+          let errorMessage = "Something went wrong."
 
-          return
+          const nameErrorMessage = response?.mutationError?.fieldErrors?.find(
+            (e) => e?.name === "name"
+          )
+
+          // if there is a specific error message for the name field, use that instead
+          if (nameErrorMessage) {
+            errorMessage = nameErrorMessage.message
+          }
+
+          if (errorMessage) {
+            const error = new Error(errorMessage)
+            config.onError?.(error)
+          }
+        } else {
+          config.onCompleted?.(data, errors)
         }
-
-        return config.onCompleted?.(data, errors)
       },
       updater: (store, data) => {
         config.updater?.(store, data)
@@ -73,6 +84,7 @@ const CreateNewArtworkListMutation = graphql`
   mutation useCreateNewArtworkListMutation($input: createCollectionInput!) {
     createCollection(input: $input) {
       responseOrError {
+        __typename
         ... on CreateCollectionSuccess {
           collection {
             internalID
@@ -83,7 +95,10 @@ const CreateNewArtworkListMutation = graphql`
 
         ... on CreateCollectionFailure {
           mutationError {
-            message
+            fieldErrors {
+              name
+              message
+            }
           }
         }
       }

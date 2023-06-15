@@ -1,5 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -12,6 +13,14 @@ jest.mock("app/utils/requestPhotos", () => ({
 }))
 
 jest.mock("formik")
+
+const mockNav = jest.fn()
+
+const Wrapper = () => (
+  <MyCollectionArtworkStore.Provider>
+    <MyCollectionAddPhotos navigation={mockNav as any} route={null as any} />
+  </MyCollectionArtworkStore.Provider>
+)
 
 describe("MyCollectionAddPhotos", () => {
   let mockAddPhotos: ReactElement
@@ -29,8 +38,7 @@ describe("MyCollectionAddPhotos", () => {
       },
     })
 
-    const mockNav = jest.fn()
-    mockAddPhotos = <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
+    mockAddPhotos = <Wrapper />
   })
 
   it("updates header with correct label based on number of photos selected", () => {
@@ -66,10 +74,7 @@ describe("MyCollectionAddPhotos", () => {
   })
 
   it("triggers action on add photo button click", () => {
-    const mockNav = jest.fn()
-    const wrapper = renderWithWrappersLEGACY(
-      <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
-    )
+    const wrapper = renderWithWrappersLEGACY(<Wrapper />)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
@@ -77,10 +82,8 @@ describe("MyCollectionAddPhotos", () => {
   it("triggers action on delete photo button click", async () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
-    const mockNav = jest.fn()
-    const wrapper = renderWithWrappersLEGACY(
-      <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
-    )
+
+    const wrapper = renderWithWrappersLEGACY(<Wrapper />)
     await waitFor(
       () => {
         wrapper.root
