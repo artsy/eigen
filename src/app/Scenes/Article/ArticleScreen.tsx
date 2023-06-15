@@ -98,19 +98,13 @@ const Placeholder: React.FC = () => {
         <Skeleton>
           <Flex px={2}>
             <Join separator={<Spacer y={0.5} />}>
-              <SkeletonText variant="xs" color="black100">
-                Art Vertical
-              </SkeletonText>
+              <SkeletonText variant="xs">Art Vertical</SkeletonText>
 
-              <SkeletonText variant="lg-display" color="black100">
-                Some Placeholder Title that wraps
-              </SkeletonText>
+              <SkeletonText variant="lg-display">Some Placeholder Title that wraps</SkeletonText>
 
-              <SkeletonText variant="sm-display" color="black100">
-                Some Author
-              </SkeletonText>
+              <SkeletonText variant="sm-display">Some Author</SkeletonText>
 
-              <SkeletonText color="black60" variant="xs" mt={1}>
+              <SkeletonText variant="xs" mt={1}>
                 September 1st, 2021
               </SkeletonText>
             </Join>

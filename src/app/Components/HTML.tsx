@@ -7,6 +7,7 @@ import {
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
+import { navigate } from "app/system/navigation/navigate"
 import { merge } from "lodash"
 import RenderHtml, { MixedStyleRecord } from "react-native-render-html"
 
@@ -43,6 +44,17 @@ export const HTML: React.FC<HTMLProps> = ({
         contentWidth={contentWidth}
         source={{ html }}
         systemFonts={[FONTS.regular, FONTS.italic, FONTS.medium, FONTS.mediumItalic]}
+        renderersProps={{
+          a: {
+            onPress: (event, href) => {
+              event.preventDefault()
+
+              // Override default behavior to ensure we use our internal router
+              // to navigate internal or external
+              navigate(href)
+            },
+          },
+        }}
         tagsStyles={merge(
           {
             a: {
