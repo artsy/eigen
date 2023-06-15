@@ -61,12 +61,18 @@ const shouldDisplayPrepromptAlert = () => {
 }
 
 export const requestPushNotificationsPermission = async () => {
-  // TODO: how to handle unwrapping this?
+  const pushPromptSettings = unsafe_getPushPromptSettings()
+  if (!pushPromptSettings) {
+    console.warn("Push prompt settings not found aborting")
+    return
+  }
+
   const {
     pushPermissionsRequestedThisSession,
     pushNotificationSettingsPromptSeen,
     pushNotificationSystemDialogueSeen,
-  } = unsafe_getPushPromptSettings()!
+  } = pushPromptSettings
+
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
     GlobalStore.actions.artsyPrefs.pushPromptLogic
 
