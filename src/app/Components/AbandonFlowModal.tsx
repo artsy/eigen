@@ -10,6 +10,7 @@ interface AbandonFlowModalProps {
   leaveButtonTitle: string
   continueButtonTitle: string
   onDismiss: () => void
+  onLeave?: () => void
 }
 
 export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
@@ -19,6 +20,7 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
   leaveButtonTitle,
   continueButtonTitle,
   onDismiss,
+  onLeave,
 }) => {
   return (
     <FancyModal visible={isVisible}>
@@ -34,7 +36,19 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
         <Text variant="sm-display" mb={4}>
           {subtitle}
         </Text>
-        <Button onPress={() => popToRoot()} block variant="fillDark" size="large">
+        <Button
+          onPress={() => {
+            if (onLeave) {
+              onLeave()
+              return
+            }
+            // not sure why we pop to root instead of just going back here
+            popToRoot()
+          }}
+          block
+          variant="fillDark"
+          size="large"
+        >
           {leaveButtonTitle}
         </Button>
         <Spacer y={1} />

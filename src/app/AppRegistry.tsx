@@ -100,7 +100,7 @@ import {
   MyCollectionArtworkScreenQuery,
 } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithArtsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
-import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkFormScreen } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
@@ -337,7 +337,10 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   About: reactModule(About),
-  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
+  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkFormScreen, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
