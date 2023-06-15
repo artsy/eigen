@@ -13,9 +13,10 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { times } from "lodash"
 import { Suspense } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { ActivityIndicator, Animated } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface GalleriesForYouProps {
@@ -36,6 +37,16 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const partners = extractNodes(data.partnersConnection)
 
+  const { headerElement, scrollProps } = useStickyScrollHeader({
+    header: (
+      <Flex flex={1} pl={6} pr={4} pt={0.5}>
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+          Galleries For You
+        </Text>
+      </Flex>
+    ),
+  })
+
   if (!partners.length) {
     return <NoGalleries />
   }
@@ -45,7 +56,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
       <Flex>
-        <FlatList
+        <Animated.FlatList
           data={partners}
           ListHeaderComponent={<GalleriesForYouHeader />}
           refreshControl={RefreshControl}
@@ -66,7 +77,10 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
               <ActivityIndicator />
             </Flex>
           )}
+          {...scrollProps}
         />
+
+        {headerElement}
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -137,13 +151,16 @@ const GalleriesForYouQuery = graphql`
   }
 `
 
-const GalleriesForYouHeader: React.FC = () => (
-  <Flex mx={2} mb={4} mt={6} mr={4}>
-    <Text variant="lg-display">Galleries For You</Text>
-
-    <Text variant="sm-display">Find galleries in your area with artists you follow.</Text>
-  </Flex>
-)
+const GalleriesForYouHeader: React.FC = () => {
+  return (
+    <Flex mx={2} mb={4} mt={6}>
+      <Text variant="lg-display" mb={0.5}>
+        Galleries For You
+      </Text>
+      <Text variant="xs">Find galleries in your area with artists you follow.</Text>
+    </Flex>
+  )
+}
 
 const GalleriesForYouPlaceholder: React.FC = () => {
   const isTablet = isPad()
@@ -158,7 +175,7 @@ const GalleriesForYouPlaceholder: React.FC = () => {
       <Flex testID="PlaceholderGrid">
         <GalleriesForYouHeader />
 
-        <Flex px={2} mt={1} mx="auto">
+        <Flex px={2} mx="auto">
           {times(5).map((i) => {
             return (
               <Flex mb={4} key={i}>
