@@ -91,7 +91,6 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
           key="grid"
           keyExtractor={(item) => "grid" + item.artist!.internalID}
           numColumns={isAPad ? 5 : 2}
-          style={{ flex: isAPad ? 3 : 2, paddingTop: space(2) }}
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
           ListHeaderComponent={() => (
