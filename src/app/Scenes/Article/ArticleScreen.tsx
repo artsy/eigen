@@ -45,12 +45,15 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
     return <ArticleWebViewScreen article={data.article} />
   }
 
+  const Header = data.article.layout === "FEATURE" ? Screen.FloatingHeader : Screen.AnimatedHeader
+
   return (
     <Screen>
-      <Screen.AnimatedHeader
+      <Header
         title={data.article.title ?? ""}
         rightElements={<ArticleShareButton article={data.article} />}
         onBack={goBack}
+        top={0}
       />
 
       <Screen.Body fullwidth>
