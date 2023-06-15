@@ -115,7 +115,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 ) : (
                   <Flex width="100%">
-                    <Text mx={2}>We couldn't find any results for you."{trimmedQuery}"</Text>
+                    <Text>We couldn't find any results for "{trimmedQuery}"</Text>
                   </Flex>
                 )
               }

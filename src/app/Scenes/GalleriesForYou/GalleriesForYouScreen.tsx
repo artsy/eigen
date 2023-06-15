@@ -181,6 +181,6 @@ const NoGalleries: React.FC = () => (
   <Flex>
     <GalleriesForYouHeader />
 
-    <Text>We couldn’t find any galleries.</Text>
+    <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
   </Flex>
 )
