@@ -30,7 +30,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
 
   const width = (isTablet ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
 
-  const { internalID, locationsConnection, name, profile } = useFragment(
+  const { internalID, initials, locationsConnection, name, profile } = useFragment(
     PartnerListItemFragment,
     partner
   )
@@ -60,11 +60,30 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
     return null
   }
 
+  const imageUrl = profile?.image?.url
+
+  const showInitials = !imageUrl && !!initials
+
   return (
     <Flex mx={2}>
       <Flex width={width} mx="auto">
         <Touchable onPress={handlePress}>
-          <OpaqueImageView imageURL={profile?.image?.url} aspectRatio={1.33} width={width} />
+          <OpaqueImageView imageURL={imageUrl} aspectRatio={1.33} width={width} />
+
+          {!!showInitials && (
+            <Flex
+              position="absolute"
+              top={0}
+              left={0}
+              width="100%"
+              height="100%"
+              justifyContent="center"
+            >
+              <Flex mx="auto">
+                <Text variant="lg-display">{initials}</Text>
+              </Flex>
+            </Flex>
+          )}
         </Touchable>
 
         <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
