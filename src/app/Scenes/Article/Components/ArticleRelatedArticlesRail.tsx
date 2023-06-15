@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Spacer } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Spacer, useSpace } from "@artsy/palette-mobile"
 import { ArticleRelatedArticlesRail_articles$key } from "__generated__/ArticleRelatedArticlesRail_articles.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { FlatList } from "react-native"
@@ -12,6 +12,8 @@ export const ArticleRelatedArticlesRail: React.FC<ArticlesRailProps> = ({
   relatedArticles,
   ...flexProps
 }) => {
+  const space = useSpace()
+
   const data = useFragment(relatedArticlesRailQuery, relatedArticles)
 
   if (data?.relatedArticles?.length === 0) {
@@ -23,6 +25,7 @@ export const ArticleRelatedArticlesRail: React.FC<ArticlesRailProps> = ({
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: space(2) }}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={data?.relatedArticles}
         keyExtractor={(item) => `relatedArticle-${item.internalID}`}
