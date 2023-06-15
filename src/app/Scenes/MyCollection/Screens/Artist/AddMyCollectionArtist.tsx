@@ -70,16 +70,18 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
   }
 
   const handleBackPress = () => {
+    if (dirty) {
+      setShowAbandonModal(true)
+      return
+    }
+
     navigation.goBack()
   }
 
   return (
     <>
       <ArtsyKeyboardAvoidingView>
-        <FancyModalHeader
-          onLeftButtonPress={dirty ? () => setShowAbandonModal(true) : handleBackPress}
-          hideBottomDivider
-        >
+        <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
           Add New Artist
         </FancyModalHeader>
 
