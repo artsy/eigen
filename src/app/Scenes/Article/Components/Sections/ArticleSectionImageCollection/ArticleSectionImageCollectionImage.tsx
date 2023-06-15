@@ -1,6 +1,8 @@
-import { useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollectionImage_figure$key } from "__generated__/ArticleSectionImageCollectionImage_figure.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { MotiView } from "moti"
+import { useState } from "react"
+import FastImage from "react-native-fast-image"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -11,6 +13,7 @@ interface ArticleSectionImageCollectionImageProps {
 export const ArticleSectionImageCollectionImage: React.FC<
   ArticleSectionImageCollectionImageProps
 > = ({ figure }) => {
+  const [loading, setLoading] = useState(true)
   const { width } = useScreenDimensions()
 
   const data = useFragment(ArticleSectionImageCollectionImageQuery, figure)
@@ -19,16 +22,24 @@ export const ArticleSectionImageCollectionImage: React.FC<
     return null
   }
 
+  const dimensions = { width, height: width / data.image.aspectRatio }
+
   return (
-    <OpaqueImageView
-      imageURL={data.image.resized.src}
-      aspectRatio={data.image.aspectRatio}
-      useRawURL
-      style={{
-        width: width - 40,
-        aspectRatio: data.image.aspectRatio,
-      }}
-    />
+    <Flex position="relative">
+      <MotiView animate={{ opacity: loading ? 1 : 0 }} style={{ position: "absolute", zIndex: 1 }}>
+        <Flex {...dimensions} backgroundColor="black10" />
+      </MotiView>
+
+      <FastImage
+        style={dimensions}
+        onLoadStart={() => setLoading(true)}
+        onLoadEnd={() => setLoading(false)}
+        source={{
+          uri: data.image.resized.src,
+          priority: FastImage.priority.normal,
+        }}
+      />
+    </Flex>
   )
 }
 
@@ -37,7 +48,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleImageSection {
       id
       image {
-        resized(height: 1000) {
+        resized(width: 1000) {
           src
           width
           height
@@ -48,7 +59,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on Artwork {
       id
       image {
-        resized(height: 1000) {
+        resized(width: 1000) {
           src
           width
           height
@@ -59,7 +70,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        resized(height: 1000) {
+        resized(width: 1000) {
           src
           width
           height

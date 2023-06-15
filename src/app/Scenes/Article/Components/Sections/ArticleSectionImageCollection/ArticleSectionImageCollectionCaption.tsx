@@ -11,25 +11,30 @@ interface ArticleSectionImageCollectionCaptionProps {
 export const ArticleSectionImageCollectionCaption: React.FC<
   ArticleSectionImageCollectionCaptionProps
 > = ({ figure }) => {
-  const color = useColor()
-
   const data = useFragment(ArticleSectionImageCollectionCaptionQuery, figure)
 
+  const color = useColor()
+
+  if (data.__typename !== "ArticleImageSection") {
+    return null
+  }
+
+  if (!!data.caption) {
+    return null
+  }
+
   return (
-    <>
-      {data.__typename === "ArticleImageSection" && !!data.caption && (
-        <HTML
-          html={data.caption}
-          variant="xs"
-          tagStyles={{
-            p: {
-              color: color("black60"),
-              textAlign: "center",
-            },
-          }}
-        />
-      )}
-    </>
+    <HTML
+      html={data.caption as string}
+      variant="xs"
+      margin="auto"
+      tagStyles={{
+        p: {
+          color: color("black60"),
+          textAlign: "center",
+        },
+      }}
+    />
   )
 }
 
@@ -38,18 +43,6 @@ const ArticleSectionImageCollectionCaptionQuery = graphql`
     __typename
     ... on ArticleImageSection {
       caption
-    }
-
-    # TODO: Ask @damon what this is about
-    ... on ArticleUnpublishedArtwork {
-      title
-      date
-      artist {
-        name
-      }
-      partner {
-        name
-      }
     }
   }
 `

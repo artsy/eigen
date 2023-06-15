@@ -1,11 +1,19 @@
-import { Screen, ShareIcon, Spacer } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Join,
+  Screen,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { ArticleScreenQuery } from "__generated__/ArticleScreenQuery.graphql"
 import { ArticleBody } from "app/Scenes/Article/Components/ArticleBody"
-import { RelatedArticlesRail } from "app/Scenes/Article/Components/RelatedArticlesRail"
+import { ArticleRelatedArticlesRail } from "app/Scenes/Article/Components/ArticleRelatedArticlesRail"
+import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
+import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebViewScreen"
 import { goBack } from "app/system/navigation/navigate"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 interface ArticleScreenProps {
@@ -29,25 +37,29 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
     return null
   }
 
-  const hasRelatedArticles = data.article.relatedArticles.length > 0
+  const NATIVE_LAYOUTS = ["STANDARD", "FEATURE"]
+
+  const redirectToWebview = !NATIVE_LAYOUTS.includes(data.article.layout)
+
+  if (redirectToWebview) {
+    return <ArticleWebViewScreen article={data.article} />
+  }
 
   return (
     <Screen>
       <Screen.AnimatedHeader
         title={data.article.title ?? ""}
-        // FIXME: Why do right elements not appear?
-        rightElements={ShareButton}
+        rightElements={<ArticleShareButton article={data.article} />}
         onBack={goBack}
       />
-      <Screen.Body pb={2}>
+
+      <Screen.Body fullwidth>
         <Screen.ScrollView>
           <ArticleBody article={data.article} />
 
-          {!!hasRelatedArticles && (
+          {data.article.relatedArticles.length > 0 && (
             <>
-              <Spacer y={2} />
-
-              <RelatedArticlesRail relatedArticles={data.article} />
+              <ArticleRelatedArticlesRail relatedArticles={data.article} my={2} />
             </>
           )}
         </Screen.ScrollView>
@@ -56,24 +68,16 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
   )
 }
 
-const ShareButton = () => {
-  // TODO: Implement share button
-  const handleSharePress = () => {
-    //
-  }
-
-  return (
-    <TouchableWithoutFeedback onPress={() => handleSharePress} testID="share-button">
-      <ShareIcon fill="black100" height="25px" width="100%" />
-    </TouchableWithoutFeedback>
-  )
-}
-
 export const articleScreenQuery = graphql`
   query ArticleScreenQuery($slug: String!) {
     article(id: $slug) {
+      ...ArticleShareButton_article
+      ...ArticleWebViewScreen_article
       ...ArticleBody_article
-      ...RelatedArticlesRail_articles
+      ...ArticleRelatedArticlesRail_articles
+
+      href
+      layout
       title
       relatedArticles {
         internalID
@@ -84,8 +88,36 @@ export const articleScreenQuery = graphql`
 
 const Placeholder: React.FC = () => {
   return (
-    <ProvidePlaceholderContext>
-      <PlaceholderGrid />
-    </ProvidePlaceholderContext>
+    <Screen>
+      <Screen.Header rightElements={<ArticleShareButton article={null as any} />} onBack={goBack} />
+
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <Join separator={<Spacer y={0.5} />}>
+              <SkeletonText variant="xs" color="black100">
+                Art Vertical
+              </SkeletonText>
+
+              <SkeletonText variant="lg-display" color="black100">
+                Some Placeholder Title that wraps
+              </SkeletonText>
+
+              <SkeletonText variant="sm-display" color="black100">
+                Some Author
+              </SkeletonText>
+
+              <SkeletonText color="black60" variant="xs" mt={1}>
+                September 1st, 2021
+              </SkeletonText>
+            </Join>
+
+            <Spacer y={2} />
+
+            <SkeletonBox width="100%" height={400} />
+          </Flex>
+        </Skeleton>
+      </Screen.Body>
+    </Screen>
   )
 }

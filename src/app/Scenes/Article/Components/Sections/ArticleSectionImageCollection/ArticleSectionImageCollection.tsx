@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollection_section$key } from "__generated__/ArticleSectionImageCollection_section.graphql"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
@@ -20,31 +20,22 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
   }
 
   return (
-    <>
-      {/* TODO: Feature articles */}
-      {/* <Text>{data.layout}</Text> */}
-
-      <FlatList
-        horizontal
-        pagingEnabled
-        scrollEnabled={data?.figures?.length > 1}
-        showsHorizontalScrollIndicator={false}
-        data={data.figures}
-        renderItem={({ item, index }) => {
-          return (
-            <Flex
-              key={`ImageCollection-${index}`}
-              flexDirection="column"
-              justifyContent="center"
-              mr={0.5}
-            >
-              <ArticleSectionImageCollectionImage figure={item} />
-              <ArticleSectionImageCollectionCaption figure={item} />
-            </Flex>
-          )
-        }}
-      />
-    </>
+    <FlatList
+      data={data.figures}
+      scrollEnabled={data?.figures?.length > 1}
+      ItemSeparatorComponent={() => <Spacer x={0.5} />}
+      showsHorizontalScrollIndicator={false}
+      horizontal
+      pagingEnabled
+      renderItem={({ item, index }) => {
+        return (
+          <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
+            <ArticleSectionImageCollectionImage figure={item} />
+            <ArticleSectionImageCollectionCaption figure={item} />
+          </Flex>
+        )
+      }}
+    />
   )
 }
 
@@ -52,7 +43,6 @@ const ArticleSectionImageCollectionQuery = graphql`
   fragment ArticleSectionImageCollection_section on ArticleSectionImageCollection {
     layout
     figures {
-      __typename
       ...ArticleSectionImageCollectionImage_figure
       ...ArticleSectionImageCollectionCaption_figure
     }
