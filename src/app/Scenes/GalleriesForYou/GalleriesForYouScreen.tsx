@@ -8,6 +8,7 @@ import {
 } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -15,7 +16,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { times } from "lodash"
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { ActivityIndicator, Animated } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -23,10 +24,15 @@ interface GalleriesForYouProps {
   location: Location | null
 }
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
-  const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, {
+  const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
+
+  const queryParams = {
     near: location && `${location?.lat},${location?.lng}`,
     includePartnersNearIpBasedLocation: !location,
-  })
+    includePartnersWithFollowedArtists: true,
+  }
+
+  const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, queryParams)
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     GalleriesForYouScreenQuery,
@@ -47,6 +53,21 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     ),
   })
 
+  // Refetch in case the user doesn't follow artists and there are no results
+  // This will show results even in case the user doesn't follow any artists
+  const [hasRefetched, setHasRefetched] = useState(false)
+
+  useEffect(() => {
+    if (partners.length || hasRefetched) return
+
+    refetch({
+      ...queryParams,
+      includePartnersWithFollowedArtists: false,
+    })
+
+    setHasRefetched(true)
+  }, [partners])
+
   if (!partners.length) {
     return <NoGalleries />
   }
@@ -56,6 +77,12 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
       <Flex>
+        {!!visualizeLocation && (
+          <Text ml={6} color="red">
+            Location: {JSON.stringify(location)}
+          </Text>
+        )}
+
         <Animated.FlatList
           data={partners}
           ListHeaderComponent={<GalleriesForYouHeader />}
@@ -105,6 +132,7 @@ const partnersConnectionFragment = graphql`
   @refetchable(queryName: "GalleriesForYouRefetchQuery")
   @argumentDefinitions(
     includePartnersNearIpBasedLocation: { type: "Boolean" }
+    includePartnersWithFollowedArtists: { type: "Boolean" }
     near: { type: "String" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
@@ -115,7 +143,7 @@ const partnersConnectionFragment = graphql`
       eligibleForListing: true
       excludeFollowedPartners: true
       includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
-      includePartnersWithFollowedArtists: true
+      includePartnersWithFollowedArtists: $includePartnersWithFollowedArtists
       defaultProfilePublic: true
       sort: DISTANCE
       maxDistance: 6371 # Earth radius in km to get all results (https://en.wikipedia.org/wiki/Earth_radius?useskin=vector#Mean_radius)
@@ -140,6 +168,7 @@ export const GalleriesForYouQueryVariables = {
 const GalleriesForYouQuery = graphql`
   query GalleriesForYouScreenQuery(
     $includePartnersNearIpBasedLocation: Boolean
+    $includePartnersWithFollowedArtists: Boolean
     $near: String
     $count: Int
     $after: String
@@ -147,6 +176,7 @@ const GalleriesForYouQuery = graphql`
     ...GalleriesForYouScreen_partnersConnection
       @arguments(
         includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+        includePartnersWithFollowedArtists: $includePartnersWithFollowedArtists
         near: $near
         count: $count
         after: $after
