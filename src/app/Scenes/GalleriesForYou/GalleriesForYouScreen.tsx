@@ -66,7 +66,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     })
 
     setHasRefetched(true)
-  })
+  }, [partners])
 
   if (!partners.length) {
     return <NoGalleries />
