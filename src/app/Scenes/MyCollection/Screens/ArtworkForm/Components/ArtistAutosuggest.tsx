@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text, Touchable, Button, AddIcon } from "@artsy/palette-mobile"
+import { AddIcon, Box, Button, Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
@@ -115,7 +115,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 ) : (
                   <Flex width="100%">
-                    <Text>We couldn't find any results for "{trimmedQuery}"</Text>
+                    <Text mx={2}>We couldn't find any results for you."{trimmedQuery}"</Text>
                   </Flex>
                 )
               }
