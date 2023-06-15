@@ -15,6 +15,7 @@ import {
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Pill } from "app/Components/Pill"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
@@ -310,6 +311,7 @@ const ArtworkFilters: React.FC<FiltersProps> = (props) => {
     <Flex backgroundColor="white100" flexDirection="row" pb={1}>
       <Input
         testID="MyCollectionSearchBarInput"
+        icon={<SearchIcon width={18} height={18} />}
         placeholder="Search Your Artworks"
         onChangeText={setQuery}
         enableClearButton
@@ -328,7 +330,7 @@ const ArtworkFilters: React.FC<FiltersProps> = (props) => {
           testID="sort-and-filter-button"
           render={({ color }) => (
             <Flex flexDirection="row" alignItems="center">
-              <FilterIcon fill={color} width="24px" height="24px" />
+              <FilterIcon fill={color} width={26} height={26} />
               {filtersCount > 0 && (
                 <Text variant="xs" color="blue100">
                   {` ${bullet} ${filtersCount}`}
