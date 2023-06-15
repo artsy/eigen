@@ -278,25 +278,6 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
   })
 }
 
-// export const requestPushNotificationsPermission = async () => {
-//   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
-//   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
-//     setTimeout(() => {
-//       if (Platform.OS === "ios") {
-//         LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-//       } else {
-//         Alert.alert(
-//           "Artsy Would Like to Send You Notifications",
-//           "Turn on notifications to get important updates about artists you follow.",
-//           [
-//             { text: "Dismiss", style: "cancel" },
-//             { text: "Settings", onPress: () => Linking.openSettings() },
-//           ]
-//         )
-//       }
-//     }, 3000)
-//   }
-// }
 
 module.exports = {
   configure,
