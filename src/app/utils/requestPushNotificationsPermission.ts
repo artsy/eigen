@@ -1,9 +1,10 @@
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
-import { Alert, Linking } from "react-native"
+import { Alert, Linking, Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 
 const showSettingsAlert = () => {
@@ -34,9 +35,12 @@ const showPrepromptAlert = async () => {
 
 const requestSystemPermissions = async () => {
   GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogueSeen(true)
-  // TODO: double check these permissions
-  const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-  await PushNotification.requestPermissions(permissions)
+  if (Platform.OS === "ios") {
+    LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
+  } else {
+    const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
+    await PushNotification.requestPermissions(permissions)
+  }
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
