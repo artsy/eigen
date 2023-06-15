@@ -104,7 +104,7 @@ const partnersConnectionFragment = graphql`
       includePartnersWithFollowedArtists: true
       defaultProfilePublic: true
       sort: DISTANCE
-      maxDistance: 6371
+      maxDistance: 6371 # Earth radius in km to get all results (https://en.wikipedia.org/wiki/Earth_radius?useskin=vector#Mean_radius)
       near: $near
       type: GALLERY
     ) @connection(key: "GalleriesForYouScreen_partnersConnection") {
