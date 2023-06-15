@@ -70,22 +70,22 @@ export const requestPushNotificationsPermission = async () => {
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
     GlobalStore.actions.artsyPrefs.pushPromptLogic
 
-  if (pushPermissionsRequestedThisSession) {
-    return
-  }
-
   const permissionStatus = await getNotificationPermissionsStatus()
   if (permissionStatus === PushAuthorizationStatus.Authorized) {
-    // TODO: refresh the push token
-    // We may not need to do anything here, push library should
-    // get the onRegister callback any time the app opens
-    // TEST THIS
+    // On iOS, we need to request the push token again to trigger the onRegister callback
+    if (Platform.OS === "ios") {
+      LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
+    }
     return
   } else if (permissionStatus === PushAuthorizationStatus.Denied) {
     if (!pushNotificationSettingsPromptSeen) {
       showSettingsAlert()
       setPushNotificationSettingsPromptSeen(true)
     }
+    return
+  }
+
+  if (pushPermissionsRequestedThisSession) {
     return
   }
 
