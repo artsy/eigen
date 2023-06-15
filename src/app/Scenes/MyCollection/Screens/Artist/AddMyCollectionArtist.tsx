@@ -51,8 +51,7 @@ export const AddMyCollectionArtist: React.FC = () => {
       },
       initialErrors: {},
       onSubmit: () => {
-        // @ts-expect-error
-        const { onSubmit } = route?.params || {}
+        const { onSubmit } = route?.params?.props || {}
         if (onSubmit) {
           onSubmit(values)
         }
@@ -69,7 +68,7 @@ export const AddMyCollectionArtist: React.FC = () => {
   }
 
   const handleBackPress = () => {
-    if (dirty) {
+    if (dirty && !showAbandonModal) {
       setShowAbandonModal(true)
       return
     }
@@ -89,7 +88,7 @@ export const AddMyCollectionArtist: React.FC = () => {
           isVisible={!!showAbandonModal}
           leaveButtonTitle="Leave Without Saving"
           onDismiss={() => setShowAbandonModal(false)}
-          onLeave={handleBackPress}
+          onLeave={navigation.goBack}
           subtitle="Changes you have made so far will not be saved."
           title="Leave without saving?"
         />
