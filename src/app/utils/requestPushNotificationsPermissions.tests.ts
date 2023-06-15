@@ -186,7 +186,6 @@ describe("requestPushNotificationsPermission", () => {
     await requestPushPromise
 
     // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
-    // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
     expect(alertSpy).toHaveBeenCalledWith(
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
