@@ -1,4 +1,4 @@
-import { Spacer, quoteLeft, quoteRight, Flex, Join, Message } from "@artsy/palette-mobile"
+import { Flex, Join, Message, Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
@@ -10,7 +10,7 @@ import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
-import { PartnerListItem } from "./Components/PartnerListItem"
+import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 
@@ -77,7 +77,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
             }
 
             return (
-              <PartnerListItem
+              <OnboardingPartnerListItem
                 partner={partner}
                 onFollow={() => {
                   trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
@@ -155,7 +155,7 @@ const OnboardingSearchResultsFragment = graphql`
             owner {
               __typename
               ... on Partner {
-                ...PartnerListItem_partner
+                ...OnboardingPartnerListItem_partner
               }
             }
           }

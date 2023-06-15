@@ -1,11 +1,10 @@
 import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-// import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
 import { useFormik } from "formik"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -24,9 +23,12 @@ const validationSchema = Yup.object().shape({
   birthYear: Yup.string().trim().max(4, "Birth year is invalid"),
   deathYear: Yup.string().trim().max(4, "Death year is invalid"),
 })
-export const AddMyCollectionArtist: React.FC<{}> = () => {
+
+export const AddMyCollectionArtist: React.FC = () => {
+  const navigation =
+    useNavigation<StackNavigationProp<ArtworkFormScreen, "AddMyCollectionArtist">>()
+
   const route = useRoute<RouteProp<ArtworkFormScreen, "AddMyCollectionArtist">>()
-  // const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   const [showAbandonModal, setShowAbandonModal] = useState(false)
 
@@ -42,19 +44,18 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
       validateOnChange: true,
       validateOnBlur: true,
       initialValues: {
-        name: "",
+        name: route?.params?.props?.artistDisplayName || "",
         nationality: "",
         birthYear: "",
         deathYear: "",
       },
       initialErrors: {},
       onSubmit: () => {
-        route.params.props.onSubmit(values)
-        // GlobalStore.actions.myCollection.artwork.updateFormValues({
-        //   customArtist: values,
-        //   metric: preferredMetric,
-        // })
-        // navigation.navigate("ArtworkFormMain", { ...route.params })
+        // @ts-expect-error
+        const { onSubmit } = route?.params || {}
+        if (onSubmit) {
+          onSubmit(values)
+        }
       },
       validationSchema: validationSchema,
     })
@@ -67,24 +68,19 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
     handleChange(field)(text)
   }
 
-  const handleGoBack = route.params.props.handleBackButtonPress
-    ? route.params.props.handleBackButtonPress
-    : goBack
+  const handleBackPress = () => {
+    if (dirty) {
+      setShowAbandonModal(true)
+      return
+    }
+
+    navigation.goBack()
+  }
 
   return (
     <>
       <ArtsyKeyboardAvoidingView>
-        <FancyModalHeader
-          onLeftButtonPress={() => {
-            if (dirty) {
-              setShowAbandonModal(true)
-              return
-            }
-
-            handleGoBack()
-          }}
-          hideBottomDivider
-        >
+        <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
           Add New Artist
         </FancyModalHeader>
 
@@ -93,7 +89,7 @@ export const AddMyCollectionArtist: React.FC<{}> = () => {
           isVisible={!!showAbandonModal}
           leaveButtonTitle="Leave Without Saving"
           onDismiss={() => setShowAbandonModal(false)}
-          onLeave={handleGoBack}
+          onLeave={handleBackPress}
           subtitle="Changes you have made so far will not be saved."
           title="Leave without saving?"
         />

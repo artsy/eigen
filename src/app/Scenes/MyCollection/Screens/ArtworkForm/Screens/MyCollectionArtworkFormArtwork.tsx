@@ -19,7 +19,7 @@ import { fetchQuery, graphql } from "relay-runtime"
 
 export const MyCollectionArtworkFormArtwork: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
@@ -30,7 +30,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
   useEffect(() => {
     // Navigate back to the artist search screen if no artist is selected.
     if (!formik.values.artistSearchResult) {
-      navigation.navigate("ArtworkFormArtist", { ...route.params })
+      navigation.navigate("ArtworkFormArtist")
     }
   }, [formik.values.artistSearchResult])
 
@@ -96,12 +96,16 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     })
   }
 
-  const navigateToNext = () => navigation.navigate("ArtworkFormMain", { ...route.params })
+  const navigateToNext = () => navigation.navigate("ArtworkFormMain")
+
+  const handleBackButtonPress = () => {
+    navigation.goBack()
+  }
 
   return (
     <>
       <FancyModalHeader
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
+        onLeftButtonPress={handleBackButtonPress}
         rightButtonText="Skip"
         onRightButtonPress={onSkip}
         hideBottomDivider

@@ -14,24 +14,25 @@ export const useEditArtworkList = (): Response => {
       onCompleted: (data, errors) => {
         const response = data.updateCollection?.responseOrError
 
-        if (response?.__typename !== "UpdateCollectionFailure") {
-          return config.onCompleted?.(data, errors)
-        }
+        if (response?.__typename === "UpdateCollectionFailure") {
+          // use generic error message by default
+          let errorMessage = "Something went wrong."
 
-        // use generic error message by default
-        let errorMessage = "Something went wrong."
+          const nameErrorMessage = response?.mutationError?.fieldErrors?.find(
+            (e) => e?.name === "name"
+          )
 
-        // if there is a specific error message for the name field, use that instead
-        const nameErrorMessage = response?.mutationError?.fieldErrors?.find(
-          (e) => e?.name === "name"
-        )
-        if (nameErrorMessage) {
-          errorMessage = nameErrorMessage.message
-        }
+          // if there is a specific error message for the name field, use that instead
+          if (nameErrorMessage) {
+            errorMessage = nameErrorMessage.message
+          }
 
-        if (errorMessage) {
-          const error = new Error(errorMessage)
-          config.onError?.(error)
+          if (errorMessage) {
+            const error = new Error(errorMessage)
+            config.onError?.(error)
+          }
+        } else {
+          config.onCompleted?.(data, errors)
         }
       },
     })

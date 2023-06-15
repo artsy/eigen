@@ -1,4 +1,4 @@
-import { Spacer, Flex, Join } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -10,7 +10,7 @@ import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./Components/ArtistListItem"
-import { PartnerListItem } from "./Components/PartnerListItem"
+import { OnboardingPartnerListItem } from "./Components/OnboardingPartnerListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
@@ -64,7 +64,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
             }
 
             return (
-              <PartnerListItem
+              <OnboardingPartnerListItem
                 partner={partner}
                 onFollow={() => {
                   trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
@@ -129,7 +129,7 @@ const OnboardingOrderedSetScreenQuery = graphql`
               owner {
                 __typename
                 ... on Partner {
-                  ...PartnerListItem_partner
+                  ...OnboardingPartnerListItem_partner
                 }
               }
             }

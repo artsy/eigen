@@ -1,6 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -17,9 +18,8 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { createMockEnvironment } from "relay-test-utils"
 import {
-  MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
-  updateArtwork,
+  MyCollectionArtworkFormScreen,
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
@@ -43,7 +43,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkForm
+        <MyCollectionArtworkFormScreen
           artwork={mockArtwork as any}
           mode="edit"
           onSuccess={jest.fn()}
@@ -91,7 +91,11 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen
+            mode="add"
+            onSuccess={jest.fn()}
+            source={Tab.collection}
+          />,
           mockEnvironment
         )
 
@@ -115,6 +119,7 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
         await flushPromiseQueue()
 
         fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
@@ -209,7 +214,11 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen
+            mode="add"
+            onSuccess={jest.fn()}
+            source={Tab.collection}
+          />,
           mockEnvironment
         )
 
@@ -283,7 +292,11 @@ describe("MyCollectionArtworkForm", () => {
 
       it("initializes the artist name input field", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen
+            mode="add"
+            onSuccess={jest.fn()}
+            source={Tab.collection}
+          />,
           mockEnvironment
         )
 
@@ -516,7 +529,7 @@ describe("MyCollectionArtworkForm", () => {
       jest.clearAllMocks()
     })
 
-    it("displays the new saving artwork loading screen", async () => {
+    it("displays saving artwork loading modal", async () => {
       const assetCredentials = {
         signature: "some-signature",
         credentials: "some-credentials",
@@ -535,7 +548,7 @@ describe("MyCollectionArtworkForm", () => {
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
       const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+        <MyCollectionArtworkFormScreen mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
         mockEnvironment
       )
 

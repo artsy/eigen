@@ -1,17 +1,20 @@
+import { ActionType, ContextModule, DeleteCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import {
-  Spacer,
-  Flex,
   Box,
-  useSpace,
-  useColor,
-  Text,
-  Separator,
+  Button,
+  Flex,
   Join,
   Message,
-  Button,
+  Separator,
+  Spacer,
+  Text,
+  useColor,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { captureException } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
@@ -25,21 +28,28 @@ import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Componen
 import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Rarity"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
+import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
-import { isEmpty } from "lodash"
+import { isEmpty, isEqual } from "lodash"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
+import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
 export const MyCollectionArtworkFormMain: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
+  const { trackEvent } = useTracking()
+
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
@@ -51,8 +61,10 @@ export const MyCollectionArtworkFormMain: React.FC<
   const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
-  const modalType = route.params.mode
-  const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
+
+  const { mode, onDelete, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
+
+  const addOrEditLabel = mode === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const initialCurrency = formikValues.pricePaidCurrency?.length
@@ -95,7 +107,7 @@ export const MyCollectionArtworkFormMain: React.FC<
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
 
     // Check if any fields are filled out when adding a new artwork
-    if (modalType === "add") {
+    if (mode === "add") {
       return Object.getOwnPropertyNames(formValues).find(
         (key) =>
           !["pricePaidCurrency", "metric", "photos", "customArtist"].includes(key) &&
@@ -121,9 +133,57 @@ export const MyCollectionArtworkFormMain: React.FC<
     }
   }
 
+  const clearForm = async () => {
+    const { formValues, dirtyFormCheckValues } = artworkState.sessionState
+
+    const formIsDirty = !isEqual(formValues, dirtyFormCheckValues)
+
+    if (formIsDirty) {
+      const discardData = await new Promise((resolve) =>
+        showActionSheetWithOptions(
+          {
+            title: "Do you want to discard your changes?",
+            options: ["Discard", "Keep editing"],
+            destructiveButtonIndex: 0,
+            cancelButtonIndex: 1,
+            useModal: true,
+          },
+          (buttonIndex) => {
+            if (buttonIndex === 0) {
+              resolve(true)
+            }
+          }
+        )
+      )
+
+      if (!discardData) {
+        return
+      }
+    }
+
+    if (mode === "edit") {
+      // Reset the form with the initial values from the artwork
+      GlobalStore.actions.myCollection.artwork.updateFormValues(dirtyFormCheckValues)
+    } else {
+      GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    }
+  }
+
   const handleCategory = (category: string) => {
     formik.handleChange("category")(category)
   }
+
+  const handleBackButtonPress = () => {
+    if (mode === "edit") {
+      GlobalStore.actions.myCollection.artwork.resetForm()
+      goBack()
+    } else {
+      navigation.goBack()
+    }
+  }
+
+  const isSubmission =
+    mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
   const ArtistField = () => {
     if (formik.values.artistSearchResult) {
@@ -145,33 +205,65 @@ export const MyCollectionArtworkFormMain: React.FC<
       )
   }
 
+  const handleDelete = async () => {
+    if (mode === "edit" && onDelete && artwork) {
+      trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
+      try {
+        // TODO: Fix this separetely
+        if (!__TEST__) {
+          await myCollectionDeleteArtwork(artwork.internalID)
+        }
+        refreshMyCollection()
+        onDelete()
+      } catch (e) {
+        if (__DEV__) {
+          console.error(e)
+        } else {
+          captureException(e)
+        }
+        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+      }
+    }
+  }
+
+  const { bottom } = useScreenDimensions().safeAreaInsets
+
   return (
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={
-            isFormDirty() && modalType === "edit"
-              ? () => setShowAbandonModal(true)
-              : route.params.onHeaderBackButtonPress
-          }
+          onLeftButtonPress={() => {
+            if (isFormDirty() && mode === "edit") {
+              setShowAbandonModal(true)
+            } else {
+              handleBackButtonPress()
+            }
+          }}
           rightButtonText={isFormDirty() ? "Clear" : undefined}
-          onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
+          onRightButtonPress={
+            isFormDirty()
+              ? () => {
+                  clearForm()
+                }
+              : undefined
+          }
           hideBottomDivider
         >
           {addOrEditLabel} Details
         </FancyModalHeader>
 
         <AbandonFlowModal
-          isVisible={!!showAbandonModal && modalType === "edit"}
+          isVisible={!!showAbandonModal && mode === "edit"}
           title="Leave without saving?"
           subtitle="Changes you have made so far will not be saved."
           leaveButtonTitle="Leave Without Saving"
           continueButtonTitle="Continue Editing"
           onDismiss={() => setShowAbandonModal(false)}
+          onLeave={handleBackButtonPress}
         />
 
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-          {!!route.params.isSubmission && (
+          {!!isSubmission && (
             <Message
               containerStyle={{ mx: `${space(2)}px` }}
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
@@ -295,7 +387,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Spacer y={2} />
 
           <ScreenMargin>
-            {modalType === "edit" && (
+            {mode === "edit" && (
               <Text
                 my={4}
                 variant="sm"
@@ -313,7 +405,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                     },
                     (buttonIndex) => {
                       if (buttonIndex === 0) {
-                        route.params.onDelete?.()
+                        handleDelete?.()
                       }
                     }
                   )
@@ -342,8 +434,9 @@ export const MyCollectionArtworkFormMain: React.FC<
           onPress={formik.handleSubmit}
           testID="CompleteButton"
           haptic
+          mb={`${bottom}px`}
         >
-          {modalType === "edit" ? "Save changes" : "Complete"}
+          {mode === "edit" ? "Save changes" : "Complete"}
         </Button>
       </Flex>
     </>
@@ -384,4 +477,15 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
       <Separator />
     </>
   )
+}
+
+const tracks = {
+  deleteCollectedArtwork: (internalID: string, slug: string): DeleteCollectedArtwork => ({
+    action: ActionType.deleteCollectedArtwork,
+    context_module: ContextModule.myCollectionArtwork,
+    context_owner_id: internalID,
+    context_owner_slug: slug,
+    context_owner_type: OwnerType.myCollectionArtwork,
+    platform: "mobile",
+  }),
 }

@@ -8,6 +8,7 @@ import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
@@ -15,7 +16,7 @@ import { useTracking } from "react-tracking"
 
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const tracking = useTracking()
@@ -33,9 +34,9 @@ export const MyCollectionArtworkFormArtist: React.FC<
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
     if (result.isPersonalArtist || result.counts?.artworks === 0) {
-      navigation.navigate("ArtworkFormMain", { ...route.params })
+      navigation.navigate("ArtworkFormMain")
     } else {
-      navigation.navigate("ArtworkFormArtwork", { ...route.params })
+      navigation.navigate("ArtworkFormArtwork")
     }
   }
 
@@ -45,12 +46,13 @@ export const MyCollectionArtworkFormArtist: React.FC<
     if (enableCollectedArtists) {
       navigation.navigate("AddMyCollectionArtist", {
         props: {
-          name: artistDisplayName,
-          onSubmit: () => {
-            // do nothing
-          },
-          handleBackButtonPress: () => {
-            navigation.goBack()
+          artistDisplayName: artistDisplayName,
+          onSubmit: (values) => {
+            GlobalStore.actions.myCollection.artwork.updateFormValues({
+              customArtist: values,
+              metric: preferredMetric,
+            })
+            navigation.navigate("ArtworkFormMain")
           },
         },
       })
@@ -61,14 +63,20 @@ export const MyCollectionArtworkFormArtist: React.FC<
           metric: preferredMetric,
           pricePaidCurrency: preferredCurrency,
         })
-        navigation.navigate("ArtworkFormMain", { ...route.params })
+        navigation.navigate("ArtworkFormMain")
       })
     }
   }
 
+  const handleBack = () => {
+    // TOOD: The state doesn't need to be stored in the global store
+    GlobalStore.actions.myCollection.artwork.resetForm()
+    goBack()
+  }
+
   return (
     <>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={handleBack}>
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>

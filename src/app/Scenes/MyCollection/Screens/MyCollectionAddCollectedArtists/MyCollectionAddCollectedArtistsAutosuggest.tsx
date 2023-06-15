@@ -57,11 +57,15 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const isTablet = isPad()
 
+  // We are using this gymnastics to make sure that sent params are captured no matter if we navigate
+  // using navigation.navigate or the global navigate function
   const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
     passProps: {
       onSubmit: () => {
-        // do nothing
+        // TODO: when the backend is ready
+        // PS: make sure to set query to empty string as soon as the user saves a custom artist
       },
+      artistDisplayName: query,
     },
   }
 
@@ -187,7 +191,6 @@ const MyCollectionAddCollectedArtistsAutosuggestPlaceholder: React.FC<{}> = ({})
 
   const Circle = () => (
     <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
-      {/* <PlaceholderBox width={100} height={100} borderRadius={50} backgroundColor="black10"></PlaceholderBox> */}
       <PlaceholderBox
         height={ARTIST_LIST_ITEM_HEIGHT}
         width={ARTIST_LIST_ITEM_HEIGHT}
