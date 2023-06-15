@@ -99,9 +99,12 @@ const partnersConnectionFragment = graphql`
       first: $count
       after: $after
       eligibleForListing: true
+      excludeFollowedPartners: true
       includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+      includePartnersWithFollowedArtists: true
       defaultProfilePublic: true
-      sort: RANDOM_SCORE_DESC
+      sort: DISTANCE
+      maxDistance: 6371
       near: $near
       type: GALLERY
     ) @connection(key: "GalleriesForYouScreen_partnersConnection") {
