@@ -8,7 +8,7 @@ import {
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { navigate } from "app/system/navigation/navigate"
-import { Alert, Linking, Platform } from "react-native"
+import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
@@ -278,25 +278,25 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
   })
 }
 
-export const requestPushNotificationsPermission = async () => {
-  const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
-  if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
-    setTimeout(() => {
-      if (Platform.OS === "ios") {
-        LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-      } else {
-        Alert.alert(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Dismiss", style: "cancel" },
-            { text: "Settings", onPress: () => Linking.openSettings() },
-          ]
-        )
-      }
-    }, 3000)
-  }
-}
+// export const requestPushNotificationsPermission = async () => {
+//   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
+//   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
+//     setTimeout(() => {
+//       if (Platform.OS === "ios") {
+//         LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
+//       } else {
+//         Alert.alert(
+//           "Artsy Would Like to Send You Notifications",
+//           "Turn on notifications to get important updates about artists you follow.",
+//           [
+//             { text: "Dismiss", style: "cancel" },
+//             { text: "Settings", onPress: () => Linking.openSettings() },
+//           ]
+//         )
+//       }
+//     }, 3000)
+//   }
+// }
 
 module.exports = {
   configure,
@@ -310,5 +310,4 @@ module.exports = {
   getNotificationPermissionsStatus,
   CHANNELS,
   PushAuthorizationStatus,
-  requestPushNotificationsPermission,
 }

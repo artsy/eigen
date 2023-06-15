@@ -15,15 +15,6 @@ RCT_EXPORT_METHOD(requestDirectNotificationPermissions)
     });
 }
 
-
-RCT_EXPORT_METHOD(requestPrepromptNotificationPermissions)
-{
-    /* Used on login with some additional logic before requesting permissions */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.prepromptNotificationPermissionPrompter();
-    });
-}
-
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];
