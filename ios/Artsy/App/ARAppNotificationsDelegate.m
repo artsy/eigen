@@ -4,7 +4,6 @@
 #import "ArtsyAPI+DeviceTokens.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
-#import <RNCPushNotificationIOS.h>
 
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
@@ -22,8 +21,6 @@
 #import "ARNotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "Appboy-iOS-SDK/AppboyKit.h"
-
-
 
 @implementation ARAppNotificationsDelegate
 
@@ -201,7 +198,6 @@
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
     [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #endif
-    [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceTokenData
@@ -257,8 +253,6 @@
         [[NSUserDefaults standardUserDefaults] setValue:nil forKey:ARAPNSDeviceTokenKey];
     }
 #endif
-
-    [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
@@ -275,13 +269,6 @@
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 
     handler(UIBackgroundFetchResultNoData);
-
-    [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:handler];
-}
-
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-{
-  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
 }
 
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
@@ -323,13 +310,6 @@
             [self tappedNotification:notificationInfo url:url];
         }
     }
-}
-
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)(void))completionHandler
-{
-  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
 }
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;

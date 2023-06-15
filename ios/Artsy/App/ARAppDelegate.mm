@@ -193,9 +193,6 @@ static ARAppDelegate *_sharedInstance = nil;
         [FIRApp configure];
     }
 
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = self;
-
     return YES;
 }
 
