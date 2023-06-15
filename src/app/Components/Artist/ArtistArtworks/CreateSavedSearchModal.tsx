@@ -5,18 +5,19 @@ import {
   TappedCreateAlert,
   ToggledSavedSearch,
 } from "@artsy/cohesion"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+// import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
+  CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
@@ -32,7 +33,10 @@ export interface CreateSavedSearchModalProps {
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
   const { visible, entity, attributes, aggregations, closeModal, onComplete } = props
   const tracking = useTracking()
-  const popover = usePopoverMessage()
+  // const popover = usePopoverMessage()
+
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   useEffect(() => {
     if (visible) {
@@ -50,24 +54,32 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     const { owner } = entity
 
     tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
-    closeModal()
-    onComplete?.()
 
-    popover.show({
-      title: "Your alert has been created.",
-      message: "Edit your alerts in your profile, in Settings.",
-      onPress: async () => {
-        const options: NavigateOptions = {
-          popToRootTabView: true,
-          showInTabName: "profile",
-        }
+    // navigation.navigate("EmailPreferences")
 
-        await navigate("/my-profile/settings", options)
-        setTimeout(() => {
-          navigate("/my-profile/saved-search-alerts")
-        }, 100)
-      },
-    })
+    // Navigate to new confirmation screen
+    // Passing in the new searchCriteriaID as a prop to navigate function?
+    // Then in the new screen, we can use the searchCriteriaID to fetch the new saved search alert
+    // and display the confirmation screen
+
+    // closeModal()
+    // onComplete?.()
+
+    // popover.show({
+    //   title: "Your alert has been created.",
+    //   message: "Edit your alerts in your profile, in Settings.",
+    //   onPress: async () => {
+    //     const options: NavigateOptions = {
+    //       popToRootTabView: true,
+    //       showInTabName: "profile",
+    //     }
+
+    //     await navigate("/my-profile/settings", options)
+    //     setTimeout(() => {
+    //       navigate("/my-profile/saved-search-alerts")
+    //     }, 100)
+    //   },
+    // })
   }
 
   const params: CreateSavedSearchAlertParams = {

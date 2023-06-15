@@ -29,12 +29,17 @@ export interface CreateSavedSearchAlertProps {
   params: CreateSavedSearchAlertParams
 }
 
+export interface ConfirmationScreenParams {
+  searchCriteriaID: string
+}
+
 // This needs to be a `type` rather than an `interface`
 
 export type CreateSavedSearchAlertNavigationStack = {
   CreateSavedSearchAlert: CreateSavedSearchAlertParams
   AlertPriceRangeScreen: undefined
   EmailPreferences: undefined
+  ConfirmationScreen: ConfirmationScreenParams
 }
 
 export interface EditSavedSearchAlertParams {
@@ -53,6 +58,7 @@ export type EditSavedSearchAlertNavigationStack = {
   EditSavedSearchAlertContent: EditSavedSearchAlertParams
   AlertPriceRangeScreen: undefined
   EmailPreferences: undefined
+  ConfirmationScreen: ConfirmationScreenParams
 }
 
 export interface SavedSearchPill {

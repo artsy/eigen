@@ -18,6 +18,7 @@ import {
   EditSavedSearchAlertParams,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { AlertPriceRangeScreen } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
+import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
 import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -137,6 +138,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
               <Stack.Screen name="AlertPriceRangeScreen" component={AlertPriceRangeScreen} />
+              <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </SavedSearchStoreProvider>

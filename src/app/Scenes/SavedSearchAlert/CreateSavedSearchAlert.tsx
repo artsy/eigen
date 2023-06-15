@@ -8,11 +8,12 @@ import {
   SavedSearchStoreProvider,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
-import { AlertPriceRangeScreen } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
 } from "./SavedSearchAlertModel"
+import { AlertPriceRangeScreen } from "./screens/AlertPriceRangeScreen"
+import { ConfirmationScreen } from "./screens/ConfirmationScreen"
 import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
@@ -49,6 +50,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
               <Stack.Screen name="AlertPriceRangeScreen" component={AlertPriceRangeScreen} />
+              <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} />
             </Stack.Navigator>
           </Box>
         </FancyModal>
