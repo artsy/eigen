@@ -1,4 +1,4 @@
-import { AddIcon, Avatar, Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { Avatar, Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
 import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,28 +11,6 @@ interface MyCollectionCollectedArtistsRailProps {
 }
 
 export const ARTIST_CIRCLE_DIAMETER = 100
-
-const AddMoreButton = () => {
-  return (
-    <Flex>
-      <Flex
-        alignItems="center"
-        backgroundColor="black5"
-        border="1px solid"
-        borderColor="black15"
-        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-        height={ARTIST_CIRCLE_DIAMETER}
-        justifyContent="center"
-        width={ARTIST_CIRCLE_DIAMETER}
-      >
-        <AddIcon height={28} width={28} fill="black60" />
-      </Flex>
-      <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
-        Add Artist
-      </Text>
-    </Flex>
-  )
-}
 
 export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArtistsRailProps> = ({
   me,
@@ -83,7 +61,6 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                 <Spinner />
               </Flex>
             )}
-            {!hasNext && <AddMoreButton />}
           </Flex>
         }
         onEndReached={handleLoadMore}
