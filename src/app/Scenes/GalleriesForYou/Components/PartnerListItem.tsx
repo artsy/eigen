@@ -12,6 +12,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
+import { uniq } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerListItemProps {
@@ -35,9 +36,11 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
     partner
   )
 
-  const cities = extractNodes(locationsConnection)
-    .map((location) => location.city)
-    .join(" • ")
+  const cities = uniq(extractNodes(locationsConnection).map((location) => location.city)).join(
+    " • "
+  )
+
+  const hasMoreCities = locationsConnection?.pageInfo?.hasNextPage
 
   const { followProfile, isInFlight } = useFollowProfile({
     id: profile?.id!,
@@ -91,6 +94,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
             <Text variant="sm">{name}</Text>
             <Text variant="sm-display" color="black60">
               {cities}
+              {!!hasMoreCities && "..."}
             </Text>
           </Flex>
 
@@ -114,6 +118,9 @@ const PartnerListItemFragment = graphql`
     name
     initials
     locationsConnection(first: 5) {
+      pageInfo {
+        hasNextPage
+      }
       edges {
         node {
           city
