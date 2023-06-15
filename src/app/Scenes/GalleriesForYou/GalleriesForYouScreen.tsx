@@ -39,7 +39,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
+      <Flex flex={1} pl={6} pr={4} pt={0.5}>
         <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
           Galleries For You
         </Text>
