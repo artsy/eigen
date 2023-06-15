@@ -1,12 +1,12 @@
 import {
   Checkbox,
   Flex,
+  InfoCircleIcon,
   Join,
   Message,
   Spacer,
   Text,
   Touchable,
-  useColor,
 } from "@artsy/palette-mobile"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
@@ -15,7 +15,6 @@ import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Componen
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Image } from "react-native"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -47,32 +46,22 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   )
 }
 
-const RemoveTheArtist: React.FC<{ canBeRemoved: boolean }> = ({ canBeRemoved }) => {
-  const color = useColor()
-
-  return (
-    <Join separator={<Spacer y={1} />}>
-      <Text
-        disabled={!canBeRemoved}
-        onPress={() => {}}
-        color={canBeRemoved ? "red100" : "black60"}
-        variant="xs"
-        underline
-      >
+const RemoveTheArtist: React.FC<{ canBeRemoved: boolean }> = ({ canBeRemoved }) => (
+  <Join separator={<Spacer y={1} />}>
+    {canBeRemoved ? (
+      <Text onPress={() => {}} color="red100" variant="xs" underline>
         Remove Artist
       </Text>
-      {!canBeRemoved && (
-        <Message
-          variant="default"
-          title=" To remove this artist, please remove their artworks from My Collection first."
-          IconComponent={() => (
-            <Image source={require("images/info.webp")} style={{ tintColor: color("black100") }} />
-          )}
-        />
-      )}
-    </Join>
-  )
-}
+    ) : (
+      <Message
+        variant="default"
+        title="To remove this artist, please remove their artworks from My Collection first."
+        IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
+      />
+    )}
+  </Join>
+)
+
 const ShareArtistCheckbox: React.FC<{ onCheckboxPress: () => void }> = ({ onCheckboxPress }) => {
   return (
     <Touchable haptic onPress={onCheckboxPress}>
