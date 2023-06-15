@@ -1,3 +1,4 @@
+import { StackNavigationProp } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
@@ -13,7 +14,7 @@ jest.mock("app/Components/FancyModal/FancyModalHeader", () => ({
   FancyModalHeader: () => null,
 }))
 
-jest.mock("../Components/ArtistAutosuggest", () => ({
+jest.mock("app/Components/ArtistAutosuggest/ArtistAutosuggest", () => ({
   ArtistAutosuggest: () => null,
 }))
 
@@ -36,6 +37,10 @@ jest.mock("app/utils/requestPhotos", () => ({
 }))
 
 describe("AddEditArtwork", () => {
+  const mockNav: Partial<StackNavigationProp<{}>> = {
+    addListener: jest.fn(),
+  }
+
   const useFormikContextMock = useFormikContext as jest.Mock
 
   beforeEach(() => {
@@ -65,7 +70,7 @@ describe("AddEditArtwork", () => {
           },
         }}
       >
-        <MyCollectionArtworkFormMain />
+        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
@@ -89,7 +94,7 @@ describe("AddEditArtwork", () => {
           },
         }}
       >
-        <MyCollectionArtworkFormMain />
+        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
@@ -111,7 +116,7 @@ describe("AddEditArtwork", () => {
           },
         }}
       >
-        <MyCollectionArtworkFormMain />
+        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
     // make form dirty
@@ -160,7 +165,7 @@ describe("AddEditArtwork", () => {
           },
         }}
       >
-        <MyCollectionArtworkFormMain />
+        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
@@ -169,7 +174,7 @@ describe("AddEditArtwork", () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it("fires delete artwork action on delete button click", async () => {
+  it("fires delete artwork action on delete button click", () => {
     const mockDelete = jest.fn()
 
     const artworkForm = (
@@ -182,7 +187,7 @@ describe("AddEditArtwork", () => {
           },
         }}
       >
-        <MyCollectionArtworkFormMain />
+        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
       </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)

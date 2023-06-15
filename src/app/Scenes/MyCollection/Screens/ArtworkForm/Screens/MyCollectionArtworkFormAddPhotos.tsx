@@ -1,6 +1,5 @@
 import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
@@ -16,10 +15,9 @@ import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-nati
 const MARGIN = 2
 export const DELAY_TIME_MS = 500
 
-export const MyCollectionAddPhotos: React.FC<{}> = () => {
-  const navigation =
-    useNavigation<NavigationProp<StackScreenProps<ArtworkFormScreen, "AddPhotos">>>()
-
+export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({
+  navigation,
+}) => {
   // By momentarily rendering a lighter placeholder, this page does not have to wait for large heavy
   // images to load first before rendering. Therefore the animation on Touchable tapped to load this
   // screen will not appear frozen while waiting for react navigation to fully load this page before

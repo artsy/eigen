@@ -13,8 +13,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
+import { StackScreenProps } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -46,10 +45,10 @@ import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<{}> = () => {
+export const MyCollectionArtworkFormMain: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
+> = ({ navigation }) => {
   const { trackEvent } = useTracking()
-
-  const navigation = useNavigation<StackNavigationProp<ArtworkFormScreen, "ArtworkFormMain">>()
 
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")

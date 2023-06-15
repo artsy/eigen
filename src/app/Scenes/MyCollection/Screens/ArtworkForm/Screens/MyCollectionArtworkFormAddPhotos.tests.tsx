@@ -14,9 +14,11 @@ jest.mock("app/utils/requestPhotos", () => ({
 
 jest.mock("formik")
 
+const mockNav = jest.fn()
+
 const Wrapper = () => (
   <MyCollectionArtworkStore.Provider>
-    <MyCollectionAddPhotos />
+    <MyCollectionAddPhotos navigation={mockNav as any} route={null as any} />
   </MyCollectionArtworkStore.Provider>
 )
 

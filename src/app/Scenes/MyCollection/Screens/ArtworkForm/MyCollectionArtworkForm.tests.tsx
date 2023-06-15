@@ -33,8 +33,7 @@ const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
 
-// TODO: Fix this test 💣💣💣
-describe.skip("MyCollectionArtworkForm", () => {
+describe("MyCollectionArtworkForm", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -120,6 +119,7 @@ describe.skip("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
         await flushPromiseQueue()
 
         fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
@@ -529,7 +529,7 @@ describe.skip("MyCollectionArtworkForm", () => {
       jest.clearAllMocks()
     })
 
-    it.only("displays saving artwork loading modal", async () => {
+    it("displays saving artwork loading modal", async () => {
       const assetCredentials = {
         signature: "some-signature",
         credentials: "some-credentials",
