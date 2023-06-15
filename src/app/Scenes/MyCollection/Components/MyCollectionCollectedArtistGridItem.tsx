@@ -1,4 +1,4 @@
-import { Flex, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistGridItem_artist$key } from "__generated__/MyCollectionCollectedArtistGridItem_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
@@ -23,11 +23,9 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
     artist
   )
   const { nationality, birthday, deathday } = artistData
-  const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
 
   const isAPad = isPad()
-  const itemWidth = isAPad ? (screenWidth - space(2) * 7) / 3 : (screenWidth - space(2) * 4) / 2
+  const itemWidth = 100
 
   const getMeta = () => {
     const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
@@ -54,7 +52,7 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
   const meta = getMeta()
 
   return (
-    <Flex flex={1} maxWidth={isAPad ? "33%" : "50%"} alignItems="center">
+    <Flex flex={1} maxWidth={isAPad ? "20%" : "50%"} alignItems="center">
       <Touchable
         onPress={() => {
           setViewKind({
