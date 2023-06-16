@@ -24,7 +24,12 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
         return (
           <Fragment key={`articleBodySection-${index}`}>
             <ArticleSectionImageCollection section={section} />
-            <ArticleSectionText section={section} px={2} />
+            <ArticleSectionText
+              section={section}
+              internalID={data.internalID}
+              slug={data.slug}
+              px={2}
+            />
           </Fragment>
         )
       })}
@@ -40,5 +45,8 @@ const ArticleBodyQuery = graphql`
       ...ArticleSectionImageCollection_section
       ...ArticleSectionText_section
     }
+
+    internalID
+    slug
   }
 `

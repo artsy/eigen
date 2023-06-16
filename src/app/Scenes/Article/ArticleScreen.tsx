@@ -13,6 +13,7 @@ import { ArticleRelatedArticlesRail } from "app/Scenes/Article/Components/Articl
 import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
 import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebViewScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -48,26 +49,35 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
   const Header = data.article.layout === "FEATURE" ? Screen.FloatingHeader : Screen.AnimatedHeader
 
   return (
-    <Screen>
-      <Header
-        title={data.article.title ?? ""}
-        rightElements={<ArticleShareButton article={data.article} />}
-        onBack={goBack}
-        top={0}
-      />
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArticlePage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_slug: data.article.slug ?? "",
+        context_screen_owner_id: data.article.internalID,
+      }}
+    >
+      <Screen>
+        <Header
+          title={data.article.title ?? ""}
+          rightElements={<ArticleShareButton article={data.article} />}
+          onBack={goBack}
+          top={0}
+        />
 
-      <Screen.Body fullwidth>
-        <Screen.ScrollView>
-          <ArticleBody article={data.article} />
+        <Screen.Body fullwidth>
+          <Screen.ScrollView>
+            <ArticleBody article={data.article} />
 
-          {data.article.relatedArticles.length > 0 && (
-            <>
-              <ArticleRelatedArticlesRail relatedArticles={data.article} my={2} />
-            </>
-          )}
-        </Screen.ScrollView>
-      </Screen.Body>
-    </Screen>
+            {data.article.relatedArticles.length > 0 && (
+              <>
+                <ArticleRelatedArticlesRail relatedArticles={data.article} my={2} />
+              </>
+            )}
+          </Screen.ScrollView>
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTracking>
   )
 }
 
@@ -79,12 +89,14 @@ export const articleScreenQuery = graphql`
       ...ArticleBody_article
       ...ArticleRelatedArticlesRail_article
 
+      internalID
       href
       layout
-      title
+      slug
       relatedArticles {
         internalID
       }
+      title
     }
   }
 `

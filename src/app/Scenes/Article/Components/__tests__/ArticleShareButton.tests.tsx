@@ -4,6 +4,7 @@ import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareBu
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 
 // Mock react-native-share module
@@ -12,6 +13,8 @@ jest.mock("react-native-share", () => ({
 }))
 
 describe("ArticleShareButton", () => {
+  const mockUseTracking = useTracking as jest.Mock
+
   const { renderWithRelay } = setupTestWrapper({
     Component: ArticleShareButton,
     query: graphql`
@@ -24,6 +27,12 @@ describe("ArticleShareButton", () => {
   })
 
   it("shares the article", () => {
+    const trackingSpy = jest.fn()
+
+    mockUseTracking.mockImplementation(() => ({
+      trackEvent: trackingSpy,
+    }))
+
     renderWithRelay({
       Article: () => ({
         href: "/article/foo",
@@ -43,5 +52,15 @@ describe("ArticleShareButton", () => {
         "Example Article on Artsy\nhttps://staging.artsy.net/article/foo?utm_content=article-share",
       failOnCancel: false,
     })
+
+    expect(trackingSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedArticleShare",
+        context_module: "article",
+        context_screen_owner_id: '<mock-value-for-field-"internalID">',
+        context_screen_owner_slug: '<mock-value-for-field-"slug">',
+        context_screen_owner_type: "article",
+      })
+    )
   })
 })

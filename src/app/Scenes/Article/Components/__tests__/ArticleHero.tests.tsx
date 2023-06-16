@@ -28,14 +28,14 @@ describe("ArticleHero", () => {
         vertical: "Vertical",
         title: "Title",
         byline: "Byline",
-        publishedAt: "2023-06-15T00:00:00.000Z",
+        publishedAt: "2023-06-12T00:00:00.000",
       }),
     })
 
     expect(screen.getByText("Vertical")).toBeOnTheScreen()
     expect(screen.getByText("Title")).toBeOnTheScreen()
     expect(screen.getByText("Byline")).toBeOnTheScreen()
-    expect(screen.getByText("Jun 14, 2023")).toBeOnTheScreen()
+    expect(screen.getByText("Jun 12, 2023")).toBeOnTheScreen()
   })
 
   it("renders hero image if available", () => {

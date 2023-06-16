@@ -13,8 +13,9 @@ import RenderHtml, { MixedStyleRecord } from "react-native-render-html"
 
 interface HTMLProps extends FlexProps {
   html: string
-  variant?: TextProps["variant"]
+  onLinkPress?: (href: string) => void
   tagStyles?: MixedStyleRecord
+  variant?: TextProps["variant"]
 }
 
 const FONTS = {
@@ -26,6 +27,7 @@ const FONTS = {
 
 export const HTML: React.FC<HTMLProps> = ({
   html,
+  onLinkPress,
   tagStyles = {},
   variant = "sm",
   ...flexProps
@@ -48,6 +50,11 @@ export const HTML: React.FC<HTMLProps> = ({
           a: {
             onPress: (event, href) => {
               event.preventDefault()
+
+              // External callback
+              if (onLinkPress) {
+                onLinkPress(href)
+              }
 
               // Override default behavior to ensure we use our internal router
               // to navigate internal or external
