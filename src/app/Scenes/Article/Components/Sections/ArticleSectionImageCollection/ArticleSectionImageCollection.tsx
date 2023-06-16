@@ -1,8 +1,8 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollection_section$key } from "__generated__/ArticleSectionImageCollection_section.graphql"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
-import { Fragment } from "react"
+import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -15,19 +15,27 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
 }) => {
   const data = useFragment(ArticleSectionImageCollectionQuery, section)
 
-  return (
-    <>
-      <Text>{data.layout}</Text>
+  if (!data?.figures?.length) {
+    return null
+  }
 
-      {data?.figures?.map((figure, index) => {
+  return (
+    <FlatList
+      data={data.figures}
+      scrollEnabled={data?.figures?.length > 1}
+      ItemSeparatorComponent={() => <Spacer x={0.5} />}
+      showsHorizontalScrollIndicator={false}
+      horizontal
+      pagingEnabled
+      renderItem={({ item, index }) => {
         return (
-          <Fragment key={index}>
-            <ArticleSectionImageCollectionImage figure={figure} />
-            <ArticleSectionImageCollectionCaption figure={figure} />
-          </Fragment>
+          <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
+            <ArticleSectionImageCollectionImage figure={item} />
+            <ArticleSectionImageCollectionCaption figure={item} />
+          </Flex>
         )
-      })}
-    </>
+      }}
+    />
   )
 }
 
@@ -35,7 +43,6 @@ const ArticleSectionImageCollectionQuery = graphql`
   fragment ArticleSectionImageCollection_section on ArticleSectionImageCollection {
     layout
     figures {
-      __typename
       ...ArticleSectionImageCollectionImage_figure
       ...ArticleSectionImageCollectionCaption_figure
     }

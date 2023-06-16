@@ -106,8 +106,8 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.131.0",
-    "@artsy/palette-mobile": "11.1.0",
+    "@artsy/cohesion": "4.132.0",
+    "@artsy/palette-mobile": "11.2.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@formatjs/intl-datetimeformat": "6.8.0",
@@ -192,6 +192,7 @@
     "react-native-push-notification": "8.1.1",
     "react-native-reanimated": "2.13.0",
     "react-native-reanimated-zoom": "0.3.3",
+    "react-native-render-html": "6.3.4",
     "react-native-safe-area-context": "3.4.0",
     "react-native-screens": "3.20.0",
     "react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view#a7f46de184123be9703c57b0a7618ae0557c8a87",

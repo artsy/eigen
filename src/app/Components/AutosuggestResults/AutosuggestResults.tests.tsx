@@ -2,6 +2,8 @@ import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/Aut
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
+import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
@@ -11,8 +13,6 @@ import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
-import { SearchContext } from "./SearchContext"
-import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 
 const FixturePage1: AutosuggestResultsQuery$rawResponse = {
   results: {
@@ -117,7 +117,8 @@ jest.mock("lodash", () => ({
 
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 
-jest.mock("./RecentSearches", () => {
+// app/Scenes/Search/RecentSearches.tsx
+jest.mock("app/Scenes/Search/RecentSearches", () => {
   const notifyRecentSearch = jest.fn()
   return {
     useRecentSearches() {
@@ -126,7 +127,8 @@ jest.mock("./RecentSearches", () => {
   }
 })
 
-const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
+const notifyRecentSearchMock = require("app/Scenes/Search/RecentSearches").useRecentSearches()
+  .notifyRecentSearch
 
 const consoleErrorMock = jest.fn()
 const whiteListErrors = [

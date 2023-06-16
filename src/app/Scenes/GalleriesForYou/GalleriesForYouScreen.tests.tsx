@@ -23,7 +23,7 @@ describe("GalleriesForYou", () => {
 
     await waitForElementToBeRemoved(() => screen.getByTestId("PlaceholderGrid"))
 
-    expect(screen.queryByText("Galleries For You")).toBeOnTheScreen()
+    expect(screen.getAllByText("Galleries For You")).toBeTruthy()
     expect(
       screen.queryByText("Find galleries in your area with artists you follow.")
     ).toBeOnTheScreen()

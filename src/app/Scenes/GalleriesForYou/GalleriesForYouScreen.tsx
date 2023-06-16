@@ -8,24 +8,31 @@ import {
 } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { times } from "lodash"
-import { Suspense } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { Suspense, useEffect, useState } from "react"
+import { ActivityIndicator, Animated } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface GalleriesForYouProps {
   location: Location | null
 }
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
-  const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, {
+  const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
+
+  const queryParams = {
     near: location && `${location?.lat},${location?.lng}`,
     includePartnersNearIpBasedLocation: !location,
-  })
+    includePartnersWithFollowedArtists: true,
+  }
+
+  const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, queryParams)
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     GalleriesForYouScreenQuery,
@@ -36,6 +43,31 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const partners = extractNodes(data.partnersConnection)
 
+  const { headerElement, scrollProps } = useStickyScrollHeader({
+    header: (
+      <Flex flex={1} pl={6} pr={4} pt={0.5}>
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+          Galleries For You
+        </Text>
+      </Flex>
+    ),
+  })
+
+  // Refetch in case the user doesn't follow artists and there are no results
+  // This will show results even in case the user doesn't follow any artists
+  const [hasRefetched, setHasRefetched] = useState(false)
+
+  useEffect(() => {
+    if (partners.length || hasRefetched) return
+
+    refetch({
+      ...queryParams,
+      includePartnersWithFollowedArtists: false,
+    })
+
+    setHasRefetched(true)
+  }, [partners])
+
   if (!partners.length) {
     return <NoGalleries />
   }
@@ -45,7 +77,13 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
       <Flex>
-        <FlatList
+        {!!visualizeLocation && (
+          <Text ml={6} color="red">
+            Location: {JSON.stringify(location)}
+          </Text>
+        )}
+
+        <Animated.FlatList
           data={partners}
           ListHeaderComponent={<GalleriesForYouHeader />}
           refreshControl={RefreshControl}
@@ -66,7 +104,10 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
               <ActivityIndicator />
             </Flex>
           )}
+          {...scrollProps}
         />
+
+        {headerElement}
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -91,6 +132,7 @@ const partnersConnectionFragment = graphql`
   @refetchable(queryName: "GalleriesForYouRefetchQuery")
   @argumentDefinitions(
     includePartnersNearIpBasedLocation: { type: "Boolean" }
+    includePartnersWithFollowedArtists: { type: "Boolean" }
     near: { type: "String" }
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
@@ -99,9 +141,12 @@ const partnersConnectionFragment = graphql`
       first: $count
       after: $after
       eligibleForListing: true
+      excludeFollowedPartners: true
       includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+      includePartnersWithFollowedArtists: $includePartnersWithFollowedArtists
       defaultProfilePublic: true
-      sort: RANDOM_SCORE_DESC
+      sort: DISTANCE
+      maxDistance: 6371 # Earth radius in km to get all results (https://en.wikipedia.org/wiki/Earth_radius?useskin=vector#Mean_radius)
       near: $near
       type: GALLERY
     ) @connection(key: "GalleriesForYouScreen_partnersConnection") {
@@ -123,6 +168,7 @@ export const GalleriesForYouQueryVariables = {
 const GalleriesForYouQuery = graphql`
   query GalleriesForYouScreenQuery(
     $includePartnersNearIpBasedLocation: Boolean
+    $includePartnersWithFollowedArtists: Boolean
     $near: String
     $count: Int
     $after: String
@@ -130,6 +176,7 @@ const GalleriesForYouQuery = graphql`
     ...GalleriesForYouScreen_partnersConnection
       @arguments(
         includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation
+        includePartnersWithFollowedArtists: $includePartnersWithFollowedArtists
         near: $near
         count: $count
         after: $after
@@ -137,13 +184,16 @@ const GalleriesForYouQuery = graphql`
   }
 `
 
-const GalleriesForYouHeader: React.FC = () => (
-  <Flex mx={2} mb={4} mt={6} mr={4}>
-    <Text variant="lg-display">Galleries For You</Text>
-
-    <Text variant="sm-display">Find galleries in your area with artists you follow.</Text>
-  </Flex>
-)
+const GalleriesForYouHeader: React.FC = () => {
+  return (
+    <Flex mx={2} mb={4} mt={6}>
+      <Text variant="lg-display" mb={0.5}>
+        Galleries For You
+      </Text>
+      <Text variant="xs">Find galleries in your area with artists you follow.</Text>
+    </Flex>
+  )
+}
 
 const GalleriesForYouPlaceholder: React.FC = () => {
   const isTablet = isPad()
@@ -158,7 +208,7 @@ const GalleriesForYouPlaceholder: React.FC = () => {
       <Flex testID="PlaceholderGrid">
         <GalleriesForYouHeader />
 
-        <Flex px={2} mt={1} mx="auto">
+        <Flex px={2} mx="auto">
           {times(5).map((i) => {
             return (
               <Flex mb={4} key={i}>
@@ -178,6 +228,6 @@ const NoGalleries: React.FC = () => (
   <Flex>
     <GalleriesForYouHeader />
 
-    <Text>We couldn’t find any galleries.</Text>
+    <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
   </Flex>
 )

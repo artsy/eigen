@@ -12,6 +12,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
+import { uniq } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerListItemProps {
@@ -30,14 +31,16 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
 
   const width = (isTablet ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
 
-  const { internalID, locationsConnection, name, profile } = useFragment(
+  const { internalID, initials, locationsConnection, name, profile } = useFragment(
     PartnerListItemFragment,
     partner
   )
 
-  const cities = extractNodes(locationsConnection)
-    .map((location) => location.city)
-    .join(" • ")
+  const cities = uniq(extractNodes(locationsConnection).map((location) => location.city)).join(
+    " • "
+  )
+
+  const hasMoreCities = locationsConnection?.pageInfo?.hasNextPage
 
   const { followProfile, isInFlight } = useFollowProfile({
     id: profile?.id!,
@@ -60,11 +63,30 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
     return null
   }
 
+  const imageUrl = profile?.image?.url
+
+  const showInitials = !imageUrl && !!initials
+
   return (
     <Flex mx={2}>
       <Flex width={width} mx="auto">
         <Touchable onPress={handlePress}>
-          <OpaqueImageView imageURL={profile?.image?.url} aspectRatio={1.33} width={width} />
+          <OpaqueImageView imageURL={imageUrl} aspectRatio={1.33} width={width} />
+
+          {!!showInitials && (
+            <Flex
+              position="absolute"
+              top={0}
+              left={0}
+              width="100%"
+              height="100%"
+              justifyContent="center"
+            >
+              <Flex mx="auto">
+                <Text variant="lg-display">{initials}</Text>
+              </Flex>
+            </Flex>
+          )}
         </Touchable>
 
         <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
@@ -72,6 +94,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({ partner, onPre
             <Text variant="sm">{name}</Text>
             <Text variant="sm-display" color="black60">
               {cities}
+              {!!hasMoreCities && "..."}
             </Text>
           </Flex>
 
@@ -95,6 +118,9 @@ const PartnerListItemFragment = graphql`
     name
     initials
     locationsConnection(first: 5) {
+      pageInfo {
+        hasNextPage
+      }
       edges {
         node {
           city

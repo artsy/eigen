@@ -6,7 +6,10 @@ import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollection
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import {
+  AddMyCollectionArtist,
+  MyCollectionCustomArtistSchema,
+} from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
@@ -36,7 +39,13 @@ export type ArtworkFormMode = "add" | "edit"
 export type ArtworkFormScreen = {
   ArtworkFormArtist: undefined
   ArtworkFormArtwork: undefined
-  AddMyCollectionArtist: undefined
+  // Params can be deleted as soon as we consolidate add artwork and add artist flows
+  AddMyCollectionArtist: {
+    props: {
+      artistDisplayName: string
+      onSubmit: (artistId: MyCollectionCustomArtistSchema) => void
+    }
+  }
   ArtworkFormMain: undefined
   AddPhotos: undefined
 }

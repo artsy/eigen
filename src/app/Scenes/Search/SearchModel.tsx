@@ -1,6 +1,6 @@
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Action, action } from "easy-peasy"
-import { AutosuggestResult } from "./AutosuggestResults"
 
 export const MAX_SAVED_RECENT_SEARCHES = 100
 export const MAX_SHOWN_RECENT_SEARCHES = 5

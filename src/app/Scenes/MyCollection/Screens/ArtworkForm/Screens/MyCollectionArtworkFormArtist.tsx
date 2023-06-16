@@ -1,12 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -44,7 +44,18 @@ export const MyCollectionArtworkFormArtist: React.FC<
     GlobalStore.actions.myCollection.artwork.resetForm()
 
     if (enableCollectedArtists) {
-      navigation.navigate("AddMyCollectionArtist")
+      navigation.navigate("AddMyCollectionArtist", {
+        props: {
+          artistDisplayName: artistDisplayName,
+          onSubmit: (values) => {
+            GlobalStore.actions.myCollection.artwork.updateFormValues({
+              customArtist: values,
+              metric: preferredMetric,
+            })
+            navigation.navigate("ArtworkFormMain")
+          },
+        },
+      })
     } else {
       requestAnimationFrame(() => {
         GlobalStore.actions.myCollection.artwork.updateFormValues({
