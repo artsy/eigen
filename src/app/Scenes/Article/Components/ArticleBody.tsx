@@ -27,7 +27,7 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
             <ArticleSectionText
               section={section}
               internalID={data.internalID}
-              slug={data.slug}
+              slug={data.slug ?? ""}
               px={2}
             />
           </Fragment>

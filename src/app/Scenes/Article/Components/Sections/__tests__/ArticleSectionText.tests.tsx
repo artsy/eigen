@@ -21,7 +21,7 @@ describe("ArticleSectionText", () => {
       {}
     )
 
-    return <ArticleSectionText section={data.article!.sections[0]} />
+    return <ArticleSectionText section={data.article!.sections[0]} internalID="foo" slug="bar" />
   }
 
   const { renderWithRelay } = setupTestWrapper({
