@@ -7875,6 +7875,27 @@ type DeleteAccountPayload {
   userAccountOrError: AccountMutationType
 }
 
+type DeleteArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteArtistInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DeleteArtistPayload {
+  # Success or Error, on success the deleted Artist is returned
+  artistOrError: DeleteArtistSuccessOrErrorType
+  clientMutationId: String
+}
+
+type DeleteArtistSuccess {
+  artist: Artist
+}
+
+union DeleteArtistSuccessOrErrorType = DeleteArtistFailure | DeleteArtistSuccess
+
 input DeleteArtworkImageInput {
   artworkID: String!
   clientMutationId: String
@@ -12103,6 +12124,9 @@ type Mutation {
     input: CreateUserSaleProfileMutationInput!
   ): CreateUserSaleProfileMutationPayload
   createViewingRoom(input: CreateViewingRoomInput!): CreateViewingRoomPayload
+
+  # Delete an artist
+  deleteArtist(input: DeleteArtistInput!): DeleteArtistPayload
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
