@@ -351,7 +351,10 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Article: reactModule(ArticleScreen),
+  Article: reactModule(ArticleScreen, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Articles: reactModule(
     ArticlesScreen,
     {
