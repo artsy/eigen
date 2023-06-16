@@ -60,7 +60,7 @@ describe("requestPushNotificationsPermission", () => {
       artsyPrefs: {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
-          pushNotificationDialogueLastSeenTimestamp: undefined,
+          pushNotificationDialogLastSeenTimestamp: undefined,
         },
       },
     })
@@ -168,8 +168,8 @@ describe("requestPushNotificationsPermission", () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
-          pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenTimestamp: undefined,
+          pushNotificationSystemDialogSeen: false,
+          pushNotificationDialogLastSeenTimestamp: undefined,
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -204,8 +204,8 @@ describe("requestPushNotificationsPermission", () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
-          pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
+          pushNotificationSystemDialogSeen: false,
+          pushNotificationDialogLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -240,8 +240,8 @@ describe("requestPushNotificationsPermission", () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
-          pushNotificationSystemDialogueSeen: false,
-          pushNotificationDialogueLastSeenTimestamp: dateLessThanAWeekAgo.getTime(),
+          pushNotificationSystemDialogSeen: false,
+          pushNotificationDialogLastSeenTimestamp: dateLessThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -260,7 +260,7 @@ describe("requestPushNotificationsPermission", () => {
     expect(alertSpy).not.toHaveBeenCalled()
   })
 
-  it("sets the pushNotificationDialogueLastSeenDate to the current date after showing the pre-prompt", async () => {
+  it("sets the pushNotificationDialogLastSeenDate to the current date after showing the pre-prompt", async () => {
     // Set the last seen date to more than a week ago
     const dateMoreThanAWeekAgo = new Date()
     dateMoreThanAWeekAgo.setDate(dateMoreThanAWeekAgo.getDate() - 8)
@@ -268,7 +268,7 @@ describe("requestPushNotificationsPermission", () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
-          pushNotificationDialogueLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
+          pushNotificationDialogLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
           pushPermissionsRequestedThisSession: false,
         },
       },
@@ -297,11 +297,11 @@ describe("requestPushNotificationsPermission", () => {
       ]
     )
 
-    // Now check if the pushNotificationDialogueLastSeenDate in GlobalStore was updated to the current date
-    const pushNotificationDialogueLastSeenTimestamp =
+    // Now check if the pushNotificationDialogLastSeenDate in GlobalStore was updated to the current date
+    const pushNotificationDialogLastSeenTimestamp =
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
-        .pushNotificationDialogueLastSeenTimestamp
+        .pushNotificationDialogLastSeenTimestamp
 
-    expect(pushNotificationDialogueLastSeenTimestamp).toEqual(currentDate.getTime())
+    expect(pushNotificationDialogLastSeenTimestamp).toEqual(currentDate.getTime())
   })
 })

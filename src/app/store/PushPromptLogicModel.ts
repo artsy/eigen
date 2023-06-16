@@ -3,23 +3,23 @@ import { Action, action } from "easy-peasy"
 export interface PushPromptLogicModel {
   pushPermissionsRequestedThisSession: boolean
   pushNotificationSettingsPromptSeen: boolean
-  pushNotificationAppleDialogueRejected: boolean
-  pushNotificationSystemDialogueSeen: boolean
-  pushNotificationDialogueLastSeenTimestamp: number | null
+  pushNotificationAppleDialogRejected: boolean
+  pushNotificationSystemDialogSeen: boolean
+  pushNotificationDialogLastSeenTimestamp: number | null
 
   setPushPermissionsRequestedThisSession: Action<PushPromptLogicModel, boolean>
   setPushNotificationSettingsPromptSeen: Action<PushPromptLogicModel, boolean>
-  setPushNotificationAppleDialogueRejected: Action<PushPromptLogicModel, boolean>
-  setPushNotificationSystemDialogueSeen: Action<PushPromptLogicModel, boolean>
-  setPushNotificationDialogueLastSeenTimestamp: Action<PushPromptLogicModel, number>
+  setPushNotificationAppleDialogRejected: Action<PushPromptLogicModel, boolean>
+  setPushNotificationSystemDialogSeen: Action<PushPromptLogicModel, boolean>
+  setPushNotificationDialogLastSeenTimestamp: Action<PushPromptLogicModel, number>
 }
 
 export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
   pushPermissionsRequestedThisSession: false,
   pushNotificationSettingsPromptSeen: false,
-  pushNotificationAppleDialogueRejected: false,
-  pushNotificationSystemDialogueSeen: false,
-  pushNotificationDialogueLastSeenTimestamp: null,
+  pushNotificationAppleDialogRejected: false,
+  pushNotificationSystemDialogSeen: false,
+  pushNotificationDialogLastSeenTimestamp: null,
 
   setPushPermissionsRequestedThisSession: action((state, payload) => {
     state.pushPermissionsRequestedThisSession = payload
@@ -27,13 +27,13 @@ export const getPushPromptLogicModel = (): PushPromptLogicModel => ({
   setPushNotificationSettingsPromptSeen: action((state, payload) => {
     state.pushNotificationSettingsPromptSeen = payload
   }),
-  setPushNotificationAppleDialogueRejected: action((state, payload) => {
-    state.pushNotificationAppleDialogueRejected = payload
+  setPushNotificationAppleDialogRejected: action((state, payload) => {
+    state.pushNotificationAppleDialogRejected = payload
   }),
-  setPushNotificationSystemDialogueSeen: action((state, payload) => {
-    state.pushNotificationSystemDialogueSeen = payload
+  setPushNotificationSystemDialogSeen: action((state, payload) => {
+    state.pushNotificationSystemDialogSeen = payload
   }),
-  setPushNotificationDialogueLastSeenTimestamp: action((state, payload) => {
-    state.pushNotificationDialogueLastSeenTimestamp = payload
+  setPushNotificationDialogLastSeenTimestamp: action((state, payload) => {
+    state.pushNotificationDialogLastSeenTimestamp = payload
   }),
 })

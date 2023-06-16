@@ -28,13 +28,13 @@ const showPrepromptAlert = async () => {
       { text: "OK", onPress: () => requestSystemPermissions() },
     ]
   )
-  await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogueLastSeenTimestamp(
+  await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogLastSeenTimestamp(
     Date.now()
   )
 }
 
 const requestSystemPermissions = async () => {
-  GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogueSeen(true)
+  GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogSeen(true)
   if (Platform.OS === "ios") {
     LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
   } else {
@@ -45,14 +45,14 @@ const requestSystemPermissions = async () => {
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
 const shouldDisplayPrepromptAlert = () => {
-  const { pushNotificationDialogueLastSeenTimestamp } = unsafe_getPushPromptSettings()!
+  const { pushNotificationDialogLastSeenTimestamp } = unsafe_getPushPromptSettings()!
 
-  if (pushNotificationDialogueLastSeenTimestamp) {
+  if (pushNotificationDialogLastSeenTimestamp) {
     // we don't want to ask too often
-    // currently, we make sure at least a week has passed by since you last saw the dialogue
-    const pushNotificationDialogueLastSeenDate = new Date(pushNotificationDialogueLastSeenTimestamp)
+    // currently, we make sure at least a week has passed by since you last saw the dialog
+    const pushNotificationDialogLastSeenDate = new Date(pushNotificationDialogLastSeenTimestamp)
     const currentDate = new Date()
-    const timePassed = currentDate.getTime() - pushNotificationDialogueLastSeenDate.getTime()
+    const timePassed = currentDate.getTime() - pushNotificationDialogLastSeenDate.getTime()
     return timePassed >= ONE_WEEK_MS
   } else {
     // if you've never seen one before, we'll show you ;)
@@ -70,7 +70,7 @@ export const requestPushNotificationsPermission = async () => {
   const {
     pushPermissionsRequestedThisSession,
     pushNotificationSettingsPromptSeen,
-    pushNotificationSystemDialogueSeen,
+    pushNotificationSystemDialogSeen,
   } = pushPromptSettings
 
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
@@ -96,7 +96,7 @@ export const requestPushNotificationsPermission = async () => {
   }
 
   setTimeout(() => {
-    if (!pushNotificationSystemDialogueSeen && shouldDisplayPrepromptAlert()) {
+    if (!pushNotificationSystemDialogSeen && shouldDisplayPrepromptAlert()) {
       showPrepromptAlert()
       setPushPermissionsRequestedThisSession(true)
     }
