@@ -233,7 +233,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/privacy-request", "PrivacyRequest"),
     addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/recently-viewed", "RecentlyViewed"),
-    addRoute("/reverse-image", "ReverseImage"),
     addRoute("/sales", "Sales"),
     addRoute("/search", "Search"),
     addRoute("/search2", "Search2"),

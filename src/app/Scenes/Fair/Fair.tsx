@@ -7,7 +7,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { HeaderButton } from "app/Components/HeaderButton"
 import { NavigationalTabs, TabsType } from "app/Components/LegacyTabs"
-import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -49,8 +48,7 @@ const tabs: TabsType = [
 ]
 
 export const Fair: React.FC<FairProps> = ({ fair }) => {
-  const { isActive, isReverseImageSearchEnabled } = fair
-  const shouldShowImageSearchButton = isReverseImageSearchEnabled && !!isActive
+  const { isActive } = fair
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
@@ -273,14 +271,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       <HeaderButton shouldHide={shouldHideButtons} onPress={() => goBack()} position="left">
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
-      <SearchImageHeaderButton
-        isImageSearchButtonVisible={!!shouldShowImageSearchButton && !shouldHideButtons}
-        owner={{
-          type: OwnerType.fair,
-          id: fair.internalID,
-          slug: fair.slug,
-        }}
-      />
     </ProvideScreenTracking>
   )
 }
@@ -291,7 +281,6 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       internalID
       slug
       isActive
-      isReverseImageSearchEnabled
       articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
         edges {
           __typename
