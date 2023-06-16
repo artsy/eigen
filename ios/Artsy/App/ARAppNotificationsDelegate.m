@@ -33,6 +33,7 @@
     UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
     [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         NSString *grantedString = granted ? @"YES" : @"NO";
+        // TODO: Because we trigger again to get the token register this is being over-reported
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
         [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
     }];
@@ -94,7 +95,7 @@
     ARActionLog(@"Got device notification token: %@", deviceToken);
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
 
-    // Save device token purely for the dev settings view.
+    // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
     [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
