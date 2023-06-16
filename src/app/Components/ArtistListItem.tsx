@@ -223,7 +223,9 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   `,
 })
 
-export const ArtistListItemPlaceholder = () => (
+export const ArtistListItemPlaceholder: React.FC<{ displaywithCheckbox?: boolean }> = ({
+  displaywithCheckbox,
+}) => (
   <Flex flexDirection="row">
     <PlaceholderBox height={45} width={45} borderRadius={22.5} />
     <Flex pl={1} pt={0.5} height={45}>
@@ -231,7 +233,11 @@ export const ArtistListItemPlaceholder = () => (
       <PlaceholderText height={13} width={100 + Math.random() * 100} />
     </Flex>
     <Flex height={45} position="absolute" right={0} justifyContent="center">
-      <PlaceholderBox height={25} width={90} borderRadius={50} />
+      {displaywithCheckbox ? (
+        <PlaceholderBox height={20} width={20} />
+      ) : (
+        <PlaceholderBox height={25} width={90} borderRadius={50} />
+      )}
     </Flex>
   </Flex>
 )

@@ -1,6 +1,8 @@
 import { Text, Flex, Button, useColor, useSpace } from "@artsy/palette-mobile"
+import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import React from "react"
+import { setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
+import React, { useEffect } from "react"
 import { Image, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -8,6 +10,11 @@ export const MyCollectionArtistsCollectedOnboarding: React.FC<{}> = () => {
   const insets = useSafeAreaInsets()
   const color = useColor()
   const space = useSpace()
+
+  useEffect(() => {
+    setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
+  }, [])
+
   return (
     <>
       <Flex mt={Platform.OS === "android" ? `${insets.top}px` : undefined}>

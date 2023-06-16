@@ -24,6 +24,9 @@ export const visualClues = defineVisualClues({
   MedianAuctionPriceListItemTooltip: {
     description: "Tooltip on the first item of median auction price list",
   },
+  MyCollectionArtistsCollectedOnboarding: {
+    description: "Tha modal that shows the onboarding for the collected artists",
+  },
 })
 
 export const visualClueNames = Object.keys(visualClues)
