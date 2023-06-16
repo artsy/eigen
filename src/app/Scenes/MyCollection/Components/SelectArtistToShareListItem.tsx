@@ -6,10 +6,14 @@ import { graphql } from "relay-runtime"
 
 interface SelectArtistToShareListItemProps {
   artist: SelectArtistToShareListItem_artist$key
+  checked: boolean
+  oncheckBoxPress: (internalID: string) => void
 }
 
 export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemProps> = ({
   artist,
+  checked,
+  oncheckBoxPress,
 }) => {
   const artistData = useFragment<SelectArtistToShareListItem_artist$key>(artistFragment, artist)
 
@@ -20,7 +24,9 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       withFeedback
       showFollowButton={false}
       onPress={() => {}}
-      RightButton={<Checkbox mr={1} checked={true} onPress={() => console.log("pressed")} />}
+      RightButton={
+        <Checkbox mr={1} checked={checked} onPress={() => oncheckBoxPress(artistData.internalID)} />
+      }
     />
   )
 }

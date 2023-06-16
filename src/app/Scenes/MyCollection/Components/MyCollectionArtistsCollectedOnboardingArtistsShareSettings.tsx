@@ -4,7 +4,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { SelectArtistToShareListItem } from "app/Scenes/MyCollection/Components/SelectArtistToShareListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { times } from "lodash"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -20,6 +20,17 @@ export const MyCollectionArtistsCollectedOnboardingArtistsShareSettingsScreen: R
     const collectedArtists = extractNodes(
       queryData.me?.myCollectionInfo?.collectedArtistsConnection
     )
+    const initiallySelectedArtists = collectedArtists.map((artist) => artist.internalID)
+
+    const [selectedArtists, setSelectedArtists] = useState<string[]>(initiallySelectedArtists)
+
+    const handleCheckBoxPress = (internalID: string) => {
+      if (selectedArtists.includes(internalID)) {
+        setSelectedArtists(selectedArtists.filter((item) => item !== internalID))
+      } else {
+        setSelectedArtists(selectedArtists.concat(internalID))
+      }
+    }
 
     return (
       <Flex flexGrow={1} px={2}>
@@ -32,7 +43,13 @@ export const MyCollectionArtistsCollectedOnboardingArtistsShareSettingsScreen: R
           <FlatList
             data={collectedArtists}
             ItemSeparatorComponent={() => <Spacer y={2} />}
-            renderItem={({ item }) => <SelectArtistToShareListItem artist={item} />}
+            renderItem={({ item }) => (
+              <SelectArtistToShareListItem
+                artist={item}
+                checked={!!selectedArtists.includes(item.internalID)}
+                oncheckBoxPress={(internalID) => handleCheckBoxPress(internalID)}
+              />
+            )}
           />
         </Flex>
         <Button
@@ -80,7 +97,7 @@ const MyCollectionArtistsCollectedOnboardingArtistsShareSettingsScreenQuery = gr
         collectedArtistsConnection(first: 100, includePersonalArtists: true) {
           edges {
             node {
-              id
+              internalID
               ...SelectArtistToShareListItem_artist
             }
           }
