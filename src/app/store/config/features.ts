@@ -246,11 +246,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableArtworkContextMenu: {
+  AREnableLongPressArtworkCards: {
     description: "Enable Context Menu on artwork cards",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkContextMenu",
   },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
