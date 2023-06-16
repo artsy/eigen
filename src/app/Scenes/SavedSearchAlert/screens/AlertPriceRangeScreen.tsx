@@ -17,7 +17,7 @@ const getInputValue = (value: PriceRange[number]) => {
 
 export const AlertPriceRangeScreen = () => {
   const navigation =
-    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRangeScreen">>()
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRange">>()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
@@ -30,10 +30,6 @@ export const AlertPriceRangeScreen = () => {
 
   const [range, setRange] = useState(parsePriceRange(initailPriceRange))
   const [minValue, maxValue] = range
-
-  const handleBackNavigation = () => {
-    navigation.goBack()
-  }
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
     // Early exit the input update if the value is not a number
@@ -78,7 +74,7 @@ export const AlertPriceRangeScreen = () => {
     <Flex>
       <ArtworkFilterBackHeader
         title="Price"
-        onLeftButtonPress={handleBackNavigation}
+        onLeftButtonPress={() => navigation.goBack()}
         rightButtonText="Clear"
         onRightButtonPress={handleOnClear}
       />
@@ -98,6 +94,7 @@ export const AlertPriceRangeScreen = () => {
             onChangeText={handleTextChange(0)}
             testID="price-min-input"
             descriptionColor="black100"
+            accessibilityLabel="Minimum Price Range Input"
           />
           <Spacer x={2} />
           <Input
@@ -111,6 +108,7 @@ export const AlertPriceRangeScreen = () => {
             onChangeText={handleTextChange(1)}
             testID="price-max-input"
             descriptionColor="black100"
+            accessibilityLabel="Maximum Price Range Input"
           />
         </Flex>
       </ScrollView>

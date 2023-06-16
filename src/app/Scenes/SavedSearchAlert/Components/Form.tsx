@@ -142,8 +142,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Touchable
         accessibilityLabel="Set price range"
         accessibilityRole="button"
-        underlayColor="black5"
-        onPress={() => navigation.navigate("AlertPriceRangeScreen")}
+        onPress={() => navigation.navigate("AlertPriceRange")}
       >
         <Flex flexDirection="row" alignItems="center" py={1}>
           <Flex flex={1}>

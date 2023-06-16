@@ -136,7 +136,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 initialParams={params}
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-              <Stack.Screen name="AlertPriceRangeScreen" component={AlertPriceRangeScreen} />
+              <Stack.Screen name="AlertPriceRange" component={AlertPriceRangeScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </SavedSearchStoreProvider>

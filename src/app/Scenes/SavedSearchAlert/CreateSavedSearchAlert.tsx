@@ -48,7 +48,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 initialParams={params}
               />
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-              <Stack.Screen name="AlertPriceRangeScreen" component={AlertPriceRangeScreen} />
+              <Stack.Screen name="AlertPriceRange" component={AlertPriceRangeScreen} />
             </Stack.Navigator>
           </Box>
         </FancyModal>
