@@ -5,8 +5,8 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { useState } from "react"
-import { ScrollView } from "react-native"
+import { useRef, useState } from "react"
+import { ScrollView, TextInput } from "react-native"
 
 const DEFAULT_PRICE_RANGE = "*-*"
 const NUMBERS_REGEX = /^(|\d)+$/
@@ -22,6 +22,9 @@ export const AlertPriceRangeScreen = () => {
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
   )
+
+  const minValInputRef = useRef<TextInput>(null)
+  const maxValInputRef = useRef<TextInput>(null)
 
   const initailPriceRange = attributes.priceRange || DEFAULT_PRICE_RANGE
 
@@ -63,15 +66,29 @@ export const AlertPriceRangeScreen = () => {
     navigation.goBack()
   }
 
+  const handleOnClear = () => {
+    if (minValInputRef.current && maxValInputRef.current) {
+      minValInputRef.current.clear()
+      maxValInputRef.current.clear()
+    }
+    setRange(parsePriceRange(DEFAULT_PRICE_RANGE))
+  }
+
   return (
     <Flex>
-      <ArtworkFilterBackHeader title="Price" onLeftButtonPress={handleBackNavigation} />
+      <ArtworkFilterBackHeader
+        title="Price"
+        onLeftButtonPress={handleBackNavigation}
+        rightButtonText="Clear"
+        onRightButtonPress={handleOnClear}
+      />
       <ScrollView keyboardShouldPersistTaps="handled">
         <Flex m={2}>
           <Text variant="sm">Set price range you are interested in</Text>
         </Flex>
         <Flex flexDirection="row" mx={2}>
           <Input
+            ref={minValInputRef}
             containerStyle={{ flex: 1 }}
             description="Min"
             fixedRightPlaceholder="$USD"
@@ -84,6 +101,7 @@ export const AlertPriceRangeScreen = () => {
           />
           <Spacer x={2} />
           <Input
+            ref={maxValInputRef}
             containerStyle={{ flex: 1 }}
             description="Max"
             fixedRightPlaceholder="$USD"

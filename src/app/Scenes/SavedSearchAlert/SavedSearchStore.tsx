@@ -17,7 +17,7 @@ interface SavedSearchModel {
     this,
     {
       key: SearchCriteria
-      value: string | number | boolean
+      value: string | null
     }
   >
   removeValueFromAttributesByKeyAction: Action<
@@ -44,13 +44,17 @@ export const savedSearchModel: SavedSearchModel = {
   },
 
   setValueToAttributesByKeyAction: action((state, payload) => {
-    // set form dirty on price update
-    if (payload.key === "priceRange" && state.attributes[payload.key] !== payload.value) {
-      state.dirty = true
-    }
+    if (payload.key === "priceRange") {
+      // set form dirty on price update
+      if (state.attributes[payload.key] !== payload.value) {
+        state.dirty = true
+      }
 
-    //@ts-ignore
-    state.attributes[payload.key] = payload.value
+      // set the price range to be null if the value is *-* (which means empty)
+      state.attributes[payload.key] = payload.value === "*-*" ? null : payload.value
+    } else {
+      state.attributes[payload.key] = payload.value as unknown as null | undefined
+    }
   }),
 
   removeValueFromAttributesByKeyAction: action((state, payload) => {
