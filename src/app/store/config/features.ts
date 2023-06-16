@@ -61,11 +61,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable query prefetching",
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableImageSearch: {
-    readyForRelease: false,
-    description: "Enable search with image",
-    showInDevMenu: true,
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",

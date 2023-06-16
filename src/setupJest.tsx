@@ -92,8 +92,6 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
-jest.mock("react-native-vision-camera", () => {})
-
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 require("jest-fetch-mock").enableMocks()
