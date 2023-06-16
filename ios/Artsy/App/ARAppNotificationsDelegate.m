@@ -35,11 +35,17 @@
         NSString *grantedString = granted ? @"YES" : @"NO";
         // TODO: Because we trigger again to get the token register this is being over-reported
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
+
+        if (!granted) {
+            [[[AREmission sharedInstance] notificationsManagerModule] notificationPermissionsRejected];
+        } else {
+            [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
+        }
+
         [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
     }];
 
     [[UIApplication sharedApplication] registerForRemoteNotifications];
-    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueSeen];
 }
 
 #pragma mark -
@@ -63,7 +69,6 @@
     }];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
-    [AROptions setBool:YES forOption:ARPushNotificationsAppleDialogueRejected];
 #endif
 }
 
@@ -98,7 +103,6 @@
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-    [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
     [[Appboy sharedInstance] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.

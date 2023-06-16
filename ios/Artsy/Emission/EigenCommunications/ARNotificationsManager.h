@@ -32,6 +32,7 @@
 - (NSDictionary *)reactState;
 
 - (void)notificationReceived;
+- (void)notificationPermissionsRejected;
 
 - (void)modalDismissed;
 

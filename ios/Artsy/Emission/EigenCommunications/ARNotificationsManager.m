@@ -43,6 +43,7 @@
 // event keys
 // These should match the values in src/app/store/NativeModel.ts
 static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
+static NSString *notificationPermissionsRejected = @"NOTIFICATION_PERMISSIONS_REJECTED";
 static NSString *modalDismissed = @"MODAL_DISMISSED";
 static NSString *stateChanged = @"STATE_CHANGED";
 static NSString *reactStateChanged = @"STATE_CHANGED";
@@ -161,6 +162,11 @@ RCT_EXPORT_MODULE();
 - (void)requestModalDismiss
 {
     [self dispatchAfterBootstrap:requestModalDismiss data:@{}];
+}
+
+- (void)notificationPermissionsRejected
+{
+    [self dispatchAfterBootstrap:notificationPermissionsRejected data:@{}];
 }
 
 // Will be called when this module's first listener is added.
