@@ -1,9 +1,18 @@
-import { Tabs } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Screen,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -136,7 +145,7 @@ export const PartnerQueryRenderer: React.FC<{
   })
 
   if (loading) {
-    return <HeaderTabsGridPlaceholder />
+    return <PartnerSkeleton />
   }
 
   return (
@@ -156,8 +165,77 @@ export const PartnerQueryRenderer: React.FC<{
       render={renderWithPlaceholder({
         Container: PartnerContainer,
         initialProps: others,
-        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+        renderPlaceholder: () => <PartnerSkeleton />,
       })}
     />
+  )
+}
+
+export const PartnerSkeleton: React.FC = () => {
+  return (
+    <Screen>
+      <Screen.Header />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <SkeletonText variant="xl">Gagosian Gal</SkeletonText>
+          </Flex>
+
+          <Spacer y={2} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Overview</SkeletonText>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">Shows</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={2} />
+
+        <Box px={2}>
+          <SkeletonBox width="100%" height={100} />
+
+          <Spacer y={1} />
+
+          <SkeletonText variant="xs">Has 1 location in Dubai</SkeletonText>
+
+          <Spacer y={1} />
+
+          <SkeletonBox width="100%" height={50} />
+
+          <Spacer y={2} />
+
+          <SkeletonText variant="xs">Artists (110)</SkeletonText>
+
+          <Spacer y={2} />
+
+          {/* Artists list */}
+          {Array.from({ length: 10 }).map((_, i) => {
+            return (
+              <Flex
+                flexDirection="row"
+                key={i}
+                width="100%"
+                justifyContent="space-between"
+                mb={1}
+                alignItems="center"
+              >
+                <Flex width="50%" flexDirection="row" alignItems="center">
+                  <SkeletonBox width={50} height={50} />
+                  <Flex flexDirection="column" ml={1}>
+                    <SkeletonText variant="xs" mb={0.5}>
+                      Artist Name
+                    </SkeletonText>
+                    <SkeletonText variant="xs">Japanese, b, 1995</SkeletonText>
+                  </Flex>
+                </Flex>
+                <SkeletonBox width={50} height={30} />
+              </Flex>
+            )
+          })}
+        </Box>
+      </Screen.Body>
+    </Screen>
   )
 }

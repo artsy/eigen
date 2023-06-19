@@ -1,13 +1,23 @@
-import { Flex, Tabs } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Screen,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
-import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
 import { goBack } from "app/system/navigation/navigate"
 
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { PlaceholderGrid } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Dimensions } from "react-native"
@@ -104,9 +114,53 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       }}
       render={renderWithPlaceholder({
         Container: Gene,
-        renderPlaceholder: () => <GenePlaceholder />,
+        renderPlaceholder: () => <GeneSkeleton />,
         initialProps: { geneID },
       })}
     />
+  )
+}
+
+export const GeneSkeleton: React.FC = () => {
+  return (
+    <Screen>
+      <Screen.Header />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <SkeletonText variant="xl">Some Gene</SkeletonText>
+
+            <Box mt={2}>
+              <SkeletonBox width="100%" height={30} />
+            </Box>
+          </Flex>
+          <Flex>
+            <Spacer y={2} />
+
+            {/* Tabs */}
+            <Flex justifyContent="space-around" flexDirection="row" px={2}>
+              <SkeletonText variant="xs">Works</SkeletonText>
+              <SkeletonText variant="xs">About</SkeletonText>
+            </Flex>
+
+            <Separator mt={1} mb={2} />
+
+            <Flex justifyContent="space-between" flexDirection="row" px={2}>
+              <SkeletonText variant="xs">Sort and Filter</SkeletonText>
+            </Flex>
+
+            <Separator my={2} />
+
+            <SkeletonText mx={2} variant="xs">
+              Showing 57326 works
+            </SkeletonText>
+
+            <Spacer y={2} />
+
+            <PlaceholderGrid />
+          </Flex>
+        </Skeleton>
+      </Screen.Body>
+    </Screen>
   )
 }

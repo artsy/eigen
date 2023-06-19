@@ -4,6 +4,9 @@ import {
   Flex,
   HeartFillIcon,
   HeartIcon,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
   Spacer,
   Text,
   TextProps,
@@ -25,11 +28,7 @@ import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableR
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import {
-  PlaceholderBox,
-  PlaceholderRaggedText,
-  RandomNumberGenerator,
-} from "app/utils/placeholders"
+import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -500,11 +499,15 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   seed = Math.random(),
 }) => {
   const rng = new RandomNumberGenerator(seed)
+
   return (
-    <Flex>
-      <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
+    <Skeleton>
+      <SkeletonBox height={rng.next({ from: 50, to: 150 })} width="100%" />
       <Spacer y={1} />
-      <PlaceholderRaggedText seed={rng.next()} numLines={2} />
-    </Flex>
+      <SkeletonText variant="xs">Artwork Title</SkeletonText>
+      <SkeletonText variant="xs" mt={0.5}>
+        Artwork Description
+      </SkeletonText>
+    </Skeleton>
   )
 }
