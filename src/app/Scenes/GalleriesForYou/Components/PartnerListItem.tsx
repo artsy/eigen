@@ -14,6 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { Location } from "app/utils/hooks/useLocation"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
+import { uniq } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerListItemProps {
@@ -48,6 +49,8 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
   const sortedLocations = userLocation
     ? sortByDistance(locations as { coordinates: Location }[], userLocation)
     : locations
+
+  const cities = uniq(sortedLocations.map((location) => location.city))
 
   const { followProfile, isInFlight } = useFollowProfile({
     id: profile?.id!,
@@ -99,10 +102,10 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
         <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
           <Flex mr={1} flexShrink={1}>
             <Text variant="sm">{name}</Text>
-            {!!sortedLocations[0] && (
+            {!!cities[0] && (
               <Text variant="sm-display" color="black60">
-                {sortedLocations[0].city}
-                {!!(sortedLocations.length > 1) && ` and ${sortedLocations.length} more`}
+                {cities[0]}
+                {!!(cities.length > 1) && ` and ${cities.length - 1} more`}
               </Text>
             )}
           </Flex>
