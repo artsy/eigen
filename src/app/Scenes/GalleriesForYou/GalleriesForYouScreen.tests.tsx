@@ -30,6 +30,8 @@ describe("GalleriesForYou", () => {
 
     expect(screen.queryByText("GALERIA AZUR")).toBeOnTheScreen()
     expect(screen.queryByText("Gallery Fedorova")).toBeOnTheScreen()
+
+    expect(screen.queryByText("Nearest City and 2 more locations")).toBeOnTheScreen()
   })
 })
 
@@ -43,21 +45,36 @@ const partnersConnection = {
         initials: "GA",
         locationsConnection: {
           edges: [
-            { node: { city: "Madrid", id: "TG9jYXRpb246NWZlNDg4MDFkOGM3YmQwMDEwZjc4ZjNk" } },
             {
               node: {
-                city: "Ciudad autónoma de Buenos Aires",
+                city: "Potsdam",
+                coordinates: {
+                  lat: 53,
+                  lng: 22,
+                },
+                id: "TG9jYXRpb246NjA0OGJmOGYyZmIxMTgwMDEyY2Y3NjZh",
+              },
+            },
+            {
+              node: {
+                city: "Nearest City",
+                coordinates: {
+                  lat: 52,
+                  lng: 23,
+                },
                 id: "TG9jYXRpb246NjA0OGJmOGYyZmIxMTgwMDEyY2Y3NjZh",
               },
             },
             {
               node: {
                 city: "Ciudad autónoma de Buenos Aires",
+                coordinates: {
+                  lat: 20,
+                  lng: 32,
+                },
                 id: "TG9jYXRpb246NjA0OGMwNDhmMWM1ZWQwMDBlZDIxMjA1",
               },
             },
-            { node: { city: "Berlin", id: "TG9jYXRpb246NjE5ZDY0ZmRmNDNhMmMwMDBjNDU5YTRk" } },
-            { node: { city: "Madrid", id: "TG9jYXRpb246NjIwYjg1MWZlNDQwYzIwMDBjZTUyY2Rm" } },
           ],
         },
         profile: {

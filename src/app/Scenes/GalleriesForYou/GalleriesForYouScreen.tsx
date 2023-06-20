@@ -89,7 +89,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
           refreshControl={RefreshControl}
           onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
           renderItem={({ item }) => {
-            return <PartnerListItem partner={item} />
+            return <PartnerListItem partner={item} userLocation={location} />
           }}
           keyExtractor={(item) => item.internalID}
           ItemSeparatorComponent={() => <Spacer y={4} />}
