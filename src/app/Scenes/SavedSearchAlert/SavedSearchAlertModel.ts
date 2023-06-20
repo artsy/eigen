@@ -31,6 +31,7 @@ export interface CreateSavedSearchAlertProps {
 
 export interface ConfirmationScreenParams {
   searchCriteriaID: string
+  alertAttributes: SearchCriteriaAttributes
 }
 
 // This needs to be a `type` rather than an `interface`

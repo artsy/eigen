@@ -168,7 +168,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
       }
 
-      navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
+      navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id, alertAttributes })
 
       onComplete?.(result)
     } catch (error) {
