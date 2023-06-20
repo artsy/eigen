@@ -92,12 +92,37 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
   const closeIconRef = useRef(null)
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
     setViewKind({ viewKind: "Add" })
   }, 100)
+
+  const handlePlusButtonPress = () => {
+    switch (selectedTab) {
+      case "Artists":
+        navigate("my-collection/collected-artists/new")
+        break
+      case "Artworks":
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            mode: "add",
+            source: Tab.collection,
+            onSuccess: () => {
+              // hide the bottom sheet
+              setViewKind({ viewKind: null })
+              popToRoot()
+            },
+          },
+        })
+        break
+      default:
+        showAddToMyCollectionBottomSheet()
+        break
+    }
+  }
 
   const { width } = useMeasure({ ref: closeIconRef })
 
@@ -132,7 +157,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
           <Touchable
-            onPress={showAddToMyCollectionBottomSheet}
+            onPress={handlePlusButtonPress}
             haptic
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
