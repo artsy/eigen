@@ -4,8 +4,9 @@ import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/My
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
 import { extractNodes } from "app/utils/extractNodes"
-import { useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { useRefreshControl } from "app/utils/refreshHelpers"
+import { stringIncludes } from "app/utils/stringHelpers"
+import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface MyCollectionCollectedArtistsViewProps {
@@ -15,8 +16,6 @@ interface MyCollectionCollectedArtistsViewProps {
 export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArtistsViewProps> = ({
   me,
 }) => {
-  const [refreshing, setRefreshing] = useState(false)
-
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     collectedArtistsPaginationFragment,
     me
@@ -32,18 +31,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
     loadNext(10)
   }
 
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetch(
-      {},
-      {
-        fetchPolicy: "store-and-network",
-        onComplete: () => {
-          setRefreshing(false)
-        },
-      }
-    )
-  }
+  const RefreshControl = useRefreshControl(refetch)
 
   const collectedArtists = extractNodes(data.myCollectionInfo?.collectedArtistsConnection)
 
@@ -53,22 +41,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   const artistsAndArtworksCount = data.myCollectionInfo?.collectedArtistsConnection?.edges
     ?.filter((artist) => {
-      return (
-        artist?.node?.name
-          ?.toLowerCase()
-          // Make sure to remove accents and diacritics for better comparisons
-          // Salvador Dalí -> Salvador Dali
-          // Édouard Manet -> Edouard Manet
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .includes(
-            keyword
-              .toLowerCase()
-              .trim()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-          )
-      )
+      return stringIncludes(artist?.node?.name || "", keyword)
     })
     ?.filter((edge) => edge !== null && edge.node !== null)
     .map((edge) => {
@@ -103,11 +76,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
         onEndReached={handleLoadMore}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
         ItemSeparatorComponent={() => <Spacer y={2} />}
-        refreshControl={
-          !__TEST__ ? (
-            <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
-          ) : undefined
-        }
+        refreshControl={RefreshControl}
       />
     </Flex>
   )

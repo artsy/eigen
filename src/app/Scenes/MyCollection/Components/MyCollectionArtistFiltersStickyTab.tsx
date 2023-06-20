@@ -10,7 +10,8 @@ export const MyCollectionArtistFilters: React.FC<{}> = () => {
   const [query, setQuery] = useState(keyword)
 
   const setKeyword = debounce(
-    MyCollectionArtworksKeywordStore.useStoreActions((actions) => actions.setKeyword)
+    MyCollectionArtworksKeywordStore.useStoreActions((actions) => actions.setKeyword),
+    200
   )
 
   useEffect(() => {
