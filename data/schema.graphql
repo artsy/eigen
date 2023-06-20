@@ -15040,7 +15040,7 @@ type Query {
   ): RecentlySoldArtworkTypeConnection
 
   # A requested location
-  requestLocation(ip: String!): RequestLocation
+  requestLocation(ip: String): RequestLocation
 
   # Search for matching artworks by image
   reverseImageSearch(
@@ -15441,6 +15441,7 @@ type RequestCredentialsForAssetUploadPayload {
 
 type RequestLocation {
   cached: Int
+  coordinates: LatLng
   country: String
   countryCode: String
   id: ID!
@@ -19352,7 +19353,7 @@ type Viewer {
   ): RecentlySoldArtworkTypeConnection
 
   # A requested location
-  requestLocation(ip: String!): RequestLocation
+  requestLocation(ip: String): RequestLocation
 
   # Search for matching artworks by image
   reverseImageSearch(
