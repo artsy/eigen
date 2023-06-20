@@ -31,7 +31,7 @@ describe("GalleriesForYou", () => {
     expect(screen.queryByText("GALERIA AZUR")).toBeOnTheScreen()
     expect(screen.queryByText("Gallery Fedorova")).toBeOnTheScreen()
 
-    expect(screen.queryByText("Nearest City and 1 more city")).toBeOnTheScreen()
+    expect(screen.queryByText("Nearest City and 2 more locations")).toBeOnTheScreen()
   })
 })
 

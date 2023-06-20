@@ -1,14 +1,16 @@
 import { Location } from "app/utils/hooks/useLocation"
 
-export const sortByDistance = (coordinates: Location[], target: Location): Location[] => {
-  return coordinates
-    .map((coordinate) => ({
-      coordinate,
-      distance: Math.sqrt(
-        Math.pow(Number(coordinate.lng) - Number(target.lng), 2) +
-          Math.pow(Number(coordinate.lat) - Number(target.lat), 2)
-      ),
-    }))
-    .sort((a, b) => a.distance - b.distance)
-    .map(({ coordinate }) => coordinate)
+export const sortByDistance = (
+  locations: { coordinates: Location; city?: string }[],
+  target: Location
+) => {
+  return locations.sort(
+    (a, b) => distanceTo(a.coordinates, target) - distanceTo(b.coordinates, target)
+  )
+}
+
+const distanceTo = (a: Location, b: Location) => {
+  return Math.sqrt(
+    Math.pow(Number(a.lng) - Number(b.lng), 2) + Math.pow(Number(a.lat) - Number(b.lat), 2)
+  )
 }
