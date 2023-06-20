@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs } from "@artsy/palette-mobile"
-import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
+import { Flex, Tabs } from "@artsy/palette-mobile"
+import { ArtistInsightsQuery } from "__generated__/ArtistInsightsQuery.graphql"
+import { ArtistInsights_artist$key } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import {
   AnimatedArtworkFilterButton,
@@ -9,19 +10,19 @@ import {
 } from "app/Components/ArtworkFilter"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
+import { ActivityIndicator, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
-  artist: ArtistInsights_artist$data
-  relay: RelayProp
+  artist: ArtistInsights_artist$key
   initialFilters?: FilterArray
 }
 
@@ -29,8 +30,8 @@ const SCROLL_UP_TO_SHOW_THRESHOLD = 150
 const FILTER_BUTTON_OFFSET = 50
 
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
-  const { artist, relay, initialFilters } = props
-
+  const { initialFilters } = props
+  const artist = useFragment(artistInsightsFragment, props.artist)
   const tracking = useTracking()
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
@@ -82,10 +83,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 60, paddingHorizontal: 20 }}
         onScrollEndDrag={onScrollEndDrag}
       >
-        <MarketStatsQueryRenderer
-          artistInternalID={artist.internalID}
-          environment={relay.environment}
-        />
+        <MarketStatsQueryRenderer artistInternalID={artist.internalID} />
         <View
           onLayout={({
             nativeEvent: {
@@ -121,17 +119,43 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   )
 }
 
-export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
-  artist: graphql`
-    fragment ArtistInsights_artist on Artist {
-      name
-      id
-      internalID
-      slug
-      ...ArtistInsightsAuctionResults_artist
+const artistInsightsFragment = graphql`
+  fragment ArtistInsights_artist on Artist {
+    name
+    id
+    internalID
+    slug
+    ...ArtistInsightsAuctionResults_artist
+  }
+`
+
+const artistInsightsQuery = graphql`
+  query ArtistInsightsQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistInsights_artist
     }
-  `,
-})
+  }
+`
+
+export const ArtistInsightsQueryRenderer: React.FC<{
+  artistID: string
+  initialFilters?: FilterArray
+}> = withSuspense(
+  ({ artistID, initialFilters }) => {
+    const data = useLazyLoadQuery<ArtistInsightsQuery>(artistInsightsQuery, { artistID })
+
+    if (!data.artist) {
+      return null
+    }
+
+    return <ArtistInsights artist={data.artist} initialFilters={initialFilters} />
+  },
+  () => (
+    <Flex flex={1} justifyContent="center" alignItems="center">
+      <ActivityIndicator />
+    </Flex>
+  )
+)
 
 export const tracks = {
   openFilter: (id: string, slug: string) => {

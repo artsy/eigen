@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Message, Tabs } from "@artsy/palette-mobile"
+import { Spacer, Box, Message, Tabs, Flex } from "@artsy/palette-mobile"
+import { ArtistArtworksQuery, FilterArtworksInput } from "__generated__/ArtistArtworksQuery.graphql"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -15,10 +16,17 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 
 import { Schema } from "app/utils/track"
 import React, { useEffect } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { ActivityIndicator } from "react-native"
+import {
+  createPaginationContainer,
+  graphql,
+  RelayPaginationProp,
+  useLazyLoadQuery,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
@@ -26,6 +34,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
   predefinedFilters?: FilterArray
+  input?: FilterArtworksInput
 }
 
 type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
@@ -123,6 +132,19 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   }
 
   const filteredArtworks = () => {
+    if (!artist.statuses?.artworks) {
+      return (
+        <Message
+          variant="default"
+          title="No works available by the artist at this time"
+          text="Create an Alert to receive notifications when new works are added"
+          bodyTextStyle={{
+            color: "black60",
+          }}
+        />
+      )
+    }
+
     if (artworksCount === 0) {
       return (
         <Box mb="80px" pt={2}>
@@ -134,41 +156,28 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           />
         </Box>
       )
-    } else {
-      return (
-        <>
-          <Spacer y={2} />
-          <InfiniteScrollArtworksGrid
-            connection={artist.artworks!}
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            {...props}
-            contextScreenOwnerType={OwnerType.artist}
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-          />
-        </>
-      )
     }
-  }
 
-  if (!artist.statuses?.artworks) {
     return (
-      <Message
-        variant="default"
-        title="No works available by the artist at this time"
-        text="Create an Alert to receive notifications when new works are added"
-        bodyTextStyle={{
-          color: "black60",
-        }}
-      />
+      <>
+        <Spacer y={2} />
+        <InfiniteScrollArtworksGrid
+          connection={artist.artworks!}
+          loadMore={relay.loadMore}
+          hasMore={relay.hasMore}
+          {...props}
+          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerId={artist.internalID}
+          contextScreenOwnerSlug={artist.slug}
+        />
+      </>
     )
   }
 
   return artist.artworks ? filteredArtworks() : null
 }
 
-export default createPaginationContainer(
+export const ArtistArtworksPaginationContainer = createPaginationContainer(
   ArtworksGrid,
   {
     artist: graphql`
@@ -228,16 +237,16 @@ export default createPaginationContainer(
     getConnectionFromProps(props) {
       return props.artist && props.artist.artworks
     },
-    getVariables(props, { count, cursor }, fragmentVariables) {
+    getVariables(props, { count, cursor }) {
       return {
         id: props.artist.id,
-        input: fragmentVariables.input,
+        input: props.input,
         count,
         cursor,
       }
     },
     query: graphql`
-      query ArtistArtworksQuery(
+      query ArtistArtworksPaginationQuery(
         $id: ID!
         $count: Int!
         $cursor: String
@@ -251,4 +260,44 @@ export default createPaginationContainer(
       }
     `,
   }
+)
+
+const artistArtworksQuery = graphql`
+  query ArtistArtworksQuery($artistID: String!, $input: FilterArtworksInput) {
+    artist(id: $artistID) {
+      ...ArtistArtworks_artist @arguments(input: $input)
+    }
+  }
+`
+
+export const ArtistArtworksQueryRenderer: React.FC<{
+  artistID: string
+  searchCriteria: SearchCriteriaAttributes | null
+  predefinedFilters?: FilterArray
+  input?: FilterArtworksInput
+}> = withSuspense(
+  ({ artistID, searchCriteria, predefinedFilters, input }) => {
+    const data = useLazyLoadQuery<ArtistArtworksQuery>(artistArtworksQuery, {
+      artistID,
+      input,
+    })
+
+    if (!data?.artist) {
+      return null
+    }
+
+    return (
+      <ArtistArtworksPaginationContainer
+        artist={data.artist}
+        predefinedFilters={predefinedFilters}
+        searchCriteria={searchCriteria}
+        input={input}
+      />
+    )
+  },
+  () => (
+    <Flex flex={1} justifyContent="center" alignItems="center">
+      <ActivityIndicator />
+    </Flex>
+  )
 )

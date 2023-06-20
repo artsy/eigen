@@ -9,15 +9,12 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
-import {
-  ArtistAboveTheFoldQuery,
-  FilterArtworksInput,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
-import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
-import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
+import { FilterArtworksInput } from "__generated__/ArtistArtworksQuery.graphql"
+import { ArtistQuery } from "__generated__/ArtistQuery.graphql"
+import { ArtistAboutQueryRenderer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
+import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
-import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { ArtistInsightsQueryRenderer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
   filterArtworksParams,
@@ -33,44 +30,44 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderGrid } from "app/utils/placeholders"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
-import { ActivityIndicator, TouchableOpacity, View } from "react-native"
-import { graphql } from "react-relay"
+import { TouchableOpacity } from "react-native"
+import { QueryRenderer, graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const INITIAL_TAB = "Artworks"
 
 interface ArtistProps {
-  artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
-  artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
+  artistID: string
+  artist: NonNullable<ArtistQuery["response"]["artist"]>
   initialTab?: string
   searchCriteria: SearchCriteriaAttributes | null
   fetchCriteriaError: Error | null
   predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
+  input?: FilterArtworksInput
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
   const {
-    artistAboveTheFold,
-    artistBelowTheFold,
+    artistID,
+    artist,
     initialTab = INITIAL_TAB,
     searchCriteria,
     fetchCriteriaError,
     predefinedFilters,
     auctionResultsInitialFilters,
+    input,
   } = props
 
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
 
   const displayAboutSection =
-    artistAboveTheFold.has_metadata ||
-    !!artistAboveTheFold.statuses?.articles ||
-    (artistAboveTheFold.counts?.related_artists ?? 0) > 0
+    artist.has_metadata || !!artist.statuses?.articles || (artist.counts?.related_artists ?? 0) > 0
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -86,12 +83,12 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const handleSharePress = () => {
     showShareSheet({
       type: "artist",
-      internalID: artistAboveTheFold.internalID,
-      slug: artistAboveTheFold.slug,
-      artists: [{ name: artistAboveTheFold.name }],
-      title: artistAboveTheFold.name!,
-      href: artistAboveTheFold.href!,
-      currentImageUrl: artistAboveTheFold.image?.url ?? undefined,
+      internalID: artist.internalID,
+      slug: artist.slug,
+      artists: [{ name: artist.name }],
+      title: artist.name!,
+      href: artist.href!,
+      currentImageUrl: artist.image?.url ?? undefined,
     })
   }
 
@@ -100,14 +97,14 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       info={{
         context_screen: Schema.PageNames.ArtistPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: artistAboveTheFold.slug,
-        context_screen_owner_id: artistAboveTheFold.internalID,
+        context_screen_owner_slug: artist.slug,
+        context_screen_owner_id: artist.internalID,
       }}
     >
       <ArtworkFiltersStoreProvider>
         <Tabs.TabsWithHeader
           initialTabName={initialTab}
-          title={artistAboveTheFold.name!}
+          title={artist.name!}
           headerProps={{
             rightElements: (
               <>
@@ -118,19 +115,13 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             ),
             onBack: goBack,
           }}
-          BelowTitleHeaderComponent={() => (
-            <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
-          )}
+          BelowTitleHeaderComponent={() => <ArtistHeaderFragmentContainer artist={artist} />}
         >
           {displayAboutSection ? (
             <Tabs.Tab name="Overview" label="Overview">
               <Tabs.Lazy>
                 <>
-                  {artistBelowTheFold ? (
-                    <ArtistAboutContainer artist={artistBelowTheFold} />
-                  ) : (
-                    <LoadingPage />
-                  )}
+                  <ArtistAboutQueryRenderer artistID={artistID} />
                 </>
               </Tabs.Lazy>
             </Tabs.Tab>
@@ -138,26 +129,23 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistArtworks
-                artist={artistAboveTheFold}
+              <ArtistArtworksQueryRenderer
+                artistID={artistID}
                 searchCriteria={searchCriteria}
                 predefinedFilters={predefinedFilters}
+                input={input}
               />
             </Tabs.Lazy>
           </Tabs.Tab>
 
-          {artistAboveTheFold?.statuses?.auctionLots ? (
+          {!!artist?.statuses?.auctionLots ? (
             <Tabs.Tab name="Insights" label="Insights">
               <Tabs.Lazy>
                 <>
-                  {artistBelowTheFold ? (
-                    <ArtistInsightsFragmentContainer
-                      artist={artistBelowTheFold}
-                      initialFilters={auctionResultsInitialFilters}
-                    />
-                  ) : (
-                    <LoadingPage />
-                  )}
+                  <ArtistInsightsQueryRenderer
+                    artistID={artistID}
+                    initialFilters={auctionResultsInitialFilters}
+                  />
                 </>
               </Tabs.Lazy>
             </Tabs.Tab>
@@ -180,10 +168,9 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
+  query ArtistQuery($artistID: String!) {
     artist(id: $artistID) {
       ...ArtistHeader_artist
-      ...ArtistArtworks_artist @arguments(input: $input)
       internalID
       slug
       has_metadata: hasMetadata
@@ -248,67 +235,32 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const input = prepareFilterArtworksParamsForInput(initialArtworksInput)
 
           return (
-            <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
+            <QueryRenderer<ArtistQuery>
               environment={environment || getRelayEnvironment()}
-              above={{
-                query: ArtistScreenQuery,
-                variables: {
+              variables={{ artistID }}
+              query={ArtistScreenQuery}
+              render={renderWithPlaceholder({
+                Container: Artist,
+                initialProps: {
+                  initialTab: initialTab,
+                  searchCriteria: savedSearchCriteria,
+                  fetchCriteriaError: fetchCriteriaError,
+                  predefinedFilters: predefinedFilters,
+                  auctionResultsInitialFilters: getFilterArrayFromQueryParams({
+                    categories: categories ?? [],
+                    sizes: sizes ?? [],
+                  }),
                   artistID,
                   input: input as FilterArtworksInput,
                 },
-              }}
-              below={{
-                query: graphql`
-                  query ArtistBelowTheFoldQuery($artistID: String!) {
-                    artist(id: $artistID) {
-                      ...ArtistAbout_artist
-                      ...ArtistInsights_artist
-                    }
-                  }
-                `,
-                variables: { artistID },
-              }}
-              render={{
+                renderFallback: () => null,
                 renderPlaceholder: () => <ArtistSkeleton />,
-                renderComponent: ({ above, below }) => {
-                  if (!above.artist) {
-                    throw new Error("no artist data")
-                  }
-                  return (
-                    <Artist
-                      artistAboveTheFold={above.artist}
-                      artistBelowTheFold={below?.artist}
-                      initialTab={initialTab}
-                      searchCriteria={savedSearchCriteria}
-                      fetchCriteriaError={fetchCriteriaError}
-                      predefinedFilters={predefinedFilters}
-                      auctionResultsInitialFilters={getFilterArrayFromQueryParams({
-                        categories: categories ?? [],
-                        sizes: sizes ?? [],
-                      })}
-                    />
-                  )
-                },
-              }}
+              })}
             />
           )
         },
       }}
     />
-  )
-}
-
-/**
- * Be lazy and just have a simple loading spinner for the below-the-fold tabs
- * (as opposed to nice fancy placeholder screens) since people are really
- * unlikely to tap into them quick enough to see the loading state
- * @param param0
- */
-const LoadingPage: React.FC<{}> = ({}) => {
-  return (
-    <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-      <ActivityIndicator />
-    </View>
   )
 }
 
