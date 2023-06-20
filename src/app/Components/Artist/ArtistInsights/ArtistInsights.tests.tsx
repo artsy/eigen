@@ -1,11 +1,11 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
+import { ArtistInsights } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistInsightsFragmentContainer } from "./ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 jest.mock("react-native-collapsible-tab-view", () => {
@@ -16,8 +16,6 @@ jest.mock("react-native-collapsible-tab-view", () => {
     useFocusedTab: () => "Insights",
   }
 })
-
-const trackEvent = useTracking().trackEvent
 
 describe("ArtistInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -38,7 +36,7 @@ describe("ArtistInsights", () => {
         if (!props?.artist) {
           return null
         }
-        return <ArtistInsightsFragmentContainer artist={props.artist} />
+        return <ArtistInsights artist={props.artist} />
       }}
     />
   )
@@ -56,7 +54,7 @@ describe("ArtistInsights", () => {
 
     await flushPromiseQueue()
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "screen",
       context_screen_owner_id: "internalID-1",
       context_screen_owner_slug: "slug-1",

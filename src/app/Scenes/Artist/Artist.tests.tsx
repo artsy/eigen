@@ -10,7 +10,7 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
+type ArtistQueries = "ArtistQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -49,35 +49,10 @@ describe("Artist", () => {
     </ModalStack>
   )
 
-  it("returns an empty state if artist has no artworks", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
-    const emptyTitle = "No works available by the artist at this time"
-    const emptyMessage = "Create an Alert to receive notifications when new works are added"
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: false,
-          counts: {
-            related_artists: 0,
-          },
-          statuses: {
-            articles: false,
-            artworks: false,
-            auctionLots: false,
-          },
-        }
-      },
-    })
-
-    expect(getByText(emptyTitle)).toBeTruthy()
-    expect(getByText(emptyMessage)).toBeTruthy()
-  })
-
   it("should render Artworks tab by default", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+    mockMostRecentOperation("ArtistQuery", {
       Artist() {
         return {
           has_metadata: false,
@@ -99,7 +74,7 @@ describe("Artist", () => {
   it("returns Overview tab if artist has metadata", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+    mockMostRecentOperation("ArtistQuery", {
       Artist() {
         return {
           has_metadata: true,
@@ -119,7 +94,7 @@ describe("Artist", () => {
   it("returns Overview tab if artist has only articles", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+    mockMostRecentOperation("ArtistQuery", {
       Artist() {
         return {
           has_metadata: false,
@@ -139,7 +114,7 @@ describe("Artist", () => {
   it("returns three tabs if artist has metadata, works, and auction results", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+    mockMostRecentOperation("ArtistQuery", {
       Artist() {
         return {
           has_metadata: true,
@@ -160,7 +135,7 @@ describe("Artist", () => {
   it("hides Artist insights tab when there are no auction results", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+    mockMostRecentOperation("ArtistQuery", {
       Artist() {
         return {
           has_metadata: true,
@@ -180,7 +155,7 @@ describe("Artist", () => {
   it("tracks a page view", async () => {
     renderWithHookWrappersTL(<TestWrapper />)
 
-    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    mockMostRecentOperation("ArtistQuery")
 
     await flushPromiseQueue()
 

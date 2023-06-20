@@ -4,14 +4,14 @@ import Biography from "app/Components/Artist/Biography"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtistAboutContainer } from "./ArtistAbout"
+import { ArtistAbout } from "./ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
     Component: ({ artist }) => (
       <ModalStack>
-        <ArtistAboutContainer artist={artist!} />
+        <ArtistAbout artist={artist!} />
       </ModalStack>
     ),
     query: graphql`

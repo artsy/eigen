@@ -242,6 +242,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               render={renderWithPlaceholder({
                 Container: Artist,
                 initialProps: {
+                  artistID,
                   initialTab: initialTab,
                   searchCriteria: savedSearchCriteria,
                   fetchCriteriaError: fetchCriteriaError,
@@ -250,7 +251,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     categories: categories ?? [],
                     sizes: sizes ?? [],
                   }),
-                  artistID,
                   input: input as FilterArtworksInput,
                 },
                 renderFallback: () => null,
