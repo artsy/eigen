@@ -208,12 +208,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-collection/career-highlights", "CareerHighlightsBigCardsSwiper"),
     addRoute("/my-collection/median-sale-price-at-auction/:artistID", "MedianSalePriceAtAuction"),
     addRoute(
-      "/my-collection/onboarding/artists-collected",
-      "MyCollectionArtistsCollectedOnboarding"
-    ),
-    addRoute(
-      "/my-collection/onboarding/artists-collected/share-settings",
-      "MyCollectionArtistsCollectedOnboardingArtistsShareSettings"
+      "/my-collection/collected-artists/privacy-settings",
+      "MyCollectionCollectedArtistsPrivacy"
     ),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),
