@@ -1,7 +1,6 @@
 import { Spinner } from "@artsy/palette-mobile"
-import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
-import { PartnerContainer } from "app/Scenes/Partner/Partner"
+import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -65,7 +64,7 @@ describe("VanityURLEntity", () => {
       const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="partner" slugType="profileID" slug="some-partner" />
       )
-      const partnerPlaceholder = tree.root.findByType(HeaderTabsGridPlaceholder)
+      const partnerPlaceholder = tree.root.findByType(PartnerSkeleton)
       expect(partnerPlaceholder).toBeDefined()
     })
 
