@@ -256,7 +256,7 @@ export async function configure() {
      *     requestPermissions: Platform.OS === 'ios'
      */
     // TODO:- Update this as required when implementing for ios
-    requestPermissions: true,
+    requestPermissions: false,
   })
 }
 
@@ -277,7 +277,6 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
     }
   })
 }
-
 
 module.exports = {
   configure,
