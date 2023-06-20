@@ -943,6 +943,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 })
     updateExperimentsContext({ userId: undefined })
