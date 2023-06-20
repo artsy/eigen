@@ -49,7 +49,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             <Spacer y={2} />
 
             {!!requestedPasswordReset ? (
-              <Text color="blue100">Password reset link sent. Check your email.</Text>
+              <Text color="blue100">Password reset link sent. Please check your email.</Text>
             ) : (
               <Input
                 ref={inputRef}
