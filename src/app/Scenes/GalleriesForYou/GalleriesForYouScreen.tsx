@@ -39,7 +39,12 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     GalleriesForYouScreen_partnersConnection$key
   >(partnersConnectionFragment, queryData)
 
-  const ipLocation = data.requestLocation?.coordinates
+  const ipLocation = queryData.requestLocation?.coordinates
+
+  const userLocation = {
+    lat: location?.lat || ipLocation?.lat,
+    lng: location?.lng || ipLocation?.lng,
+  }
 
   const RefreshControl = useRefreshControl(refetch)
 
@@ -91,7 +96,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
           refreshControl={RefreshControl}
           onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
           renderItem={({ item }) => {
-            return <PartnerListItem partner={item} userLocation={location || ipLocation} />
+            return <PartnerListItem partner={item} userLocation={userLocation} />
           }}
           keyExtractor={(item) => item.internalID}
           ItemSeparatorComponent={() => <Spacer y={4} />}

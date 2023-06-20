@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 import { PermissionsAndroid, Platform } from "react-native"
 
 export interface Location {
-  lat: number
-  lng: number
+  lat: number | null
+  lng: number | null
 }
 
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
