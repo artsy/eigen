@@ -1,19 +1,19 @@
 import {
   Autocomplete,
   CloseIcon,
-  TriangleDown,
   Flex,
-  useColor,
-  Text,
-  useTextStyleForPalette,
   Separator,
+  Text,
   Touchable,
+  TriangleDown,
+  useColor,
+  useTextStyleForPalette,
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, InteractionManager, TextInput, TouchableOpacity } from "react-native"
+import { FlatList, TextInput, TouchableOpacity } from "react-native"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -79,7 +79,8 @@ export const Select = <ValueType,>({
   const open = async () => {
     await blurAllOtherInputs()
 
-    InteractionManager.runAfterInteractions(() => {
+    // this is a hack to make sure that the modal doesn't open until the keyboard has been dismissed
+    requestAnimationFrame(() => {
       setShowingModal(true)
     })
   }
