@@ -61,11 +61,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable query prefetching",
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableImageSearch: {
-    readyForRelease: false,
-    description: "Enable search with image",
-    showInDevMenu: true,
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
@@ -246,11 +241,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableArtworkContextMenu: {
+  AREnableLongPressArtworkCards: {
     description: "Enable Context Menu on artwork cards",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkContextMenu",
   },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",

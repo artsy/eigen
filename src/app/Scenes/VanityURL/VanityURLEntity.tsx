@@ -1,9 +1,8 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
-import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
-import { PartnerContainer } from "app/Scenes/Partner/Partner"
+import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -86,7 +85,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
               case "partner":
                 return (
                   <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
-                    <HeaderTabsGridPlaceholder />
+                    <PartnerSkeleton />
                   </View>
                 )
               default:

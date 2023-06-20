@@ -1,9 +1,9 @@
-import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { Spacer, useColor } from "@artsy/palette-mobile"
+import { PaginationDots } from "app/Components/PaginationDots"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useContext } from "react"
 import { Animated, View } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselContext } from "./ImageCarouselContext"
-import { useSpringValue } from "./useSpringValue"
 
 export type IndicatorType = "dots" | "scrollBar" | undefined
 
@@ -13,43 +13,20 @@ export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = (
   if (indicatorType === "scrollBar") {
     return <ScrollBar />
   }
-  return <PaginationDots />
+  return <PaginationDotsWrapper />
 }
 
-const PaginationDots: React.FC = () => {
+const PaginationDotsWrapper: React.FC = () => {
   const { media } = useContext(ImageCarouselContext)
+  const { imageIndex } = useContext(ImageCarouselContext)
+
+  imageIndex.useUpdates()
+
   return (
     <>
       <Spacer y={2} />
-      <Flex flexDirection="row" justifyContent="center">
-        {media.map((_, index) => (
-          <PaginationDot key={index} diameter={5} index={index} />
-        ))}
-      </Flex>
+      <PaginationDots length={media.length} currentIndex={imageIndex.current} />
     </>
-  )
-}
-
-export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
-  diameter,
-  index,
-}) => {
-  const { imageIndex } = useContext(ImageCarouselContext)
-  imageIndex.useUpdates()
-  const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)
-
-  return (
-    <Animated.View
-      accessibilityLabel="Image Pagination Indicator"
-      style={{
-        marginHorizontal: diameter * 0.8,
-        borderRadius: diameter / 2,
-        width: diameter,
-        height: diameter,
-        backgroundColor: "black",
-        opacity,
-      }}
-    />
   )
 }
 
