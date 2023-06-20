@@ -105,7 +105,8 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             {!!cities[0] && (
               <Text variant="sm-display" color="black60">
                 {cities[0]}
-                {!!(cities.length > 1) && ` and ${cities.length - 1} more`}
+                {!!(cities.length > 1) &&
+                  ` and ${cities.length - 1} more ${cities.length > 2 ? "cities" : "city"}`}
               </Text>
             )}
           </Flex>
