@@ -83,7 +83,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       <Flex>
         {!!visualizeLocation && (
           <Text ml={6} color="red">
-            Location: {JSON.stringify(location)}
+            Location: {location ? JSON.stringify(location) : "Using IP-based location"}
           </Text>
         )}
 

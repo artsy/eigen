@@ -125,7 +125,10 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
-  const { location, isLoading } = useLocation(disableLocation)
+  const { location, isLoading } = useLocation({
+    disabled: disableLocation,
+    skipPermissionRequests: true,
+  })
 
   if (isLoading) {
     return <ShowsRailPlaceholder />
@@ -135,7 +138,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
     <Suspense fallback={<ShowsRailPlaceholder />}>
       {!!visualizeLocation && (
         <Text mx={2} color="red">
-          Location: {JSON.stringify(location)}
+          Location: {location ? JSON.stringify(location) : "Using IP-based location"}
         </Text>
       )}
 
