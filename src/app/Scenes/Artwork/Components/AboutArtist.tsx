@@ -38,7 +38,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
           )}
         </Join>
       </Flex>
-      {hasSingleArtist && text && (
+      {!!hasSingleArtist && !!text && (
         <Box mt={2}>
           <ReadMore
             content={text}

@@ -1,6 +1,5 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Touchable } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 

@@ -13,6 +13,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import { MyCollectionCollectedArtistsOnboardingModal } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsOnboardingModal"
 import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
@@ -161,6 +162,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <Tabs.ScrollView>
+        <MyCollectionCollectedArtistsOnboardingModal />
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
@@ -188,6 +190,8 @@ const MyCollection: React.FC<{
           hasArtworks={artworks.length > 0}
         />
       </Tabs.SubTabBar>
+      <MyCollectionCollectedArtistsOnboardingModal />
+
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         mode={FilterModalMode.Custom}
