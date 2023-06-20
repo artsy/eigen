@@ -20,7 +20,6 @@ const showSettingsAlert = () => {
 }
 
 const showPrepromptAlert = async () => {
-  // TODO: Analytics for user disinterest and interest
   Alert.alert(
     "Artsy Would Like to Send You Notifications",
     "Turn on notifications to get important updates about artists you follow.",

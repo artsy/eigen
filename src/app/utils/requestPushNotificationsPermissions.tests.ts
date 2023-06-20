@@ -79,7 +79,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
         { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
       ]
     )
@@ -109,7 +109,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel" },
         { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
       ]
     )
@@ -152,7 +152,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel" },
         { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
       ]
     )
@@ -190,7 +190,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
         { text: "OK", onPress: expect.any(Function) },
       ]
     )
@@ -226,7 +226,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
         { text: "OK", onPress: expect.any(Function) },
       ]
     )
@@ -292,7 +292,7 @@ describe("requestPushNotificationsPermission", () => {
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
-        { text: "Dismiss", style: "cancel" },
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
         { text: "OK", onPress: expect.any(Function) },
       ]
     )
