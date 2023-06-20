@@ -7,6 +7,8 @@ export interface Location {
   lng: number
 }
 
+const REQUEST_PERMISSION_DELAY = 1000
+
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
 
 /**
@@ -49,16 +51,19 @@ export const useLocation = ({ disabled = false, skipPermissionRequests = false }
   }
 
   const requestPermission = () => {
-    Geolocation.requestAuthorization(
-      () => {
-        setPermissionRequested(true)
-      },
+    // Adding a delay to avoid requesting permission before the screen rendered
+    setTimeout(() => {
+      Geolocation.requestAuthorization(
+        () => {
+          setPermissionRequested(true)
+        },
 
-      (error) => {
-        console.log("Couldn't request permission to use device's location.", error)
-        setPermissionRequested(true)
-      }
-    )
+        (error) => {
+          console.log("Couldn't request permission to use device's location.", error)
+          setPermissionRequested(true)
+        }
+      )
+    }, REQUEST_PERMISSION_DELAY)
   }
 
   useEffect(() => {
