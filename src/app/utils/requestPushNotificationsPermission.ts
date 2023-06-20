@@ -4,6 +4,7 @@ import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
+import { postEventToProviders } from "app/utils/track/providers"
 import { Alert, Linking, Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 
@@ -12,7 +13,7 @@ const showSettingsAlert = () => {
     "Artsy Would Like to Send You Notifications",
     "Turn on notifications to get important updates about artists you follow.",
     [
-      { text: "Dismiss", style: "cancel" },
+      { text: "Not Now", style: "cancel" },
       { text: "Settings", onPress: () => Linking.openSettings() },
     ]
   )
@@ -24,10 +25,33 @@ const showPrepromptAlert = async () => {
     "Artsy Would Like to Send You Notifications",
     "Turn on notifications to get important updates about artists you follow.",
     [
-      { text: "Dismiss", style: "cancel" },
-      { text: "OK", onPress: () => requestSystemPermissions() },
+      {
+        text: "Not Now",
+        style: "cancel",
+        onPress: () => {
+          postEventToProviders({
+            action: "Artsy notification prompt response",
+            action_type: "Tap",
+            name: "Cancel",
+            context_screen: "Some screen",
+          })
+        },
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          postEventToProviders({
+            action: "Artsy notification prompt response",
+            action_type: "Tap",
+            name: "Yes",
+            context_screen: "Some screen",
+          })
+          requestSystemPermissions()
+        },
+      },
     ]
   )
+
   await GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationDialogLastSeenTimestamp(
     Date.now()
   )
@@ -63,7 +87,6 @@ const shouldDisplayPrepromptAlert = () => {
 export const requestPushNotificationsPermission = async () => {
   const pushPromptSettings = unsafe_getPushPromptSettings()
   if (!pushPromptSettings) {
-    console.warn("Push prompt settings not found aborting")
     return
   }
 
