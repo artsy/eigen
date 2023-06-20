@@ -100,7 +100,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
     setViewKind({ viewKind: "Add" })
   }, 100)
 
-  const handlePlusButtonPress = () => {
+  const handleCreateButtonPress = () => {
     switch (selectedTab) {
       case "Artists":
         navigate("my-collection/collected-artists/new")
@@ -157,7 +157,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
           <Touchable
-            onPress={handlePlusButtonPress}
+            onPress={handleCreateButtonPress}
             haptic
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
