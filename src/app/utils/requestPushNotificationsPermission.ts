@@ -33,7 +33,7 @@ const showPrepromptAlert = async () => {
             action: "Artsy notification prompt response",
             action_type: "Tap",
             name: "Cancel",
-            context_screen: "Some screen",
+            context_screen: "PushNotificationOnboarding",
           })
         },
       },
@@ -44,7 +44,7 @@ const showPrepromptAlert = async () => {
             action: "Artsy notification prompt response",
             action_type: "Tap",
             name: "Yes",
-            context_screen: "Some screen",
+            context_screen: "PushNotificationOnboarding",
           })
           requestSystemPermissions()
         },
