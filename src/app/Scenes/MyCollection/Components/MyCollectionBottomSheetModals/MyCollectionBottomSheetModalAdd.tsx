@@ -21,7 +21,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artists"
           description="List the artists in your collection."
           onPress={() => {
-            console.log("Add Artists")
+            navigate("my-collection/collected-artists/new")
           }}
           icon={<UserMultiIcon height={24} width={24} />}
           py="40px"

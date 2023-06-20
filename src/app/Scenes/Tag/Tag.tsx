@@ -1,8 +1,16 @@
-import { Tabs } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Screen,
+  Separator,
+  Skeleton,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
-import { TagPlaceholder } from "app/Scenes/Tag/TagPlaceholder"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { PlaceholderGrid } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 
@@ -65,9 +73,48 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
       variables={{ tagID }}
       render={renderWithPlaceholder({
         Container: Tag,
-        renderPlaceholder: () => <TagPlaceholder />,
+        renderPlaceholder: () => <TagSkeleton />,
         initialProps: { tagID },
       })}
     />
+  )
+}
+
+const TagSkeleton: React.FC = () => {
+  return (
+    <Screen>
+      <Screen.Header />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <SkeletonText variant="xl">Guitar Tag</SkeletonText>
+          </Flex>
+
+          <Spacer y={2} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">Description</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={2} />
+
+        <Flex justifyContent="space-between" flexDirection="row" px={2}>
+          <SkeletonText variant="xs">Sort and Filter</SkeletonText>
+        </Flex>
+
+        <Separator my={2} />
+
+        <SkeletonText mx={2} variant="xs">
+          Showing 57326 works
+        </SkeletonText>
+
+        <Spacer y={2} />
+
+        <PlaceholderGrid />
+      </Screen.Body>
+    </Screen>
   )
 }

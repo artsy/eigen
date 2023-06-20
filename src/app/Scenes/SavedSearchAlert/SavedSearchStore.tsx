@@ -13,6 +13,13 @@ interface SavedSearchModel {
   entity: SavedSearchEntity
   dirty: boolean
 
+  setValueToAttributesByKeyAction: Action<
+    this,
+    {
+      key: SearchCriteria
+      value: string | null
+    }
+  >
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
@@ -35,6 +42,20 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
+
+  setValueToAttributesByKeyAction: action((state, payload) => {
+    if (payload.key === "priceRange") {
+      // set form dirty on price update
+      if (state.attributes[payload.key] !== payload.value) {
+        state.dirty = true
+      }
+
+      // set the price range to be null if the value is *-* (which means empty)
+      state.attributes[payload.key] = payload.value === "*-*" ? null : payload.value
+    } else {
+      state.attributes[payload.key] = payload.value as unknown as null | undefined
+    }
+  }),
 
   removeValueFromAttributesByKeyAction: action((state, payload) => {
     const prevValue = state.attributes[payload.key]

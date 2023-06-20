@@ -1,7 +1,7 @@
 import { Touchable } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface HeaderButtonProps extends AnimateProps<ViewProps> {
   style?: StyleProp<Animated.AnimateStyle<ViewStyle>>

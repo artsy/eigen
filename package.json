@@ -99,15 +99,14 @@
   ],
   "dependenciesComments": {
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
-    "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159",
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "react-spring": "Try removing this! We have reanimated now.",
     "deprecated-react-native-prop-types": "Needed for patching react-native-scrollable-tab-view, react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.130.0",
-    "@artsy/palette-mobile": "11.0.40",
+    "@artsy/cohesion": "4.132.0",
+    "@artsy/palette-mobile": "11.2.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@formatjs/intl-datetimeformat": "6.8.0",
@@ -192,6 +191,7 @@
     "react-native-push-notification": "8.1.1",
     "react-native-reanimated": "2.13.0",
     "react-native-reanimated-zoom": "0.3.3",
+    "react-native-render-html": "6.3.4",
     "react-native-safe-area-context": "3.4.0",
     "react-native-screens": "3.20.0",
     "react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view#a7f46de184123be9703c57b0a7618ae0557c8a87",
@@ -201,7 +201,6 @@
     "react-native-url-polyfill": "1.3.0",
     "react-native-view-shot": "3.4.0",
     "react-native-vimeo-iframe": "1.2.1",
-    "react-native-vision-camera": "2.15.2",
     "react-native-webview": "11.3.1",
     "react-relay": "14.1.0",
     "react-spring": "8.0.23",

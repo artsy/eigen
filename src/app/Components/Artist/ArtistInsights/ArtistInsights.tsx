@@ -9,7 +9,6 @@ import {
 } from "app/Components/ArtworkFilter"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useRef, useState } from "react"
@@ -26,7 +25,9 @@ interface ArtistInsightsProps {
   initialFilters?: FilterArray
 }
 
+const SCROLL_UP_TO_SHOW_THRESHOLD = 150
 const FILTER_BUTTON_OFFSET = 50
+
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const { artist, relay, initialFilters } = props
 

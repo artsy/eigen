@@ -1,33 +1,34 @@
-import { Route } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
 import { fireEvent } from "@testing-library/react-native"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
-import { ArtworkFormMode } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("AddMyCollectionArtist", () => {
-  const mockNav: Partial<StackNavigationProp<{}>> = {
-    addListener: jest.fn(),
-  }
-  const mockRoute: Route<
-    "AddMyCollectionArtist",
-    {
-      mode: ArtworkFormMode
-      clearForm(): void
-      onHeaderBackButtonPress(): void
-    }
-  > = {
-    key: "AddMyCollectionArtist",
-    name: "AddMyCollectionArtist",
-    params: {
-      mode: "add",
-      clearForm: jest.fn(),
-      onHeaderBackButtonPress: jest.fn(),
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+    }),
+    useRoute: () => {
+      const props: ArtworkFormScreen["AddMyCollectionArtist"] = {
+        props: {
+          onSubmit: jest.fn(),
+          artistDisplayName: "",
+        },
+      }
+      return {
+        params: {
+          props,
+        },
+      }
     },
   }
+})
 
-  const TestRenderer = () => <AddMyCollectionArtist navigation={mockNav as any} route={mockRoute} />
+describe("AddMyCollectionArtist", () => {
+  const TestRenderer = () => <AddMyCollectionArtist />
 
   it("renders the form with the right name", () => {
     const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)

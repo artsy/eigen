@@ -61,11 +61,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable query prefetching",
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableImageSearch: {
-    readyForRelease: false,
-    description: "Enable search with image",
-    showInDevMenu: true,
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
@@ -231,10 +226,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
   },
   AREnableArtworkLists: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable Artwork Lists",
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
@@ -247,17 +241,22 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableArtworkContextMenu: {
+  AREnableLongPressArtworkCards: {
     description: "Enable Context Menu on artwork cards",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkContextMenu",
   },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableShowsForYouLocation",
+  },
+  AREnableGalleriesForYou: {
+    description: "Enable Galleries For You",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableGalleriesForYou",
   },
 }
 

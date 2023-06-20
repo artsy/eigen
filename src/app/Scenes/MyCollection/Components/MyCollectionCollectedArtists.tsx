@@ -10,6 +10,7 @@ interface MyCollectionCollectedArtists {
 
 export const MyCollectionCollectedArtists: React.FC<MyCollectionCollectedArtists> = ({ me }) => {
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
   const data = useFragment(collectedArtistsFragment, me)
 
   if (!data) {

@@ -1,4 +1,5 @@
 import { MyCollectionCollectedArtistsViewTestsQuery } from "__generated__/MyCollectionCollectedArtistsViewTestsQuery.graphql"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -16,25 +17,27 @@ describe("MyCollectionCollectedArtistsView", () => {
 
   const TestRenderer = () => {
     return (
-      <MyCollectionTabsStoreProvider>
-        <QueryRenderer<MyCollectionCollectedArtistsViewTestsQuery>
-          environment={mockEnvironment}
-          query={graphql`
-            query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
-              me {
-                ...MyCollectionCollectedArtistsView_me
+      <MyCollectionArtworksKeywordStore.Provider>
+        <MyCollectionTabsStoreProvider>
+          <QueryRenderer<MyCollectionCollectedArtistsViewTestsQuery>
+            environment={mockEnvironment}
+            query={graphql`
+              query MyCollectionCollectedArtistsViewTestsQuery @relay_test_operation {
+                me {
+                  ...MyCollectionCollectedArtistsView_me
+                }
               }
-            }
-          `}
-          render={({ props }) => {
-            if (!props?.me) {
-              return null
-            }
-            return <MyCollectionCollectedArtistsView me={props.me} />
-          }}
-          variables={{}}
-        />
-      </MyCollectionTabsStoreProvider>
+            `}
+            render={({ props }) => {
+              if (!props?.me) {
+                return null
+              }
+              return <MyCollectionCollectedArtistsView me={props.me} />
+            }}
+            variables={{}}
+          />
+        </MyCollectionTabsStoreProvider>
+      </MyCollectionArtworksKeywordStore.Provider>
     )
   }
 

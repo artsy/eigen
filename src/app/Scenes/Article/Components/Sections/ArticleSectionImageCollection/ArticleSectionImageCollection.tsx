@@ -1,8 +1,10 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollection_section$key } from "__generated__/ArticleSectionImageCollection_section.graphql"
+import { PaginationDots } from "app/Components/PaginationDots"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
-import { Fragment } from "react"
+import { useState } from "react"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -13,20 +15,48 @@ interface ArticleSectionImageCollectionProps {
 export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollectionProps> = ({
   section,
 }) => {
+  const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const data = useFragment(ArticleSectionImageCollectionQuery, section)
+
+  if (!data?.figures?.length) {
+    return null
+  }
+
+  const updateCurrentPageIndex = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const totalWidth = event.nativeEvent.layoutMeasurement.width
+    const xPos = event.nativeEvent.contentOffset.x
+    const pageIndex = Math.floor(xPos / totalWidth)
+
+    setCurrentPageIndex(pageIndex)
+  }
 
   return (
     <>
-      <Text>{data.layout}</Text>
+      <FlatList
+        data={data.figures}
+        scrollEnabled={data?.figures?.length > 1}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
+        showsHorizontalScrollIndicator={false}
+        onMomentumScrollEnd={updateCurrentPageIndex}
+        horizontal
+        pagingEnabled
+        renderItem={({ item, index }) => {
+          return (
+            <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
+              <ArticleSectionImageCollectionImage figure={item} />
+              <ArticleSectionImageCollectionCaption figure={item} />
+            </Flex>
+          )
+        }}
+      />
 
-      {data?.figures?.map((figure, index) => {
-        return (
-          <Fragment key={index}>
-            <ArticleSectionImageCollectionImage figure={figure} />
-            <ArticleSectionImageCollectionCaption figure={figure} />
-          </Fragment>
-        )
-      })}
+      {data.figures.length > 1 && (
+        <>
+          <Flex my={2}>
+            <PaginationDots currentIndex={currentPageIndex} length={data.figures.length} />
+          </Flex>
+        </>
+      )}
     </>
   )
 }
@@ -35,7 +65,6 @@ const ArticleSectionImageCollectionQuery = graphql`
   fragment ArticleSectionImageCollection_section on ArticleSectionImageCollection {
     layout
     figures {
-      __typename
       ...ArticleSectionImageCollectionImage_figure
       ...ArticleSectionImageCollectionCaption_figure
     }

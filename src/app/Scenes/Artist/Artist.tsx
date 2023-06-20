@@ -1,4 +1,14 @@
-import { ShareIcon, Tabs } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Join,
+  Screen,
+  Separator,
+  ShareIcon,
+  Skeleton,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -18,13 +28,13 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { PlaceholderGrid } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { ActivityIndicator, TouchableOpacity, View } from "react-native"
@@ -217,7 +227,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
       searchCriteriaId={searchCriteriaID ?? search_criteria_id}
       environment={environment}
       render={{
-        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+        renderPlaceholder: () => <ArtistSkeleton />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const predefinedFilterParams = filterArtworksParams(predefinedFilters ?? [], "artwork")
@@ -259,7 +269,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 variables: { artistID },
               }}
               render={{
-                renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+                renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
                   if (!above.artist) {
                     throw new Error("no artist data")
@@ -299,5 +309,37 @@ const LoadingPage: React.FC<{}> = ({}) => {
     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
       <ActivityIndicator />
     </View>
+  )
+}
+
+const ArtistSkeleton: React.FC = () => {
+  return (
+    <Screen>
+      <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <Join separator={<Spacer y={0.5} />}>
+              <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+              <SkeletonText variant="xs">American, b. 1945</SkeletonText>
+              <SkeletonText variant="xs">40 Works, 45 Followers</SkeletonText>
+            </Join>
+          </Flex>
+
+          <Spacer y={4} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Overview</SkeletonText>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">Insights</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={4} />
+
+        <PlaceholderGrid />
+      </Screen.Body>
+    </Screen>
   )
 }

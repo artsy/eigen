@@ -1,4 +1,4 @@
-import { BorderBox, XCircleIcon, AddIcon, Flex, Box, useColor } from "@artsy/palette-mobile"
+import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"

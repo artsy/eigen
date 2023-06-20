@@ -1,4 +1,4 @@
-import { ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { AvatarSize, ClassTheme, EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
@@ -14,6 +14,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 
 interface Props {
   artist: ArtistListItem_artist$data
+  avatarSize?: AvatarSize
   Component?: any
   containerStyle?: StyleProp<ViewStyle>
   contextModule?: string
@@ -49,6 +50,7 @@ export const formatTombstoneText = (
 
 const ArtistListItem: React.FC<Props> = ({
   artist,
+  avatarSize = "sm",
   containerStyle = {},
   contextModule,
   disableNavigation,
@@ -93,9 +95,11 @@ const ArtistListItem: React.FC<Props> = ({
     if (tombstoneText || Number.isInteger(uploadsCount)) {
       return (
         <Flex>
-          <Text variant="xs" color="black60">
-            {tombstoneText}
-          </Text>
+          {!!tombstoneText && (
+            <Text variant="xs" color="black60">
+              {tombstoneText}
+            </Text>
+          )}
 
           {Number.isInteger(uploadsCount) && (
             <Text variant="xs" color={uploadsCount === 0 ? "black60" : "black100"}>
@@ -140,7 +144,7 @@ const ArtistListItem: React.FC<Props> = ({
                 meta={meta}
                 imageUrl={imageURl ?? undefined}
                 initials={initials ?? undefined}
-                avatarSize="sm"
+                avatarSize={avatarSize}
                 RightButton={RightButton}
               />
             </Flex>
@@ -221,7 +225,9 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   `,
 })
 
-export const ArtistListItemPlaceholder = () => (
+export const ArtistListItemPlaceholder: React.FC<{ includeCheckbox?: boolean }> = ({
+  includeCheckbox,
+}) => (
   <Flex flexDirection="row">
     <PlaceholderBox height={45} width={45} borderRadius={22.5} />
     <Flex pl={1} pt={0.5} height={45}>
@@ -229,7 +235,11 @@ export const ArtistListItemPlaceholder = () => (
       <PlaceholderText height={13} width={100 + Math.random() * 100} />
     </Flex>
     <Flex height={45} position="absolute" right={0} justifyContent="center">
-      <PlaceholderBox height={25} width={90} borderRadius={50} />
+      {includeCheckbox ? (
+        <PlaceholderBox height={20} width={20} />
+      ) : (
+        <PlaceholderBox height={25} width={90} borderRadius={50} />
+      )}
     </Flex>
   </Flex>
 )

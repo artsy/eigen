@@ -13,7 +13,11 @@ import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { MyCollectionCollectedArtistsPrivacy } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsPrivacy"
+import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import {
@@ -99,7 +103,7 @@ import {
   MyCollectionArtworkScreenQuery,
 } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithArtsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
-import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkFormScreen } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
@@ -116,7 +120,6 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
-import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "./Scenes/Sales/Sales"
@@ -336,13 +339,22 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   About: reactModule(About),
-  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
+  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkFormScreen, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
+  AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
+    hidesBackButton: true,
+  }),
   ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, {
     fullBleed: true,
     hidesBackButton: true,
   }),
-  Article: reactModule(ArticleScreen),
+  Article: reactModule(ArticleScreen, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Articles: reactModule(
     ArticlesScreen,
     {
@@ -432,6 +444,7 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
+  GalleriesForYou: reactModule(GalleriesForYouScreen),
   Gene: reactModule(GeneQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,
@@ -470,7 +483,20 @@ export const modules = defineModules({
     { fullBleed: true, hidesBackButton: true },
     [MyCollectionArtworkScreenQuery]
   ),
+  MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
+    screenOptions: {
+      gestureEnabled: false,
+    },
+    hidesBottomTabs: true,
+  }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
+  MyCollectionCollectedArtistsPrivacy: reactModule(MyCollectionCollectedArtistsPrivacy, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+
   MyProfile: reactModule(
     MyProfile,
     {
@@ -513,12 +539,6 @@ export const modules = defineModules({
     { hidesBackButton: true }
   ),
   RecentlyViewed: reactModule(RecentlyViewedScreen, {}, [RecentlyViewedScreenQuery]),
-  ReverseImage: reactModule(ReverseImage, {
-    hidesBackButton: true,
-    fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
-  }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
     SellWithArtsyHomeScreenQuery,
   ]),

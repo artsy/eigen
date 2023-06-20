@@ -10,8 +10,9 @@ import {
 } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Pill } from "app/Components/Pill"
+import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import {
@@ -66,34 +67,57 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   }, [selectedTab, hasArtworks, enableCollectedArtists])
 
   return (
-    <>
-      {!!enableCollectedArtists && (
-        <Flex pb={0}>
-          <MainStickyHeader hasArtworks={hasArtworks} />
-        </Flex>
-      )}
-      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
+    <Flex px={2} backgroundColor="white100">
       <Messages
         showNewWorksMessage={showNewWorksMessage}
         showSubmissionMessage={showSubmissionMessage}
         hasMarketSignals={hasMarketSignals}
       />
-    </>
+      {!!enableCollectedArtists && (
+        <Flex>
+          <MainStickyHeader hasArtworks={hasArtworks} />
+        </Flex>
+      )}
+      {!!showArtworkFilters && <Filters filtersCount={filtersCount} showModal={showModal} />}
+    </Flex>
   )
 }
 
 export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
-  const space = useSpace()
-
   const closeIconRef = useRef(null)
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const showAddToMyCollectionBottomSheet = debounce(() => {
     setViewKind({ viewKind: "Add" })
   }, 100)
+
+  const handleCreateButtonPress = () => {
+    switch (selectedTab) {
+      case "Artists":
+        navigate("my-collection/collected-artists/new")
+        break
+      case "Artworks":
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            mode: "add",
+            source: Tab.collection,
+            onSuccess: () => {
+              // hide the bottom sheet
+              setViewKind({ viewKind: null })
+              popToRoot()
+            },
+          },
+        })
+        break
+      default:
+        showAddToMyCollectionBottomSheet()
+        break
+    }
+  }
 
   const { width } = useMeasure({ ref: closeIconRef })
 
@@ -102,12 +126,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   return (
     <>
-      <Flex
-        alignItems="center"
-        flexDirection="row"
-        justifyContent="space-between"
-        style={{ paddingTop: space(2), paddingHorizontal: space(2) }}
-      >
+      <Flex alignItems="center" flexDirection="row" justifyContent="space-between" p={2}>
         <AnimatedCloseIcon closeIconRef={closeIconRef} />
 
         {/* Pills */}
@@ -133,17 +152,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         {/* Seach and Add */}
         <Flex justifyContent="center" alignItems="center" flexDirection="row">
           <Touchable
-            onPress={() => {
-              console.log("Search button pressed")
-            }}
-            haptic
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <SearchIcon width={24} height={24} />
-          </Touchable>
-          <Spacer x={PILL_PADDING} />
-          <Touchable
-            onPress={showAddToMyCollectionBottomSheet}
+            onPress={handleCreateButtonPress}
             haptic
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
@@ -160,6 +169,9 @@ const AnimatedCloseIcon: React.FC<{
 }> = ({ closeIconRef }) => {
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
   const setSelectedTab = MyCollectionTabsStore.useStoreActions((actions) => actions.setSelectedTab)
+  const setKeyword = debounce(
+    MyCollectionArtworksKeywordStore.useStoreActions((actions) => actions.setKeyword)
+  )
 
   const space = useSpace()
 
@@ -168,7 +180,6 @@ const AnimatedCloseIcon: React.FC<{
       left={space(2)}
       position="absolute"
       ref={closeIconRef}
-      top={space(2)}
       // Allow the first pill to capture touches when the X button is hidden
       zIndex={selectedTab !== null ? 1 : -1}
     >
@@ -180,6 +191,7 @@ const AnimatedCloseIcon: React.FC<{
       >
         <Touchable
           onPress={() => {
+            setKeyword("")
             setSelectedTab(null)
           }}
           haptic="impactLight"
@@ -191,7 +203,6 @@ const AnimatedCloseIcon: React.FC<{
             borderWidth="1px"
             height={PILL_DIAMETER}
             justifyContent="center"
-            px={2}
             width={PILL_DIAMETER}
           >
             <CloseIcon />
@@ -263,11 +274,24 @@ const AnimatedPill: React.FC<{
   )
 }
 
-const Filters = ({ filtersCount, showModal }: { filtersCount: number; showModal: () => void }) => {
+export interface FiltersProps {
+  filtersCount: number
+  showModal: () => void
+}
+
+const Filters: React.FC<FiltersProps> = (props) => {
   const { trackEvent } = useTracking()
 
+  const { showModal, filtersCount } = props
+
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
+  if (enableCollectedArtists) {
+    return <MyCollectionArtworkFilters {...props} />
+  }
+
   return (
-    <Flex px={2} backgroundColor="white100">
+    <Flex backgroundColor="white100">
       <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={showModal}>
         <Button
           data-test-id="add-artwork-button-non-zero-state"
@@ -297,8 +321,12 @@ const Messages: React.FC<{
   showNewWorksMessage: boolean
   showSubmissionMessage: boolean
 }> = ({ hasMarketSignals, showNewWorksMessage, showSubmissionMessage }) => {
+  if (!hasMarketSignals && !showNewWorksMessage && !showSubmissionMessage) {
+    return null
+  }
+
   return (
-    <>
+    <Flex>
       {!!showNewWorksMessage && (
         <PurchasedArtworkAddedMessage
           onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
@@ -313,7 +341,7 @@ const Messages: React.FC<{
         sourceTab={Tab.collection}
         hasMarketSignals={hasMarketSignals}
       />
-    </>
+    </Flex>
   )
 }
 

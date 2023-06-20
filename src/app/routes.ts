@@ -180,6 +180,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/fair/:fairID/info", "FairMoreInfo"),
     addRoute("/favorites", "Favorites"),
     addRoute("/feature/:slug", "Feature"),
+    addRoute("/galleries-for-you", "GalleriesForYou"),
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/inbox", "Inbox"),
     addRoute("/inquiry/:artworkID", "Inquiry"),
@@ -194,6 +195,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-account/edit-phone", "MyAccountEditPhone"),
     addRoute("/my-account/edit-price-range", "MyAccountEditPriceRange"),
     addRoute("/my-collection", "MyCollection"),
+    addRoute("/my-collection/artists/new", "AddMyCollectionArtist"),
     addRoute("/my-collection/artwork/:artworkId", "MyCollectionArtwork"),
     addRoute("/my-collection/artwork/:artworkID/price-estimate", "RequestForPriceEstimateScreen"),
     addRoute(
@@ -202,8 +204,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     ),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection/collected-artists/new", "MyCollectionAddCollectedArtists"),
     addRoute("/my-collection/career-highlights", "CareerHighlightsBigCardsSwiper"),
     addRoute("/my-collection/median-sale-price-at-auction/:artistID", "MedianSalePriceAtAuction"),
+    addRoute(
+      "/my-collection/collected-artists/privacy-settings",
+      "MyCollectionCollectedArtistsPrivacy"
+    ),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/my-profile/payment", "MyProfilePayment"),
@@ -230,7 +237,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/privacy-request", "PrivacyRequest"),
     addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/recently-viewed", "RecentlyViewed"),
-    addRoute("/reverse-image", "ReverseImage"),
     addRoute("/sales", "Sales"),
     addRoute("/search", "Search"),
     addRoute("/search2", "Search2"),

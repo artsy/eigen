@@ -1,13 +1,13 @@
 import {
   Autocomplete,
   CloseIcon,
-  TriangleDown,
   Flex,
-  useColor,
-  Text,
-  useTextStyleForPalette,
   Separator,
+  Text,
   Touchable,
+  TriangleDown,
+  useColor,
+  useTextStyleForPalette,
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
@@ -78,7 +78,11 @@ export const Select = <ValueType,>({
 
   const open = async () => {
     await blurAllOtherInputs()
-    setShowingModal(true)
+
+    // this is a hack to make sure that the modal doesn't open until the keyboard has been dismissed
+    requestAnimationFrame(() => {
+      setShowingModal(true)
+    })
   }
 
   const close = () => {

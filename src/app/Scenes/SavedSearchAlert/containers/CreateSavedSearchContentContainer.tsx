@@ -1,15 +1,12 @@
 import { Box } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/core"
-import { StackNavigationProp } from "@react-navigation/stack"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
-import {
-  CreateSavedSearchAlertNavigationStack,
-  SavedSearchAlertMutationResult,
-} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   getNotificationPermissionsStatus,
@@ -19,21 +16,19 @@ import useAppState from "app/utils/useAppState"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-interface CreateSavedSearchAlertContentQueryRendererProps {
-  navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
-  onClosePress: () => void
-  onComplete: (response: SavedSearchAlertMutationResult) => void
-}
-
-interface CreateSavedSearchAlertContentProps
-  extends CreateSavedSearchAlertContentQueryRendererProps {
+interface CreateSavedSearchAlertContentProps {
   relay: RelayRefetchProp
   viewer?: CreateSavedSearchContentContainer_viewer$data | null
   loading: boolean
 }
 
 const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
-  const { viewer, loading, relay, navigation, onClosePress, ...other } = props
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
+  const route =
+    useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
+  const { viewer, loading, relay } = props
+  const { onClosePress, ...other } = route.params
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
@@ -125,7 +120,7 @@ const CreateSavedSearchContentContainer = createRefetchContainer(
 )
 
 export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
-  CreateSavedSearchAlertContentQueryRendererProps
+  CreateSavedSearchAlertContentProps
 > = (props) => {
   return (
     <QueryRenderer<CreateSavedSearchContentContainerQuery>

@@ -1,4 +1,4 @@
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistSearchResult } from "./ArtistSearchResult"
 

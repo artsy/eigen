@@ -11,7 +11,6 @@ const LoadingModal: React.FC<LoadingModalProps & ModalProps> = ({
   dark = false,
   ...rest
 }) => {
-  const { backgroundColor, spinnerColor } = getColors(dark)
   return (
     <Modal
       animationType="fade"
@@ -20,10 +19,18 @@ const LoadingModal: React.FC<LoadingModalProps & ModalProps> = ({
       transparent
       statusBarTranslucent
     >
-      <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor }}>
-        <Spinner color={spinnerColor} />
-      </Flex>
+      <LoadingSpinner dark={dark} />
     </Modal>
+  )
+}
+
+export const LoadingSpinner: React.FC<{ dark?: boolean }> = ({ dark = false }) => {
+  const { backgroundColor, spinnerColor } = getColors(dark)
+
+  return (
+    <Flex flex={1} alignItems="center" justifyContent="center" style={{ backgroundColor }}>
+      <Spinner color={spinnerColor} />
+    </Flex>
   )
 }
 

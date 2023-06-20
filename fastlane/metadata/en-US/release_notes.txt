@@ -1,4 +1,6 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
 
+  - Smoother animations when you move between tabs.
+  - Performance improvements
 
 Have feedback? Email us at support@artsy.net

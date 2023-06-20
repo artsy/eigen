@@ -5,6 +5,7 @@ import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { debounce } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
@@ -45,6 +46,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   const inputRef = useRef<TextInput>(null)
 
   const debouncedSetKeywordFilter = useMemo(() => debounce((text) => onChangeText?.(text), 200), [])
+
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const onViewOptionChange = (selectedViewOption: ViewOption) => {
     LayoutAnimation.configureNext({
@@ -137,7 +140,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+
+            {!enableCollectedArtists && (
+              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+            )}
           </Flex>
         </Flex>
       )}

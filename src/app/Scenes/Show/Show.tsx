@@ -1,10 +1,8 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box, Separator } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
-import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
@@ -38,8 +36,6 @@ interface ShowProps {
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [visible, setVisible] = useState(false)
-  const shouldShowImageSearchButton = show.isReverseImageSearchEnabled && !!show.isActive
-
   const filterComponentAnimationValue = new Animated.Value(0)
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
@@ -129,11 +125,6 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyboardShouldPersistTaps="handled"
         />
       </ArtworkFiltersStoreProvider>
-
-      <SearchImageHeaderButton
-        isImageSearchButtonVisible={shouldShowImageSearchButton}
-        owner={{ type: OwnerType.show, id: show.internalID, slug: show.slug }}
-      />
     </ProvideScreenTracking>
   )
 }
@@ -143,7 +134,6 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
     fragment Show_show on Show {
       internalID
       slug
-      isReverseImageSearchEnabled
       isActive
       ...ShowHeader_show
       ...ShowInstallShots_show
