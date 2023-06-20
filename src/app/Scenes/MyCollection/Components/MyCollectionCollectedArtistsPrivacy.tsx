@@ -81,7 +81,7 @@ const ShareSettingsScreenPlaceholder: React.FC<{}> = () => (
       <Join separator={<Spacer y={2} />}>
         {times(4).map((index: number) => (
           <Flex key={index}>
-            <ArtistListItemPlaceholder displaywithCheckbox />
+            <ArtistListItemPlaceholder includeCheckbox />
           </Flex>
         ))}
       </Join>

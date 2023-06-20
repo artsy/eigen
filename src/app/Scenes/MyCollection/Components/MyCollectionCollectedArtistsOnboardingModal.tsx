@@ -3,13 +3,12 @@ import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { navigate } from "app/system/navigation/navigate"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React from "react"
-import { Image, Modal, Platform } from "react-native"
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { Image, Modal } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   const { showVisualClue } = useVisualClue()
 
-  const insets = useSafeAreaInsets()
   const color = useColor()
   const space = useSpace()
 
@@ -24,7 +23,7 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   return (
     <Modal presentationStyle="formSheet" animationType="slide">
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
-        <Flex mt={Platform.OS === "android" ? `${insets.top}px` : undefined}>
+        <Flex>
           <Flex top={space(1)} alignItems="center" justifyContent="flex-start" width="100%">
             <Flex
               style={{
@@ -55,9 +54,8 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
               onPress={() => {
                 setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
                 setTimeout(() => {
-                  navigate("my-collection/collected-artists/privacy-settings")
+                  navigate("/my-collection/collected-artists/privacy-settings")
                 }, 1000)
-                ;() => {}
               }}
             >
               Select Artists to Share
