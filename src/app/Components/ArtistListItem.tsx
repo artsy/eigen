@@ -95,9 +95,11 @@ const ArtistListItem: React.FC<Props> = ({
     if (tombstoneText || Number.isInteger(uploadsCount)) {
       return (
         <Flex>
-          <Text variant="xs" color="black60">
-            {tombstoneText}
-          </Text>
+          {!!tombstoneText && (
+            <Text variant="xs" color="black60">
+              {tombstoneText}
+            </Text>
+          )}
 
           {Number.isInteger(uploadsCount) && (
             <Text variant="xs" color={uploadsCount === 0 ? "black60" : "black100"}>

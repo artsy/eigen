@@ -1,6 +1,7 @@
 import { Text, Touchable } from "@artsy/palette-mobile"
 import { Input } from "app/Components/Input"
 import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
@@ -54,6 +55,8 @@ it("selects correct value", async () => {
 
   await act(() => component.root.findAllByType(TouchableOpacity)[0].props.onPress())
 
+  await flushPromiseQueue()
+
   const selectModal = component.root.findAllByType(Modal)[0]
   selectModal.findAllByType(Touchable)[1].props.onPress()
 
@@ -76,7 +79,10 @@ it("filters on search", async () => {
 
   await act(() => component.root.findAllByType(TouchableOpacity)[0].props.onPress())
 
+  await flushPromiseQueue()
+
   const input = component.root.findAllByType(Input)[0]
+
   input.props.onChangeText("Option 2")
 
   const selectModal = component.root.findAllByType(Modal)[0]
