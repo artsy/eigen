@@ -10440,6 +10440,20 @@ type ImageURLs {
   normalized: String
 }
 
+type InputAddress {
+  address_line1: String!
+  address_line2: String!
+  city: String!
+  country: String!
+  postal_code: String!
+  region: String
+}
+
+type InputAddressFields {
+  address: InputAddress
+  lines: [String]
+}
+
 type InquirerCollectorProfile {
   artsyUserSince(
     format: String
@@ -15238,6 +15252,16 @@ type Query {
     id: String!
   ): VanityURLEntityType
 
+  # Verify a given address.
+  verifyAddress(
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    country: String!
+    postalCode: String!
+    region: String
+  ): VerifyAddressType
+
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
 
@@ -16979,6 +17003,20 @@ type SubmittedPriceEstimateParams {
   requesterPhoneNumber: String
 }
 
+type SuggestedAddress {
+  address_line_1: String!
+  address_line_2: String!
+  city: String!
+  country: String!
+  postal_code: String!
+  region: String
+}
+
+type SuggestedAddressFields {
+  address: SuggestedAddress
+  lines: [String]
+}
+
 type System {
   algolia: Algolia
 
@@ -18622,6 +18660,20 @@ enum UserSearchCriteriaFrequency {
 
 union VanityURLEntityType = Fair | Partner
 
+enum VerificationStatuses {
+  NOT_FOUND
+  NOT_PERFORMED
+  VERIFICATION_UNAVAILABLE
+  VERIFIED_NO_CHANGE
+  VERIFIED_WITH_CHANGES
+}
+
+type VerifyAddressType {
+  inputAddress: InputAddressFields
+  suggestedAddresses: [SuggestedAddressFields]
+  verificationStatus: VerificationStatuses
+}
+
 # An object containing video metadata
 type Video {
   # The height of the video
@@ -19517,6 +19569,16 @@ type Viewer {
     # The slug or ID of the Profile to get a partner or fair for
     id: String!
   ): VanityURLEntityType
+
+  # Verify a given address.
+  verifyAddress(
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    country: String!
+    postalCode: String!
+    region: String
+  ): VerifyAddressType
   viewingRoomsConnection(
     after: String
     first: Int
