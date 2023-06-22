@@ -7,15 +7,18 @@ export interface Location {
   lng: number
 }
 
+const REQUEST_PERMISSION_DELAY = 1000
+
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
 
 /**
  * Returns the user's location if available, otherwise returns the user's IP address
  * Usage:
- *   const { isLoading, location, ip } = useLocation()
+ *   const { isLoading, location, ip } = useLocation({ diabled: false, skipPermissionRequests: true })
  */
-export const useLocation = (disabled = false) => {
+export const useLocation = ({ disabled = false, skipPermissionRequests = false } = {}) => {
   const [isLoading, setIsLoading] = useState(!disabled)
+  const [permissionRequested, setPermissionRequested] = useState(false)
   const [location, setLocation] = useState<Location | null>(null)
 
   const getLocation = async () => {
@@ -47,13 +50,33 @@ export const useLocation = (disabled = false) => {
     }
   }
 
+  const requestPermission = () => {
+    // Adding a delay to avoid requesting permission before the screen rendered
+    setTimeout(() => {
+      Geolocation.requestAuthorization(
+        () => {
+          setPermissionRequested(true)
+        },
+
+        (error) => {
+          console.log("Couldn't request permission to use device's location.", error)
+          setPermissionRequested(true)
+        }
+      )
+    }, REQUEST_PERMISSION_DELAY)
+  }
+
   useEffect(() => {
-    if (disabled) {
-      return
-    }
+    if (disabled || skipPermissionRequests || permissionRequested) return
+
+    requestPermission()
+  }, [skipPermissionRequests, disabled])
+
+  useEffect(() => {
+    if (disabled) return
 
     getLocation()
-  }, [disabled])
+  }, [disabled, permissionRequested])
 
   return { isLoading, location }
 }
