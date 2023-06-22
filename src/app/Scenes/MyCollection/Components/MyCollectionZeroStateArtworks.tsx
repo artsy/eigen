@@ -1,6 +1,6 @@
 import { Button, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
 import { tracks } from "./MyCollectionZeroState"
 
@@ -18,9 +18,7 @@ export const MyCollectionZeroStateArtworks: React.FC = () => {
           trackEvent(tracks.addCollectedArtwork())
           navigate("my-collection/artworks/new", {
             passProps: {
-              mode: "add",
               source: Tab.collection,
-              onSuccess: popToRoot,
             },
           })
         }}

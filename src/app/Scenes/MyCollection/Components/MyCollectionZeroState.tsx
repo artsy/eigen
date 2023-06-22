@@ -1,8 +1,8 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { useSpace, Flex, LockIcon, Button, Text, Tabs } from "@artsy/palette-mobile"
+import { Button, Flex, LockIcon, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Image } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -39,9 +39,7 @@ export const MyCollectionZeroState: React.FC = () => {
                 trackEvent(tracks.addCollectedArtwork())
                 navigate("my-collection/artworks/new", {
                   passProps: {
-                    mode: "add",
                     source: Tab.collection,
-                    onSuccess: popToRoot,
                   },
                 })
               }}

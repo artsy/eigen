@@ -39,9 +39,7 @@ describe("MyCollectionBottomSheetModalAdd", () => {
 
       expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
         passProps: {
-          mode: "add",
           source: Tab.collection,
-          onSuccess: expect.anything(),
         },
       })
     })

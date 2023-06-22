@@ -1,6 +1,5 @@
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { MyCollectionArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { goBack, popToRoot } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -60,15 +59,6 @@ export const MyCollectionArtworkEditQueryRenderer = withSuspense(
       artworkId: artworkID,
     })
 
-    return (
-      <MyCollectionArtworkFormScreen
-        artwork={data.artwork!}
-        mode="edit"
-        onDelete={popToRoot}
-        onSuccess={() => {
-          goBack()
-        }}
-      />
-    )
+    return <MyCollectionArtworkFormScreen artwork={data.artwork!} mode="edit" />
   }
 )

@@ -16,12 +16,11 @@ import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/metho
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
-import { dismissModal } from "app/system/navigation/navigate"
+import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
-import { InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -52,17 +51,15 @@ export type ArtworkFormScreen = {
   AddPhotos: undefined
 }
 
-export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
+export type MyCollectionArtworkFormProps =
   | {
       mode: "add"
       source: Tab
     }
   | {
       mode: "edit"
-      onDelete: () => void
       artwork: MyCollectionArtworkEditQuery["response"]["artwork"]
     }
-)
 
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
@@ -76,7 +73,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
-  const { mode, onSuccess } = MyCollectionArtworkStore.useStoreState((state) => state)
+  const { mode } = MyCollectionArtworkStore.useStoreState((state) => state)
 
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
   // sent through the react-navigation system)
@@ -130,13 +127,13 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       console.error("Artwork could not be saved", e)
       setLoading(false)
     } finally {
-      setLoading(false)
-    }
-
-    InteractionManager.runAfterInteractions(() => {
       dismissModal()
-      onSuccess?.()
-    })
+      if (mode === "add") {
+        popToRoot()
+      } else {
+        goBack()
+      }
+    }
   }
 
   useEffect(() => {

@@ -43,12 +43,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkFormScreen
-          artwork={mockArtwork as any}
-          mode="edit"
-          onSuccess={jest.fn()}
-          onDelete={jest.fn()}
-        />,
+        <MyCollectionArtworkFormScreen artwork={mockArtwork as any} mode="edit" />,
         mockEnvironment
       )
 
@@ -91,11 +86,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -214,11 +205,7 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -292,11 +279,7 @@ describe("MyCollectionArtworkForm", () => {
 
       it("initializes the artist name input field", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -440,7 +423,6 @@ describe("MyCollectionArtworkForm", () => {
         }
         const formCheckValues = formValues
         const props: MyCollectionArtworkFormProps = {
-          onSuccess: jest.fn(),
           mode: "add",
           source: Tab.collection,
         }
@@ -548,7 +530,7 @@ describe("MyCollectionArtworkForm", () => {
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
       const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkFormScreen mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+        <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
         mockEnvironment
       )
 

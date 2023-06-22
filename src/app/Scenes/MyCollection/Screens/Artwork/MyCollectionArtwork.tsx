@@ -30,7 +30,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   category,
 }) => {
   const { trackEvent } = useTracking()
-  const { fetchKey, refetch } = useRefetch()
+  const { fetchKey } = useRefetch()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
@@ -54,11 +54,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
-        artwork: data.artwork,
-        onSuccess: () => {
-          refetch()
-          goBack()
-        },
         onDelete: popToRoot,
       },
     })

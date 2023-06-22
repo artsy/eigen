@@ -1,6 +1,6 @@
-import { Flex, Text, Button } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Image } from "react-native"
 
@@ -22,13 +22,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
           onPress={() => {
             navigate("my-collection/artworks/new", {
               passProps: {
-                mode: "add",
                 source: Tab.insights,
-                onSuccess: () => {
-                  // Since the career highlights screen is a modal, we need to dismiss it after
-                  // saving the artwork.
-                  dismissModal()
-                },
               },
             })
           }}
