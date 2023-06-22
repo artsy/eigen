@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Image, ImageSourcePropType } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -36,7 +36,7 @@ const data: Array<{
 ]
 
 export const WaysWeSell: React.FC = () => {
-  const color = useColor()
+  const { color, space } = useTheme()
 
   const maxImageWidth = useExtraLargeWidth()
 
@@ -44,16 +44,19 @@ export const WaysWeSell: React.FC = () => {
     (maxImageWidth * Math.max(...data.map((i) => i.height))) / IMAGE_WIDTH
 
   return (
-    <Flex bg="black100" py={4} px={2}>
-      <Text variant="lg-display" color={color("white100")} mb={1}>
-        A sales strategy tailored to your artwork
-      </Text>
+    <Flex bg="black100" py={4}>
+      <Flex px={2}>
+        <Text variant="lg-display" color={color("white100")} mb={1}>
+          A sales strategy tailored to your artwork
+        </Text>
 
-      <Text variant="xs" color={color("white100")} mb={2}>
-        A dedicated specialist works with you to select the best sales option for your artwork.
-      </Text>
+        <Text variant="xs" color={color("white100")} mb={2}>
+          A dedicated specialist works with you to select the best sales option for your artwork.
+        </Text>
+      </Flex>
 
       <FlatList
+        contentContainerStyle={{ paddingLeft: space(2), paddingRight: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={data}
