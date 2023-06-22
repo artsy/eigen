@@ -65,10 +65,14 @@ export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: 
 }
 
 export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return addRoute(url, "ReactWebView", (params) => ({
-    url: replaceParams(url, params),
-    ...config,
-  }))
+  return addRoute(
+    url,
+    config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
+    (params) => ({
+      url: replaceParams(url, params),
+      ...config,
+    })
+  )
 }
 
 export function replaceParams(url: string, params: any) {
@@ -270,6 +274,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/price-database"),
     addWebViewRoute("/privacy"),
