@@ -258,6 +258,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
   },
+  AREnablePriceControlForCreateAlertFlow: {
+    description: "Enable Inline price control for Create Alert modal flow",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {
