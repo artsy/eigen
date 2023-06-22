@@ -10205,6 +10205,9 @@ type IdentityVerification {
   # A globally unique ID.
   id: ID!
 
+  # ID of the admin or user (self) that initiated this IDV request
+  initiatorID: String
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invitationExpiresAt(
@@ -10219,11 +10222,17 @@ type IdentityVerification {
   # Name of the identity verification's owner
   name: String
 
+  # ID of the order the user was placing when this IDV request was created
+  orderID: String
+
   # The overrides associated with an identity verification
   overrides: [IdentityVerificationOverride]
 
   # Page URL sent to the identify verification's owner
   pageURL: String
+
+  # ID of the auction the user was registering for when this IDV request was created
+  saleID: String
 
   # The scan references (i.e., results) associated with an identity verification
   scanReferences: [IdentityVerificationScanReference]
@@ -16481,8 +16490,17 @@ input SendIdentityVerificationEmailMutationInput {
   # The email for the user undergoing identity verification
   email: String
 
+  # The ID of the user (self or admin) who initiated the IDV process
+  initiatorID: String
+
   # The name to be used for the user undergoing identity verification
   name: String
+
+  # The ID of the order where the IDV process was initated
+  orderID: String
+
+  # The ID of the sale where the IDV process was initated
+  saleID: String
 
   # Whether an automated identity verification is sent or not
   sendEmail: Boolean
