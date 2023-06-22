@@ -17,6 +17,7 @@ import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYo
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { MyCollectionCollectedArtistsPrivacy } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsPrivacy"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
+import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
@@ -103,7 +104,7 @@ import {
   MyCollectionArtworkScreenQuery,
 } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithArtsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
-import { MyCollectionArtworkFormScreen } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { MyCollectionArtworkAdd } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
@@ -339,10 +340,6 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   About: reactModule(About),
-  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkFormScreen, {
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-  }),
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
     hidesBackButton: true,
   }),
@@ -483,6 +480,18 @@ export const modules = defineModules({
     { fullBleed: true, hidesBackButton: true },
     [MyCollectionArtworkScreenQuery]
   ),
+  MyCollectionArtworkAdd: reactModule(MyCollectionArtworkAdd, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  MyCollectionArtworkEdit: reactModule(MyCollectionArtworkEditQueryRenderer, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
   MyCollectionAddCollectedArtists: reactModule(MyCollectionAddCollectedArtistsScreen, {
     screenOptions: {
       gestureEnabled: false,

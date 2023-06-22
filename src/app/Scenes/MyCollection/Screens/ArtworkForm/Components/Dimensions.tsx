@@ -3,6 +3,7 @@ import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { nullToUndef } from "app/utils/nullAndUndef"
 import { throttle } from "lodash"
 import React, { useState } from "react"
 
@@ -50,7 +51,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("height")}
             onBlur={formik.handleBlur("height")}
-            value={formik.values.height}
+            value={nullToUndef(formik.values.height)}
             testID="HeightInput"
           />
         </Flex>
@@ -60,7 +61,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("width")}
             onBlur={formik.handleBlur("width")}
-            value={formik.values.width}
+            value={nullToUndef(formik.values.width)}
             testID="WidthInput"
           />
         </Flex>
@@ -70,7 +71,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("depth")}
             onBlur={formik.handleBlur("depth")}
-            value={formik.values.depth}
+            value={nullToUndef(formik.values.depth)}
             testID="DepthInput"
           />
         </Flex>

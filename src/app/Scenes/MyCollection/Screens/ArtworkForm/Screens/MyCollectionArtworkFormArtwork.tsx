@@ -63,6 +63,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
         ...filteredFormValues,
+        attributionClass: artworkData.attributionClass?.name as any,
         photos,
       })
     } catch (error) {
@@ -145,6 +146,9 @@ const fetchArtwork = async (
             isDefault
             imageURL
             width
+          }
+          attributionClass {
+            name
           }
           isEdition
           category

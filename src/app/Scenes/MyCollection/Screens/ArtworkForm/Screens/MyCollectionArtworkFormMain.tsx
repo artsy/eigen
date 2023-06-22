@@ -36,6 +36,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { nullToUndef } from "app/utils/nullAndUndef"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty, isEqual } from "lodash"
@@ -287,7 +288,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="TitleInput"
                 required
                 accessibilityLabel="Title"
-                value={formikValues.title}
+                value={nullToUndef(formikValues.title)}
               />
               <CategoryPicker<string>
                 value={formikValues.category}
@@ -302,7 +303,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onBlur={formik.handleBlur("date")}
                 testID="DateInput"
                 accessibilityLabel="Year"
-                value={formikValues.date}
+                value={nullToUndef(formikValues.date)}
               />
               <Input
                 title="Materials"
@@ -311,7 +312,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
-                value={formikValues.medium}
+                value={nullToUndef(formikValues.medium)}
               />
               <Rarity />
               <Dimensions />
@@ -338,7 +339,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 title="Provenance"
                 maxLength={500}
                 placeholder="Describe how you acquired the artwork"
-                value={formikValues.provenance}
+                value={nullToUndef(formikValues.provenance)}
                 accessibilityLabel="Describe how you acquired the artwork"
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
@@ -350,7 +351,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 onBlur={formik.handleBlur("artworkLocation")}
                 testID="LocationInput"
                 accessibilityLabel="Enter city where the artwork is located"
-                value={formikValues.artworkLocation}
+                value={nullToUndef(formikValues.artworkLocation)}
               />
               {!!enableNotesField && (
                 <Input
@@ -361,7 +362,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                   onBlur={formik.handleBlur("confidentialNotes")}
                   testID="NotesInput"
                   accessibilityLabel="Notes"
-                  value={formikValues.confidentialNotes}
+                  value={nullToUndef(formikValues.confidentialNotes)}
                 />
               )}
             </Join>

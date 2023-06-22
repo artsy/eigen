@@ -5,6 +5,7 @@ import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { nullToUndef } from "app/utils/nullAndUndef"
 import React, { useState } from "react"
 
 type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
@@ -39,7 +40,7 @@ export const Rarity: React.FC = () => {
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionNumber")}
                 onBlur={formik.handleBlur("editionNumber")}
-                value={formik.values.editionNumber}
+                value={nullToUndef(formik.values.editionNumber)}
               />
             </Flex>
           </Flex>
@@ -53,7 +54,7 @@ export const Rarity: React.FC = () => {
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionSize")}
                 onBlur={formik.handleBlur("editionSize")}
-                value={formik.values.editionSize}
+                value={nullToUndef(formik.values.editionSize)}
               />
             </Flex>
           </Flex>

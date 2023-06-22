@@ -2,7 +2,6 @@ import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollection
 import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
-import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { Action, action, thunk, Thunk } from "easy-peasy"
@@ -26,22 +25,22 @@ export interface ArtworkFormValues {
   isP1Artist?: boolean
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  date: string
-  depth: string
-  editionSize: string
-  editionNumber: string
-  height: string
-  isEdition: boolean
-  medium: string
-  metric: Metric | ""
-  confidentialNotes: string
+  date: string | null
+  depth: string | null
+  editionSize: string | null
+  editionNumber: string | null
+  height: string | null
+  isEdition: boolean | null
+  medium: string | null
+  metric: string | null
+  confidentialNotes: string | null | undefined
   photos: Image[]
-  provenance: string
+  provenance: string | null
   pricePaidDollars: string
   pricePaidCurrency: string
   title: string
-  width: string
-  artworkLocation: string
+  width: string | null
+  artworkLocation: string | null
   attributionClass: ArtworkAttributionClassType | undefined
 }
 
@@ -52,21 +51,21 @@ export const initialFormValues: ArtworkFormValues = {
   artistDisplayName: undefined,
   artistSearchResult: null,
   category: "",
-  date: "",
-  depth: "",
-  editionSize: "",
-  editionNumber: "",
-  height: "",
-  isEdition: false,
-  medium: "",
-  metric: "",
-  confidentialNotes: "",
+  date: null,
+  depth: null,
+  editionSize: null,
+  editionNumber: null,
+  height: null,
+  isEdition: null,
+  medium: null,
+  metric: null,
+  confidentialNotes: undefined,
   photos: [],
   pricePaidDollars: "",
   pricePaidCurrency: "",
   provenance: "",
   title: "",
-  width: "",
+  width: null,
   artworkLocation: "",
   attributionClass: undefined,
 }

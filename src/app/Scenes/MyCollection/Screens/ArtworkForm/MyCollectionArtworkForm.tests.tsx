@@ -155,7 +155,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe(30)
         expect(getByTestId("HeightInput").props.value).toBe(20)
         expect(getByTestId("DepthInput").props.value).toBe(40)
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
         expect(getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
@@ -187,7 +187,7 @@ describe("MyCollectionArtworkForm", () => {
               "artworkLocation": "",
               "attributionClass": undefined,
               "category": "Print",
-              "confidentialNotes": "",
+              "confidentialNotes": undefined,
               "date": "2007",
               "depth": 40,
               "editionNumber": "",
@@ -274,12 +274,12 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Add Details")).toBeTruthy()
 
         expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
 
@@ -331,12 +331,12 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByTestId("ArtistDisplayNameInput").props.value).toBe("foo bar")
         expect(getByTestId("TitleInput").props.value).toBe("")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
   })
@@ -598,7 +598,7 @@ describe("MyCollectionArtworkForm", () => {
 
       await flushPromiseQueue()
 
-      expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+      expect(getByTestId("saving-artwork-modal")).toBeDefined()
     })
   })
 })

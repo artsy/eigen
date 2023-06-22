@@ -12,6 +12,7 @@ import {
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
+import { isEqual } from "lodash"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 
@@ -89,7 +90,15 @@ export const Select = <ValueType,>({
     setShowingModal(false)
   }
 
-  const selectedItem = options.find((o) => o.value === value)
+  const selectedItem = options.find((o) => {
+    if (typeof o.value === "string" && typeof value === "string") {
+      return (
+        (o.value as unknown as string).toLowerCase() === (value as unknown as string).toLowerCase()
+      )
+    }
+
+    return isEqual(o.value, value)
+  })
 
   return (
     <>

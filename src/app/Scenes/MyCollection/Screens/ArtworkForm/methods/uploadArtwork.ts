@@ -92,53 +92,55 @@ export const updateArtwork = async (
     addArtworkMessages({ hasMarketPriceInsights, sourceTab: props.source })
     return hasMarketPriceInsights
   } else {
-    const response = await myCollectionUpdateArtwork({
-      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
-      artworkId: props.artwork.internalID,
-      artworkLocation: others.artworkLocation,
-      attributionClass: others.attributionClass || undefined,
-      category: others.category,
-      date: others.date,
-      depth: others.depth,
-      editionNumber: others.editionNumber,
-      editionSize: others.editionSize,
-      externalImageUrls,
-      height: others.height,
-      isEdition: others.isEdition,
-      medium: others.medium,
-      metric: others.metric,
-      confidentialNotes: others.confidentialNotes,
-      pricePaidCents: pricePaidCents ?? null,
-      pricePaidCurrency,
-      provenance: others.provenance,
-      title: others.title,
-      width: others.width,
-    })
-
-    const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
-
-    // Store images locally and start from the end because
-    // it's only possible to add new images at the end
-    const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
-
-    await Promise.all(
-      reverse([...newPhotos]).map(async (image, index) => {
-        const imageID = reversedImages[index]?.internalID
-
-        if (!imageID) return
-
-        await storeLocalImage(imageID, {
-          path: image.path!,
-          width: image.width!,
-          height: image.height!,
-        })
+    if (props.artwork?.internalID) {
+      const response = await myCollectionUpdateArtwork({
+        artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
+        artworkId: props.artwork.internalID,
+        artworkLocation: others.artworkLocation,
+        attributionClass: others.attributionClass || undefined,
+        category: others.category,
+        date: others.date,
+        depth: others.depth,
+        editionNumber: others.editionNumber,
+        editionSize: others.editionSize,
+        externalImageUrls,
+        height: others.height,
+        isEdition: others.isEdition,
+        medium: others.medium,
+        metric: others.metric,
+        confidentialNotes: others.confidentialNotes,
+        pricePaidCents: pricePaidCents ?? null,
+        pricePaidCurrency,
+        provenance: others.provenance,
+        title: others.title,
+        width: others.width,
       })
-    )
 
-    // Delete images
-    const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
-    for (const photo of deletedImages) {
-      await deleteArtworkImage(props.artwork.internalID, photo.id)
+      const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
+
+      // Store images locally and start from the end because
+      // it's only possible to add new images at the end
+      const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
+
+      await Promise.all(
+        reverse([...newPhotos]).map(async (image, index) => {
+          const imageID = reversedImages[index]?.internalID
+
+          if (!imageID) return
+
+          await storeLocalImage(imageID, {
+            path: image.path!,
+            width: image.width!,
+            height: image.height!,
+          })
+        })
+      )
+
+      // Delete images
+      const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
+      for (const photo of deletedImages) {
+        await deleteArtworkImage(props.artwork.internalID, photo.id)
+      }
     }
   }
 }
