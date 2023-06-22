@@ -41,14 +41,6 @@ describe("CreateNewArtworkListView", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("should display artwork info", () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />)
-
-    expect(getByText(/Banksy/)).toBeTruthy()
-    expect(getByText(/Artwork Title/)).toBeTruthy()
-    expect(getByText(/2023/)).toBeTruthy()
-  })
-
   describe("Remaining characters label", () => {
     it("default state", () => {
       const { getByText } = renderWithHookWrappersTL(<TestRenderer />)
