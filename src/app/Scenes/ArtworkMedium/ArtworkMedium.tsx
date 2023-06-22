@@ -1,12 +1,12 @@
-import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
+import { Spacer, Text, Separator, Button, Box } from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
-import { goBack } from "app/system/navigation/navigate"
+import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface Props {
@@ -14,36 +14,39 @@ interface Props {
 }
 
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   useAndroidGoBack()
 
+  const buttonComponent = (
+    <Box m={2}>
+      <Button onPress={() => dismissModal()} block>
+        OK
+      </Button>
+      <Spacer y={1} />
+    </Box>
+  )
+
   return (
-    <ScrollView>
-      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
-        <Box my={4}>
-          <Join separator={<Spacer y={2} />} flatten>
-            {!!artwork.mediumType && (
-              <>
-                <Text variant="lg-display">{artwork.mediumType.name}</Text>
-
-                <Text>{artwork.mediumType.longDescription}</Text>
-
-                <Separator />
-              </>
-            )}
-
-            <Text>
-              Artsy has nineteen medium types. Medium types are categories that define the material
-              or format used to create the artwork.
-            </Text>
-
-            <Button onPress={() => goBack()} block>
-              OK
-            </Button>
-          </Join>
-        </Box>
+    <BottomAlignedButtonWrapper buttonComponent={buttonComponent}>
+      <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()}>
+        Medium
+      </FancyModalHeader>
+      <Box mt={2} ml={2} mr={2}>
+        {!!artwork.mediumType && (
+          <>
+            <Text variant="lg-display">{artwork.mediumType.name}</Text>
+            <Spacer y={2} />
+            <Text>{artwork.mediumType.longDescription}</Text>
+            <Spacer y={2} />
+            <Separator />
+            <Spacer y={2} />
+          </>
+        )}
+        <Text>
+          Artsy has nineteen medium types. Medium types are categories that define the material or
+          format used to create the artwork.
+        </Text>
       </Box>
-    </ScrollView>
+    </BottomAlignedButtonWrapper>
   )
 }
 

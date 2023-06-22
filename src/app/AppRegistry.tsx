@@ -380,7 +380,7 @@ export const modules = defineModules({
     },
     [ArtworkScreenQuery]
   ),
-  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
+  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, { modalPresentationStyle: "fullScreen" }),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
   ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
