@@ -8,7 +8,10 @@ import {
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import {
+  HomeAboveTheFoldQuery,
+  HomeAboveTheFoldQuery$data,
+} from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
 import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
@@ -31,7 +34,6 @@ import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/A
 import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
 import { AuctionResultsRail } from "app/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
-import { ContentCards } from "app/Scenes/Home/Components/ContentCards"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
@@ -51,7 +53,6 @@ import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
@@ -96,6 +97,7 @@ import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { useContentCards } from "./Components/ContentCards"
+import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
 
@@ -124,6 +126,7 @@ export interface HomeProps extends ViewProps {
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null
+  heroUnits: HomeAboveTheFoldQuery$data["heroUnits"] | null
 }
 
 const Home = memo((props: HomeProps) => {
@@ -213,10 +216,10 @@ const Home = memo((props: HomeProps) => {
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
       const trackingProps = extractArtworkActionTrackingProps(item)
-
-      if (true) {
-        return <HeroUnitsRail test={props.homePageAbove?.heroUnits} />
-      }
+      console.log("item", item.data)
+      // if (true) {
+      //   return <HeroUnitsRail test={props.homePageAbove?.heroUnits} />
+      // }
 
       if (!item.data) {
         return <></>
@@ -243,7 +246,7 @@ const Home = memo((props: HomeProps) => {
         case "meetYourNewAdvisor":
           return <MeetYourNewAdvisorRail title={item.title} />
         case "contentCards":
-          return <ContentCards cards={item.data} />
+          return <HeroUnitsRail heroUnits={item.data} />
         case "articles":
           return <ArticlesRailFragmentContainer title={item.title} articlesConnection={item.data} />
         case "artist":
@@ -751,7 +754,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
-            heroUnits: heroUnitsConnection(first: 10, private: true) {
+            heroUnits: heroUnitsConnection(first: 10, private: true) @optionalField {
               ...HeroUnitsRail_heroUnitsConnection
             }
           }
@@ -803,6 +806,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
+              heroUnits={above ? above.heroUnits : null}
             />
           )
         },

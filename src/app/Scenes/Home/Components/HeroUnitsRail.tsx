@@ -1,10 +1,12 @@
 import { Box, Flex, Spacer, Text, Button, Touchable } from "@artsy/palette-mobile"
+import { ArticlesRail_articlesConnection$key } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
+import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { PaginationDots } from "./PaginationDots"
 
@@ -84,11 +86,12 @@ export const useContentCards = () => {
 }
 
 interface HeroUnitsRailProps {
-  test: any
+  heroUnits: ArticlesRail_articlesConnection$key
 }
 
 export const HeroUnitsRail: React.FC<HeroUnitsRailProps> = (props) => {
-  console.log(props)
+  const data = useFragment(homeFragment, props.heroUnits)
+  console.warn({ data })
   const cards: any[] = []
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])

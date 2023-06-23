@@ -18,6 +18,14 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
     const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
       {
+        data: props.heroUnits,
+        isEmpty: isEmpty(props.heroUnits),
+        key: "contentCardsRail",
+        prefetchUrl: "",
+        title: "",
+        type: "contentCards",
+      },
+      {
         contextModule: ContextModule.newWorksForYouRail,
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
@@ -26,14 +34,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         key: "newWorksForYouRail",
         title: "New Works for You",
         type: "newWorksForYou",
-      },
-      {
-        data: cards,
-        isEmpty: isEmpty(cards),
-        key: "contentCardsRail",
-        prefetchUrl: "",
-        title: "",
-        type: "contentCards",
       },
       {
         data: props.homePageAbove?.activeBidsArtworkModule,
