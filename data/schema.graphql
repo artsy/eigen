@@ -258,15 +258,15 @@ type Agreement {
 }
 
 type Algolia {
-  apiKey: String!
-  appID: String!
-  indices: [AlgoliaIndex!]!
+  apiKey: String! @deprecated(reason: "Algolia search is no longer supported")
+  appID: String! @deprecated(reason: "Algolia search is no longer supported")
+  indices: [AlgoliaIndex!]! @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AlgoliaIndex {
-  displayName: String!
-  key: String!
-  name: String!
+  displayName: String! @deprecated(reason: "Algolia search is no longer supported")
+  key: String! @deprecated(reason: "Algolia search is no longer supported")
+  name: String! @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AnalyticsArtist {
@@ -14007,9 +14007,6 @@ type Query {
     last: Int
     userId: ID!
   ): AuctionsLotStandingConnection!
-
-  # Get Algolia configuration
-  _unused_gravity_algolia: Algolia!
   _unused_gravity_devices(userId: ID!): [Device!]!
 
   # Autocomplete resolvers.
@@ -17037,7 +17034,8 @@ type SuggestedAddressFields {
 }
 
 type System {
-  algolia: Algolia
+  # Deprecated Algolia fields, temporarily kept for legacy compatibility
+  algolia: Algolia @deprecated(reason: "Algolia search is no longer supported")
 
   # Creates, and authorizes, a JWT custom for Causality
   causalityJWT(
