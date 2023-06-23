@@ -18,7 +18,6 @@ export const StickyBottomContentPlaceholder = () => {
 }
 
 export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooterPosition }) => {
-  const bottomOffset = useArtworkListsBottomOffset(2)
   const { dismiss } = useBottomSheetModal()
 
   const { save, inProgress } = useSavePendingArtworkListsChanges({
@@ -35,8 +34,6 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
             Done
           </Button>
         </Box>
-
-        <Box height={bottomOffset} />
       </Box>
     </BottomSheetFooter>
   )
