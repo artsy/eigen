@@ -36,13 +36,13 @@ describe("ArtworkListsProvider", () => {
         mockEnvironment
       )
 
-      expect(queryByText("Select more lists for this artwork.")).toBeNull()
+      expect(queryByText("Select where you’d like to save this artwork:")).toBeNull()
     })
 
     it("should be displayed when artwork is set", () => {
       const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      expect(getByText("Select more lists for this artwork.")).toBeTruthy()
+      expect(getByText("Select where you’d like to save this artwork:")).toBeTruthy()
     })
 
     // TODO: Fix this test, it's failing because footerComponent (in SelectArtworkListsForArtworkView) is not being rendered

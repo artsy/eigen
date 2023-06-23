@@ -27,8 +27,7 @@ export const SelectArtworkListsForArtworkHeader = () => {
   return (
     <>
       <Box mx={2} mb={2}>
-        <Text>Artwork added to Saved Artworks.</Text>
-        <Text color="black60">Select more lists for this artwork.</Text>
+        <Text>Select where you’d like to save this artwork:</Text>
         <Spacer y={2} />
 
         <Flex flexDirection="row" justifyContent="space-between">
