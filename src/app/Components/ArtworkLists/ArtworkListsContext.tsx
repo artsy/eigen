@@ -91,14 +91,13 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     removedArtworkLists: ArtworkListEntity[]
   ) => {
     if (addedArtworkLists.length > 0 && removedArtworkLists.length > 0) {
-      toast.changesSaved({
-        artwork,
-      })
+      toast.changesSaved()
       return
     }
 
     if (addedArtworkLists.length > 0) {
       showToastForAddedLists(artwork, addedArtworkLists)
+
       return
     }
 
@@ -109,19 +108,12 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   }
 
   const savedToDefaultArtworkList = (artwork: ArtworkEntity) => {
-    const openSelectArtworkListsForArtworkView = () => {
-      dispatch({
-        type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
-        payload: {
-          artwork,
-          artworkListID: null,
-        },
-      })
-    }
-
-    toast.savedToDefaultArtworkList({
-      artwork,
-      onToastPress: openSelectArtworkListsForArtworkView,
+    dispatch({
+      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
+      payload: {
+        artwork,
+        artworkListID: null,
+      },
     })
   }
 
@@ -146,9 +138,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         dispatchArtworkSavedStateChanged(state.artwork!.internalID)
       }
 
-      toast.changesSaved({
-        artwork: result.artwork,
-      })
+      toast.changesSaved()
 
       return
     }
@@ -159,9 +149,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
-      toast.removedFromDefaultArtworkList({
-        artwork: result.artwork,
-      })
+      toast.removedFromDefaultArtworkList()
 
       return
     }

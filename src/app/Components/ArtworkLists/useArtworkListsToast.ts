@@ -25,39 +25,28 @@ export const useArtworkListToast = () => {
   const toast = useToast()
 
   const savedToDefaultArtworkList = (options: SavedToDefaultArtworkListOptions) => {
-    const { artwork, onToastPress } = options
+    const { onToastPress } = options
 
     toast.show("Artwork saved", DEFAULT_TOAST_PLACEMENT, {
-      backgroundColor: "green100",
       cta: "Add to a List",
-      imageURL: artwork.imageURL ?? undefined,
       onPress: onToastPress,
     })
   }
 
-  const removedFromDefaultArtworkList = (options: Options) => {
-    const { artwork } = options
-
-    toast.show("Removed from Saved Artworks", DEFAULT_TOAST_PLACEMENT, {
-      imageURL: artwork.imageURL ?? undefined,
-    })
+  const removedFromDefaultArtworkList = () => {
+    toast.show("Removed from Saved Artworks", DEFAULT_TOAST_PLACEMENT)
   }
 
-  const changesSaved = (options?: Options) => {
-    toast.show("Changes saved", DEFAULT_TOAST_PLACEMENT, {
-      backgroundColor: "green100",
-      imageURL: options?.artwork?.imageURL ?? undefined,
-    })
+  const changesSaved = () => {
+    toast.show("Changes saved", DEFAULT_TOAST_PLACEMENT)
   }
 
   const addedToSingleArtworkList = (options: SingleArtworkListOptions) => {
-    const { artwork, artworkList } = options
+    const { artworkList } = options
     const message = `Added to ${artworkList.name} list`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
-      backgroundColor: "green100",
       cta: "View List",
-      imageURL: artwork.imageURL ?? undefined,
       onPress: () => {
         navigate(`/artwork-list/${artworkList.internalID}`)
       },
@@ -65,13 +54,11 @@ export const useArtworkListToast = () => {
   }
 
   const addedToMultipleArtworkLists = (options: MultipleArtworkListsOptions) => {
-    const { artwork, artworkLists } = options
+    const { artworkLists } = options
     const message = `Added to ${artworkLists.length} lists`
 
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
-      backgroundColor: "green100",
       cta: "View Saves",
-      imageURL: artwork.imageURL ?? undefined,
       onPress: () => {
         navigate("/artwork-lists")
       },
@@ -79,21 +66,17 @@ export const useArtworkListToast = () => {
   }
 
   const removedFromSingleArtworkList = (options: SingleArtworkListOptions) => {
-    const { artwork, artworkList } = options
+    const { artworkList } = options
     const message = `Removed from ${artworkList.name} list`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT, {
-      imageURL: artwork.imageURL ?? undefined,
-    })
+    toast.show(message, DEFAULT_TOAST_PLACEMENT)
   }
 
   const removedFromMultipleArtworkLists = (options: MultipleArtworkListsOptions) => {
-    const { artwork, artworkLists } = options
+    const { artworkLists } = options
     const message = `Removed from ${artworkLists.length} lists`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT, {
-      imageURL: artwork.imageURL ?? undefined,
-    })
+    toast.show(message, DEFAULT_TOAST_PLACEMENT)
   }
 
   return {
