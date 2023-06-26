@@ -28,12 +28,12 @@ export const useHandleEmailVerification = () => {
   return { showVerificationBanner, handleVerification }
 }
 
-export const useHandleIDVerification = () => {
+export const useHandleIDVerification = (initiatorID: string) => {
   const [showVerificationBanner, setShowVerificationBanner] = useState(false)
 
   const handleVerification = useCallback(async () => {
     try {
-      const response = await verifyID({})
+      const response = await verifyID({ initiatorID: initiatorID })
       const verificationState =
         response.sendIdentityVerificationEmail?.confirmationOrError?.identityVerification?.state
 

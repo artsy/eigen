@@ -94,10 +94,12 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     showVerificationBanner: showVerificationBannerForEmail,
     handleVerification: handleEmailVerification,
   } = useHandleEmailVerification()
+
+  const initiatorID = me?.internalID ?? ""
   const {
     showVerificationBanner: showVerificationBannerForID,
     handleVerification: handleIDVerification,
-  } = useHandleIDVerification()
+  } = useHandleIDVerification(initiatorID)
 
   const localImage = useLocalImageStorage("profile", undefined, undefined, refreshKey)
 
@@ -364,6 +366,7 @@ const meFragment = graphql`
     profession
     otherRelevantPositions
     bio
+    internalID
     location {
       display
       city
