@@ -162,7 +162,7 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists) {
     return (
       <Tabs.ScrollView>
-        <MyCollectionCollectedArtistsOnboardingModal />
+        {!!enableCollectedArtists && <MyCollectionCollectedArtistsOnboardingModal />}
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
@@ -190,7 +190,7 @@ const MyCollection: React.FC<{
           hasArtworks={artworks.length > 0}
         />
       </Tabs.SubTabBar>
-      <MyCollectionCollectedArtistsOnboardingModal />
+      {!!enableCollectedArtists && <MyCollectionCollectedArtistsOnboardingModal />}
 
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
