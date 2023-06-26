@@ -13,7 +13,7 @@ export const MyCollectionZeroState: React.FC = () => {
   const image = require("images/my-collection-empty-state.webp")
 
   return (
-    <Tabs.ScrollView>
+    <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box mt={4}>
         <ZeroState
           bigTitle="Know Your Collection Better"

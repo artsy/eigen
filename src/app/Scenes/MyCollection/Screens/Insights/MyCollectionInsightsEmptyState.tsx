@@ -8,7 +8,7 @@ export const MyCollectionInsightsEmptyState = () => {
   const space = useSpace()
 
   return (
-    <Tabs.ScrollView>
+    <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box mt={4}>
         <ZeroState
           bigTitle="Gain Deeper Knowledge of your Collection"
