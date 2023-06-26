@@ -52,9 +52,9 @@ const verify = async (type: verificationType) => {
     const confirmationOrError = sendConfirmationEmail?.confirmationOrError
     return confirmationOrError?.unconfirmedEmail
   } else {
-    const { sendIdentityVerificationEmail } = await verifyID(getRelayEnvironment())
+    const { sendIdentityVerificationEmail } = await verifyID({})
 
     const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
-    return confirmationOrError?.identityVerificationEmail?.state
+    return confirmationOrError?.identityVerification?.state
   }
 }
