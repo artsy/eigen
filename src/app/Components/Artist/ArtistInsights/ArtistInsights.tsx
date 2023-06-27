@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Tabs } from "@artsy/palette-mobile"
 import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
+import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -86,6 +87,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           artistInternalID={artist.internalID}
           environment={relay.environment}
         />
+
         <View
           onLayout={({
             nativeEvent: {
@@ -95,11 +97,15 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             auctionResultsYCoordinate.current = y
           }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer
-            artist={artist}
-            scrollToTop={scrollToTop}
-            initialFilters={initialFilters}
-          />
+          {artist.statuses?.auctionLots ? (
+            <ArtistInsightsAuctionResultsPaginationContainer
+              artist={artist}
+              scrollToTop={scrollToTop}
+              initialFilters={initialFilters}
+            />
+          ) : (
+            <ArtistInsightsEmpty my={6} />
+          )}
         </View>
       </Tabs.ScrollView>
 
@@ -124,11 +130,14 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
 export const ArtistInsightsFragmentContainer = createFragmentContainer(ArtistInsights, {
   artist: graphql`
     fragment ArtistInsights_artist on Artist {
+      ...ArtistInsightsAuctionResults_artist
       name
       id
       internalID
       slug
-      ...ArtistInsightsAuctionResults_artist
+      statuses {
+        auctionLots
+      }
     }
   `,
 })
