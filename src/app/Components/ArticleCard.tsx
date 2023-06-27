@@ -78,12 +78,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             {article.thumbnailTitle}
           </Text>
           {!!article.byline && (
-            <Text color="black100" variant="xs">
+            <Text color="black100" variant="xs" mt={0.5}>
               {article.byline}
             </Text>
           )}
           {!!article.publishedAt && (
-            <Text color="black60" variant="xs">
+            <Text color="black60" variant="xs" mt={0.5}>
               {DateTime.fromISO(article.publishedAt).toFormat("MMM d, yyyy")}
             </Text>
           )}
