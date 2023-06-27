@@ -6,6 +6,7 @@ import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
@@ -64,6 +65,7 @@ export const ArtsyWebViewPage = ({
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
+  useAndroidGoBack()
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
