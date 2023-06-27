@@ -7,9 +7,10 @@ jest.mock("@react-native-community/geolocation", () => ({
   getCurrentPosition: jest.fn((success, _) => {
     success({ coords: { latitude: 52, longitude: 23 } })
   }),
+  requestAuthorization: jest.fn(),
 }))
 
-describe("GalleriesForYou", () => {
+describe("GalleriesForYouScreen", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: GalleriesForYouScreen,
   })

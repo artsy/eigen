@@ -180,6 +180,8 @@ describe("ArtworkActions", () => {
     })
 
     it("should track save event when user saves and artwork successfully", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: false })
+
       const { env } = renderWithRelay({
         Artwork: () => ({
           ...artworkActionsArtwork,

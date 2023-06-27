@@ -39,6 +39,10 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     GalleriesForYouScreen_partnersConnection$key
   >(partnersConnectionFragment, queryData)
 
+  const ipLocation = queryData.requestLocation?.coordinates
+
+  const userLocation = location || { lat: ipLocation?.lat!, lng: ipLocation?.lng! }
+
   const RefreshControl = useRefreshControl(refetch)
 
   const partners = extractNodes(data.partnersConnection)
@@ -79,7 +83,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       <Flex>
         {!!visualizeLocation && (
           <Text ml={6} color="red">
-            Location: {JSON.stringify(location)}
+            Location: {location ? JSON.stringify(location) : "Using IP-based location"}
           </Text>
         )}
 
@@ -89,7 +93,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
           refreshControl={RefreshControl}
           onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
           renderItem={({ item }) => {
-            return <PartnerListItem partner={item} userLocation={location} />
+            return <PartnerListItem partner={item} userLocation={userLocation} />
           }}
           keyExtractor={(item) => item.internalID}
           ItemSeparatorComponent={() => <Spacer y={4} />}
@@ -173,6 +177,12 @@ const GalleriesForYouQuery = graphql`
     $count: Int
     $after: String
   ) {
+    requestLocation {
+      coordinates {
+        lat
+        lng
+      }
+    }
     ...GalleriesForYouScreen_partnersConnection
       @arguments(
         includePartnersNearIpBasedLocation: $includePartnersNearIpBasedLocation

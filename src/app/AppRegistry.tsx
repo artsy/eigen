@@ -537,6 +537,16 @@ export const modules = defineModules({
   PurchaseModal: reactModule(PurchaseModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
+  ModalWebView: reactModule(ArtsyWebViewPage, {
+    fullBleed: false,
+    hasOwnModalCloseButton: true,
+    hidesBackButton: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+    screenOptions: {
+      gestureEnabled: false,
+    },
+  }),
   ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,

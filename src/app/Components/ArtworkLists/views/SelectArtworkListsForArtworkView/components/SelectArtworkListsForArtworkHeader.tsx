@@ -1,9 +1,21 @@
-import { Box, Button, Message, Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
+import {
+  Box,
+  Button,
+  AddIcon,
+  Flex,
+  Message,
+  Spacer,
+  Text,
+  quoteLeft,
+  quoteRight,
+} from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 
 export const SelectArtworkListsForArtworkHeader = () => {
-  const { state, dispatch } = useArtworkListsContext()
+  const { state, dispatch, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
+  const { selectedTotalCount } = state
+  const totalCount =
+    selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
   const openCreateNewArtworkListView = () => {
     dispatch({
@@ -14,20 +26,25 @@ export const SelectArtworkListsForArtworkHeader = () => {
 
   return (
     <>
-      <Box m={2}>
-        <ArtworkInfo artwork={state.artwork!} />
-
+      <Box mx={2} mb={2}>
+        <Text>Select where you’d like to save this artwork:</Text>
         <Spacer y={2} />
 
-        <Button
-          variant="outline"
-          size="small"
-          width="100%"
-          block
-          onPress={openCreateNewArtworkListView}
-        >
-          Create New List
-        </Button>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Button
+            variant="text"
+            size="small"
+            onPress={openCreateNewArtworkListView}
+            icon={<AddIcon />}
+            ml={-1}
+          >
+            Create New List
+          </Button>
+
+          <Text variant="xs" textAlign="center" color="black60">
+            {getSelectedListsCountText(totalCount)}
+          </Text>
+        </Flex>
       </Box>
 
       {!!state.recentlyAddedArtworkList && (
@@ -39,4 +56,12 @@ export const SelectArtworkListsForArtworkHeader = () => {
       )}
     </>
   )
+}
+
+const getSelectedListsCountText = (count: number) => {
+  if (count === 1) {
+    return "1 list selected"
+  }
+
+  return `${count} lists selected`
 }

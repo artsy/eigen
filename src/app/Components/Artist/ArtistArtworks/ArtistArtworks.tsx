@@ -1,5 +1,5 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Message, Tabs } from "@artsy/palette-mobile"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Box, Text, Button, Tabs, BellIcon } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -74,6 +74,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 }) => {
   const tracking = useTracking()
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const { openFilterArtworksModal } = useShowArtworksFilterModal({ artist })
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
@@ -154,14 +156,41 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   if (!artist.statuses?.artworks) {
     return (
-      <Message
-        variant="default"
-        title="No works available by the artist at this time"
-        text="Create an Alert to receive notifications when new works are added"
-        bodyTextStyle={{
-          color: "black60",
-        }}
-      />
+      <>
+        <Spacer y={6} />
+
+        <Text variant="md" textAlign="center">
+          Get notified when new works are available
+        </Text>
+
+        <Text variant="md" textAlign="center" color="black60">
+          There are currently no works for sale for this artist. Create an alert, and we’ll let you
+          know when new works are added.
+        </Text>
+
+        <Spacer y={2} />
+
+        <Button
+          variant="outline"
+          mx="auto"
+          icon={<BellIcon />}
+          onPress={() => {
+            openFilterArtworksModal("createAlert")
+
+            tracking.trackEvent({
+              action: ActionType.tappedCreateAlert,
+              context_screen_owner_type: OwnerType.artist,
+              context_screen_owner_id: artist.internalID,
+              context_screen_owner_slug: artist.slug,
+              context_module: ContextModule.artworkGrid,
+            })
+          }}
+        >
+          Create Alert
+        </Button>
+
+        <Spacer y={6} />
+      </>
     )
   }
 

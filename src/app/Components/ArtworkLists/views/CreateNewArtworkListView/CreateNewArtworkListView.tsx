@@ -1,6 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkInfo } from "app/Components/ArtworkLists/components/ArtworkInfo"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { AutoHeightBottomSheet } from "app/Components/ArtworkLists/components/AutoHeightBottomSheet"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
@@ -9,7 +7,7 @@ import { useCallback } from "react"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
-  const { state, dispatch } = useArtworkListsContext()
+  const { dispatch } = useArtworkListsContext()
   const bottomOffset = useArtworkListsBottomOffset(2)
 
   const closeCurrentView = useCallback(() => {
@@ -25,13 +23,7 @@ export const CreateNewArtworkListView = () => {
       name={ArtworkListsViewName.CreateNewArtworkLists}
       onDismiss={closeCurrentView}
     >
-      <ArtworkListsBottomSheetSectionTitle mt={1}>
-        Create a new list
-      </ArtworkListsBottomSheetSectionTitle>
-
-      <Box m={2}>
-        <ArtworkInfo artwork={state.artwork!} />
-      </Box>
+      <ArtworkListsBottomSheetSectionTitle>Create a new list</ArtworkListsBottomSheetSectionTitle>
 
       <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
     </AutoHeightBottomSheet>
