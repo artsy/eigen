@@ -1,4 +1,4 @@
-import { apostrophe, quoteLeft, quoteRight, Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { NotificationType } from "./types"
 
 interface ActivityEmptyViewProps {
@@ -7,13 +7,13 @@ interface ActivityEmptyViewProps {
 
 const entityByType: Record<NotificationType, { title: string; message: string }> = {
   all: {
-    title: `You haven${apostrophe}t followed any artists, galleries or fairs yet.`,
+    title: `Follow artists and galleries to stay up to date`,
     message:
-      "Follow artists to keep track of their latest work and career highlights. Following artists helps Artsy to recommend works you might like.",
+      "Keep track of the art and events you love, and get recommendations based on who you follow.",
   },
   alerts: {
-    title: `Set alerts for artworks you${apostrophe}re seeking.`,
-    message: `Filter for the artworks you love on an artist page and tap ${quoteLeft}Create Alert.${quoteRight} Get notifications here when there${apostrophe}s a match.`,
+    title: `Hunting for a particular artwork?`,
+    message: `Create alerts on an artist or artwork page and get notifications here when there’s a match.`,
   },
 }
 
