@@ -11,10 +11,6 @@ export const myCollectionArtworkEditQuery = graphql`
   query MyCollectionArtworkEditQuery($artworkId: String!) {
     artwork(id: $artworkId) {
       internalID
-      # artist {
-      #   internalID
-      #   formattedNationalityAndBirthday
-      # }
       pricePaid {
         display
         minor

@@ -7,7 +7,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { useRefetch } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { Suspense, useCallback } from "react"
@@ -30,7 +29,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   category,
 }) => {
   const { trackEvent } = useTracking()
-  const { fetchKey } = useRefetch()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
@@ -41,7 +39,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       // TODO: Fix this logic once we only need category to fetch insights
       medium: getVortexMedium(medium, category),
     },
-    { fetchPolicy: "store-and-network", fetchKey }
+    { fetchPolicy: "store-and-network" }
   )
 
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
