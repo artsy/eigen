@@ -24,7 +24,7 @@ import {
   MyCollectionTabsStore,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
@@ -103,13 +103,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
       case "Artworks":
         navigate("my-collection/artworks/new", {
           passProps: {
-            mode: "add",
             source: Tab.collection,
-            onSuccess: () => {
-              // hide the bottom sheet
-              setViewKind({ viewKind: null })
-              popToRoot()
-            },
           },
         })
         break
@@ -299,9 +293,7 @@ const Filters: React.FC<FiltersProps> = (props) => {
           onPress={async () => {
             navigate("my-collection/artworks/new", {
               passProps: {
-                mode: "add",
                 source: Tab.collection,
-                onSuccess: popToRoot,
               },
             })
             trackEvent(tracks.addCollectedArtwork())

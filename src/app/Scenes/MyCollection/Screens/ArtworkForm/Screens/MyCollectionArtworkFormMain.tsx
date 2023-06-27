@@ -32,7 +32,7 @@ import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/Artwor
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
+import { goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -62,7 +62,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const { mode, onDelete, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
+  const { mode, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
 
   const addOrEditLabel = mode === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
@@ -206,7 +206,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   }
 
   const handleDelete = async () => {
-    if (mode === "edit" && onDelete && artwork) {
+    if (mode === "edit" && artwork) {
       trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
       try {
         // TODO: Fix this separetely
@@ -214,7 +214,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           await myCollectionDeleteArtwork(artwork.internalID)
         }
         refreshMyCollection()
-        onDelete()
+        popToRoot()
       } catch (e) {
         if (__DEV__) {
           console.error(e)

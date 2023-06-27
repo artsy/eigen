@@ -1,7 +1,7 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { Flex, Text, Button } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
@@ -38,9 +38,7 @@ export const ActivateMoreMarketInsightsBanner = () => {
               trackEvent(tracks.tappedUploadAnotherArtwork())
               navigate("my-collection/artworks/new", {
                 passProps: {
-                  mode: "add",
                   source: Tab.insights,
-                  onSuccess: popToRoot,
                 },
               })
             }}

@@ -206,8 +206,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       "/my-collection/artwork/:artworkID/price-estimate/success",
       "RequestForPriceEstimateConfirmationScreen"
     ),
-    addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
-    addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection/artworks/:artworkID/edit", "MyCollectionArtworkEdit"),
+    addRoute("/my-collection/artworks/new", "MyCollectionArtworkAdd"),
     addRoute("/my-collection/collected-artists/new", "MyCollectionAddCollectedArtists"),
     addRoute("/my-collection/career-highlights", "CareerHighlightsBigCardsSwiper"),
     addRoute("/my-collection/median-sale-price-at-auction/:artistID", "MedianSalePriceAtAuction"),

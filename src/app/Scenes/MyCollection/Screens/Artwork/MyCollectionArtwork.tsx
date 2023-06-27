@@ -1,11 +1,12 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
-import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefetch } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -29,7 +30,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   category,
 }) => {
   const { trackEvent } = useTracking()
-  const { fetchKey, refetch } = useRefetch()
+  const { fetchKey } = useRefetch()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
@@ -53,11 +54,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
-        artwork: data.artwork,
-        onSuccess: () => {
-          refetch()
-          goBack()
-        },
         onDelete: popToRoot,
       },
     })
@@ -144,7 +140,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
           totalCount
         }
       }
-      marketPriceInsights {
+      marketPriceInsights @optionalField {
         ...MyCollectionArtworkArtistMarket_artworkPriceInsights
         ...MyCollectionArtworkDemandIndex_artworkPriceInsights
       }
@@ -166,7 +162,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="8px">
-      <PlaceholderBox width="100%" marginBottom={10} />
+      <LoadingSpinner />
     </Flex>
   </ProvidePlaceholderContext>
 )
@@ -232,7 +228,7 @@ export const ArtworkMetaProps = graphql`
     confidentialNotes
     # needed to show the banner inside the edit artwork view
     # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
-    consignmentSubmission {
+    consignmentSubmission @optionalField {
       displayText
     }
     pricePaid {

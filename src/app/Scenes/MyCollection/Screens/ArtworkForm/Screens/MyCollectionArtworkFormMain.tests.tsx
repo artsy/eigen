@@ -4,6 +4,7 @@ import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Comp
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { popToRoot } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
@@ -175,12 +176,9 @@ describe("AddEditArtwork", () => {
   })
 
   it("fires delete artwork action on delete button click", () => {
-    const mockDelete = jest.fn()
-
     const artworkForm = (
       <MyCollectionArtworkStore.Provider
         runtimeModel={{
-          onDelete: mockDelete,
           mode: "edit",
           artwork: {
             internalID: "id",
@@ -196,6 +194,6 @@ describe("AddEditArtwork", () => {
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
     const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
     callback(0) // confirm deletion
-    expect(mockDelete).toHaveBeenCalledWith()
+    expect(popToRoot).toHaveBeenCalledWith()
   })
 })

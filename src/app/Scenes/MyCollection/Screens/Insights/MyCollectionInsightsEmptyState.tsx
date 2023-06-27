@@ -1,7 +1,7 @@
-import { useSpace, Button, Tabs, Box } from "@artsy/palette-mobile"
+import { Box, Button, Tabs, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Image } from "react-native"
 
 export const MyCollectionInsightsEmptyState = () => {
@@ -26,7 +26,7 @@ export const MyCollectionInsightsEmptyState = () => {
                 block
                 onPress={() => {
                   navigate("my-collection/artworks/new", {
-                    passProps: { mode: "add", source: Tab.insights, onSuccess: popToRoot },
+                    passProps: { source: Tab.insights },
                   })
                 }}
               >
