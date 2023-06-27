@@ -19,55 +19,55 @@ export interface Image {
 
 export interface ArtworkFormValues {
   artist: string
-  customArtist: MyCollectionCustomArtistSchema | null
-  artistIds: string[]
   artistDisplayName?: string
-  isP1Artist?: boolean
+  artistIds: string[]
   artistSearchResult: AutosuggestResult | null
-  category: string // this refers to "materials" in UI
-  date: string | null
-  depth: string | null
-  editionSize: string | null
-  editionNumber: string | null
-  height: string | null
-  isEdition: boolean | null
-  medium: string | null
-  metric: string | null
-  confidentialNotes: string | null | undefined
-  photos: Image[]
-  provenance: string | null
-  pricePaidDollars: string
-  pricePaidCurrency: string
-  title: string
-  width: string | null
-  artworkLocation: string | null
+  artworkLocation: string | undefined
   attributionClass: ArtworkAttributionClassType | undefined
+  category: string // this refers to "materials" in UI
+  confidentialNotes: string | undefined
+  customArtist: MyCollectionCustomArtistSchema | null
+  date: string | undefined
+  depth: string | undefined
+  editionNumber: string | undefined
+  editionSize: string | undefined
+  height: string | undefined
+  isEdition: boolean | null
+  isP1Artist?: boolean
+  medium: string | undefined
+  metric: string | null
+  photos: Image[]
+  pricePaidCurrency: string
+  pricePaidDollars: string
+  provenance: string | undefined
+  title: string
+  width: string | undefined
 }
 
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
-  customArtist: null,
-  artistIds: [],
   artistDisplayName: undefined,
+  artistIds: [],
   artistSearchResult: null,
-  category: "",
-  date: null,
-  depth: null,
-  editionSize: null,
-  editionNumber: null,
-  height: null,
-  isEdition: null,
-  medium: null,
-  metric: null,
-  confidentialNotes: undefined,
-  photos: [],
-  pricePaidDollars: "",
-  pricePaidCurrency: "",
-  provenance: "",
-  title: "",
-  width: null,
-  artworkLocation: "",
+  artworkLocation: undefined,
   attributionClass: undefined,
+  category: "",
+  confidentialNotes: undefined,
+  customArtist: null,
+  date: undefined,
+  depth: undefined,
+  editionNumber: undefined,
+  editionSize: undefined,
+  height: undefined,
+  isEdition: null,
+  medium: undefined,
+  metric: null,
+  photos: [],
+  pricePaidCurrency: "",
+  pricePaidDollars: "",
+  provenance: undefined,
+  title: "",
+  width: undefined,
 }
 
 export interface MyCollectionArtworkModel {

@@ -5,7 +5,6 @@ import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
-import { nullToUndef } from "app/utils/nullAndUndef"
 import React, { useState } from "react"
 
 type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
@@ -18,8 +17,8 @@ export const Rarity: React.FC = () => {
     formik.handleChange("attributionClass")(value)
     if (value !== "UNIQUE") {
       // Unset edition number and size if not unique
-      formik.setFieldValue("editionNumber", null)
-      formik.setFieldValue("editionSize", null)
+      formik.setFieldValue("editionNumber", undefined)
+      formik.setFieldValue("editionSize", undefined)
     }
   }
 
@@ -45,7 +44,7 @@ export const Rarity: React.FC = () => {
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionNumber")}
                 onBlur={formik.handleBlur("editionNumber")}
-                value={nullToUndef(formik.values.editionNumber)}
+                value={formik.values.editionNumber}
               />
             </Flex>
           </Flex>
@@ -59,7 +58,7 @@ export const Rarity: React.FC = () => {
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionSize")}
                 onBlur={formik.handleBlur("editionSize")}
-                value={nullToUndef(formik.values.editionSize)}
+                value={formik.values.editionSize}
               />
             </Flex>
           </Flex>

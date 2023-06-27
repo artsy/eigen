@@ -2,6 +2,7 @@ import { ArtworkIcon, Flex, Separator, Text, UserMultiIcon } from "@artsy/palett
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MenuItem } from "app/Components/MenuItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 
 export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
@@ -20,7 +21,11 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artists"
           description="List the artists in your collection."
           onPress={() => {
-            navigate("my-collection/collected-artists/new")
+            navigate("my-collection/collected-artists/new", {
+              passProps: {
+                source: Tab.collection,
+              },
+            })
           }}
           icon={<UserMultiIcon height={24} width={24} />}
           py="40px"
@@ -31,7 +36,11 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           description="Upload images and details of an artwork in your collection."
           onPress={() => {
             setViewKind({ viewKind: null })
-            navigate("my-collection/artworks/new")
+            navigate("my-collection/artworks/new", {
+              passProps: {
+                source: Tab.collection,
+              },
+            })
           }}
           icon={<ArtworkIcon height={24} width={24} />}
           py="40px"
