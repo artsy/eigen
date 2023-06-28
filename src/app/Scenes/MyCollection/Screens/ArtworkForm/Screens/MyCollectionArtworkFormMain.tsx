@@ -185,26 +185,6 @@ export const MyCollectionArtworkFormMain: React.FC<
   const isSubmission =
     mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
-  const ArtistField = () => {
-    if (formik.values.artistSearchResult) {
-      return <ArtistSearchResult result={formik.values.artistSearchResult} />
-    } else if (formik.values.customArtist) {
-      return <ArtistCustomArtist artist={formik.values.customArtist} />
-    } else
-      return (
-        <Input
-          title="Artist"
-          placeholder="Artist"
-          onChangeText={formik.handleChange("artistDisplayName")}
-          onBlur={formik.handleBlur("artistDisplayName")}
-          testID="ArtistDisplayNameInput"
-          required
-          accessibilityLabel="Artist Name"
-          value={formikValues.artistDisplayName}
-        />
-      )
-  }
-
   const handleDelete = async () => {
     if (mode === "edit" && onDelete && artwork) {
       trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
@@ -441,6 +421,28 @@ export const MyCollectionArtworkFormMain: React.FC<
       </Flex>
     </>
   )
+}
+
+const ArtistField = () => {
+  const { formik } = useArtworkForm()
+
+  if (formik.values.artistSearchResult) {
+    return <ArtistSearchResult result={formik.values.artistSearchResult} />
+  } else if (formik.values.customArtist) {
+    return <ArtistCustomArtist artist={formik.values.customArtist} />
+  } else
+    return (
+      <Input
+        title="Artist"
+        placeholder="Artist"
+        onChangeText={formik.handleChange("artistDisplayName")}
+        onBlur={formik.handleBlur("artistDisplayName")}
+        testID="ArtistDisplayNameInput"
+        required
+        accessibilityLabel="Artist Name"
+        value={formik.values.artistDisplayName}
+      />
+    )
 }
 
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
