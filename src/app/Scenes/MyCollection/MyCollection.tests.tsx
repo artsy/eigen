@@ -74,7 +74,7 @@ describe("MyCollection", () => {
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
         expect.objectContaining({
-          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+          passProps: { source: Tab.collection },
         })
       )
     })

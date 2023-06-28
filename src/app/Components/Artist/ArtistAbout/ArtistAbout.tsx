@@ -2,6 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import Articles from "app/Components/Artist/Articles/Articles"
+import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app/Components/Artist/ArtistConsignButton"
@@ -21,33 +22,51 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const articles = extractNodes(artist.articles)
   const relatedArtists = extractNodes(artist.related?.artists)
 
+  const isDisplayable =
+    artist.hasMetadata ||
+    artist.notableWorks?.edges?.length === 3 ||
+    !!artist.iconicCollections?.length ||
+    !!articles.length ||
+    !!relatedArtists.length
+
   return (
     <Tabs.ScrollView>
-      <Stack spacing={4} my={2}>
-        {!!artist.hasMetadata && <Biography artist={artist as any} />}
-        <ArtistSeriesMoreSeriesFragmentContainer
-          contextScreenOwnerId={artist.internalID}
-          contextScreenOwnerSlug={artist.slug}
-          contextScreenOwnerType={OwnerType.artist}
-          contextModule={ContextModule.artistSeriesRail}
-          artist={artist}
-          artistSeriesHeader="Top Artist Series"
-          mt={2}
-        />
-        {artist.notableWorks?.edges?.length === 3 && (
-          <ArtistNotableWorksRailFragmentContainer artist={artist} />
-        )}
-        {!!artist.iconicCollections && artist.iconicCollections.length > 1 && (
-          <ArtistCollectionsRailFragmentContainer
-            collections={artist.iconicCollections}
+      {isDisplayable ? (
+        <Stack spacing={4} my={2}>
+          {!!artist.hasMetadata && <Biography artist={artist as any} />}
+
+          <ArtistSeriesMoreSeriesFragmentContainer
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
+            contextScreenOwnerType={OwnerType.artist}
+            contextModule={ContextModule.artistSeriesRail}
             artist={artist}
+            artistSeriesHeader="Top Artist Series"
+            mt={2}
           />
-        )}
-        <ArtistConsignButton artist={artist} />
-        <ArtistAboutShowsFragmentContainer artist={artist} />
-        {!!articles.length && <Articles articles={articles} />}
-        {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
-      </Stack>
+
+          {artist.notableWorks?.edges?.length === 3 && (
+            <ArtistNotableWorksRailFragmentContainer artist={artist} />
+          )}
+
+          {!!artist.iconicCollections && artist.iconicCollections.length > 1 && (
+            <ArtistCollectionsRailFragmentContainer
+              collections={artist.iconicCollections}
+              artist={artist}
+            />
+          )}
+
+          <ArtistConsignButton artist={artist} />
+
+          <ArtistAboutShowsFragmentContainer artist={artist} />
+
+          {!!articles.length && <Articles articles={articles} />}
+
+          {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
+        </Stack>
+      ) : (
+        <ArtistAboutEmpty my={6} />
+      )}
     </Tabs.ScrollView>
   )
 }

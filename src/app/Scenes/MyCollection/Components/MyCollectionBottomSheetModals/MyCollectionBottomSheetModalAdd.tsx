@@ -3,10 +3,10 @@ import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MenuItem } from "app/Components/MenuItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 
 export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
-  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
 
   return (
     <BottomSheetView>
@@ -21,7 +21,11 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artists"
           description="List the artists in your collection."
           onPress={() => {
-            navigate("my-collection/collected-artists/new")
+            navigate("my-collection/collected-artists/new", {
+              passProps: {
+                source: Tab.collection,
+              },
+            })
           }}
           icon={<UserMultiIcon height={24} width={24} />}
           py="40px"
@@ -31,15 +35,10 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artworks"
           description="Upload images and details of an artwork in your collection."
           onPress={() => {
+            setViewKind({ viewKind: null })
             navigate("my-collection/artworks/new", {
               passProps: {
-                mode: "add",
                 source: Tab.collection,
-                onSuccess: () => {
-                  // hide the bottom sheet
-                  setViewKind({ viewKind: null })
-                  popToRoot()
-                },
               },
             })
           }}

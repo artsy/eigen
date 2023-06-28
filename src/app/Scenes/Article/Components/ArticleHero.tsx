@@ -35,12 +35,12 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
           {data.title}
         </Text>
 
-        <Text variant="sm-display" color="black100">
+        <Text variant="xs" color="black100" mt={0.5}>
           {data.byline}
         </Text>
 
         {!!data.publishedAt && (
-          <Text color="black60" variant="xs" mt={1}>
+          <Text color="black60" variant="xs" mt={0.5}>
             {DateTime.fromISO(data.publishedAt).toFormat("MMM d, yyyy")}
           </Text>
         )}

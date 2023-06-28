@@ -1,10 +1,11 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
+import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
-import LoadingModal from "app/Components/Modals/LoadingModal"
+import { FadeIn } from "app/Components/FadeIn"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   AddMyCollectionArtist,
@@ -15,11 +16,11 @@ import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/metho
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
+import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
-import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -50,17 +51,15 @@ export type ArtworkFormScreen = {
   AddPhotos: undefined
 }
 
-export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
+export type MyCollectionArtworkFormProps =
   | {
       mode: "add"
       source: Tab
     }
   | {
       mode: "edit"
-      onDelete: () => void
-      artwork: Omit<MyCollectionArtwork_sharedProps$data, " $refType">
+      artwork: MyCollectionArtworkEditQuery["response"]["artwork"]
     }
-)
 
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
@@ -74,7 +73,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
-  const { mode, onSuccess } = MyCollectionArtworkStore.useStoreState((state) => state)
+  const { mode } = MyCollectionArtworkStore.useStoreState((state) => state)
 
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
   // sent through the react-navigation system)
@@ -92,12 +91,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
     setLoading(true)
 
-    updateMyUserProfile({
-      currencyPreference: preferredCurrency,
-      lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
-    })
-
     try {
+      updateMyUserProfile({
+        currencyPreference: preferredCurrency,
+        lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+      })
+
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
         __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
@@ -107,17 +106,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           )
         }),
       ])
-    } catch (e) {
-      __DEV__ ? console.error(e) : captureException(e)
 
-      Alert.alert("Artwork could not be saved.", typeof e === "string" ? e : undefined)
-
-      setLoading(false)
-
-      return
-    }
-
-    try {
       // Adding tracking after a successfully adding an artwork
       if (mode === "add") {
         trackEvent(
@@ -135,12 +124,16 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       refreshMyCollection()
       refreshMyCollectionInsights({})
     } catch (e) {
-      __DEV__ ? console.error(e) : captureException(e)
+      console.error("Artwork could not be saved", e)
+      setLoading(false)
+    } finally {
+      dismissModal()
+      if (mode === "add") {
+        popToRoot()
+      } else {
+        goBack()
+      }
     }
-
-    InteractionManager.runAfterInteractions(() => {
-      onSuccess?.()
-    })
   }
 
   useEffect(() => {
@@ -156,6 +149,8 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     onSubmit: handleSubmit,
     validationSchema: artworkSchema,
   })
+
+  const { width, height } = useScreenDimensions()
 
   return (
     <NavigationContainer independent ref={navContainerRef}>
@@ -183,18 +178,52 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <Stack.Screen name="ArtworkFormMain" component={MyCollectionArtworkFormMain} />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        {mode === "add" ? (
-          <SavingArtworkModal
-            testID="saving-artwork-modal"
-            isVisible={loading}
-            loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
-          />
-        ) : (
-          <LoadingModal testID="loading-modal" isVisible={loading} />
-        )}
+
+        {mode === "add" && loading ? (
+          <FadeIn style={{ position: "absolute" }} slide>
+            <Flex
+              height={height}
+              width={width}
+              left={0}
+              bottom={0}
+              top={0}
+              right={0}
+              position="absolute"
+              testID="saving-artwork-modal"
+            >
+              <SavingArtworkModal
+                testID="saving-artwork-modal"
+                isVisible={loading}
+                loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
+              />
+            </Flex>
+          </FadeIn>
+        ) : null}
+
+        {mode === "edit" && loading ? (
+          <FadeIn style={{ position: "absolute" }} slide>
+            <Flex
+              height={height}
+              width={width}
+              left={0}
+              bottom={0}
+              top={0}
+              right={0}
+              testID="saving-artwork-modal"
+            >
+              <LoadingSpinner />
+            </Flex>
+          </FadeIn>
+        ) : null}
       </FormikProvider>
     </NavigationContainer>
   )
+}
+
+export const MyCollectionArtworkAdd: React.FC<{
+  source: Tab
+}> = ({ source }) => {
+  return <MyCollectionArtworkFormScreen mode="add" source={source} />
 }
 
 export const MyCollectionArtworkFormScreen: React.FC<MyCollectionArtworkFormProps> = (props) => {

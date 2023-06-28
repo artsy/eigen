@@ -159,7 +159,7 @@ const MyCollection: React.FC<{
   }
 
   // User has no artworks but has manually added collected artists
-  if (artworks.length === 0 && hasCollectedArtists) {
+  if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
     return (
       <Tabs.ScrollView>
         <MyCollectionCollectedArtistsOnboardingModal />
@@ -190,7 +190,7 @@ const MyCollection: React.FC<{
           hasArtworks={artworks.length > 0}
         />
       </Tabs.SubTabBar>
-      <MyCollectionCollectedArtistsOnboardingModal />
+      {!!enableCollectedArtists && <MyCollectionCollectedArtistsOnboardingModal />}
 
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}

@@ -6,6 +6,7 @@ import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
@@ -13,7 +14,6 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Platform } from "react-native"
 import { Edge, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -65,6 +65,7 @@ export const ArtsyWebViewPage = ({
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
+  useAndroidGoBack()
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -106,11 +107,7 @@ export const ArtsyWebViewPage = ({
   }
 
   return (
-    <Flex
-      flex={1}
-      pt={isPresentedModally && Platform.OS !== "android" ? 0 : `${saInsets.top}px`}
-      backgroundColor="white"
-    >
+    <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}

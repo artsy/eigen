@@ -125,13 +125,11 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           {displayAboutSection ? (
             <Tabs.Tab name="Overview" label="Overview">
               <Tabs.Lazy>
-                <>
-                  {artistBelowTheFold ? (
-                    <ArtistAboutContainer artist={artistBelowTheFold} />
-                  ) : (
-                    <LoadingPage />
-                  )}
-                </>
+                {artistBelowTheFold ? (
+                  <ArtistAboutContainer artist={artistBelowTheFold} />
+                ) : (
+                  <LoadingPage />
+                )}
               </Tabs.Lazy>
             </Tabs.Tab>
           ) : null}

@@ -133,7 +133,7 @@ export const ArticlesPlaceholder = () => {
             <FlatList
               numColumns={numColumns}
               key={`${numColumns}`}
-              ListHeaderComponent={() => <ArticlesHeader />}
+              ListHeaderComponent={() => <ArticlesHeader title="Artsy Editorial" />}
               data={_.times(6)}
               keyExtractor={(item) => `${item}-${numColumns}`}
               renderItem={({ item }) => {

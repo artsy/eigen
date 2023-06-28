@@ -51,8 +51,9 @@ describe("Artist", () => {
 
   it("returns an empty state if artist has no artworks", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
-    const emptyTitle = "No works available by the artist at this time"
-    const emptyMessage = "Create an Alert to receive notifications when new works are added"
+    const emptyTitle = "Get notified when new works are available"
+    const emptyMessage =
+      "There are currently no works for sale for this artist. Create an alert, and we’ll let you know when new works are added."
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {

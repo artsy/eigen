@@ -15,6 +15,11 @@ export const Rarity: React.FC = () => {
 
   const handleValueChange = (value: AttributionClassType) => {
     formik.handleChange("attributionClass")(value)
+    if (value !== "UNIQUE") {
+      // Unset edition number and size if not unique
+      formik.setFieldValue("editionNumber", undefined)
+      formik.setFieldValue("editionSize", undefined)
+    }
   }
 
   return (

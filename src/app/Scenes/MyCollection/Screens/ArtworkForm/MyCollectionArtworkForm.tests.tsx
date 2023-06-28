@@ -43,12 +43,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkFormScreen
-          artwork={mockArtwork as any}
-          mode="edit"
-          onSuccess={jest.fn()}
-          onDelete={jest.fn()}
-        />,
+        <MyCollectionArtworkFormScreen artwork={mockArtwork as any} mode="edit" />,
         mockEnvironment
       )
 
@@ -91,11 +86,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -155,7 +146,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe(30)
         expect(getByTestId("HeightInput").props.value).toBe(20)
         expect(getByTestId("DepthInput").props.value).toBe(40)
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
         expect(getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
@@ -184,10 +175,10 @@ describe("MyCollectionArtworkForm", () => {
                 "internal-id",
               ],
               "artists": undefined,
-              "artworkLocation": "",
+              "artworkLocation": undefined,
               "attributionClass": undefined,
               "category": "Print",
-              "confidentialNotes": "",
+              "confidentialNotes": undefined,
               "date": "2007",
               "depth": 40,
               "editionNumber": "",
@@ -202,7 +193,7 @@ describe("MyCollectionArtworkForm", () => {
               "metric": "in",
               "pricePaidCents": undefined,
               "pricePaidCurrency": "USD",
-              "provenance": "",
+              "provenance": undefined,
               "title": "Morons",
               "width": 30,
             },
@@ -214,11 +205,7 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -274,12 +261,12 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Add Details")).toBeTruthy()
 
         expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
 
@@ -292,11 +279,7 @@ describe("MyCollectionArtworkForm", () => {
 
       it("initializes the artist name input field", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen
-            mode="add"
-            onSuccess={jest.fn()}
-            source={Tab.collection}
-          />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -331,12 +314,12 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByTestId("ArtistDisplayNameInput").props.value).toBe("foo bar")
         expect(getByTestId("TitleInput").props.value).toBe("")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
   })
@@ -440,7 +423,6 @@ describe("MyCollectionArtworkForm", () => {
         }
         const formCheckValues = formValues
         const props: MyCollectionArtworkFormProps = {
-          onSuccess: jest.fn(),
           mode: "add",
           source: Tab.collection,
         }
@@ -548,7 +530,7 @@ describe("MyCollectionArtworkForm", () => {
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
       const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkFormScreen mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+        <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
         mockEnvironment
       )
 
@@ -598,7 +580,7 @@ describe("MyCollectionArtworkForm", () => {
 
       await flushPromiseQueue()
 
-      expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+      expect(getByTestId("saving-artwork-modal")).toBeDefined()
     })
   })
 })

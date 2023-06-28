@@ -15,6 +15,7 @@ describe("Rarity", () => {
       values: {
         attributionClass: "Limited Edition",
       },
+      setFieldValue: jest.fn(() => jest.fn()),
     }))
   })
 
