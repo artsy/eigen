@@ -340,7 +340,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableCollectedArtists = useFeatureFlag("AREnableCollectedArtists")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>

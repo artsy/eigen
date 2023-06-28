@@ -52,6 +52,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
@@ -191,24 +192,47 @@ export const MyCollectionArtworkFormMain: React.FC<
   const isSubmission =
     mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
-  const handleDelete = async () => {
-    if (mode === "edit" && artwork) {
-      trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
-      try {
-        // TODO: Fix this separetely
-        if (!__TEST__) {
-          await myCollectionDeleteArtwork(artwork.internalID)
+  const handleDelete = () => {
+    if (enableCollectedArtists) {
+      return
+    }
+
+    handleDeleteLegacy()
+  }
+
+  const handleDeleteLegacy = () => {
+    showActionSheetWithOptions(
+      {
+        title: "Delete artwork?",
+        options: ["Delete", "Cancel"],
+        destructiveButtonIndex: 0,
+        cancelButtonIndex: 1,
+        useModal: true,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          deleteArtwork?.()
         }
-        refreshMyCollection()
-        popToRoot()
-      } catch (e) {
-        if (__DEV__) {
-          console.error(e)
-        } else {
-          captureException(e)
-        }
-        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
       }
+    )
+  }
+
+  const deleteArtwork = async () => {
+    trackEvent(tracks.deleteCollectedArtwork(artwork!.internalID, artwork!.slug))
+    try {
+      // TODO: Fix this separetely
+      if (!__TEST__) {
+        await myCollectionDeleteArtwork(artwork!.internalID)
+      }
+      refreshMyCollection()
+      popToRoot()
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
+      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     }
   }
 
@@ -373,29 +397,14 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Spacer y={2} />
 
           <ScreenMargin>
-            {mode === "edit" && (
+            {mode === "edit" && !!artwork && (
               <Text
                 my={4}
                 variant="sm"
                 underline
                 color={color("red100")}
                 textAlign="center"
-                onPress={() => {
-                  showActionSheetWithOptions(
-                    {
-                      title: "Delete artwork?",
-                      options: ["Delete", "Cancel"],
-                      destructiveButtonIndex: 0,
-                      cancelButtonIndex: 1,
-                      useModal: true,
-                    },
-                    (buttonIndex) => {
-                      if (buttonIndex === 0) {
-                        handleDelete?.()
-                      }
-                    }
-                  )
-                }}
+                onPress={handleDelete}
                 testID="DeleteButton"
               >
                 Delete artwork
