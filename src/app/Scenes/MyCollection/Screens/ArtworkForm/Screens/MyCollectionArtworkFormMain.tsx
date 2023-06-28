@@ -25,6 +25,7 @@ import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
+import { MyCollectionArtworkFormDeleteArtworkModal } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/MyCollectionArtworkFormDeleteArtworkModal"
 import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Rarity"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
@@ -56,7 +57,10 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+
   const [showAbandonModal, setShowAbandonModal] = useState(false)
+  const [showDeleteArtistModal, setShowDeleteArtistModal] = useState(false)
+
   const { formik } = useArtworkForm()
   const color = useColor()
   const space = useSpace()
@@ -194,6 +198,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const handleDelete = () => {
     if (enableCollectedArtists) {
+      setShowDeleteArtistModal(true)
       return
     }
 
@@ -217,12 +222,15 @@ export const MyCollectionArtworkFormMain: React.FC<
     )
   }
 
-  const deleteArtwork = async () => {
+  const deleteArtwork = async (shouldDeleteArtist?: boolean) => {
     trackEvent(tracks.deleteCollectedArtwork(artwork!.internalID, artwork!.slug))
     try {
       // TODO: Fix this separetely
       if (!__TEST__) {
         await myCollectionDeleteArtwork(artwork!.internalID)
+      }
+      if (shouldDeleteArtist) {
+        // TODO: delete artist as well
       }
       refreshMyCollection()
       popToRoot()
@@ -241,6 +249,12 @@ export const MyCollectionArtworkFormMain: React.FC<
   return (
     <>
       <ArtsyKeyboardAvoidingView>
+        <MyCollectionArtworkFormDeleteArtworkModal
+          visible={showDeleteArtistModal}
+          hideModal={() => setShowDeleteArtistModal(false)}
+          deleteArtwork={deleteArtwork}
+        />
+
         <FancyModalHeader
           onLeftButtonPress={() => {
             if (isFormDirty() && mode === "edit") {
