@@ -3,6 +3,7 @@ import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
+import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Alert, Linking, Platform } from "react-native"
 import { requestNotifications } from "react-native-permissions"
@@ -63,8 +64,22 @@ const showPrepromptAlert = async () => {
 export const requestSystemPermissions = async () => {
   GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogSeen(true)
   const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-  const result = await requestNotifications(permissions)
-  console.log("requestNotifications result", result)
+  const { status } = await requestNotifications(permissions)
+  if (status === "granted") {
+    postEventToProviders({
+      action: "push notifications requested",
+      granted: true,
+    })
+    SegmentTrackingProvider.identify
+      ? SegmentTrackingProvider.identify(null, { "has enabled notifications": 1 })
+      : (() => undefined)()
+  } else {
+    postEventToProviders({
+      action: "push notifications requested",
+      granted: false,
+    })
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogRejected(true)
+  }
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds

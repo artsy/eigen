@@ -284,7 +284,7 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddPushPromptLogicModel]: (state) => {
     delete state.auth.requestedPushPermissionsThisSession
     state.artsyPrefs.pushPromptLogic = {
-      pushNotificationAppleDialogRejected: false,
+      pushNotificationSystemDialogRejected: false,
       pushNotificationDialogLastSeenTimestamp: null,
       pushNotificationSettingsPromptSeen: false,
       pushNotificationSystemDialogSeen: false,

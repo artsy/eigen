@@ -17,9 +17,6 @@ export type NativeEvent =
       payload: any
     }
   | {
-      type: "NOTIFICATION_PERMISSIONS_REJECTED"
-    }
-  | {
       type: "REQUEST_NAVIGATION"
       payload: { route: string; props: {} }
     }
@@ -91,9 +88,6 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "NOTIFICATION_RECEIVED":
       GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
-      return
-    case "NOTIFICATION_PERMISSIONS_REJECTED":
-      GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationAppleDialogRejected(true)
       return
     case "REQUEST_NAVIGATION": {
       const { route, props } = event.payload
