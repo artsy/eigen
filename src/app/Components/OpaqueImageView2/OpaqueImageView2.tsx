@@ -76,6 +76,10 @@ const useComponentSize = () => {
   return { layoutHeight, layoutWidth, onLayout }
 }
 
+/**
+ * @deprecated
+ * Use `Image` from palette instead.
+ */
 export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
