@@ -94,6 +94,10 @@ jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
+jest.mock("react-native-permissions", () => ({
+  requestNotifications: jest.fn(),
+}))
+
 require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
