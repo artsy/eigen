@@ -899,7 +899,7 @@ describe("App version Versions.AddPushPromptLogicModel", () => {
     }) as any
 
     expect(migratedState.artsyPrefs.pushPromptLogic).toEqual({
-      pushNotificationAppleDialogRejected: false,
+      pushNotificationSystemDialogRejected: false,
       pushNotificationDialogLastSeenTimestamp: null,
       pushNotificationSettingsPromptSeen: false,
       pushNotificationSystemDialogSeen: false,
