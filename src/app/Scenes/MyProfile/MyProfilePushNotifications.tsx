@@ -280,6 +280,7 @@ export const MyProfilePushNotifications: React.FC<{
     </View>
   )
 
+  // TODO: the below logic may be broken on Android 13 with runtime push permissions
   return (
     <PageWithSimpleHeader
       title="Push Notifications"
