@@ -124,13 +124,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
     }];
 }
-
-- (ARCellData *)requestNotificationsAlert;
-{
-    return [self tappableCellDataWithTitle:@"Request Receiving Notifications" selection:^{
-        [[[ARAppNotificationsDelegate alloc] init] registerForDeviceNotificationsWithApple];
-    }];
-}
 #endif
 
 

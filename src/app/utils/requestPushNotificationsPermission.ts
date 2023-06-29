@@ -1,4 +1,3 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
@@ -6,7 +5,7 @@ import {
 } from "app/utils/PushNotification"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Alert, Linking, Platform } from "react-native"
-import PushNotification from "react-native-push-notification"
+import { requestNotifications } from "react-native-permissions"
 
 const showSettingsAlert = () => {
   Alert.alert(
@@ -14,7 +13,12 @@ const showSettingsAlert = () => {
     "Turn on notifications to get important updates about artists you follow.",
     [
       { text: "Not Now", style: "cancel" },
-      { text: "Settings", onPress: () => Linking.openSettings() },
+      {
+        text: "Settings",
+        onPress: () => {
+          Linking.openSettings()
+        },
+      },
     ]
   )
 }
@@ -56,14 +60,11 @@ const showPrepromptAlert = async () => {
   )
 }
 
-const requestSystemPermissions = async () => {
+export const requestSystemPermissions = async () => {
   GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogSeen(true)
-  if (Platform.OS === "ios") {
-    LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
-  } else {
-    const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-    await PushNotification.requestPermissions(permissions)
-  }
+  const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
+  const result = await requestNotifications(permissions)
+  console.log("requestNotifications result", result)
 }
 
 const ONE_WEEK_MS = 1000 * 60 * 60 * 24 * 7 // One week in milliseconds
@@ -102,10 +103,13 @@ export const requestPushNotificationsPermission = async () => {
   if (permissionStatus === PushAuthorizationStatus.Authorized) {
     // On iOS, we need to request the push token again to trigger the onRegister callback
     if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
+      requestSystemPermissions()
     }
     return
-  } else if (permissionStatus === PushAuthorizationStatus.Denied) {
+  } else if (
+    permissionStatus === PushAuthorizationStatus.Denied &&
+    pushNotificationSystemDialogSeen
+  ) {
     if (!pushNotificationSettingsPromptSeen) {
       showSettingsAlert()
       setPushNotificationSettingsPromptSeen(true)

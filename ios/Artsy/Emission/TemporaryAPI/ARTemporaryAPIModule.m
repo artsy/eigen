@@ -7,14 +7,6 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(requestDirectNotificationPermissions)
-{
-    /* Used in settings screen to directly ask user for push permissions */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.directNotificationPermissionPrompter();
-    });
-}
-
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];

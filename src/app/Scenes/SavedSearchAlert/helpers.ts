@@ -2,11 +2,11 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
+import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
 export const requestNotificationPermissions = () => {
@@ -18,8 +18,9 @@ export const requestNotificationPermissions = () => {
       [
         {
           text: "Proceed",
-          onPress: () =>
-            LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
+          onPress: () => {
+            requestSystemPermissions()
+          },
         },
         {
           text: "Cancel",

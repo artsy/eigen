@@ -17,7 +17,4 @@ typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
 
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 
-/// Used in admin tools and for react native to request permissions
-- (void)registerForDeviceNotificationsWithApple;
-
 @end

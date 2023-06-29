@@ -25,30 +25,6 @@
 @implementation ARAppNotificationsDelegate
 
 #pragma mark -
-#pragma mark Push Notification Register
-
-- (void)registerForDeviceNotificationsWithApple
-{
-    ARActionLog(@"Registering with Apple for remote notifications.");
-    UNAuthorizationOptions authOptions = (UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert);
-    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
-        NSString *grantedString = granted ? @"YES" : @"NO";
-        // TODO: Because we trigger again to get the token register this is being over-reported
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationsRequested traits:@{@"granted" : grantedString}];
-
-        if (!granted) {
-            [[[AREmission sharedInstance] notificationsManagerModule] notificationPermissionsRejected];
-        } else {
-            [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];
-        }
-
-        [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
-    }];
-
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-}
-
-#pragma mark -
 #pragma mark Push Notification Delegate
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
