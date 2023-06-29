@@ -416,6 +416,7 @@ function getNativeModules(): OurNativeModules {
     },
     ARTemporaryAPIModule: {
       fetchNotificationPermissions: jest.fn(),
+      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),
@@ -468,25 +469,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       AREnabled: true,
       CurrentLocale: "en_US",
       LocalTimeZone: "",
-    },
-
-    ARNotificationsManager: {
-      nativeState: {
-        userAgent: "Jest Unit Tests",
-        authenticationToken: "authenticationToken",
-        launchCount: 1,
-        userID: "userID",
-        userEmail: "user@example.com",
-      },
-      postNotificationName: jest.fn(),
-      didFinishBootstrapping: jest.fn(),
-      reactStateUpdated: jest.fn(),
-    },
-    ARTemporaryAPIModule: {
-      fetchNotificationPermissions: jest.fn(),
-      markNotificationsRead: jest.fn(),
-      setApplicationIconBadgeNumber: jest.fn(),
-      getUserEmail: jest.fn(),
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),

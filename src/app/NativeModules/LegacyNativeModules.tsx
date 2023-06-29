@@ -25,6 +25,7 @@ interface LegacyNativeModules {
     fetchNotificationPermissions(
       callback: (error: any, result: PushAuthorizationStatus) => void
     ): void
+    markUserPermissionStatus(granted: boolean): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
     getUserEmail(): string
@@ -127,6 +128,7 @@ const LegacyNativeModulesAndroid = {
 
   ARTemporaryAPIModule: {
     fetchNotificationPermissions: noop("fetchNotificationPermissions"),
+    markUserPermissionStatus: noop("markUserPermissionStatus"),
     markNotificationsRead: noop("markNotificationsRead"),
     setApplicationIconBadgeNumber: () => {
       console.log("TODO: make app icon badge work on android")

@@ -1,3 +1,4 @@
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
@@ -70,6 +71,7 @@ export const requestSystemPermissions = async () => {
       action: "push notifications requested",
       granted: true,
     })
+    LegacyNativeModules.ARTemporaryAPIModule.markUserPermissionStatus(true)
     SegmentTrackingProvider.identify
       ? SegmentTrackingProvider.identify(null, { "has enabled notifications": 1 })
       : (() => undefined)()
@@ -78,6 +80,7 @@ export const requestSystemPermissions = async () => {
       action: "push notifications requested",
       granted: false,
     })
+    LegacyNativeModules.ARTemporaryAPIModule.markUserPermissionStatus(false)
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogRejected(true)
   }
 }
