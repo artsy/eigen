@@ -4,36 +4,19 @@ import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"
 
-type verificationType = "ID" | "Email"
-
-const IDVerificationBlockingStates = ["passed", "failed", "watchlist_hit"]
+const VERIFICATION_BANNER_TIMEOUT = 6000
+const ID_VERIFICATION_BLOCKING_STATES = ["passed", "failed", "watchlist_hit"]
 
 export const useHandleEmailVerification = () => {
-  return useHandleVerification("Email")
-}
-
-export const useHandleIDVerification = () => {
-  return useHandleVerification("ID")
-}
-
-const VERIFICATION_BANNER_TIMEOUT = 6000
-
-const useHandleVerification = (type: verificationType) => {
   const [showVerificationBanner, setShowVerificationBanner] = useState(false)
 
   const handleVerification = useCallback(async () => {
     try {
-      const response = await verify(type)
+      await verifyEmail(getRelayEnvironment())
 
-      // if response as state from ID verification
-      const IDVerificationState = !(response && IDVerificationBlockingStates.includes(response))
-
-      if (type === "Email" || IDVerificationState) {
-        setShowVerificationBanner(true)
-      }
+      setShowVerificationBanner(true)
     } catch (error) {
       captureException(error)
-      setShowVerificationBanner(false)
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
@@ -45,16 +28,31 @@ const useHandleVerification = (type: verificationType) => {
   return { showVerificationBanner, handleVerification }
 }
 
-const verify = async (type: verificationType) => {
-  if (type === "Email") {
-    const { sendConfirmationEmail } = await verifyEmail(getRelayEnvironment())
+export const useHandleIDVerification = (initiatorID: string) => {
+  const [showVerificationBanner, setShowVerificationBanner] = useState(false)
 
-    const confirmationOrError = sendConfirmationEmail?.confirmationOrError
-    return confirmationOrError?.unconfirmedEmail
-  } else {
-    const { sendIdentityVerificationEmail } = await verifyID(getRelayEnvironment())
+  const handleVerification = useCallback(async () => {
+    try {
+      const response = await verifyID({ initiatorID: initiatorID })
+      const verificationState =
+        response.sendIdentityVerificationEmail?.confirmationOrError?.identityVerification?.state
 
-    const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
-    return confirmationOrError?.identityVerificationEmail?.state
-  }
+      const IdvHasValidState =
+        typeof verificationState === "string" &&
+        !ID_VERIFICATION_BLOCKING_STATES.includes(verificationState)
+
+      if (IdvHasValidState) {
+        setShowVerificationBanner(true)
+      }
+    } catch (error) {
+      captureException(error)
+    } finally {
+      // Allow the user some time to read the message
+      setTimeout(() => {
+        setShowVerificationBanner(false)
+      }, VERIFICATION_BANNER_TIMEOUT)
+    }
+  }, [])
+
+  return { showVerificationBanner, handleVerification }
 }
