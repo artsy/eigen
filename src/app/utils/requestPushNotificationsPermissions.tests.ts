@@ -91,11 +91,12 @@ describe("requestPushNotificationsPermission", () => {
     expect(pushRequestedThisSession).toBe(true)
   })
 
-  it("shows settings alert if push permissions are denied", async () => {
+  it("shows settings alert if push permissions are denied and they have seen the system prompt", async () => {
     __globalStoreTestUtils__?.injectState({
       artsyPrefs: {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
+          pushNotificationSystemDialogSeen: true,
         },
       },
     })
@@ -121,6 +122,7 @@ describe("requestPushNotificationsPermission", () => {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
           pushNotificationSettingsPromptSeen: true,
+          pushNotificationSystemDialogSeen: true,
         },
       },
     })
@@ -139,6 +141,7 @@ describe("requestPushNotificationsPermission", () => {
         pushPromptLogic: {
           pushPermissionsRequestedThisSession: false,
           pushNotificationSettingsPromptSeen: false,
+          pushNotificationSystemDialogSeen: true,
         },
       },
     })
