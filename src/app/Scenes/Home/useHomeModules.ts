@@ -7,9 +7,8 @@ import { isConnectionEmpty } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isEmpty } from "lodash"
 import { useMemo } from "react"
-import ReactAppboy from "react-native-appboy-sdk"
 
-export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedContentCard[]) => {
+export const useHomeModules = (props: HomeProps) => {
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
@@ -29,12 +28,12 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "newWorksForYou",
       },
       {
-        data: cards,
-        isEmpty: isEmpty(cards),
-        key: "contentCardsRail",
+        data: props.heroUnits,
+        isEmpty: isEmpty(props.heroUnits),
+        key: "heroUnitsRail",
         prefetchUrl: "",
         title: "",
-        type: "contentCards",
+        type: "heroUnits",
       },
       {
         data: props.homePageAbove?.activeBidsArtworkModule,
@@ -221,7 +220,6 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       allModulesKeys: allModules.map((module) => module.key),
     }
   }, [
-    cards,
     props.newWorksForYou,
     props.homePageAbove?.activeBidsArtworkModule,
     props.meAbove,
