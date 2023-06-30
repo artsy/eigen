@@ -67,11 +67,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
 
-  const displayAboutSection =
-    artistAboveTheFold.has_metadata ||
-    !!artistAboveTheFold.statuses?.articles ||
-    (artistAboveTheFold.counts?.related_artists ?? 0) > 0
-
   useEffect(() => {
     if (!!fetchCriteriaError) {
       popoverMessage.show({
@@ -110,11 +105,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           title={artistAboveTheFold.name!}
           headerProps={{
             rightElements: (
-              <>
-                <TouchableOpacity onPress={handleSharePress}>
-                  <ShareIcon width={23} height={23} />
-                </TouchableOpacity>
-              </>
+              <TouchableOpacity onPress={handleSharePress}>
+                <ShareIcon width={23} height={23} />
+              </TouchableOpacity>
             ),
             onBack: goBack,
           }}
@@ -122,18 +115,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
           )}
         >
-          {displayAboutSection ? (
-            <Tabs.Tab name="Overview" label="Overview">
-              <Tabs.Lazy>
-                {artistBelowTheFold ? (
-                  <ArtistAboutContainer artist={artistBelowTheFold} />
-                ) : (
-                  <LoadingPage />
-                )}
-              </Tabs.Lazy>
-            </Tabs.Tab>
-          ) : null}
-
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
               <ArtistArtworks
@@ -144,22 +125,28 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             </Tabs.Lazy>
           </Tabs.Tab>
 
-          {artistAboveTheFold?.statuses?.auctionLots ? (
-            <Tabs.Tab name="Insights" label="Insights">
-              <Tabs.Lazy>
-                <>
-                  {artistBelowTheFold ? (
-                    <ArtistInsightsFragmentContainer
-                      artist={artistBelowTheFold}
-                      initialFilters={auctionResultsInitialFilters}
-                    />
-                  ) : (
-                    <LoadingPage />
-                  )}
-                </>
-              </Tabs.Lazy>
-            </Tabs.Tab>
-          ) : null}
+          <Tabs.Tab name="Insights" label="Auction Results">
+            <Tabs.Lazy>
+              {artistBelowTheFold ? (
+                <ArtistInsightsFragmentContainer
+                  artist={artistBelowTheFold}
+                  initialFilters={auctionResultsInitialFilters}
+                />
+              ) : (
+                <LoadingPage />
+              )}
+            </Tabs.Lazy>
+          </Tabs.Tab>
+
+          <Tabs.Tab name="Overview" label="About">
+            <Tabs.Lazy>
+              {artistBelowTheFold ? (
+                <ArtistAboutContainer artist={artistBelowTheFold} />
+              ) : (
+                <LoadingPage />
+              )}
+            </Tabs.Lazy>
+          </Tabs.Tab>
         </Tabs.TabsWithHeader>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
@@ -184,19 +171,10 @@ export const ArtistScreenQuery = graphql`
       ...ArtistArtworks_artist @arguments(input: $input)
       internalID
       slug
-      has_metadata: hasMetadata
-      counts {
-        partner_shows: partnerShows
-        related_artists: relatedArtists
-      }
       href
       name
       image {
         url(version: "large")
-      }
-      statuses {
-        auctionLots
-        articles
       }
     }
   }
@@ -328,9 +306,9 @@ const ArtistSkeleton: React.FC = () => {
 
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
-            <SkeletonText variant="xs">Overview</SkeletonText>
             <SkeletonText variant="xs">Artworks</SkeletonText>
-            <SkeletonText variant="xs">Insights</SkeletonText>
+            <SkeletonText variant="xs">Auction Results</SkeletonText>
+            <SkeletonText variant="xs">About</SkeletonText>
           </Flex>
         </Skeleton>
 
