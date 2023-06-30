@@ -73,8 +73,8 @@ describe("Artist", () => {
     const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     expect(queryByText("Artworks")).toBeTruthy()
-    expect(queryByText("Overview")).toBeTruthy()
-    expect(queryByText("Insights")).toBeTruthy()
+    expect(queryByText("Auction Results")).toBeTruthy()
+    expect(queryByText("About")).toBeTruthy()
   })
 
   it("tracks a page view", async () => {

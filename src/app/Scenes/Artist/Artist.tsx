@@ -115,16 +115,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
           )}
         >
-          <Tabs.Tab name="Overview" label="Overview">
-            <Tabs.Lazy>
-              {artistBelowTheFold ? (
-                <ArtistAboutContainer artist={artistBelowTheFold} />
-              ) : (
-                <LoadingPage />
-              )}
-            </Tabs.Lazy>
-          </Tabs.Tab>
-
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
               <ArtistArtworks
@@ -135,13 +125,23 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             </Tabs.Lazy>
           </Tabs.Tab>
 
-          <Tabs.Tab name="Insights" label="Insights">
+          <Tabs.Tab name="Insights" label="Auction Results">
             <Tabs.Lazy>
               {artistBelowTheFold ? (
                 <ArtistInsightsFragmentContainer
                   artist={artistBelowTheFold}
                   initialFilters={auctionResultsInitialFilters}
                 />
+              ) : (
+                <LoadingPage />
+              )}
+            </Tabs.Lazy>
+          </Tabs.Tab>
+
+          <Tabs.Tab name="Overview" label="About">
+            <Tabs.Lazy>
+              {artistBelowTheFold ? (
+                <ArtistAboutContainer artist={artistBelowTheFold} />
               ) : (
                 <LoadingPage />
               )}
@@ -306,9 +306,9 @@ const ArtistSkeleton: React.FC = () => {
 
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
-            <SkeletonText variant="xs">Overview</SkeletonText>
             <SkeletonText variant="xs">Artworks</SkeletonText>
-            <SkeletonText variant="xs">Insights</SkeletonText>
+            <SkeletonText variant="xs">Auction Results</SkeletonText>
+            <SkeletonText variant="xs">About</SkeletonText>
           </Flex>
         </Skeleton>
 
