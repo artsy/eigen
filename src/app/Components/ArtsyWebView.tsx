@@ -47,12 +47,14 @@ export const ArtsyWebViewPage = ({
   mimicBrowserBackButton = true,
   useRightCloseButton = false,
   showShareButton = false,
+  systemBackAction,
   backProps,
   backAction,
 }: {
   url: string
   isPresentedModally?: boolean
   backProps?: GoBackProps
+  systemBackAction?: () => void
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
@@ -104,7 +106,7 @@ export const ArtsyWebViewPage = ({
     >
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          useXButton={isPresentedModally && !canGoBack}
+          useXButton={!!isPresentedModally && !canGoBack}
           onLeftButtonPress={
             useRightCloseButton && !canGoBack
               ? undefined
@@ -114,7 +116,11 @@ export const ArtsyWebViewPage = ({
                   } else if (!canGoBack) {
                     handleGoBack()
                   } else {
-                    ref.current?.goBack()
+                    if (systemBackAction) {
+                      systemBackAction()
+                    } else {
+                      ref.current?.goBack()
+                    }
                   }
                 }
           }
