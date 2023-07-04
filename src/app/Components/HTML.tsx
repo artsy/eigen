@@ -79,6 +79,7 @@ export const HTML: React.FC<HTMLProps> = ({
             },
             h2: {
               fontFamily: FONTS.medium,
+              fontWeight: "normal",
             },
             h3: {
               fontFamily: FONTS.regular,
