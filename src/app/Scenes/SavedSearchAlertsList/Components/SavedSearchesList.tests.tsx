@@ -54,7 +54,7 @@ describe("SavedSearches", () => {
       }),
     })
 
-    expect(getByText("Create an alert to get notified about new works.")).toBeTruthy()
+    expect(getByText("Get notifications when there’s a match.")).toBeTruthy()
   })
 
   it("renders the default name placeholder if there is no name for saved search alert", () => {
