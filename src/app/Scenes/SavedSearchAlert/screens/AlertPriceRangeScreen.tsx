@@ -1,73 +1,49 @@
-import { Button, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { PriceRange, parsePriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
+import { PriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
+import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
+import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
+import { getBarsFromAggregations } from "app/Components/PriceRange/utils/getBarsFromAggregations"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { useRef, useState } from "react"
-import { ScrollView, TextInput } from "react-native"
-
-const DEFAULT_PRICE_RANGE = "*-*"
-const NUMBERS_REGEX = /^(|\d)+$/
-
-const getInputValue = (value: PriceRange[number]) => {
-  return value === "*" || value === 0 ? "" : value.toString()
-}
+import { Suspense, useState } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const AlertPriceRangeScreen = () => {
-  const navigation =
-    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRange">>()
+  const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
+  const data = useLazyLoadQuery(AlertPriceRangeScreenQuery, {
+    artistID: artistID,
+  })
+  // TODO: fix any
+  const histogramBars = getBarsFromAggregations(
+    (data as any).artist?.filterArtworksConnection?.aggregations
+  )
+
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const [rawRange, setRawRange] = useState(attributes.priceRange || DEFAULT_PRICE_RANGE)
+
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
   )
 
-  const minValInputRef = useRef<TextInput>(null)
-  const maxValInputRef = useRef<TextInput>(null)
-
-  const initailPriceRange = attributes.priceRange || DEFAULT_PRICE_RANGE
-
-  const [range, setRange] = useState(parsePriceRange(initailPriceRange))
-  const [minValue, maxValue] = range
-
-  const handleTextChange = (changedIndex: number) => (value: string) => {
-    // Early exit the input update if the value is not a number
-    // This was added for the android number-pad keyboard that
-    // includes some special characters
-    if (!NUMBERS_REGEX.test(value)) {
-      return
-    }
-
-    const updatedRange = range.map((rangeValue, index) => {
-      if (index === changedIndex) {
-        if (value === "" || value === "0") {
-          return "*"
-        }
-
-        return parseInt(value, 10)
-      }
-
-      return rangeValue
-    })
-
-    setRange(updatedRange)
-  }
-
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRange">>()
   const handleOnButtonPress = () => {
     setValueToAttributesByKeyAction({
       key: SearchCriteria.priceRange,
-      value: range.join("-"),
+      value: rawRange,
     })
     navigation.goBack()
   }
 
-  const handleOnClear = () => {
-    if (minValInputRef.current && maxValInputRef.current) {
-      minValInputRef.current.clear()
-      maxValInputRef.current.clear()
-    }
-    setRange(parsePriceRange(DEFAULT_PRICE_RANGE))
+  const handleClear = () => {
+    setRawRange(DEFAULT_PRICE_RANGE)
+  }
+
+  const handleUpdateRange = (updatedRange: PriceRange) => {
+    setRawRange(updatedRange.join("-"))
   }
 
   return (
@@ -76,48 +52,47 @@ export const AlertPriceRangeScreen = () => {
         title="Price"
         onLeftButtonPress={() => navigation.goBack()}
         rightButtonText="Clear"
-        onRightButtonPress={handleOnClear}
+        onRightButtonPress={handleClear}
       />
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <Flex m={2}>
-          <Text variant="sm">Set price range you are interested in</Text>
-        </Flex>
-        <Flex flexDirection="row" mx={2}>
-          <Input
-            ref={minValInputRef}
-            containerStyle={{ flex: 1 }}
-            description="Min"
-            fixedRightPlaceholder="$USD"
-            enableClearButton
-            keyboardType="number-pad"
-            value={getInputValue(minValue)}
-            onChangeText={handleTextChange(0)}
-            testID="price-min-input"
-            descriptionColor="black100"
-            accessibilityLabel="Minimum Price Range Input"
-          />
-          <Spacer x={2} />
-          <Input
-            ref={maxValInputRef}
-            containerStyle={{ flex: 1 }}
-            description="Max"
-            fixedRightPlaceholder="$USD"
-            enableClearButton
-            keyboardType="number-pad"
-            value={getInputValue(maxValue)}
-            onChangeText={handleTextChange(1)}
-            testID="price-max-input"
-            descriptionColor="black100"
-            accessibilityLabel="Maximum Price Range Input"
-          />
-        </Flex>
-      </ScrollView>
+      <PriceRangeContainer
+        rawPriceRange={rawRange}
+        histogramBars={histogramBars}
+        header={<Text variant="sm">Set price range you are interested in</Text>}
+        onPriceRangeUpdate={handleUpdateRange}
+      />
+
       <Spacer y={2} />
+
       <Flex m={2}>
         <Button block onPress={handleOnButtonPress}>
           Set Price Range
         </Button>
       </Flex>
     </Flex>
+  )
+}
+
+const AlertPriceRangeScreenQuery = graphql`
+  query AlertPriceRangeScreenQuery($artistID: String!) {
+    artist(id: $artistID) {
+      filterArtworksConnection(aggregations: [SIMPLE_PRICE_HISTOGRAM], first: 0) {
+        aggregations {
+          slice
+          counts {
+            count
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+`
+
+export const AlertPriceRangeScreenQueryRenderer: React.FC<{}> = () => {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <AlertPriceRangeScreen />
+    </Suspense>
   )
 }
