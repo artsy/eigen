@@ -48,7 +48,7 @@ export const ShareSheet = () => {
     return null
   }
 
-  const { smallImageURL, currentImageUrl } = getShareImages(data)
+  const { currentImageUrl } = getShareImages(data)
 
   const shareOnInstagramStory = async () => {
     const base64Data = await getBase64Data(shotRef.current!)
@@ -93,7 +93,7 @@ export const ShareSheet = () => {
 
     const resp = await RNFetchBlob.config({
       fileCache: true,
-    }).fetch("GET", smallImageURL)
+    }).fetch("GET", currentImageUrl)
 
     const base64RawData = await resp.base64()
     const base64Data = `data:image/png;base64,${base64RawData}`

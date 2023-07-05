@@ -38,7 +38,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   const imageFigures = artwork.images.filter(guardFactory("__typename", "Image"))
   const currentImage = (imageFigures ?? [])[currentImageIndex]
-  const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
+  const currentImageUrl = (currentImage?.imageURL ?? "").replace(":version", "large")
 
   return (
     <>
@@ -119,7 +119,7 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       images: figures {
         __typename
         ... on Image {
-          url
+          imageURL
         }
       }
 

@@ -10,7 +10,7 @@ export type ShareSheetArtworkItem = {
   internalID: string
   images: ReadonlyArray<{
     readonly __typename: "Image"
-    readonly url: string | null
+    readonly imageURL: string | null
   }>
   title: string
   href: string
