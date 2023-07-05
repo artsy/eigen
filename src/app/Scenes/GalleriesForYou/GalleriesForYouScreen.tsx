@@ -80,7 +80,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
-      <Flex>
+      <Flex mb={2}>
         {!!visualizeLocation && (
           <Text ml={6} color="red">
             Location: {location ? JSON.stringify(location) : "Using IP-based location"}

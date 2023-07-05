@@ -47,7 +47,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
   const locations = extractNodes(locationsConnection)
   // Locations sorted by distance to the user's location (if available)
   const sortedLocations = userLocation
-    ? sortByDistance(locations as { coordinates: Location }[], userLocation)
+    ? sortByDistance(locations as { coordinates?: Location }[], userLocation)
     : locations
 
   const { followProfile, isInFlight } = useFollowProfile({
