@@ -1,5 +1,18 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Text, Button, Tabs, BellIcon } from "@artsy/palette-mobile"
+
+import {
+  Text,
+  Button,
+  Tabs,
+  BellIcon,
+  Spacer,
+  Box,
+  Flex,
+  useSpace,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
+import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
+import { MasonryFlashList } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -10,14 +23,16 @@ import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/Sort
 import { convertSavedSearchCriteriaToFilterParams } from "app/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import React, { useEffect } from "react"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -72,17 +87,24 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   predefinedFilters,
   ...props
 }) => {
+  const space = useSpace()
+
+  const { currentScrollY } = useScreenScrollContext()
+  const { top } = useHeaderMeasurements()
   const tracking = useTracking()
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const { openFilterArtworksModal } = useShowArtworksFilterModal({ artist })
 
+  const { width, height } = useScreenDimensions()
+
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
   )
 
-  const artworks = artist.artworks
-  const artworksCount = artworks?.edges?.length
+  // const artworks = artist.artworks
+  const artworks = extractNodes(artist.artworks)
+  // const artworksCount = artworks?.length
 
   useArtworkFilters({
     relay,
@@ -124,35 +146,35 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  const filteredArtworks = () => {
-    if (artworksCount === 0) {
-      return (
-        <Box mb="80px" pt={2}>
-          <FilteredArtworkGridZeroState
-            id={artist.id}
-            slug={artist.slug}
-            trackClear={trackClear}
-            hideClearButton={!appliedFilters.length}
-          />
-        </Box>
-      )
-    } else {
-      return (
-        <>
-          <Spacer y={2} />
-          <InfiniteScrollArtworksGrid
-            connection={artist.artworks!}
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            {...props}
-            contextScreenOwnerType={OwnerType.artist}
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-          />
-        </>
-      )
-    }
-  }
+  // const filteredArtworks = () => {
+  //   if (artworksCount === 0) {
+  //     return (
+  // <Box mb="80px" pt={2}>
+  //   <FilteredArtworkGridZeroState
+  //     id={artist.id}
+  //     slug={artist.slug}
+  //     trackClear={trackClear}
+  //     hideClearButton={!appliedFilters.length}
+  //   />
+  // </Box>
+  //     )
+  //   } else {
+  //     return (
+  //       <>
+  //         <Spacer y={2} />
+  //         <InfiniteScrollArtworksGrid
+  //           connection={artist.artworks!}
+  //           loadMore={relay.loadMore}
+  //           hasMore={relay.hasMore}
+  //           {...props}
+  //           contextScreenOwnerType={OwnerType.artist}
+  //           contextScreenOwnerId={artist.internalID}
+  //           contextScreenOwnerSlug={artist.slug}
+  //         />
+  //       </>
+  //     )
+  //   }
+  // }
 
   if (!artist.statuses?.artworks) {
     return (
@@ -193,8 +215,90 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
       </>
     )
   }
+  const columnCount = 2
 
-  return artist.artworks ? filteredArtworks() : null
+  // need to prevent the onEndReached from triggering on mount
+  // when the lists parent doesn't have fixed height (not flex)
+  // the onEndReached is getting triggered on mount and never when it should
+
+  // console.warn({ currentScrollY })
+
+  return (
+    <Flex flex={1} justifyContent="center" m={-2} bg="red10">
+      <Flex height={600} bg="blue10">
+        <MasonryFlashList
+          indicatorStyle="white"
+          // onLayout={(test) => {
+          //   // console.warn("flipper", test.nativeEvent.layout.height)
+          // }}
+          testID="MasonryList"
+          data={artworks}
+          // not 100% sure if we need this 👇
+          // optimizeItemArrangement
+          // // not 100% sure if we need this 👇
+          // overrideItemLayout={(layout, item) => {
+          //   layout.size = item?.height
+          // }}
+          numColumns={columnCount}
+          // estimatedItemSize 👇 Average or median size for elements in the list. Doesn't have to be very accurate but
+          // a good estimate can improve performance. A quick look at Element Inspector can help you
+          // determine this. If you're confused between two values, the smaller value is a better choice.
+          // For vertical lists provide average height and for horizontal average width.
+          // Read more about it here: https://shopify.github.io/flash-list/docs/estimated-item-size
+          estimatedItemSize={100}
+          ListHeaderComponent={
+            // <Component item={{ index: 0, height: 100 }} text="Header" backgroundColor="red" />
+            <Spacer y={4} />
+          }
+          // ListFooterComponent={
+          //   // replace it with loading state indicator
+          //   <Component item={{ index: 0, height: 100 }} text="Footer" backgroundColor="lightblue" />
+          // }
+          ListEmptyComponent={
+            <Box mb="80px" pt={2}>
+              <FilteredArtworkGridZeroState
+                id={artist.id}
+                slug={artist.slug}
+                trackClear={trackClear}
+                hideClearButton={!appliedFilters.length}
+              />
+            </Box>
+          }
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, columnIndex }) => {
+            const imgAspectRatio = item.image?.aspectRatio ?? 1
+            const imgWidth = width / 2 - space(2) - space(1)
+            const imgHeight = imgWidth / imgAspectRatio
+
+            return (
+              <Flex pl={columnIndex === 1 ? 1 : 0} pr={columnIndex === 0 ? 1 : 0} py={1}>
+                <ArtworkGridItem artwork={item} height={imgHeight} />
+              </Flex>
+            )
+          }}
+          // onLoad={({ elapsedTimeInMs }) => {
+          //   console.log("List Load Time", elapsedTimeInMs)
+          // }}
+          viewabilityConfig={{
+            itemVisiblePercentThreshold: 50,
+          }}
+          onViewableItemsChanged={({ viewableItems, changed }) => {
+
+            console.warn("flipper viewableItems", viewableItems)
+            console.warn("flipper changed", changed)
+            console.warn("flipper called")
+          }}
+          contentContainerStyle={{
+            paddingHorizontal: space(2),
+            paddingBottom: space(4),
+            backgroundColor: "purple",
+          }}
+          // onEndReached={() => console.warn("onEndReached")}
+          // onEndReachedThreshold={0.5}
+        />
+      </Flex>
+    </Flex>
+  )
 }
 
 export default createPaginationContainer(
@@ -239,13 +343,26 @@ export default createPaginationContainer(
           @connection(key: "ArtistArtworksGrid_artworks") {
           edges {
             node {
+              slug
               id
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork  # @arguments(includeAllImages: false)
+                # ...MyCollectionArtworkGridItem_artwork
+                # @skip(if: $skipMyCollection)
+                @arguments(includeAllImages: false)
             }
           }
           counts {
             total
           }
-          ...InfiniteScrollArtworksGrid_connection
+          # ...InfiniteScrollArtworksGrid_connection
+          pageInfo {
+            hasNextPage
+            startCursor
+            endCursor
+          }
         }
         statuses {
           artworks
