@@ -74,7 +74,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
       <PriceRangeContainer
-        rawPriceRange={rawRange}
+        filterPriceRange={rawRange}
         histogramBars={histogramBars}
         header={<Text variant="sm-display">Choose Your Price Range</Text>}
         onPriceRangeUpdate={handleUpdateRange}

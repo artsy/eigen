@@ -1,13 +1,14 @@
-import { Flex, Histogram, HistogramBarEntity, Input, Spacer } from "@artsy/palette-mobile"
+import { Flex, Histogram, HistogramBarEntity, Spacer } from "@artsy/palette-mobile"
 import { parsePriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
+import { Input } from "app/Components/Input"
 import { PriceRangeSlider } from "app/Components/PriceRange/PriceRangeSlider"
 import { RANGE_DOT_SIZE } from "app/Components/PriceRange/constants"
 import { PriceRange } from "app/Components/PriceRange/types"
 import { convertToFilterFormatRange } from "app/Components/PriceRange/utils/convertToFilterFormatRange"
 import { getInputValue } from "app/Components/PriceRange/utils/getInputValue"
 import { parseSliderRange } from "app/Components/PriceRange/utils/parseSliderRange"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 
 const NUMBERS_REGEX = /^(|\d)+$/
@@ -18,7 +19,7 @@ interface RecentPriceRangeEntity {
 }
 
 interface PriceRangeContainerProps {
-  rawPriceRange: string // *-*
+  filterPriceRange: string // *-*
   histogramBars: HistogramBarEntity[]
   header: React.ReactNode
   onPriceRangeUpdate: (range: PriceRange) => void
@@ -26,15 +27,19 @@ interface PriceRangeContainerProps {
 }
 
 export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
-  rawPriceRange,
+  filterPriceRange,
   histogramBars,
   header,
   onPriceRangeUpdate,
   onRecentPriceRangeSelected,
 }) => {
   const screenScrollViewRef = useRef<ScrollView>(null)
+  const [range, setRange] = useState(parsePriceRange(filterPriceRange))
 
-  const [range, setRange] = useState(parsePriceRange(rawPriceRange))
+  useEffect(() => {
+    setRange(parsePriceRange(filterPriceRange))
+  }, [filterPriceRange])
+
   const sliderRange = parseSliderRange(range)
   const [minValue, maxValue] = range
 

@@ -16,7 +16,6 @@ export const AlertPriceRangeScreen = () => {
   const data = useLazyLoadQuery(AlertPriceRangeScreenQuery, {
     artistID: artistID,
   })
-  // TODO: fix any
   const histogramBars = getBarsFromAggregations(
     (data as any).artist?.filterArtworksConnection?.aggregations
   )
@@ -55,7 +54,7 @@ export const AlertPriceRangeScreen = () => {
         onRightButtonPress={handleClear}
       />
       <PriceRangeContainer
-        rawPriceRange={rawRange}
+        filterPriceRange={rawRange}
         histogramBars={histogramBars}
         header={<Text variant="sm">Set price range you are interested in</Text>}
         onPriceRangeUpdate={handleUpdateRange}
