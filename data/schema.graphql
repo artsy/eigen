@@ -7629,6 +7629,7 @@ input CreateUserInterestMutationInput {
   clientMutationId: String
   interestId: String!
   interestType: UserInterestInterestType!
+  private: Boolean
   sessionID: String
 }
 
@@ -18512,6 +18513,7 @@ type UserInterest {
   # A type-specific ID.
   internalID: ID!
   ownerType: UserInterestOwnerType
+  private: Boolean!
 }
 
 enum UserInterestCategory {
