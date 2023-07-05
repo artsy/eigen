@@ -45,27 +45,22 @@ export const shareContent = (shareSheetItem: ShareSheetItem) => {
 export const getShareImages = (shareSheetItem: ShareSheetItem) => {
   if (shareSheetItem.type === "sale") {
     return {
-      smallImageURL: "",
       currentImageUrl: "",
     }
   }
 
   if (shareSheetItem.type === "artist") {
     const currentImageUrl = (shareSheetItem.currentImageUrl ?? "").replace(":version", "normalized")
-    const smallImageURL = (shareSheetItem.currentImageUrl ?? "").replace(":version", "small")
 
     return {
       currentImageUrl,
-      smallImageURL,
     }
   }
 
   const currentImage = (shareSheetItem?.images ?? [])[shareSheetItem?.currentImageIndex ?? 0]
-  const currentImageUrl = (currentImage?.url ?? "").replace(":version", "normalized")
-  const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
+  const currentImageUrl = (currentImage?.imageURL ?? "").replace(":version", "normalized")
 
   return {
     currentImageUrl,
-    smallImageURL,
   }
 }
