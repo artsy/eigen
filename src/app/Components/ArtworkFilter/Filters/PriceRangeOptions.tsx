@@ -35,7 +35,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const [rawRange, setRawRange] = useState(selectedFilterOption.paramValue as string)
+  const [filterPriceRange, setFilterPriceRange] = useState(
+    selectedFilterOption.paramValue as string
+  )
   const filterHeaderText = FilterDisplayName.priceRange
   const selectFiltersActionDebounced = useMemo(
     () => debounce(selectFiltersAction, DEBOUNCE_DELAY),
@@ -43,7 +45,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   )
 
   const handleClear = () => {
-    setRawRange(DEFAULT_PRICE_RANGE)
+    setFilterPriceRange(DEFAULT_PRICE_RANGE)
   }
 
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_RANGE
@@ -51,7 +53,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const handleUpdateRange = (updatedRange: PriceRange) => {
     const [min, max] = updatedRange
 
-    setRawRange(updatedRange.join("-"))
+    setFilterPriceRange(updatedRange.join("-"))
     selectFiltersActionDebounced({
       displayText: parsePriceRangeLabel(min, max),
       paramValue: updatedRange.join("-"),
@@ -74,7 +76,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
       <PriceRangeContainer
-        filterPriceRange={rawRange}
+        filterPriceRange={filterPriceRange}
         histogramBars={histogramBars}
         header={<Text variant="sm-display">Choose Your Price Range</Text>}
         onPriceRangeUpdate={handleUpdateRange}

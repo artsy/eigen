@@ -8,6 +8,7 @@ import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
 import { getBarsFromAggregations } from "app/Components/PriceRange/utils/getBarsFromAggregations"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -16,33 +17,43 @@ export const AlertPriceRangeScreen = () => {
   const data = useLazyLoadQuery(AlertPriceRangeScreenQuery, {
     artistID: artistID,
   })
+
   const histogramBars = getBarsFromAggregations(
     (data as any).artist?.filterArtworksConnection?.aggregations
   )
-
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const [rawRange, setRawRange] = useState(attributes.priceRange || DEFAULT_PRICE_RANGE)
-
+  const [filterPriceRange, setFilterPriceRange] = useState(
+    attributes.priceRange || DEFAULT_PRICE_RANGE
+  )
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
   )
-
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRange">>()
+
   const handleOnButtonPress = () => {
     setValueToAttributesByKeyAction({
       key: SearchCriteria.priceRange,
-      value: rawRange,
+      value: filterPriceRange,
     })
     navigation.goBack()
+
+    /**
+     * We wait until the filter modal is closed, then save the recent price range
+     * Otherwise the recent price range will be displayed immediately after clicking on the "Set Price Range" button,
+     * Which can negatively affect the UI
+     */
+    setTimeout(() => {
+      GlobalStore.actions.recentPriceRanges.addNewPriceRange(filterPriceRange)
+    }, 500)
   }
 
   const handleClear = () => {
-    setRawRange(DEFAULT_PRICE_RANGE)
+    setFilterPriceRange(DEFAULT_PRICE_RANGE)
   }
 
   const handleUpdateRange = (updatedRange: PriceRange) => {
-    setRawRange(updatedRange.join("-"))
+    setFilterPriceRange(updatedRange.join("-"))
   }
 
   return (
@@ -54,7 +65,7 @@ export const AlertPriceRangeScreen = () => {
         onRightButtonPress={handleClear}
       />
       <PriceRangeContainer
-        filterPriceRange={rawRange}
+        filterPriceRange={filterPriceRange}
         histogramBars={histogramBars}
         header={<Text variant="sm">Set price range you are interested in</Text>}
         onPriceRangeUpdate={handleUpdateRange}
