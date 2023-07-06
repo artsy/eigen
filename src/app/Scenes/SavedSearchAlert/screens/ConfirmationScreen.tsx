@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ConfirmationScreenMatchingArtworksQuery,
@@ -112,6 +113,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 
 const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
   const screen = useScreenDimensions()
+  const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
@@ -121,11 +123,15 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
   const artworks = extractNodes(data.artworksConnection)
   const total = data?.artworksConnection?.counts?.total // TODO: handle zero state
 
-  const areMoreMatchesAvailable = total > 10 && !!attributes.artistIDs?.[0] // TODO: constant
+  const areMoreMatchesAvailable = total > 10 && attributes?.artistIDs?.length === 1 // TODO: constant
 
   const handleSeeAllMatchingWorks = () => {
     closeModal?.()
-    navigate(`/artist/${attributes.artistIDs?.[0]}`) // TODO: filter attributes
+    navigate(`/artist/${attributes.artistIDs?.[0]}`, {
+      passProps: {
+        searchCriteriaID: route.params.searchCriteriaID,
+      },
+    })
   }
 
   return (
