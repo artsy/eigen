@@ -29,9 +29,12 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { PAGE_SIZE } from "app/Components/constants"
+import { ViewableItems } from "app/Scenes/Sale/Sale"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
+import { ViewToken } from "react-native"
 import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -90,12 +93,13 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const space = useSpace()
 
   const { currentScrollY } = useScreenScrollContext()
+
+  console.warn("DEBUG: currentScrollY", currentScrollY)
   const { top } = useHeaderMeasurements()
   const tracking = useTracking()
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const { openFilterArtworksModal } = useShowArtworksFilterModal({ artist })
-
   const { width, height } = useScreenDimensions()
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
@@ -104,7 +108,28 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   // const artworks = artist.artworks
   const artworks = extractNodes(artist.artworks)
-  // const artworksCount = artworks?.length
+  const artworksLength = artworks?.length ?? 0
+  const artworksPageSize = artworksLength / 10
+
+  const onViewableItemsChanged = useCallback(({ changed }) => {
+    // secure that with changed? to not get called all the time
+    // how do we make the index dynamic here? now its 9 but how do we
+    console.warn("DEBUG: artworksPageSize", artworksPageSize)
+    const isEnd = changed.some(
+      // PAGE_SIZE * timesFetched - 1
+      // is to check if the last item of each page is visible to fetch more
+      (obj) => obj.index === PAGE_SIZE * artworksPageSize - 1 && obj.isViewable
+    )
+
+    if (relay.hasMore() && isEnd) {
+      console.warn("DEBUG: loaded more")
+      console.warn(
+        "obj.index === PAGE_SIZE * artworksPageSize - 1",
+        PAGE_SIZE * artworksPageSize - 1
+      )
+      relay.loadMore(PAGE_SIZE)
+    }
+  }, [])
 
   useArtworkFilters({
     relay,
@@ -224,78 +249,76 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   // console.warn({ currentScrollY })
 
   return (
-    <Flex flex={1} justifyContent="center" m={-2} bg="red10">
+    <Flex flex={1} justifyContent="center" m={-2}>
       <Flex height={600} bg="blue10">
-        <MasonryFlashList
-          indicatorStyle="white"
-          // onLayout={(test) => {
-          //   // console.warn("flipper", test.nativeEvent.layout.height)
-          // }}
-          testID="MasonryList"
-          data={artworks}
-          // not 100% sure if we need this 👇
-          // optimizeItemArrangement
-          // // not 100% sure if we need this 👇
-          // overrideItemLayout={(layout, item) => {
-          //   layout.size = item?.height
-          // }}
-          numColumns={columnCount}
-          // estimatedItemSize 👇 Average or median size for elements in the list. Doesn't have to be very accurate but
-          // a good estimate can improve performance. A quick look at Element Inspector can help you
-          // determine this. If you're confused between two values, the smaller value is a better choice.
-          // For vertical lists provide average height and for horizontal average width.
-          // Read more about it here: https://shopify.github.io/flash-list/docs/estimated-item-size
-          estimatedItemSize={100}
-          ListHeaderComponent={
-            // <Component item={{ index: 0, height: 100 }} text="Header" backgroundColor="red" />
-            <Spacer y={4} />
-          }
-          // ListFooterComponent={
-          //   // replace it with loading state indicator
-          //   <Component item={{ index: 0, height: 100 }} text="Footer" backgroundColor="lightblue" />
-          // }
-          ListEmptyComponent={
-            <Box mb="80px" pt={2}>
-              <FilteredArtworkGridZeroState
-                id={artist.id}
-                slug={artist.slug}
-                trackClear={trackClear}
-                hideClearButton={!appliedFilters.length}
-              />
-            </Box>
-          }
-          keyExtractor={(item) => item.id}
-          renderItem={({ item, columnIndex }) => {
-            const imgAspectRatio = item.image?.aspectRatio ?? 1
-            const imgWidth = width / 2 - space(2) - space(1)
-            const imgHeight = imgWidth / imgAspectRatio
+      <MasonryFlashList
 
-            return (
-              <Flex pl={columnIndex === 1 ? 1 : 0} pr={columnIndex === 0 ? 1 : 0} py={1}>
-                <ArtworkGridItem artwork={item} height={imgHeight} />
-              </Flex>
-            )
-          }}
-          // onLoad={({ elapsedTimeInMs }) => {
-          //   console.log("List Load Time", elapsedTimeInMs)
-          // }}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 50,
-          }}
-          onViewableItemsChanged={({ viewableItems, changed }) => {
+        // indicatorStyle="white"
+        // onLayout={(test) => {
+        //   // console.warn("flipper", test.nativeEvent.layout.height)
+        // }}
+        testID="MasonryList"
+        data={artworks}
+        // not 100% sure if we need this 👇
+        // optimizeItemArrangement
+        // // not 100% sure if we need this 👇
+        // overrideItemLayout={(layout, item) => {
+        //   layout.size = item?.height
+        // }}
+        numColumns={columnCount}
+        // estimatedItemSize 👇 Average or median size for elements in the list. Doesn't have to be very accurate but
+        // a good estimate can improve performance. A quick look at Element Inspector can help you
+        // determine this. If you're confused between two values, the smaller value is a better choice.
+        // For vertical lists provide average height and for horizontal average width.
+        // Read more about it here: https://shopify.github.io/flash-list/docs/estimated-item-size
+        estimatedItemSize={100}
+        ListHeaderComponent={
+          // <Component item={{ index: 0, height: 100 }} text="Header" backgroundColor="red" />
+          <Spacer y={4} />
+        }
+        // ListFooterComponent={
+        //   // replace it with loading state indicator
+        //   <Component item={{ index: 0, height: 100 }} text="Footer" backgroundColor="lightblue" />
+        // }
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState
+              id={artist.id}
+              slug={artist.slug}
+              trackClear={trackClear}
+              hideClearButton={!appliedFilters.length}
+            />
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / 2 - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
 
-            console.warn("flipper viewableItems", viewableItems)
-            console.warn("flipper changed", changed)
-            console.warn("flipper called")
-          }}
-          contentContainerStyle={{
-            paddingHorizontal: space(2),
-            paddingBottom: space(4),
-            backgroundColor: "purple",
-          }}
-          // onEndReached={() => console.warn("onEndReached")}
-          // onEndReachedThreshold={0.5}
-        />
+          return (
+            <Flex pl={columnIndex === 1 ? 1 : 0} pr={columnIndex === 0 ? 1 : 0} py={1}>
+              <ArtworkGridItem artwork={item} height={imgHeight} />
+            </Flex>
+          )
+        }}
+        // onLoad={({ elapsedTimeInMs }) => {
+        //   console.log("List Load Time", elapsedTimeInMs)
+        // }}
+        viewabilityConfig={{
+          // itemVisiblePercentThreshold: 50,
+          waitForInteraction: true,
+          viewAreaCoveragePercentThreshold: 20,
+        }}
+        onViewableItemsChanged={onViewableItemsChanged}
+        contentContainerStyle={{
+          paddingHorizontal: space(2),
+          paddingBottom: space(4),
+          backgroundColor: "purple",
+        }}
+        // onEndReached={() => console.warn("onEndReached")}
+        // onEndReachedThreshold={0.1}
+      />
       </Flex>
     </Flex>
   )
@@ -348,10 +371,10 @@ export default createPaginationContainer(
               image(includeAll: false) {
                 aspectRatio
               }
-              ...ArtworkGridItem_artwork  # @arguments(includeAllImages: false)
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
                 # ...MyCollectionArtworkGridItem_artwork
                 # @skip(if: $skipMyCollection)
-                @arguments(includeAllImages: false)
+                # @arguments(includeAllImages: false)
             }
           }
           counts {
