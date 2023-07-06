@@ -63,5 +63,5 @@ const getSelectedListsCountText = (count: number) => {
     return "1 list selected"
   }
 
-  return `${count} lists selected`
+  return `${Math.max(0, count)} lists selected`
 }
