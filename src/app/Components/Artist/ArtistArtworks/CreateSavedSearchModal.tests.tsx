@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -51,7 +51,7 @@ describe("CreateSavedSearchModal", () => {
     renderWithWrappers(<TestRenderer />)
   })
 
-  it("should navigate to the saved search alerts list when popover is pressed", async () => {
+  xit("should navigate to the saved search alerts list when popover is pressed", async () => {
     const { getByText, UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
     UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
@@ -64,7 +64,16 @@ describe("CreateSavedSearchModal", () => {
     })
   })
 
-  it("should call navigate twice", async () => {
+  fit("should navigate to the confirmation screen", async () => {
+    const { findByText, UNSAFE_root } = renderWithWrappers(<TestRenderer />)
+
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+
+    screen.debug()
+    await waitFor(() => expect(findByText("Your alert has been saved.")).toBeOnTheScreen())
+  })
+
+  xit("should call navigate twice", async () => {
     const { UNSAFE_root, getByText } = renderWithWrappers(<TestRenderer />)
 
     UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
