@@ -1,10 +1,20 @@
 import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+import {
+  ConfirmationScreenMatchingArtworksQuery,
+  FilterArtworksInput,
+} from "__generated__/ConfirmationScreenMatchingArtworksQuery.graphql"
+import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Pill } from "app/Components/Pill"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
+import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { Suspense } from "react"
 import { ScrollView } from "react-native"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">
 
@@ -46,11 +56,55 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
 
           <Spacer y={2} />
 
-          <Text pb={1000} backgroundColor="black10">
-            Artworks TKTK
-          </Text>
+          <MatchingArtworksContainer />
         </ScrollView>
       </Box>
+    </Box>
+  )
+}
+
+const MatchingArtworksContainer: React.FC = () => {
+  const screen = useScreenDimensions()
+
+  return (
+    <Suspense fallback={<GenericGridPlaceholder width={screen.width - 40} />}>
+      <MatchingArtworks />
+    </Suspense>
+  )
+}
+
+const matchingArtworksQuery = graphql`
+  query ConfirmationScreenMatchingArtworksQuery($input: FilterArtworksInput) {
+    artworksConnection(first: 20, input: $input) {
+      counts {
+        total
+      }
+      edges {
+        node {
+          ...GenericGrid_artworks
+        }
+      }
+    }
+  }
+`
+
+const MatchingArtworks: React.FC = () => {
+  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+
+  const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
+    input: attributes as FilterArtworksInput,
+  })
+
+  const artworks = extractNodes(data.artworksConnection)
+  const total = data?.artworksConnection?.counts?.total // TODO: handle zero state
+
+  return (
+    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
+      <Text variant="sm" color="black60">
+        You might like these {total} works currently on Artsy that match your criteria
+      </Text>
+      <Spacer y={2} />
+      <GenericGrid artworks={artworks} />
     </Box>
   )
 }
