@@ -1,5 +1,5 @@
 import { Button, Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { PriceRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
@@ -12,7 +12,14 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const AlertPriceRangeScreen = () => {
+type AlertPriceRangeScreenProps = StackScreenProps<
+  CreateSavedSearchAlertNavigationStack,
+  "AlertPriceRange"
+>
+
+export const AlertPriceRangeScreen: React.FC<
+  StackScreenProps<CreateSavedSearchAlertNavigationStack>
+> = ({ navigation }) => {
   const artistID = SavedSearchStore.useStoreState((state) => state.entity.artists[0].id)
   const data = useLazyLoadQuery(AlertPriceRangeScreenQuery, {
     artistID: artistID,
@@ -28,8 +35,6 @@ export const AlertPriceRangeScreen = () => {
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
   )
-  const navigation =
-    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "AlertPriceRange">>()
 
   const handleOnButtonPress = () => {
     setValueToAttributesByKeyAction({
@@ -99,10 +104,10 @@ const AlertPriceRangeScreenQuery = graphql`
   }
 `
 
-export const AlertPriceRangeScreenQueryRenderer: React.FC<{}> = () => {
+export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenProps> = (props) => {
   return (
-    <Suspense fallback={<Spinner />}>
-      <AlertPriceRangeScreen />
+    <Suspense fallback={<Spinner testID="alert-price-range-spinner" />}>
+      <AlertPriceRangeScreen {...props} />
     </Suspense>
   )
 }
