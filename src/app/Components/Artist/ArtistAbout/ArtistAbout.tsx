@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
-import Articles from "app/Components/Artist/Articles/Articles"
+import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {
-  const articles = extractNodes(artist.articles)
+  const articles = extractNodes(artist.articlesConnection)
   const relatedArtists = extractNodes(artist.related?.artists)
 
   const isDisplayable =
@@ -60,7 +60,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 
           <ArtistAboutShowsFragmentContainer artist={artist} />
 
-          {!!articles.length && <Articles articles={articles} />}
+          {!!articles.length && <Articles articles={articles} artist={artist} />}
 
           {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
         </Stack>
@@ -80,6 +80,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...Biography_artist
       ...ArtistSeriesMoreSeries_artist
       ...ArtistNotableWorksRail_artist
+      ...Articles_artist
       # this should match the query in ArtistNotableWorksRail
       notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
         edges {
@@ -103,7 +104,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
           }
         }
       }
-      articles: articlesConnection(first: 10, inEditorialFeed: true) {
+      articlesConnection(first: 5, inEditorialFeed: true) {
         edges {
           node {
             ...Articles_articles
