@@ -33,10 +33,12 @@ describe("Articles", () => {
   it("renders", () => {
     renderWithRelay()
 
-    expect(screen.getByText(`Artsy Editorial Featuring <mock-value-for-field-"name">`)).toBeTruthy()
-    expect(screen.getByText(`<mock-value-for-field-"vertical">`)).toBeTruthy()
-    expect(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`)).toBeTruthy()
-    expect(screen.getByText(`By <mock-value-for-field-"byline">`)).toBeTruthy()
+    expect(
+      screen.getByText(`Artsy Editorial Featuring <mock-value-for-field-"name">`)
+    ).toBeOnTheScreen()
+    expect(screen.getByText(`<mock-value-for-field-"vertical">`)).toBeOnTheScreen()
+    expect(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`)).toBeOnTheScreen()
+    expect(screen.getByText(`By <mock-value-for-field-"byline">`)).toBeOnTheScreen()
   })
 
   it("navigates to a specific article via webview", () => {

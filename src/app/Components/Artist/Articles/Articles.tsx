@@ -34,7 +34,6 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
         <MasonryStatic
           data={articlesData.slice(1, articlesData.length)}
           renderItem={({ item }) => <Article article={item} />}
-          numColumns={2}
           columnSeparator={() => <Spacer x={2} />}
           columnKey="articles"
         />

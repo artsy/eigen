@@ -16,7 +16,7 @@ interface MasonryStaticProps<T> {
 export function MasonryStatic<T>({
   data,
   renderItem,
-  numColumns = 1,
+  numColumns = 2,
   columnSeparator,
   columnKey,
 }: MasonryStaticProps<T>) {

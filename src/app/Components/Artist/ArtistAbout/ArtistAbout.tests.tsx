@@ -67,7 +67,7 @@ describe("ArtistAbout", () => {
         Artist: () => ({ name: "Andy Warhol" }),
       })
 
-      expect(screen.getByText("Artsy Editorial Featuring Andy Warhol")).toBeTruthy()
+      expect(screen.getByText("Artsy Editorial Featuring Andy Warhol")).toBeOnTheScreen()
     })
 
     it("does not render when there are no articles", () => {
@@ -75,7 +75,7 @@ describe("ArtistAbout", () => {
         ArticleConnection: () => ({ edges: null }),
       })
 
-      expect(screen.queryByText("Artsy Editorial Featuring", { exact: false })).toBeNull()
+      expect(screen.queryByText(/Artsy Editorial Featuring/)).not.toBeOnTheScreen()
     })
   })
 })
