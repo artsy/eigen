@@ -17,6 +17,7 @@ import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
@@ -26,6 +27,7 @@ type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "Confirmati
 export const ConfirmationScreen: React.FC<Props> = (props) => {
   const { route } = props
   const { closeModal } = route.params
+  const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
 
   const handleLeftButtonPress = () => {
@@ -40,12 +42,12 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
   return (
     <Box flex={1}>
       <FancyModalHeader hideBottomDivider useXButton onLeftButtonPress={handleLeftButtonPress} />
-      <Box px={2}>
+      <Box px={2} flex={1}>
         <Text variant="lg">Your alert has been saved</Text>
 
         <Spacer y={1} />
 
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ paddingBottom: bottomInset }}>
           <Text variant="sm" color="black60">
             We’ll let you know when matching works are added to Artsy.
           </Text>
@@ -71,8 +73,6 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
           <Button onPress={handleManageAlerts} block variant="outline">
             Manage your alerts
           </Button>
-
-          <Spacer y={12} />
         </ScrollView>
       </Box>
     </Box>
