@@ -28,7 +28,6 @@ export const Article: React.FC<ArticleProps> = ({ article, headline = false }) =
           src={data.thumbnailImage?.url ?? ""}
           aspectRatio={1.5}
           width={headline ? 350 : 175}
-          backgroundColor="blue10"
         />
         <Spacer y={1} />
         <Text variant="xs" color="black100">
