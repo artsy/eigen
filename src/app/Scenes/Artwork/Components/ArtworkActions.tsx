@@ -16,7 +16,7 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import { take } from "lodash"
+import { isEmpty, take } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -48,11 +48,12 @@ export const shareContent = (
 }
 
 export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
-  const { image, id, slug, heightCm, widthCm, isHangable } = artwork
+  const { image, id, slug, heightCm, widthCm, isHangable, sale } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
 
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
+  const isOpenSale = (!isEmpty(sale) && sale?.isAuction && !sale?.isClosed) ?? false
 
   const openViewInRoom = () => {
     const heightIn = cm2in(heightCm!)
@@ -77,7 +78,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
       <Join separator={<Spacer x={2} />}>
-        <ArtworkSaveButton artwork={artwork} />
+        <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={isOpenSale} />
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <Touchable
             hitSlop={{
@@ -130,6 +131,10 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
       }
       widthCm
       heightCm
+      sale {
+        isAuction
+        isClosed
+      }
     }
   `,
 })

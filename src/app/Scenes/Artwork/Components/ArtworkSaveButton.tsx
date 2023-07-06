@@ -20,6 +20,7 @@ import { useTracking } from "react-tracking"
 
 interface ArtworkSaveButtonProps {
   artwork: ArtworkSaveButton_artwork$key
+  saveToDefaultCollectionOnly?: boolean
 }
 
 interface IconProps {
@@ -62,7 +63,10 @@ const getA11yLabel = (isSaved: boolean, isOpenSale: boolean) => {
   return "Save artwork"
 }
 
-export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork }) => {
+export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
+  artwork,
+  saveToDefaultCollectionOnly = false,
+}) => {
   const space = useSpace()
   const { trackEvent } = useTracking()
   const artworkData = useFragment(ArtworkSaveButtonFragment, artwork)
@@ -77,6 +81,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         context_module: Schema.ContextModules.ArtworkActions,
       })
     },
+    saveToDefaultCollectionOnly,
   })
   const { sale } = artworkData
 
