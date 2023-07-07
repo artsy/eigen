@@ -117,7 +117,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     }
 
     if (enableCreateAlerts) {
-      contextMenuActions.push({
+      // Put create alert at front since it is high intent
+      contextMenuActions.unshift({
         title: "Create alert",
         systemIcon: "bell",
         onPress: () => {
