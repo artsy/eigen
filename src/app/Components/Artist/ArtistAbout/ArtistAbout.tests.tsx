@@ -61,9 +61,6 @@ describe("ArtistAbout", () => {
   describe("ArtistAboutEditorial", () => {
     it("renders editorial section", () => {
       renderWithRelay({
-        ArticleConnection: () => ({
-          edges: [{ node: { internalID: "article-id" } }],
-        }),
         Artist: () => ({ name: "Andy Warhol" }),
       })
 

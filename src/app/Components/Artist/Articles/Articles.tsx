@@ -3,6 +3,7 @@ import { Articles_articles$key } from "__generated__/Articles_articles.graphql"
 import { Articles_artist$key } from "__generated__/Articles_artist.graphql"
 import { MasonryStatic } from "app/Components/MasonryStatic"
 import { navigate } from "app/system/navigation/navigate"
+import { Dimensions } from "react-native"
 import { useFragment, graphql } from "react-relay"
 import { Article } from "./Article"
 
@@ -35,6 +36,7 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
           data={articlesData.slice(1, articlesData.length)}
           renderItem={({ item }) => <Article article={item} />}
           columnSeparator={() => <Spacer x={2} />}
+          numColumns={Dimensions.get("window").width > 700 ? 3 : 2}
           columnKey="articles"
         />
       </Flex>
