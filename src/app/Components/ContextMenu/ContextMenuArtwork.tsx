@@ -40,7 +40,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
-  const enableContextMenu = useFeatureFlag("AREnableLongPressArtworkCards")
+  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
