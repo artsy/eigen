@@ -126,7 +126,7 @@ export interface HomeProps extends ViewProps {
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null
-  heroUnits: HomeAboveTheFoldQuery$data["heroUnits"] | null
+  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null
 }
 
 const Home = memo((props: HomeProps) => {
@@ -750,7 +750,8 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
-            heroUnits: heroUnitsConnection(first: 10, private: true) @optionalField {
+            heroUnitsConnection(first: 10, private: true) @optionalField {
+              ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
             }
           }
@@ -802,7 +803,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
-              heroUnits={above ? above.heroUnits : null}
+              heroUnits={above ? above.heroUnitsConnection : null}
             />
           )
         },
