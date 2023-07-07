@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { StackScreenProps } from "@react-navigation/stack"
 import {
   ConfirmationScreenMatchingArtworksQuery,
   FilterArtworksInput,
@@ -22,10 +21,8 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
-type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">
-
-export const ConfirmationScreen: React.FC<Props> = (props) => {
-  const { route } = props
+export const ConfirmationScreen: React.FC = () => {
+  const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
