@@ -220,12 +220,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
-  AREnableNativeArticleView: {
-    readyForRelease: true,
-    description: "Show native article view",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNativeArticles",
-  },
   AREnableArtworkLists: {
     readyForRelease: true,
     description: "Enable Artwork Lists",
