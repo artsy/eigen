@@ -224,7 +224,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     description: "Show native article view",
     showInDevMenu: true,
-    echoFlagKey: "AREnableNativeArticles",
+    echoFlagKey: "AREnableNativeArticleView",
   },
   AREnableArtworkLists: {
     readyForRelease: true,
