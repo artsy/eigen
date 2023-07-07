@@ -1,5 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { ArticleBody_article$key } from "__generated__/ArticleBody_article.graphql"
+import { FONTS, HTML } from "app/Components/HTML"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
 import { ArticleSectionText } from "app/Scenes/Article/Components/Sections/ArticleSectionText"
@@ -13,6 +14,7 @@ interface ArticleBodyProps {
 
 export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
   const data = useFragment(ArticleBodyQuery, article)
+  const color = useColor()
 
   return (
     <>
@@ -33,6 +35,30 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
           </Fragment>
         )
       })}
+      {!!data.authors &&
+        data.authors.map((author) => {
+          return (
+            <Flex m={2} key={author.name}>
+              <Text color="black60">{author.name}</Text>
+              <Text variant="xs" color="black60">
+                {author.bio}
+              </Text>
+            </Flex>
+          )
+        })}
+      {!!data.postscript && (
+        <Flex m={2}>
+          <HTML
+            html={data.postscript}
+            tagStyles={{
+              p: {
+                color: color("black60"),
+                fontFamily: FONTS.italic,
+              },
+            }}
+          />
+        </Flex>
+      )}
     </>
   )
 }
@@ -45,7 +71,11 @@ const ArticleBodyQuery = graphql`
       ...ArticleSectionImageCollection_section
       ...ArticleSectionText_section
     }
-
+    postscript
+    authors {
+      name
+      bio
+    }
     internalID
     slug
   }
