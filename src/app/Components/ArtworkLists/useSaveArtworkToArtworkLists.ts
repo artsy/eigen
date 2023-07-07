@@ -9,11 +9,13 @@ import { graphql, useFragment } from "react-relay"
 
 interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
+  saveToDefaultCollectionOnly?: boolean
 }
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
+  const isArtworkListsFFEnabled = useFeatureFlag("AREnableArtworkLists")
+  const isArtworkListsEnabled = !options.saveToDefaultCollectionOnly && isArtworkListsFFEnabled
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
