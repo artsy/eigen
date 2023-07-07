@@ -245,7 +245,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableLongPressOnArtworkCards",
   },
