@@ -18,7 +18,7 @@ interface HTMLProps extends FlexProps {
   variant?: TextProps["variant"]
 }
 
-const FONTS = {
+export const FONTS = {
   regular: "Unica77LL-Regular",
   italic: "Unica77LL-Italic",
   medium: "Unica77LL-Medium",
