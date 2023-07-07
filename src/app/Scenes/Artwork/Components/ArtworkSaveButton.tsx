@@ -12,8 +12,8 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { Schema } from "app/utils/track"
-import { isEmpty } from "lodash"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -43,16 +43,16 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
   return <HeartIcon accessibilityLabel="Save icon" />
 }
 
-const getSaveButtonText = (isSaved: boolean, isOpenSale: boolean) => {
-  if (isOpenSale) {
+const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {
+  if (openOrUpcomingSale) {
     return "Watch lot"
   }
 
   return isSaved ? "Saved" : "Save"
 }
 
-const getA11yLabel = (isSaved: boolean, isOpenSale: boolean) => {
-  if (isOpenSale) {
+const getA11yLabel = (isSaved: boolean, openOrUpcomingSale: boolean) => {
+  if (openOrUpcomingSale) {
     return "Watch lot"
   }
 
@@ -84,11 +84,10 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
     saveToDefaultCollectionOnly,
   })
   const { sale } = artworkData
+  const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
-  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
-
-  const a11yLabel = getA11yLabel(!!isSaved, !!isOpenSale)
-  const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
+  const a11yLabel = getA11yLabel(!!isSaved, !!openOrUpcomingSale)
+  const buttonCopy = getSaveButtonText(!!isSaved, !!openOrUpcomingSale)
 
   return (
     <Touchable
@@ -103,7 +102,11 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
       onPress={saveArtworkToLists}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        {isOpenSale ? <WatchLotIcon isSaved={!!isSaved} /> : <SaveButtonIcon isSaved={!!isSaved} />}
+        {openOrUpcomingSale ? (
+          <WatchLotIcon isSaved={!!isSaved} />
+        ) : (
+          <SaveButtonIcon isSaved={!!isSaved} />
+        )}
         <Spacer x={0.5} />
 
         <Box position="relative">
@@ -112,7 +115,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
           {/* Hidden from screen readers */}
           {!__TEST__ && (
             <Text variant="sm" color="transparent" accessibilityElementsHidden>
-              {isOpenSale ? "Watch lot" : "Saved"}
+              {openOrUpcomingSale ? "Watch lot" : "Saved"}
             </Text>
           )}
           <Box {...StyleSheet.absoluteFillObject}>

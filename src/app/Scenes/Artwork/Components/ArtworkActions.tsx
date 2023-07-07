@@ -12,11 +12,12 @@ import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwor
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
+import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import { isEmpty, take } from "lodash"
+import { take } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -53,7 +54,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const space = useSpace()
 
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
-  const isOpenSale = (!isEmpty(sale) && sale?.isAuction && !sale?.isClosed) ?? false
+  const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
     const heightIn = cm2in(heightCm!)
@@ -78,7 +79,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
       <Join separator={<Spacer x={2} />}>
-        <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={isOpenSale} />
+        <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={openOrUpcomingSale} />
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <Touchable
             hitSlop={{
