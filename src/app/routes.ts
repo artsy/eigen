@@ -126,7 +126,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/art-quiz", "ArtQuiz"),
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
-    addRoute("/article2/:articleID", "Article"), // TODO: AREnableNativeArticleView: Rename /article2 to /article once we've removed the old /article route
+    addRoute("/article/:articleID", "Article"),
     addRoute("/articles", "Articles"),
     addRoute("/artist-series/:artistSeriesID", "ArtistSeries"),
     addRoute("/artist/:artistID", "Artist"),
@@ -262,7 +262,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
-    addWebViewRoute("/article/:articleID", { showShareButton: true }),
     addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/auction-faq"),
     addWebViewRoute("/buy-now-feature-faq"),
