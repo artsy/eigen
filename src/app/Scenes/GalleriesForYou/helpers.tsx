@@ -1,7 +1,7 @@
 import { Location } from "app/utils/hooks/useLocation"
 
 export const sortByDistance = (
-  locations: { coordinates: Location; city?: string }[],
+  locations: { coordinates?: Location; city?: string }[],
   target: Location
 ) => {
   return locations.sort(
@@ -9,8 +9,9 @@ export const sortByDistance = (
   )
 }
 
-const distanceTo = (a: Location, b: Location) => {
+const distanceTo = (a?: Location, b?: Location) => {
   return Math.sqrt(
-    Math.pow(Number(a.lng) - Number(b.lng), 2) + Math.pow(Number(a.lat) - Number(b.lat), 2)
+    Math.pow(Number(a?.lng || 0) - Number(b?.lng || 0), 2) +
+      Math.pow(Number(a?.lat || 0) - Number(b?.lat || 0), 2)
   )
 }
