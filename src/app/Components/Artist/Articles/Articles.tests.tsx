@@ -1,6 +1,5 @@
 import { screen, fireEvent } from "@testing-library/react-native"
 import { ArticlesTestsQuery } from "__generated__/ArticlesTestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -49,13 +48,10 @@ describe("Articles", () => {
   })
 
   it("navigates to a specific article natively", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableNativeArticleView: true,
-    })
     renderWithRelay()
 
     fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
-    expect(navigate).toHaveBeenCalledWith(`/article2/<Article-mock-id-3>`)
+    expect(navigate).toHaveBeenCalledWith(`<mock-value-for-field-\"href\">`)
   })
 
   it("navigates to all articles", () => {
