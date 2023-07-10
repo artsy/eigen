@@ -20,8 +20,7 @@ export function MasonryStatic<T>({
   columnSeparator,
   columnKey,
 }: MasonryStaticProps<T>) {
-  const itemsColumns: T[][] = []
-  Array.from(Array(numColumns)).forEach(() => itemsColumns.push([]))
+  const itemsColumns: T[][] = Array.from({ length: numColumns }, () => [])
 
   data.forEach((item, index) => itemsColumns[index % numColumns].push(item))
 
