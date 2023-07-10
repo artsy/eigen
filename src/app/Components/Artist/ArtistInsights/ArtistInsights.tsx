@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Tabs } from "@artsy/palette-mobile"
+import { Tabs, useSpace } from "@artsy/palette-mobile"
 import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
 import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
@@ -31,7 +31,7 @@ const FILTER_BUTTON_OFFSET = 50
 
 export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const { artist, relay, initialFilters } = props
-
+  const space = useSpace()
   const tracking = useTracking()
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false)
@@ -80,7 +80,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   return (
     <ArtworkFiltersStoreProvider>
       <Tabs.ScrollView
-        contentContainerStyle={{ paddingTop: 20, paddingBottom: 60, paddingHorizontal: 20 }}
+        contentContainerStyle={{
+          marginTop: space(2),
+          marginHorizontal: space(2),
+          paddingBottom: space(4),
+        }}
         onScrollEndDrag={onScrollEndDrag}
       >
         <MarketStatsQueryRenderer
