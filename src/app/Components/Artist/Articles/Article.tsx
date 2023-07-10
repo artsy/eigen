@@ -1,7 +1,6 @@
 import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { Articles_article$key } from "__generated__/Articles_article.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import FastImage from "react-native-fast-image"
 import { useFragment, graphql } from "react-relay"
 
@@ -12,14 +11,9 @@ interface ArticleProps {
 
 export const Article: React.FC<ArticleProps> = ({ article, headline = false }) => {
   const data = useFragment(articleQuery, article)
-  const enableNativeArticleView = useFeatureFlag("AREnableNativeArticleView")
 
   const handleOnPress = () => {
-    if (enableNativeArticleView) {
-      navigate(`/article2/${data.internalID}`)
-    } else {
-      navigate(data.href!)
-    }
+    navigate(data.href!)
   }
 
   return (
