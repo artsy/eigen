@@ -44,7 +44,6 @@ describe("AlertPriceRangeScreen", () => {
             entity: savedSearchEntity,
           }}
         >
-          j
           <AlertPriceRangeScreenQueryRenderer
             route={null as any}
             navigation={navigationMock as any}

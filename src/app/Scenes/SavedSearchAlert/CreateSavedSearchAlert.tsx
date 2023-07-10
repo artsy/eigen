@@ -8,7 +8,7 @@ import {
   SavedSearchStoreProvider,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
-import { AlertPriceRangeScreen } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
+import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -50,7 +50,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
               <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
               <Stack.Screen
                 name="AlertPriceRange"
-                component={AlertPriceRangeScreen}
+                component={AlertPriceRangeScreenQueryRenderer}
                 options={{
                   // Avoid PanResponser conflicts between the slider and the slide back gesture
                   gestureEnabled: false,

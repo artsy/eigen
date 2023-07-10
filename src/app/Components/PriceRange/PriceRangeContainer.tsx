@@ -5,9 +5,11 @@ import { Input } from "app/Components/Input"
 import { PriceRangeSlider } from "app/Components/PriceRange/PriceRangeSlider"
 import { RANGE_DOT_SIZE } from "app/Components/PriceRange/constants"
 import { PriceRange } from "app/Components/PriceRange/types"
-import { convertToFilterFormatRange } from "app/Components/PriceRange/utils/convertToFilterFormatRange"
-import { getInputValue } from "app/Components/PriceRange/utils/getInputValue"
-import { parseSliderRange } from "app/Components/PriceRange/utils/parseSliderRange"
+import {
+  convertToFilterFormatRange,
+  getInputValue,
+  parseSliderRange,
+} from "app/Components/PriceRange/utils"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 

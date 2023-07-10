@@ -13,7 +13,7 @@ import {
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
 import { DEFAULT_PRICE_RANGE } from "app/Components/PriceRange/constants"
-import { getBarsFromAggregations } from "app/Components/PriceRange/utils/getBarsFromAggregations"
+import { getBarsFromAggregations } from "app/Components/PriceRange/utils"
 import { debounce } from "lodash"
 import { useMemo, useState } from "react"
 import { useTracking } from "react-tracking"

@@ -1,11 +1,9 @@
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
-import {
-  DEFAULT_RANGE,
-  RANGE_DOT_SIZE,
-  SLIDER_STEP_VALUE,
-} from "app/Components/PriceRange/constants"
+import { DEFAULT_RANGE, RANGE_DOT_SIZE } from "app/Components/PriceRange/constants"
 import { useWindowDimensions } from "react-native"
+
+const SLIDER_STEP_VALUE = 100
 
 interface PriceRangeSliderProps {
   sliderRange: number[]
