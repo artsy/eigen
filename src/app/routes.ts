@@ -262,7 +262,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
-    addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/auction-faq"),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
