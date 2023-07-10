@@ -16,7 +16,7 @@ export const ArticleWebViewScreen: React.FC<ArticleWebViewScreenProps> = ({ arti
   }
 
   return (
-    <Screen testID="ArticleWebViewScreen" safeArea={undefined}>
+    <Screen testID="ArticleWebViewScreen">
       <Screen.Header onBack={goBack} />
       <Screen.Body fullwidth>
         {/*
@@ -32,7 +32,6 @@ export const ArticleWebViewScreen: React.FC<ArticleWebViewScreenProps> = ({ arti
 
 const articleWebViewFragment = graphql`
   fragment ArticleWebViewScreen_article on Article {
-    title
     href
   }
 `

@@ -23,7 +23,6 @@ describe("ArticleWebViewScreen", () => {
       }),
     })
 
-    expect(screen.getByText("Example Article")).toBeOnTheScreen()
     expect(screen.UNSAFE_getByProps({ url: "/article/foo" })).toBeOnTheScreen()
   })
 })
