@@ -83,6 +83,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         contentContainerStyle={{
           marginTop: space(2),
           marginHorizontal: space(2),
+          paddingBottom: space(4),
         }}
         onScrollEndDrag={onScrollEndDrag}
       >
