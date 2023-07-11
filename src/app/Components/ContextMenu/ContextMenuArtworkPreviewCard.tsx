@@ -53,7 +53,7 @@ export interface ContextMenuArtworkPreviewCardProps extends ArtworkActionTrackin
 
 export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCardProps> = ({
   hideArtistName = false,
-  showPartnerName = false,
+  showPartnerName = true,
   dark = false,
   isRecentlySoldArtwork = false,
   lotLabel,
@@ -185,7 +185,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
           <ContextMenuArtworkPreviewCardImage
             containerWidth={containerWidth}
             image={image}
-            size={size}
+            size="extraLarge"
             urgencyTag={urgencyTag}
             imageHeightExtra={
               displayForRecentlySoldArtwork
