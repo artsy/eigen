@@ -118,7 +118,11 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
-    input: attributes as FilterArtworksInput,
+    input: {
+      ...attributes,
+      forSale: true,
+      sort: "-published_at",
+    } as FilterArtworksInput,
   })
 
   const artworks = extractNodes(data.artworksConnection)
