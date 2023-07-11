@@ -1,4 +1,4 @@
-import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ConfirmationScreenMatchingArtworksQuery,
@@ -10,6 +10,7 @@ import { Pill } from "app/Components/Pill"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { Suspense } from "react"
@@ -27,8 +28,13 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
     closeModal?.()
   }
 
+  const handleManageAlerts = () => {
+    closeModal?.()
+    navigate("/my-profile/saved-search-alerts")
+  }
+
   return (
-    <Box>
+    <Box flex={1}>
       <FancyModalHeader hideBottomDivider useXButton onLeftButtonPress={handleLeftButtonPress} />
       <Box px={2}>
         <Text variant="lg">Your alert has been saved</Text>
@@ -56,19 +62,25 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
 
           <Spacer y={2} />
 
-          <MatchingArtworksContainer />
+          <MatchingArtworksContainer closeModal={closeModal} />
+
+          <Button onPress={handleManageAlerts} block variant="outline">
+            Manage your alerts
+          </Button>
+
+          <Spacer y={12} />
         </ScrollView>
       </Box>
     </Box>
   )
 }
 
-const MatchingArtworksContainer: React.FC = () => {
+const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
   const screen = useScreenDimensions()
 
   return (
     <Suspense fallback={<GenericGridPlaceholder width={screen.width - 40} />}>
-      <MatchingArtworks />
+      <MatchingArtworks closeModal={closeModal} />
     </Suspense>
   )
 }
@@ -88,7 +100,7 @@ const matchingArtworksQuery = graphql`
   }
 `
 
-const MatchingArtworks: React.FC = () => {
+const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
@@ -98,13 +110,30 @@ const MatchingArtworks: React.FC = () => {
   const artworks = extractNodes(data.artworksConnection)
   const total = data?.artworksConnection?.counts?.total // TODO: handle zero state
 
+  const areMoreMatchesAvailable = total > 10 && !!attributes.artistIDs?.[0] // TODO: constant
+
+  const handleSeeAllMatchingWorks = () => {
+    closeModal?.()
+    navigate(`/artist/${attributes.artistIDs?.[0]}`) // TODO: filter attributes
+  }
+
   return (
     <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
       <Text variant="sm" color="black60">
         You might like these {total} works currently on Artsy that match your criteria
       </Text>
+
       <Spacer y={2} />
+
       <GenericGrid artworks={artworks} />
+
+      <Spacer y={4} />
+
+      {!!areMoreMatchesAvailable && (
+        <Button onPress={handleSeeAllMatchingWorks} block mb={1}>
+          See all matching works
+        </Button>
+      )}
     </Box>
   )
 }
