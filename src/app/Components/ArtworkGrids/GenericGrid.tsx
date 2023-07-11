@@ -227,7 +227,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props) => {
+const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props & PropsForArtwork) => {
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
   return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
 }
