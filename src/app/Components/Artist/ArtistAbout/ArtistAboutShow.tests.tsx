@@ -49,13 +49,8 @@ const show = {
   slug: "test-show",
   name: "Test Show",
   href: "www.test.com/img.jpeg",
-  isFairBooth: false,
   partner: {
-    __typename: "Partner",
     name: "Test Partner",
   },
   exhibitionPeriod: "Jul 12 - Jul 20",
-  coverImage: {
-    url: "www.test.com/cover.jpeg",
-  },
 }
