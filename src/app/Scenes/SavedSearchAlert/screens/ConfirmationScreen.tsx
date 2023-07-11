@@ -157,7 +157,6 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
       <GenericGrid
         width={screen.width - space(2)}
         artworks={artworks}
-        // @ts-expect-error TODO: fix type error maybe introduced in 298c1fd
         onPress={(slug: string) => {
           closeModal?.()
           // TODO: tracking and history?
