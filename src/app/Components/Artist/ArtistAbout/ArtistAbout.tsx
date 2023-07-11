@@ -7,7 +7,7 @@ import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/Ar
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app/Components/Artist/ArtistConsignButton"
 import Biography from "app/Components/Artist/Biography"
-import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
+import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
 import { Stack } from "app/Components/Stack"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
@@ -20,7 +20,7 @@ interface Props {
 
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const articles = extractNodes(artist.articlesConnection)
-  const relatedArtists = extractNodes(artist.related?.artists)
+  const relatedArtists = extractNodes(artist.related?.artistsConnection)
 
   const isDisplayable =
     artist.hasMetadata ||
@@ -62,7 +62,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 
           {!!articles.length && <Articles articles={articles} artist={artist} />}
 
-          {!!relatedArtists.length && <RelatedArtists artists={relatedArtists} />}
+          {!!relatedArtists.length && <RelatedArtistsRail artists={relatedArtists} />}
         </Stack>
       ) : (
         <ArtistAboutEmpty my={6} />
@@ -96,10 +96,10 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...ArtistConsignButton_artist
       ...ArtistAboutShows_artist
       related {
-        artists: artistsConnection(first: 16) {
+        artistsConnection(first: 12) {
           edges {
             node {
-              ...RelatedArtists_artists
+              ...RelatedArtistsRail_artists
             }
           }
         }
