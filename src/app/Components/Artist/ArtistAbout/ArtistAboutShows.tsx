@@ -26,7 +26,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
       <FlatList
         data={shows}
         renderItem={({ item }) => <ArtistAboutShow show={item} />}
-        ItemSeparatorComponent={() => <Spacer x={1} />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(show) => show.internalID}
         showsHorizontalScrollIndicator={false}
         horizontal
