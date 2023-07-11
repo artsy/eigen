@@ -9,15 +9,6 @@ extern NSString *const ARXAppTokenKeychainKey;
 extern NSString *const ARXAppTokenExpiryDateDefault;
 
 #pragma mark -
-#pragma mark push notifications
-
-extern NSString *const ARPushNotificationsAppleDialogueSeen;
-extern NSString *const ARPushNotificationsAppleDialogueRejected;
-extern NSString *const ARPushNotificationsSettingsPromptSeen;
-extern NSString *const ARPushNotificationFollowArtist;
-extern NSString *const ARPushNotificationsDialogueLastSeenDate;
-
-#pragma mark -
 #pragma mark user permissions
 
 /// Has given access to the camera for AR? nil when they've not been asked yet

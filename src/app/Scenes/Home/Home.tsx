@@ -67,6 +67,7 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -152,6 +153,10 @@ const Home = memo((props: HomeProps) => {
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")
+  }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
   }, [])
 
   // we cannot rely on mount events for screens in tab views for screen tracking
