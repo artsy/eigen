@@ -10,13 +10,11 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
@@ -32,7 +30,6 @@ export interface CreateSavedSearchModalProps {
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
   const { visible, entity, attributes, aggregations, closeModal, onComplete } = props
   const tracking = useTracking()
-  const popover = usePopoverMessage()
 
   useEffect(() => {
     if (visible) {
@@ -48,33 +45,17 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     const { owner } = entity
-
     tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
-    closeModal()
-    onComplete?.()
-
-    popover.show({
-      title: "Your alert has been created.",
-      message: "Edit your alerts in your profile, in Settings.",
-      onPress: async () => {
-        const options: NavigateOptions = {
-          popToRootTabView: true,
-          showInTabName: "profile",
-        }
-
-        await navigate("/my-profile/settings", options)
-        setTimeout(() => {
-          navigate("/my-profile/saved-search-alerts")
-        }, 100)
-      },
-    })
   }
 
   const params: CreateSavedSearchAlertParams = {
     aggregations,
     attributes,
     entity,
-    onClosePress: closeModal,
+    onClosePress: () => {
+      onComplete?.() // close the filter modal stack (if coming from artist artwork grid)
+      closeModal() // close the alert modal stack
+    },
     onComplete: handleComplete,
   }
 
