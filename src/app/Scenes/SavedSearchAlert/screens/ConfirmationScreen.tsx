@@ -154,7 +154,16 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
 
       <Spacer y={2} />
 
-      <GenericGrid width={screen.width - space(2)} artworks={artworks} />
+      <GenericGrid
+        width={screen.width - space(2)}
+        artworks={artworks}
+        // @ts-expect-error TODO: fix type error maybe introduced in 298c1fd
+        onPress={(slug: string) => {
+          closeModal?.()
+          // TODO: tracking and history?
+          navigate(`artwork/${slug}`)
+        }}
+      />
 
       <Spacer y={4} />
 
