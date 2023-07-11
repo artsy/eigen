@@ -1748,6 +1748,7 @@ type ArtistMeta {
 
 enum ArtistPage {
   ABOUT
+  ARTIST_SERIES
   ARTWORKS
   AUCTION_RESULTS
 }
