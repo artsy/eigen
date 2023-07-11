@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Join, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
@@ -17,6 +17,7 @@ import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">
@@ -24,7 +25,9 @@ type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "Confirmati
 export const ConfirmationScreen: React.FC<Props> = (props) => {
   const { route } = props
   const { closeModal } = route.params
+  const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
+  const { space } = useTheme()
 
   const handleLeftButtonPress = () => {
     closeModal?.()
@@ -38,12 +41,19 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
   return (
     <Box flex={1}>
       <FancyModalHeader hideBottomDivider useXButton onLeftButtonPress={handleLeftButtonPress} />
-      <Box px={2}>
-        <Text variant="lg">Your alert has been saved</Text>
+      <Box flex={1}>
+        <Text variant="lg" px={2}>
+          Your alert has been saved
+        </Text>
 
         <Spacer y={1} />
 
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: bottomInset,
+            paddingHorizontal: space(2),
+          }}
+        >
           <Text variant="sm" color="black60">
             We’ll let you know when matching works are added to Artsy.
           </Text>
@@ -69,8 +79,6 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
           <Button onPress={handleManageAlerts} block variant="outline">
             Manage your alerts
           </Button>
-
-          <Spacer y={12} />
         </ScrollView>
       </Box>
     </Box>
@@ -114,6 +122,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 
 const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
   const screen = useScreenDimensions()
+  const { space } = useTheme()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
@@ -147,10 +156,7 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
 
       <Spacer y={2} />
 
-      <GenericGrid
-        width={screen.width} // important to include this
-        artworks={artworks}
-      />
+      <GenericGrid width={screen.width - space(2)} artworks={artworks} />
 
       <Spacer y={4} />
 
