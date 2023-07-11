@@ -1,9 +1,7 @@
-import { Spacer, Flex, Text, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
-import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
-import { navigate } from "app/system/navigation/navigate"
+import { ArtistAboutShow } from "app/Components/Artist/ArtistAbout/ArtistAboutShow"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -12,94 +10,43 @@ interface Props {
 }
 
 const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
-  const currentShows = extractNodes(artist.currentShows)
-  const upcomingShows = extractNodes(artist.upcomingShows)
-  const currentAndUpcomingShows = [...currentShows, ...upcomingShows]
+  const shows = extractNodes(artist?.showsConnection)
+  const { width } = useScreenDimensions()
+  const { space } = useTheme()
 
-  const pastShows = extractNodes(artist.pastShows)
-  const screenWidth = useScreenDimensions().width
-
-  // We show the current and upcoming shows. If no current/upcoming, we show the 3 past shows
-  // See https://artsyproduct.atlassian.net/browse/CX-743 for business rules
-  const shownShows = currentAndUpcomingShows.length > 0 ? currentAndUpcomingShows : pastShows
-
-  const userHasShows = currentAndUpcomingShows.length + pastShows.length
-
-  if (userHasShows) {
-    return (
-      <Flex>
-        <Text variant="sm-display" mb={1}>
-          Shows featuring {artist.name}
-        </Text>
-        <FlatList
-          data={shownShows}
-          renderItem={({ item }) => (
-            <ArtistShowFragmentContainer
-              show={item}
-              styles={{
-                container: {
-                  width: 335,
-                  marginRight: 15,
-                },
-                image: {
-                  width: 335,
-                  height: 220,
-                  marginBottom: 10,
-                },
-              }}
-            />
-          )}
-          ItemSeparatorComponent={() => <Spacer x={1} />}
-          keyExtractor={(show) => show.id}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          style={{ left: -20, width: screenWidth }}
-          contentContainerStyle={{ paddingBottom: 15, paddingLeft: 20 }}
-        />
-        {!!pastShows.length && (
-          <Button
-            variant="fillGray"
-            onPress={() => navigate(`/artist/${artist?.slug!}/shows`)}
-            size="small"
-            block
-          >
-            See all past shows
-          </Button>
-        )}
-      </Flex>
-    )
+  if (shows.length === 0 || !artist) {
+    return null
   }
 
-  // If the user has no past/current/upcoming shows
-  return null
+  return (
+    <Flex>
+      <Text variant="sm-display" pb={4}>
+        Shows Featuring {artist.name}
+      </Text>
+      <FlatList
+        data={shows}
+        renderItem={({ item }) => <ArtistAboutShow show={item} />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
+        keyExtractor={(show) => show.internalID}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        contentContainerStyle={{ paddingRight: space(4) }}
+        style={{ width }}
+      />
+    </Flex>
+  )
 }
 
 export const ArtistAboutShowsFragmentContainer = createFragmentContainer(ArtistAboutShows, {
   artist: graphql`
     fragment ArtistAboutShows_artist on Artist {
-      name
-      slug
-      currentShows: showsConnection(status: "running", first: 10) {
+      name @required(action: NONE)
+      slug @required(action: NONE)
+      showsConnection(first: 12, sort: END_AT_ASC, status: "running") {
         edges {
           node {
-            id
-            ...ArtistShow_show
-          }
-        }
-      }
-      upcomingShows: showsConnection(status: "upcoming", first: 10) {
-        edges {
-          node {
-            id
-            ...ArtistShow_show
-          }
-        }
-      }
-      pastShows: showsConnection(status: "closed", first: 3) {
-        edges {
-          node {
-            id
-            ...ArtistShow_show
+            internalID
+            ...ArtistAboutShow_show
           }
         }
       }
