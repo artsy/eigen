@@ -63,7 +63,6 @@ describe("ArticleScreen", () => {
 
     await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.queryByText("Article Title")).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(ArticleWebViewScreen)).toBeOnTheScreen()
   })
 })

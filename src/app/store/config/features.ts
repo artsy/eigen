@@ -220,15 +220,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
-  AREnableNativeArticleView: {
-    readyForRelease: false,
-    description: "Show native article view",
-    showInDevMenu: true,
-  },
   AREnableArtworkLists: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Artwork Lists",
     showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
@@ -241,10 +237,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableLongPressArtworkCards: {
+  AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
     readyForRelease: false,
     showInDevMenu: true,
+    echoFlagKey: "AREnableLongPressOnArtworkCards",
   },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
@@ -257,6 +254,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
+  },
+  AREnablePriceControlForCreateAlertFlow: {
+    description: "Enable Inline price control for Create Alert modal flow",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 }
 

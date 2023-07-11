@@ -9,7 +9,7 @@ import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Suspense } from "react"
+import { Suspense, memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,7 +23,7 @@ interface ShowsRailProps {
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
-export const ShowsRail: React.FC<ShowsRailProps> = ({ disableLocation, location, title }) => {
+export const ShowsRail: React.FC<ShowsRailProps> = memo(({ disableLocation, location, title }) => {
   const tracking = useTracking()
 
   const queryVariables = location
@@ -72,7 +72,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ disableLocation, location,
       </Flex>
     </Flex>
   )
-}
+})
 
 const ShowsQuery = graphql`
   query ShowsRailQuery($near: Near, $includeShowsNearIpBasedLocation: Boolean) {
@@ -125,7 +125,10 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
 }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
-  const { location, isLoading } = useLocation(disableLocation)
+  const { location, isLoading } = useLocation({
+    disabled: disableLocation,
+    skipPermissionRequests: true,
+  })
 
   if (isLoading) {
     return <ShowsRailPlaceholder />
@@ -135,7 +138,7 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
     <Suspense fallback={<ShowsRailPlaceholder />}>
       {!!visualizeLocation && (
         <Text mx={2} color="red">
-          Location: {JSON.stringify(location)}
+          Location: {location ? JSON.stringify(location) : "Using IP-based location"}
         </Text>
       )}
 

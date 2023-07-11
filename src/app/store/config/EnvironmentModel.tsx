@@ -1,7 +1,7 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { Platform } from "react-native"
 
@@ -48,7 +48,7 @@ export const environment = defineEnvironmentOptions({
   webURL: {
     description: "Force URL",
     presets: {
-      local: "http://localhost:5000",
+      local: "http://localhost:4000",
       staging: "https://staging.artsy.net",
       production: "https://www.artsy.net",
     },

@@ -74,7 +74,7 @@ interface State {
 
 /**
  * @deprecated
- * Use `OpaqueImageView` from palette instead.
+ * Use `Image` from palette instead.
  */
 export default class OpaqueImageView extends React.Component<Props, State> {
   constructor(props: Props) {

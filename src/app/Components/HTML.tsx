@@ -18,7 +18,7 @@ interface HTMLProps extends FlexProps {
   variant?: TextProps["variant"]
 }
 
-const FONTS = {
+export const FONTS = {
   regular: "Unica77LL-Regular",
   italic: "Unica77LL-Italic",
   medium: "Unica77LL-Medium",
@@ -68,6 +68,7 @@ export const HTML: React.FC<HTMLProps> = ({
               textDecorationLine: "underline",
               textDecorationColor: color("black100"),
               color: color("black100"),
+              textDecorationStyle: "solid",
             },
             p: {
               fontFamily: FONTS.regular,
@@ -75,6 +76,14 @@ export const HTML: React.FC<HTMLProps> = ({
             },
             em: {
               fontFamily: FONTS.italic,
+            },
+            h2: {
+              fontFamily: FONTS.medium,
+              fontWeight: "normal",
+            },
+            h3: {
+              fontFamily: FONTS.regular,
+              fontWeight: "normal",
             },
           },
           tagStyles

@@ -32,14 +32,14 @@ import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/Artwor
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
+import { goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
-import { isEmpty, isEqual } from "lodash"
-import React, { useEffect, useState } from "react"
+import { isEmpty } from "lodash"
+import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -62,7 +62,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const { mode, onDelete, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
+  const { mode, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
 
   const addOrEditLabel = mode === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
@@ -85,7 +85,11 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetForm()
+                if (mode === "edit" || !formikValues.artistSearchResult) {
+                  GlobalStore.actions.myCollection.artwork.resetForm()
+                } else {
+                  GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                }
                 navigation.dispatch(e.data.action)
               },
             },
@@ -103,7 +107,7 @@ export const MyCollectionArtworkFormMain: React.FC<
     artworkState.sessionState.dirtyFormCheckValues,
   ])
 
-  const isFormDirty = () => {
+  const isFormDirty = useCallback(() => {
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
 
     // Check if any fields are filled out when adding a new artwork
@@ -131,12 +135,15 @@ export const MyCollectionArtworkFormMain: React.FC<
         false
       )
     }
-  }
+  }, [
+    JSON.stringify(artworkState.sessionState.formValues),
+    JSON.stringify(artworkState.sessionState.dirtyFormCheckValues),
+  ])
 
   const clearForm = async () => {
-    const { formValues, dirtyFormCheckValues } = artworkState.sessionState
+    const { dirtyFormCheckValues } = artworkState.sessionState
 
-    const formIsDirty = !isEqual(formValues, dirtyFormCheckValues)
+    const formIsDirty = isFormDirty()
 
     if (formIsDirty) {
       const discardData = await new Promise((resolve) =>
@@ -175,7 +182,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const handleBackButtonPress = () => {
     if (mode === "edit") {
-      GlobalStore.actions.myCollection.artwork.resetForm()
       goBack()
     } else {
       navigation.goBack()
@@ -185,28 +191,8 @@ export const MyCollectionArtworkFormMain: React.FC<
   const isSubmission =
     mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
-  const ArtistField = () => {
-    if (formik.values.artistSearchResult) {
-      return <ArtistSearchResult result={formik.values.artistSearchResult} />
-    } else if (formik.values.customArtist) {
-      return <ArtistCustomArtist artist={formik.values.customArtist} />
-    } else
-      return (
-        <Input
-          title="Artist"
-          placeholder="Artist"
-          onChangeText={formik.handleChange("artistDisplayName")}
-          onBlur={formik.handleBlur("artistDisplayName")}
-          testID="ArtistDisplayNameInput"
-          required
-          accessibilityLabel="Artist Name"
-          value={formikValues.artistDisplayName}
-        />
-      )
-  }
-
   const handleDelete = async () => {
-    if (mode === "edit" && onDelete && artwork) {
+    if (mode === "edit" && artwork) {
       trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
       try {
         // TODO: Fix this separetely
@@ -214,7 +200,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           await myCollectionDeleteArtwork(artwork.internalID)
         }
         refreshMyCollection()
-        onDelete()
+        popToRoot()
       } catch (e) {
         if (__DEV__) {
           console.error(e)
@@ -441,6 +427,28 @@ export const MyCollectionArtworkFormMain: React.FC<
       </Flex>
     </>
   )
+}
+
+const ArtistField: React.FC = () => {
+  const { formik } = useArtworkForm()
+
+  if (formik.values.artistSearchResult) {
+    return <ArtistSearchResult result={formik.values.artistSearchResult} />
+  } else if (formik.values.customArtist) {
+    return <ArtistCustomArtist artist={formik.values.customArtist} />
+  } else
+    return (
+      <Input
+        title="Artist"
+        placeholder="Artist"
+        onChangeText={formik.handleChange("artistDisplayName")}
+        onBlur={formik.handleBlur("artistDisplayName")}
+        testID="ArtistDisplayNameInput"
+        required
+        accessibilityLabel="Artist Name"
+        value={formik.values.artistDisplayName}
+      />
+    )
 }
 
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {

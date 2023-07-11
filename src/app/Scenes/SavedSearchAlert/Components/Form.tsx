@@ -19,6 +19,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
@@ -57,6 +58,7 @@ export const Form: React.FC<FormProps> = (props) => {
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
+  const priceControlEnabled = useFeatureFlag("AREnablePriceControlForCreateAlertFlow")
 
   // Data has not changed
   if (isEditMode && !dirty) {
@@ -138,22 +140,26 @@ export const Form: React.FC<FormProps> = (props) => {
           ))}
         </Flex>
       </Box>
-      <Spacer y={2} />
-      <Touchable
-        accessibilityLabel="Set price range"
-        accessibilityRole="button"
-        onPress={() => navigation.navigate("AlertPriceRange")}
-      >
-        <Flex flexDirection="row" alignItems="center" py={1}>
-          <Flex flex={1}>
-            <Text variant="sm-display">Set price range you are interested in</Text>
-          </Flex>
-          <Flex alignSelf="center" mt={0.5}>
-            <ArrowRightIcon />
-          </Flex>
-        </Flex>
-      </Touchable>
-      <Spacer y={4} />
+      {!!priceControlEnabled && (
+        <>
+          <Spacer y={2} />
+          <Touchable
+            accessibilityLabel="Set price range"
+            accessibilityRole="button"
+            onPress={() => navigation.navigate("AlertPriceRange")}
+          >
+            <Flex flexDirection="row" alignItems="center" py={1}>
+              <Flex flex={1}>
+                <Text variant="sm-display">Set price range you are interested in</Text>
+              </Flex>
+              <Flex alignSelf="center" mt={0.5}>
+                <ArrowRightIcon />
+              </Flex>
+            </Flex>
+          </Touchable>
+          <Spacer y={4} />
+        </>
+      )}
       <SavedSearchAlertSwitch
         label="Mobile Alerts"
         onChange={onTogglePushNotification}

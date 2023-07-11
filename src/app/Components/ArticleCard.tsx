@@ -24,20 +24,11 @@ interface ArticleCardProps extends ViewProps {
 }
 
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
-  const enableNativeArticleView = useFeatureFlag("AREnableNativeArticleView")
-
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
-
-    // TODO: We need to switch on the type of article here, as we'll want to redirect
-    // feature articles into the webview and standard articles to native.
-    if (enableNativeArticleView) {
-      navigate(`/article2/${article.internalID}`)
-    } else {
-      navigate(article.href!)
-    }
+    navigate(article.href!)
   }
 
   const { space } = useTheme()
@@ -78,12 +69,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             {article.thumbnailTitle}
           </Text>
           {!!article.byline && (
-            <Text color="black100" variant="xs">
+            <Text color="black100" variant="xs" mt={0.5}>
               {article.byline}
             </Text>
           )}
           {!!article.publishedAt && (
-            <Text color="black60" variant="xs">
+            <Text color="black60" variant="xs" mt={0.5}>
               {DateTime.fromISO(article.publishedAt).toFormat("MMM d, yyyy")}
             </Text>
           )}

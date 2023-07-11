@@ -258,15 +258,15 @@ type Agreement {
 }
 
 type Algolia {
-  apiKey: String!
-  appID: String!
-  indices: [AlgoliaIndex!]!
+  apiKey: String! @deprecated(reason: "Algolia search is no longer supported")
+  appID: String! @deprecated(reason: "Algolia search is no longer supported")
+  indices: [AlgoliaIndex!]! @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AlgoliaIndex {
-  displayName: String!
-  key: String!
-  name: String!
+  displayName: String! @deprecated(reason: "Algolia search is no longer supported")
+  key: String! @deprecated(reason: "Algolia search is no longer supported")
+  name: String! @deprecated(reason: "Algolia search is no longer supported")
 }
 
 type AnalyticsArtist {
@@ -2741,6 +2741,7 @@ type AuctionResult implements Node {
   ): String
   saleDateText: String
   saleTitle: String
+  slug: String
   title: String
 }
 
@@ -4004,6 +4005,9 @@ type CommerceBuyOrder implements CommerceOrder {
   paymentMethod: CommercePaymentMethodEnum
   paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
+
+  # Whether the buyer needs to complete identity verification to make this purchase.
+  requireIdentityVerification: Boolean!
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
   sellerTotal(
@@ -4768,6 +4772,9 @@ type CommerceOfferOrder implements CommerceOrder {
   paymentMethod: CommercePaymentMethodEnum
   paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
+
+  # Whether the buyer needs to complete identity verification to make this purchase.
+  requireIdentityVerification: Boolean!
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
   sellerTotal(
@@ -4973,6 +4980,9 @@ interface CommerceOrder {
   paymentMethod: CommercePaymentMethodEnum
   paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
+
+  # Whether the buyer needs to complete identity verification to make this purchase.
+  requireIdentityVerification: Boolean!
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
   sellerTotal(
@@ -7619,6 +7629,7 @@ input CreateUserInterestMutationInput {
   clientMutationId: String
   interestId: String!
   interestType: UserInterestInterestType!
+  private: Boolean
   sessionID: String
 }
 
@@ -10204,6 +10215,9 @@ type IdentityVerification {
   # A globally unique ID.
   id: ID!
 
+  # ID of the admin or user (self) that initiated this IDV request
+  initiatorID: String
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   invitationExpiresAt(
@@ -10218,11 +10232,17 @@ type IdentityVerification {
   # Name of the identity verification's owner
   name: String
 
+  # ID of the order the user was placing when this IDV request was created
+  orderID: String
+
   # The overrides associated with an identity verification
   overrides: [IdentityVerificationOverride]
 
   # Page URL sent to the identify verification's owner
   pageURL: String
+
+  # ID of the auction the user was registering for when this IDV request was created
+  saleID: String
 
   # The scan references (i.e., results) associated with an identity verification
   scanReferences: [IdentityVerificationScanReference]
@@ -10438,6 +10458,20 @@ type ImageSearch {
 
 type ImageURLs {
   normalized: String
+}
+
+type InputAddress {
+  address_line1: String!
+  address_line2: String!
+  city: String!
+  country: String!
+  postal_code: String!
+  region: String
+}
+
+type InputAddressFields {
+  address: InputAddress
+  lines: [String]
 }
 
 type InquirerCollectorProfile {
@@ -13983,9 +14017,6 @@ type Query {
     last: Int
     userId: ID!
   ): AuctionsLotStandingConnection!
-
-  # Get Algolia configuration
-  _unused_gravity_algolia: Algolia!
   _unused_gravity_devices(userId: ID!): [Device!]!
 
   # Autocomplete resolvers.
@@ -14354,7 +14385,7 @@ type Query {
 
   # An auction result
   auctionResult(
-    # The ID of the auction result
+    # The ID or slug of the auction result
     id: String!
   ): AuctionResult
 
@@ -15237,6 +15268,16 @@ type Query {
     # The slug or ID of the Profile to get a partner or fair for
     id: String!
   ): VanityURLEntityType
+
+  # Verify a given address.
+  verifyAddress(
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    country: String!
+    postalCode: String!
+    region: String
+  ): VerifyAddressType
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -16456,8 +16497,17 @@ input SendIdentityVerificationEmailMutationInput {
   # The email for the user undergoing identity verification
   email: String
 
+  # The ID of the user (self or admin) who initiated the IDV process
+  initiatorID: String
+
   # The name to be used for the user undergoing identity verification
   name: String
+
+  # The ID of the order where the IDV process was initated
+  orderID: String
+
+  # The ID of the sale where the IDV process was initated
+  saleID: String
 
   # Whether an automated identity verification is sent or not
   sendEmail: Boolean
@@ -16979,8 +17029,23 @@ type SubmittedPriceEstimateParams {
   requesterPhoneNumber: String
 }
 
+type SuggestedAddress {
+  address_line_1: String!
+  address_line_2: String!
+  city: String!
+  country: String!
+  postal_code: String!
+  region: String
+}
+
+type SuggestedAddressFields {
+  address: SuggestedAddress
+  lines: [String]
+}
+
 type System {
-  algolia: Algolia
+  # Deprecated Algolia fields, temporarily kept for legacy compatibility
+  algolia: Algolia @deprecated(reason: "Algolia search is no longer supported")
 
   # Creates, and authorizes, a JWT custom for Causality
   causalityJWT(
@@ -18448,6 +18513,7 @@ type UserInterest {
   # A type-specific ID.
   internalID: ID!
   ownerType: UserInterestOwnerType
+  private: Boolean!
 }
 
 enum UserInterestCategory {
@@ -18621,6 +18687,20 @@ enum UserSearchCriteriaFrequency {
 }
 
 union VanityURLEntityType = Fair | Partner
+
+enum VerificationStatuses {
+  NOT_FOUND
+  NOT_PERFORMED
+  VERIFICATION_UNAVAILABLE
+  VERIFIED_NO_CHANGE
+  VERIFIED_WITH_CHANGES
+}
+
+type VerifyAddressType {
+  inputAddress: InputAddressFields
+  suggestedAddresses: [SuggestedAddressFields]
+  verificationStatus: VerificationStatuses
+}
 
 # An object containing video metadata
 type Video {
@@ -18843,7 +18923,7 @@ type Viewer {
 
   # An auction result
   auctionResult(
-    # The ID of the auction result
+    # The ID or slug of the auction result
     id: String!
   ): AuctionResult
 
@@ -19517,6 +19597,16 @@ type Viewer {
     # The slug or ID of the Profile to get a partner or fair for
     id: String!
   ): VanityURLEntityType
+
+  # Verify a given address.
+  verifyAddress(
+    addressLine1: String!
+    addressLine2: String
+    city: String!
+    country: String!
+    postalCode: String!
+    region: String
+  ): VerifyAddressType
   viewingRoomsConnection(
     after: String
     first: Int

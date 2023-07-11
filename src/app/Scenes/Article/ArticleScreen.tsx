@@ -59,7 +59,6 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
     >
       <Screen>
         <Header
-          title={data.article.title ?? ""}
           rightElements={<ArticleShareButton article={data.article} />}
           onBack={goBack}
           top={0}

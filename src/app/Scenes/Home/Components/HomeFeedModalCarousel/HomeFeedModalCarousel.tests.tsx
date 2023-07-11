@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
+import { navigate, switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
@@ -38,9 +38,7 @@ describe(FooterButtons, () => {
 
       expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
         passProps: {
-          mode: "add",
           source: Tab.collection,
-          onSuccess: popToRoot,
         },
       })
       expect(trackEvent).toHaveBeenCalledWith({

@@ -65,10 +65,14 @@ export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: 
 }
 
 export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return addRoute(url, "ReactWebView", (params) => ({
-    url: replaceParams(url, params),
-    ...config,
-  }))
+  return addRoute(
+    url,
+    config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
+    (params) => ({
+      url: replaceParams(url, params),
+      ...config,
+    })
+  )
 }
 
 export function replaceParams(url: string, params: any) {
@@ -122,7 +126,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/art-quiz", "ArtQuiz"),
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
-    addRoute("/article2/:articleID", "Article"), // TODO: AREnableNativeArticleView: Rename /article2 to /article once we've removed the old /article route
+    addRoute("/article/:articleID", "Article"),
     addRoute("/articles", "Articles"),
     addRoute("/artist-series/:artistSeriesID", "ArtistSeries"),
     addRoute("/artist/:artistID", "Artist"),
@@ -202,8 +206,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       "/my-collection/artwork/:artworkID/price-estimate/success",
       "RequestForPriceEstimateConfirmationScreen"
     ),
-    addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
-    addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection/artworks/:artworkID/edit", "MyCollectionArtworkEdit"),
+    addRoute("/my-collection/artworks/new", "MyCollectionArtworkAdd"),
     addRoute("/my-collection/collected-artists/new", "MyCollectionAddCollectedArtists"),
     addRoute("/my-collection/career-highlights", "CareerHighlightsBigCardsSwiper"),
     addRoute("/my-collection/median-sale-price-at-auction/:artistID", "MedianSalePriceAtAuction"),
@@ -258,8 +262,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
-    addWebViewRoute("/article/:articleID", { showShareButton: true }),
-    addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/auction-faq"),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
@@ -270,6 +272,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/price-database"),
     addWebViewRoute("/privacy"),

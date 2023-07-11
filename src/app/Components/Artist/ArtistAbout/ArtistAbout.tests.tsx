@@ -57,4 +57,22 @@ describe("ArtistAbout", () => {
       expect(screen.UNSAFE_queryByType(ArtistAboutShowsFragmentContainer)).toBeTruthy()
     })
   })
+
+  describe("ArtistAboutEditorial", () => {
+    it("renders editorial section", () => {
+      renderWithRelay({
+        Artist: () => ({ name: "Andy Warhol" }),
+      })
+
+      expect(screen.getByText("Artsy Editorial Featuring Andy Warhol")).toBeOnTheScreen()
+    })
+
+    it("does not render when there are no articles", () => {
+      renderWithRelay({
+        ArticleConnection: () => ({ edges: null }),
+      })
+
+      expect(screen.queryByText(/Artsy Editorial Featuring/)).not.toBeOnTheScreen()
+    })
+  })
 })

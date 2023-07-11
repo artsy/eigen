@@ -2,7 +2,7 @@ import { Flex, useColor } from "@artsy/palette-mobile"
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -54,9 +54,7 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
               onButtonPress={() => {
                 navigate("my-collection/artworks/new", {
                   passProps: {
-                    mode: "add",
                     source: Tab.insights,
-                    onSuccess: popToRoot,
                   },
                 })
               }}

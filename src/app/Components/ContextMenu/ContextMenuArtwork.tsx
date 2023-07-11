@@ -8,6 +8,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
+import { isEmpty } from "lodash"
 import React from "react"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
@@ -39,15 +40,17 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
-  const enableContextMenu = useFeatureFlag("AREnableLongPressArtworkCards")
+  const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
-  const { title, href, artists, slug, internalID, id, isHangable, image } = artwork
+  const { title, href, artists, slug, internalID, id, isHangable, image, sale } = artwork
 
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
+
+  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
@@ -77,9 +80,13 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   const getContextMenuActions = () => {
+    let saveTitle = isSaved ? "Remove from saved" : "Save"
+    if (isOpenSale) {
+      saveTitle = "Watch Lot"
+    }
     const contextMenuActions: ContextAction[] = [
       {
-        title: isSaved ? "Remove from saved" : "Save",
+        title: saveTitle,
         systemIcon: isSaved ? "heart.fill" : "heart",
         onPress: () => {
           saveArtworkToLists()
@@ -117,7 +124,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     }
 
     if (enableCreateAlerts) {
-      contextMenuActions.push({
+      // Put create alert at front since it is high intent
+      contextMenuActions.unshift({
         title: "Create alert",
         systemIcon: "bell",
         onPress: () => {
