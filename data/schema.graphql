@@ -104,6 +104,15 @@ type addOrderedSetItemSuccess {
   setItem: OrderedSetItem
 }
 
+input AddressInput {
+  addressLine1: String!
+  addressLine2: String
+  city: String
+  country: String!
+  postalCode: String!
+  region: String
+}
+
 type addUserRoleFailure {
   mutationError: GravityMutationError
 }
@@ -10461,11 +10470,11 @@ type ImageURLs {
 }
 
 type InputAddress {
-  address_line1: String!
-  address_line2: String!
+  addressLine1: String!
+  addressLine2: String!
   city: String!
   country: String!
-  postal_code: String!
+  postalCode: String!
   region: String
 }
 
@@ -15270,14 +15279,7 @@ type Query {
   ): VanityURLEntityType
 
   # Verify a given address.
-  verifyAddress(
-    addressLine1: String!
-    addressLine2: String
-    city: String!
-    country: String!
-    postalCode: String!
-    region: String
-  ): VerifyAddressType
+  verifyAddress(address: AddressInput!): VerifyAddressType
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -17030,11 +17032,11 @@ type SubmittedPriceEstimateParams {
 }
 
 type SuggestedAddress {
-  address_line_1: String!
-  address_line_2: String!
+  addressLine1: String!
+  addressLine2: String!
   city: String!
   country: String!
-  postal_code: String!
+  postalCode: String!
   region: String
 }
 
@@ -19599,14 +19601,7 @@ type Viewer {
   ): VanityURLEntityType
 
   # Verify a given address.
-  verifyAddress(
-    addressLine1: String!
-    addressLine2: String
-    city: String!
-    country: String!
-    postalCode: String!
-    region: String
-  ): VerifyAddressType
+  verifyAddress(address: AddressInput!): VerifyAddressType
   viewingRoomsConnection(
     after: String
     first: Int
