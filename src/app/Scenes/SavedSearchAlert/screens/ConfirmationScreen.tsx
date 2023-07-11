@@ -19,7 +19,7 @@ import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-const NUMBER_OF_ARTWORKS_TO_SHOW = 10
+export const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 export const ConfirmationScreen: React.FC = () => {
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
