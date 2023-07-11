@@ -13,6 +13,7 @@ import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchP
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -76,10 +77,8 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
 }
 
 const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
-  const screen = useScreenDimensions()
-
   return (
-    <Suspense fallback={<GenericGridPlaceholder width={screen.width - 40} />}>
+    <Suspense fallback={<MatchingArtworksPlaceholder />}>
       <MatchingArtworks closeModal={closeModal} />
     </Suspense>
   )
@@ -100,7 +99,20 @@ const matchingArtworksQuery = graphql`
   }
 `
 
+const MatchingArtworksPlaceholder: React.FC = () => {
+  const screen = useScreenDimensions()
+  const { space } = useTheme()
+  return (
+    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
+      <PlaceholderRaggedText numLines={2} textHeight={20} />
+      <Spacer y={2} />
+      <GenericGridPlaceholder width={screen.width - space(4)} />
+    </Box>
+  )
+}
+
 const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
+  const screen = useScreenDimensions()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
@@ -125,7 +137,10 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
 
       <Spacer y={2} />
 
-      <GenericGrid artworks={artworks} />
+      <GenericGrid
+        width={screen.width} // important to include this
+        artworks={artworks}
+      />
 
       <Spacer y={4} />
 
