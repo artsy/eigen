@@ -192,6 +192,14 @@ export const ArtsyWebView = forwardRef<
 
       const result = matchRoute(targetURL)
 
+      // TODO: need to implement the rest of native articles surfaces (news etc)
+      // the purpose of this is to prevent the webview from redirecting you again
+      // to the articles route, which would cause a loop and once in the webview to
+      // redirect you to either a native article view or an article webview
+      if (result.type === "match" && result.module === "Article") {
+        return
+      }
+
       // if it's a route that we know we don't have a native view for, keep it in the webview
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
