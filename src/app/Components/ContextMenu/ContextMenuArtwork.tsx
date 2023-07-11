@@ -3,6 +3,8 @@ import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkCardSize } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
@@ -24,6 +26,7 @@ interface ContextMenuArtworkProps {
   onCreateAlertActionPress: () => void
   dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
+  size: ArtworkCardSize
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
 }
@@ -33,6 +36,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   children,
   haptic = true,
   dark = false,
+  size,
   onCreateAlertActionPress,
   contextScreenOwnerType,
   contextModule,
@@ -180,12 +184,20 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return <>{children}</>
   }
 
+  const artworkPreviewComponent = (
+    artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data,
+    size: ArtworkCardSize
+  ) => {
+    return <ContextMenuArtworkPreviewCard artwork={artwork} size={size} />
+  }
+
   return (
     <ContextMenu
       actions={contextActions}
       onPress={handleContextPress}
       onCancel={handleContextCancel}
       previewPadding={20}
+      preview={artworkPreviewComponent(artwork, size)}
       hideShadows={true}
       previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       disabled={!shouldDisplayContextMenu}
