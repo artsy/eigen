@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Join, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
@@ -61,18 +61,16 @@ export const ConfirmationScreen: React.FC<Props> = (props) => {
           <Spacer y={2} />
 
           <Flex flexDirection="row" flexWrap="wrap">
-            <Join separator={<Spacer x={1} />}>
-              {pills.map((pill) => {
-                return (
-                  <Pill key={`param-${pill.paramName}-value-${pill.value}`} block>
-                    {pill.label}
-                  </Pill>
-                )
-              })}
-            </Join>
+            {pills.map((pill) => {
+              return (
+                <Pill key={`param-${pill.paramName}-value-${pill.value}`} block mr={1} mb={1}>
+                  {pill.label}
+                </Pill>
+              )
+            })}
           </Flex>
 
-          <Spacer y={2} />
+          <Spacer y={1} />
 
           <MatchingArtworksContainer closeModal={closeModal} />
 
