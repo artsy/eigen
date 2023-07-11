@@ -20,6 +20,8 @@ import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
+const NUMBER_OF_ARTWORKS_TO_SHOW = 10
+
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">
 
 export const ConfirmationScreen: React.FC<Props> = (props) => {
@@ -92,8 +94,8 @@ const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = ({ clos
 }
 
 const matchingArtworksQuery = graphql`
-  query ConfirmationScreenMatchingArtworksQuery($input: FilterArtworksInput) {
-    artworksConnection(first: 20, input: $input) {
+  query ConfirmationScreenMatchingArtworksQuery($input: FilterArtworksInput, $first: Int) {
+    artworksConnection(first: $first, input: $input) {
       counts {
         total
       }
@@ -125,6 +127,7 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
+    first: NUMBER_OF_ARTWORKS_TO_SHOW,
     input: {
       ...attributes,
       forSale: true,
@@ -135,7 +138,8 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
   const artworks = extractNodes(data.artworksConnection)
   const total = data?.artworksConnection?.counts?.total // TODO: handle zero state
 
-  const areMoreMatchesAvailable = total > 10 && attributes?.artistIDs?.length === 1 // TODO: constant
+  const areMoreMatchesAvailable =
+    total > NUMBER_OF_ARTWORKS_TO_SHOW && attributes?.artistIDs?.length === 1
 
   const handleSeeAllMatchingWorks = () => {
     closeModal?.()
