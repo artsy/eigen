@@ -102,7 +102,11 @@ const alertPriceRangeScreenQuery = graphql`
   }
 `
 
-const Placeholder: React.FC<{}> = () => <Spinner testID="alert-price-range-spinner" />
+const Placeholder: React.FC<{}> = () => (
+  <Flex flex={1} justifyContent="center" alignItems="center">
+    <Spinner testID="alert-price-range-spinner" />
+  </Flex>
+)
 
 export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQRProps> =
   withSuspense((props) => {
