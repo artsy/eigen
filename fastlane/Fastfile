@@ -170,7 +170,7 @@ lane :ship_beta_android_play_store do
     track: "alpha",
   ).first(20)
 
-  vname, vcode = set_build_version_android
+  vname, vcode = set_build_version_android(version_code: 800)
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
@@ -204,7 +204,7 @@ lane :ship_beta_android_firebase do
 
   flag_android_beta(is_android_beta: true)
 
-  vname, vcode = set_build_version_android
+  vname, vcode = set_build_version_android(version_code: 800)
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
