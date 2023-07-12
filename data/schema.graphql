@@ -10474,7 +10474,7 @@ type ImageURLs {
 
 type InputAddress {
   addressLine1: String!
-  addressLine2: String!
+  addressLine2: String
   city: String!
   country: String!
   postalCode: String!
@@ -17036,7 +17036,7 @@ type SubmittedPriceEstimateParams {
 
 type SuggestedAddress {
   addressLine1: String!
-  addressLine2: String!
+  addressLine2: String
   city: String!
   country: String!
   postalCode: String!
