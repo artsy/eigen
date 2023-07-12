@@ -13,8 +13,9 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
+import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
