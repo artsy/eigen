@@ -8,9 +8,9 @@ import {
   Tabs,
 } from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PlaceholderGrid } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 

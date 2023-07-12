@@ -8,6 +8,7 @@ import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -24,12 +25,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import {
-  PlaceholderBox,
-  PlaceholderGrid,
-  PlaceholderText,
-  RandomWidthPlaceholderText,
-} from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
