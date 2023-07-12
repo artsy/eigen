@@ -90,6 +90,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
   onSelected,
 }) => {
   const priceRanges = usePriceRanges()
+  const priceRangesRef = useRef(priceRanges)
   const space = useSpace()
   const recentPriceRangeScrollRef = useRef<ScrollView>(null)
 
@@ -109,7 +110,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
     >
       <Flex flexDirection="row">
         <Join separator={<Spacer x={1} />}>
-          {priceRanges.map((recentPrice) => {
+          {priceRangesRef.current.map((recentPrice) => {
             const { value } = recentPrice
             const [min, max] = parsePriceRange(value)
             const label = parsePriceRangeLabel(min, max)

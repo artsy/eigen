@@ -46,16 +46,9 @@ export const AlertPriceRangeScreen: React.FC<AlertPriceRanceScreenProps> = ({
       key: SearchCriteria.priceRange,
       value: filterPriceRange,
     })
-    navigation.goBack()
+    GlobalStore.actions.recentPriceRanges.addNewPriceRange(filterPriceRange)
 
-    /**
-     * We wait until the filter modal is closed, then save the recent price range
-     * Otherwise the recent price range will be displayed immediately after clicking on the "Set Price Range" button,
-     * Which can negatively affect the UI
-     */
-    setTimeout(() => {
-      GlobalStore.actions.recentPriceRanges.addNewPriceRange(filterPriceRange)
-    }, 500)
+    navigation.goBack()
   }
 
   const handleClear = () => {
