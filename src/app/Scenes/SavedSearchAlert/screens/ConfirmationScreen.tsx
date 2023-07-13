@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
-import { RouteProp, useRoute } from "@react-navigation/native"
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
   ConfirmationScreenMatchingArtworksQuery,
   FilterArtworksInput,
@@ -15,7 +15,7 @@ import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToP
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -23,11 +23,20 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 export const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 export const ConfirmationScreen: React.FC = () => {
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
   const { space } = useTheme()
+
+  useEffect(() => {
+    const backListener = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault()
+    })
+    return backListener
+  }, [])
 
   const handleLeftButtonPress = () => {
     closeModal?.()

@@ -60,6 +60,9 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
               <Stack.Screen
                 name="ConfirmationScreen"
                 component={ConfirmationScreen}
+                options={{
+                  gestureEnabled: false,
+                }}
                 initialParams={{
                   closeModal: params.onClosePress,
                 }}
