@@ -94,10 +94,6 @@ jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
-jest.mock("react-native-permissions", () => ({
-  requestNotifications: jest.fn(),
-}))
-
 require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
@@ -419,8 +415,9 @@ function getNativeModules(): OurNativeModules {
       reactStateUpdated: jest.fn(),
     },
     ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),
@@ -474,6 +471,7 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       CurrentLocale: "en_US",
       LocalTimeZone: "",
     },
+
     ARNotificationsManager: {
       nativeState: {
         userAgent: "Jest Unit Tests",
@@ -487,8 +485,9 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       reactStateUpdated: jest.fn(),
     },
     ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
-      markUserPermissionStatus: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
       getUserEmail: jest.fn(),

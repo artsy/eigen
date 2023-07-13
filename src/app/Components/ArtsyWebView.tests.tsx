@@ -9,7 +9,6 @@ import { stringify } from "query-string"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
-
 import {
   _test_expandGoogleAdLink as expandGoogleAdLink,
   ArtsyWebView,
@@ -155,13 +154,16 @@ describe("ArtsyWebViewPage", () => {
 
   describe("mimicBrowserBackButton", () => {
     it("lets our native back button control the browser", () => {
-      const mockSystemBackAction = jest.fn()
-      const tree = render({ systemBackAction: mockSystemBackAction })
+      const tree = render()
+      const browserGoBack = jest
+        .spyOn(screen.UNSAFE_getByType(WebView).instance, "goBack")
+        .mockImplementation(() => undefined)
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
       expect(goBack).toHaveBeenCalled()
+      expect(browserGoBack).not.toHaveBeenCalled()
       ;(goBack as any).mockReset()
-      mockSystemBackAction.mockReset()
+      ;(browserGoBack as any).mockReset()
 
       webViewProps(tree).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
@@ -169,13 +171,15 @@ describe("ArtsyWebViewPage", () => {
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
-      expect(mockSystemBackAction).toHaveBeenCalled()
+      expect(browserGoBack).toHaveBeenCalled()
       expect(goBack).not.toHaveBeenCalled()
     })
 
     it("can be overridden", () => {
-      const mockSystemBackAction = jest.fn()
-      const tree = render({ mimicBrowserBackButton: false, systemBackAction: mockSystemBackAction })
+      const tree = render({ mimicBrowserBackButton: false })
+      const browserGoBack = jest
+        .spyOn(screen.UNSAFE_getByType(WebView).instance, "goBack")
+        .mockImplementation(() => undefined)
 
       webViewProps(tree).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
@@ -183,7 +187,7 @@ describe("ArtsyWebViewPage", () => {
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
-      expect(mockSystemBackAction).not.toHaveBeenCalled()
+      expect(browserGoBack).not.toHaveBeenCalled()
       expect(goBack).toHaveBeenCalled()
     })
   })
