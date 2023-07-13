@@ -14797,7 +14797,7 @@ react-native-fast-image@8.6.3, react-native-fast-image@^8.6.3:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
   integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
 
-react-native-fbsdk-next@11:
+react-native-fbsdk-next@11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-11.0.0.tgz#8a9c126d92251f0e9fcf5ccd6dca648bc03ed236"
   integrity sha512-F0rNqfSByO7MG0n2J8rDdqBsqu2P5+nFkEnBuOh+HN1UDnxpF6lbt4N38oWN1v32h+Gb0TL0wiJnperbGuu5tQ==
