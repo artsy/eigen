@@ -25,7 +25,7 @@ Ask your mentor to add you on the [firebase.console](https://console.firebase.go
 
 <details><summary>NOTE: After installing Xcode</summary>
 
-Check that Command Line Tools version is added in the Locations tab. Xcode>Preferences>Locations:
+Check that Command Line Tools version is added in the Locations tab. Xcode>Settings>Locations:
 <img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
 
 </details>
@@ -121,14 +121,6 @@ yarn start
 
 First, ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id.
 
-#### Using terminal
-
-> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
-
-```sh
-yarn ios
-```
-
 #### Using Xcode
 
 Open the app in Xcode:
@@ -138,6 +130,14 @@ open ios/Artsy.xcworkspace
 ```
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.
+
+#### Using terminal
+
+> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
+
+```sh
+yarn ios
+```
 
 #### Flipper
 
