@@ -3,6 +3,7 @@ import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNoti
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
@@ -10,7 +11,6 @@ import {
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
@@ -83,7 +83,7 @@ export const AllowPushNotificationsBanner = () => (
       <Button
         size="large"
         onPress={() => {
-          requestSystemPermissions()
+          LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
         }}
       >
         Enable
@@ -280,7 +280,6 @@ export const MyProfilePushNotifications: React.FC<{
     </View>
   )
 
-  // TODO: the below logic may be broken on Android 13 with runtime push permissions
   return (
     <PageWithSimpleHeader
       title="Push Notifications"
