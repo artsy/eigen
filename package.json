@@ -320,7 +320,7 @@
     "jest-watch-typeahead": "0.6.1",
     "jetifier": "1.6.6",
     "json5": "2.2.2",
-    "lint-staged": "13.1.0",
+    "lint-staged": "13.2.3",
     "metro-react-native-babel-preset": "0.70.3",
     "node-fetch": "2.6.7",
     "ora": "5.4.0",
@@ -359,5 +359,10 @@
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
     "yarn.lock": "yarn install"
+  },
+  "lint-staged": {
+    "*": "yarn detect-secrets:hook",
+    "*.@(ts|tsx)": ["yarn lint", "yarn prettier-write"],
+    "*.@(json|md)": ["yarn prettier-write"]
   }
 }
