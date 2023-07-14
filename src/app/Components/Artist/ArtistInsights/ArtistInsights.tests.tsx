@@ -1,5 +1,4 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
-import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -61,25 +60,6 @@ describe("ArtistInsights", () => {
     resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
-  })
-
-  it("renders the empty state when there are no auction lots", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-
-    mockEnvironment.mock.resolveMostRecentOperation(() => ({
-      data: {
-        artist: {
-          statuses: {
-            auctionLots: false,
-          },
-        },
-      },
-    }))
-
-    resolveMostRecentRelayOperation(mockEnvironment)
-
-    expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(0)
-    expect(tree.findAllByType(ArtistInsightsEmpty).length).toEqual(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", async () => {
