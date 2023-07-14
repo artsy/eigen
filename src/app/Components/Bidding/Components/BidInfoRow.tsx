@@ -10,22 +10,26 @@ interface BidInfoRowProps extends FlexProps {
   onPress?: () => void
 }
 
-export const BidInfoRow: React.FC<BidInfoRowProps> = ({ label, value, onPress, ...props }) => {
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <Row p={2} pb="1" mb={1} {...props}>
-        <Col>
-          <Text variant="xs">{label}</Text>
-        </Col>
+export class BidInfoRow extends React.Component<BidInfoRowProps> {
+  render() {
+    const { label, value, onPress, ...props } = this.props
 
-        <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>
+    return (
+      <TouchableWithoutFeedback onPress={onPress}>
+        <Row p={2} pb="1" mb={1} {...props}>
+          <Col>
+            <Text variant="xs">{label}</Text>
+          </Col>
 
-        <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-          <Text color="blue100" ml={4}>
-            {Boolean(value) ? "Edit" : "Add"}
-          </Text>
-        </Col>
-      </Row>
-    </TouchableWithoutFeedback>
-  )
+          <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>
+
+          <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
+            <Text color="blue100" ml={4}>
+              {Boolean(value) ? "Edit" : "Add"}
+            </Text>
+          </Col>
+        </Row>
+      </TouchableWithoutFeedback>
+    )
+  }
 }
