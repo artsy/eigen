@@ -1,6 +1,3 @@
-// @ts-check
-
-import { ParseResult } from "./changelog-types"
 import { changelogTemplateSections } from "./generateChangelogSectionTemplate"
 
 export const parsePRDescription = (description: string): ParseResult => {
@@ -77,4 +74,16 @@ function groupItems(lines: string[]) {
   }
 
   return result
+}
+
+export type ParseResult =
+  | { type: "error" } // for when no changelog-related stuff is found
+  | { type: "no_changes" } // for when we add #nochangelog hashtag
+  | ({ type: "changes" } & ParseResultChanges)
+
+interface ParseResultChanges {
+  crossPlatformUserFacingChanges: string[]
+  iOSUserFacingChanges: string[]
+  androidUserFacingChanges: string[]
+  devChanges: string[]
 }
