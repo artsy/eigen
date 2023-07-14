@@ -38,8 +38,6 @@ export const ModalStack: React.FC = ({ children }) => {
   useEffect(() => {
     if (trackSiftAndroid) {
       const initialRouteName = routeNameRef.current
-      // Expect error becuase their typing doesn't include setPageName, but it's there
-      // @ts-expect-error
       SiftReactNative.setPageName(`screen_${initialRouteName}`)
       SiftReactNative.upload()
     }
@@ -75,7 +73,6 @@ export const ModalStack: React.FC = ({ children }) => {
           })
 
           if (trackSiftAndroid) {
-            // @ts-expect-error
             SiftReactNative.setPageName(`screen_${currentRoute.name}`)
             SiftReactNative.upload()
           }
