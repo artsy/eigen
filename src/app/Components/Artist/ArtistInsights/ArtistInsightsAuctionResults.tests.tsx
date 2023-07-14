@@ -1,11 +1,13 @@
 import { Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
+import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import {
@@ -77,6 +79,7 @@ describe("ArtistInsightsAuctionResults", () => {
     it("are shown when upcoming auction results are available", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "upcomingAuctionResults") {
             return {
@@ -98,6 +101,7 @@ describe("ArtistInsightsAuctionResults", () => {
     it("are hidden when no upcoming auction results are available", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "upcomingAuctionResults") {
             return {
@@ -121,6 +125,7 @@ describe("ArtistInsightsAuctionResults", () => {
     it("are shown when past auction results are available", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "pastAuctionResults") {
             return {
@@ -142,6 +147,7 @@ describe("ArtistInsightsAuctionResults", () => {
     it("are hidden when no past auction results are available", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({ statuses: { auctionLots: true } }),
         AuctionResultConnection: (context) => {
           if (context.alias === "pastAuctionResults") {
             return {
@@ -165,6 +171,7 @@ describe("ArtistInsightsAuctionResults", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
+        statuses: { auctionLots: true },
         auctionResultsConnection: {
           totalCount: 0,
           edges: [],
@@ -175,11 +182,22 @@ describe("ArtistInsightsAuctionResults", () => {
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState).length).toEqual(1)
   })
 
+  it("renders the empty state when there are no auction lots", () => {
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => ({ statuses: { auctionLots: false } }),
+    })
+
+    expect(tree.root.findAllByType(ArtistInsightsEmpty).length).toEqual(1)
+    expect(tree.root.findAllByType(InfoButton).length).toEqual(0)
+  })
+
   describe("ListHeaderComponent", () => {
     it("renders the results string when totalCount is equal to 1", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
+          statuses: { auctionLots: true },
           auctionResultsConnection: {
             totalCount: 1,
             edges: mockEdges(1),
@@ -196,6 +214,7 @@ describe("ArtistInsightsAuctionResults", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
+          statuses: { auctionLots: true },
           auctionResultsConnection: {
             totalCount: 10,
             edges: mockEdges(10),
