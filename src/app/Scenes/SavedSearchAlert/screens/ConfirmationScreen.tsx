@@ -44,7 +44,9 @@ export const ConfirmationScreen: React.FC = () => {
 
   const handleManageAlerts = () => {
     closeModal?.()
-    navigate("/my-profile/saved-search-alerts")
+    requestAnimationFrame(() => {
+      navigate("/my-profile/saved-search-alerts")
+    })
   }
 
   return (
@@ -153,10 +155,12 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
 
   const handleSeeAllMatchingWorks = () => {
     closeModal?.()
-    navigate(`/artist/${attributes.artistIDs?.[0]}`, {
-      passProps: {
-        searchCriteriaID: route.params.searchCriteriaID,
-      },
+    requestAnimationFrame(() => {
+      navigate(`/artist/${attributes.artistIDs?.[0]}`, {
+        passProps: {
+          searchCriteriaID: route.params.searchCriteriaID,
+        },
+      })
     })
   }
 
@@ -174,7 +178,9 @@ const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal })
         onPress={(slug: string) => {
           closeModal?.()
           // TODO: tracking and history?
-          navigateToPageableRoute?.(`artwork/${slug}`)
+          requestAnimationFrame(() => {
+            navigateToPageableRoute?.(`artwork/${slug}`)
+          })
         }}
       />
 

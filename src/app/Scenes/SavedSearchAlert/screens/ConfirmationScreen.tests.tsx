@@ -78,13 +78,15 @@ describe(ConfirmationScreen, () => {
   })
 
   describe("CTAs", () => {
-    it("renders manage-alerts button always", () => {
+    it("renders manage-alerts button always", async () => {
       renderWithRelay()
 
       const manageButton = screen.queryByText("Manage your alerts")
       expect(manageButton).toBeOnTheScreen()
 
       fireEvent.press(manageButton!)
+      await flushPromiseQueue()
+
       expect(navigate).toHaveBeenCalledWith("/my-profile/saved-search-alerts")
     })
 
@@ -98,6 +100,8 @@ describe(ConfirmationScreen, () => {
       expect(seeAllButton).toBeOnTheScreen()
 
       fireEvent.press(seeAllButton!)
+      await flushPromiseQueue()
+
       expect(navigate).toHaveBeenCalledWith("/artist/david-hockney", {
         passProps: { searchCriteriaID: "foo-bar-42" },
       })
