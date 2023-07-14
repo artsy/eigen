@@ -191,7 +191,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         artworks={artworks}
         onPress={(slug: string) => {
           closeModal?.()
-          // TODO: tracking and history?
+          // TODO: tracking
           requestAnimationFrame(() => {
             navigateToPageableRoute?.(`artwork/${slug}`)
           })
