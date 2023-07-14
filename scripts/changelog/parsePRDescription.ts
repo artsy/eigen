@@ -1,12 +1,9 @@
 // @ts-check
 
-const { changelogTemplateSections } = require("./generateChangelogSectionTemplate")
+import { ParseResult } from "./changelog-types"
+import { changelogTemplateSections } from "./generateChangelogSectionTemplate"
 
-/**
- * @param {string} description
- * @returns {import('./changelog-types').ParseResult}
- */
-module.exports.parsePRDescription = (description) => {
+export const parsePRDescription = (description: string): ParseResult => {
   description = stripComments(description)
   if (description.includes("#nochangelog")) {
     return { type: "no_changes" }
@@ -14,10 +11,7 @@ module.exports.parsePRDescription = (description) => {
 
   const lines = description.split("\n").map((line) => line.trim())
 
-  /**
-   * @type {import('./changelog-types').ParseResult}
-   */
-  const result = {
+  const result: ParseResult = {
     androidUserFacingChanges: [],
     crossPlatformUserFacingChanges: [],
     devChanges: [],
@@ -53,26 +47,14 @@ module.exports.parsePRDescription = (description) => {
   return result
 }
 
-/**
- * @param {string} text
- */
-function stripComments(text) {
+function stripComments(text: string) {
   return text.replace(/<!--.*?-->/g, "")
 }
 
-/**
- * @param {string[]} lines
- */
-function groupItems(lines) {
-  /**
-   * @type {string[]}
-   */
-  const result = []
+function groupItems(lines: string[]) {
+  const result: string[] = []
 
-  /**
-   * @type {string[]}
-   */
-  let group = []
+  let group: string[] = []
 
   for (const line of lines) {
     if (line.startsWith("-") || line.startsWith("*")) {

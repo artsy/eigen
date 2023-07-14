@@ -1,15 +1,14 @@
-// @ts-check
+import * as fs from "fs"
+import prettier from "prettier"
 
-const changelogTemplateSections = {
+export const changelogTemplateSections = {
   androidUserFacingChanges: "Android user-facing changes",
   crossPlatformUserFacingChanges: "Cross-platform user-facing changes",
   devChanges: "Dev changes",
   iOSUserFacingChanges: "iOS user-facing changes",
 }
 
-module.exports.changelogTemplateSections = changelogTemplateSections
-
-module.exports.generateChangelogSectionTemplate = () => {
+export const generateChangelogSectionTemplate = () => {
   return `### Changelog updates
 
 <!-- 📝 Please fill out at least one of these sections. -->
@@ -29,13 +28,7 @@ ${Object.entries(changelogTemplateSections)
 `
 }
 
-const fs = require("fs")
-const prettier = require("prettier")
-
-/**
- * @param {string} filePath
- */
-module.exports.updateChangelogSectionTemplate = (filePath) => {
+export const updateChangelogSectionTemplate = (filePath: string) => {
   let fileContents = fs.readFileSync(filePath, "utf8").toString()
 
   const regex = /### Changelog updates[\S\s]+end_changelog_updates.*/g
@@ -44,13 +37,12 @@ module.exports.updateChangelogSectionTemplate = (filePath) => {
     process.exit(1)
   }
 
-  fileContents = fileContents.replace(regex, this.generateChangelogSectionTemplate())
+  fileContents = fileContents.replace(regex, generateChangelogSectionTemplate())
   fileContents = prettier.format(fileContents, { parser: "markdown" })
 
   fs.writeFileSync(filePath, fileContents, "utf8")
 }
 
-// @ts-ignore
 if (require.main === module) {
-  this.updateChangelogSectionTemplate("./docs/pull_request_template.md")
+  updateChangelogSectionTemplate("./docs/pull_request_template.md")
 }

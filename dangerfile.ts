@@ -113,20 +113,15 @@ export const useWebPs = (fileNames: string[]) => {
 export const validatePRChangelog = () => {
   const pr = danger.github.pr
 
-  // const isOpen = pr.state === "open"
-  // if (!isOpen) {
-  //   console.log("Skipping this check because the PR is not open")
-  //   return
-  // }
+  const isOpen = pr.state === "open"
+  if (!isOpen) {
+    console.log("Skipping this check because the PR is not open")
+    return
+  }
 
   const content = pr.body
 
   const res = parsePRDescription(content) as ParseResult
-
-  // TODO: Delete this once we finish the new changelog work
-  if (!content.includes("#run_new_changelog_check")) {
-    return
-  }
 
   if (res.type === "error") {
     console.log("Something went wrong while parsing the PR description")
