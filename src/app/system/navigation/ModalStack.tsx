@@ -34,7 +34,7 @@ export const ModalStack: React.FC = ({ children }) => {
     "AREnableAdditionalSiftAndroidTracking"
   )
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
-  const routeNameRef = useRef()
+  const routeNameRef = useRef<string>()
   useEffect(() => {
     if (trackSiftAndroid) {
       const initialRouteName = routeNameRef.current
@@ -50,6 +50,7 @@ export const ModalStack: React.FC = ({ children }) => {
       ref={__unsafe_mainModalStackRef}
       initialState={initialState}
       onReady={() => {
+        routeNameRef.current = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.name
         setNavigationReady({ isNavigationReady: true })
       }}
       onStateChange={() => {
