@@ -21,14 +21,6 @@ const PartnerHeader: React.FC<{
     categoryNames.includes(badge)
   )
 
-  const Wrapper: React.FC<{}> = ({ children }) => {
-    return (
-      <Box px={2} py={1}>
-        {children}
-      </Box>
-    )
-  }
-
   if (!!showOnlyFollowButton && !!partner.profile) {
     return (
       <Wrapper>
@@ -79,3 +71,11 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
     }
   `,
 })
+
+const Wrapper: React.FC<{}> = ({ children }) => {
+  return (
+    <Box px={2} py={1}>
+      {children}
+    </Box>
+  )
+}

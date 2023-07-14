@@ -33,14 +33,14 @@ export const PartnerLocationSection: React.FC<PartnerLocationSectionProps> = ({ 
   }
 
   const cities = get(partner, (p) => p.cities)
+
   if (!cities) {
     return null
   }
+
   const { locationText, cityText, lastCity } = createLocationsString(partner)
 
-  const renderComponent = !!locationText && !!cityText
-
-  if (!renderComponent) {
+  if (!locationText || !cityText) {
     return null
   }
 
