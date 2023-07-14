@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -71,7 +71,7 @@ describe(ConfirmationScreen, () => {
     renderWithRelay({
       FilterArtworksConnection: () => artworksConnection,
     })
-    await flushPromiseQueue()
+    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
 
     expect(screen.getByText("Untitled #1")).toBeOnTheScreen()
     expect(screen.getByText("Untitled #2")).toBeOnTheScreen()
@@ -94,7 +94,7 @@ describe(ConfirmationScreen, () => {
       renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
       })
-      await flushPromiseQueue()
+      await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
 
       const seeAllButton = screen.queryByText("See all matching works")
       expect(seeAllButton).toBeOnTheScreen()
@@ -111,7 +111,7 @@ describe(ConfirmationScreen, () => {
       renderWithRelay({
         FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
       })
-      await flushPromiseQueue()
+      await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
 
       expect(screen.queryByText("See all matching works")).not.toBeOnTheScreen()
     })

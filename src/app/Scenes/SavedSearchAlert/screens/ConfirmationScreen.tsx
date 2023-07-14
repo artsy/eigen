@@ -100,7 +100,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
   const screen = useScreenDimensions()
   const { space } = useTheme()
   return (
-    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
+    <Box testID="MatchingArtworksPlaceholder" borderTopWidth={1} borderTopColor="black30" pt={1}>
       <PlaceholderRaggedText numLines={2} textHeight={20} />
       <Spacer y={2} />
       <GenericGridPlaceholder width={screen.width - space(4)} />
