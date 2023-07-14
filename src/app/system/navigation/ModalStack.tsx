@@ -10,7 +10,6 @@ import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterM
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
-import { useEffect, useRef } from "react"
 import { Platform } from "react-native"
 import SiftReactNative from "sift-react-native"
 import { NavStack } from "./NavStack"
@@ -34,22 +33,19 @@ export const ModalStack: React.FC = ({ children }) => {
     "AREnableAdditionalSiftAndroidTracking"
   )
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
-  const routeNameRef = useRef<string>()
-  useEffect(() => {
-    if (trackSiftAndroid) {
-      const initialRouteName = routeNameRef.current
-      SiftReactNative.setPageName(`screen_${initialRouteName}`)
-      SiftReactNative.upload()
-    }
-  }, [])
 
   return (
     <NavigationContainer
       ref={__unsafe_mainModalStackRef}
       initialState={initialState}
       onReady={() => {
-        routeNameRef.current = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.name
         setNavigationReady({ isNavigationReady: true })
+
+        if (trackSiftAndroid) {
+          const initialRouteName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.name
+          SiftReactNative.setPageName(`screen_${initialRouteName}`)
+          SiftReactNative.upload()
+        }
       }}
       onStateChange={() => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
