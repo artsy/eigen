@@ -17,6 +17,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
+import { pluralize } from "app/utils/pluralize"
 import { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -171,7 +172,8 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
   return (
     <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
       <Text variant="sm" color="black60">
-        You might like these {total} works currently on Artsy that match your criteria
+        You might like {pluralize("this", total, "these")} {total} {pluralize("work", total)}{" "}
+        currently on Artsy that match your criteria
       </Text>
 
       <Spacer y={2} />
