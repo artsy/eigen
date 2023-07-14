@@ -151,7 +151,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
   const { space } = useTheme()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const artworks = extractNodes(artworksConnection)
-  const total = artworksConnection?.counts?.total // TODO: handle zero state
+  const total = artworksConnection?.counts?.total
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
@@ -167,6 +167,14 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         },
       })
     })
+  }
+
+  if (total === 0) {
+    return (
+      <Text mb={2} p={2} bg="black10" color="black60">
+        There aren't any works available that meet the criteria at this time.
+      </Text>
+    )
   }
 
   return (
