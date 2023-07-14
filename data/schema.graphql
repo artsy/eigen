@@ -1394,6 +1394,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     size: Int
   ): [Artist]
   counts: ArtistCounts
+  coverArtwork: Artwork
   createdAt(
     format: String
 
@@ -17312,6 +17313,7 @@ type UpdateArtistFailure {
 
 input UpdateArtistMutationInput {
   clientMutationId: String
+  coverArtworkId: String
   displayName: String
   first: String
   id: String!
