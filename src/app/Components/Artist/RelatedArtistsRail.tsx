@@ -22,7 +22,7 @@ export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists 
       <FlatList
         data={data}
         renderItem={({ item }) => <RelatedArtistsRailCell artist={item} />}
-        ItemSeparatorComponent={() => <Spacer x={1} />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(item) => `related-artists-rail-item-${item.id}`}
         horizontal
         showsHorizontalScrollIndicator={false}
