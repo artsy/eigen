@@ -2,6 +2,7 @@ import { Box, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
   ConfirmationScreenMatchingArtworksQuery,
+  ConfirmationScreenMatchingArtworksQuery$data,
   FilterArtworksInput,
 } from "__generated__/ConfirmationScreenMatchingArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -14,8 +15,9 @@ import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
-import { Suspense, useEffect } from "react"
+import { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -94,13 +96,34 @@ export const ConfirmationScreen: React.FC = () => {
   )
 }
 
-const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
+const MatchingArtworksPlaceholder: React.FC = () => {
+  const screen = useScreenDimensions()
+  const { space } = useTheme()
   return (
-    <Suspense fallback={<MatchingArtworksPlaceholder />}>
-      <MatchingArtworks closeModal={closeModal} />
-    </Suspense>
+    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
+      <PlaceholderRaggedText numLines={2} textHeight={20} />
+      <Spacer y={2} />
+      <GenericGridPlaceholder width={screen.width - space(4)} />
+    </Box>
   )
 }
+
+const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
+  ({ closeModal }) => {
+    const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+    const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
+      first: NUMBER_OF_ARTWORKS_TO_SHOW,
+      input: {
+        ...attributes,
+        forSale: true,
+        sort: "-published_at",
+      } as FilterArtworksInput,
+    })
+
+    return <MatchingArtworks artworksConnection={data.artworksConnection} closeModal={closeModal} />
+  },
+  MatchingArtworksPlaceholder
+)
 
 const matchingArtworksQuery = graphql`
   query ConfirmationScreenMatchingArtworksQuery($input: FilterArtworksInput, $first: Int) {
@@ -117,37 +140,18 @@ const matchingArtworksQuery = graphql`
     }
   }
 `
-
-const MatchingArtworksPlaceholder: React.FC = () => {
-  const screen = useScreenDimensions()
-  const { space } = useTheme()
-  return (
-    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
-      <PlaceholderRaggedText numLines={2} textHeight={20} />
-      <Spacer y={2} />
-      <GenericGridPlaceholder width={screen.width - space(4)} />
-    </Box>
-  )
+interface MatchingArtworksProps {
+  artworksConnection: ConfirmationScreenMatchingArtworksQuery$data["artworksConnection"]
+  closeModal?: () => void
 }
 
-const MatchingArtworks: React.FC<{ closeModal?: () => void }> = ({ closeModal }) => {
+const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection, closeModal }) => {
   const screen = useScreenDimensions()
   const { space } = useTheme()
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
+  const artworks = extractNodes(artworksConnection)
+  const total = artworksConnection?.counts?.total // TODO: handle zero state
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-
-  const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
-    first: NUMBER_OF_ARTWORKS_TO_SHOW,
-    input: {
-      ...attributes,
-      forSale: true,
-      sort: "-published_at",
-    } as FilterArtworksInput,
-  })
-
-  const artworks = extractNodes(data.artworksConnection)
-  const total = data?.artworksConnection?.counts?.total // TODO: handle zero state
-
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const areMoreMatchesAvailable =
