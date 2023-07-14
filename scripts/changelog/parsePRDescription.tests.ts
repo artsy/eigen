@@ -1,8 +1,7 @@
-import { ParseResult as PRDescriptionParseResult } from "./changelog-types"
-import { parsePRDescription } from "./parsePRDescription"
+import { ParseResult, parsePRDescription } from "./parsePRDescription"
 
-const ERROR: PRDescriptionParseResult = { type: "error" }
-const NO_CHANGES: PRDescriptionParseResult = { type: "no_changes" }
+const ERROR: ParseResult = { type: "error" }
+const NO_CHANGES: ParseResult = { type: "no_changes" }
 
 describe("parsePRDescription", () => {
   it("returns error for empty PR description", () => {
