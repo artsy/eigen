@@ -378,3 +378,16 @@ Once we have removed the `palette` directory from eigen.
 #### Explanation/Context:
 
 Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
+
+## Patch-package for sift-react-native
+
+#### When can we remove this:
+
+Just adds a type, so likely doesn't need to be removed. But if they officially add it
+([see this issue](https://github.com/SiftScience/sift-react-native/issues/6)), we could drop this
+patch.
+
+#### Explanation/Context:
+
+This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
+I patched it to add the type.
