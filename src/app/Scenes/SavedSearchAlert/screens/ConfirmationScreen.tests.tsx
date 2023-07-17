@@ -67,6 +67,46 @@ describe(ConfirmationScreen, () => {
     expect(screen.queryByText("Painting")).toBeOnTheScreen()
   })
 
+  it("displays the correct message when there are many matches", async () => {
+    renderWithRelay({
+      FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW + 1 } }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+
+    expect(
+      screen.queryByText(
+        "11 works currently on Artsy match your criteria. See our top picks for you:"
+      )
+    ).toBeOnTheScreen()
+  })
+
+  it("displays the correct message when there are few matches", async () => {
+    renderWithRelay({
+      FilterArtworksConnection: () => ({ counts: { total: NUMBER_OF_ARTWORKS_TO_SHOW - 1 } }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+
+    expect(
+      screen.queryByText(
+        "You might like these 9 works currently on Artsy that match your criteria:"
+      )
+    ).toBeOnTheScreen()
+  })
+
+  it("displays the correct message when there are no matches", async () => {
+    renderWithRelay({
+      FilterArtworksConnection: () => ({ counts: { total: 0 } }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.getByTestId("MatchingArtworksPlaceholder"))
+
+    expect(
+      screen.queryByText("There aren't any works available that meet the criteria at this time.")
+    ).toBeOnTheScreen()
+  })
+
   it("displays the matching artworks", async () => {
     renderWithRelay({
       FilterArtworksConnection: () => artworksConnection,

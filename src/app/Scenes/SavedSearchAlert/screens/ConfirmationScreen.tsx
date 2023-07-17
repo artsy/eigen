@@ -177,11 +177,20 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
     )
   }
 
+  const numWorks = `${total} ${pluralize("work", total)}`
+
+  const message = !!areMoreMatchesAvailable
+    ? `${numWorks} currently on Artsy match your criteria. See our top picks for you:`
+    : `You might like ${pluralize(
+        "this",
+        total,
+        "these"
+      )} ${numWorks} currently on Artsy that match your criteria:`
+
   return (
     <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
       <Text variant="sm" color="black60">
-        You might like {pluralize("this", total, "these")} {total} {pluralize("work", total)}{" "}
-        currently on Artsy that match your criteria
+        {message}
       </Text>
 
       <Spacer y={2} />
