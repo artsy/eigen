@@ -1,26 +1,21 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Touchable } from "@artsy/palette-mobile"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { objectTabByContextModule, tracks } from "app/Scenes/Search/constants"
 import { getContextModuleByPillName } from "app/Scenes/Search/helpers"
-import {
-  PillType,
-  ElasticSearchResultInterface,
-  TappedSearchResultData,
-} from "app/Scenes/Search/types"
+import { PillType, SearchResultInterface, TappedSearchResultData } from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "@artsy/palette-mobile"
 import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
-export interface ElasticSearchResultItemProps {
-  result: ElasticSearchResultInterface
+export interface SearchResultItemProps {
+  result: SearchResultInterface
   selectedPill: PillType
   query?: string
   position: number
 }
 
-export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
+export const SearchResult: React.FC<SearchResultItemProps> = ({
   query,
   result,
   selectedPill,
@@ -41,7 +36,7 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     })
   }
 
-  const handleTrackResultPress = (result: ElasticSearchResultInterface) => {
+  const handleTrackResultPress = (result: SearchResultInterface) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
     const data: TappedSearchResultData = {

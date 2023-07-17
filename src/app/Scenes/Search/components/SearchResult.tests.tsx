@@ -1,14 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import {
-  ElasticSearchResult,
-  ElasticSearchResultItemProps,
-} from "app/Scenes/Search/components/ElasticSearchResult"
+import { SearchResult, SearchResultItemProps } from "app/Scenes/Search/components/SearchResult"
 import { ARTIST_PILL } from "app/Scenes/Search/constants"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-const initialProps: ElasticSearchResultItemProps = {
+const initialProps: SearchResultItemProps = {
   selectedPill: ARTIST_PILL,
   result: {
     __typename: "Artist",
@@ -22,16 +19,16 @@ const initialProps: ElasticSearchResultItemProps = {
   query: "Banksy",
 }
 
-describe("ElasticSearchResult", () => {
+describe("EntitySearchResult", () => {
   it("renders the expected information", () => {
-    renderWithWrappers(<ElasticSearchResult {...initialProps} />)
+    renderWithWrappers(<SearchResult {...initialProps} />)
 
     expect(screen.queryByText("Banksy")).toBeTruthy()
     expect(screen.queryByTestId("search-result-image-Banksy")).toBeTruthy()
   })
 
   it("navigates to the artist page when the result is pressed", () => {
-    renderWithWrappers(<ElasticSearchResult {...initialProps} />)
+    renderWithWrappers(<SearchResult {...initialProps} />)
 
     fireEvent.press(screen.getByText("Banksy"))
 
@@ -41,7 +38,7 @@ describe("ElasticSearchResult", () => {
   })
 
   it("tracks the tap event", () => {
-    renderWithWrappers(<ElasticSearchResult {...initialProps} />)
+    renderWithWrappers(<SearchResult {...initialProps} />)
 
     fireEvent.press(screen.getByText("Banksy"))
 

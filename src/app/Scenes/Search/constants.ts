@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { SearchEntity } from "__generated__/ElasticSearchResultsQuery.graphql"
+import { SearchEntity } from "__generated__/EntitySearchResultsQuery.graphql"
 import { Schema } from "app/utils/track"
 import { PillType, TappedSearchResultData } from "./types"
 
@@ -55,7 +55,7 @@ export const GALLERY_PILL: PillType = {
   key: "PartnerGallery",
 }
 
-export const ES_ONLY_PILLS: PillType[] = [
+export const SEARCH_PILLS: PillType[] = [
   TOP_PILL,
   ARTWORKS_PILL,
   ARTIST_PILL,
@@ -70,11 +70,18 @@ export const ES_ONLY_PILLS: PillType[] = [
 
 export const DEFAULT_PILLS: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
+export const SEARCH_PILLS_WITH_AN_ARTICLE: PillType[] = [
+  ARTIST_PILL,
+  ARTIST_SERIES_PILL,
+  ARTICLE_PILL,
+  AUCTION_PILL,
+]
+
 interface SearchEntityMap {
   [key: string]: SearchEntity
 }
 
-export const ELASTIC_PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
+export const SEARCH_PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
   artwork: "ARTWORK",
   artist: "ARTIST",
   article: "ARTICLE",

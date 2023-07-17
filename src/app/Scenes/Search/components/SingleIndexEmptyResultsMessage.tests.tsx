@@ -9,7 +9,6 @@ describe("SingleIndexEmptyResultsMessage", () => {
         query="query"
         selectedPill={{
           key: "artist",
-          type: "elastic",
           displayName: "artist",
         }}
       />
@@ -25,7 +24,6 @@ describe("SingleIndexEmptyResultsMessage", () => {
         query="query"
         selectedPill={{
           key: "marketing_collection",
-          type: "elastic",
           displayName: "collection",
         }}
       />

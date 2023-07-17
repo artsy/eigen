@@ -1,11 +1,11 @@
 import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
-import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
-import { ElasticSearchResults_searchConnection$key } from "__generated__/ElasticSearchResults_searchConnection.graphql"
+import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
+import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
-import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
+import { SearchResult } from "app/Scenes/Search/components/SearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
-import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
+import { SEARCH_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
@@ -13,30 +13,30 @@ import { Suspense, useContext, useEffect, useRef } from "react"
 import { FlatList, Keyboard } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-interface SearchResults2Props {
+interface SearchResultsProps {
   query: string
   selectedPill: PillType
 }
 
 const PAGE_SIZE = isPad() ? 20 : 10
 
-export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedPill }) => {
+export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
   const flatListRef = useRef<FlatList>(null)
   const { inputRef } = useContext(SearchContext)
 
-  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
+  const selectedEntity = SEARCH_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
 
-  const queryData = useLazyLoadQuery<ElasticSearchResultsQuery>(elasticSearchResultsQuery, {
+  const queryData = useLazyLoadQuery<EntitySearchResultsQuery>(entitySearchResultsQuery, {
     query,
     first: PAGE_SIZE,
     entities: [selectedEntity],
   })
 
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
-    ElasticSearchResultsQuery,
-    ElasticSearchResults_searchConnection$key
-  >(searchResultsFragment, queryData)
+    EntitySearchResultsQuery,
+    EntitySearchResults_searchConnection$key
+  >(entitySearchResultsFragment, queryData)
 
   const hits = extractNodes(data?.searchConnection)
 
@@ -68,12 +68,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={({ item, index }) => (
-        <ElasticSearchResult
-          result={item}
-          selectedPill={selectedPill}
-          query={query}
-          position={index}
-        />
+        <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
       )}
       initialNumToRender={PAGE_SIZE}
       showsVerticalScrollIndicator={false}
@@ -94,19 +89,19 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
   )
 }
 
-export const ElasticSearchResults2Screen: React.FC<SearchResults2Props> = (props) => (
+export const EntitySearchResultsScreen: React.FC<SearchResultsProps> = (props) => (
   <Suspense
     fallback={
       <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
     }
   >
-    <SearchResults2 {...props} />
+    <EntitySearchResults {...props} />
   </Suspense>
 )
 
-const searchResultsFragment = graphql`
-  fragment ElasticSearchResults_searchConnection on Query
-  @refetchable(queryName: "ElasticSearchResults_searchConnectionnRefetch")
+const entitySearchResultsFragment = graphql`
+  fragment EntitySearchResults_searchConnection on Query
+  @refetchable(queryName: "EntitySearchResults_searchConnectionnRefetch")
   @argumentDefinitions(
     query: { type: "String!" }
     first: { type: "Int" }
@@ -121,7 +116,7 @@ const searchResultsFragment = graphql`
       page: $page
       query: $query
       entities: $entities
-    ) @connection(key: "ElasticSearchResults_searchConnection") {
+    ) @connection(key: "EntitySearchResults_searchConnection") {
       edges {
         node {
           __typename
@@ -142,15 +137,15 @@ const searchResultsFragment = graphql`
   }
 `
 
-const elasticSearchResultsQuery = graphql`
-  query ElasticSearchResultsQuery(
+const entitySearchResultsQuery = graphql`
+  query EntitySearchResultsQuery(
     $query: String!
     $first: Int
     $cursor: String
     $entities: [SearchEntity]
     $page: Int
   ) {
-    ...ElasticSearchResults_searchConnection
+    ...EntitySearchResults_searchConnection
       @arguments(query: $query, first: $first, cursor: $cursor, page: $page, entities: $entities)
   }
 `

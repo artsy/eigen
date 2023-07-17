@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
+import { SEARCH_PILLS } from "app/Scenes/Search/constants"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen } from "./Search"
@@ -109,7 +109,7 @@ describe("Search", () => {
     // needed to resolve the second relay operation triggered for the text change > 2
     resolveMostRecentRelayOperation(env)
 
-    ES_ONLY_PILLS.forEach((pill) => {
+    SEARCH_PILLS.forEach((pill) => {
       expect(screen.queryByText(pill.displayName)).toBeTruthy()
     })
   })

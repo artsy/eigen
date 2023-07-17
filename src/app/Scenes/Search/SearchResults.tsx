@@ -4,7 +4,7 @@ import {
   AutosuggestResult,
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
-import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
+import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
 import { useTracking } from "react-tracking"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { ARTWORKS_PILL, TOP_PILL, tracks } from "./constants"
@@ -49,11 +49,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
 
   if (!isTopPillSelected && !isArtworksPillSelected) {
     return (
-      <ElasticSearchResults2Screen
-        query={query}
-        selectedPill={selectedPill}
-        key={selectedPill.key}
-      />
+      <EntitySearchResultsScreen query={query} selectedPill={selectedPill} key={selectedPill.key} />
     )
   }
 

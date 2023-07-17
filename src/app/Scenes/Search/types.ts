@@ -7,7 +7,7 @@ export interface PillType {
   key: string
 }
 
-export interface ElasticSearchResultInterface {
+export interface SearchResultInterface {
   __typename: string
   displayLabel: string | null
   href: string | null

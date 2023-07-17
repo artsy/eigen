@@ -3,7 +3,7 @@ import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
-import { ElasticSearchPills } from "app/Scenes/Search/ElasticSearchPills"
+import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -22,7 +22,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { ES_ONLY_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
+import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
@@ -131,10 +131,10 @@ export const Search: React.FC = () => {
           {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
             <>
               <Box pt={2} pb={1}>
-                <ElasticSearchPills
+                <SearchPills
                   viewer={queryData.viewer}
                   ref={searchPillsRef}
-                  pills={ES_ONLY_PILLS}
+                  pills={SEARCH_PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
                   isLoading={isLoading}
@@ -177,7 +177,7 @@ export const Search: React.FC = () => {
 export const SearchScreenQuery = graphql`
   query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
     viewer @skip(if: $skipSearchQuery) {
-      ...ElasticSearchPills_viewer @arguments(term: $term)
+      ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
     ...TrendingArtists_query
