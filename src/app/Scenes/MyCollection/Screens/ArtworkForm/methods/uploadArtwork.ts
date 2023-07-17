@@ -9,7 +9,7 @@ import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { storeLocalImage } from "app/utils/LocalImageStore"
 import { reverse } from "lodash"
 
-export const updateArtwork = async (
+export const saveOrUpdateArtwork = async (
   values: ArtworkFormValues,
   dirtyFormCheckValues: ArtworkFormValues,
   props: MyCollectionArtworkFormProps

@@ -1,7 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
+import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -493,7 +493,7 @@ describe("MyCollectionArtworkForm", () => {
 
         const storeLocalImageMock = jest.spyOn(LocalImageStore, "storeLocalImage")
 
-        await updateArtwork(formValues, formCheckValues, props)
+        await saveOrUpdateArtwork(formValues, formCheckValues, props)
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()

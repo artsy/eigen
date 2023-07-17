@@ -12,7 +12,7 @@ import {
   MyCollectionCustomArtistSchema,
 } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
-import { updateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
+import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -21,6 +21,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
+import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -100,7 +101,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
         __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
-        updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
+        saveOrUpdateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
           setSavingArtworkModalDisplayText(
             hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
           )
@@ -123,16 +124,17 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
       refreshMyCollection()
       refreshMyCollectionInsights({})
-    } catch (e) {
-      console.error("Artwork could not be saved", e)
-      setLoading(false)
-    } finally {
+
       dismissModal()
       if (mode === "add") {
         popToRoot()
       } else {
         goBack()
       }
+    } catch (e) {
+      console.error("Artwork could not be saved", e)
+      setLoading(false)
+      Alert.alert("Artwork could not be saved")
     }
   }
 
