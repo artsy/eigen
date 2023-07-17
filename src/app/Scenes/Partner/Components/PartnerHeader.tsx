@@ -8,7 +8,8 @@ import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerF
 
 const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner$data
-}> = ({ partner }) => {
+  showOnlyFollowButton?: boolean
+}> = ({ partner, showOnlyFollowButton }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
   const galleryBadges = ["Black Owned", "Women Owned"]
@@ -20,9 +21,19 @@ const PartnerHeader: React.FC<{
     categoryNames.includes(badge)
   )
 
+  if (!!showOnlyFollowButton && !!partner.profile) {
+    return (
+      <Wrapper>
+        <Flex flexGrow={0} flexShrink={0}>
+          <FollowButton partner={partner} />
+        </Flex>
+      </Wrapper>
+    )
+  }
+
   return (
     <>
-      <Box px={2} pb={1}>
+      <Wrapper>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Stack spacing={0.5}>
             {!!eligibleArtworks && (
@@ -37,7 +48,7 @@ const PartnerHeader: React.FC<{
             </Flex>
           )}
         </Flex>
-      </Box>
+      </Wrapper>
       {!!firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
     </>
   )
@@ -60,3 +71,11 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
     }
   `,
 })
+
+const Wrapper: React.FC<{}> = ({ children }) => {
+  return (
+    <Box px={2} py={1}>
+      {children}
+    </Box>
+  )
+}
