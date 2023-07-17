@@ -1,6 +1,6 @@
 import { apostrophe, quoteLeft, quoteRight, Text, Spacer, Box } from "@artsy/palette-mobile"
-import { SINGLE_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
-import { AlgoliaIndexKey, PillType } from "app/Scenes/Search/types"
+import { SEARCH_PILLS_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
+import { PillType } from "app/Scenes/Search/types"
 
 interface SingleIndexEmptyResultsMessageProps {
   query: string
@@ -11,9 +11,7 @@ export const SingleIndexEmptyResultsMessage: React.FC<SingleIndexEmptyResultsMes
   query,
   selectedPill,
 }) => {
-  const article = SINGLE_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
-    ? "an"
-    : "a"
+  const article = SEARCH_PILLS_WITH_AN_ARTICLE.includes(selectedPill) ? "an" : "a"
 
   return (
     <Box px={2} py={1}>

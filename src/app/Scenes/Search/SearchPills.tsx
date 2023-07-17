@@ -1,25 +1,25 @@
 import { useSpace } from "@artsy/palette-mobile"
-import { ElasticSearchPills_viewer$key } from "__generated__/ElasticSearchPills_viewer.graphql"
+import { SearchPills_viewer$key } from "__generated__/SearchPills_viewer.graphql"
+import { Pill } from "app/Components/Pill"
 import { TOP_PILL } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
-import { Pill } from "app/Components/Pill"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
-export interface ElasticSearchPillsProps {
+export interface SearchPillsProps {
   pills: PillType[]
   onPillPress: (pill: PillType) => void
   isSelected: (pill: PillType) => boolean
-  viewer: ElasticSearchPills_viewer$key
+  viewer: SearchPills_viewer$key
   isLoading: boolean
 }
 
-export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPillsProps>(
+export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>(
   ({ pills, onPillPress, isSelected, viewer }, ref) => {
     const space = useSpace()
 
-    const data = useFragment<ElasticSearchPills_viewer$key>(ElasticSearchPillsQuery, viewer)
+    const data = useFragment<SearchPills_viewer$key>(SearchPillsQuery, viewer)
 
     const aggregation = data?.searchConnection?.aggregations?.[0]
 
@@ -66,8 +66,8 @@ export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPill
   }
 )
 
-export const ElasticSearchPillsQuery = graphql`
-  fragment ElasticSearchPills_viewer on Viewer
+export const SearchPillsQuery = graphql`
+  fragment SearchPills_viewer on Viewer
   @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
     searchConnection(first: 0, mode: AUTOSUGGEST, query: $term, aggregations: [TYPE]) {
       aggregations {

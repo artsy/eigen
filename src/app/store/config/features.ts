@@ -144,11 +144,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "ARShowArtQuizApp",
   },
-  AREnableESOnlySearch: {
-    description: "Enable ES only search",
-    readyForRelease: true,
-    echoFlagKey: "AREnableESOnlySearch",
-  },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
     readyForRelease: true,

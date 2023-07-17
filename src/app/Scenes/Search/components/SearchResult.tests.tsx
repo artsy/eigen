@@ -1,116 +1,62 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import * as navigation from "app/system/navigation/navigate"
+import { SearchResult, SearchResultItemProps } from "app/Scenes/Search/components/SearchResult"
+import { ARTIST_PILL } from "app/Scenes/Search/constants"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
-import { Touchable } from "@artsy/palette-mobile"
-import { SearchHighlight } from "./SearchHighlight"
-import { SearchResult } from "./SearchResult"
 
-jest.mock("app/utils/useSearchInsightsConfig", () => ({
-  searchInsights: jest.fn(),
-}))
-jest.mock("./SearchHighlight.tsx", () => ({ SearchHighlight: () => null }))
-
-const initialResult = {
-  href: "/test-href",
-  image_url: "test-url",
-  name: "Test Name",
-  objectID: "test-id",
-  slug: "test-slug",
-  __position: 1,
-  __queryID: "test-query-id",
+const initialProps: SearchResultItemProps = {
+  selectedPill: ARTIST_PILL,
+  result: {
+    __typename: "Artist",
+    displayLabel: "Banksy",
+    href: "/artist/banksy",
+    imageUrl: "https://oneimage.jpg",
+    slug: "banksy",
+    internalID: "banksy12512",
+  },
+  position: 1,
+  query: "Banksy",
 }
 
-const TestPage = (props: any) => {
-  const { result, ...rest } = props
-  return (
-    <SearchResult
-      categoryName="Article"
-      result={{
-        ...initialResult,
-        ...result,
-      }}
-      selectedPill={{
-        indexName: "Article_staging",
-        displayName: "Article",
-        disabled: false,
-      }}
-      {...rest}
-    />
-  )
-}
+describe("EntitySearchResult", () => {
+  it("renders the expected information", () => {
+    renderWithWrappers(<SearchResult {...initialProps} />)
 
-describe("SearchListItem", () => {
-  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
-
-  const navigateSpy = jest.spyOn(navigation, "navigate")
-
-  const searchInsightsSpy = jest.spyOn(useSearchInsightsConfig, "searchInsights")
-
-  beforeEach(() => {
-    jest.clearAllMocks()
+    expect(screen.queryByText("Banksy")).toBeTruthy()
+    expect(screen.queryByTestId("search-result-image-Banksy")).toBeTruthy()
   })
 
-  afterEach(() => {
-    __globalStoreTestUtils__?.reset()
+  it("navigates to the artist page when the result is pressed", () => {
+    renderWithWrappers(<SearchResult {...initialProps} />)
+
+    fireEvent.press(screen.getByText("Banksy"))
+
+    // navigates to the artist page
+    expect(navigate).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledWith("/artist/banksy")
   })
 
-  it("renders image with correct props", () => {
-    renderWithWrappers(<TestPage />)
+  it("tracks the tap event", () => {
+    renderWithWrappers(<SearchResult {...initialProps} />)
 
-    const searchResultImage = screen.getByTestId("search-result-image")
-    expect(searchResultImage).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Banksy"))
 
-    expect(searchResultImage).toHaveProp("imageURL", "test-url")
-  })
-
-  it("renders highlight with correct props", () => {
-    renderWithWrappers(<TestPage />)
-    const highlight = screen.UNSAFE_getByType(SearchHighlight)
-
-    expect(highlight).toBeDefined()
-    expect(highlight.props.attribute).toEqual("name")
-    expect(highlight.props.hit).toEqual(initialResult)
-  })
-
-  it("calls searchInsights with correct params on press", () => {
-    renderWithWrappers(<TestPage />)
-
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
-    expect(searchInsightsSpy).toHaveBeenCalledWith("clickedObjectIDsAfterSearch", {
-      index: "Article_staging",
-      eventName: "Search item clicked",
-      positions: [1],
-      queryID: "test-query-id",
-      objectIDs: ["test-id"],
-    })
-  })
-
-  it("when a result is pressed, correctly adds it to global recent searches", () => {
-    renderWithWrappers(<TestPage />)
-
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
-
-    expect(getRecentSearches()).toEqual([
-      {
-        type: "AUTOSUGGEST_RESULT_TAPPED",
-        props: {
-          imageUrl: "test-url",
-          href: "/test-href",
-          slug: "test-slug",
-          displayLabel: "Test Name",
-          __typename: "Article",
-          displayType: "Article",
+    // tracks the press event
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "selectedResultFromSearchScreen",
+          "context_module": "artistsTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "Search",
+          "position": 1,
+          "query": "Banksy",
+          "selected_object_slug": "banksy",
+          "selected_object_type": "Artist",
         },
-      },
-    ])
-  })
-
-  it(`calls navigation.navigate with href on press when href does not start with "/partner"`, () => {
-    renderWithWrappers(<TestPage />)
-
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
-    expect(navigateSpy).toHaveBeenCalledWith("/test-href")
+      ]
+    `)
   })
 })

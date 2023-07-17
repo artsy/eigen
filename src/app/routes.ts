@@ -243,7 +243,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/recently-viewed", "RecentlyViewed"),
     addRoute("/sales", "Sales"),
     addRoute("/search", "Search"),
-    addRoute("/search2", "Search2"),
     addRoute("/sell/inquiry", "ConsignmentInquiry"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
     addRoute("/settings/dark-mode", "DarkModeSettings"),

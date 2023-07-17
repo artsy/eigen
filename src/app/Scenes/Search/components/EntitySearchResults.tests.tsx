@@ -1,8 +1,8 @@
 import { Spinner } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
+import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
-import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
+import { EntitySearchResultsScreen } from "app/Scenes/Search/components/EntitySearchResults"
 import { ARTIST_PILL } from "app/Scenes/Search/constants"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -25,18 +25,18 @@ const eventData = {
   },
 }
 
-describe("ElasticSearchResults", () => {
+describe("EntitySearchResults", () => {
   const initialProps = {
     query: "Banksy",
     selectedPill: ARTIST_PILL,
   }
 
-  const { renderWithRelay } = setupTestWrapper<ElasticSearchResultsQuery>({
+  const { renderWithRelay } = setupTestWrapper<EntitySearchResultsQuery>({
     Component: () => (
       <SearchContext.Provider
         value={{ inputRef: { current: { blur: jest.fn() } as any }, queryRef: { current: "" } }}
       >
-        <ElasticSearchResults2Screen {...initialProps} />,
+        <EntitySearchResultsScreen {...initialProps} />,
       </SearchContext.Provider>
     ),
   })
