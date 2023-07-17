@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { volleyClient } from "app/utils/volleyClient"
 import { Platform } from "react-native"
 import deviceInfoModule from "react-native-device-info"
@@ -9,7 +10,10 @@ import {
   MiddlewareNextFn,
   RelayNetworkLayerResponse,
 } from "react-relay-network-modern/node8"
-import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
+import {
+  GraphQLResponse,
+  GraphQLSingularResponse,
+} from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
 const isErrorStatus = (status: number | undefined) => {
@@ -80,51 +84,85 @@ const trackError = (
   })
 }
 
-export const errorMiddleware = () => {
-  return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
-    const res = await next(req)
-    const resJson = res?.json as GraphQLResponse
+export const legacyErrorMiddleware = async (
+  req: GraphQLRequest,
+  res: RelayNetworkLayerResponse
+) => {
+  const resJson = res?.json as GraphQLResponse
 
-    // @ts-ignore RELAY 12 MIGRATION
-    const hasErrors = Boolean(resJson.errors?.length)
+  // @ts-ignore RELAY 12 MIGRATION
+  const hasErrors = Boolean(resJson.errors?.length)
 
-    if (!hasErrors) {
-      return res
-    }
-
-    const allErrorsAreOptional =
-      // @ts-ignore RELAY 12 MIGRATION
-      resJson.extensions?.optionalFields?.length === resJson.errors?.length
-
-    if (allErrorsAreOptional) {
-      trackError(req.operation.name, req.operation.kind, "optionalField")
-      return res
-    }
-
-    // at this point, we have errors that are not optional
-
-    const requestHasPrincipalField = req.operation.text?.includes("@principalField")
-
-    if (!requestHasPrincipalField) {
-      trackError(req.operation.name, req.operation.kind, "default")
-      return throwError(req, res)
-    }
-
-    // at this point, we have errors and we have a principalField
-
-    // This represents whether or not the query experienced an error and that error was thrown while resolving
-    // a field marked with the @principalField directive, or any sub-selection of such a field.
-    // @ts-ignore RELAY 12 MIGRATION
-    const principalFieldWasInvolvedInError = isErrorStatus(
-      // @ts-ignore RELAY 12 MIGRATION
-      resJson.extensions?.principalField?.httpStatusCode
-    )
-
-    if (principalFieldWasInvolvedInError) {
-      trackError(req.operation.name, req.operation.kind, "principalField")
-      return throwError(req, res)
-    }
-
+  if (!hasErrors) {
     return res
   }
+
+  const allErrorsAreOptional =
+    // @ts-ignore RELAY 12 MIGRATION
+    resJson.extensions?.optionalFields?.length === resJson.errors?.length
+
+  if (allErrorsAreOptional) {
+    trackError(req.operation.name, req.operation.kind, "optionalField")
+    return res
+  }
+
+  // at this point, we have errors that are not optional
+
+  const requestHasPrincipalField = req.operation.text?.includes("@principalField")
+
+  if (!requestHasPrincipalField) {
+    trackError(req.operation.name, req.operation.kind, "default")
+    return throwError(req, res)
+  }
+
+  // at this point, we have errors and we have a principalField
+
+  // This represents whether or not the query experienced an error and that error was thrown while resolving
+  // a field marked with the @principalField directive, or any sub-selection of such a field.
+  // @ts-ignore RELAY 12 MIGRATION
+  const principalFieldWasInvolvedInError = isErrorStatus(
+    // @ts-ignore RELAY 12 MIGRATION
+    resJson.extensions?.principalField?.httpStatusCode
+  )
+
+  if (principalFieldWasInvolvedInError) {
+    trackError(req.operation.name, req.operation.kind, "principalField")
+    return throwError(req, res)
+  }
+
+  return res
+}
+
+export const newErrorMiddleware = async (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
+  const resJson = res?.json as GraphQLSingularResponse
+
+  // This represents whether or not the query experienced an error and that error was thrown while resolving
+  // a field marked with the @principalField directive, or any sub-selection of such a field.
+  const principalFieldWasInvolvedInError = isErrorStatus(
+    resJson.extensions?.principalField?.httpStatusCode
+  )
+
+  if (principalFieldWasInvolvedInError) {
+    trackError(req.operation.name, req.operation.kind, "principalField")
+    return throwError(req, res)
+  }
+
+  return res
+}
+
+export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
+  const res = await next(req)
+
+  const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
+
+  const isScreenUsingNewErrorMiddleware = req.variables.useNewErrorMiddleware === true
+
+  const enableNewErrorMiddleware =
+    useNewErrorMiddlewareFeatureFlag || isScreenUsingNewErrorMiddleware
+
+  if (!!enableNewErrorMiddleware) {
+    return newErrorMiddleware(req, res)
+  }
+
+  return legacyErrorMiddleware(req, res)
 }

@@ -461,12 +461,12 @@ export const HomeFragmentContainer = memo(
             ...OldCollectionsRail_collectionsModule
             ...CollectionsRail_collectionsModule
           }
-          _onboardingModule: onboardingModule @optionalField {
+          _onboardingModule: onboardingModule {
             showMyCollectionCard
             showSWACard
           }
 
-          onboardingModule @optionalField {
+          onboardingModule {
             ...HomeFeedOnboardingRail_onboardingModule
           }
         }
@@ -502,17 +502,17 @@ export const HomeFragmentContainer = memo(
 
           ...ArtworkRecommendationsRail_me
 
-          auctionResultsByFollowedArtistsPast: auctionResultsByFollowedArtists(
-            first: 12
-            state: PAST
-          ) {
-            ...AuctionResultsRail_auctionResults
-            edges {
-              node {
-                internalID
-              }
-            }
-          }
+          # auctionResultsByFollowedArtistsPast: auctionResultsByFollowedArtists(
+          #   first: 12
+          #   state: PAST
+          # ) {
+          #   ...AuctionResultsRail_auctionResults
+          #   edges {
+          #     node {
+          #       internalID
+          #     }
+          #   }
+          # }
         }
       `,
       articlesConnection: graphql`
@@ -544,30 +544,29 @@ export const HomeFragmentContainer = memo(
     },
     graphql`
       query HomeRefetchQuery($version: String) {
-        homePage @optionalField {
+        homePage {
           ...Home_homePageAbove
         }
-        homePageBelow: homePage @optionalField {
+        homePageBelow: homePage {
           ...Home_homePageBelow
         }
-        me @optionalField {
+        me {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
         }
-        meBelow: me @optionalField {
+        meBelow: me {
           ...Home_meBelow
         }
-        featured: viewingRooms(featured: true) @optionalField {
+        featured: viewingRooms(featured: true) {
           ...Home_featured
         }
-        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-          @optionalField {
+        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
           ...Home_articlesConnection
         }
         newWorksForYou: viewer {
           ...Home_newWorksForYou
         }
-        emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
+        emergingPicks: marketingCollection(slug: "curators-picks-emerging") {
           ...Home_emergingPicks
         }
       }
@@ -742,16 +741,16 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
-            homePage @optionalField {
+            homePage {
               ...Home_homePageAbove
             }
-            me @optionalField {
+            me {
               ...Home_meAbove
             }
-            newWorksForYou: viewer @optionalField {
+            newWorksForYou: viewer {
               ...Home_newWorksForYou
             }
-            heroUnitsConnection(first: 10, private: false) @optionalField {
+            heroUnitsConnection(first: 10, private: false) {
               ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
             }
@@ -764,27 +763,27 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
       below={{
         query: graphql`
           query HomeBelowTheFoldQuery {
-            homePage @optionalField {
+            homePage {
               ...Home_homePageBelow
             }
-            emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
+            emergingPicks: marketingCollection(slug: "curators-picks-emerging") {
               ...Home_emergingPicks
             }
-            featured: viewingRooms(featured: true) @optionalField {
+            featured: viewingRooms(featured: true) {
               ...Home_featured
             }
-            me @optionalField {
+            me {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-              @optionalField {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
               ...Home_articlesConnection
             }
           }
         `,
         variables: {
           version: worksForYouRecommendationsModel.payload || "B",
+          useNewErrorMiddleware: true,
         },
       }}
       render={{
