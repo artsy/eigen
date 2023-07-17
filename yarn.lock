@@ -15590,11 +15590,6 @@ screenfull@^5.1.0:
   resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-5.1.0.tgz#85c13c70f4ead4c1b8a935c70010dfdcd2c0e5c8"
   integrity sha512-dYaNuOdzr+kc6J6CFcBrzkLCfyGcMg+gWkJ8us93IQ7y1cevhQAugFsaCdMHb6lw8KV3xPzSxzH7zM1dQap9mA==
 
-search-insights@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/search-insights/-/search-insights-2.0.3.tgz#f1606cf9c409c9e37048b9b85592fd79aec6cb31"
-  integrity sha512-4Ek1YKDFYUV2l8F2dz4uVvsRPlxyfNLzyHf+NP59RlhAylMJUMvDWiLkHmn9d0M6SPkaljFlpi7lSyT0tKQ43w==
-
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
