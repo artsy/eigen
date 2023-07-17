@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
-import { Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
@@ -21,7 +21,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Dimensions } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -152,7 +152,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     validationSchema: artworkSchema,
   })
 
-  const { width, height } = useScreenDimensions()
+  const { width, height } = Dimensions.get("screen")
 
   return (
     <NavigationContainer independent ref={navContainerRef}>
