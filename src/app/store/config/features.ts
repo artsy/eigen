@@ -260,6 +260,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableAdditionalSiftAndroidTracking: {
+    description: "Send additional events to Sift on Android",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
+  },
 }
 
 export interface DevToggleDescriptor {

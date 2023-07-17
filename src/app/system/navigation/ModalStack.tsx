@@ -8,8 +8,10 @@ import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
+import SiftReactNative from "sift-react-native"
 import { NavStack } from "./NavStack"
 import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
@@ -24,12 +26,26 @@ const Stack = createStackNavigator()
 export const ModalStack: React.FC = ({ children }) => {
   const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
   const { setSessionState: setNavigationReady } = GlobalStore.actions
+
+  // Code for Sift tracking; needs to be manually fired on Android
+  // See https://github.com/SiftScience/sift-react-native/pull/23#issuecomment-1630984250
+  const enableAdditionalSiftAndroidTracking = useFeatureFlag(
+    "AREnableAdditionalSiftAndroidTracking"
+  )
+  const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
+
   return (
     <NavigationContainer
       ref={__unsafe_mainModalStackRef}
       initialState={initialState}
       onReady={() => {
         setNavigationReady({ isNavigationReady: true })
+
+        if (trackSiftAndroid) {
+          const initialRouteName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.name
+          SiftReactNative.setPageName(`screen_${initialRouteName}`)
+          SiftReactNative.upload()
+        }
       }}
       onStateChange={() => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
@@ -51,6 +67,11 @@ export const ModalStack: React.FC = ({ children }) => {
             data: { ...params },
             level: Severity.Info,
           })
+
+          if (trackSiftAndroid) {
+            SiftReactNative.setPageName(`screen_${currentRoute.name}`)
+            SiftReactNative.upload()
+          }
         }
       }}
     >
