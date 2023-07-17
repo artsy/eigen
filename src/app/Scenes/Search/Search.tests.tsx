@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { SearchScreen2 } from "./Search2"
+import { SearchScreen } from "./Search"
 
 jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),
@@ -15,7 +15,7 @@ jest.mock("lodash", () => ({
 
 describe("Search", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: () => <SearchScreen2 />,
+    Component: () => <SearchScreen />,
   })
 
   it("should render a text input with placeholder and no pills", async () => {

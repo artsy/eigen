@@ -1,11 +1,12 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { Search2Query, Search2Query$variables } from "__generated__/Search2Query.graphql"
+import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { ElasticSearchPills } from "app/Scenes/Search/ElasticSearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
@@ -13,7 +14,6 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
@@ -29,12 +29,12 @@ import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEna
 
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
-export const search2QueryDefaultVariables: Search2Query$variables = {
+export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
   skipSearchQuery: true,
 }
 
-export const Search2: React.FC = () => {
+export const Search: React.FC = () => {
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
@@ -49,7 +49,7 @@ export const Search2: React.FC = () => {
     data: queryData,
     refetch,
     isLoading,
-  } = useSearchQuery<Search2Query>(SearchScreenQuery, search2QueryDefaultVariables)
+  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryDefaultVariables)
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
@@ -163,7 +163,7 @@ export const Search2: React.FC = () => {
                 <Spacer y={4} />
               )}
 
-              <HorizontalPadding>{shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
+              <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
               <Spacer y={4} />
             </Scrollable>
@@ -175,7 +175,7 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query($term: String!, $skipSearchQuery: Boolean!) {
+  query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
     viewer @skip(if: $skipSearchQuery) {
       ...ElasticSearchPills_viewer @arguments(term: $term)
     }
@@ -184,9 +184,9 @@ export const SearchScreenQuery = graphql`
   }
 `
 
-export const SearchScreen2: React.FC = () => (
+export const SearchScreen: React.FC = () => (
   <Suspense fallback={<SearchPlaceholder />}>
-    <Search2 />
+    <Search />
   </Suspense>
 )
 
