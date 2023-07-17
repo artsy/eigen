@@ -5,7 +5,6 @@ import {
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
@@ -24,7 +23,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
   const { trackEvent } = useTracking()
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
-  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
+  const isESOnlySearchEnabled = true
 
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)

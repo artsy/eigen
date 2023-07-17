@@ -134,7 +134,7 @@ const Home = memo((props: HomeProps) => {
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
+  const isESOnlySearchEnabled = true
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
 
