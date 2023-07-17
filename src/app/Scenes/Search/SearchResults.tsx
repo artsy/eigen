@@ -23,7 +23,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
   const { trackEvent } = useTracking()
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
-  const isESOnlySearchEnabled = true
 
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -79,12 +78,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
     )
   }
 
-  if (
-    isESOnlySearchEnabled &&
-    !isTopPillSelected &&
-    !isArtworksPillSelected &&
-    selectedPill.type === "elastic"
-  ) {
+  if (!isTopPillSelected && !isArtworksPillSelected && selectedPill.type === "elastic") {
     return (
       <ElasticSearchResults2Screen
         query={query}

@@ -22,7 +22,6 @@ import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
-import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
@@ -134,7 +133,6 @@ const Home = memo((props: HomeProps) => {
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-  const isESOnlySearchEnabled = true
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
 
@@ -146,9 +144,7 @@ const Home = memo((props: HomeProps) => {
   }).current
 
   useEffect(() => {
-    isESOnlySearchEnabled
-      ? prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
-      : prefetchUrl<SearchQuery>("search")
+    prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")
