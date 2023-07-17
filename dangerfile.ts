@@ -1,5 +1,8 @@
 import * as fs from "fs"
-import { danger, fail, warn } from "danger"
+import { danger, fail, markdown, warn } from "danger"
+import { pickBy } from "lodash"
+import { changelogTemplateSections } from "./scripts/changelog/generateChangelogSectionTemplate"
+import { ParseResult, parsePRDescription } from "./scripts/changelog/parsePRDescription"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 
@@ -103,6 +106,54 @@ export const useWebPs = (fileNames: string[]) => {
     )
   }
 }
+
+// Require changelog on Eigen PRs to be valid
+// See Eigen RFC: https://github.com/artsy/eigen/issues/4499
+export const validatePRChangelog = () => {
+  const pr = danger.github.pr
+
+  const isOpen = pr.state === "open"
+  if (!isOpen) {
+    console.log("Skipping this check because the PR is not open")
+    return
+  }
+
+  const content = pr.body
+
+  const res = parsePRDescription(content) as ParseResult
+
+  if (res.type === "error") {
+    console.log("Something went wrong while parsing the PR description")
+    warn(
+      "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
+    )
+    return
+  }
+
+  if (res.type === "no_changes") {
+    console.log("PR has no changes")
+    warn("✅ **No changelog changes**")
+    return
+  }
+
+  // At this point, the PR description changelog changes are valid
+  // and res contains a list of the changes
+  console.log("PR Changelog is valid")
+
+  const { type, ...changedSections } = res
+
+  const message =
+    "### This PR contains the following changes:\n" +
+    Object.entries(pickBy(changedSections, (changesArray) => changesArray.length))
+      .map(([section, sectionValue]) => {
+        return `\n- ${
+          changelogTemplateSections[section as keyof typeof changedSections]
+        } (${sectionValue})`
+      })
+      .join("")
+
+  return markdown(message)
+}
 ;(async function () {
   const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
 
@@ -110,4 +161,5 @@ export const useWebPs = (fileNames: string[]) => {
   preventUsingTestRenderer()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
+  validatePRChangelog()
 })()
