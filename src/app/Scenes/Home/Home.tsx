@@ -144,7 +144,7 @@ const Home = memo((props: HomeProps) => {
   }).current
 
   useEffect(() => {
-    prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
+    prefetchUrl<Search2Query>("search", search2QueryDefaultVariables)
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")

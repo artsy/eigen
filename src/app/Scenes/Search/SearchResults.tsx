@@ -5,13 +5,10 @@ import {
   AutosuggestResults,
 } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
-import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
-import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
-import { ARTWORKS_PILL, objectTabByContextModule, TOP_PILL, tracks } from "./constants"
-import { getContextModuleByPillName } from "./helpers"
-import { AlgoliaSearchResult, PillType, TappedSearchResultData } from "./types"
+import { ARTWORKS_PILL, TOP_PILL, tracks } from "./constants"
+import { PillType } from "./types"
 
 interface SearchResultsProps {
   selectedPill: PillType
@@ -19,28 +16,10 @@ interface SearchResultsProps {
   onRetry: () => void
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
+export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query }) => {
   const { trackEvent } = useTracking()
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
-
-  const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
-    const contextModule = getContextModuleByPillName(selectedPill.displayName)
-
-    const data: TappedSearchResultData = {
-      type: selectedPill.displayName,
-      slug: result.slug,
-      position: result.__position - 1,
-      query,
-      contextModule: contextModule!,
-    }
-
-    if (contextModule && objectTabByContextModule[contextModule]) {
-      data.objectTab = objectTabByContextModule[contextModule]
-    }
-
-    trackEvent(tracks.tappedSearchResult(data))
-  }
 
   const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
     trackEvent(
@@ -51,16 +30,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
         query,
         contextModule: ContextModule.topTab,
       })
-    )
-  }
-
-  if (selectedPill.type === "algolia") {
-    return (
-      <AlgoliaSearchResultsContainer
-        selectedPill={selectedPill}
-        onRetry={onRetry}
-        trackResultPress={handleTrackAlgoliaResultPress}
-      />
     )
   }
 
@@ -78,7 +47,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
     )
   }
 
-  if (!isTopPillSelected && !isArtworksPillSelected && selectedPill.type === "elastic") {
+  if (!isTopPillSelected && !isArtworksPillSelected) {
     return (
       <ElasticSearchResults2Screen
         query={query}
@@ -90,6 +59,3 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
 
   return <SearchArtworksQueryRenderer keyword={query} />
 }
-
-const AlgoliaSearchResultsWithState = connectStateResults(AlgoliaSearchResults)
-const AlgoliaSearchResultsContainer = connectInfiniteHits(AlgoliaSearchResultsWithState)
