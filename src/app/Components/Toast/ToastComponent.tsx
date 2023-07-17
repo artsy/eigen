@@ -15,7 +15,7 @@ const EDGE_TOAST_HEIGHT = 60
 const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
-const TABBAR_HEIGHT = 50
+const TABBAR_HEIGHT = 130
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,

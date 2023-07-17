@@ -3,7 +3,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ToastPlacement } from "app/Components/Toast/types"
 import { navigate } from "app/system/navigation/navigate"
 
-const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "top"
+const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "bottom"
 
 interface Options {
   artwork: ArtworkEntity
