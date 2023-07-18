@@ -15,7 +15,7 @@ import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { Schema } from "app/utils/track"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -35,11 +35,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     useShowArtworksFilterModal({ artist })
 
   return (
-    <Tabs.ScrollView keyboardShouldPersistTaps="handled">
+    <TabsFlatList keyboardShouldPersistTaps="handled">
       <Tabs.SubTabBar>
-        <ArtistArtworksFilterHeader artist={artist!} />
+        <ArtistArtworksFilterHeader artist={artist} />
       </Tabs.SubTabBar>
-
       <ArtistArtworksContainer
         {...props}
         artist={artist}
@@ -57,7 +56,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
-    </Tabs.ScrollView>
+    </TabsFlatList>
   )
 }
 
