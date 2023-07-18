@@ -40,7 +40,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
+import { Alert, Image, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
@@ -412,19 +412,20 @@ export const MyCollectionArtworkFormMain: React.FC<
             </ScreenMargin>
           )}
         </ScrollView>
+
+        <Flex p={2} pb={Platform.OS === "android" ? 2 : 0}>
+          <Button
+            disabled={!formik.isValid || !isFormDirty()}
+            block
+            onPress={formik.handleSubmit}
+            testID="CompleteButton"
+            haptic
+            mb={`${bottom}px`}
+          >
+            {mode === "edit" ? "Save changes" : "Complete"}
+          </Button>
+        </Flex>
       </ArtsyKeyboardAvoidingView>
-      <Flex p={2}>
-        <Button
-          disabled={!formik.isValid || !isFormDirty()}
-          block
-          onPress={formik.handleSubmit}
-          testID="CompleteButton"
-          haptic
-          mb={`${bottom}px`}
-        >
-          {mode === "edit" ? "Save changes" : "Complete"}
-        </Button>
-      </Flex>
     </>
   )
 }
