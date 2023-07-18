@@ -11698,6 +11698,12 @@ type Me implements Node {
   # A count of unseen notifications.
   unseenNotificationsCount: Int!
 
+  # Get a user interest
+  userInterest(
+    # The ID of the UserInterest
+    id: String
+  ): UserInterest
+
   # A list of lots a user is watching.
   watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
 }
