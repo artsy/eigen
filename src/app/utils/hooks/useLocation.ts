@@ -8,6 +8,7 @@ export interface Location {
 }
 
 const REQUEST_PERMISSION_DELAY = 1000
+const MAX_AGE = 1000 * 60 * 10 // 10 minutes
 
 Geolocation.setRNConfiguration({ skipPermissionRequests: true })
 
@@ -43,7 +44,7 @@ export const useLocation = ({ disabled = false, skipPermissionRequests = false }
 
           setIsLoading(false)
         },
-        { timeout: 3000, maximumAge: 10000 }
+        { timeout: 3000, maximumAge: MAX_AGE }
       )
     } else {
       setIsLoading(false)
