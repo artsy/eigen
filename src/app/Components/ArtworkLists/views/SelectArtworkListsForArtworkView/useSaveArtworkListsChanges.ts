@@ -12,7 +12,7 @@ interface Options {
   onError?: MutationConfig["onError"]
 }
 
-export const useSavePendingArtworkListsChanges = (options?: Options) => {
+export const useSaveArtworkListsChanges = (options?: Options) => {
   const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
