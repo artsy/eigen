@@ -25,9 +25,10 @@ export interface ToastDetails {
   imageURL?: string
   backgroundColor?: Color
   duration?: ToastDuration
+  bottomPadding?: number
 }
 
 export type ToastOptions = Pick<
   ToastDetails,
-  "onPress" | "Icon" | "backgroundColor" | "duration" | "cta" | "imageURL"
+  "onPress" | "Icon" | "backgroundColor" | "duration" | "cta" | "imageURL" | "bottomPadding"
 >

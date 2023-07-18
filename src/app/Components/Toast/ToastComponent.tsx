@@ -1,9 +1,11 @@
 import { Flex, useColor, Text, Touchable, Box } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { modules } from "app/AppRegistry"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { ToastDetails, ToastDuration } from "./types"
@@ -15,7 +17,7 @@ const EDGE_TOAST_HEIGHT = 60
 const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
-const TABBAR_HEIGHT = 130
+const TABBAR_HEIGHT = 50
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
@@ -33,6 +35,7 @@ export const ToastComponent = ({
   duration = "short",
   cta,
   imageURL,
+  bottomPadding,
 }: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
@@ -58,6 +61,21 @@ export const ToastComponent = ({
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
+
+  const toastBottomPadding = useMemo(() => {
+    const moduleName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params // @ts-expect-error
+      ?.moduleName as keyof typeof modules
+
+    const isBottomTabHidden = modules[moduleName].options.hidesBottomTabs
+
+    // We currently handle custom bottom padding only for when the bottom tab bar is hidden
+    // We can change this later if we need to handle custom bottom padding for when the bottom tab bar is visible
+    if (isBottomTabHidden) {
+      return bottomPadding || 0
+    }
+
+    return TABBAR_HEIGHT
+  }, [])
 
   if (placement === "middle") {
     const innerMiddle = (
@@ -130,7 +148,7 @@ export const ToastComponent = ({
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
-            TABBAR_HEIGHT +
+            toastBottomPadding +
             EDGE_TOAST_PADDING +
             positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
