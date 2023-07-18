@@ -9,6 +9,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
+import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -54,6 +55,16 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 options={{
                   // Avoid PanResponser conflicts between the slider and the slide back gesture
                   gestureEnabled: false,
+                }}
+              />
+              <Stack.Screen
+                name="ConfirmationScreen"
+                component={ConfirmationScreen}
+                options={{
+                  gestureEnabled: false,
+                }}
+                initialParams={{
+                  closeModal: params.onClosePress,
                 }}
               />
             </Stack.Navigator>

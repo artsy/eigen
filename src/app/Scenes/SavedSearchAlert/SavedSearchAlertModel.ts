@@ -35,6 +35,7 @@ export type CreateSavedSearchAlertNavigationStack = {
   CreateSavedSearchAlert: CreateSavedSearchAlertParams
   AlertPriceRange: undefined
   EmailPreferences: undefined
+  ConfirmationScreen: ConfirmationScreenParams
 }
 
 export interface EditSavedSearchAlertParams {
@@ -53,10 +54,16 @@ export type EditSavedSearchAlertNavigationStack = {
   EditSavedSearchAlertContent: EditSavedSearchAlertParams
   AlertPriceRange: undefined
   EmailPreferences: undefined
+  ConfirmationScreen: ConfirmationScreenParams
 }
 
 export interface SavedSearchPill {
   label: string
   value: string | boolean | number
   paramName: SearchCriteria
+}
+
+export interface ConfirmationScreenParams {
+  searchCriteriaID: string
+  closeModal?: () => void
 }

@@ -1,5 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
@@ -9,6 +10,7 @@ import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
 import {
+  CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchPill,
@@ -62,6 +64,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] = useState(
     !userAllowsEmails
   )
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
+
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     enableReinitialize: true,
@@ -163,6 +168,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
       }
 
+      navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
       onComplete?.(result)
     } catch (error) {
       console.error(error)
