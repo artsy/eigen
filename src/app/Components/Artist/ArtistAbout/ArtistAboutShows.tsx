@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
+import { Spacer, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
 import { ArtistAboutShow } from "app/Components/Artist/ArtistAbout/ArtistAboutShow"
 import { extractNodes } from "app/utils/extractNodes"
@@ -19,7 +19,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
   }
 
   return (
-    <Flex>
+    <>
       <Text variant="sm-display" pb={4}>
         Shows Featuring {artist.name}
       </Text>
@@ -33,7 +33,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
         contentContainerStyle={{ paddingRight: space(4) }}
         style={{ width }}
       />
-    </Flex>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Image, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtistAboutShow_show$key } from "__generated__/ArtistAboutShow_show.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
@@ -28,7 +28,7 @@ export const ArtistAboutShow: React.FC<ArtistAboutShowProps> = ({ show }) => {
   }
 
   return (
-    <Touchable onPress={handleOnPress}>
+    <Touchable onPress={handleOnPress} style={{ width: DEFAULT_CELL_WIDTH }}>
       <Image
         testID="show-cover"
         src={data.coverImage?.url ?? ""}
@@ -36,17 +36,15 @@ export const ArtistAboutShow: React.FC<ArtistAboutShowProps> = ({ show }) => {
         width={DEFAULT_CELL_WIDTH}
       />
 
-      <Flex width={DEFAULT_CELL_WIDTH}>
-        <Text variant="lg-display" mt={1}>
-          {data.name}
+      <Text variant="lg-display" mt={1}>
+        {data.name}
+      </Text>
+      <Text variant="sm-display">{data.partner?.name}</Text>
+      {!!data.exhibitionPeriod && (
+        <Text variant="sm-display" color="black60">
+          {data.exhibitionPeriod}
         </Text>
-        <Text variant="sm-display">{data.partner?.name}</Text>
-        {!!data.exhibitionPeriod && (
-          <Text variant="sm-display" color="black60">
-            {data.exhibitionPeriod}
-          </Text>
-        )}
-      </Flex>
+      )}
     </Touchable>
   )
 }

@@ -1,6 +1,4 @@
 import { Spacer, useColor, Text } from "@artsy/palette-mobile"
-import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
-import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
@@ -14,17 +12,13 @@ import styled from "styled-components/native"
 import { ThreeUpImageLayout } from "./ThreeUpImageLayout"
 
 interface GenericArtistSeriesRailProps {
-  collections:
-    | CollectionArtistSeriesRail_collectionGroup$data["members"]
-    | ArtistAbout_artist$data["iconicCollections"]
+  collections: CollectionArtistSeriesRail_collectionGroup$data["members"]
   contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
 }
 
-type GenericArtistSeriesItem =
-  | CollectionArtistSeriesRail_collectionGroup$data["members"][0]
-  | ArtistCollectionsRail_collections$data[0]
+type GenericArtistSeriesItem = CollectionArtistSeriesRail_collectionGroup$data["members"][0]
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const color = useColor()
