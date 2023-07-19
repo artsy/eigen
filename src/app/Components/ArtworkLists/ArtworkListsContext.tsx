@@ -29,7 +29,7 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   addingArtworkLists: [],
   removingArtworkLists: [],
   hasUnsavedChanges: false,
-  toastBottomPadding: 0,
+  toastBottomPadding: null,
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -251,7 +251,7 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
     case "RESET":
       return {
         ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-        toastBottomPadding: state.toastBottomPadding || 0,
+        toastBottomPadding: state.toastBottomPadding || null,
       }
     case "SET_UNSAVED_CHANGES":
       return {

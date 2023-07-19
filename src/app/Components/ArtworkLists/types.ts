@@ -44,7 +44,7 @@ export type ArtworkListState = {
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
   hasUnsavedChanges: boolean
-  toastBottomPadding: number
+  toastBottomPadding: number | null
 }
 
 export type ArtworkListAction =

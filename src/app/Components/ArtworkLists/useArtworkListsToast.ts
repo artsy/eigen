@@ -21,13 +21,13 @@ type SingleArtworkListOptions = Options & {
   artworkList: ArtworkListEntity
 }
 
-export const useArtworkListToast = (bottomPadding?: number) => {
+export const useArtworkListToast = (bottomPadding?: number | null) => {
   const toast = useToast()
 
   const showToast = (message: string, options?: Omit<ToastOptions, "bottomPadding">) => {
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
       ...options,
-      bottomPadding,
+      bottomPadding: bottomPadding ?? null,
     })
   }
   const savedToDefaultArtworkList = (options: SavedToDefaultArtworkListOptions) => {
