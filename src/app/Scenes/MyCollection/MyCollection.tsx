@@ -10,6 +10,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
@@ -171,7 +172,7 @@ const MyCollection: React.FC<{
   }
 
   return (
-    <Tabs.ScrollView
+    <TabsFlatList
       contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}
       refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       keyboardDismissMode="on-drag"
@@ -214,7 +215,7 @@ const MyCollection: React.FC<{
           Add Random Work
         </Button>
       )}
-    </Tabs.ScrollView>
+    </TabsFlatList>
   )
 }
 

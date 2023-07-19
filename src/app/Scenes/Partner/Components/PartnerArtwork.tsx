@@ -1,4 +1,4 @@
-import { Spacer, Tabs } from "@artsy/palette-mobile"
+import { Spacer } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -8,6 +8,7 @@ import {
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { TabEmptyState } from "app/Components/TabEmptyState"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 
 import { get } from "app/utils/get"
 import React, { useState } from "react"
@@ -33,7 +34,7 @@ export const PartnerArtwork: React.FC<{
 
   return (
     <>
-      <Tabs.ScrollView>
+      <TabsFlatList>
         <Spacer y={2} />
 
         {artworksCount > 0 ? (
@@ -45,7 +46,7 @@ export const PartnerArtwork: React.FC<{
         ) : (
           <TabEmptyState text={emptyText} />
         )}
-      </Tabs.ScrollView>
+      </TabsFlatList>
 
       <AnimatedArtworkFilterButton
         isVisible

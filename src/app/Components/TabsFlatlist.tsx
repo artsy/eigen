@@ -12,9 +12,9 @@ export interface TabsFlatListProps
 }
 
 /**
- * @deprecated
  * This component was introduced to solve https://artsyproduct.atlassian.net/browse/DIA-63 issue and only this.
- * Please do not use it for any other purpose.
+ * Please do not use it for any other purpose. It will be removed once we have a better solution.
+ * Used **only** for sticky surfaces that include the infiniteScrollArtworkGrid
  */
 export const TabsFlatList: React.FC<Omit<TabsFlatListProps, "data">> = ({
   children,

@@ -6,6 +6,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
@@ -90,7 +91,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <Tabs.ScrollView keyboardShouldPersistTaps="handled">
+      <TabsFlatList keyboardShouldPersistTaps="handled">
         <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
@@ -101,7 +102,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Tag}
         />
-      </Tabs.ScrollView>
+      </TabsFlatList>
     </ArtworkFiltersStoreProvider>
   )
 }
