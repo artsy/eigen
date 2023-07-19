@@ -12,6 +12,7 @@ interface ArtistAboutRelatedGenesProps {
 }
 
 const MAX_WIDTH = 800
+const MAX_GENES = 24
 
 export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = ({ genes }) => {
   const data = useFragment(query, genes)
@@ -32,9 +33,9 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ maxWidth: isTablet ? "100%" : MAX_WIDTH, flexWrap: "wrap" }}
       >
-        {data.map(({ name, href, internalID }) => (
+        {data.slice(0, MAX_GENES).map(({ name, href, internalID }) => (
           <Fragment key={`gene-${internalID}`}>
-            <Pill rounded onPress={() => handlePillPress(href ?? "")}>
+            <Pill rounded onPress={() => href && handlePillPress(href)}>
               {name}
             </Pill>
             <Spacer x={1} y={4} />
