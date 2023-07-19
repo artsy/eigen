@@ -1,4 +1,4 @@
-import { Flex, useColor, Text, Touchable, Box } from "@artsy/palette-mobile"
+import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -33,6 +33,7 @@ export const ToastComponent = ({
   duration = "short",
   cta,
   imageURL,
+  bottomPadding,
 }: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
@@ -58,6 +59,8 @@ export const ToastComponent = ({
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
+
+  const toastBottomPadding = bottomPadding ?? TABBAR_HEIGHT
 
   if (placement === "middle") {
     const innerMiddle = (
@@ -130,7 +133,7 @@ export const ToastComponent = ({
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
-            TABBAR_HEIGHT +
+            toastBottomPadding +
             EDGE_TOAST_PADDING +
             positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
