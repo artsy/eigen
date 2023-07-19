@@ -7612,6 +7612,10 @@ type createUserAdminNoteSuccess {
   adminNote: UserAdminNotes
 }
 
+type CreateUserInterestFailure {
+  mutationError: GravityMutationError
+}
+
 type createUserInterestForUserFailure {
   mutationError: GravityMutationError
 }
@@ -7660,6 +7664,17 @@ type CreateUserInterestMutationPayload {
   clientMutationId: String
   me: Me!
   userInterest: UserInterest!
+}
+
+input CreateUserInterestsMutationInput {
+  clientMutationId: String
+  userInterests: [UserInterestInput!]!
+}
+
+type CreateUserInterestsMutationPayload {
+  clientMutationId: String
+  me: Me!
+  userInterestsOrErrors: [UserInterestOrError!]!
 }
 
 type CreateUserSaleProfileFailure {
@@ -8194,6 +8209,10 @@ input DeleteUserInput {
   id: String!
 }
 
+type DeleteUserInterestFailure {
+  mutationError: GravityMutationError
+}
+
 type deleteUserInterestForUserFailure {
   mutationError: GravityMutationError
 }
@@ -8235,6 +8254,19 @@ type DeleteUserInterestMutationPayload {
   clientMutationId: String
   me: Me!
   userInterest: UserInterest!
+}
+
+union DeleteUserInterestOrErrorType = DeleteUserInterestFailure | UserInterest
+
+input DeleteUserInterestsMutationInput {
+  clientMutationId: String
+  ids: [String!]!
+}
+
+type DeleteUserInterestsMutationPayload {
+  clientMutationId: String
+  me: Me!
+  userInterestsOrErrors: [DeleteUserInterestOrErrorType!]!
 }
 
 type DeleteUserPayload {
@@ -11713,6 +11745,18 @@ type Me implements Node {
     # The ID of the UserInterest
     id: String
   ): UserInterest
+  userInterestsConnection(
+    after: String
+    before: String
+
+    # UserInterest category to select. 'collected_before' or 'interested_in_collecting' category
+    category: UserInterestCategory
+    first: Int
+
+    # UserInterest InterestType to select. 'Artist' or 'Gene' type
+    interestType: UserInterestInterestType
+    last: Int
+  ): UserInterestConnection
 
   # A list of lots a user is watching.
   watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
@@ -12183,6 +12227,9 @@ type Mutation {
     input: CreateUserInterestForUserInput!
   ): CreateUserInterestForUserPayload
 
+  # Collect Multiple Artists
+  createUserInterests(input: CreateUserInterestsMutationInput!): CreateUserInterestsMutationPayload
+
   # Create a sale profile for a user
   createUserSaleProfile(
     input: CreateUserSaleProfileMutationInput!
@@ -12247,6 +12294,9 @@ type Mutation {
   deleteUserInterestForUser(
     input: DeleteUserInterestForUserInput!
   ): DeleteUserInterestForUserPayload
+
+  # Deletes multiple UserInterests on the logged in User's CollectorProfile.
+  deleteUserInterests(input: DeleteUserInterestsMutationInput!): DeleteUserInterestsMutationPayload
 
   # Delete a role associated with a user
   deleteUserRole(input: deleteUserRoleMutationInput!): deleteUserRoleMutationPayload
@@ -18574,6 +18624,19 @@ type UserInterestEdge {
   # The item at the end of the edge
   node: UserInterestInterest
   ownerType: String
+  private: Boolean!
+}
+
+input UserInterestInput {
+  anonymousSessionId: String
+
+  # Optional body for note
+  body: String
+  category: UserInterestCategory!
+  interestId: String!
+  interestType: UserInterestInterestType!
+  private: Boolean
+  sessionID: String
 }
 
 union UserInterestInterest = Artist | Gene
@@ -18582,6 +18645,8 @@ enum UserInterestInterestType {
   ARTIST
   GENE
 }
+
+union UserInterestOrError = CreateUserInterestFailure | UserInterest
 
 enum UserInterestOwnerType {
   COLLECTOR_PROFILE
