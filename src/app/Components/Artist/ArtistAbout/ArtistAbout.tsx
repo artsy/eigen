@@ -3,6 +3,7 @@ import { Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
+import { ArtistAboutRelatedGenes } from "app/Components/Artist/ArtistAbout/ArtistAboutRelatedGenes"
 import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app/Components/Artist/ArtistConsignButton"
@@ -21,6 +22,7 @@ interface Props {
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const articles = extractNodes(artist.articlesConnection)
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
+  const relatedGenes = extractNodes(artist.related?.genes)
 
   const isDisplayable =
     artist.hasMetadata ||
@@ -63,6 +65,8 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           {!!articles.length && <Articles articles={articles} artist={artist} />}
 
           {!!relatedArtists.length && <RelatedArtistsRail artists={relatedArtists} />}
+
+          {!!relatedGenes.length && <ArtistAboutRelatedGenes genes={relatedGenes} />}
         </Stack>
       ) : (
         <ArtistAboutEmpty my={6} />
@@ -100,6 +104,13 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
           edges {
             node {
               ...RelatedArtistsRail_artists
+            }
+          }
+        }
+        genes {
+          edges {
+            node {
+              ...ArtistAboutRelatedGenes_genes
             }
           }
         }
