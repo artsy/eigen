@@ -30,7 +30,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
     loadNext(10)
   }
 
-  const collectedArtists = extractNodes(data.myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(data.userInterestsConnection)
 
   if (!collectedArtists) return <></>
 
@@ -41,7 +41,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         showsHorizontalScrollIndicator={false}
         data={collectedArtists}
         renderItem={({ item }) => <Artist key={item.internalID} artist={item} />}
-        keyExtractor={({ internalID }) => internalID}
+        keyExtractor={({ internalID }) => internalID!}
         onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
@@ -88,15 +88,15 @@ const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsRail_me on Me
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsRail_myCollectionInfoRefetch") {
-    myCollectionInfo {
-      collectedArtistsConnection(
-        first: $count
-        after: $after
-        sort: TRENDING_DESC
-        includePersonalArtists: true
-      ) @connection(key: "MyCollectionCollectedArtistsRail_collectedArtistsConnection") {
-        edges {
-          node {
+    userInterestsConnection(
+      first: $count
+      after: $after
+      category: COLLECTED_BEFORE
+      interestType: ARTIST
+    ) @connection(key: "MyCollectionCollectedArtistsRail_userInterestsConnection") {
+      edges {
+        node {
+          ... on Artist {
             internalID
             ...MyCollectionCollectedArtistsRail_artist
           }

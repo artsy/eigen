@@ -44,7 +44,7 @@ describe("MyCollectionCollectedArtistsView", () => {
   it("renders collected artist in a list", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
-      MyCollectionInfo() {
+      Me() {
         return mockCollectedArtist
       },
     })
@@ -63,7 +63,7 @@ describe("MyCollectionCollectedArtistsView", () => {
   it("renders collected artist in a grid", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
-      MyCollectionInfo() {
+      Me() {
         return mockCollectedArtist
       },
     })
@@ -81,7 +81,7 @@ describe("MyCollectionCollectedArtistsView", () => {
 })
 
 const mockCollectedArtist = {
-  collectedArtistsConnection: {
+  userInterestsConnection: {
     edges: [
       {
         node: {

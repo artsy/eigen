@@ -37,7 +37,7 @@ describe("MyCollectionCollectedArtistsRail", () => {
   it("renders collected artist", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
-      MyCollectionInfo() {
+      Me() {
         return mockCollectedArtist
       },
     })
@@ -48,7 +48,7 @@ describe("MyCollectionCollectedArtistsRail", () => {
 })
 
 const mockCollectedArtist = {
-  collectedArtistsConnection: {
+  userInterestsConnection: {
     edges: [
       {
         node: {

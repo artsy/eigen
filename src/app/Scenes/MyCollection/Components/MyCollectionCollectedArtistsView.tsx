@@ -33,23 +33,15 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const collectedArtists = extractNodes(data.myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(data.userInterestsConnection)
 
   if (!collectedArtists.length) {
     return null
   }
 
-  const artistsAndArtworksCount = data.myCollectionInfo?.collectedArtistsConnection?.edges
-    ?.filter((artist) => {
-      return stringIncludes(artist?.node?.name || "", keyword)
-    })
-    ?.filter((edge) => edge !== null && edge.node !== null)
-    .map((edge) => {
-      return {
-        artist: edge?.node,
-        artworksCount: edge?.artworksCount || null,
-      }
-    })
+  const artists = extractNodes(data.userInterestsConnection)?.filter((artist) => {
+    return stringIncludes(artist?.name || "", keyword)
+  })
 
   return (
     <Flex>
@@ -58,20 +50,11 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <Spacer y={1} />
 
       <FlatList
-        data={artistsAndArtworksCount}
+        data={artists}
         key="list"
-        keyExtractor={(item) => "list" + item.artist!.internalID}
+        keyExtractor={(item) => "list" + item.internalID}
         renderItem={({ item }) => {
-          return (
-            <MyCollectionCollectedArtistItem
-              artworksCount={item.artworksCount}
-              // casting this type because typescript was not able to infer it correctly
-              artist={item.artist!}
-              // casting this type because typescript was not able to infer it correctly
-              key={item.artist!.internalID}
-              compact
-            />
-          )
+          return <MyCollectionCollectedArtistItem artist={item} key={item.internalID} compact />
         }}
         onEndReached={handleLoadMore}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
@@ -94,16 +77,15 @@ const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsView_me on Me
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsView_myCollectionInfoRefetch") {
-    myCollectionInfo {
-      collectedArtistsConnection(
-        first: $count
-        after: $after
-        sort: TRENDING_DESC
-        includePersonalArtists: true
-      ) @connection(key: "MyCollectionCollectedArtistsView_collectedArtistsConnection") {
-        edges {
-          artworksCount
-          node {
+    userInterestsConnection(
+      first: $count
+      after: $after
+      category: COLLECTED_BEFORE
+      interestType: ARTIST
+    ) @connection(key: "MyCollectionCollectedArtistsView_userInterestsConnection") {
+      edges {
+        node {
+          ... on Artist {
             internalID
             name
             ...MyCollectionCollectedArtistItem_artist
