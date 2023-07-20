@@ -19,7 +19,7 @@ import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/M
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { normalizeText } from "app/utils/normalizeText"
@@ -36,6 +36,9 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const addOrRemoveArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
     (actions) => actions.addOrRemoveArtist
+  )
+  const addCustomArtist = MyCollectionAddCollectedArtistsStore.useStoreActions(
+    (actions) => actions.addCustomArtist
   )
 
   const searchProviderValues = useSearchProviderValues(query.trimStart())
@@ -61,7 +64,12 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   // using navigation.navigate or the global navigate function
   const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
     passProps: {
-      onSubmit: () => {
+      onSubmit: (values) => {
+        goBack()
+
+        addCustomArtist(values)
+
+        // add custom artist to the store
         // TODO: when the backend is ready
         // PS: make sure to set query to empty string as soon as the user saves a custom artist
       },

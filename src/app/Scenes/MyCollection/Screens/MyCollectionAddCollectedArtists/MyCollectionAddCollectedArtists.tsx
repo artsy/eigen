@@ -6,6 +6,8 @@ import {
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
+import { createArtist } from "app/Scenes/MyCollection/mutations/createArtist"
+import { createUserInterests } from "app/Scenes/MyCollection/mutations/createUserInterests"
 import { dismissModal, popToRoot } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { Suspense, useState } from "react"
