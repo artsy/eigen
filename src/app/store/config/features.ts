@@ -266,6 +266,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableSelectArtistsToShareOnboarding: {
+    description: "Enable Select Artists to Share Onboarding",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {
