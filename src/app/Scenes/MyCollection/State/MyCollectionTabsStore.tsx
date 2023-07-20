@@ -10,13 +10,11 @@ type ViewPayload =
   | {
       viewKind: "Artist"
       id: string
-      artworksCount: number | null
     }
 export interface MyCollectionTabsStoreModel {
   selectedTab: CollectedTab
   viewKind: MyCollectionBottomSheetModalKind
   id: string | null
-  artworksCount: number | null
   setSelectedTab: Action<this, CollectedTab>
   setViewKind: Action<this, ViewPayload>
 }
@@ -25,7 +23,6 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   selectedTab: null,
   viewKind: null,
   id: null,
-  artworksCount: null,
   setSelectedTab: action((state, payload) => {
     state.selectedTab = payload
   }),
@@ -44,7 +41,6 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
       default:
         state.viewKind = payload.viewKind
         state.id = payload.id
-        state.artworksCount = payload.artworksCount
         break
     }
   }),

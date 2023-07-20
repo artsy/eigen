@@ -9,13 +9,9 @@ interface ArtistItem {
   artist: MyCollectionCollectedArtistItem_artist$key
   // TODO: Implement compact version of artists grid
   compact?: boolean
-  artworksCount: number | null
 }
 
-export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
-  artist,
-  artworksCount,
-}) => {
+export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist }) => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
   const artistData = useFragment<MyCollectionCollectedArtistItem_artist$key>(artistFragment, artist)
   const space = useSpace()
@@ -24,7 +20,6 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
     setViewKind({
       viewKind: "Artist",
       id: artistData.internalID,
-      artworksCount: artworksCount,
     })
   }
 
@@ -39,7 +34,6 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
   return (
     <ArtistListItemContainer
       artist={artistData}
-      uploadsCount={artworksCount}
       showFollowButton={false}
       withFeedback
       containerStyle={{ paddingHorizontal: space(2) }}
