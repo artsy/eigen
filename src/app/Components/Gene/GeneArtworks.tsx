@@ -6,6 +6,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 
 import { Schema } from "app/utils/track"
 import React, { useRef, useState } from "react"
@@ -86,7 +87,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <Tabs.ScrollView disableScrollViewPanResponder>
+      <TabsFlatList keyboardShouldPersistTaps="handled" disableScrollViewPanResponder>
         <Tabs.SubTabBar>
           <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
         </Tabs.SubTabBar>
@@ -100,7 +101,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Gene}
         />
-      </Tabs.ScrollView>
+      </TabsFlatList>
     </ArtworkFiltersStoreProvider>
   )
 }
