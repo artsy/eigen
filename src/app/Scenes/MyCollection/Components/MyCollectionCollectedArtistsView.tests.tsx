@@ -45,7 +45,7 @@ describe("MyCollectionCollectedArtistsView", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me() {
-        return mockCollectedArtist
+        return mockUserInterest
       },
     })
 
@@ -64,7 +64,7 @@ describe("MyCollectionCollectedArtistsView", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me() {
-        return mockCollectedArtist
+        return mockUserInterest
       },
     })
 
@@ -80,7 +80,7 @@ describe("MyCollectionCollectedArtistsView", () => {
   })
 })
 
-const mockCollectedArtist = {
+const mockUserInterest = {
   userInterestsConnection: {
     edges: [
       {
