@@ -11542,6 +11542,9 @@ type Me implements Node {
   ): AuctionResultConnection
   myCollectionConnection(
     after: String
+
+    # Filter by artist IDs
+    artistIDs: [String!]
     before: String
 
     # Exclude artworks that have been purchased on Artsy and automatically added to the collection.
