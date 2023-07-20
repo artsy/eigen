@@ -4,9 +4,7 @@ import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntit
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
@@ -53,7 +51,6 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else if (!entity && !slugType) {
@@ -78,11 +75,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
               case "fair":
                 return <FairPlaceholder />
               case "partner":
-                return (
-                  <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
-                    <PartnerSkeleton />
-                  </View>
-                )
+                return <PartnerSkeleton />
               default:
                 return (
                   <Flex
