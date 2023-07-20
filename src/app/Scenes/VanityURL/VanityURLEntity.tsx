@@ -20,16 +20,11 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
   // https://github.com/facebook/relay/commit/ed53bb095ddd494092819884cb4f46df94b45b79#diff-4e3d961b12253787bd61506608bc366be34ab276c09690de7df17203de7581e8
   const isFair = fairOrPartner.__typename === "Fair" || "slug" in fairOrPartner
   const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
-  const { safeAreaInsets } = useScreenDimensions()
 
   if (isFair) {
     return <FairFragmentContainer fair={fairOrPartner} />
   } else if (isPartner) {
-    return (
-      <View style={{ flex: 1, paddingTop: safeAreaInsets.top ?? 0 }}>
-        <PartnerContainer partner={fairOrPartner} />
-      </View>
-    )
+    return <PartnerContainer partner={fairOrPartner} />
   } else {
     return <VanityURLPossibleRedirect slug={originalSlug} />
   }
