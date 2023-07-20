@@ -1,4 +1,7 @@
-import { CreateArtistMutationInput } from "__generated__/createArtistMutation.graphql"
+import {
+  CreateArtistMutationInput,
+  createArtistMutation,
+} from "__generated__/createArtistMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
@@ -28,8 +31,11 @@ export const createArtist = (input: CreateArtistMutationInput) => {
         input,
       },
       onCompleted: (response, errors) => {
-        if (errors?.length) {
-          reject(errors)
+        const responseError = (response as createArtistMutation["response"]).createArtist
+          ?.artistOrError
+
+        if (errors?.length || responseError?.__typename === "CreateArtistFailure") {
+          reject(errors || responseError)
         } else {
           resolve(response)
         }

@@ -22,29 +22,10 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
     (state) => state.customArtists
   )
 
-  const handleSubmit = async () => {
-    setIsLoading(true)
-
-    // Save personal artists
-
-    try {
-      await Promise.all(
-        customArtists.map((customArtist) => {
-          createArtist({
-            displayName: customArtist.name,
-            birthday: customArtist.birthYear,
-            deathday: customArtist.deathYear,
-            nationality: customArtist.nationality,
-          })
-        })
-      )
-    } catch (error) {
-      console.error("[MyCollectionAddCollectedArtists]: error creating artist.", error)
-
-      Alert.alert("Artist could not be created.")
+  const addUserInterests = async () => {
+    if (!artistIds.length) {
+      return
     }
-
-    // Save collected artists as user interests
 
     try {
       const userInterests = artistIds.map((artistId) => {
@@ -62,6 +43,41 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
       Alert.alert("Artists could not be added.")
     }
+  }
+
+  const addCustomArtists = async () => {
+    if (!customArtists.length) {
+      return
+    }
+
+    await Promise.all(
+      customArtists.map(async (customArtist) => {
+        try {
+          await createArtist({
+            displayName: customArtist.name,
+            birthday: customArtist.birthYear,
+            deathday: customArtist.deathYear,
+            nationality: customArtist.nationality,
+            isPersonalArtist: true,
+          })
+        } catch (error) {
+          console.error(
+            `[MyCollectionAddCollectedArtists]: error creating artist ${customArtist.name}.`,
+            error
+          )
+
+          Alert.alert(`Artist ${customArtist.name} could not be created.`)
+        }
+      })
+    )
+  }
+
+  const handleSubmit = async () => {
+    setIsLoading(true)
+
+    await addCustomArtists()
+
+    await addUserInterests()
 
     setIsLoading(false)
 
