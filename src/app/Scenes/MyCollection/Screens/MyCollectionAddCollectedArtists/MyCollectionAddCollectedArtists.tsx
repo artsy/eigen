@@ -1,62 +1,90 @@
-import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Spinner, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import {
+  UserInterestCategory,
+  UserInterestInterestType,
+} from "__generated__/useCreateUserInterestsMutation.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
-import { useCreateUserInterests } from "app/Scenes/MyCollection/mutations/useCreateUserInterests"
+import { createArtist } from "app/Scenes/MyCollection/mutations/createArtist"
+import { createUserInterests } from "app/Scenes/MyCollection/mutations/createUserInterests"
 import { dismissModal, popToRoot } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import { Alert } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
-  const [createUserInterests] = useCreateUserInterests()
+  const [isLoading, setIsLoading] = useState(false)
 
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
+  const customArtists = MyCollectionAddCollectedArtistsStore.useStoreState(
+    (state) => state.customArtists
+  )
 
-  const handleSubmit = () => {
-    // TODO: Save personal artists
+  const handleSubmit = async () => {
+    setIsLoading(true)
+
+    // Save personal artists
+
+    try {
+      await Promise.all(
+        customArtists.map((customArtist) => {
+          createArtist({
+            displayName: customArtist.name,
+            birthday: customArtist.birthYear,
+            deathday: customArtist.deathYear,
+            nationality: customArtist.nationality,
+          })
+        })
+      )
+    } catch (error) {
+      console.error("[MyCollectionAddCollectedArtists]: error creating artist.", error)
+
+      Alert.alert("Artist could not be created.")
+    }
 
     // Save collected artists as user interests
 
-    const userInterests = artistIds.map((artistId) => {
-      return {
-        category: "COLLECTED_BEFORE",
-        interestId: artistId,
-        interestType: "ARTIST",
-        private: true,
-      }
-    })
+    try {
+      const userInterests = artistIds.map((artistId) => {
+        return {
+          category: "COLLECTED_BEFORE" as UserInterestCategory,
+          interestId: artistId,
+          interestType: "ARTIST" as UserInterestInterestType,
+          private: true,
+        }
+      })
 
-    createUserInterests({
-      variables: {
-        input: {
-          userInterests,
-        },
-      },
-      onCompleted: () => {
-        dismissModal()
-        popToRoot()
-      },
-      onError: (error) => {
-        console.error("[MyCollectionAddCollectedArtists]: error creating user interests.", error)
+      await createUserInterests({ userInterests })
+    } catch (error) {
+      console.error("[MyCollectionAddCollectedArtists]: error creating user interests.", error)
 
-        Alert.alert("Artists could not be added.")
-      },
-    })
+      Alert.alert("Artists could not be added.")
+    }
+
+    setIsLoading(false)
+
+    dismissModal()
+    popToRoot()
   }
+
+  const numberOfArtists = artistIds.length + customArtists.length
 
   return (
     <Flex flex={1}>
       <FancyModalHeader hideBottomDivider>
         <Text textAlign="center">Add Artists You Collect</Text>
       </FancyModalHeader>
+
       <Flex flex={1} px={2}>
         <Suspense fallback={() => null}>
           <MyCollectionAddCollectedArtistsAutosuggest />
         </Suspense>
       </Flex>
+
       <Spacer y={4} />
+
       <Flex
         position="absolute"
         bottom={0}
@@ -67,12 +95,26 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         left={0}
         backgroundColor="white100"
       >
-        <Button block disabled={artistIds.length === 0} onPress={handleSubmit} mb={`${bottom}px`}>
+        <Button block disabled={!numberOfArtists} onPress={handleSubmit} mb={`${bottom}px`}>
           <Text color="white100">
-            Add Selected {pluralize(`Artist`, artistIds.length)} • {artistIds.length}
+            Add Selected {pluralize(`Artist`, numberOfArtists)} • {numberOfArtists}
           </Text>
         </Button>
       </Flex>
+
+      {!!isLoading && (
+        <Flex
+          position="absolute"
+          top="50%"
+          left="50%"
+          opacity={0.5}
+          backgroundColor="black10"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Spinner />
+        </Flex>
+      )}
     </Flex>
   )
 }
