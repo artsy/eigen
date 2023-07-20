@@ -2,17 +2,49 @@ import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
+import { useCreateUserInterests } from "app/Scenes/MyCollection/Screens/mutations/useCreateUserInterests"
+import { dismissModal, popToRoot } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
+import { Alert } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
+  const { bottom } = useScreenDimensions().safeAreaInsets
+  const [createUserInterests] = useCreateUserInterests()
+
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
 
   const handleSubmit = () => {
-    // Save collected artists
-    // Save personal artists
+    // TODO: Save personal artists
+
+    // Save collected artists as user interests
+
+    const userInterests = artistIds.map((artistId) => {
+      return {
+        category: "COLLECTED_BEFORE",
+        interestId: artistId,
+        interestType: "ARTIST",
+        private: true,
+      }
+    })
+
+    createUserInterests({
+      variables: {
+        input: {
+          userInterests,
+        },
+      },
+      onCompleted: () => {
+        dismissModal()
+        popToRoot()
+      },
+      onError: (error) => {
+        console.error("[MyCollectionAddCollectedArtists]: error creating user interests.", error)
+
+        Alert.alert("Artists could not be added.")
+      },
+    })
   }
 
-  const { bottom } = useScreenDimensions().safeAreaInsets
   return (
     <Flex flex={1}>
       <FancyModalHeader hideBottomDivider>
