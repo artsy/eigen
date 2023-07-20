@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { dismissModal, navigate, popToRoot } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -33,6 +34,8 @@ describe("MyCollectionAddCollectedArtists", () => {
 
     fireEvent.press(screen.getByText("Add Selected Artist • 1"))
 
+    await flushPromiseQueue()
+
     const mockOperations = env.mock.getAllOperations()
 
     const createUserInterestsOperation = mockOperations[0]
@@ -50,6 +53,32 @@ describe("MyCollectionAddCollectedArtists", () => {
         },
       }
     `)
+
+    resolveMostRecentRelayOperation(env, {})
+    await flushPromiseQueue()
+
+    expect(dismissModal).toHaveBeenCalledWith()
+    expect(popToRoot).toHaveBeenCalledWith()
+  })
+
+  it("creates custom artists", async () => {
+    const { env } = renderWithRelay({
+      Me: () => ({ myCollectionInfo: { collectedArtistsConnection: { edges: [] } } }),
+    })
+
+    expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
+
+    await flushPromiseQueue()
+
+    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "My Artist")
+
+    resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
+
+    fireEvent.press(screen.getByText("Add their name."))
+
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", {
+      passProps: { artistDisplayName: "My Artist", onSubmit: expect.any(Function) },
+    })
   })
 })
 
