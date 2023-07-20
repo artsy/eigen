@@ -2,8 +2,10 @@ import { Button, Flex, Spacer, Spinner, Text, useScreenDimensions } from "@artsy
 import {
   UserInterestCategory,
   UserInterestInterestType,
+  useCreateUserInterestsMutation,
 } from "__generated__/useCreateUserInterestsMutation.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { createArtist } from "app/Scenes/MyCollection/mutations/createArtist"
@@ -11,10 +13,11 @@ import { createUserInterests } from "app/Scenes/MyCollection/mutations/createUse
 import { dismissModal, popToRoot } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { Suspense, useState } from "react"
-import { Alert } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const toast = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
 
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
@@ -24,7 +27,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
   const addUserInterests = async () => {
     if (!artistIds.length) {
-      return
+      return true
     }
 
     try {
@@ -37,12 +40,29 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         }
       })
 
-      await createUserInterests({ userInterests })
+      const result = (await createUserInterests({
+        userInterests,
+      })) as useCreateUserInterestsMutation["response"]
+
+      const failedResults = result.createUserInterests?.userInterestsOrErrors.filter(
+        (result) => result.mutationError
+      )
+
+      if (failedResults?.length === userInterests.length) {
+        toast.show("Artists could be added.", "bottom", { backgroundColor: "red100" })
+        return false
+      } else if (failedResults?.length) {
+        toast.show("Some artists could not be added.", "bottom", { backgroundColor: "red100" })
+        return true
+      }
     } catch (error) {
       console.error("[MyCollectionAddCollectedArtists]: error creating user interests.", error)
 
-      Alert.alert("Artists could not be added.")
+      toast.show("Artsts could not be added.", "bottom", { backgroundColor: "red100" })
+      return false
     }
+
+    return true
   }
 
   const createCustomArtists = async () => {
@@ -50,10 +70,10 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
       return
     }
 
-    await Promise.all(
+    const results = await Promise.all(
       customArtists.map(async (customArtist) => {
         try {
-          await createArtist({
+          return await createArtist({
             displayName: customArtist.name,
             birthday: customArtist.birthYear,
             deathday: customArtist.deathYear,
@@ -61,15 +81,16 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
             isPersonalArtist: true,
           })
         } catch (error) {
-          console.error(
-            `[MyCollectionAddCollectedArtists]: error creating artist ${customArtist.name}.`,
-            error
-          )
-
-          Alert.alert(`Artist ${customArtist.name} could not be created.`)
+          return null
         }
       })
     )
+
+    const numberOfFailedResults = results.filter((result) => !result).length
+
+    if (numberOfFailedResults > 0) {
+      toast.show("Some artists could not be created.", "bottom", { backgroundColor: "red100" })
+    }
   }
 
   const handleSubmit = async () => {
@@ -77,12 +98,15 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
     await createCustomArtists()
 
-    await addUserInterests()
+    const addingUserInterestsSucceeded = await addUserInterests()
 
     setIsLoading(false)
 
-    dismissModal()
-    popToRoot()
+    // In case no artists were added, we don't want to dismiss the modal
+    if (addingUserInterestsSucceeded) {
+      dismissModal()
+      popToRoot()
+    }
   }
 
   const numberOfArtists = artistIds.length + customArtists.length
