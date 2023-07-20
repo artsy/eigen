@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { ArtistAboutRelatedGenes_genes$key } from "__generated__/ArtistAboutRelatedGenes_genes.graphql"
 import { Pill } from "app/Components/Pill"
 import { navigate } from "app/system/navigation/navigate"
@@ -27,7 +27,10 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
   }
 
   return (
-    <Flex flexDirection="row" flexWrap="wrap">
+    <>
+      <Text variant="sm-display" pb={4}>
+        Related Categories
+      </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -42,7 +45,7 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
           </Fragment>
         ))}
       </ScrollView>
-    </Flex>
+    </>
   )
 }
 

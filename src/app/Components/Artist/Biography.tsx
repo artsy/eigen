@@ -1,47 +1,47 @@
-import { Text } from "@artsy/palette-mobile"
-import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Biography_artist$key } from "__generated__/Biography_artist.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Stack } from "app/Components/Stack"
-import React from "react"
-import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import React, { useState } from "react"
+import { graphql, useFragment } from "react-relay"
 
-import removeMarkdown from "remove-markdown"
+const MAX_CHARS = 250
 
-interface Props {
-  artist: Biography_artist$data
+interface BiographyProps {
+  artist: Biography_artist$key
 }
 
-class Biography extends React.Component<Props> {
-  render() {
-    const artist = this.props.artist
-    if (!artist.blurb && !artist.bio) {
-      return null
-    }
+export const Biography: React.FC<BiographyProps> = ({ artist }) => {
+  const [expanded, setExpanded] = useState(false)
+  const data = useFragment(query, artist)
 
-    const bio = this.props.artist.bio?.replace("born", "b.")
-
-    return (
-      <View>
-        <SectionTitle title="Biography" />
-        <Stack>
-          {!!artist.blurb && (
-            <Text variant="sm" style={{ maxWidth: 650 }}>
-              {removeMarkdown(artist.blurb)}
-            </Text>
-          )}
-          {!!bio && <Text variant="sm">{bio}</Text>}
-        </Stack>
-      </View>
-    )
+  if (!data || !data.biographyBlurb?.text) {
+    return null
   }
+
+  const text = data.biographyBlurb.text
+  const truncatedText = text.slice(0, MAX_CHARS)
+  const canExpand = text.length > MAX_CHARS
+
+  return (
+    <Flex maxWidth={650}>
+      <SectionTitle title="Biography" />
+      <Text variant="sm">
+        {`${expanded ? text : truncatedText} `}
+
+        {!!canExpand && (
+          <Touchable onPress={() => setExpanded((e) => !e)} haptic>
+            <Text underline>{expanded ? "Read Less" : "Read More"}</Text>
+          </Touchable>
+        )}
+      </Text>
+    </Flex>
+  )
 }
 
-export default createFragmentContainer(Biography, {
-  artist: graphql`
-    fragment Biography_artist on Artist {
-      bio
-      blurb
+const query = graphql`
+  fragment Biography_artist on Artist {
+    biographyBlurb(format: PLAIN, partnerBio: false) {
+      text
     }
-  `,
-})
+  }
+`

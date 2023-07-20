@@ -32,6 +32,7 @@ describe("ArtistAboutRelatedGenes", () => {
   it("renders", () => {
     renderWithRelay({ GeneConnection: () => ({ edges: genes }) })
 
+    expect(screen.getByText("Related Categories")).toBeOnTheScreen()
     expect(screen.getByText("Gene1")).toBeOnTheScreen()
     expect(screen.getByText("Gene2")).toBeOnTheScreen()
   })

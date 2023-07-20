@@ -1,15 +1,11 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Tabs } from "@artsy/palette-mobile"
+import { Join, Spacer, Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistAboutRelatedGenes } from "app/Components/Artist/ArtistAbout/ArtistAboutRelatedGenes"
-import { ArtistCollectionsRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistCollectionsRail"
-import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
-import { ArtistConsignButtonFragmentContainer as ArtistConsignButton } from "app/Components/Artist/ArtistConsignButton"
-import Biography from "app/Components/Artist/Biography"
+import { Biography } from "app/Components/Artist/Biography"
 import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
-import { Stack } from "app/Components/Stack"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,49 +21,35 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const relatedGenes = extractNodes(artist.related?.genes)
 
   const isDisplayable =
-    artist.hasMetadata ||
-    artist.notableWorks?.edges?.length === 3 ||
-    !!artist.iconicCollections?.length ||
-    !!articles.length ||
-    !!relatedArtists.length
+    artist.hasMetadata || !!articles.length || !!relatedArtists.length || !!relatedGenes.length
 
   return (
     <Tabs.ScrollView>
       {isDisplayable ? (
-        <Stack spacing={4} my={2}>
-          {!!artist.hasMetadata && <Biography artist={artist as any} />}
+        <>
+          <Spacer y={2} />
+          <Join separator={<Spacer y={4} />}>
+            {!!artist.hasMetadata && <Biography artist={artist} />}
 
-          <ArtistSeriesMoreSeriesFragmentContainer
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-            contextScreenOwnerType={OwnerType.artist}
-            contextModule={ContextModule.artistSeriesRail}
-            artist={artist}
-            artistSeriesHeader="Top Artist Series"
-            mt={2}
-          />
-
-          {artist.notableWorks?.edges?.length === 3 && (
-            <ArtistNotableWorksRailFragmentContainer artist={artist} />
-          )}
-
-          {!!artist.iconicCollections && artist.iconicCollections.length > 1 && (
-            <ArtistCollectionsRailFragmentContainer
-              collections={artist.iconicCollections}
+            <ArtistSeriesMoreSeriesFragmentContainer
+              contextScreenOwnerId={artist.internalID}
+              contextScreenOwnerSlug={artist.slug}
+              contextScreenOwnerType={OwnerType.artist}
+              contextModule={ContextModule.artistSeriesRail}
               artist={artist}
+              artistSeriesHeader="Top Artist Series"
             />
-          )}
 
-          <ArtistConsignButton artist={artist} />
+            {!!articles.length && <Articles articles={articles} artist={artist} />}
 
-          <ArtistAboutShowsFragmentContainer artist={artist} />
+            <ArtistAboutShowsFragmentContainer artist={artist} />
 
-          {!!articles.length && <Articles articles={articles} artist={artist} />}
+            {!!relatedArtists.length && <RelatedArtistsRail artists={relatedArtists} />}
 
-          {!!relatedArtists.length && <RelatedArtistsRail artists={relatedArtists} />}
-
-          {!!relatedGenes.length && <ArtistAboutRelatedGenes genes={relatedGenes} />}
-        </Stack>
+            {!!relatedGenes.length && <ArtistAboutRelatedGenes genes={relatedGenes} />}
+          </Join>
+          <Spacer y={4} />
+        </>
       ) : (
         <ArtistAboutEmpty my={6} />
       )}
@@ -83,21 +65,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       slug
       ...Biography_artist
       ...ArtistSeriesMoreSeries_artist
-      ...ArtistNotableWorksRail_artist
       ...Articles_artist
-      # this should match the query in ArtistNotableWorksRail
-      notableWorks: filterArtworksConnection(first: 3, input: { sort: "-weighted_iconicity" }) {
-        edges {
-          node {
-            id
-          }
-        }
-      }
-      ...ArtistCollectionsRail_artist
-      iconicCollections: marketingCollections(isFeaturedArtistContent: true, size: 16) {
-        ...ArtistCollectionsRail_collections
-      }
-      ...ArtistConsignButton_artist
       ...ArtistAboutShows_artist
       related {
         artistsConnection(first: 12) {
