@@ -11,6 +11,7 @@ import {
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
+import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -20,20 +21,21 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data
-  uploadsCount: number | null
+  me: MyCollectionBottomSheetModalArtistPreview_me$data
 }
 
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
-> = ({ artist, uploadsCount }) => {
-  const canBeRemoved = uploadsCount === 0
+> = ({ artist, me }) => {
+  const artworksCountWithMyCollection = me?.myCollectionConnection?.totalCount ?? 0
+  const canBeRemoved = artworksCountWithMyCollection === 0
 
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer artist={artist} uploadsCount={uploadsCount} />
+            <ArtistListItemContainer artist={artist} uploadsCount={artworksCountWithMyCollection} />
             <ArtistKindPills artist={artist} />
           </Join>
 
@@ -87,13 +89,19 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
         ...ArtistKindPills_artist
       }
     `,
+    me: graphql`
+      fragment MyCollectionBottomSheetModalArtistPreview_me on Me {
+        myCollectionConnection(artistIDs: [$artistID]) {
+          totalCount
+        }
+      }
+    `,
   }
 )
 
 export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
   artistID: string
-  uploadsCount: number | null
-}> = ({ artistID, uploadsCount }) => {
+}> = ({ artistID }) => {
   return (
     <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
       environment={getRelayEnvironment()}
@@ -101,6 +109,9 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         query MyCollectionBottomSheetModalArtistPreviewQuery($artistID: String!) {
           artist(id: $artistID) {
             ...MyCollectionBottomSheetModalArtistPreview_artist
+          }
+          me {
+            ...MyCollectionBottomSheetModalArtistPreview_me
           }
         }
       `}
@@ -112,7 +123,6 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         Container: MyCollectionBottomSheetModalArtistPreviewFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
         renderFallback: () => null,
-        initialProps: { uploadsCount },
       })}
     />
   )
