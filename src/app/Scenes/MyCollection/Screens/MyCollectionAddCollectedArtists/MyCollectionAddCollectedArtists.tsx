@@ -2,9 +2,10 @@ import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
-import { useCreateUserInterests } from "app/Scenes/MyCollection/Screens/mutations/useCreateUserInterests"
+import { useCreateUserInterests } from "app/Scenes/MyCollection/mutations/useCreateUserInterests"
 import { dismissModal, popToRoot } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
+import { Suspense } from "react"
 import { Alert } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
@@ -51,7 +52,9 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         <Text textAlign="center">Add Artists You Collect</Text>
       </FancyModalHeader>
       <Flex flex={1} px={2}>
-        <MyCollectionAddCollectedArtistsAutosuggest />
+        <Suspense fallback={() => null}>
+          <MyCollectionAddCollectedArtistsAutosuggest />
+        </Suspense>
       </Flex>
       <Spacer y={4} />
       <Flex

@@ -47,7 +47,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   )
 
   const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
-  const filteredCollecteArtists = sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), [
+  const filteredCollectedArtists = sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), [
     "displayLabel",
   ])
 
@@ -105,7 +105,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
           <Box pb={6}>
             <AutosuggestResults
               query={trimmedQuery}
-              prependResults={filteredCollecteArtists}
+              prependResults={filteredCollectedArtists}
               entities={["ARTIST"]}
               showResultType={false}
               showQuickNavigationButtons={false}
