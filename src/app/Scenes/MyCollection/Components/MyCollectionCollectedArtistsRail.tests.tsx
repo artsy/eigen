@@ -1,5 +1,6 @@
 import { MyCollectionCollectedArtistsRailTestsQuery } from "__generated__/MyCollectionCollectedArtistsRailTestsQuery.graphql"
 import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -14,23 +15,25 @@ describe("MyCollectionCollectedArtistsRail", () => {
 
   const TestRenderer = () => {
     return (
-      <QueryRenderer<MyCollectionCollectedArtistsRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
-            me {
-              ...MyCollectionCollectedArtistsRail_me
+      <MyCollectionTabsStore.Provider>
+        <QueryRenderer<MyCollectionCollectedArtistsRailTestsQuery>
+          environment={mockEnvironment}
+          query={graphql`
+            query MyCollectionCollectedArtistsRailTestsQuery @relay_test_operation {
+              me {
+                ...MyCollectionCollectedArtistsRail_me
+              }
             }
-          }
-        `}
-        render={({ props }) => {
-          if (!props?.me) {
-            return null
-          }
-          return <MyCollectionCollectedArtistsRail me={props.me} />
-        }}
-        variables={{}}
-      />
+          `}
+          render={({ props }) => {
+            if (!props?.me) {
+              return null
+            }
+            return <MyCollectionCollectedArtistsRail me={props.me} />
+          }}
+          variables={{}}
+        />
+      </MyCollectionTabsStore.Provider>
     )
   }
 

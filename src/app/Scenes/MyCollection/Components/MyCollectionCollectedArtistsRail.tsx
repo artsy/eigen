@@ -1,6 +1,7 @@
-import { Avatar, Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { Avatar, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
 import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Animated } from "react-native"
 import { useFragment, usePaginationFragment } from "react-relay"
@@ -73,14 +74,30 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
   artist,
 }) => {
   const data = useFragment(artistFragment, artist)
+  const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
 
   return (
-    <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
-      <Avatar initials={data.initials || undefined} src={data?.image?.url || undefined} size="md" />
-      <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
-        {data.name}
-      </Text>
-    </Flex>
+    <Touchable
+      haptic
+      onPress={() => {
+        setViewKind({
+          viewKind: "Artist",
+          id: data.internalID,
+        })
+      }}
+      accessibilityHint={`View more details ${data.name}`}
+    >
+      <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
+        <Avatar
+          initials={data.initials || undefined}
+          src={data?.image?.url || undefined}
+          size="md"
+        />
+        <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
+          {data.name}
+        </Text>
+      </Flex>
+    </Touchable>
   )
 }
 
@@ -108,6 +125,7 @@ const collectedArtistsPaginationFragment = graphql`
 
 const artistFragment = graphql`
   fragment MyCollectionCollectedArtistsRail_artist on Artist {
+    internalID
     name
     initials
     image {
