@@ -34,6 +34,8 @@ describe("MyCollectionAddCollectedArtists", () => {
 
     fireEvent.press(screen.getByText("Add Selected Artist • 1"))
 
+    await flushPromiseQueue()
+
     const mockOperations = env.mock.getAllOperations()
 
     const createUserInterestsOperation = mockOperations[0]
@@ -52,11 +54,14 @@ describe("MyCollectionAddCollectedArtists", () => {
       }
     `)
 
+    resolveMostRecentRelayOperation(env, {})
+    await flushPromiseQueue()
+
     expect(dismissModal).toHaveBeenCalledWith()
     expect(popToRoot).toHaveBeenCalledWith()
   })
 
-  fit("creates custom artists", async () => {
+  it("creates custom artists", async () => {
     const { env } = renderWithRelay({
       Me: () => ({ myCollectionInfo: { collectedArtistsConnection: { edges: [] } } }),
     })

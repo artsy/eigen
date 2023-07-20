@@ -45,7 +45,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
     }
   }
 
-  const addCustomArtists = async () => {
+  const createCustomArtists = async () => {
     if (!customArtists.length) {
       return
     }
@@ -75,7 +75,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const handleSubmit = async () => {
     setIsLoading(true)
 
-    await addCustomArtists()
+    await createCustomArtists()
 
     await addUserInterests()
 

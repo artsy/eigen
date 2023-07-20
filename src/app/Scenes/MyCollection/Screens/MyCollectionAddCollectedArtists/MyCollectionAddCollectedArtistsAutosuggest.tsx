@@ -65,12 +65,10 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   const navigationProps: { passProps: ArtworkFormScreen["AddMyCollectionArtist"]["props"] } = {
     passProps: {
       onSubmit: (values) => {
-        goBack()
-
         addCustomArtist(values)
 
-        // add custom artist to the store
-        // TODO: when the backend is ready
+        goBack()
+
         // PS: make sure to set query to empty string as soon as the user saves a custom artist
       },
       artistDisplayName: query,
