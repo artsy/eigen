@@ -261,6 +261,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAdditionalSiftAndroidTracking",
   },
+  ARShowCollectedArtistOnboarding: {
+    description: "Show Collected Artist Onboarding",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {

@@ -1,6 +1,7 @@
 import { Button, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React from "react"
 import { Image, Modal } from "react-native"
@@ -12,9 +13,9 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   const color = useColor()
   const space = useSpace()
 
-  const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
-    "MyCollectionArtistsCollectedOnboarding"
-  )
+  const showMyCollectionCollectedArtistsOnboarding =
+    useFeatureFlag("ARShowCollectedArtistOnboarding") &&
+    !!showVisualClue("MyCollectionArtistsCollectedOnboarding")
 
   if (!showMyCollectionCollectedArtistsOnboarding) {
     return null
