@@ -21,6 +21,7 @@ interface Props {
   disableNavigation?: boolean
   onFollowFinish?: () => void
   onPress?: () => void
+  isPrivate?: boolean
   relay: RelayProp
   RightButton?: JSX.Element
   showFollowButton?: boolean
@@ -56,6 +57,7 @@ const ArtistListItem: React.FC<Props> = ({
   disableNavigation,
   onFollowFinish,
   onPress,
+  isPrivate,
   relay,
   RightButton,
   showFollowButton = true,
@@ -146,6 +148,7 @@ const ArtistListItem: React.FC<Props> = ({
                 initials={initials ?? undefined}
                 avatarSize={avatarSize}
                 RightButton={RightButton}
+                displayPrivateIcon={isPrivate}
               />
             </Flex>
             {!!showFollowButton && (
