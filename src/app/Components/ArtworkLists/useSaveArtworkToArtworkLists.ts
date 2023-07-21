@@ -14,7 +14,7 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const isArtworkListsFFEnabled = useFeatureFlag("AREnableArtworkLists")
+  const isArtworkListsFFEnabled = useFeatureFlag("AREnableArtworksLists")
   const isArtworkListsEnabled = !options.saveToDefaultCollectionOnly && isArtworkListsFFEnabled
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()

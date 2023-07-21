@@ -215,11 +215,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableMeetYourNewAdvisorRail",
   },
-  AREnableArtworkLists: {
+  AREnableArtworksLists: {
     readyForRelease: true,
     description: "Enable Artwork Lists",
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkLists",
+    echoFlagKey: "AREnableArtworksLists",
   },
   AREnableNewAuctionsRailCard: {
     description: "Enable New Auctions Home Rail Card",
