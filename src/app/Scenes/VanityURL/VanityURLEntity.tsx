@@ -4,9 +4,7 @@ import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntit
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
@@ -20,16 +18,11 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
   // https://github.com/facebook/relay/commit/ed53bb095ddd494092819884cb4f46df94b45b79#diff-4e3d961b12253787bd61506608bc366be34ab276c09690de7df17203de7581e8
   const isFair = fairOrPartner.__typename === "Fair" || "slug" in fairOrPartner
   const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
-  const { safeAreaInsets } = useScreenDimensions()
 
   if (isFair) {
     return <FairFragmentContainer fair={fairOrPartner} />
   } else if (isPartner) {
-    return (
-      <View style={{ flex: 1, paddingTop: safeAreaInsets.top ?? 0 }}>
-        <PartnerContainer partner={fairOrPartner} />
-      </View>
-    )
+    return <PartnerContainer partner={fairOrPartner} />
   } else {
     return <VanityURLPossibleRedirect slug={originalSlug} />
   }
@@ -58,7 +51,6 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else if (!entity && !slugType) {
@@ -83,11 +75,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
               case "fair":
                 return <FairPlaceholder />
               case "partner":
-                return (
-                  <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>
-                    <PartnerSkeleton />
-                  </View>
-                )
+                return <PartnerSkeleton />
               default:
                 return (
                   <Flex
