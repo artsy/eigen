@@ -65,7 +65,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Text variant="sm-display" testID="viewAll">{`View All (${totalCount})`}</Text>
+            <Text variant="xs" underline testID="viewAll">{`View All (${totalCount})`}</Text>
           </TouchableOpacity>
         )}
       </Flex>
