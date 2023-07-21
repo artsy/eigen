@@ -10,9 +10,14 @@ interface ArtistItem {
   // TODO: Implement compact version of artists grid
   compact?: boolean
   isPrivate?: boolean
+  interestId: string
 }
 
-export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist, isPrivate }) => {
+export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
+  artist,
+  isPrivate,
+  interestId,
+}) => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
   const artistData = useFragment<MyCollectionCollectedArtistItem_artist$key>(artistFragment, artist)
   const space = useSpace()
@@ -20,7 +25,8 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({ artist, 
   const showArtistPreview = () => {
     setViewKind({
       viewKind: "Artist",
-      id: artistData.internalID,
+      artistId: artistData.internalID,
+      interestId: interestId,
     })
   }
 

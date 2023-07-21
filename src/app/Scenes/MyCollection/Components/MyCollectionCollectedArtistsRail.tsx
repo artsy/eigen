@@ -2,7 +2,6 @@ import { Avatar, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "@artsy
 import { MyCollectionCollectedArtistsRail_artist$key } from "__generated__/MyCollectionCollectedArtistsRail_artist.graphql"
 import { MyCollectionCollectedArtistsRail_me$key } from "__generated__/MyCollectionCollectedArtistsRail_me.graphql"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { extractNodes } from "app/utils/extractNodes"
 import { Animated } from "react-native"
 import { useFragment, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -31,18 +30,33 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
     loadNext(10)
   }
 
-  const collectedArtists = extractNodes(data.userInterestsConnection)
+  const userInterests = data.userInterestsConnection?.edges || []
+  const collectedArtists = userInterests.map((userInterest) => userInterest?.node)
 
   if (!collectedArtists) return <></>
+
+  const filteredUserInterests = userInterests.filter((userInterest) => {
+    if (userInterest?.internalID && userInterest.node && userInterest.node.internalID) {
+      return true
+    }
+    return
+  })
 
   return (
     <Flex>
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={collectedArtists}
-        renderItem={({ item }) => <Artist key={item.internalID} artist={item} />}
-        keyExtractor={({ internalID }) => internalID!}
+        data={filteredUserInterests}
+        renderItem={({ item }) => {
+          if (item?.node && item.internalID && item.node.internalID) {
+            return (
+              <Artist key={item.node.internalID} artist={item.node} interestId={item.internalID} />
+            )
+          }
+          return null
+        }}
+        keyExtractor={(item, index) => item?.internalID || index.toString()}
         onEndReachedThreshold={1}
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
@@ -70,9 +84,10 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   )
 }
 
-export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$key }> = ({
-  artist,
-}) => {
+export const Artist: React.FC<{
+  artist: MyCollectionCollectedArtistsRail_artist$key
+  interestId: string
+}> = ({ artist, interestId }) => {
   const data = useFragment(artistFragment, artist)
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
 
@@ -82,7 +97,8 @@ export const Artist: React.FC<{ artist: MyCollectionCollectedArtistsRail_artist$
       onPress={() => {
         setViewKind({
           viewKind: "Artist",
-          id: data.internalID,
+          artistId: data.internalID,
+          interestId: interestId,
         })
       }}
       accessibilityHint={`View more details ${data.name}`}
@@ -112,6 +128,7 @@ const collectedArtistsPaginationFragment = graphql`
       interestType: ARTIST
     ) @connection(key: "MyCollectionCollectedArtistsRail_userInterestsConnection") {
       edges {
+        internalID
         node {
           ... on Artist {
             internalID

@@ -14,6 +14,7 @@ import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generat
 import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
+import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
@@ -22,50 +23,54 @@ import { graphql } from "relay-runtime"
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data
   me: MyCollectionBottomSheetModalArtistPreview_me$data
+  interestId: string
 }
 
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
-> = ({ artist, me }) => {
-  const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
-  const canBeRemoved = artworksCountWithinMyCollection === 0
+> = ({ artist, me, interestId }) => {
+  const artworksCountWithMyCollection = me?.myCollectionConnection?.totalCount ?? 0
+  const canBeRemoved = artworksCountWithMyCollection === 0
 
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer
-              artist={artist}
-              uploadsCount={artworksCountWithinMyCollection}
-            />
+            <ArtistListItemContainer artist={artist} uploadsCount={artworksCountWithMyCollection} />
             <ArtistKindPills artist={artist} />
           </Join>
 
           <ShareArtistCheckbox onCheckboxPress={() => {}} />
 
-          <RemoveTheArtist canBeRemoved={canBeRemoved} />
+          {canBeRemoved ? (
+            <Text
+              onPress={() => {
+                deleteUserInterest({
+                  id: interestId,
+                })
+              }}
+              color="red100"
+              variant="xs"
+              underline
+            >
+              Remove Artist
+            </Text>
+          ) : (
+            <>
+              <Spacer y={1} />
+              <Message
+                variant="default"
+                title="To remove this artist, please remove their artworks from My Collection first."
+                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
+              />
+            </>
+          )}
         </Join>
       </Flex>
     </BottomSheetView>
   )
 }
-
-const RemoveTheArtist: React.FC<{ canBeRemoved: boolean }> = ({ canBeRemoved }) => (
-  <Join separator={<Spacer y={1} />}>
-    {canBeRemoved ? (
-      <Text onPress={() => {}} color="red100" variant="xs" underline>
-        Remove Artist
-      </Text>
-    ) : (
-      <Message
-        variant="default"
-        title="To remove this artist, please remove their artworks from My Collection first."
-        IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
-      />
-    )}
-  </Join>
-)
 
 const ShareArtistCheckbox: React.FC<{ onCheckboxPress: () => void }> = ({ onCheckboxPress }) => {
   return (
@@ -104,7 +109,8 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
 
 export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
   artistID: string
-}> = ({ artistID }) => {
+  interestId: string
+}> = ({ artistID, interestId }) => {
   return (
     <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
       environment={getRelayEnvironment()}
@@ -126,6 +132,9 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         Container: MyCollectionBottomSheetModalArtistPreviewFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
         renderFallback: () => null,
+        initialProps: {
+          interestId,
+        },
       })}
     />
   )

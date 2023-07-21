@@ -12,7 +12,8 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
 
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
   const view = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const id = MyCollectionTabsStore.useStoreState((state) => state.id)
+  const artistId = MyCollectionTabsStore.useStoreState((state) => state.artistId)
+  const interestId = MyCollectionTabsStore.useStoreState((state) => state.interestId)
 
   const snapPoints = useMemo(() => [view === "Artist" ? 410 : 370], [])
 
@@ -45,9 +46,12 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         handleIndicatorStyle={{ backgroundColor: "black", width: 40, height: 4, borderRadius: 2 }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
-        {view === "Artist" && !!id && (
-          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer artistID={id} />
-        )}
+        {view === "Artist" && !!artistId && !!interestId ? (
+          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer
+            artistID={artistId}
+            interestId={interestId}
+          />
+        ) : null}
       </BottomSheet>
     </>
   )
