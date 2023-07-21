@@ -40,7 +40,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
     return null
   }
 
-  const artists = userInterests?.filter((userInterest) => {
+  const filteredUserInterests = userInterests?.filter((userInterest) => {
     return stringIncludes(userInterest?.node?.name || "", keyword)
   })
 
@@ -51,18 +51,21 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <Spacer y={1} />
 
       <FlatList
-        data={artists}
+        data={filteredUserInterests}
         key="list"
-        keyExtractor={(item) => "list" + item?.node!.internalID}
+        keyExtractor={(item) => "list" + item?.node?.internalID}
         renderItem={({ item }) => {
-          return (
-            <MyCollectionCollectedArtistItem
-              artist={item?.node!}
-              key={item?.node!.internalID}
-              isPrivate={item?.private}
-              compact
-            />
-          )
+          if (item && item.node && item.node.internalID && item.private) {
+            return (
+              <MyCollectionCollectedArtistItem
+                artist={item.node}
+                key={item.node.internalID}
+                isPrivate={item.private}
+                compact
+              />
+            )
+          }
+          return null
         }}
         onEndReached={handleLoadMore}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
