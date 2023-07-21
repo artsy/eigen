@@ -1,4 +1,4 @@
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Biography_artist$key } from "__generated__/Biography_artist.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import React, { useState } from "react"
@@ -25,13 +25,15 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   return (
     <Flex maxWidth={650}>
       <SectionTitle title="Biography" />
-      <Text variant="sm">
-        {`${expanded ? text : truncatedText} `}
+      <Text>
+        <Text>{`${expanded ? text : truncatedText}${
+          text.length > MAX_CHARS && !expanded ? "... " : " "
+        }`}</Text>
 
         {!!canExpand && (
-          <Touchable onPress={() => setExpanded((e) => !e)} haptic>
-            <Text underline>{expanded ? "Read Less" : "Read More"}</Text>
-          </Touchable>
+          <Text underline onPress={() => setExpanded((e) => !e)}>
+            {expanded ? "Read Less" : "Read More"}
+          </Text>
         )}
       </Text>
     </Flex>
