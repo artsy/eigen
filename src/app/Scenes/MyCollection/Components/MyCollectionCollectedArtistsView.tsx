@@ -53,7 +53,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <FlatList
         data={filteredUserInterests}
         key="list"
-        keyExtractor={(item) => "list" + item?.node}
+        keyExtractor={(item) => "list" + item?.internalID}
         renderItem={({ item }) => {
           if (item?.node) {
             return (
@@ -97,10 +97,7 @@ const collectedArtistsPaginationFragment = graphql`
     ) @connection(key: "MyCollectionCollectedArtistsView_userInterestsConnection") {
       edges {
         internalID
-<<<<<<< HEAD
         private
-=======
->>>>>>> 2732f4774e (feat: add delete user interest mutation)
         node {
           ... on Artist {
             internalID
