@@ -1,6 +1,10 @@
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 /** Renders a React Component with specified layout using onLayout callback */
+
+/**
+ * @deprecated
+ */
 export const renderWithLayout = (component: any, layout: { width?: number; height?: number }) => {
   // create the component with renderer
   component = renderWithWrappersLEGACY(component)
