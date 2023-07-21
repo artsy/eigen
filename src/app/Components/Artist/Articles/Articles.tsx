@@ -21,7 +21,9 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="sm-display">{`Artsy Editorial Featuring ${artistData.name}`}</Text>
         <Touchable onPress={() => navigate(`artist/${artistData.slug}/articles`)}>
-          <Text variant="xs">View All</Text>
+          <Text variant="xs" underline>
+            View All
+          </Text>
         </Touchable>
       </Flex>
 
