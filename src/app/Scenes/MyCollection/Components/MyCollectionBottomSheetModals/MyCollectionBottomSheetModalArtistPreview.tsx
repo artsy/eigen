@@ -27,15 +27,18 @@ interface MyCollectionBottomSheetModalArtistPreviewProps {
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
 > = ({ artist, me }) => {
-  const artworksCountWithMyCollection = me?.myCollectionConnection?.totalCount ?? 0
-  const canBeRemoved = artworksCountWithMyCollection === 0
+  const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
+  const canBeRemoved = artworksCountWithinMyCollection === 0
 
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer artist={artist} uploadsCount={artworksCountWithMyCollection} />
+            <ArtistListItemContainer
+              artist={artist}
+              uploadsCount={artworksCountWithinMyCollection}
+            />
             <ArtistKindPills artist={artist} />
           </Join>
 
