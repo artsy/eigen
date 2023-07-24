@@ -567,9 +567,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 disabled={isLoading}
                 flex={undefined}
               >
-                <Text color="black60">
+                <Text color="black60" variant="xs">
                   I agree to{" "}
                   <LinkText
+                    variant="xs"
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
                   >
                     {partnerName(sale!)} Conditions of Sale
@@ -582,6 +583,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Text variant="xs" mt={2} color="black60">
                   I agree to{" "}
                   <LinkText
+                    variant="xs"
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
                   >
                     {partnerName(sale!)} Conditions of Sale
