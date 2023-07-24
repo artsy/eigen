@@ -178,141 +178,141 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       contextScreenOwnerSlug={contextScreenOwnerSlug}
       contextScreenOwnerType={contextScreenOwnerType}
     >
-      {/* <ContextMenuArtwork
+      <ContextMenuArtwork
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         size={size}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         dark={dark}
         artwork={artwork}
-      > */}
-      <TouchableHighlight
-        underlayColor={backgroundColor}
-        activeOpacity={0.8}
-        onPress={onPress}
-        testID={testID}
       >
-        <Flex backgroundColor={backgroundColor}>
-          <ArtworkRailCardImage
-            containerWidth={containerWidth}
-            image={image}
-            size={size}
-            urgencyTag={urgencyTag}
-            imageHeightExtra={
-              displayForRecentlySoldArtwork
-                ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
-                : undefined
-            }
-          />
-          <Flex
-            my={1}
-            width={containerWidth}
-            // Recently sold artworks require more space for the text container
-            // to accommodate the estimate and realized price
-            style={{
-              height: fontScale * getTextHeightByArtworkSize(size),
-            }}
-            backgroundColor={backgroundColor}
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Flex flex={1} backgroundColor={backgroundColor}>
-              {!!lotLabel && (
-                <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
-                  Lot {lotLabel}
-                </Text>
-              )}
-              {!hideArtistName && !!artistNames && (
-                <Text
-                  color={primaryTextColor}
-                  numberOfLines={size === "small" ? 2 : 1}
-                  lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                  variant={displayForRecentlySoldArtwork ? "md" : "xs"}
-                >
-                  {artistNames}
-                </Text>
-              )}
-              {!!title && (
-                <Text
-                  lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                  color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                  numberOfLines={size === "small" ? 2 : 1}
-                  variant="xs"
-                  fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
-                >
-                  {title}
-                  {!!date && (
-                    <Text
-                      lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
-                      color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
-                      numberOfLines={size === "small" ? 2 : 1}
-                      variant="xs"
-                    >
-                      {title && date ? ", " : ""}
-                      {date}
-                    </Text>
-                  )}
-                </Text>
-              )}
+        <TouchableHighlight
+          underlayColor={backgroundColor}
+          activeOpacity={0.8}
+          onPress={onPress}
+          testID={testID}
+        >
+          <Flex backgroundColor={backgroundColor}>
+            <ArtworkRailCardImage
+              containerWidth={containerWidth}
+              image={image}
+              size={size}
+              urgencyTag={urgencyTag}
+              imageHeightExtra={
+                displayForRecentlySoldArtwork
+                  ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
+                  : undefined
+              }
+            />
+            <Flex
+              my={1}
+              width={containerWidth}
+              // Recently sold artworks require more space for the text container
+              // to accommodate the estimate and realized price
+              style={{
+                height: fontScale * getTextHeightByArtworkSize(size),
+              }}
+              backgroundColor={backgroundColor}
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <Flex flex={1} backgroundColor={backgroundColor}>
+                {!!lotLabel && (
+                  <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
+                    Lot {lotLabel}
+                  </Text>
+                )}
+                {!hideArtistName && !!artistNames && (
+                  <Text
+                    color={primaryTextColor}
+                    numberOfLines={size === "small" ? 2 : 1}
+                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                    variant={displayForRecentlySoldArtwork ? "md" : "xs"}
+                  >
+                    {artistNames}
+                  </Text>
+                )}
+                {!!title && (
+                  <Text
+                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                    color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                    numberOfLines={size === "small" ? 2 : 1}
+                    variant="xs"
+                    fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
+                  >
+                    {title}
+                    {!!date && (
+                      <Text
+                        lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                        color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
+                        numberOfLines={size === "small" ? 2 : 1}
+                        variant="xs"
+                      >
+                        {title && date ? ", " : ""}
+                        {date}
+                      </Text>
+                    )}
+                  </Text>
+                )}
 
-              {!!showPartnerName && !!partner?.name && (
-                <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
-                  {partner?.name}
-                </Text>
-              )}
-              {!!isRecentlySoldArtwork && (size === "large" || size === "extraLarge") && (
-                <RecentlySoldCardSection
-                  priceRealizedDisplay={priceRealizedDisplay}
-                  lowEstimateDisplay={lowEstimateDisplay}
-                  highEstimateDisplay={highEstimateDisplay}
-                  performanceDisplay={performanceDisplay}
-                  secondaryTextColor={secondaryTextColor}
-                />
-              )}
+                {!!showPartnerName && !!partner?.name && (
+                  <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
+                    {partner?.name}
+                  </Text>
+                )}
+                {!!isRecentlySoldArtwork && (size === "large" || size === "extraLarge") && (
+                  <RecentlySoldCardSection
+                    priceRealizedDisplay={priceRealizedDisplay}
+                    lowEstimateDisplay={lowEstimateDisplay}
+                    highEstimateDisplay={highEstimateDisplay}
+                    performanceDisplay={performanceDisplay}
+                    secondaryTextColor={secondaryTextColor}
+                  />
+                )}
 
-              {!!saleMessage && !isRecentlySoldArtwork && (
-                <Text
-                  lineHeight="20px"
-                  variant="xs"
-                  color={primaryTextColor}
-                  numberOfLines={1}
-                  fontWeight={500}
-                >
-                  {saleMessage}
-                </Text>
+                {!!saleMessage && !isRecentlySoldArtwork && (
+                  <Text
+                    lineHeight="20px"
+                    variant="xs"
+                    color={primaryTextColor}
+                    numberOfLines={1}
+                    fontWeight={500}
+                  >
+                    {saleMessage}
+                  </Text>
+                )}
+              </Flex>
+              {!!showSaveIcon && (
+                <Flex>
+                  <Touchable
+                    haptic
+                    hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+                    onPress={saveArtworkToLists}
+                    testID="save-artwork-icon"
+                    underlayColor={backgroundColor}
+                  >
+                    {isSaved ? (
+                      <HeartFillIcon
+                        testID="filled-heart-icon"
+                        height={SAVE_ICON_SIZE}
+                        width={SAVE_ICON_SIZE}
+                        fill="blue100"
+                      />
+                    ) : (
+                      <HeartIcon
+                        testID="empty-heart-icon"
+                        height={SAVE_ICON_SIZE}
+                        width={SAVE_ICON_SIZE}
+                        fill={primaryTextColor}
+                      />
+                    )}
+                  </Touchable>
+                </Flex>
               )}
             </Flex>
-            {!!showSaveIcon && (
-              <Flex>
-                <Touchable
-                  haptic
-                  hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
-                  onPress={saveArtworkToLists}
-                  testID="save-artwork-icon"
-                  underlayColor={backgroundColor}
-                >
-                  {isSaved ? (
-                    <HeartFillIcon
-                      testID="filled-heart-icon"
-                      height={SAVE_ICON_SIZE}
-                      width={SAVE_ICON_SIZE}
-                      fill="blue100"
-                    />
-                  ) : (
-                    <HeartIcon
-                      testID="empty-heart-icon"
-                      height={SAVE_ICON_SIZE}
-                      width={SAVE_ICON_SIZE}
-                      fill={primaryTextColor}
-                    />
-                  )}
-                </Touchable>
-              </Flex>
-            )}
           </Flex>
-        </Flex>
-      </TouchableHighlight>
-      {/* </ContextMenuArtwork> */}
+        </TouchableHighlight>
+      </ContextMenuArtwork>
 
       <CreateArtworkAlertModal
         artwork={artwork}

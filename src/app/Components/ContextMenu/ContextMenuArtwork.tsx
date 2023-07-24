@@ -12,11 +12,10 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import React from "react"
-import { InteractionManager, Platform, Text, View } from "react-native"
+import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { useTracking } from "react-tracking"
-import { backgroundColor } from "styled-system"
 
 interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
   onPress?: () => void
@@ -189,7 +188,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data,
     size: ArtworkCardSize
   ) => {
-    return <Text>Hamburgers</Text> // <ContextMenuArtworkPreviewCard artwork={artwork} size={size} />
+    return <ContextMenuArtworkPreviewCard artwork={artwork} size={size} />
   }
 
   return (
@@ -197,7 +196,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       actions={contextActions}
       onPress={handleContextPress}
       onCancel={handleContextCancel}
-      // preview={artworkPreviewComponent(artwork, size)}
+      preview={artworkPreviewComponent(artwork, size)}
       hideShadows={true}
       previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       disabled={!shouldDisplayContextMenu}
