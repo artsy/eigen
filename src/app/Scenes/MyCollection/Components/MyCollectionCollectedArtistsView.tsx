@@ -3,7 +3,6 @@ import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollect
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
-import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
 import { FlatList } from "react-native"
@@ -33,14 +32,16 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const collectedArtists = extractNodes(data.userInterestsConnection)
+  const userInterests = (data.userInterestsConnection?.edges || []).filter((edge) => {
+    return !!edge
+  })
 
-  if (!collectedArtists.length) {
+  if (!userInterests.length) {
     return null
   }
 
-  const artists = extractNodes(data.userInterestsConnection)?.filter((artist) => {
-    return stringIncludes(artist?.name || "", keyword)
+  const filteredUserInterests = userInterests?.filter((userInterest) => {
+    return stringIncludes(userInterest?.node?.name || "", keyword)
   })
 
   return (
@@ -50,11 +51,21 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <Spacer y={1} />
 
       <FlatList
-        data={artists}
+        data={filteredUserInterests}
         key="list"
-        keyExtractor={(item) => "list" + item.internalID}
+        keyExtractor={(item) => "list" + item?.node?.internalID}
         renderItem={({ item }) => {
-          return <MyCollectionCollectedArtistItem artist={item} key={item.internalID} compact />
+          if (item && item.node && item.node.internalID && item.private) {
+            return (
+              <MyCollectionCollectedArtistItem
+                artist={item.node}
+                key={item.node.internalID}
+                isPrivate={item.private}
+                compact
+              />
+            )
+          }
+          return null
         }}
         onEndReached={handleLoadMore}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
@@ -84,6 +95,8 @@ const collectedArtistsPaginationFragment = graphql`
       interestType: ARTIST
     ) @connection(key: "MyCollectionCollectedArtistsView_userInterestsConnection") {
       edges {
+        internalID
+        private
         node {
           ... on Artist {
             internalID

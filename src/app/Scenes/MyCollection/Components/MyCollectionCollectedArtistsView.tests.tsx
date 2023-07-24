@@ -78,12 +78,24 @@ describe("MyCollectionCollectedArtistsView", () => {
     await expect(getByText("Rhombie Sandoval")).toBeTruthy()
     await expect(getByText("Banksy")).toBeTruthy()
   })
+
+  it("renders the privacy lock next to the artist name", async () => {
+    const { getAllByTestId } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Me() {
+        return mockUserInterest
+      },
+    })
+
+    await expect(getAllByTestId("lock-icon")).toHaveLength(2)
+  })
 })
 
 const mockUserInterest = {
   userInterestsConnection: {
     edges: [
       {
+        private: true,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Rhombie Sandoval",
@@ -94,6 +106,7 @@ const mockUserInterest = {
         },
       },
       {
+        private: true,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Banksy",
