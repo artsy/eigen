@@ -1,0 +1,107 @@
+import { Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { MyCollectionCollectedArtistsPrivacyArtistsList_me$key } from "__generated__/MyCollectionCollectedArtistsPrivacyArtistsList_me.graphql"
+import { SelectArtistToShareListItem } from "app/Scenes/MyCollection/Components/SelectArtistToShareListItem"
+import { FlatList } from "react-native"
+import { usePaginationFragment } from "react-relay"
+import { graphql } from "relay-runtime"
+
+interface MyCollectionCollectedArtistsPrivacyArtistsListProps {
+  me: MyCollectionCollectedArtistsPrivacyArtistsList_me$key
+}
+
+export const ARTIST_CIRCLE_DIAMETER = 100
+
+export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
+  MyCollectionCollectedArtistsPrivacyArtistsListProps
+> = ({ me }) => {
+  const space = useSpace()
+  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
+    myCollectionCollectedArtistsPrivacyArtistsListPaginationFragment,
+    me
+  )
+
+  const handleLoadMore = () => {
+    if (!hasNext || isLoadingNext) {
+      return
+    }
+
+    loadNext(10)
+  }
+
+  const userInterests = data.userInterestsConnection?.edges || []
+
+  if (userInterests.length === 0) {
+    return null
+  }
+
+  return (
+    <FlatList
+      showsHorizontalScrollIndicator
+      data={userInterests}
+      renderItem={({ item }) => {
+        if (item?.internalID && item.node) {
+          return (
+            <SelectArtistToShareListItem
+              key={item?.internalID}
+              artist={item?.node!}
+              checked={!!item?.private}
+            />
+          )
+        }
+        return null
+      }}
+      contentContainerStyle={{ paddingBottom: space(6), paddingHorizontal: space(2) }}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
+      ListHeaderComponent={HeaderComponent}
+      ListFooterComponent={() => {
+        if (!!isLoadingNext) {
+          return (
+            <Flex>
+              <Flex alignItems="center" justifyContent="center" height={60}>
+                <Spinner />
+              </Flex>
+            </Flex>
+          )
+        }
+        return null
+      }}
+      onEndReached={handleLoadMore}
+    />
+  )
+}
+
+export const HeaderComponent = () => {
+  return (
+    <Flex py={4}>
+      <Text variant="lg-display">Select artists to share</Text>
+      <Text mt={1} variant="sm-display">
+        Which artists in your collection would you like galleries to see when you contact them?
+      </Text>
+    </Flex>
+  )
+}
+
+const myCollectionCollectedArtistsPrivacyArtistsListPaginationFragment = graphql`
+  fragment MyCollectionCollectedArtistsPrivacyArtistsList_me on Me
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @refetchable(
+    queryName: "MyCollectionCollectedArtistsPrivacyArtistsList_myCollectionInfoRefetch"
+  ) {
+    userInterestsConnection(
+      first: $count
+      after: $after
+      category: COLLECTED_BEFORE
+      interestType: ARTIST
+    ) @connection(key: "MyCollectionCollectedArtistsPrivacyArtistsList_userInterestsConnection") {
+      edges {
+        internalID
+        private
+        node {
+          ... on Artist {
+            ...SelectArtistToShareListItem_artist
+          }
+        }
+      }
+    }
+  }
+`

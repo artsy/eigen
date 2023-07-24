@@ -7,13 +7,11 @@ import { graphql } from "relay-runtime"
 interface SelectArtistToShareListItemProps {
   artist: SelectArtistToShareListItem_artist$key
   checked: boolean
-  oncheckBoxPress: (internalID: string) => void
 }
 
 export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemProps> = ({
   artist,
   checked,
-  oncheckBoxPress,
 }) => {
   const artistData = useFragment<SelectArtistToShareListItem_artist$key>(artistFragment, artist)
 
@@ -25,7 +23,15 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       showFollowButton={false}
       onPress={() => {}}
       RightButton={
-        <Checkbox mr={1} checked={checked} onPress={() => oncheckBoxPress(artistData.internalID)} />
+        <Checkbox
+          mr={1}
+          checked={checked}
+          accessibilityHint={`Share ${artistData.name} with galleries}`}
+          accessibilityState={{ checked }}
+          onPress={() => {
+            console.warn("not yet ready")
+          }}
+        />
       }
     />
   )
@@ -34,6 +40,7 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
 const artistFragment = graphql`
   fragment SelectArtistToShareListItem_artist on Artist {
     internalID
+    name
     ...ArtistListItem_artist
   }
 `
