@@ -751,7 +751,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
-            heroUnitsConnection(first: 10, private: true) @optionalField {
+            heroUnitsConnection(first: 10, private: false) @optionalField {
               ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
             }
