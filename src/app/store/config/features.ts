@@ -252,8 +252,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnablePriceControlForCreateAlertFlow: {
     description: "Enable Inline price control for Create Alert modal flow",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnablePriceControlForCreateAlertFlow",
   },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
