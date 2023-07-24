@@ -84,6 +84,7 @@ const mockUserInterest = {
   userInterestsConnection: {
     edges: [
       {
+        private: true,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Rhombie Sandoval",
@@ -94,6 +95,7 @@ const mockUserInterest = {
         },
       },
       {
+        private: false,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Banksy",
