@@ -30,11 +30,12 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
+import { fetchUserInterestByArtistId } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/fetchUserInterestByArtistId"
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -230,14 +231,20 @@ export const MyCollectionArtworkFormMain: React.FC<
       if (!__TEST__) {
         await myCollectionDeleteArtwork(artwork!.internalID)
       }
-      if (shouldDeleteArtist) {
-        // TODO: Get the interest id from the backend
-        const interestId = "interest-id"
+
+      if (shouldDeleteArtist && formikValues.artistSearchResult?.internalID) {
+        const interest = await fetchUserInterestByArtistId(
+          formikValues.artistSearchResult?.internalID
+        )
+
         await deleteUserInterest({
-          id: interestId,
+          id: interest?.internalID!,
         })
+
+        setShowDeleteArtistModal(false)
       }
       refreshMyCollection()
+      dismissModal()
       popToRoot()
     } catch (e) {
       if (__DEV__) {
