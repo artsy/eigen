@@ -7,7 +7,6 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
@@ -17,7 +16,7 @@ import {
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo, useState } from "react"
-import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
+import { GestureResponderEvent, Image, PixelRatio, TouchableHighlight, View } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -182,7 +181,8 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
         testID={testID}
       >
         <Flex backgroundColor={backgroundColor} m={1}>
-          <ContextMenuArtworkPreviewCardImage
+          <Text>Some Text</Text>
+          {/* <ContextMenuArtworkPreviewCardImage
             containerWidth={containerWidth}
             image={image}
             size="extraLarge"
@@ -192,7 +192,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
                 ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
                 : undefined
             }
-          />
+          /> */}
           <Flex
             my={1}
             width={containerWidth}
@@ -301,11 +301,11 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
           </Flex>
         </Flex>
       </TouchableHighlight>
-      <CreateArtworkAlertModal
+      {/* <CreateArtworkAlertModal
         artwork={artwork}
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
-      />
+      /> */}
     </AnalyticsContextProvider>
   )
 }
@@ -363,36 +363,49 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
   )
 
   return (
-    <Flex>
-      <Flex width={containerWidth}>
-        <OpaqueImageView
-          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
-          imageURL={src}
-          height={
-            imageDimensions.height
-              ? imageDimensions.height + imageHeightExtra
-              : ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
-          }
-          width={containerWidth!}
-        />
-      </Flex>
-      {!!urgencyTag && (
-        <Flex
-          backgroundColor={color("white100")}
-          position="absolute"
-          px="5px"
-          py="3px"
-          bottom="5px"
-          left="5px"
-          borderRadius={2}
-          alignSelf="flex-start"
-        >
-          <Text variant="xs" color={color("black100")} numberOfLines={1}>
-            {urgencyTag}
-          </Text>
-        </Flex>
-      )}
-    </Flex>
+    <Text>Hamburgers</Text>
+    // <Flex>
+    //   <Flex width={containerWidth}>
+    // <OpaqueImageView
+    //   style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
+    //   imageURL={src}
+    //   height={
+    //     imageDimensions.height
+    //       ? imageDimensions.height + imageHeightExtra
+    //       : ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
+    //   }
+    //   width={containerWidth!}
+    // />
+    // <Image
+    //   source={{ uri: src }}
+    //   style={{ width: containerWidth!, height: imageDimensions.height }}
+    //   // style={{
+    //   //   maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    //   //   height: imageDimensions.height
+    //   //     ? imageDimensions.height + imageHeightExtra
+    //   //     : ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    //   //   width: containerWidth!,
+    //   // }}
+    // />
+    //   </Flex>
+    //   {!!urgencyTag && (
+    //     <Flex
+    //       backgroundColor={color("white100")}
+    //       position="absolute"
+    //       px="5px"
+    //       py="3px"
+    //       bottom="5px"
+    //       left="5px"
+    //       borderRadius={2}
+    //       alignSelf="flex-start"
+    //     >
+    //       <Text variant="xs" color={color("black100")} numberOfLines={1}>
+    //         {urgencyTag}
+    //       </Text>
+    //     </Flex>
+    //   )}
+    // </Flex>
+    //)
   )
 }
 
