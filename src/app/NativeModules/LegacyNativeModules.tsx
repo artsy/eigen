@@ -22,11 +22,10 @@ const noop: any = (name: string) => () =>
 
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
-    requestPrepromptNotificationPermissions(): void
-    requestDirectNotificationPermissions(): void
     fetchNotificationPermissions(
       callback: (error: any, result: PushAuthorizationStatus) => void
     ): void
+    markUserPermissionStatus(granted: boolean): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
     getUserEmail(): string
@@ -128,9 +127,8 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARTemporaryAPIModule: {
-    requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
-    requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
     fetchNotificationPermissions: noop("fetchNotificationPermissions"),
+    markUserPermissionStatus: noop("markUserPermissionStatus"),
     markNotificationsRead: noop("markNotificationsRead"),
     setApplicationIconBadgeNumber: () => {
       console.log("TODO: make app icon badge work on android")

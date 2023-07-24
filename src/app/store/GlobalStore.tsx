@@ -167,6 +167,19 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
 
 /**
  * This is marked as unsafe because it will not cause a re-render
+ * if used in a react component. Use GlobalStore.useAppState instead.
+ * It is safe to use in contexts that don't require reactivity.
+ */
+export function unsafe_getPushPromptSettings() {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.artsyPrefs.pushPromptLogic
+  }
+  return null
+}
+
+/**
+ * This is marked as unsafe because it will not cause a re-render
  * if used in a react component. Use `useLocalizedUnit` instead.
  * It is safe to use in contexts that don't require reactivity.
  */

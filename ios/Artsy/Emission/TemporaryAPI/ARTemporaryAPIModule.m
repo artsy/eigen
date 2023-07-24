@@ -1,27 +1,16 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AREmission.h"
+#import <Appboy.h>
 
 
 @implementation ARTemporaryAPIModule
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(requestDirectNotificationPermissions)
+RCT_EXPORT_METHOD(markUserPermissionStatus:(BOOL)granted)
 {
-    /* Used in settings screen to directly ask user for push permissions */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.directNotificationPermissionPrompter();
-    });
-}
-
-
-RCT_EXPORT_METHOD(requestPrepromptNotificationPermissions)
-{
-    /* Used on login with some additional logic before requesting permissions */
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.prepromptNotificationPermissionPrompter();
-    });
+    [[Appboy sharedInstance] pushAuthorizationFromUserNotificationCenter:granted];
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
