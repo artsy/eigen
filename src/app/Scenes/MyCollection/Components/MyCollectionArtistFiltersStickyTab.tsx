@@ -1,11 +1,10 @@
-import { Flex, Input, useSpace } from "@artsy/palette-mobile"
+import { Flex, Input } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { debounce } from "lodash"
 import { useEffect, useState } from "react"
 
 export const MyCollectionArtistFilters: React.FC<{}> = () => {
-  const space = useSpace()
   const keyword = MyCollectionArtworksKeywordStore.useStoreState((state) => state.keyword)
   const [query, setQuery] = useState(keyword)
 
@@ -20,7 +19,7 @@ export const MyCollectionArtistFilters: React.FC<{}> = () => {
   }, [query])
 
   return (
-    <Flex backgroundColor="white100" flexDirection="row" pb={1}>
+    <Flex pb={1} px={2}>
       <Input
         testID="MyCollectionSearchBarInput"
         icon={<SearchIcon width={18} height={18} />}
@@ -30,15 +29,8 @@ export const MyCollectionArtistFilters: React.FC<{}> = () => {
         value={query}
         returnKeyType="done"
         autoCorrect={false}
-        style={{
-          marginLeft: space(2),
-        }}
         accessibilityLabel="Search Your Artists"
       />
-
-      <Flex px={2} justifyContent="center">
-        <Flex width={26} />
-      </Flex>
     </Flex>
   )
 }
