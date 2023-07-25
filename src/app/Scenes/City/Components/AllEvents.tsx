@@ -1,9 +1,9 @@
-import { Spacer, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, Separator, Tabs } from "@artsy/palette-mobile"
 import { EventSection } from "app/Scenes/City/Components/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
 import React from "react"
-import { FlatList, ViewProps } from "react-native"
+import { ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
@@ -118,7 +118,7 @@ export class AllEvents extends React.Component<Props, State> {
   renderItemSeparator = ({ leadingItem }) => {
     if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
       return (
-        <Box py={1} px={2}>
+        <Box py={1}>
           <Separator />
         </Box>
       )
@@ -175,11 +175,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "saved":
         return <SavedEventSection data={data} citySlug={citySlug} />
       case "header":
-        return (
-          <Box px={2} pt={4}>
-            {!!data && <Text variant="lg-display">{data}</Text>}
-          </Box>
-        )
+        return <Box pt={4}>{!!data && <Text variant="lg-display">{data}</Text>}</Box>
       default:
         return null
     }
@@ -189,7 +185,7 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <FlatList
+      <Tabs.FlatList
         data={sections}
         ItemSeparatorComponent={this.renderItemSeparator}
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
