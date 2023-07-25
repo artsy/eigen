@@ -25,14 +25,16 @@ import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
+import { MyCollectionArtworkFormDeleteArtworkModal } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/MyCollectionArtworkFormDeleteArtworkModal"
 import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Rarity"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
+import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -52,10 +54,14 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+
   const [showAbandonModal, setShowAbandonModal] = useState(false)
+  const [showDeleteArtistModal, setShowDeleteArtistModal] = useState(false)
+
   const { formik } = useArtworkForm()
   const color = useColor()
   const space = useSpace()
@@ -191,24 +197,57 @@ export const MyCollectionArtworkFormMain: React.FC<
   const isSubmission =
     mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
 
-  const handleDelete = async () => {
-    if (mode === "edit" && artwork) {
-      trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork.slug))
-      try {
-        // TODO: Fix this separetely
-        if (!__TEST__) {
-          await myCollectionDeleteArtwork(artwork.internalID)
+  const handleDelete = () => {
+    if (enableCollectedArtists) {
+      setShowDeleteArtistModal(true)
+      return
+    }
+
+    handleDeleteLegacy()
+  }
+
+  const handleDeleteLegacy = () => {
+    showActionSheetWithOptions(
+      {
+        title: "Delete artwork?",
+        options: ["Delete", "Cancel"],
+        destructiveButtonIndex: 0,
+        cancelButtonIndex: 1,
+        useModal: true,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          deleteArtwork?.()
         }
-        refreshMyCollection()
-        popToRoot()
-      } catch (e) {
-        if (__DEV__) {
-          console.error(e)
-        } else {
-          captureException(e)
-        }
-        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
       }
+    )
+  }
+
+  const deleteArtwork = async (shouldDeleteArtist?: boolean) => {
+    trackEvent(tracks.deleteCollectedArtwork(artwork!.internalID, artwork!.slug))
+    try {
+      // TODO: Fix this separetely
+      if (!__TEST__) {
+        await myCollectionDeleteArtwork(artwork!.internalID)
+      }
+
+      if (shouldDeleteArtist && formikValues.artistSearchResult?.internalID) {
+        await deleteUserInterest({
+          id: formikValues.artistSearchResult.internalID,
+        })
+
+        setShowDeleteArtistModal(false)
+      }
+      refreshMyCollection()
+      dismissModal()
+      popToRoot()
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
+      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     }
   }
 
@@ -217,6 +256,15 @@ export const MyCollectionArtworkFormMain: React.FC<
   return (
     <>
       <ArtsyKeyboardAvoidingView>
+        {!!enableCollectedArtists && formikValues.artistSearchResult?.internalID ? (
+          <MyCollectionArtworkFormDeleteArtworkModal
+            visible={showDeleteArtistModal}
+            hideModal={() => setShowDeleteArtistModal(false)}
+            deleteArtwork={deleteArtwork}
+            artistID={formikValues.artistSearchResult.internalID}
+          />
+        ) : null}
+
         <FancyModalHeader
           onLeftButtonPress={() => {
             if (isFormDirty() && mode === "edit") {
@@ -373,29 +421,14 @@ export const MyCollectionArtworkFormMain: React.FC<
           <Spacer y={2} />
 
           <ScreenMargin>
-            {mode === "edit" && (
+            {mode === "edit" && !!artwork && (
               <Text
                 my={4}
                 variant="sm"
                 underline
                 color={color("red100")}
                 textAlign="center"
-                onPress={() => {
-                  showActionSheetWithOptions(
-                    {
-                      title: "Delete artwork?",
-                      options: ["Delete", "Cancel"],
-                      destructiveButtonIndex: 0,
-                      cancelButtonIndex: 1,
-                      useModal: true,
-                    },
-                    (buttonIndex) => {
-                      if (buttonIndex === 0) {
-                        handleDelete?.()
-                      }
-                    }
-                  )
-                }}
+                onPress={handleDelete}
                 testID="DeleteButton"
               >
                 Delete artwork
