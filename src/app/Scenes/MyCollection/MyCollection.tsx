@@ -337,45 +337,60 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableCollectedArtists = useFeatureFlag("AREnableCollectedArtists")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
-      {/* <Separator /> */}
       <Spacer y={1} />
+
       {/* Sort & Filter  */}
-      <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
-        <PlaceholderText width={120} height={22} />
-        <PlaceholderText width={90} height={22} borderRadius={11} />
-      </Flex>
-      <Separator />
+      {!!enableCollectedArtists ? (
+        <Flex flexDirection="row" px={2} mt={1}>
+          <Spacer y={2} />
+          <PlaceholderBox width={60} height={30} borderRadius={50} marginRight={10} />
+          <PlaceholderBox width={75} height={30} borderRadius={50} />
+        </Flex>
+      ) : (
+        <>
+          <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
+            <PlaceholderText width={120} height={22} />
+            <PlaceholderText width={90} height={22} borderRadius={11} />
+          </Flex>
+          <Separator />
+        </>
+      )}
       <Spacer y={2} />
+
+      {/* collected artists rail */}
+      {!!enableCollectedArtists ? (
+        <Flex width="100%" px={2}>
+          <Flex my={0.5} flexDirection="row">
+            {times(4).map((i) => (
+              <Flex key={i} mr={1}>
+                <Flex>
+                  <PlaceholderBox
+                    borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                    key={i}
+                    width={ARTIST_CIRCLE_DIAMETER}
+                    height={ARTIST_CIRCLE_DIAMETER}
+                  />
+                </Flex>
+                <Flex mt={1} alignItems="center">
+                  <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+      ) : null}
+
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
         <Flex width="100%" px={2}>
-          <Flex my={0.5} flexDirection="row">
-            {!!enableCollectedArtists
-              ? times(4).map((i) => (
-                  <Flex key={i} mr={1}>
-                    <Flex>
-                      <PlaceholderBox
-                        borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-                        key={i}
-                        width={ARTIST_CIRCLE_DIAMETER}
-                        height={ARTIST_CIRCLE_DIAMETER}
-                      />
-                    </Flex>
-                    <Flex mt={1}>
-                      <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
-                    </Flex>
-                  </Flex>
-                ))
-              : null}
-          </Flex>
           {times(4).map((i) => (
-            <Flex key={i} my={0.5} flexDirection="row">
+            <Flex key={i} my={!!enableCollectedArtists ? 1 : 0.5} flexDirection="row">
               <Flex>
                 <PlaceholderBox
                   key={i}
