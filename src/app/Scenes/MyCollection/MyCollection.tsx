@@ -341,8 +341,8 @@ export const MyCollectionPlaceholder: React.FC = () => {
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
-      {/* <Separator /> */}
       <Spacer y={1} />
+
       {/* Sort & Filter  */}
       {!!enableCollectedArtists ? (
         <Flex flexDirection="row" px={2} mt={1}>
@@ -360,28 +360,30 @@ export const MyCollectionPlaceholder: React.FC = () => {
         </>
       )}
       <Spacer y={2} />
+
       {/* collected artists rail */}
-      <Flex width="100%" px={2}>
-        <Flex my={0.5} flexDirection="row">
-          {!!enableCollectedArtists
-            ? times(4).map((i) => (
-                <Flex key={i} mr={1}>
-                  <Flex>
-                    <PlaceholderBox
-                      borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
-                      key={i}
-                      width={ARTIST_CIRCLE_DIAMETER}
-                      height={ARTIST_CIRCLE_DIAMETER}
-                    />
-                  </Flex>
-                  <Flex mt={1} alignItems="center">
-                    <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
-                  </Flex>
+      {!!enableCollectedArtists ? (
+        <Flex width="100%" px={2}>
+          <Flex my={0.5} flexDirection="row">
+            {times(4).map((i) => (
+              <Flex key={i} mr={1}>
+                <Flex>
+                  <PlaceholderBox
+                    borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                    key={i}
+                    width={ARTIST_CIRCLE_DIAMETER}
+                    height={ARTIST_CIRCLE_DIAMETER}
+                  />
                 </Flex>
-              ))
-            : null}
+                <Flex mt={1} alignItems="center">
+                  <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
         </Flex>
-      </Flex>
+      ) : null}
+
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />
