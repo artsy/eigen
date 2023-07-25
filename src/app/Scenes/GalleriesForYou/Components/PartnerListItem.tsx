@@ -77,8 +77,8 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
 
   return (
     <Flex mx={2}>
-      <Flex width={width} mx="auto">
-        <Touchable onPress={handlePress}>
+      <Touchable onPress={handlePress}>
+        <Flex width={width} mx="auto">
           <OpaqueImageView imageURL={imageUrl} aspectRatio={1.33} width={width} />
 
           {!!showInitials && (
@@ -95,33 +95,33 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
               </Flex>
             </Flex>
           )}
-        </Touchable>
 
-        <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
-          <Flex mr={1} flexShrink={1}>
-            <Text variant="sm">{name}</Text>
-            {!!sortedLocations[0] && (
-              <Text variant="sm-display" color="black60">
-                {sortedLocations[0].city}
-                {!!(sortedLocations.length > 1) &&
-                  ` and ${sortedLocations.length - 1} more ${pluralize(
-                    "location",
-                    sortedLocations.length - 1
-                  )}`}
-              </Text>
-            )}
-          </Flex>
+          <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
+            <Flex mr={1} flexShrink={1}>
+              <Text variant="sm">{name}</Text>
+              {!!sortedLocations[0] && (
+                <Text variant="sm-display" color="black60">
+                  {sortedLocations[0].city}
+                  {!!(sortedLocations.length > 1) &&
+                    ` and ${sortedLocations.length - 1} more ${pluralize(
+                      "location",
+                      sortedLocations.length - 1
+                    )}`}
+                </Text>
+              )}
+            </Flex>
 
-          <Flex mt={0.5}>
-            <FollowButton
-              haptic
-              isFollowed={!!profile?.isFollowed}
-              onPress={handleFollowPartner}
-              disabled={isInFlight}
-            />
+            <Flex mt={0.5}>
+              <FollowButton
+                haptic
+                isFollowed={!!profile?.isFollowed}
+                onPress={handleFollowPartner}
+                disabled={isInFlight}
+              />
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      </Touchable>
     </Flex>
   )
 }
