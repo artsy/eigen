@@ -30,7 +30,6 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
-import { fetchUserInterestByArtistId } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/fetchUserInterestByArtistId"
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
@@ -233,12 +232,8 @@ export const MyCollectionArtworkFormMain: React.FC<
       }
 
       if (shouldDeleteArtist && formikValues.artistSearchResult?.internalID) {
-        const interest = await fetchUserInterestByArtistId(
-          formikValues.artistSearchResult?.internalID
-        )
-
         await deleteUserInterest({
-          id: interest?.internalID!,
+          id: formikValues.artistSearchResult.internalID,
         })
 
         setShowDeleteArtistModal(false)
