@@ -14474,9 +14474,9 @@ react-native-collapsible-tab-view@^6.1.4:
   version "1.4.11"
   resolved "https://github.com/artsy/react-native-config.git#278cbdc5f71d792f30c7474b0a0a5caab5c95551"
 
-"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.9.4-artsy":
-  version "1.9.4"
-  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#c4e103dd31040a72e1be00ff52d97d5902321285"
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy":
+  version "1.10.0"
+  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#e5a6bf3abba774936cac9ae2988704f0d7443c14"
 
 react-native-credit-card-input@0.4.1:
   version "0.4.1"

@@ -481,7 +481,7 @@ PODS:
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
     - React-Core
-  - react-native-context-menu-view (1.9.4):
+  - react-native-context-menu-view (1.10.0):
     - React
   - react-native-cookies (6.0.11):
     - React-Core
@@ -1226,7 +1226,7 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
+  RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: b9e53f0512019150020156fa0dacd6583ab838be
   RCTTypeSafety: 04b72202bef8302802610dee70bb9407a245b64c
   React: 59288a7ca8104eb8002f01378606fe42eeabf4b5
@@ -1244,7 +1244,7 @@ SPEC CHECKSUMS:
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
-  react-native-context-menu-view: 861f485145780f7b6f9dfbb6296e61c5424131ca
+  react-native-context-menu-view: 4cd5ecaabd2cbb420018b3242ca1eef5efa0a629
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-fbsdk-next: e5ea39f1b0f1e76deeb2538275559706f3b79e82
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc

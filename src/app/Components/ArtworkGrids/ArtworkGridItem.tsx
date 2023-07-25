@@ -438,7 +438,10 @@ export const saleMessageOrBidInfo = ({
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
-    @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
+    @argumentDefinitions(
+      includeAllImages: { type: "Boolean", defaultValue: false }
+      width: { type: "Int" }
+    ) {
       ...CreateArtworkAlertModal_artwork
       availability
       title
@@ -488,6 +491,12 @@ export default createFragmentContainer(Artwork, {
       image(includeAll: $includeAllImages) {
         url(version: "large")
         aspectRatio
+        resized(width: $width) {
+          src
+          srcSet
+          width
+          height
+        }
       }
       realizedPrice
       ...useSaveArtworkToArtworkLists_artwork
