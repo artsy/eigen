@@ -26,8 +26,8 @@ interface MyCollectionBottomSheetModalArtistPreviewProps {
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
 > = ({ artist, me, interestId }) => {
-  const artworksCountWithMyCollection = me?.myCollectionConnection?.totalCount ?? 0
-  const canBeRemoved = artworksCountWithMyCollection === 0
+  const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
+  const canBeRemoved = artworksCountWithinMyCollection === 0
   const { showActionSheetWithOptions } = useActionSheet()
 
   const [isPrivate, setIsPrivate] = useState(me.userInterest?.private ?? false)
@@ -74,7 +74,11 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer artist={artist} uploadsCount={artworksCountWithMyCollection} />
+            <ArtistListItemContainer
+              artist={artist}
+              uploadsCount={artworksCountWithinMyCollection}
+              isPrivate={me.userInterest?.private}
+            />
             <ArtistKindPills artist={artist} />
           </Join>
 
