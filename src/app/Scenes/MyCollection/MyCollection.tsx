@@ -8,7 +8,9 @@ import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
@@ -24,12 +26,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import {
-  PlaceholderBox,
-  PlaceholderGrid,
-  PlaceholderText,
-  RandomWidthPlaceholderText,
-} from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
@@ -175,7 +172,7 @@ const MyCollection: React.FC<{
   }
 
   return (
-    <Tabs.ScrollView
+    <TabsFlatList
       contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}
       refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       keyboardDismissMode="on-drag"
@@ -218,7 +215,7 @@ const MyCollection: React.FC<{
           Add Random Work
         </Button>
       )}
-    </Tabs.ScrollView>
+    </TabsFlatList>
   )
 }
 

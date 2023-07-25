@@ -55,6 +55,7 @@ export const ArtsyWebViewPage = ({
   mimicBrowserBackButton = true,
   useRightCloseButton = false,
   showShareButton = false,
+  systemBackAction,
   backProps,
   backAction,
   safeAreaEdges,
@@ -62,6 +63,7 @@ export const ArtsyWebViewPage = ({
   url: string
   isPresentedModally?: boolean
   backProps?: GoBackProps
+  systemBackAction?: () => void
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
@@ -120,7 +122,11 @@ export const ArtsyWebViewPage = ({
                   } else if (!canGoBack) {
                     handleGoBack()
                   } else {
-                    ref.current?.goBack()
+                    if (systemBackAction) {
+                      systemBackAction()
+                    } else {
+                      ref.current?.goBack()
+                    }
                   }
                 }
           }
@@ -191,6 +197,14 @@ export const ArtsyWebView = forwardRef<
       const targetURL = expandGoogleAdLink(evt.url)
 
       const result = matchRoute(targetURL)
+
+      // TODO: need to implement the rest of native articles surfaces (news etc)
+      // the purpose of this is to prevent the webview from redirecting you again
+      // to the articles route, which would cause a loop and once in the webview to
+      // redirect you to either a native article view or an article webview
+      if (result.type === "match" && result.module === "Article") {
+        return
+      }
 
       // if it's a route that we know we don't have a native view for, keep it in the webview
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls

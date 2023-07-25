@@ -194,7 +194,6 @@ export interface AuthModel {
   previousSessionUserID: string | null
 
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
-  requestedPushPermissionsThisSession: boolean
 
   // Actions
   setState: Action<this, Partial<StateMapper<this>>>
@@ -276,7 +275,6 @@ export const getAuthModel = (): AuthModel => ({
   userEmail: null,
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
-  requestedPushPermissionsThisSession: false,
 
   setState: action((state, payload) => Object.assign(state, payload)),
   setSessionState: action((state, payload) => {
@@ -408,9 +406,9 @@ export const getAuthModel = (): AuthModel => ({
         userID: user.id,
         userEmail: email,
         onboardingState: onboardingState ?? "complete",
-        // Make sure we try to get push permission and new tokens on new sessions
-        requestedPushPermissionsThisSession: false,
       })
+
+      // TODO: do we need to set requested push permissions false here
 
       if (oauthProvider === "email") {
         Keychain.setInternetCredentials(
@@ -945,6 +943,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 })
     updateExperimentsContext({ userId: undefined })

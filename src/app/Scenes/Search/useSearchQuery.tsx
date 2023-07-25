@@ -1,4 +1,4 @@
-import { SearchScreenQuery } from "app/Scenes/Search/Search2"
+import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { useState } from "react"
 import { useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import {

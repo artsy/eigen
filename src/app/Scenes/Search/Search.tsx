@@ -1,162 +1,68 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
-import { SearchQuery } from "__generated__/SearchQuery.graphql"
+import { useNavigation } from "@react-navigation/native"
+import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
+import { SearchInput } from "app/Components/SearchInput"
+import { SearchPills } from "app/Scenes/Search/SearchPills"
+import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
+import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
-import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
-import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
+import { throttle } from "lodash"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
-import {
-  FetchPolicy,
-  fetchQuery,
-  graphql,
-  useLazyLoadQuery,
-  useRelayEnvironment,
-} from "react-relay"
+import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
-import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
-import { SearchInput } from "./components/SearchInput"
-import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
-import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
-import { AlgoliaIndexKey, PillType } from "./types"
+import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
+import { getContextModuleByPillName } from "./helpers"
+import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
-const SearchInputContainer = connectSearchBox(SearchInput)
+const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
-interface SearchState {
-  query?: string
-  page?: number
-}
-
-interface RefreshQueryOptions {
-  fetchKey?: number
-  fetchPolicy?: FetchPolicy
+export const searchQueryDefaultVariables: SearchQuery$variables = {
+  term: "",
+  skipSearchQuery: true,
 }
 
 export const Search: React.FC = () => {
-  const environment = useRelayEnvironment()
-  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
-  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const { system } = queryData
-  const indices = system?.algolia?.indices ?? []
-  const indiceNames = indices.map((indice) => indice.name)
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
-  const onRefetch = () => {
-    if (isRefreshing) {
-      return
-    }
-
-    setIsRefreshing(true)
-
-    fetchQuery(environment, SearchScreenQuery, {}).subscribe({
-      complete: () => {
-        setIsRefreshing(false)
-
-        setRefreshedQueryOptions((prev) => ({
-          fetchKey: (prev?.fetchKey ?? 0) + 1,
-          fetchPolicy: "store-only",
-        }))
-      },
-      error: () => {
-        setIsRefreshing(false)
-      },
-    })
-  }
-
   const searchPillsRef = useRef<ScrollView>(null)
-  const [searchState, setSearchState] = useState<SearchState>({})
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchQuery = searchState?.query ?? ""
   const searchProviderValues = useSearchProviderValues(searchQuery)
-  const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
-  const searchInsightsConfigured = useSearchInsightsConfig(
-    system?.algolia?.appID,
-    system?.algolia?.apiKey
-  )
-  const {
-    loading: indicesInfoLoading,
-    indicesInfo,
-    updateIndicesInfo,
-  } = useAlgoliaIndices({
-    searchClient,
-    indiceNames,
-    onError: (error: Error) => {
-      if (isAlgoliaApiKeyExpiredError(error)) {
-        onRefetch()
-      }
-    },
-  })
   const { trackEvent } = useTracking()
+  const isAndroid = Platform.OS === "android"
+  const navigation = useNavigation()
 
-  const pillsArray = useMemo<PillType[]>(() => {
-    const allowedIndices = indices.filter((indice) =>
-      ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
-    )
-    const formattedIndices: PillType[] = allowedIndices.map((index) => {
-      const { name, ...other } = index
+  const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
+  const {
+    data: queryData,
+    refetch,
+    isLoading,
+  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryDefaultVariables)
 
-      return {
-        ...other,
-        type: "algolia",
-        disabled: !indicesInfo[name]?.hasResults,
-        indexName: name,
-      }
-    })
+  useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
-    return [...DEFAULT_PILLS, ...formattedIndices]
-  }, [indices, indicesInfo])
-
-  useEffect(() => {
-    /**
-     * Refetch up-to-date info about Algolia indices for specified search query
-     * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
-     */
-    if (searchClient && shouldStartSearching(searchQuery)) {
-      updateIndicesInfo(searchQuery)
-    }
-  }, [searchClient])
-
-  const onTextChange = useCallback(
-    (value: string) => {
-      if (value.length === 0) {
-        handleResetSearchInput()
-      }
-
-      if (shouldStartSearching(value)) {
-        updateIndicesInfo(value)
-      }
-    },
-    [searchClient]
-  )
-
-  if (!searchClient || !searchInsightsConfigured) {
-    return <SearchPlaceholder />
-  }
-
+  // TODO: to be removed on ES results PR
   const handleRetry = () => {
-    setSearchState((prevState) => ({ ...prevState }))
+    setSearchQuery((prevState) => prevState)
   }
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
   }
 
   const isSelected = (pill: PillType) => {
@@ -168,91 +74,110 @@ export const Search: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
-  const renderCityGuideCTA = () => {
-    if (Platform.OS === "ios" && !isPad()) {
-      return <CityGuideCTA />
+  const handleThrottledTextChange = useMemo(
+    () =>
+      throttle((value) => {
+        setSearchQuery(value)
+      }, SEARCH_THROTTLE_INTERVAL),
+    []
+  )
+
+  const onSearchTextChanged = (queryText: string) => {
+    queryText = queryText.trim()
+
+    handleThrottledTextChange(queryText)
+
+    if (queryText.length === 0) {
+      trackEvent({
+        action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+      })
+      handleResetSearchInput()
+
+      handleThrottledTextChange.flush()
+
+      return
     }
 
-    return null
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+      query: queryText,
+    })
   }
+
+  useEffect(() => {
+    if (searchProviderValues.inputRef?.current && isAndroid) {
+      const unsubscribe = navigation?.addListener("focus", () => {
+        // setTimeout here is to make sure that the search screen is focused in order to focus on text input
+        // without that the searchInput is not focused
+        setTimeout(() => searchProviderValues.inputRef.current?.focus(), 200)
+      })
+
+      return unsubscribe
+    }
+  }, [navigation, searchProviderValues.inputRef.current])
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <InstantSearch
-          searchClient={searchClient}
-          indexName={selectedPill.type === "algolia" ? selectedPill.indexName! : ""}
-          searchState={searchState}
-          onSearchStateChange={setSearchState}
-        >
-          <Configure clickAnalytics />
-          <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
-          <Flex p={2} pb={0}>
-            <SearchInputContainer
-              placeholder="Search artists, artworks, galleries, etc"
-              onTextChange={onTextChange}
-            />
-          </Flex>
-
-          <Flex flex={1} collapsable={false}>
-            {shouldStartSearching(searchQuery) ? (
-              <>
-                <Box pt={2} pb={1}>
-                  <SearchPills
-                    ref={searchPillsRef}
-                    loading={indicesInfoLoading}
-                    pills={pillsArray}
-                    onPillPress={handlePillPress}
-                    isSelected={isSelected}
-                  />
-                </Box>
-                <SearchResults
-                  selectedPill={selectedPill}
-                  query={searchQuery}
-                  onRetry={handleRetry}
+        <Flex p={2} pb={0}>
+          <SearchInput
+            ref={searchProviderValues?.inputRef}
+            placeholder={SEARCH_INPUT_PLACEHOLDER}
+            enableCancelButton
+            onChangeText={onSearchTextChanged}
+          />
+        </Flex>
+        <Flex flex={1} collapsable={false}>
+          {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
+            <>
+              <Box pt={2} pb={1}>
+                <SearchPills
+                  viewer={queryData.viewer}
+                  ref={searchPillsRef}
+                  pills={SEARCH_PILLS}
+                  onPillPress={handlePillPress}
+                  isSelected={isSelected}
+                  isLoading={isLoading}
                 />
-              </>
-            ) : (
-              <Scrollable>
-                <HorizontalPadding>
-                  <RecentSearches />
-                </HorizontalPadding>
+              </Box>
+              <SearchResults
+                selectedPill={selectedPill}
+                query={searchQuery}
+                // TODO: to be removed on ES results PR
+                onRetry={handleRetry}
+              />
+            </>
+          ) : (
+            <Scrollable>
+              <HorizontalPadding>
+                <RecentSearches />
+              </HorizontalPadding>
 
-                {!!isSearchDiscoveryContentEnabled ? (
-                  <>
-                    <Spacer y={4} />
-                    <TrendingArtists data={queryData} mb={4} />
-                    <CuratedCollections collections={queryData} mb={4} />
-                  </>
-                ) : (
+              {!!isSearchDiscoveryContentEnabled ? (
+                <>
                   <Spacer y={4} />
-                )}
-
-                <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
-
+                  <TrendingArtists data={queryData} mb={4} />
+                  <CuratedCollections collections={queryData} mb={4} />
+                </>
+              ) : (
                 <Spacer y={4} />
-              </Scrollable>
-            )}
-          </Flex>
-        </InstantSearch>
+              )}
+
+              <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
+
+              <Spacer y={4} />
+            </Scrollable>
+          )}
+        </Flex>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
   )
 }
 
 export const SearchScreenQuery = graphql`
-  query SearchQuery {
-    system {
-      __typename
-      algolia {
-        appID
-        apiKey
-        indices {
-          name
-          displayName
-          key
-        }
-      }
+  query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
+    viewer @skip(if: $skipSearchQuery) {
+      ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
     ...TrendingArtists_query

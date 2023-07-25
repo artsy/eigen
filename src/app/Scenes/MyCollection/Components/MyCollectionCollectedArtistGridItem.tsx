@@ -56,7 +56,6 @@ export const MyCollectionCollectedArtistGridItem: React.FC<
           setViewKind({
             viewKind: "Artist",
             id: artistData.internalID,
-            artworksCount: artworksCount,
           })
         }}
       >

@@ -2,7 +2,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { Linking } from "react-native"
-import { getPartnerSlug, navigate } from "./navigate"
+import { navigate } from "./navigate"
 
 function args(mock: jest.Mock) {
   return mock.mock.calls[mock.mock.calls.length - 1]
@@ -307,17 +307,5 @@ describe(navigate, () => {
       await navigate("/artist/andy-warhol")
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalledTimes(3)
     })
-  })
-})
-
-describe("getPartnerSlug", () => {
-  it('should not modify the slug if "partner/" is not present', () => {
-    const slug = "partner/my-partner"
-    expect(getPartnerSlug(slug)).toBe("partner/my-partner")
-  })
-
-  it('should remove "partner/" if it exists in the slug', () => {
-    const slug = "my-partner"
-    expect(getPartnerSlug(slug)).toBe(`partner/${slug}`)
   })
 })

@@ -3,7 +3,6 @@ import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollect
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
-import { extractNodes } from "app/utils/extractNodes"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
 import { FlatList } from "react-native"
@@ -33,23 +32,17 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const collectedArtists = extractNodes(data.myCollectionInfo?.collectedArtistsConnection)
+  const userInterests = (data.userInterestsConnection?.edges || []).filter((edge) => {
+    return !!edge
+  })
 
-  if (!collectedArtists.length) {
+  if (!userInterests.length) {
     return null
   }
 
-  const artistsAndArtworksCount = data.myCollectionInfo?.collectedArtistsConnection?.edges
-    ?.filter((artist) => {
-      return stringIncludes(artist?.node?.name || "", keyword)
-    })
-    ?.filter((edge) => edge !== null && edge.node !== null)
-    .map((edge) => {
-      return {
-        artist: edge?.node,
-        artworksCount: edge?.artworksCount || null,
-      }
-    })
+  const filteredUserInterests = userInterests?.filter((userInterest) => {
+    return stringIncludes(userInterest?.node?.name || "", keyword)
+  })
 
   return (
     <Flex>
@@ -58,20 +51,21 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <Spacer y={1} />
 
       <FlatList
-        data={artistsAndArtworksCount}
+        data={filteredUserInterests}
         key="list"
-        keyExtractor={(item) => "list" + item.artist!.internalID}
+        keyExtractor={(item) => "list" + item?.node?.internalID}
         renderItem={({ item }) => {
-          return (
-            <MyCollectionCollectedArtistItem
-              artworksCount={item.artworksCount}
-              // casting this type because typescript was not able to infer it correctly
-              artist={item.artist!}
-              // casting this type because typescript was not able to infer it correctly
-              key={item.artist!.internalID}
-              compact
-            />
-          )
+          if (item && item.node && item.node.internalID && item.private) {
+            return (
+              <MyCollectionCollectedArtistItem
+                artist={item.node}
+                key={item.node.internalID}
+                isPrivate={item.private}
+                compact
+              />
+            )
+          }
+          return null
         }}
         onEndReached={handleLoadMore}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
@@ -94,16 +88,17 @@ const collectedArtistsPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsView_me on Me
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
   @refetchable(queryName: "MyCollectionCollectedArtistsView_myCollectionInfoRefetch") {
-    myCollectionInfo {
-      collectedArtistsConnection(
-        first: $count
-        after: $after
-        sort: TRENDING_DESC
-        includePersonalArtists: true
-      ) @connection(key: "MyCollectionCollectedArtistsView_collectedArtistsConnection") {
-        edges {
-          artworksCount
-          node {
+    userInterestsConnection(
+      first: $count
+      after: $after
+      category: COLLECTED_BEFORE
+      interestType: ARTIST
+    ) @connection(key: "MyCollectionCollectedArtistsView_userInterestsConnection") {
+      edges {
+        internalID
+        private
+        node {
+          ... on Artist {
             internalID
             name
             ...MyCollectionCollectedArtistItem_artist

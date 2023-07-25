@@ -17,9 +17,14 @@ export const ArticleWebViewScreen: React.FC<ArticleWebViewScreenProps> = ({ arti
 
   return (
     <Screen testID="ArticleWebViewScreen">
-      <Screen.Header title={data.title ?? ""} onBack={goBack} />
-      <Screen.Body>
-        <ArtsyWebView url={data.href} />
+      <Screen.Header onBack={goBack} />
+      <Screen.Body fullwidth>
+        {/*
+            NOTE: we don't need safeAreaEdges but passing undefined or empty array didn't work,
+            so we're passing "left" that doesn't actually add anything to the webview to avoid
+            having double paddings from Screen and ArtsyWebView
+        */}
+        <ArtsyWebView url={data.href} safeAreaEdges={["left"]} />
       </Screen.Body>
     </Screen>
   )
@@ -27,7 +32,6 @@ export const ArticleWebViewScreen: React.FC<ArticleWebViewScreenProps> = ({ arti
 
 const articleWebViewFragment = graphql`
   fragment ArticleWebViewScreen_article on Article {
-    title
     href
   }
 `

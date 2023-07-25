@@ -139,7 +139,7 @@ describe("ArtworkActions", () => {
   describe("Save button", () => {
     // TODO: remove skip when lists feature flag is readyForRelease: true
     describe.skip("whith lists feature flag enabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: true })
       it("should trigger save mutation when user presses save button", () => {
         const { env } = renderWithRelay({
           Artwork: () => ({
@@ -160,7 +160,7 @@ describe("ArtworkActions", () => {
 
     describe("whith lists feature flag disabled", () => {
       it("should trigger save mutation when user presses save button", () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: false })
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: false })
 
         const { env } = renderWithRelay({
           Artwork: () => ({
@@ -180,7 +180,7 @@ describe("ArtworkActions", () => {
     })
 
     it("should track save event when user saves and artwork successfully", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkLists: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: false })
 
       const { env } = renderWithRelay({
         Artwork: () => ({

@@ -93,8 +93,10 @@ const parseSectionPositions = (section: string, body: string) => {
 async function getChangelogFromPrs(prs: PullsGetResponse[]) {
   let changelog = ""
   const prsWithoutChangelog: PullsGetResponse[] = []
+  const prsWithNoChangelog: PullsGetResponse[] = []
   for (const pr of prs) {
-    const prBody = pr.body
+    // pr body without comments
+    const prBody = pr.body.replace(/<!--.*?-->/g, "")
     let prHasChangelog = false
     for (const section of SECTIONS) {
       const positions = parseSectionPositions(section, prBody)
@@ -108,10 +110,10 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
       }
     }
     if (!prHasChangelog) {
-      prsWithoutChangelog.push(pr)
+      prBody.includes("#nochangelog") ? prsWithNoChangelog.push(pr) : prsWithoutChangelog.push(pr)
     }
   }
-  return { changelog, prsWithoutChangelog }
+  return { changelog, prsWithoutChangelog, prsWithNoChangelog }
 }
 
 async function main() {
@@ -125,16 +127,20 @@ async function main() {
   }
 
   const prs = await getPrsBetweenTags(tag1, tag2)
-  const { changelog, prsWithoutChangelog } = await getChangelogFromPrs(prs)
+  const { changelog, prsWithoutChangelog, prsWithNoChangelog } = await getChangelogFromPrs(prs)
 
-  console.log(chalk.bold.green("\nPRs with changelog entries:"))
-  console.log(chalk.green(changelog))
+  console.log(chalk.bold.greenBright("\nPRs with changelog entries:"))
+  console.log(chalk.greenBright(changelog))
+
+  console.log(chalk.bold.green("\nPRs with #nochangelog:"))
+  for (const pr of prsWithNoChangelog) {
+    console.log(chalk.green(`PR #${pr.number}: ${pr.title}`))
+  }
 
   console.log(chalk.bold.yellow("\nPRs without changelog entries:"))
   for (const pr of prsWithoutChangelog) {
     console.log(chalk.yellow(`PR #${pr.number}: ${pr.title}`))
   }
 }
-
 
 main().catch((err) => console.error(err))

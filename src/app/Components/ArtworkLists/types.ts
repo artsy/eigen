@@ -44,9 +44,11 @@ export type ArtworkListState = {
   addingArtworkLists: ArtworkListEntity[]
   removingArtworkLists: ArtworkListEntity[]
   hasUnsavedChanges: boolean
+  toastBottomPadding: number | null
 }
 
 export type ArtworkListAction =
+  | { type: "SET_TOAST_BOTTOM_PADDING"; payload: number }
   | { type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE"; payload: boolean }
   | {
       type: "OPEN_SELECT_ARTWORK_LISTS_VIEW"

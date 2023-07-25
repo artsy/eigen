@@ -191,7 +191,7 @@ export const AutosuggestSearchResult: React.FC<{
  */
 function navigateToResult(result: AutosuggestResult, artistTab: ArtistTabs = "Artworks") {
   if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    navigateToPartner(result.slug!)
+    navigateToPartner(result.href!)
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {

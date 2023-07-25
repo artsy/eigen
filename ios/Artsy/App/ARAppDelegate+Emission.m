@@ -65,18 +65,6 @@
 
     [AREmission setSharedInstance:emission];
 
-#pragma mark - Native Module: Push Notification Permissions
-
-    emission.APIModule.directNotificationPermissionPrompter = ^() {
-        ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-        [delegate registerForDeviceNotificationsWithApple];
-    };
-
-    emission.APIModule.prepromptNotificationPermissionPrompter = ^() {
-        ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-        [delegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
-    };
-
 #pragma mark - Native Module: Follow status
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {

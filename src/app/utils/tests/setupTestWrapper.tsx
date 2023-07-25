@@ -15,6 +15,8 @@ interface SetupTestWrapper<T extends OperationType, ComponentProps> {
 
 type RenderWithRelay = RenderResult & {
   env: ReturnType<typeof createMockEnvironment>
+  mockResolveLastOperation: (mockResolvers: MockResolvers) => void
+  mockRejectLastOperation: (error: Error) => void
 }
 
 /**
@@ -124,7 +126,21 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
       })
     })
 
-    return { ...view, env }
+    const mockResolveLastOperation = (mockResolvers: MockResolvers) => {
+      act(() => {
+        env.mock.resolveMostRecentOperation((operation) => {
+          return MockPayloadGenerator.generate(operation, mockResolvers)
+        })
+      })
+    }
+
+    const mockRejectLastOperation = (error: Error) => {
+      act(() => {
+        env.mock.rejectMostRecentOperation(error)
+      })
+    }
+
+    return { ...view, env, mockResolveLastOperation, mockRejectLastOperation }
   }
 
   return { renderWithRelay }

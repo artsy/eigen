@@ -1,8 +1,8 @@
-import { Search2Query$variables } from "__generated__/Search2Query.graphql"
+import { SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { useEffect } from "react"
 
 interface Props {
-  refetch: (updatedVariables: Search2Query$variables) => void
+  refetch: (updatedVariables: SearchQuery$variables) => void
   query: string
 }
 

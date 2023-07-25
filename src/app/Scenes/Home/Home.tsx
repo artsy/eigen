@@ -21,7 +21,6 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
@@ -50,7 +49,7 @@ import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
-import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
+import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -67,6 +66,7 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -134,7 +134,6 @@ const Home = memo((props: HomeProps) => {
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
 
@@ -146,12 +145,14 @@ const Home = memo((props: HomeProps) => {
   }).current
 
   useEffect(() => {
-    isESOnlySearchEnabled
-      ? prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
-      : prefetchUrl<SearchQuery>("search")
+    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")
+  }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
   }, [])
 
   // we cannot rely on mount events for screens in tab views for screen tracking
@@ -750,7 +751,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
-            heroUnitsConnection(first: 10, private: true) @optionalField {
+            heroUnitsConnection(first: 10, private: false) @optionalField {
               ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
             }

@@ -175,25 +175,27 @@ describe("AddEditArtwork", () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it("fires delete artwork action on delete button click", () => {
-    const artworkForm = (
-      <MyCollectionArtworkStore.Provider
-        runtimeModel={{
-          mode: "edit",
-          artwork: {
-            internalID: "id",
-          },
-        }}
-      >
-        <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
-      </MyCollectionArtworkStore.Provider>
-    )
-    const wrapper = renderWithWrappersLEGACY(artworkForm)
-    const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
-    deleteButton.props.onPress()
-    expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
-    const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
-    callback(0) // confirm deletion
-    expect(popToRoot).toHaveBeenCalledWith()
+  describe("delete artwork button", () => {
+    it("fires delete artwork action on delete button click when artists collected feature flag is disabled", () => {
+      const artworkForm = (
+        <MyCollectionArtworkStore.Provider
+          runtimeModel={{
+            mode: "edit",
+            artwork: {
+              internalID: "id",
+            },
+          }}
+        >
+          <MyCollectionArtworkFormMain navigation={mockNav as any} route={null as any} />
+        </MyCollectionArtworkStore.Provider>
+      )
+      const wrapper = renderWithWrappersLEGACY(artworkForm)
+      const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
+      deleteButton.props.onPress()
+      expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
+      const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
+      callback(0) // confirm deletion
+      expect(popToRoot).toHaveBeenCalledWith()
+    })
   })
 })

@@ -11,6 +11,7 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { omit, pickBy } from "lodash"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
@@ -63,7 +64,8 @@ export const MyCollectionArtworkFormArtwork: React.FC<
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
         ...filteredFormValues,
-        attributionClass: artworkData.attributionClass?.name as any,
+        attributionClass:
+          getAttributionClassValueByName(artworkData.attributionClass?.name) || undefined,
         photos,
       })
     } catch (error) {

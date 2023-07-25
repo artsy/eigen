@@ -32,7 +32,7 @@ interface MyProfileTabProps {
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
-  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
+  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworksLists")
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { showVisualClue } = useVisualClue()
 

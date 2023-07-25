@@ -75,6 +75,7 @@ const Partner: React.FC<PartnerProps> = (props) => {
       <Tabs.TabsWithHeader
         title={partner.name!}
         initialTabName={initialTab}
+        BelowTitleHeaderComponent={() => <PartnerHeader partner={partner} showOnlyFollowButton />}
         headerProps={{ onBack: goBack }}
       >
         <Tabs.Tab name="Overview" label="Overview">
@@ -177,8 +178,14 @@ export const PartnerSkeleton: React.FC = () => {
       <Screen.Header />
       <Screen.Body fullwidth>
         <Skeleton>
-          <Flex px={2}>
+          <Flex px={2} flexDirection="column">
             <SkeletonText variant="xl">Gagosian Gal</SkeletonText>
+
+            <Spacer y={1} />
+
+            <SkeletonBox width={100} height={30} />
+
+            <Spacer y={1} />
           </Flex>
 
           <Spacer y={2} />

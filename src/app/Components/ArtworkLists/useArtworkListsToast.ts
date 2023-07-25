@@ -1,9 +1,9 @@
 import { ArtworkEntity, ArtworkListEntity } from "app/Components/ArtworkLists/types"
 import { useToast } from "app/Components/Toast/toastHook"
-import { ToastPlacement } from "app/Components/Toast/types"
+import { ToastOptions, ToastPlacement } from "app/Components/Toast/types"
 import { navigate } from "app/system/navigation/navigate"
 
-const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "top"
+const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "bottom"
 
 interface Options {
   artwork: ArtworkEntity
@@ -21,31 +21,37 @@ type SingleArtworkListOptions = Options & {
   artworkList: ArtworkListEntity
 }
 
-export const useArtworkListToast = () => {
+export const useArtworkListToast = (bottomPadding?: number | null) => {
   const toast = useToast()
 
+  const showToast = (message: string, options?: Omit<ToastOptions, "bottomPadding">) => {
+    toast.show(message, DEFAULT_TOAST_PLACEMENT, {
+      ...options,
+      bottomPadding: bottomPadding ?? null,
+    })
+  }
   const savedToDefaultArtworkList = (options: SavedToDefaultArtworkListOptions) => {
     const { onToastPress } = options
 
-    toast.show("Artwork saved", DEFAULT_TOAST_PLACEMENT, {
+    showToast("Artwork saved", {
       cta: "Add to a List",
       onPress: onToastPress,
     })
   }
 
   const removedFromDefaultArtworkList = () => {
-    toast.show("Removed from Saved Artworks", DEFAULT_TOAST_PLACEMENT)
+    showToast("Removed from Saved Artworks")
   }
 
   const changesSaved = () => {
-    toast.show("Changes saved", DEFAULT_TOAST_PLACEMENT)
+    showToast("Changes saved")
   }
 
   const addedToSingleArtworkList = (options: SingleArtworkListOptions) => {
     const { artworkList } = options
     const message = `Added to ${artworkList.name} list`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT, {
+    showToast(message, {
       cta: "View List",
       onPress: () => {
         navigate(`/artwork-list/${artworkList.internalID}`)
@@ -57,7 +63,7 @@ export const useArtworkListToast = () => {
     const { artworkLists } = options
     const message = `Added to ${artworkLists.length} lists`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT, {
+    showToast(message, {
       cta: "View Saves",
       onPress: () => {
         navigate("/artwork-lists")
@@ -69,14 +75,14 @@ export const useArtworkListToast = () => {
     const { artworkList } = options
     const message = `Removed from ${artworkList.name} list`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT)
+    showToast(message)
   }
 
   const removedFromMultipleArtworkLists = (options: MultipleArtworkListsOptions) => {
     const { artworkLists } = options
     const message = `Removed from ${artworkLists.length} lists`
 
-    toast.show(message, DEFAULT_TOAST_PLACEMENT)
+    showToast(message)
   }
 
   return {

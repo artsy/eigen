@@ -1,10 +1,11 @@
 import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 

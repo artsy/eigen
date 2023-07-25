@@ -44,8 +44,8 @@ describe("MyCollectionCollectedArtistsView", () => {
   it("renders collected artist in a list", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
-      MyCollectionInfo() {
-        return mockCollectedArtist
+      Me() {
+        return mockUserInterest
       },
     })
 
@@ -63,8 +63,8 @@ describe("MyCollectionCollectedArtistsView", () => {
   it("renders collected artist in a grid", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
-      MyCollectionInfo() {
-        return mockCollectedArtist
+      Me() {
+        return mockUserInterest
       },
     })
 
@@ -78,12 +78,24 @@ describe("MyCollectionCollectedArtistsView", () => {
     await expect(getByText("Rhombie Sandoval")).toBeTruthy()
     await expect(getByText("Banksy")).toBeTruthy()
   })
+
+  it("renders the privacy lock next to the artist name", async () => {
+    const { getAllByTestId } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Me() {
+        return mockUserInterest
+      },
+    })
+
+    await expect(getAllByTestId("lock-icon")).toHaveLength(2)
+  })
 })
 
-const mockCollectedArtist = {
-  collectedArtistsConnection: {
+const mockUserInterest = {
+  userInterestsConnection: {
     edges: [
       {
+        private: true,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Rhombie Sandoval",
@@ -94,6 +106,7 @@ const mockCollectedArtist = {
         },
       },
       {
+        private: true,
         node: {
           internalID: "5f112c5876efda000e68f3a9",
           name: "Banksy",

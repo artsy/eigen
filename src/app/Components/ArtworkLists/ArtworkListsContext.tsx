@@ -29,6 +29,7 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   addingArtworkLists: [],
   removingArtworkLists: [],
   hasUnsavedChanges: false,
+  toastBottomPadding: null,
 }
 
 export const ArtworkListsContext = createContext<ArtworkListsContextState>(
@@ -53,7 +54,8 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
   })
-  const toast = useArtworkListToast()
+
+  const toast = useArtworkListToast(state.toastBottomPadding)
 
   const showToastForAddedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
     if (artworkLists.length === 1) {
@@ -198,6 +200,12 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
 
 const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkListState => {
   switch (action.type) {
+    case "SET_TOAST_BOTTOM_PADDING":
+      return {
+        ...state,
+        toastBottomPadding: action.payload,
+      }
+
     case "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE":
       return {
         ...state,
@@ -241,7 +249,10 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         selectedTotalCount: action.payload,
       }
     case "RESET":
-      return ARTWORK_LISTS_CONTEXT_INITIAL_STATE
+      return {
+        ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+        toastBottomPadding: state.toastBottomPadding || null,
+      }
     case "SET_UNSAVED_CHANGES":
       return {
         ...state,

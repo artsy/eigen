@@ -49,9 +49,10 @@ export const Versions = {
   AddOnboardingArtQuizStateToAuthModel: 36,
   AddPushPromptStateToAuthModel: 37,
   AddUserPreferredArtistsView: 38,
+  AddPushPromptLogicModel: 39,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPreferredArtistsView
+export const CURRENT_APP_VERSION = Versions.AddPushPromptLogicModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -279,6 +280,16 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPreferredArtistsView]: (state) => {
     state.userPrefs.artistViewOption = DEFAULT_VIEW_OPTION
+  },
+  [Versions.AddPushPromptLogicModel]: (state) => {
+    delete state.auth.requestedPushPermissionsThisSession
+    state.artsyPrefs.pushPromptLogic = {
+      pushNotificationSystemDialogRejected: false,
+      pushNotificationDialogLastSeenTimestamp: null,
+      pushNotificationSettingsPromptSeen: false,
+      pushNotificationSystemDialogSeen: false,
+      pushPermissionsRequestedThisSession: false,
+    }
   },
 }
 

@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
-import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPrevie"
+import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { useCallback, useMemo, useRef } from "react"
 
@@ -13,7 +13,6 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
   const view = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const id = MyCollectionTabsStore.useStoreState((state) => state.id)
-  const uploadsCount = MyCollectionTabsStore.useStoreState((state) => state.artworksCount)
 
   const snapPoints = useMemo(() => [view === "Artist" ? 410 : 370], [])
 
@@ -47,10 +46,7 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
         {view === "Artist" && !!id && (
-          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer
-            artistID={id}
-            uploadsCount={uploadsCount}
-          />
+          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer artistID={id} />
         )}
       </BottomSheet>
     </>

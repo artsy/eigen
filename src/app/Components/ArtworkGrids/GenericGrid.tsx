@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { TextProps } from "@artsy/palette-mobile"
+import { Flex, TextProps, useScreenDimensions } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
@@ -227,7 +227,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props) => {
+const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props & PropsForArtwork) => {
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
   return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
 }
@@ -263,5 +263,14 @@ export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) =
         </Stack>
       ))}
     </Stack>
+  )
+}
+
+export const PlaceholderGrid = () => {
+  const { width } = useScreenDimensions()
+  return (
+    <Flex mx={2} flexDirection="row" testID="PlaceholderGrid">
+      <GenericGridPlaceholder width={width - 40} />
+    </Flex>
   )
 }

@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
-import Biography from "app/Components/Artist/Biography"
+import { Biography } from "app/Components/Artist/Biography"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
