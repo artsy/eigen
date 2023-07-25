@@ -12499,6 +12499,9 @@ type Mutation {
   # Updates a UserInterest on the logged in User's CollectorProfile.
   updateUserInterest(input: UpdateUserInterestMutationInput!): UpdateUserInterestMutationPayload
 
+  # Update user interests for multiple artists
+  updateUserInterests(input: UpdateUserInterestsMutationInput!): UpdateUserInterestsMutationPayload
+
   # Update the user sale profile
   updateUserSaleProfile(
     input: UpdateUserSaleProfileMutationInput!
@@ -18120,6 +18123,11 @@ type UpdateUserInterestFailure {
   mutationError: GravityMutationError
 }
 
+input UpdateUserInterestInput {
+  id: String!
+  private: Boolean
+}
+
 input UpdateUserInterestMutationInput {
   clientMutationId: String
   id: String!
@@ -18133,7 +18141,24 @@ type UpdateUserInterestMutationPayload {
   userInterestOrError: UpdateUserInterestResponseOrError
 }
 
+union UpdateUserInterestOrError = UpdateUserInterestsFailure | UserInterest
+
 union UpdateUserInterestResponseOrError = UpdateUserInterestFailure | UpdateUserInterestSuccess
+
+type UpdateUserInterestsFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateUserInterestsMutationInput {
+  clientMutationId: String
+  userInterests: [UpdateUserInterestInput!]!
+}
+
+type UpdateUserInterestsMutationPayload {
+  clientMutationId: String
+  me: Me!
+  userInterestsOrErrors: [UpdateUserInterestOrError!]!
+}
 
 type UpdateUserInterestSuccess {
   userInterest: UserInterest
