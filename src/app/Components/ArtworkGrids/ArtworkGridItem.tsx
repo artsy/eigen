@@ -211,7 +211,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
-        size="extraLarge"
       >
         <Touchable
           haptic
