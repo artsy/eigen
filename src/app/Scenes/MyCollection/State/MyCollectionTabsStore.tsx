@@ -9,12 +9,14 @@ type ViewPayload =
     }
   | {
       viewKind: "Artist"
-      id: string
+      artistId: string
+      interestId: string
     }
 export interface MyCollectionTabsStoreModel {
   selectedTab: CollectedTab
   viewKind: MyCollectionBottomSheetModalKind
-  id: string | null
+  artistId: string | null
+  interestId: string | null
   setSelectedTab: Action<this, CollectedTab>
   setViewKind: Action<this, ViewPayload>
 }
@@ -22,7 +24,8 @@ export interface MyCollectionTabsStoreModel {
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   selectedTab: null,
   viewKind: null,
-  id: null,
+  artistId: null,
+  interestId: null,
   setSelectedTab: action((state, payload) => {
     state.selectedTab = payload
   }),
@@ -31,7 +34,8 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
     switch (payload.viewKind) {
       case null:
         state.viewKind = null
-        state.id = null
+        state.interestId = null
+        state.artistId = null
         break
 
       case "Add":
@@ -40,7 +44,8 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
 
       default:
         state.viewKind = payload.viewKind
-        state.id = payload.id
+        state.artistId = payload.artistId
+        state.interestId = payload.interestId
         break
     }
   }),

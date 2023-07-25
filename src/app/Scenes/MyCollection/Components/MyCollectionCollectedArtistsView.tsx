@@ -53,15 +53,16 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
       <FlatList
         data={filteredUserInterests}
         key="list"
-        keyExtractor={(item) => "list" + item?.node?.internalID}
+        keyExtractor={(item) => "list" + item?.internalID}
         renderItem={({ item }) => {
-          if (item && item.node && item.node.internalID && item.private) {
+          if (item?.node) {
             return (
               <MyCollectionCollectedArtistItem
-                artist={item.node}
-                key={item.node.internalID}
-                isPrivate={item.private}
+                artist={item.node!}
+                key={item.internalID}
                 compact
+                interestId={item.internalID}
+                isPrivate={item.private}
               />
             )
           }
@@ -102,7 +103,6 @@ const collectedArtistsPaginationFragment = graphql`
             internalID
             name
             ...MyCollectionCollectedArtistItem_artist
-            ...MyCollectionCollectedArtistGridItem_artist
           }
         }
       }
