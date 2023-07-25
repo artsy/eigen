@@ -6951,6 +6951,16 @@ type Conversation implements Node {
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
     @deprecated(reason: "Prefer messagesConnection")
 
+  # A connection for all messages and events in a single conversation
+  messagesAndConversationEventsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): MessageOrConversationEventTypeConnection
+
   # A connection for all messages in a single conversation
   messagesConnection(
     after: String
@@ -7001,6 +7011,22 @@ type ConversationEdge {
 
   # The item at the end of the edge
   node: Conversation
+}
+
+# An event (such as a submitted offer) in a conversation.
+type ConversationEvent implements Node {
+  # Text for this event, formatted for the buyer.
+  buyerBody: String
+  eventKey: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Text for this event, formatted for the seller.
+  sellerBody: String
 }
 
 # The participant who started the conversation, currently always a User
@@ -11905,6 +11931,28 @@ type MessageInitiator {
   name: String
 }
 
+union MessageOrConversationEventType = ConversationEvent | Message
+
+# A connection to a list of items.
+type MessageOrConversationEventTypeConnection {
+  # A list of edges.
+  edges: [MessageOrConversationEventTypeEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MessageOrConversationEventTypeEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: MessageOrConversationEventType
+}
+
 type MetaphysicsService {
   environment: String!
   queryTracing: Boolean!
@@ -13246,7 +13294,14 @@ type Partner implements Node {
     @deprecated(reason: "Prefer to use `locationsConnection`. [Will be removed in v2]")
 
   # A connection of locations from a Partner.
-  locationsConnection(after: String, before: String, first: Int, last: Int): LocationConnection
+  locationsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): LocationConnection
   meta: PartnerMeta
   name: String
   partnerPageEligible: Boolean
