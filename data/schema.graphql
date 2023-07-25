@@ -1588,6 +1588,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   statuses: ArtistStatuses
   targetSupply: ArtistTargetSupply
   vanguardYear: String
+  verifiedRepresentatives: [Partner!]!
   years: String
 }
 
