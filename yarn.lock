@@ -14345,6 +14345,14 @@ react-devtools-core@4.24.0, react-devtools-core@4.27.4:
     shell-quote "^1.6.1"
     ws "^7"
 
+react-devtools-core@4.28.0:
+  version "4.28.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.28.0.tgz#3fa18709b24414adddadac33b6b9cea96db60f2f"
+  integrity sha512-E3C3X1skWBdBzwpOUbmXG8SgH6BtsluSMe+s6rRcujNKG1DGi8uIfhdhszkgDpAsMoE55hwqRUzeXCmETDBpTg==
+  dependencies:
+    shell-quote "^1.6.1"
+    ws "^7"
+
 react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -14528,10 +14536,10 @@ react-native-flipper-relay-devtools@1.0.3:
   dependencies:
     relay-devtools-core janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg
 
-react-native-flipper@0.131.1:
-  version "0.131.1"
-  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.131.1.tgz#b1a43e40a442187fa78c5ed6d478471ff4a2686c"
-  integrity sha512-X65VbZgwVRVYAc3OBdHi0h8dJR/Mgxdg8WoQLGgaYyhHcaqsF06GjOzBJLwNjN3TK5Gih228IFqLqI9Rwl2dEA==
+react-native-flipper@0.207.0:
+  version "0.207.0"
+  resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.207.0.tgz#a0e5576c2f80fac002dda678dfa431184a3348be"
+  integrity sha512-KG+uy74nCRHiK7t/sxn0oKlJTy7SkaJPnWK8WDaOBv98qRWFPdSlUtxki0guoPjmO7gAV+nZsiGDd+98oZSohg==
 
 react-native-gesture-handler@2.5.0:
   version "2.5.0"
@@ -15458,10 +15466,10 @@ rn-fetch-blob@0.12.0:
     base-64 "0.1.0"
     glob "7.0.6"
 
-rn-flipper-async-storage-advanced@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/rn-flipper-async-storage-advanced/-/rn-flipper-async-storage-advanced-1.0.4.tgz#ca3d0c315a75f379fef3771cc6ee3bef2d774265"
-  integrity sha512-ixA6LJOxz+spdeJ8a2x6KimIiDCuKDky0ic5VaOHWIPSUcGmtmmZKJ98TQ0Uj3Cx/sM9K5VaUyjt2Gt1lrZNiw==
+rn-flipper-async-storage-advanced@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/rn-flipper-async-storage-advanced/-/rn-flipper-async-storage-advanced-1.0.5.tgz#908467faf55ed64b6d2eceb95a15e030d99ecd4e"
+  integrity sha512-IW2qXGyf+wgZKNV01li02e7c/DR/NQGIdQZ5CKynhVtl0Od8tO4AS/mZtRjmPbRtqSSGTdOUBSJ4d2JsCVZUPw==
 
 rsvp@^4.8.4:
   version "4.8.4"
