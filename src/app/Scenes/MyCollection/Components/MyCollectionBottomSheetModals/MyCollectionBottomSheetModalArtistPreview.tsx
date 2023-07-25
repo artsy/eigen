@@ -74,7 +74,11 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={4} />}>
           <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer artist={artist} uploadsCount={artworksCountWithMyCollection} />
+            <ArtistListItemContainer
+              artist={artist}
+              uploadsCount={artworksCountWithMyCollection}
+              isPrivate={isPrivate}
+            />
             <ArtistKindPills artist={artist} />
           </Join>
 
