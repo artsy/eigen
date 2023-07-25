@@ -500,7 +500,7 @@ PODS:
     - FBSDKGamingServicesKit (~> 15.0.0)
     - FBSDKShareKit (~> 15.0.0)
     - React-Core
-  - react-native-flipper (0.131.1):
+  - react-native-flipper (0.207.0):
     - React-Core
   - react-native-geolocation (3.0.6):
     - React-Core
@@ -1247,7 +1247,7 @@ SPEC CHECKSUMS:
   react-native-context-menu-view: 4cd5ecaabd2cbb420018b3242ca1eef5efa0a629
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-fbsdk-next: e5ea39f1b0f1e76deeb2538275559706f3b79e82
-  react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
+  react-native-flipper: 457f5d70546cdd4281e748ff3726385ffa06ba41
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
