@@ -7,7 +7,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import {
   HeaderComponent,
   MyCollectionCollectedArtistsPrivacyArtistsList,
-} from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsPrivacyArtistsList"
+} from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacyArtistsList"
 import { dismissModal } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
