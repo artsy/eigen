@@ -4,6 +4,7 @@ import {
   MyCollectionCollectedArtistsPrivacyQuery$data,
 } from "__generated__/MyCollectionCollectedArtistsPrivacyQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { useToast } from "app/Components/Toast/toastHook"
 import {
   ArtistInterestsStore,
   ArtistInterestsStoreProvider,
@@ -12,9 +13,11 @@ import {
   HeaderComponent,
   MyCollectionCollectedArtistsPrivacyArtistsList,
 } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacyArtistsList"
-import { dismissModal } from "app/system/navigation/navigate"
+import { updateUserInterests } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/updateUserInterests"
+import { popToRoot } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
+import { useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -25,27 +28,53 @@ interface MyCollectionCollectedArtistsPrivacyProps {
 export const MyCollectionCollectedArtistsPrivacy: React.FC<
   MyCollectionCollectedArtistsPrivacyProps
 > = ({ me }) => {
-  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
-    (state) => state.userInterestsPrivacy
-  )
-
-  const handleSave = () => {
-    console.warn("not yet ready")
-    dismissModal()
-  }
-
   return (
     <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
       <Flex flexGrow={1}>
         <MyCollectionCollectedArtistsPrivacyArtistsList me={me!} />
       </Flex>
 
-      <Flex position="absolute" p={2} bottom={0} backgroundColor="white100">
-        <Button block onPress={handleSave}>
-          Done
-        </Button>
-      </Flex>
+      <SubmitButton />
     </SafeAreaView>
+  )
+}
+
+const SubmitButton: React.FC = () => {
+  const toast = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
+    (state) => state.userInterestsPrivacy
+  )
+
+  const handleSubmit = async () => {
+    if (isLoading) {
+      return
+    }
+
+    try {
+      setIsLoading(true)
+      await updateUserInterests(userInterestsPrivacy)
+      toast.show("Saved", "bottom", {
+        backgroundColor: "green100",
+      })
+      popToRoot()
+    } catch (error) {
+      toast.show("Failed to update artists privacy", "bottom", {
+        backgroundColor: "red100",
+      })
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Flex position="absolute" p={2} bottom={0} backgroundColor="white100">
+      <Button block onPress={handleSubmit} loading={isLoading}>
+        Done
+      </Button>
+    </Flex>
   )
 }
 

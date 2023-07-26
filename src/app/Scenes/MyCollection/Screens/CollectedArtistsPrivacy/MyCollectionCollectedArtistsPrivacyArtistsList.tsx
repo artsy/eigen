@@ -84,7 +84,7 @@ export const HeaderComponent = () => {
 
 const myCollectionCollectedArtistsPrivacyArtistsListPaginationFragment = graphql`
   fragment MyCollectionCollectedArtistsPrivacyArtistsList_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, after: { type: "String" })
   @refetchable(
     queryName: "MyCollectionCollectedArtistsPrivacyArtistsList_myCollectionInfoRefetch"
   ) {
