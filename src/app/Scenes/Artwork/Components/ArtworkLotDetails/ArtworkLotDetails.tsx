@@ -37,9 +37,7 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
 
   const handleConditionsOfSaleTap = () => {
     trackEvent(tracks.tappedConditionsOfSale())
-    navigate(`/conditions-of-sale`, {
-      modal: true,
-    })
+    navigate(`/conditions-of-sale`)
   }
 
   const handleReadOurAuctionFAQsTap = () => {

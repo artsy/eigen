@@ -116,7 +116,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   onPressConditionsOfSale = () => {
-    navigate("/conditions-of-sale", { modal: true })
+    navigate("/conditions-of-sale")
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
