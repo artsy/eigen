@@ -31,11 +31,13 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
 
   const interest = userInterestsPrivacy.find((userInterest) => userInterest.id === interestID)
 
-  const [checked, setChecked] = useState(interest ? !interest.private : !privateProp)
+  const isPrivate = interest ? !interest.private : !privateProp
+
+  const [checked, setChecked] = useState(!isPrivate)
 
   useDebounce(
     () => {
-      if (!privateProp !== checked) {
+      if (privateProp !== isPrivate) {
         addOrUpdateUserInterest({
           id: interestID,
           private: !checked,
