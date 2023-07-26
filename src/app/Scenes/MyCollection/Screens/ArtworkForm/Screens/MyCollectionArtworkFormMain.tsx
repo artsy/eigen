@@ -32,7 +32,7 @@ import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/Artwor
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, popToRoot } from "app/system/navigation/navigate"
+import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -200,6 +200,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           await myCollectionDeleteArtwork(artwork.internalID)
         }
         refreshMyCollection()
+        dismissModal()
         popToRoot()
       } catch (e) {
         if (__DEV__) {
