@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spinner, Text, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsPrivacyArtistsList_me$key } from "__generated__/MyCollectionCollectedArtistsPrivacyArtistsList_me.graphql"
 import { SelectArtistToShareListItem } from "app/Scenes/MyCollection/Components/SelectArtistToShareListItem"
 import { FlatList } from "react-native"
@@ -7,15 +7,15 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionCollectedArtistsPrivacyArtistsListProps {
   me: MyCollectionCollectedArtistsPrivacyArtistsList_me$key
-  updateCollectedArtists: (interestId: string, checked: boolean) => void
 }
 
 export const ARTIST_CIRCLE_DIAMETER = 100
 
 export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
   MyCollectionCollectedArtistsPrivacyArtistsListProps
-> = ({ me, updateCollectedArtists }) => {
+> = ({ me }) => {
   const space = useSpace()
+
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
     myCollectionCollectedArtistsPrivacyArtistsListPaginationFragment,
     me
@@ -45,17 +45,14 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
             <SelectArtistToShareListItem
               key={item?.internalID}
               artist={item?.node!}
-              checked={!!item?.private}
-              onPress={(checked) => {
-                updateCollectedArtists(item?.internalID!, checked)
-              }}
+              interestID={item?.internalID}
+              private={item.private}
             />
           )
         }
         return null
       }}
-      contentContainerStyle={{ paddingBottom: space(6), paddingHorizontal: space(2) }}
-      ItemSeparatorComponent={() => <Spacer y={2} />}
+      contentContainerStyle={{ paddingBottom: space(6) }}
       ListHeaderComponent={HeaderComponent}
       ListFooterComponent={() => {
         if (!!isLoadingNext) {
@@ -76,7 +73,7 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
 
 export const HeaderComponent = () => {
   return (
-    <Flex py={4}>
+    <Flex py={4} px={2}>
       <Text variant="lg-display">Select artists to share</Text>
       <Text mt={1} variant="sm-display">
         Which artists in your collection would you like galleries to see when you contact them?

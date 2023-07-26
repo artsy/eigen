@@ -1,21 +1,46 @@
-import { Checkbox } from "@artsy/palette-mobile"
+import { Checkbox, useSpace } from "@artsy/palette-mobile"
 import { SelectArtistToShareListItem_artist$key } from "__generated__/SelectArtistToShareListItem_artist.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
+import { ArtistInterestsStore } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/ArtistInterestsStore"
+import { useCallback } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
 interface SelectArtistToShareListItemProps {
   artist: SelectArtistToShareListItem_artist$key
-  checked: boolean
-  onPress: (checked: boolean) => void
+  interestID: string
+  private: boolean
 }
 
 export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemProps> = ({
   artist,
-  checked,
-  onPress,
+  interestID,
+  private: isPrivate,
 }) => {
   const artistData = useFragment<SelectArtistToShareListItem_artist$key>(artistFragment, artist)
+
+  const space = useSpace()
+  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
+    (state) => state.userInterestsPrivacy
+  )
+
+  const addOrUpdateUserInterest = ArtistInterestsStore.useStoreActions(
+    (actions) => actions.addOrUpdateUserInterest
+  )
+
+  const interest = userInterestsPrivacy.find((userInterest) => userInterest.id === interestID)
+
+  const isChecked = interest ? interest.private : isPrivate
+
+  const handlePress = useCallback(
+    (checked: boolean) => {
+      addOrUpdateUserInterest({
+        id: interestID,
+        private: checked,
+      })
+    },
+    [isChecked]
+  )
 
   return (
     <ArtistListItemContainer
@@ -23,16 +48,15 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       avatarSize="xs"
       withFeedback
       showFollowButton={false}
-      onPress={() => {}}
+      containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(1) }}
+      onPress={() => handlePress(!isChecked)}
       RightButton={
         <Checkbox
           mr={1}
-          checked={checked}
+          checked={isChecked}
           accessibilityHint={`Share ${artistData.name} with galleries}`}
-          accessibilityState={{ checked }}
-          onPress={() => {
-            onPress(!checked)
-          }}
+          accessibilityState={{ checked: !isChecked }}
+          onPress={() => handlePress(!isChecked)}
         />
       }
     />

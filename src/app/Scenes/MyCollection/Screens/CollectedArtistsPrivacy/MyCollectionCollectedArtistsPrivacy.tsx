@@ -1,9 +1,13 @@
-import { Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex } from "@artsy/palette-mobile"
 import {
   MyCollectionCollectedArtistsPrivacyQuery,
   MyCollectionCollectedArtistsPrivacyQuery$data,
 } from "__generated__/MyCollectionCollectedArtistsPrivacyQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import {
+  ArtistInterestsStore,
+  ArtistInterestsStoreProvider,
+} from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/ArtistInterestsStore"
 import {
   HeaderComponent,
   MyCollectionCollectedArtistsPrivacyArtistsList,
@@ -11,7 +15,6 @@ import {
 import { dismissModal } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { times } from "lodash"
-import { useState } from "react"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -19,26 +22,12 @@ interface MyCollectionCollectedArtistsPrivacyProps {
   me: MyCollectionCollectedArtistsPrivacyQuery$data["me"]
 }
 
-type UpdateUserInterestInput = {
-  id: String
-  private: Boolean
-}
-
 export const MyCollectionCollectedArtistsPrivacy: React.FC<
   MyCollectionCollectedArtistsPrivacyProps
 > = ({ me }) => {
-  const [userInterestsPrivacy, setUserInterestsPrivacy] = useState<UpdateUserInterestInput[]>([])
-
-  const updateCollectedArtists = (artistId: string, checked: boolean) => {
-    const oldUserInterestsPrivacy = [...userInterestsPrivacy]
-    const userInterestIndex = oldUserInterestsPrivacy.findIndex((artist) => artist.id === artistId)
-    if (userInterestIndex > -1) {
-      oldUserInterestsPrivacy[userInterestIndex].private = checked
-      setUserInterestsPrivacy(oldUserInterestsPrivacy)
-    } else {
-      setUserInterestsPrivacy([...oldUserInterestsPrivacy, { id: artistId, private: checked }])
-    }
-  }
+  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
+    (state) => state.userInterestsPrivacy
+  )
 
   const handleSave = () => {
     console.warn("not yet ready")
@@ -48,10 +37,7 @@ export const MyCollectionCollectedArtistsPrivacy: React.FC<
   return (
     <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
       <Flex flexGrow={1}>
-        <MyCollectionCollectedArtistsPrivacyArtistsList
-          me={me!}
-          updateCollectedArtists={updateCollectedArtists}
-        />
+        <MyCollectionCollectedArtistsPrivacyArtistsList me={me!} />
       </Flex>
 
       <Flex position="absolute" p={2} bottom={0} backgroundColor="white100">
@@ -65,15 +51,13 @@ export const MyCollectionCollectedArtistsPrivacy: React.FC<
 
 const ShareSettingsScreenPlaceholder: React.FC<{}> = () => (
   <Flex>
-    <Flex px={2}>
+    <Flex>
       <HeaderComponent />
-      <Join separator={<Spacer y={2} />}>
-        {times(10).map((index: number) => (
-          <Flex key={index}>
-            <ArtistListItemPlaceholder includeCheckbox />
-          </Flex>
-        ))}
-      </Join>
+      {times(10).map((index: number) => (
+        <Flex px={2} key={index}>
+          <ArtistListItemPlaceholder includeCheckbox />
+        </Flex>
+      ))}
     </Flex>
   </Flex>
 )
@@ -85,7 +69,11 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
     { fetchPolicy: "network-only" }
   )
 
-  return <MyCollectionCollectedArtistsPrivacy me={data.me!} />
+  return (
+    <ArtistInterestsStoreProvider>
+      <MyCollectionCollectedArtistsPrivacy me={data.me!} />
+    </ArtistInterestsStoreProvider>
+  )
 }, ShareSettingsScreenPlaceholder)
 
 const myCollectionCollectedArtistsPrivacyQuery = graphql`
