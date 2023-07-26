@@ -350,7 +350,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    // TODO: need to check it out
     navigate("/conditions-of-sale")
   }
 
