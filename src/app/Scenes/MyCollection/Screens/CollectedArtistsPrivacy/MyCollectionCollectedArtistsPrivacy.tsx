@@ -30,7 +30,7 @@ export const MyCollectionCollectedArtistsPrivacy: React.FC<
 > = ({ me }) => {
   return (
     <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
-      <Flex flexGrow={1}>
+      <Flex flexGrow={1} flex={1}>
         <MyCollectionCollectedArtistsPrivacyArtistsList me={me!} />
       </Flex>
 
