@@ -1,5 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-  - Improved image quality when you share artworks with other people.
+- Keep track of your saved artworks thanks to artworks lists.
+- Artist screen design improvements
+- You can now set price alerts to get notified when works from your favourite artists are available
 
 Have feedback? Email us at support@artsy.net
