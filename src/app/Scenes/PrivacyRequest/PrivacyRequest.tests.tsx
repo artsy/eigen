@@ -10,7 +10,7 @@ describe(PrivacyRequest, () => {
 
     fireEvent.press(getByText("Privacy Policy"))
 
-    expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
   it("handles email link taps", () => {

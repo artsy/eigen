@@ -131,7 +131,7 @@ describe("ArtworkDetails", () => {
     })
   })
 
-  it("navigates to medium info modal when tapped", async () => {
+  it("navigates to medium info when tapped", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {})
@@ -139,10 +139,10 @@ describe("ArtworkDetails", () => {
 
     fireEvent.press(screen.getByText("name-1"))
 
-    expect(navigate).toHaveBeenCalledWith("/artwork/slug-1/medium", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/artwork/slug-1/medium")
   })
 
-  it("navigates to artwork classifications modal when tapped", async () => {
+  it("navigates to artwork classifications when tapped", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {})
@@ -150,10 +150,10 @@ describe("ArtworkDetails", () => {
 
     fireEvent.press(screen.getByText("attributionClass.name-1"))
 
-    expect(navigate).toHaveBeenCalledWith("/artwork-classifications", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/artwork-classifications")
   })
 
-  it("navigates to artwork certificate of authenticity modal when tapped", async () => {
+  it("navigates to artwork certificate of authenticity when tapped", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {})
@@ -161,7 +161,7 @@ describe("ArtworkDetails", () => {
 
     fireEvent.press(screen.getByText("details-1"))
 
-    expect(navigate).toHaveBeenCalledWith("/artwork-certificate-of-authenticity", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/artwork-certificate-of-authenticity")
   })
 
   it("should not render condition report button when canRequestLotConditionsReport false", async () => {
