@@ -10,6 +10,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
 import { Image } from "react-native"
+import LinearGradient from "react-native-linear-gradient"
 import { useTracking } from "react-tracking"
 
 const IMAGE_ASPECT_RATIO = 0.74
@@ -40,6 +41,17 @@ export const GalleriesForYouBanner: React.FC<GalleriesForYouBannerProps> = ({ mb
               source={require("images/galleries_for_you.webp")}
               style={{ width: width, height: width / IMAGE_ASPECT_RATIO }}
               resizeMode={isTablet ? "contain" : "cover"}
+            />
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "40%",
+                bottom: 0,
+              }}
             />
           </Flex>
 
