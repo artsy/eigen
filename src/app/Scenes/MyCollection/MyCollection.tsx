@@ -37,7 +37,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import {
   QueryRenderer,
@@ -75,6 +75,14 @@ const MyCollection: React.FC<{
   const toast = useToast()
 
   const hasCollectedArtists = Number(me.myCollectionInfo?.artistsCount) > 0
+
+  const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
+
+  const hasCollectedArtistsRef = useRef(hasCollectedArtists).current
+
+  // We are using a ref of the hasCollectedArtists to prevent the modal from showing up as soon as you upload your first artist
+  const showCollectedArtistsOnboardingModal =
+    showCollectedArtistsOnboarding && hasCollectedArtistsRef
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
@@ -159,7 +167,8 @@ const MyCollection: React.FC<{
   if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
     return (
       <Tabs.ScrollView>
-        <MyCollectionCollectedArtistsOnboardingModal />
+        {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
+
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <>
@@ -187,7 +196,10 @@ const MyCollection: React.FC<{
           hasArtworks={artworks.length > 0}
         />
       </Tabs.SubTabBar>
-      {!!enableCollectedArtists && <MyCollectionCollectedArtistsOnboardingModal />}
+      {/* No need to onboard users to managing artists privacy if they have no artists in their collection */}
+      {!!enableCollectedArtists && !!showCollectedArtistsOnboardingModal && (
+        <MyCollectionCollectedArtistsOnboardingModal />
+      )}
 
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
