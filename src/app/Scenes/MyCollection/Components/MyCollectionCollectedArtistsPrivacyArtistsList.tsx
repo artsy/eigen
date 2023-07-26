@@ -7,13 +7,14 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionCollectedArtistsPrivacyArtistsListProps {
   me: MyCollectionCollectedArtistsPrivacyArtistsList_me$key
+  updateCollectedArtists: (interestId: string, checked: boolean) => void
 }
 
 export const ARTIST_CIRCLE_DIAMETER = 100
 
 export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
   MyCollectionCollectedArtistsPrivacyArtistsListProps
-> = ({ me }) => {
+> = ({ me, updateCollectedArtists }) => {
   const space = useSpace()
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
     myCollectionCollectedArtistsPrivacyArtistsListPaginationFragment,
@@ -45,6 +46,9 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
               key={item?.internalID}
               artist={item?.node!}
               checked={!!item?.private}
+              onPress={(checked) => {
+                updateCollectedArtists(item?.internalID!, checked)
+              }}
             />
           )
         }
