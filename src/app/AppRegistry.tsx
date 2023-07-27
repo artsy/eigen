@@ -415,7 +415,7 @@ export const modules = defineModules({
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     fullBleed: true,
     alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
+    modalPresentationStyle: "fullScreen",
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {

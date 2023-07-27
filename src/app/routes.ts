@@ -261,7 +261,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
-    addWebViewRoute("/auction-faq"),
+    addWebViewRoute("/auction-faq", {
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
+    }),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/categories"),
