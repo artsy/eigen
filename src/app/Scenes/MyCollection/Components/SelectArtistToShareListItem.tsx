@@ -1,7 +1,7 @@
 import { Checkbox, useSpace } from "@artsy/palette-mobile"
 import { SelectArtistToShareListItem_artist$key } from "__generated__/SelectArtistToShareListItem_artist.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
-import { ArtistInterestsStore } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/ArtistInterestsStore"
+import { UserInterestsStore } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
 import { useState } from "react"
 import { useFragment } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
@@ -21,15 +21,13 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
   const artistData = useFragment<SelectArtistToShareListItem_artist$key>(artistFragment, artist)
 
   const space = useSpace()
-  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
-    (state) => state.userInterestsPrivacy
-  )
+  const userInterests = UserInterestsStore.useStoreState((state) => state.userInterests)
 
-  const addOrUpdateUserInterest = ArtistInterestsStore.useStoreActions(
+  const addOrUpdateUserInterest = UserInterestsStore.useStoreActions(
     (actions) => actions.addOrUpdateUserInterest
   )
 
-  const interest = userInterestsPrivacy.find((userInterest) => userInterest.id === interestID)
+  const interest = userInterests.find((userInterest) => userInterest.id === interestID)
 
   const isPrivate = interest ? !interest.private : !privateProp
 

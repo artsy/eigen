@@ -6,13 +6,13 @@ import {
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { useToast } from "app/Components/Toast/toastHook"
 import {
-  ArtistInterestsStore,
-  ArtistInterestsStoreProvider,
-} from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/ArtistInterestsStore"
-import {
   HeaderComponent,
   MyCollectionCollectedArtistsPrivacyArtistsList,
 } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacyArtistsList"
+import {
+  UserInterestsStore,
+  UserInterestsStoreProvider,
+} from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
 import { updateUserInterests } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/updateUserInterests"
 import { popToRoot } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -43,9 +43,7 @@ const SubmitButton: React.FC = () => {
   const toast = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
-  const userInterestsPrivacy = ArtistInterestsStore.useStoreState(
-    (state) => state.userInterestsPrivacy
-  )
+  const userInterests = UserInterestsStore.useStoreState((state) => state.userInterests)
 
   const handleSubmit = async () => {
     if (isLoading) {
@@ -54,7 +52,7 @@ const SubmitButton: React.FC = () => {
 
     try {
       setIsLoading(true)
-      await updateUserInterests(userInterestsPrivacy)
+      await updateUserInterests(userInterests)
       toast.show("Saved", "bottom", {
         backgroundColor: "green100",
       })
@@ -95,13 +93,13 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
   const data = useLazyLoadQuery<MyCollectionCollectedArtistsPrivacyQuery>(
     myCollectionCollectedArtistsPrivacyQuery,
     {},
-    { fetchPolicy: "network-only" }
+    { fetchPolicy: "store-and-network" }
   )
 
   return (
-    <ArtistInterestsStoreProvider>
+    <UserInterestsStoreProvider>
       <MyCollectionCollectedArtistsPrivacy me={data.me!} />
-    </ArtistInterestsStoreProvider>
+    </UserInterestsStoreProvider>
   )
 }, ShareSettingsScreenPlaceholder)
 

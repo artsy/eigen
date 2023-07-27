@@ -1,4 +1,4 @@
-import { UserInterestInput } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/ArtistInterestsStore"
+import { UserInterestInput } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 

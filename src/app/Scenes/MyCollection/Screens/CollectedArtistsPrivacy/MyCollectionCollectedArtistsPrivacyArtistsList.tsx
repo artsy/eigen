@@ -55,16 +55,16 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
       contentContainerStyle={{ paddingBottom: space(6) }}
       ListHeaderComponent={HeaderComponent}
       ListFooterComponent={() => {
-        if (!!isLoadingNext) {
-          return (
-            <Flex>
-              <Flex alignItems="center" justifyContent="center" height={60}>
-                <Spinner />
-              </Flex>
-            </Flex>
-          )
+        if (!isLoadingNext) {
+          return null
         }
-        return null
+        return (
+          <Flex>
+            <Flex alignItems="center" justifyContent="center" height={60}>
+              <Spinner />
+            </Flex>
+          </Flex>
+        )
       }}
       onEndReached={handleLoadMore}
     />
