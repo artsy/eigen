@@ -14806,10 +14806,10 @@ react-native-bootsplash@3.2.0:
     fs-extra "^9.1.0"
     jimp "^0.16.1"
 
-react-native-code-push@8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-8.0.2.tgz#cf86a68232ba98d64588d4f45d7b393d46335587"
-  integrity sha512-0ATo6n2HZ+xAXjuM7MfL5BBul/MhOyUpO0DGUelzFOmvxVfjS+yURQYscRWMhg9nurlIbJz3zGcsbOopF1ZIgw==
+react-native-code-push@7:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-7.1.0.tgz#9767518d684017993ff32875bfd349ce01298d35"
+  integrity sha512-ZBc4166cbdPUP0m/013IzVZBVwrHdyFAp/JJCYuVyL0G6ki3Yp8a9f7zGm6xTvMzanOT6cm051iYqqNznvGiCA==
   dependencies:
     code-push "^4.1.0"
     glob "^7.1.7"
