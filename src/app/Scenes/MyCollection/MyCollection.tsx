@@ -23,6 +23,7 @@ import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Component
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { extractEdges } from "app/utils/extractEdges"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -74,7 +75,7 @@ const MyCollection: React.FC<{
 
   const toast = useToast()
 
-  const hasCollectedArtists = Number(me.myCollectionInfo?.artistsCount) > 0
+  const hasCollectedArtists = extractEdges(me.userInterestsConnection).length > 0
 
   const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
 
@@ -166,15 +167,30 @@ const MyCollection: React.FC<{
   // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
     return (
-      <Tabs.ScrollView>
+      <Tabs.ScrollView
+        contentContainerStyle={{
+          justifyContent: "flex-start",
+          paddingHorizontal: 0,
+        }}
+      >
         {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
+
+        <Tabs.SubTabBar>
+          <MyCollectionStickyHeader
+            filtersCount={filtersCount}
+            hasMarketSignals={hasMarketSignals}
+            showModal={() => setIsFilterModalVisible(true)}
+            showNewWorksMessage={!!showNewWorksMessage}
+            hasArtworks={artworks.length > 0}
+          />
+        </Tabs.SubTabBar>
 
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
-          <>
+          <Flex px={2}>
             <Separator my={4} />
             <MyCollectionZeroStateArtworks />
-          </>
+          </Flex>
         )}
       </Tabs.ScrollView>
     )
@@ -240,10 +256,14 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
-          artistsCount
           artworksCount
         }
         ...MyCollectionCollectedArtists_me
+        userInterestsConnection(first: 10, category: COLLECTED_BEFORE, interestType: ARTIST) {
+          edges {
+            internalID
+          }
+        }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {

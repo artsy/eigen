@@ -53,8 +53,10 @@ describe("MyCollection", () => {
           },
           myCollectionInfo: {
             includesPurchasedArtworks: true,
-            artistsCount: 0,
             artworksCount: 0,
+          },
+          userInterestsConnection: {
+            edges: [],
           },
         }),
       })
