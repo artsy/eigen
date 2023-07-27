@@ -176,7 +176,7 @@ export const usePreloadShowsRail = (disableLocation: boolean) => {
     if (!isLoading) {
       return
     }
-    console.log("ShowsRailQuery", "prefetching")
+
     prefetchQuery(ShowsQuery, getQueryVariables(location, disableLocation))
   }, [isLoading])
 }

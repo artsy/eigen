@@ -177,6 +177,7 @@ const Home = memo((props: HomeProps) => {
     "CX-impressions-tracking-home-rail-views"
   )
 
+  // Preloading the Shows for You rail to avoid loading it when the user scrolls. This is needed because it has it's own query renderer.
   usePreloadShowsRail(enableShowsForYouLocation)
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
