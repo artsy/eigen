@@ -43,7 +43,7 @@ import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAd
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
-import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { ShowsRailContainer, usePreloadShowsRail } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import {
   DEFAULT_RECS_MODEL_VERSION,
@@ -176,6 +176,9 @@ const Home = memo((props: HomeProps) => {
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
   )
+
+  // Preloading the Shows for You rail to avoid loading it when the user scrolls. This is needed because it has it's own query renderer.
+  usePreloadShowsRail(enableShowsForYouLocation)
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const { modules, allModulesKeys } = useHomeModules(props)
