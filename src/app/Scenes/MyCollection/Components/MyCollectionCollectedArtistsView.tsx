@@ -3,6 +3,7 @@ import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollect
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
+import { extractEdges } from "app/utils/extractEdges"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
 import { FlatList } from "react-native"
@@ -32,9 +33,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
   const RefreshControl = useRefreshControl(refetch)
 
-  const userInterests = (data.userInterestsConnection?.edges || []).filter((edge) => {
-    return !!edge
-  })
+  const userInterests = extractEdges(data.userInterestsConnection)
 
   if (!userInterests.length) {
     return null

@@ -1,6 +1,7 @@
 import { Flex, Spinner, Text, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsPrivacyArtistsList_me$key } from "__generated__/MyCollectionCollectedArtistsPrivacyArtistsList_me.graphql"
 import { SelectArtistToShareListItem } from "app/Scenes/MyCollection/Components/SelectArtistToShareListItem"
+import { extractEdges } from "app/utils/extractEdges"
 import { FlatList } from "react-native"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -29,7 +30,7 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
     loadNext(10)
   }
 
-  const userInterests = data.userInterestsConnection?.edges || []
+  const userInterests = extractEdges(data.userInterestsConnection)
 
   if (userInterests.length === 0) {
     return null
