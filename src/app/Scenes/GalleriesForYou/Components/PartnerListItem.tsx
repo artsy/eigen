@@ -79,22 +79,24 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     <Flex mx={2}>
       <Touchable onPress={handlePress}>
         <Flex width={width} mx="auto">
-          <OpaqueImageView imageURL={imageUrl} aspectRatio={1.33} width={width} />
+          <Flex>
+            <OpaqueImageView imageURL={imageUrl} aspectRatio={1.33} width={width} />
 
-          {!!showInitials && (
-            <Flex
-              position="absolute"
-              top={0}
-              left={0}
-              width="100%"
-              height="100%"
-              justifyContent="center"
-            >
-              <Flex mx="auto">
-                <Text variant="lg-display">{initials}</Text>
+            {!!showInitials && (
+              <Flex
+                position="absolute"
+                top={0}
+                left={0}
+                width="100%"
+                height="100%"
+                justifyContent="center"
+              >
+                <Flex mx="auto">
+                  <Text variant="lg-display">{initials}</Text>
+                </Flex>
               </Flex>
-            </Flex>
-          )}
+            )}
+          </Flex>
 
           <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
             <Flex mr={1} flexShrink={1}>
