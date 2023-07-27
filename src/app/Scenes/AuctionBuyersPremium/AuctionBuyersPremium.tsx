@@ -6,7 +6,6 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { FC } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -18,7 +17,7 @@ interface AuctionBuyersPremiumQueryRendererProps {
   saleID: string
 }
 
-export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) => {
+export const AuctionBuyersPremium: React.FC<AuctionBuyersPremiumProps> = ({ sale }) => {
   const space = useSpace()
   const schedule = compact(sale.buyersPremium).sort((a, b) => (a.cents ?? 0) - (b.cents ?? 0))
 
@@ -114,7 +113,7 @@ const AuctionBuyersPremiumFragmentContainer = createFragmentContainer(AuctionBuy
   `,
 })
 
-const AuctionBuyersPremiumLoadingPlaceholder = () => {
+const AuctionBuyersPremiumLoadingPlaceholder: React.FC = () => {
   const space = useSpace()
   return (
     <Screen>
@@ -142,9 +141,9 @@ const AuctionBuyersPremiumLoadingPlaceholder = () => {
   )
 }
 
-export const AuctionBuyersPremiumQueryRenderer: FC<AuctionBuyersPremiumQueryRendererProps> = ({
-  saleID,
-}) => {
+export const AuctionBuyersPremiumQueryRenderer: React.FC<
+  AuctionBuyersPremiumQueryRendererProps
+> = ({ saleID }) => {
   return (
     <QueryRenderer<AuctionBuyersPremiumQuery>
       environment={getRelayEnvironment()}
@@ -158,7 +157,7 @@ export const AuctionBuyersPremiumQueryRenderer: FC<AuctionBuyersPremiumQueryRend
       `}
       render={renderWithPlaceholder({
         Container: AuctionBuyersPremiumFragmentContainer,
-        renderPlaceholder: AuctionBuyersPremiumLoadingPlaceholder,
+        renderPlaceholder: () => <AuctionBuyersPremiumLoadingPlaceholder />,
       })}
     />
   )
