@@ -7,6 +7,8 @@
 #import "AppboyReactUtils.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
+#import <CodePush/CodePush.h>
+#import <AppCenterReactNative.h>
 
 #import "ARAnalyticsConstants.h"
 #import "ARAppDelegate.h"
@@ -148,23 +150,25 @@ static ARAppDelegate *_sharedInstance = nil;
 
     AREmission *emission = [self setupSharedEmission];
 
+    [AppCenterReactNative register];
+
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
     [emission setBridge:bridge];
-    #if RCT_NEW_ARCH_ENABLED
-  _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
-  _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
-  _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
-  _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
-  bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
+#if RCT_NEW_ARCH_ENABLED
+    _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
+    _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
+    _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
+    _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
+    bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
-  NSDictionary *initProps = [self prepareInitialProps];
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eigen", initProps);
+    NSDictionary *initProps = [self prepareInitialProps];
+    UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eigen", initProps);
 
-  if (@available(iOS 13.0, *)) {
-    rootView.backgroundColor = [UIColor systemBackgroundColor];
-  } else {
-    rootView.backgroundColor = [UIColor whiteColor];
-  }
+    if (@available(iOS 13.0, *)) {
+        rootView.backgroundColor = [UIColor systemBackgroundColor];
+    } else {
+        rootView.backgroundColor = [UIColor whiteColor];
+    }
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *rootViewController = [UIViewController new];
@@ -185,7 +189,7 @@ static ARAppDelegate *_sharedInstance = nil;
     FlipperClient *client = [FlipperClient sharedClient];
     [client addPlugin:[FlipperPerformancePlugin new]];
   #endif
-  RCTAppSetupPrepareApp(application);
+    RCTAppSetupPrepareApp(application);
 
     [self setupForAppLaunch:launchOptions];
 
@@ -349,7 +353,7 @@ static ARAppDelegate *_sharedInstance = nil;
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+    return [CodePush bundleURL];
 #endif
 }
 
