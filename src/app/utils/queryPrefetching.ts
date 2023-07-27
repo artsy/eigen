@@ -45,7 +45,7 @@ async function isRateLimited() {
   return remainingRequests < 0
 }
 
-const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
+export const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
   const environment = getRelayEnvironment()
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
