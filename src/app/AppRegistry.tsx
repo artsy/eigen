@@ -15,9 +15,9 @@ import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
-import { MyCollectionCollectedArtistsPrivacy } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsPrivacy"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
+import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
@@ -497,12 +497,16 @@ export const modules = defineModules({
     hidesBottomTabs: true,
   }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
-  MyCollectionCollectedArtistsPrivacy: reactModule(MyCollectionCollectedArtistsPrivacy, {
-    hidesBackButton: true,
-    hidesBottomTabs: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
-  }),
+  MyCollectionCollectedArtistsPrivacy: reactModule(
+    MyCollectionCollectedArtistsPrivacyQueryRenderer,
+    {
+      hidesBackButton: true,
+      hidesBottomTabs: true,
+      screenOptions: {
+        gestureEnabled: false,
+      },
+    }
+  ),
 
   MyProfile: reactModule(
     MyProfile,

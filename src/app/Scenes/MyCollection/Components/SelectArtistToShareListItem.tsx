@@ -1,21 +1,50 @@
-import { Checkbox } from "@artsy/palette-mobile"
+import { Checkbox, useSpace } from "@artsy/palette-mobile"
 import { SelectArtistToShareListItem_artist$key } from "__generated__/SelectArtistToShareListItem_artist.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
+import { UserInterestsStore } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
+import { useState } from "react"
 import { useFragment } from "react-relay"
+import useDebounce from "react-use/lib/useDebounce"
 import { graphql } from "relay-runtime"
 
 interface SelectArtistToShareListItemProps {
   artist: SelectArtistToShareListItem_artist$key
-  checked: boolean
-  oncheckBoxPress: (internalID: string) => void
+  interestID: string
+  private: boolean
 }
 
 export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemProps> = ({
   artist,
-  checked,
-  oncheckBoxPress,
+  interestID,
+  private: privateProp,
 }) => {
   const artistData = useFragment<SelectArtistToShareListItem_artist$key>(artistFragment, artist)
+
+  const space = useSpace()
+  const userInterests = UserInterestsStore.useStoreState((state) => state.userInterests)
+
+  const addOrUpdateUserInterest = UserInterestsStore.useStoreActions(
+    (actions) => actions.addOrUpdateUserInterest
+  )
+
+  const interest = userInterests.find((userInterest) => userInterest.id === interestID)
+
+  const isPrivate = interest ? !interest.private : !privateProp
+
+  const [checked, setChecked] = useState(!isPrivate)
+
+  useDebounce(
+    () => {
+      if (privateProp !== isPrivate) {
+        addOrUpdateUserInterest({
+          id: interestID,
+          private: !checked,
+        })
+      }
+    },
+    300,
+    [checked]
+  )
 
   return (
     <ArtistListItemContainer
@@ -23,9 +52,16 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       avatarSize="xs"
       withFeedback
       showFollowButton={false}
-      onPress={() => {}}
+      containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(1) }}
+      onPress={() => setChecked(!checked)}
       RightButton={
-        <Checkbox mr={1} checked={checked} onPress={() => oncheckBoxPress(artistData.internalID)} />
+        <Checkbox
+          mr={1}
+          checked={checked}
+          accessibilityHint={`Share ${artistData.name} with galleries}`}
+          accessibilityState={{ checked }}
+          onPress={() => setChecked(!checked)}
+        />
       }
     />
   )
@@ -34,6 +70,7 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
 const artistFragment = graphql`
   fragment SelectArtistToShareListItem_artist on Artist {
     internalID
+    name
     ...ArtistListItem_artist
   }
 `

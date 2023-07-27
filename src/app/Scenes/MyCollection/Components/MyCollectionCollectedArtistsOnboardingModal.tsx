@@ -1,41 +1,41 @@
-import { Button, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Image, Modal } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   const { showVisualClue } = useVisualClue()
+  const [showModal, setShowModal] = useState(false)
 
-  const color = useColor()
-  const space = useSpace()
+  const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
+    "MyCollectionArtistsCollectedOnboarding"
+  )
 
-  const showMyCollectionCollectedArtistsOnboarding =
-    useFeatureFlag("ARShowCollectedArtistOnboarding") &&
-    !!showVisualClue("MyCollectionArtistsCollectedOnboarding")
+  useEffect(() => {
+    // Only show the modal after a delay to avoid hiding my collection content immediately
+    const showModalTimeout = setTimeout(() => {
+      setShowModal(true)
+    }, 1000)
 
-  if (!showMyCollectionCollectedArtistsOnboarding) {
+    return () => {
+      clearTimeout(showModalTimeout)
+    }
+  }, [])
+
+  if (!showMyCollectionCollectedArtistsOnboarding || !showModal) {
     return null
   }
 
   return (
-    <Modal presentationStyle="formSheet" animationType="slide">
-      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
-        <Flex>
-          <Flex top={space(1)} alignItems="center" justifyContent="flex-start" width="100%">
-            <Flex
-              style={{
-                backgroundColor: color("black100"),
-                borderRadius: 2,
-                height: 4,
-                width: 40,
-              }}
-            />
-          </Flex>
-        </Flex>
+    <Modal
+      presentationStyle="fullScreen"
+      visible={showMyCollectionCollectedArtistsOnboarding}
+      animationType="slide"
+    >
+      <SafeAreaView style={{ flex: 1 }}>
         <Flex flexGrow={1} mt={4}>
           <Flex mx={2} position="relative" flex={1}>
             <Text variant="lg-display">Share Artists You Collect</Text>
