@@ -43,7 +43,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
   })
 
   return (
-    <Flex>
+    <Flex testID="my-collection-collected-artists-rail">
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}

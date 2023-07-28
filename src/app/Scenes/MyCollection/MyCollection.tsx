@@ -74,7 +74,7 @@ const MyCollection: React.FC<{
 
   const toast = useToast()
 
-  const hasCollectedArtists = Number(me.myCollectionInfo?.artistsCount) > 0
+  const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
 
   const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
 
@@ -166,15 +166,30 @@ const MyCollection: React.FC<{
   // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
     return (
-      <Tabs.ScrollView>
+      <Tabs.ScrollView
+        contentContainerStyle={{
+          justifyContent: "flex-start",
+          paddingHorizontal: 0,
+        }}
+      >
         {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
+
+        <Tabs.SubTabBar>
+          <MyCollectionStickyHeader
+            filtersCount={filtersCount}
+            hasMarketSignals={hasMarketSignals}
+            showModal={() => setIsFilterModalVisible(true)}
+            showNewWorksMessage={!!showNewWorksMessage}
+            hasArtworks={artworks.length > 0}
+          />
+        </Tabs.SubTabBar>
 
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
-          <>
+          <Flex px={2}>
             <Separator my={4} />
             <MyCollectionZeroStateArtworks />
-          </>
+          </Flex>
         )}
       </Tabs.ScrollView>
     )
@@ -240,10 +255,12 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
-          artistsCount
           artworksCount
         }
         ...MyCollectionCollectedArtists_me
+        userInterestsConnection(first: 10, category: COLLECTED_BEFORE, interestType: ARTIST) {
+          totalCount
+        }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {

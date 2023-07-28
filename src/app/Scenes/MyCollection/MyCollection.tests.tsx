@@ -6,6 +6,7 @@ import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -53,8 +54,10 @@ describe("MyCollection", () => {
           },
           myCollectionInfo: {
             includesPurchasedArtworks: true,
-            artistsCount: 0,
             artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 0,
           },
         }),
       })
@@ -81,6 +84,74 @@ describe("MyCollection", () => {
 
     it("tracks analytics event when Add Artwork is pressed", () => {
       const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
+      addArtworkButton.props.onPress()
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "addCollectedArtwork",
+            "context_module": "myCollectionHome",
+            "context_owner_type": "myCollection",
+            "platform": "mobile",
+          },
+        ]
+      `)
+    })
+  })
+
+  describe("collection contains some artists and no artworks", () => {
+    let tree: RenderResult
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: true })
+
+      tree = renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: { edges: [] },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 1,
+          },
+        }),
+      })
+    })
+
+    it("shows collected artists rail", () => {
+      expect(tree.getByTestId("my-collection-collected-artists-rail")).toBeTruthy()
+    })
+
+    it("shows zero artworks state", () => {
+      expect(tree.getByText("Add your artworks")).toBeTruthy()
+      expect(
+        tree.getByText(
+          "Access price and market insights and build an online record of your collection."
+        )
+      ).toBeTruthy()
+    })
+
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.UNSAFE_getByProps({
+        testID: "add-artwork-button-zero-artworks-state",
+      })
+      addArtworkButton.props.onPress()
+
+      expect(navigate).toHaveBeenCalledWith(
+        "my-collection/artworks/new",
+        expect.objectContaining({
+          passProps: { source: Tab.collection },
+        })
+      )
+    })
+
+    it("tracks analytics event when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.UNSAFE_getByProps({
+        testID: "add-artwork-button-zero-artworks-state",
+      })
+
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)

@@ -14,6 +14,7 @@ export const MyCollectionZeroStateArtworks: React.FC = () => {
         Access price and market insights and build an online record of your collection.
       </Text>
       <Button
+        testID="add-artwork-button-zero-artworks-state"
         onPress={() => {
           trackEvent(tracks.addCollectedArtwork())
           navigate("my-collection/artworks/new", {
