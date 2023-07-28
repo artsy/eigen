@@ -11,6 +11,7 @@ jest.mock("@react-navigation/native", () => {
     useNavigation: () => ({
       navigate: jest.fn(),
     }),
+    useIsFocused: () => true,
     useRoute: () => {
       const props: ArtworkFormScreen["AddMyCollectionArtist"] = {
         props: {

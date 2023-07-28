@@ -1,13 +1,13 @@
 import { ArtsyKeyboardAvoidingView, Button, Flex, Join, Spacer } from "@artsy/palette-mobile"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { useFormik } from "formik"
-import React, { useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { Keyboard, ScrollView } from "react-native"
 import * as Yup from "yup"
 
 export interface MyCollectionCustomArtistSchema {
@@ -37,6 +37,14 @@ export const AddMyCollectionArtist: React.FC = () => {
   const nationalityInputRef = useRef<Input>(null)
   const birthYearInputRef = useRef<Input>(null)
   const deathYearInputRef = useRef<Input>(null)
+
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    if (isFocused) {
+      Keyboard.dismiss()
+    }
+  }, [isFocused])
 
   const { handleSubmit, validateField, handleChange, dirty, isValid, values, errors } =
     useFormik<MyCollectionCustomArtistSchema>({
