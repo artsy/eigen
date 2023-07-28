@@ -1,10 +1,11 @@
-import { Button, Flex, Spacer, Spinner, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import {
   UserInterestCategory,
   UserInterestInterestType,
   useCreateUserInterestsMutation,
 } from "__generated__/useCreateUserInterestsMutation.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import LoadingModal from "app/Components/Modals/LoadingModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
@@ -105,9 +106,10 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
 
     // In case no artists were added, we don't want to dismiss the modal
     if (addingUserInterestsSucceeded) {
+      refreshMyCollection()
+      toast.show("Saved.", "bottom", { backgroundColor: "green100" })
       dismissModal()
       popToRoot()
-      refreshMyCollection()
     }
   }
 
@@ -137,26 +139,19 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
         left={0}
         backgroundColor="white100"
       >
-        <Button block disabled={!numberOfArtists} onPress={handleSubmit} mb={`${bottom}px`}>
+        <Button
+          block
+          disabled={!numberOfArtists || isLoading}
+          onPress={handleSubmit}
+          mb={`${bottom}px`}
+        >
           <Text color="white100">
             Add Selected {pluralize(`Artist`, numberOfArtists)} • {numberOfArtists}
           </Text>
         </Button>
       </Flex>
 
-      {!!isLoading && (
-        <Flex
-          position="absolute"
-          top="50%"
-          left="50%"
-          opacity={0.5}
-          backgroundColor="black10"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Spinner />
-        </Flex>
-      )}
+      <LoadingModal isVisible={isLoading} dark />
     </Flex>
   )
 }
