@@ -76,6 +76,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
           <Join separator={<Spacer y={2} />}>
             <ArtistListItemContainer
               artist={artist}
+              disableNavigation={!!artist?.isPersonalArtist}
               uploadsCount={artworksCountWithinMyCollection}
               isPrivate={me.userInterest?.private}
               showFollowButton={!artist?.isPersonalArtist}
