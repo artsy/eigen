@@ -1,6 +1,5 @@
-import { useSpace } from "@artsy/palette-mobile"
+import { useSpace, Pill } from "@artsy/palette-mobile"
 import { SearchPills_viewer$key } from "__generated__/SearchPills_viewer.graphql"
-import { Pill } from "app/Components/Pill"
 import { TOP_PILL } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import React from "react"
@@ -44,18 +43,17 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>(
         {pills.map((pill) => {
           const { key, displayName } = pill
           const selected = isSelected(pill)
-          const disabled = !!selected || isPillDisabled(key)
+          const disabled = isPillDisabled(key)
 
           return (
             <Pill
               mr={1}
               key={key}
               accessibilityState={{ selected, disabled }}
-              rounded
+              variant="search"
               selected={selected}
               disabled={disabled}
               onPress={() => onPillPress(pill)}
-              block
             >
               {displayName}
             </Pill>

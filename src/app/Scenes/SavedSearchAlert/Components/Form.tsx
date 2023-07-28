@@ -1,5 +1,4 @@
 import {
-  CloseIcon,
   Spacer,
   Flex,
   Box,
@@ -7,11 +6,11 @@ import {
   Button,
   ArrowRightIcon,
   Touchable,
+  Pill,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
-import { Pill } from "app/Components/Pill"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -125,15 +124,10 @@ export const Form: React.FC<FormProps> = (props) => {
             <Pill
               testID="alert-pill"
               m={0.5}
+              variant="filter"
+              disabled={isArtistPill(pill)}
               key={`filter-label-${index}`}
-              iconPosition="right"
-              onPress={() => {
-                if (!isArtistPill(pill)) {
-                  onRemovePill(pill)
-                }
-              }}
-              Icon={isArtistPill(pill) ? undefined : CloseIcon}
-              block
+              onPress={() => onRemovePill(pill)}
             >
               {pill.label}
             </Pill>
