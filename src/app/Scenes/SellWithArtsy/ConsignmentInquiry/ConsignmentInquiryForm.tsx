@@ -160,7 +160,7 @@ export const ConsignmentInquiryForm: React.FC<{
           <Spacer y={4} />
           <Text variant="xs" color="black60" mb={2}>
             By continuing, you agree to{" "}
-            <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>
+            <LinkText variant="xs" onPress={() => navigate("/privacy")}>
               Artsy’s Privacy Policy.
             </LinkText>{" "}
           </Text>

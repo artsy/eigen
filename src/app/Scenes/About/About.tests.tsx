@@ -8,7 +8,7 @@ describe("About", () => {
 
     expect(tree.root.findAllByProps({ title: "Terms of Use" })).toBeTruthy()
     tree.root.findByProps({ title: "Terms of Use" }).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/terms", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/terms")
   })
 
   it("renders Privacy policy", () => {
@@ -16,7 +16,7 @@ describe("About", () => {
 
     expect(tree.root.findAllByProps({ title: "Privacy Policy" })).toBeTruthy()
     tree.root.findByProps({ title: "Privacy Policy" }).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
   it("renders Conditions of Sale", () => {
@@ -24,7 +24,7 @@ describe("About", () => {
 
     expect(tree.root.findAllByProps({ title: "Conditions of Sale" })).toBeTruthy()
     tree.root.findByProps({ title: "Conditions of Sale" }).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/conditions-of-sale", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/conditions-of-sale")
   })
 
   it("renders Version", () => {

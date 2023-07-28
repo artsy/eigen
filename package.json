@@ -105,11 +105,12 @@
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "react-spring": "Try removing this! We have reanimated now.",
     "deprecated-react-native-prop-types": "Needed for patching react-native-scrollable-tab-view, react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
-    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
+    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
+    "react-native-dev-menu-android": "Needed for react-native dev menu on android see https://github.com/artsy/eigen/pull/8660"
   },
   "dependencies": {
     "@artsy/cohesion": "4.136.0",
-    "@artsy/palette-mobile": "11.2.8",
+    "@artsy/palette-mobile": "11.2.10",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@formatjs/intl-datetimeformat": "6.8.0",
@@ -123,7 +124,6 @@
     "@ptomasroos/react-native-multi-slider": "2.2.2",
     "@react-native-async-storage/async-storage": "1.16.1",
     "@react-native-clipboard/clipboard": "1.7.0",
-    "@react-native-community/cameraroll": "1.3.0",
     "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-community/geolocation": "3.0.6",
     "@react-native-community/netinfo": "9.3.7",
@@ -218,7 +218,6 @@
     "styled-system": "5.1.5",
     "supercluster": "7.1.5",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
-    "tsutils": "3.21.0",
     "unleash-proxy-client": "2.4.3",
     "url": "0.11.0",
     "victory-native": "36.6.8",
@@ -239,7 +238,7 @@
     "@react-native-community/cli-platform-ios": "6.2.0",
     "@testing-library/jest-native": "5.4.2",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/react-native": "12.1.2",
+    "@testing-library/react-native": "12.1.3",
     "@tsconfig/react-native": "2.0.2",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.1.1",
@@ -356,7 +355,12 @@
   },
   "lint-staged": {
     "*": "yarn detect-secrets:hook",
-    "*.@(ts|tsx)": ["yarn lint", "yarn prettier-write"],
-    "*.@(json|md)": ["yarn prettier-write"]
+    "*.@(ts|tsx)": [
+      "yarn lint",
+      "yarn prettier-write"
+    ],
+    "*.@(json|md)": [
+      "yarn prettier-write"
+    ]
   }
 }

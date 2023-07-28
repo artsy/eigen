@@ -16,7 +16,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const auctionInternalID =
       this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.internalID
     if (auctionInternalID) {
-      navigate(`/auction/${auctionInternalID}/buyers-premium`, { modal: true })
+      navigate(`/auction/${auctionInternalID}/buyers-premium`)
     }
   }
 
@@ -109,7 +109,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             </Text>
           )}
         </Flex>
-        {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
+        {!!sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
             <Spacer y={1} />
             <Text variant="sm" color="black60">
