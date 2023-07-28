@@ -78,6 +78,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
               artist={artist}
               uploadsCount={artworksCountWithinMyCollection}
               isPrivate={me.userInterest?.private}
+              showFollowButton={!artist?.isPersonalArtist}
             />
             <ArtistKindPills artist={artist} />
           </Join>
@@ -146,6 +147,7 @@ export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = create
       fragment MyCollectionBottomSheetModalArtistPreview_artist on Artist {
         ...ArtistListItem_artist
         ...ArtistKindPills_artist
+        isPersonalArtist
       }
     `,
     me: graphql`
