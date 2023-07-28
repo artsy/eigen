@@ -4,23 +4,10 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { ReactNode } from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { InboxContainer, InboxPlaceholder } from "./Inbox"
-
-// impossible to test react-native-scrollable-tab-view without a mock
-jest.mock("react-native-scrollable-tab-view", () => {
-  return {
-    __esModule: true, // needed to mock the default export
-    default: (props: { children: ReactNode[] }) => {
-      // Just render first child
-      return props.children
-    },
-    DefaultTabBar: () => null,
-  }
-})
 
 describe("renders Inbox component", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
