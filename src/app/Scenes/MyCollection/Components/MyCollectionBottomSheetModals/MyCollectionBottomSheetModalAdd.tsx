@@ -21,6 +21,8 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           title="Add Artists"
           description="List the artists in your collection."
           onPress={() => {
+            setViewKind({ viewKind: null })
+
             navigate("my-collection/collected-artists/new", {
               passProps: {
                 source: Tab.collection,
@@ -36,6 +38,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
           description="Upload images and details of an artwork in your collection."
           onPress={() => {
             setViewKind({ viewKind: null })
+
             navigate("my-collection/artworks/new", {
               passProps: {
                 source: Tab.collection,
