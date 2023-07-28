@@ -155,7 +155,6 @@ export class CityView extends Component<Props, State> {
         {relayErrorState ? (
           <ErrorScreen relayErrorState={relayErrorState} key="error" />
         ) : (
-          // snapThreshold is set to 1 to fix issues with initial scrollview inset
           <TabsContainer
             onTabChange={(tab) => {
               this.setSelectedTab(Number(tab.index))
