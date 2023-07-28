@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, useColor, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Separator, Tabs } from "@artsy/palette-mobile"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
@@ -9,7 +9,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
 import { useEffect, useState } from "react"
-import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
+import { ActivityIndicator, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import ConversationSnippet from "./ConversationSnippet"
@@ -96,12 +96,9 @@ export const Conversations: React.FC<Props> = (props) => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
-      <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Text variant="lg-display" mx={2} mt={1}>
-          Inbox {unreadCounter}
-        </Text>
-      </Flex>
-      <FlatList
+      <Tabs.FlatList
+        // this line makes the ListHeaderComponent sticky
+        stickyHeaderIndices={[0]}
         data={conversations}
         refreshControl={
           <RefreshControl
@@ -124,6 +121,20 @@ export const Conversations: React.FC<Props> = (props) => {
 
           return null
         }}
+        ListHeaderComponent={
+          <Flex
+            py={1}
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: color("black10"),
+              backgroundColor: color("white100"),
+            }}
+          >
+            <Text variant="lg-display" mx={2} mt={1}>
+              Inbox {unreadCounter}
+            </Text>
+          </Flex>
+        }
         renderItem={({ item }) => {
           return (
             <ConversationSnippet
