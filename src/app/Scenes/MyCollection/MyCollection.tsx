@@ -23,7 +23,6 @@ import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Component
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { extractEdges } from "app/utils/extractEdges"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -75,7 +74,7 @@ const MyCollection: React.FC<{
 
   const toast = useToast()
 
-  const hasCollectedArtists = extractEdges(me.userInterestsConnection).length > 0
+  const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
 
   const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
 
@@ -260,9 +259,7 @@ export const MyCollectionContainer = createPaginationContainer(
         }
         ...MyCollectionCollectedArtists_me
         userInterestsConnection(first: 10, category: COLLECTED_BEFORE, interestType: ARTIST) {
-          edges {
-            internalID
-          }
+          totalCount
         }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
