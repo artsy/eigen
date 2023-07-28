@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
   ConfirmationScreenMatchingArtworksQuery,
@@ -7,7 +7,6 @@ import {
 } from "__generated__/ConfirmationScreenMatchingArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Pill } from "app/Components/Pill"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
@@ -77,7 +76,13 @@ export const ConfirmationScreen: React.FC = () => {
           <Flex flexDirection="row" flexWrap="wrap">
             {pills.map((pill) => {
               return (
-                <Pill key={`param-${pill.paramName}-value-${pill.value}`} block mr={1} mb={1}>
+                <Pill
+                  key={`param-${pill.paramName}-value-${pill.value}`}
+                  variant="filter"
+                  disabled
+                  mr={1}
+                  mb={1}
+                >
                   {pill.label}
                 </Pill>
               )

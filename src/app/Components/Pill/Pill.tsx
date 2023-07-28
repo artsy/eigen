@@ -70,6 +70,10 @@ const getSize = (size: PillSize): { height: number; paddingRight: number; paddin
   }
 }
 
+/**
+ * @deprecated
+ * Use `Image` from palette instead.
+ */
 export const Pill: React.FC<PillProps> = ({
   badge,
   block = false,
