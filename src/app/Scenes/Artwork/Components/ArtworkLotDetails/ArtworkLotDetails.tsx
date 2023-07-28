@@ -30,23 +30,17 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   const shouldRenderExtraInfo = shouldRenderInfo && !isLiveAuctionState
 
   const handleBuyersPremiumTap = () => {
-    navigate(`/auction/${internalID!}/buyers-premium`, {
-      modal: true,
-    })
+    navigate(`/auction/${internalID!}/buyers-premium`)
   }
 
   const handleConditionsOfSaleTap = () => {
     trackEvent(tracks.tappedConditionsOfSale())
-    navigate(`/conditions-of-sale`, {
-      modal: true,
-    })
+    navigate(`/conditions-of-sale`)
   }
 
   const handleReadOurAuctionFAQsTap = () => {
     trackEvent(tracks.tappedAuctionFAQs())
-    navigate(`/auction-faq`, {
-      modal: true,
-    })
+    navigate(`/auction-faq`)
   }
 
   const handleAskASpecialistTap = () => {

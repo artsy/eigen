@@ -261,11 +261,17 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
-    addWebViewRoute("/auction-faq"),
+    addWebViewRoute("/auction-faq", {
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
+    }),
     addWebViewRoute("/buy-now-feature-faq"),
     addWebViewRoute("/buyer-guarantee"),
     addWebViewRoute("/categories"),
-    addWebViewRoute("/conditions-of-sale"),
+    addWebViewRoute("/conditions-of-sale", {
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
+    }),
     addWebViewRoute("/identity-verification-faq"),
     addWebViewRoute("/meet-the-specialists"),
     addWebViewRoute("/orders/:orderID", {
@@ -275,8 +281,14 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       safeAreaEdges: ["bottom"],
     }),
     addWebViewRoute("/price-database"),
-    addWebViewRoute("/privacy"),
-    addWebViewRoute("/terms"),
+    addWebViewRoute("/privacy", {
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
+    }),
+    addWebViewRoute("/terms", {
+      alwaysPresentModally: true,
+      safeAreaEdges: ["bottom"],
+    }),
     addWebViewRoute("/unsubscribe"),
 
     // Every other route needs to go above

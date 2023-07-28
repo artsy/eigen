@@ -21,11 +21,8 @@ export class PrivacyRequest extends React.Component {
           <Join separator={<Spacer y={2} />}>
             <Text variant="sm" textAlign="left">
               Please see Artsy’s{" "}
-              <LinkText onPress={() => navigate("/privacy", { modal: true })}>
-                Privacy Policy
-              </LinkText>{" "}
-              for more information about the information we collect, how we use it, and why we use
-              it.
+              <LinkText onPress={() => navigate("/privacy")}>Privacy Policy</LinkText> for more
+              information about the information we collect, how we use it, and why we use it.
             </Text>
             <Text variant="sm" textAlign="left">
               To submit a personal data request tap the button below or email{" "}

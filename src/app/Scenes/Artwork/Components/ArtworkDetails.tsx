@@ -20,9 +20,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     {
       title: "Medium",
       value: artworkData?.mediumType?.name && (
-        <TouchableWithoutFeedback
-          onPress={() => navigate(`/artwork/${artworkData.slug}/medium`, { modal: true })}
-        >
+        <TouchableWithoutFeedback onPress={() => navigate(`/artwork/${artworkData.slug}/medium`)}>
           <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.mediumType?.name}
           </Text>
@@ -40,9 +38,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     {
       title: "Rarity",
       value: artworkData?.attributionClass?.name && (
-        <TouchableWithoutFeedback
-          onPress={() => navigate(`/artwork-classifications`, { modal: true })}
-        >
+        <TouchableWithoutFeedback onPress={() => navigate(`/artwork-classifications`)}>
           <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.attributionClass?.name}
           </Text>
@@ -56,9 +52,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     {
       title: "Certificate of Authenticity",
       value: artworkData?.certificateOfAuthenticity?.details && (
-        <TouchableWithoutFeedback
-          onPress={() => navigate(`/artwork-certificate-of-authenticity`, { modal: true })}
-        >
+        <TouchableWithoutFeedback onPress={() => navigate(`/artwork-certificate-of-authenticity`)}>
           <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.certificateOfAuthenticity?.details}
           </Text>

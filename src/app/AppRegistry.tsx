@@ -375,9 +375,21 @@ export const modules = defineModules({
     },
     [ArtworkScreenQuery]
   ),
-  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
-  ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
-  ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
+  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer, {
+    fullBleed: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer, {
+    fullBleed: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity, {
+    fullBleed: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
   ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
   ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
@@ -403,7 +415,7 @@ export const modules = defineModules({
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     fullBleed: true,
     alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
+    modalPresentationStyle: "fullScreen",
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
