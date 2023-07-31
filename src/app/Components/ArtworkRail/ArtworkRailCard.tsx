@@ -180,7 +180,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     >
       <ContextMenuArtwork
         contextModule={contextModule}
-        isRecentlySoldArtwork
+        isRecentlySoldArtwork={isRecentlySoldArtwork}
         lotLabel={lotLabel}
         priceRealizedDisplay={priceRealizedDisplay}
         lowEstimateDisplay={lowEstimateDisplay}
