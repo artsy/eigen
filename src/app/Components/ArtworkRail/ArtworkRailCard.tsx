@@ -180,6 +180,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     >
       <ContextMenuArtwork
         contextModule={contextModule}
+        isRecentlySoldArtwork
+        lotLabel={lotLabel}
+        priceRealizedDisplay={priceRealizedDisplay}
+        lowEstimateDisplay={lowEstimateDisplay}
+        highEstimateDisplay={highEstimateDisplay}
+        performanceDisplay={performanceDisplay}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         dark={dark}

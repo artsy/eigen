@@ -25,6 +25,12 @@ interface ContextMenuArtworkProps {
   onCreateAlertActionPress: () => void
   dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
+  isRecentlySoldArtwork?: boolean
+  lotLabel?: string | null
+  lowEstimateDisplay?: string
+  highEstimateDisplay?: string
+  performanceDisplay?: string
+  priceRealizedDisplay?: string
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
 }
@@ -34,6 +40,11 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   children,
   haptic = true,
   dark = false,
+  isRecentlySoldArtwork = false,
+  lotLabel,
+  highEstimateDisplay,
+  performanceDisplay,
+  priceRealizedDisplay,
   onCreateAlertActionPress,
   contextScreenOwnerType,
   contextModule,
@@ -184,7 +195,16 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const artworkPreviewComponent = (
     artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   ) => {
-    return <ContextMenuArtworkPreviewCard artwork={artwork} />
+    return (
+      <ContextMenuArtworkPreviewCard
+        artwork={artwork}
+        isRecentlySoldArtwork={isRecentlySoldArtwork}
+        lotLabel={lotLabel}
+        highEstimateDisplay={highEstimateDisplay}
+        performanceDisplay={performanceDisplay}
+        priceRealizedDisplay={priceRealizedDisplay}
+      />
+    )
   }
 
   return (
