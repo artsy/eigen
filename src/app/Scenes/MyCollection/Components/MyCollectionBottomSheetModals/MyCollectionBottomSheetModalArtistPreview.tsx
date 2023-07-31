@@ -11,6 +11,7 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
 import { QueryRenderer, createFragmentContainer } from "react-relay"
@@ -60,6 +61,8 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
         })
         // Hide modal after removing artist
         setViewKind({ viewKind: null })
+
+        refreshMyCollection()
       })
       .catch((error) => {
         console.error(error)
