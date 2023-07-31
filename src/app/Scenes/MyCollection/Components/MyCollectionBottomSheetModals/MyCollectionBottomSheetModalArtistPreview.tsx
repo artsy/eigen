@@ -86,7 +86,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
 
           <Flex flexDirection="row" alignItems="flex-start">
             <Checkbox
-              checked={isPrivate}
+              checked={!isPrivate}
               accessibilityState={{ checked: isPrivate }}
               onPress={() => {
                 setIsPrivate(!isPrivate)
