@@ -17,7 +17,6 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
 }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
-  // TODO: add new images, confirm coopy, change buttons on the last screen + rename components
   return (
     <Flex flex={1}>
       {!!enableCollectedArtists ? (
