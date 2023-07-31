@@ -25,7 +25,7 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
           <HomeFeedModalCarouselScreenWrapper
             title="Create a private record of your artworks"
             description="Manage your collection online easily and securely in one place."
-            imgSrc={require("images/my-collection-onboarding-image-1.webp")}
+            imgSrc={require("images/myCollection-onboarding-image-1.webp")}
           />
           <HomeFeedModalCarouselScreenWrapper
             title="Get insights on your collection"
@@ -40,7 +40,7 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
           <HomeFeedModalCarouselScreenWrapper
             title="Build your reputation with galleries"
             description="Share artists you collect to help galleries get to know your interests and collector profile."
-            imgSrc={require("images/my-collection-onboarding-image-3.webp")}
+            imgSrc={require("images/myCollection-onboarding-image-4.webp")}
           />
           <HomeFeedModalCarouselScreenWrapper
             title="How it works"
