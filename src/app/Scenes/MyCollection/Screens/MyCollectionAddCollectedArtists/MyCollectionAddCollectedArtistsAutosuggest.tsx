@@ -8,7 +8,7 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
-import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
+import { MyCollectionAddCollectedArtistsAutosuggestQuery } from "__generated__/MyCollectionAddCollectedArtistsAutosuggestQuery.graphql"
 import {
   AutosuggestResult,
   AutosuggestResults,
@@ -17,12 +17,12 @@ import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
+import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { normalizeText } from "app/utils/normalizeText"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { sortBy, times } from "lodash"
 import { useState } from "react"
@@ -43,13 +43,13 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 
   const searchProviderValues = useSearchProviderValues(query.trimStart())
 
-  const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(
+  const queryData = useLazyLoadQuery<MyCollectionAddCollectedArtistsAutosuggestQuery>(
     myCollectionAddCollectedArtistsAutosuggestQuery,
     {},
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection)
   const filteredCollectedArtists = sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), [
     "displayLabel",
   ])
@@ -151,10 +151,11 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
   query MyCollectionAddCollectedArtistsAutosuggestQuery {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
-          edges {
-            node {
+      userInterestsConnection(first: 100, category: COLLECTED_BEFORE, interestType: ARTIST) {
+        edges {
+          internalID
+          node {
+            ... on Artist {
               displayLabel
               imageUrl
               initials
@@ -167,28 +168,38 @@ const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
   }
 `
 
-export const filterArtistsByKeyword = (
-  artists: Array<{ displayLabel: string | null }>,
-  keywordFilter: string
-) => {
-  if (keywordFilter.length < 2) {
-    return artists
-  }
+// export const filterArtistsByKeyword = (
+//   artists: {
+//     readonly displayLabel?: string | null | undefined
+//     readonly imageUrl?: string | null | undefined
+//     readonly initials?: string | null | undefined
+//     readonly internalID?: string | undefined
+//   }[],
+//   keywordFilter: string
+// ) => {
+//   if (keywordFilter.length < 2) {
+//     return artists
+//   }
 
-  const normalizedKeywordFilter = normalizeText(keywordFilter)
+//   const normalizedKeywordFilter = normalizeText(keywordFilter)
 
-  if (!normalizedKeywordFilter) {
-    return artists
-  }
+//   if (!normalizedKeywordFilter) {
+//     return artists
+//   }
 
-  const keywordFilterWords = normalizedKeywordFilter.split(" ")
+//   const keywordFilterWords = normalizedKeywordFilter.split(" ")
 
-  const doAllKeywordFiltersMatch = (artist: { displayLabel: string | null }) =>
-    keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
-      .length === 0
+//   const doAllKeywordFiltersMatch = (artist: {
+//     readonly displayLabel?: string | null | undefined
+//     readonly imageUrl?: string | null | undefined
+//     readonly initials?: string | null | undefined
+//     readonly internalID?: string | undefined
+//   }) =>
+//     keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
+//       .length === 0
 
-  return artists.filter(doAllKeywordFiltersMatch)
-}
+//   return artists.filter(doAllKeywordFiltersMatch)
+// }
 
 const ARTIST_LIST_ITEM_HEIGHT = 100
 
