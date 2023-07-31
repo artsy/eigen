@@ -1,25 +1,28 @@
-import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { LARGE_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SMALL_RAIL_IMAGE_WIDTH } from "app/Components/ArtworkRail/SmallArtworkRail"
-import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { isPad } from "app/utils/hardware"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
-import { useMemo } from "react"
 import { PixelRatio } from "react-native"
 import { graphql } from "react-relay"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
+const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
 
-export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 400
+const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 400
 
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
-export type ArtworkCardSize = "small" | "large" | "extraLarge"
+const useFullWidth = () => {
+  const isTablet = isPad()
+  const space = useSpace()
+  const { width } = useScreenDimensions()
+  const extraLargeWidth = isTablet ? 400 : width - space(4)
+  return extraLargeWidth
+}
 
 export interface ContextMenuArtworkPreviewCardProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
@@ -46,7 +49,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
   priceRealizedDisplay,
   artwork,
 }) => {
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
+  const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
 
   const fontScale = PixelRatio.getFontScale()
 
@@ -67,31 +70,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
   }
 
-  const containerWidth = useMemo(() => {
-    const imageDimensions = sizeToFit(
-      {
-        width: image?.resized?.width ?? 0,
-        height: image?.resized?.height ?? 0,
-      },
-      {
-        width: isRecentlySoldArtwork
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-      }
-    )
-
-    if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
-      return SMALL_RAIL_IMAGE_WIDTH
-    } else if (imageDimensions.width <= LARGE_RAIL_IMAGE_WIDTH) {
-      return LARGE_RAIL_IMAGE_WIDTH
-    } else if (imageDimensions.width >= EXTRALARGE_RAIL_CARD_IMAGE_WIDTH) {
-      return EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-    } else {
-      return imageDimensions.width
-    }
-  }, [image?.resized?.height, image?.resized?.width])
-
+  const containerWidth = FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
   const displayForRecentlySoldArtwork = !!isRecentlySoldArtwork
 
   return (
@@ -205,7 +184,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
   ContextMenuArtworkPreviewCardImageProps
 > = ({ image, urgencyTag = null, containerWidth, isRecentlySoldArtwork, imageHeightExtra = 0 }) => {
   const color = useColor()
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
+  const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
 
   const { width, height, src } = image?.resized || {}
 
@@ -227,7 +206,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     },
     {
       width: isRecentlySoldArtwork
-        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+        ? FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH
         : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
     }
