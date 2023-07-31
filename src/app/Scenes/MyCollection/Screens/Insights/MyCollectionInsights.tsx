@@ -1,5 +1,6 @@
 import { Flex, Spacer, Tabs, useColor, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -84,9 +85,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   }
 
   return (
-    <Tabs.ScrollView
+    <TabsFlatList
+      contentContainerStyle={{
+        paddingHorizontal: 0,
+      }}
       refreshControl={<RefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
-      contentContainerStyle={{ paddingHorizontal: 0 }}
     >
       <Tabs.SubTabBar>
         <Flex px={2}>
@@ -112,7 +115,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
           <ActivateMoreMarketInsightsBanner />
         </>
       )}
-    </Tabs.ScrollView>
+    </TabsFlatList>
   )
 }
 
