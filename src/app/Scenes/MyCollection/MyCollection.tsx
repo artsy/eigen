@@ -166,7 +166,7 @@ const MyCollection: React.FC<{
   // User has no artworks but has manually added collected artists
   if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
     return (
-      <Tabs.ScrollView
+      <TabsFlatList
         contentContainerStyle={{
           justifyContent: "flex-start",
           paddingHorizontal: 0,
@@ -191,7 +191,7 @@ const MyCollection: React.FC<{
             <MyCollectionZeroStateArtworks />
           </Flex>
         )}
-      </Tabs.ScrollView>
+      </TabsFlatList>
     )
   }
 
@@ -369,7 +369,12 @@ export const MyCollectionPlaceholder: React.FC = () => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
-    <Tabs.ScrollView contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}>
+    <TabsFlatList
+      contentContainerStyle={{
+        justifyContent: "flex-start",
+        paddingHorizontal: 0,
+      }}
+    >
       <Spacer y={1} />
 
       {/* Sort & Filter  */}
@@ -436,7 +441,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </Tabs.ScrollView>
+    </TabsFlatList>
   )
 }
 
