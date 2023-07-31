@@ -7,11 +7,11 @@ import {
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { normalizeText } from "app/utils/normalizeText"
 import { sortBy } from "lodash"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -39,9 +39,17 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
+    (node) => node.__typename === "Artist"
+  )
   const filteredCollecteArtists = enableArtworksFromNonArtsyArtists
-    ? sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), ["displayLabel"])
+    ? sortBy(
+        filterArtistsByKeyword(
+          collectedArtists as Array<{ displayLabel: string | null }>,
+          trimmedQuery
+        ),
+        ["displayLabel"]
+      )
     : []
 
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
@@ -164,10 +172,12 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 const ArtistAutosuggestScreenQuery = graphql`
   query ArtistAutosuggestQuery {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
-          edges {
-            node {
+      userInterestsConnection(first: 100, category: COLLECTED_BEFORE, interestType: ARTIST)
+        @connection(key: "MyCollectionCollectedArtistsRail_userInterestsConnection") {
+        edges {
+          internalID
+          node {
+            ... on Artist {
               __typename
               counts {
                 artworks
@@ -189,26 +199,3 @@ const ArtistAutosuggestScreenQuery = graphql`
     }
   }
 `
-
-export const filterArtistsByKeyword = (
-  artists: Array<{ displayLabel: string | null }>,
-  keywordFilter: string
-) => {
-  if (keywordFilter.length < 2) {
-    return artists
-  }
-
-  const normalizedKeywordFilter = normalizeText(keywordFilter)
-
-  if (!normalizedKeywordFilter) {
-    return artists
-  }
-
-  const keywordFilterWords = normalizedKeywordFilter.split(" ")
-
-  const doAllKeywordFiltersMatch = (artist: { displayLabel: string | null }) =>
-    keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
-      .length === 0
-
-  return artists.filter(doAllKeywordFiltersMatch)
-}

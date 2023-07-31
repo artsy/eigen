@@ -17,12 +17,12 @@ import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
+import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { normalizeText } from "app/utils/normalizeText"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { sortBy, times } from "lodash"
 import { useState } from "react"
@@ -49,12 +49,18 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
-  const filteredCollectedArtists = sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), [
-    "displayLabel",
-  ])
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection)
+  const filteredCollectedArtists = sortBy(
+    filterArtistsByKeyword(
+      collectedArtists as Array<{ displayLabel: string | null }>,
+      trimmedQuery
+    ),
+    ["displayLabel"]
+  )
 
-  const oldCollectedArtistsIds = collectedArtists.map((artist) => artist.internalID)
+  const oldCollectedArtistsIds = (collectedArtists as Array<{ internalID: string | null }>).map(
+    (artist) => artist.internalID
+  )
 
   const showResults = trimmedQuery.length > 2
 
@@ -151,10 +157,10 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
   query MyCollectionAddCollectedArtistsAutosuggestQuery {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
-          edges {
-            node {
+      userInterestsConnection(first: 100) {
+        edges {
+          node {
+            ... on Artist {
               displayLabel
               imageUrl
               initials
@@ -166,29 +172,6 @@ const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
     }
   }
 `
-
-export const filterArtistsByKeyword = (
-  artists: Array<{ displayLabel: string | null }>,
-  keywordFilter: string
-) => {
-  if (keywordFilter.length < 2) {
-    return artists
-  }
-
-  const normalizedKeywordFilter = normalizeText(keywordFilter)
-
-  if (!normalizedKeywordFilter) {
-    return artists
-  }
-
-  const keywordFilterWords = normalizedKeywordFilter.split(" ")
-
-  const doAllKeywordFiltersMatch = (artist: { displayLabel: string | null }) =>
-    keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
-      .length === 0
-
-  return artists.filter(doAllKeywordFiltersMatch)
-}
 
 const ARTIST_LIST_ITEM_HEIGHT = 100
 

@@ -19,7 +19,7 @@ describe("MyCollectionAddCollectedArtists", () => {
 
   it("adds collected artists by creating user interests", async () => {
     const { env } = renderWithRelay({
-      Me: () => ({ myCollectionInfo: { collectedArtistsConnection: { edges: [] } } }),
+      Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
     expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
@@ -63,7 +63,7 @@ describe("MyCollectionAddCollectedArtists", () => {
 
   it("creates custom artists", async () => {
     const { env } = renderWithRelay({
-      Me: () => ({ myCollectionInfo: { collectedArtistsConnection: { edges: [] } } }),
+      Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
     expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
