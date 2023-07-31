@@ -7,11 +7,11 @@ import {
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { filterArtistsByKeyword } from "app/Scenes/MyCollection/utils/filterArtistsByKeyword"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { normalizeText } from "app/utils/normalizeText"
 import { sortBy } from "lodash"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -199,26 +199,3 @@ const ArtistAutosuggestScreenQuery = graphql`
     }
   }
 `
-
-export const filterArtistsByKeyword = (
-  artists: Array<{ displayLabel: string | null }>,
-  keywordFilter: string
-) => {
-  if (keywordFilter.length < 2) {
-    return artists
-  }
-
-  const normalizedKeywordFilter = normalizeText(keywordFilter)
-
-  if (!normalizedKeywordFilter) {
-    return artists
-  }
-
-  const keywordFilterWords = normalizedKeywordFilter.split(" ")
-
-  const doAllKeywordFiltersMatch = (artist: { displayLabel: string | null }) =>
-    keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
-      .length === 0
-
-  return artists.filter(doAllKeywordFiltersMatch)
-}
