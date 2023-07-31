@@ -31,12 +31,12 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
     MedianSalePriceAtAuctionQuery,
     SelectArtistModal_myCollectionInfo$key
-  >(collectedArtistsConnectionFragment, queryData)
+  >(userInterestsConnectionFragment, queryData)
 
   const [query, setQuery] = useState<string>("")
   const [filteredArtists, setFilteredArtists] = useState<ArtistItem_artist$key[]>([])
 
-  const artistsList = extractNodes(data?.me?.myCollectionInfo?.collectedArtistsConnection)
+  const artistsList = extractNodes(data?.me?.userInterestsConnection)
   const normalizedQuery = normalizeText(query)
 
   const handleLoadMore = () => {
@@ -103,16 +103,16 @@ const ListHeaderComponent = (
   </Flex>
 )
 
-const collectedArtistsConnectionFragment = graphql`
+const userInterestsConnectionFragment = graphql`
   fragment SelectArtistModal_myCollectionInfo on Query
   @refetchable(queryName: "SelectArtistModal_myCollectionInfoRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: $count, after: $after)
-          @connection(key: "SelectArtistModal_collectedArtistsConnection") {
-          edges {
-            node {
+      userInterestsConnection(first: $count, after: $after)
+        @connection(key: "SelectArtistModal_userInterestsConnection") {
+        edges {
+          node {
+            ... on Artist {
               internalID
               name
               ...ArtistItem_artist

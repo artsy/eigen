@@ -622,21 +622,19 @@ const mockArtworkSearchResult = {
 
 const mockCollectedArtistsResult = {
   me: {
-    myCollectionInfo: {
-      collectedArtistsConnection: {
-        edges: [
-          {
-            node: {
-              __typename: "Artist",
-              displayLabel: "My Artist",
-              formattedNationalityAndBirthday: "British, b. 1974",
-              initials: "MA",
-              internalID: "my-artist-id",
-              slug: "My Artist",
-            },
+    userInterestsConnection: {
+      edges: [
+        {
+          node: {
+            __typename: "Artist",
+            displayLabel: "My Artist",
+            formattedNationalityAndBirthday: "British, b. 1974",
+            initials: "MA",
+            internalID: "my-artist-id",
+            slug: "My Artist",
           },
-        ],
-      },
+        },
+      ],
     },
   },
 }

@@ -39,9 +39,17 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
+    (node) => node.__typename === "Artist"
+  )
   const filteredCollecteArtists = enableArtworksFromNonArtsyArtists
-    ? sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), ["displayLabel"])
+    ? sortBy(
+        filterArtistsByKeyword(
+          collectedArtists as Array<{ displayLabel: string | null }>,
+          trimmedQuery
+        ),
+        ["displayLabel"]
+      )
     : []
 
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
@@ -164,10 +172,12 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 const ArtistAutosuggestScreenQuery = graphql`
   query ArtistAutosuggestQuery {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
-          edges {
-            node {
+      userInterestsConnection(first: 100, category: COLLECTED_BEFORE, interestType: ARTIST)
+        @connection(key: "MyCollectionCollectedArtistsRail_userInterestsConnection") {
+        edges {
+          internalID
+          node {
+            ... on Artist {
               __typename
               counts {
                 artworks

@@ -143,40 +143,43 @@ const mockResult = {
   me: {
     myCollectionInfo: {
       artistsCount: 3,
-      collectedArtistsConnection: {
-        edges: [
-          {
-            node: {
-              id: "QXJ0aXN0OjRkOGI5MmIzNGViNjhhMWIyYzAwMDNmNA==",
-              internalID: "4d8b92b34eb68a1b2c0003f4",
-              name: "Andy Warhol",
-              initials: "AW",
-              formattedNationalityAndBirthday: "American, 1928–1987",
-              imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-            },
+    },
+    userInterestsConnection: {
+      edges: [
+        {
+          node: {
+            __typename: "Artist",
+            id: "QXJ0aXN0OjRkOGI5MmIzNGViNjhhMWIyYzAwMDNmNA==",
+            internalID: "4d8b92b34eb68a1b2c0003f4",
+            name: "Andy Warhol",
+            initials: "AW",
+            formattedNationalityAndBirthday: "American, 1928–1987",
+            imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
           },
-          {
-            node: {
-              id: "QXJ0aXN0OjRkZDE1ODRkZTAwOTFlMDAwMTAwMjA3Yw==",
-              internalID: "4dd1584de0091e000100207c",
-              name: "Banksy",
-              initials: "B",
-              formattedNationalityAndBirthday: "British, b. 1974",
-              imageUrl: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-            },
+        },
+        {
+          node: {
+            __typename: "Artist",
+            id: "QXJ0aXN0OjRkZDE1ODRkZTAwOTFlMDAwMTAwMjA3Yw==",
+            internalID: "4dd1584de0091e000100207c",
+            name: "Banksy",
+            initials: "B",
+            formattedNationalityAndBirthday: "British, b. 1974",
+            imageUrl: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
           },
-          {
-            node: {
-              id: "QXJ0aXN0OjVjMzQxNTU5ZmM1NDY5NDQ1ZGJkMjM2Yg==",
-              internalID: "5c341559fc5469445dbd236b",
-              name: "Amoako Boafo",
-              initials: "AB",
-              formattedNationalityAndBirthday: "Ghanaian, b. 1984",
-              imageUrl: "https://d32dm0rphc51dk.cloudfront.net/bBBIgjEwR2o9C_7BqJ6YPw/square.jpg",
-            },
+        },
+        {
+          node: {
+            __typename: "Artist",
+            id: "QXJ0aXN0OjVjMzQxNTU5ZmM1NDY5NDQ1ZGJkMjM2Yg==",
+            internalID: "5c341559fc5469445dbd236b",
+            name: "Amoako Boafo",
+            initials: "AB",
+            formattedNationalityAndBirthday: "Ghanaian, b. 1984",
+            imageUrl: "https://d32dm0rphc51dk.cloudfront.net/bBBIgjEwR2o9C_7BqJ6YPw/square.jpg",
           },
-        ],
-      },
+        },
+      ],
     },
   },
 }

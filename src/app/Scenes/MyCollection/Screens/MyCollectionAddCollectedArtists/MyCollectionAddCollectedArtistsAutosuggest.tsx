@@ -49,12 +49,18 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
     { fetchPolicy: "network-only" }
   )
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
-  const filteredCollectedArtists = sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), [
-    "displayLabel",
-  ])
+  const collectedArtists = extractNodes(queryData.me?.userInterestsConnection)
+  const filteredCollectedArtists = sortBy(
+    filterArtistsByKeyword(
+      collectedArtists as Array<{ displayLabel: string | null }>,
+      trimmedQuery
+    ),
+    ["displayLabel"]
+  )
 
-  const oldCollectedArtistsIds = collectedArtists.map((artist) => artist.internalID)
+  const oldCollectedArtistsIds = (collectedArtists as Array<{ internalID: string | null }>).map(
+    (artist) => artist.internalID
+  )
 
   const showResults = trimmedQuery.length > 2
 
@@ -151,10 +157,10 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
 const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
   query MyCollectionAddCollectedArtistsAutosuggestQuery {
     me {
-      myCollectionInfo {
-        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
-          edges {
-            node {
+      userInterestsConnection(first: 100) {
+        edges {
+          node {
+            ... on Artist {
               displayLabel
               imageUrl
               initials
