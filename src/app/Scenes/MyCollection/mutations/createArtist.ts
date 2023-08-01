@@ -5,7 +5,9 @@ import {
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
-export const createArtist = (input: CreateArtistMutationInput) => {
+export const createArtist = (
+  input: CreateArtistMutationInput
+): Promise<createArtistMutation["response"]> => {
   return new Promise((resolve, reject) => {
     commitMutation(getRelayEnvironment(), {
       mutation: graphql`
@@ -15,6 +17,7 @@ export const createArtist = (input: CreateArtistMutationInput) => {
               __typename
               ... on CreateArtistSuccess {
                 artist {
+                  internalID
                   displayName
                 }
               }
@@ -37,7 +40,7 @@ export const createArtist = (input: CreateArtistMutationInput) => {
         if (errors?.length || responseError?.__typename === "CreateArtistFailure") {
           reject(errors || responseError)
         } else {
-          resolve(response)
+          resolve(response as createArtistMutation["response"])
         }
       },
       onError: reject,
