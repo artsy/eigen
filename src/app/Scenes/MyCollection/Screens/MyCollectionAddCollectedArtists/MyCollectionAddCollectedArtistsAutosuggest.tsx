@@ -232,6 +232,13 @@ const CollectedArtistListItem: React.FC<{
     <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
       <Touchable onPress={handlePress} disabled={disabled}>
         <Flex width="100%" alignItems="center">
+          <Flex
+            position="absolute"
+            backgroundColor="black10"
+            height={ARTIST_LIST_ITEM_HEIGHT}
+            width={ARTIST_LIST_ITEM_HEIGHT}
+            borderRadius={ARTIST_LIST_ITEM_HEIGHT / 2}
+          />
           {!!(isSelected || !!disabled) && <Overlay disabled={disabled} />}
           <Avatar
             src={artist.imageUrl || undefined}
