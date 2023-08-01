@@ -154,7 +154,6 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   )
 }
 
-// TODO: fix placeholder
 export const InboxPlaceholder = () => {
   return (
     <>
