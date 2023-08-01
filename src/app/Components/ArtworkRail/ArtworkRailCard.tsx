@@ -413,7 +413,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   )
 }
 
-const RecentlySoldCardSection: React.FC<
+export const RecentlySoldCardSection: React.FC<
   Pick<
     ArtworkRailCardProps,
     "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"

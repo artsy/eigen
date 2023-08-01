@@ -2,11 +2,12 @@ import { Flex, Text, useColor, useScreenDimensions, useSpace } from "@artsy/pale
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { isPad } from "app/utils/hardware"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { compact } from "lodash"
 import { PixelRatio } from "react-native"
 import { graphql } from "react-relay"
 
@@ -26,29 +27,25 @@ const useFullWidth = () => {
 
 export interface ContextMenuArtworkPreviewCardProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
-  dark?: boolean
-  hideArtistName?: boolean
-  showPartnerName?: boolean
-  isRecentlySoldArtwork?: boolean
-  lotLabel?: string | null
-  lowEstimateDisplay?: string
-  highEstimateDisplay?: string
-  performanceDisplay?: string
-  priceRealizedDisplay?: string
+  artworkDisplayProps?: ArtworkDisplayProps
 }
 
 export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCardProps> = ({
-  hideArtistName = false,
-  showPartnerName = true,
-  dark = false,
-  isRecentlySoldArtwork = false,
-  lotLabel,
-  lowEstimateDisplay,
-  highEstimateDisplay,
-  performanceDisplay,
-  priceRealizedDisplay,
   artwork,
+  artworkDisplayProps,
 }) => {
+  const {
+    dark = false,
+    hideArtistName = false,
+    showPartnerName = true,
+    isRecentlySoldArtwork = false,
+    lotLabel,
+    lowEstimateDisplay,
+    highEstimateDisplay,
+    performanceDisplay,
+    priceRealizedDisplay,
+  } = artworkDisplayProps ?? {}
+
   const FULL_WIDTH_RAIL_CARD_IMAGE_WIDTH = useFullWidth()
 
   const fontScale = PixelRatio.getFontScale()
@@ -242,31 +239,6 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
           </Text>
         </Flex>
       )}
-    </Flex>
-  )
-}
-
-const RecentlySoldCardSection: React.FC<
-  Pick<
-    ContextMenuArtworkPreviewCardProps,
-    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
-  > & { secondaryTextColor: string }
-> = ({ priceRealizedDisplay, lowEstimateDisplay, highEstimateDisplay, performanceDisplay }) => {
-  return (
-    <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-        <Text variant="lg-display" numberOfLines={1}>
-          {priceRealizedDisplay}
-        </Text>
-        {!!performanceDisplay && (
-          <Text variant="lg-display" color="green" numberOfLines={1}>
-            {`+${performanceDisplay}`}
-          </Text>
-        )}
-      </Flex>
-      <Text variant="xs" color="black60" lineHeight="20px">
-        Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-      </Text>
     </Flex>
   )
 }

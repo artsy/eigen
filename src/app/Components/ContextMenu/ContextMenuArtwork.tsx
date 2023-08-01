@@ -21,21 +21,24 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
   onPress?: () => void
 }
 
+export type ArtworkDisplayProps = Pick<
+  ArtworkRailCardProps,
+  | "dark"
+  | "hideArtistName"
+  | "showPartnerName"
+  | "isRecentlySoldArtwork"
+  | "lotLabel"
+  | "lowEstimateDisplay"
+  | "highEstimateDisplay"
+  | "performanceDisplay"
+  | "priceRealizedDisplay"
+>
+
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
   haptic?: HapticFeedbackTypes | boolean
-  artworkDisplayProps?: Pick<
-    ArtworkRailCardProps,
-    | "dark"
-    | "hideArtistName"
-    | "showPartnerName"
-    | "isRecentlySoldArtwork"
-    | "lotLabel"
-    | "highEstimateDisplay"
-    | "performanceDisplay"
-    | "priceRealizedDisplay"
-  >
+  artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
 }
@@ -49,22 +52,14 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   contextScreenOwnerType,
   contextModule,
 }) => {
-  const {
-    dark = false,
-    hideArtistName = false,
-    showPartnerName = true,
-    isRecentlySoldArtwork = false,
-    lotLabel,
-    highEstimateDisplay,
-    performanceDisplay,
-    priceRealizedDisplay,
-  } = artworkDisplayProps ?? {}
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
+
+  const dark = artworkDisplayProps?.dark ?? false
 
   const { title, href, artists, slug, internalID, id, isHangable, image, sale } = artwork
 
@@ -206,17 +201,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   ) => {
     return (
-      <ContextMenuArtworkPreviewCard
-        artwork={artwork}
-        dark={dark}
-        hideArtistName={hideArtistName}
-        showPartnerName={showPartnerName}
-        isRecentlySoldArtwork={isRecentlySoldArtwork}
-        lotLabel={lotLabel}
-        highEstimateDisplay={highEstimateDisplay}
-        performanceDisplay={performanceDisplay}
-        priceRealizedDisplay={priceRealizedDisplay}
-      />
+      <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
     )
   }
 
