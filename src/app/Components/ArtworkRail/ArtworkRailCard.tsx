@@ -182,8 +182,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         contextModule={contextModule}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-        dark={dark}
         artwork={artwork}
+        artworkDisplayProps={{
+          dark,
+          showPartnerName,
+          hideArtistName,
+          isRecentlySoldArtwork,
+          lotLabel,
+          lowEstimateDisplay,
+          highEstimateDisplay,
+          performanceDisplay,
+          priceRealizedDisplay,
+        }}
       >
         <TouchableHighlight
           underlayColor={backgroundColor}
@@ -406,7 +416,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   )
 }
 
-const RecentlySoldCardSection: React.FC<
+export const RecentlySoldCardSection: React.FC<
   Pick<
     ArtworkRailCardProps,
     "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"

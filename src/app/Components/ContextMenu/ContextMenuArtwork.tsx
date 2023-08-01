@@ -3,6 +3,7 @@ import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -20,11 +21,24 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
   onPress?: () => void
 }
 
+export type ArtworkDisplayProps = Pick<
+  ArtworkRailCardProps,
+  | "dark"
+  | "hideArtistName"
+  | "showPartnerName"
+  | "isRecentlySoldArtwork"
+  | "lotLabel"
+  | "lowEstimateDisplay"
+  | "highEstimateDisplay"
+  | "performanceDisplay"
+  | "priceRealizedDisplay"
+>
+
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
-  dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
+  artworkDisplayProps?: ArtworkDisplayProps
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
 }
@@ -33,7 +47,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artwork,
   children,
   haptic = true,
-  dark = false,
+  artworkDisplayProps,
   onCreateAlertActionPress,
   contextScreenOwnerType,
   contextModule,
@@ -44,6 +58,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
+
+  const dark = artworkDisplayProps?.dark ?? false
 
   const { title, href, artists, slug, internalID, id, isHangable, image, sale } = artwork
 
@@ -184,7 +200,9 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const artworkPreviewComponent = (
     artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   ) => {
-    return <ContextMenuArtworkPreviewCard artwork={artwork} />
+    return (
+      <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
+    )
   }
 
   return (
