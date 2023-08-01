@@ -145,7 +145,7 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
       variables={{}}
       render={(...args) =>
         renderWithPlaceholder({
-          Container: () => <InboxPlaceholder />,
+          Container: InboxContainer,
           initialProps: props,
           renderPlaceholder: () => <InboxPlaceholder />,
         })(...args)
