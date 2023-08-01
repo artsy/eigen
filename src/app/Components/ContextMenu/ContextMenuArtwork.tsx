@@ -3,6 +3,7 @@ import { useColor } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { ArtworkRailCard_artwork$data } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -23,14 +24,18 @@ interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
 interface ContextMenuArtworkProps {
   artwork: ArtworkRailCard_artwork$data | ArtworkGridItem_artwork$data
   onCreateAlertActionPress: () => void
-  dark?: boolean
   haptic?: HapticFeedbackTypes | boolean
-  isRecentlySoldArtwork?: boolean
-  lotLabel?: string | null
-  lowEstimateDisplay?: string
-  highEstimateDisplay?: string
-  performanceDisplay?: string
-  priceRealizedDisplay?: string
+  artworkDisplayProps?: Pick<
+    ArtworkRailCardProps,
+    | "dark"
+    | "hideArtistName"
+    | "showPartnerName"
+    | "isRecentlySoldArtwork"
+    | "lotLabel"
+    | "highEstimateDisplay"
+    | "performanceDisplay"
+    | "priceRealizedDisplay"
+  >
   contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
 }
@@ -39,16 +44,21 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artwork,
   children,
   haptic = true,
-  dark = false,
-  isRecentlySoldArtwork = false,
-  lotLabel,
-  highEstimateDisplay,
-  performanceDisplay,
-  priceRealizedDisplay,
+  artworkDisplayProps,
   onCreateAlertActionPress,
   contextScreenOwnerType,
   contextModule,
 }) => {
+  const {
+    dark = false,
+    hideArtistName = false,
+    showPartnerName = true,
+    isRecentlySoldArtwork = false,
+    lotLabel,
+    highEstimateDisplay,
+    performanceDisplay,
+    priceRealizedDisplay,
+  } = artworkDisplayProps ?? {}
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
@@ -198,6 +208,9 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return (
       <ContextMenuArtworkPreviewCard
         artwork={artwork}
+        dark={dark}
+        hideArtistName={hideArtistName}
+        showPartnerName={showPartnerName}
         isRecentlySoldArtwork={isRecentlySoldArtwork}
         lotLabel={lotLabel}
         highEstimateDisplay={highEstimateDisplay}
