@@ -1,7 +1,7 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useSpace, Flex, LockIcon, Button, Text, Tabs, Box } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { HomeFeedModalCarousel } from "app/Scenes/Home/Components/HomeFeedModalCarousel/ModalCarousel"
+import { ModalCarousel } from "app/Scenes/Home/Components/ModalCarouselComponents/ModalCarousel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -21,7 +21,7 @@ export const MyCollectionZeroState: React.FC = () => {
   return (
     <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box mt={4}>
-        <HomeFeedModalCarousel
+        <ModalCarousel
           isVisible={isMyCollectionModalVisible}
           toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
         />

@@ -6,15 +6,12 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ModalCarouselContainer } from "./ModalCarouselContainer"
 import { ModalCarouselScreenWrapper } from "./ModalCarouselScreenWrapper"
 
-interface HomeFeedModalCarouselProps {
+interface ModalCarouselProps {
   isVisible: boolean
   toggleModal: (isVisible: boolean) => void
 }
 
-export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
-  isVisible,
-  toggleModal,
-}) => {
+export const ModalCarousel: React.FC<ModalCarouselProps> = ({ isVisible, toggleModal }) => {
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
