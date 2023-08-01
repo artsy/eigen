@@ -24,7 +24,7 @@ interface PartnerListItemProps {
   userLocation?: Location | null
 }
 
-export const MAX_PARTNER_LIST_ITEM_WIDTH = 700
+export const MAX_PARTNER_LIST_ITEM_WIDTH = 480
 
 export const PartnerListItem: React.FC<PartnerListItemProps> = ({
   partner,
@@ -149,7 +149,7 @@ const PartnerListItemFragment = graphql`
       internalID
       isFollowed
       image {
-        url(version: ["large", "medium"])
+        url(version: "wide")
       }
     }
   }
