@@ -40,7 +40,6 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
   useEffect(() => {
     if (isActiveTab) {
-      console.warn("boom")
       refreshMyBids()
     }
   }, [isActiveTab])

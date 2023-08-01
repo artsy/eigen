@@ -1,5 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
-import { Spacer, Flex, Separator, Tabs } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Tabs, Skeleton, SkeletonText } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
@@ -145,7 +145,7 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
       variables={{}}
       render={(...args) =>
         renderWithPlaceholder({
-          Container: InboxContainer,
+          Container: () => <InboxPlaceholder />,
           initialProps: props,
           renderPlaceholder: () => <InboxPlaceholder />,
         })(...args)
@@ -157,15 +157,15 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
 // TODO: fix placeholder
 export const InboxPlaceholder = () => {
   return (
-    <Flex height="100%" testID="inbox-placeholder">
-      <Flex flexDirection="row" mx={2} mt={4} mb={1}>
-        <PlaceholderText width={60} height={26} />
-        <Spacer x={1} />
-        <PlaceholderText width={80} height={26} />
-      </Flex>
-      <Flex>
-        <Separator mx={1} />
-      </Flex>
+    <>
+      <Skeleton>
+        {/* Tabs */}
+        <Flex justifyContent="space-around" flexDirection="row" px={2} pt={1}>
+          <SkeletonText variant="sm">Bids</SkeletonText>
+          <SkeletonText variant="sm">Inbox</SkeletonText>
+        </Flex>
+        <Separator mt={1} />
+      </Skeleton>
       <Flex flex={1} px={2}>
         <Flex my="auto" alignItems="center">
           <PlaceholderText width={240} />
@@ -181,6 +181,6 @@ export const InboxPlaceholder = () => {
           <PlaceholderBox width={176} height={50} borderRadius={25} />
         </Flex>
       </Flex>
-    </Flex>
+    </>
   )
 }
