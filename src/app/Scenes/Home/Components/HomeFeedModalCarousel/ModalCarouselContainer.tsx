@@ -16,7 +16,7 @@ export interface FullScreenCarouselProps {
   toggleModal: (isVisible: boolean) => void
 }
 
-export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
+export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
   children,
   isVisible,
   initialPage = 0,

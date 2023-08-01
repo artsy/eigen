@@ -3,8 +3,8 @@ import { PhoneIcon } from "app/Components/Icons/HomeFeedOnboarding/PhoneIcon"
 import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { HomeFeedModalCarouselContainer } from "./HomeFeedModalCarouselContainer"
-import { HomeFeedModalCarouselScreenWrapper } from "./HomeFeedModalCarouselScreenWrapper"
+import { ModalCarouselContainer } from "./ModalCarouselContainer"
+import { ModalCarouselScreenWrapper } from "./ModalCarouselScreenWrapper"
 
 interface HomeFeedModalCarouselProps {
   isVisible: boolean
@@ -20,54 +20,48 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
   return (
     <Flex flex={1}>
       {!!enableCollectedArtists ? (
-        <HomeFeedModalCarouselContainer isVisible={isVisible} toggleModal={toggleModal}>
-          <HomeFeedModalCarouselScreenWrapper
+        <ModalCarouselContainer isVisible={isVisible} toggleModal={toggleModal}>
+          <ModalCarouselScreenWrapper
             title="Create a private record of your artworks"
             description="Manage your collection online easily and securely in one place."
             imgSrc={require("images/myCollection-onboarding-image-1.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
+          <ModalCarouselScreenWrapper
             title="Get insights on your collection"
             description="Track market demand and get insights into the market value of artworks in your collection."
             imgSrc={require("images/my-collection-onboarding-image-2.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
+          <ModalCarouselScreenWrapper
             title="Keep track of artists you collect"
             description="Discover more about the artists you collect, with latest career news and auction results."
             imgSrc={require("images/my-collection-onboarding-image-3.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
+          <ModalCarouselScreenWrapper
             title="Build your reputation with galleries"
             description="Share artists you collect to help galleries get to know your interests and collector profile."
             imgSrc={require("images/myCollection-onboarding-image-4.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
-            title="How it works"
-            description={<HowItWorksScreenNew />}
-          />
-        </HomeFeedModalCarouselContainer>
+          <ModalCarouselScreenWrapper title="How it works" description={<HowItWorksScreenNew />} />
+        </ModalCarouselContainer>
       ) : (
-        <HomeFeedModalCarouselContainer isVisible={isVisible} toggleModal={toggleModal}>
-          <HomeFeedModalCarouselScreenWrapper
+        <ModalCarouselContainer isVisible={isVisible} toggleModal={toggleModal}>
+          <ModalCarouselScreenWrapper
             title="Create a private record of your artworks"
             description="Manage your collection online easily and securely in one place."
             imgSrc={require("images/my-collection-onboarding-image-1.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
+          <ModalCarouselScreenWrapper
             title="Get insights on your collection"
             description="Track market demand and get insights into the market value of artworks in your collection."
             imgSrc={require("images/my-collection-onboarding-image-2.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
+          <ModalCarouselScreenWrapper
             title="Keep track of artists you collect"
             description="Discover more about the artists you collect, with latest career news and auction results."
             imgSrc={require("images/my-collection-onboarding-image-3.webp")}
           />
-          <HomeFeedModalCarouselScreenWrapper
-            title="How it works"
-            description={<HowItWorksScreen />}
-          />
-        </HomeFeedModalCarouselContainer>
+          <ModalCarouselScreenWrapper title="How it works" description={<HowItWorksScreen />} />
+        </ModalCarouselContainer>
       )}
     </Flex>
   )

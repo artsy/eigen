@@ -5,7 +5,7 @@ import { switchTab } from "app/system/navigation/navigate"
 import { memo, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
+import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/ModalCarousel"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {

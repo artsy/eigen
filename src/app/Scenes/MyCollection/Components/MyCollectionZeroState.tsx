@@ -1,7 +1,7 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useSpace, Flex, LockIcon, Button, Text, Tabs, Box } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { HomeFeedModalCarousel } from "app/Scenes/Home/Components/HomeFeedModalCarousel/HomeFeedModalCarousel"
+import { HomeFeedModalCarousel } from "app/Scenes/Home/Components/HomeFeedModalCarousel/ModalCarousel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
