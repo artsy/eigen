@@ -2,6 +2,7 @@ import { MyCollectionArtworkFormProps } from "app/Scenes/MyCollection/Screens/Ar
 import { uploadPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { addArtworkMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/addArtworkMessages"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { createArtist } from "app/Scenes/MyCollection/mutations/createArtist"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
@@ -38,16 +39,29 @@ export const saveOrUpdateArtwork = async (
   }
 
   if (props.mode === "add") {
+    let artistIds = artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined
     let artistsData
 
     if (artistDisplayName) {
       artistsData = [{ displayName: artistDisplayName }]
     } else if (customArtist) {
-      artistsData = [{ displayName: customArtist.name }]
-    } else artistsData = undefined
+      const artistResponse = await createArtist({
+        displayName: customArtist.name,
+        birthday: customArtist.birthYear,
+        deathday: customArtist.deathYear,
+        nationality: customArtist.nationality,
+        isPersonalArtist: true,
+      })
+
+      if (!(artistResponse.createArtist?.artistOrError?.__typename === "CreateArtistSuccess")) {
+        throw new Error("Artist creation failed.")
+      }
+
+      artistIds = [artistResponse.createArtist?.artistOrError?.artist?.internalID!]
+    }
 
     const response = await myCollectionCreateArtwork({
-      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
+      artistIds,
       artists: artistsData,
       artworkLocation: others.artworkLocation,
       attributionClass: others.attributionClass || undefined,

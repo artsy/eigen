@@ -17,6 +17,7 @@ import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArt
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
@@ -65,6 +66,8 @@ export type MyCollectionArtworkFormProps =
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
+  const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
+
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
@@ -131,10 +134,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       } else {
         goBack()
       }
-    } catch (e) {
-      console.error("Artwork could not be saved", e)
+    } catch (error: any) {
+      console.error("Artwork could not be saved", error)
       setLoading(false)
-      Alert.alert("Artwork could not be saved")
+      Alert.alert("Artwork could not be saved", enableShowError ? error?.message : undefined)
     }
   }
 
