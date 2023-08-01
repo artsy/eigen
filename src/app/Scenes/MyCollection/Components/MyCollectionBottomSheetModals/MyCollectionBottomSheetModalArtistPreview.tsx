@@ -109,8 +109,8 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
               onPress={() => {
                 showActionSheetWithOptions(
                   {
-                    title: "Delete artist?",
-                    options: ["Delete", "Cancel"],
+                    title: "This artist will be removed from My Collection.",
+                    options: ["Remove Artist", "Keep Artist"],
                     destructiveButtonIndex: 0,
                     cancelButtonIndex: 1,
                     useModal: true,
