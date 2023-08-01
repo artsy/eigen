@@ -185,8 +185,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         artwork={artwork}
         artworkDisplayProps={{
           dark,
+          showPartnerName,
+          hideArtistName,
           isRecentlySoldArtwork,
           lotLabel,
+          lowEstimateDisplay,
           highEstimateDisplay,
           performanceDisplay,
           priceRealizedDisplay,
