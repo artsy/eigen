@@ -98,7 +98,7 @@ const ArtistListItem: React.FC<Props> = ({
       return (
         <Flex>
           {!!tombstoneText && (
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="black60" numberOfLines={1}>
               {tombstoneText}
             </Text>
           )}
