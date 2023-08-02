@@ -13,6 +13,9 @@ export interface VisualClueModel {
   _removeVisualClueAsSeen: Action<this, VisualClueName | string>
 }
 
+/**
+ * @deprecated use ProgressiveOnboardingModel instead
+ */
 export const getVisualClueModel = (): VisualClueModel => ({
   sessionState: {
     nextId: 0,
@@ -23,6 +26,9 @@ export const getVisualClueModel = (): VisualClueModel => ({
     state.sessionState.nextId += 1
     return
   }),
+  /**
+   * @deprecated use dismissed from ProgressiveOnboardingModel instead
+   */
   seenVisualClues: [],
   setVisualClueAsSeen: action((state, clueName) => {
     const isSessionClue = !visualClueNames.includes(clueName)

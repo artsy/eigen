@@ -33,6 +33,7 @@ interface MyProfileTabProps {
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab }) => {
   const isArtworkListsEnabled = useFeatureFlag("AREnableArtworksLists")
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { showVisualClue } = useVisualClue()
 
@@ -41,6 +42,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
   if (showVisualClue("MyCollectionInsights")) {
     indicators.push({
       tabName: Tab.insights,
+      Component: () => {
+        return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
+      },
+    })
+  }
+  if (isDismissed("find-saved-artwork").status && !isDismissed("save-highlight").status) {
+    indicators.push({
+      tabName: Tab.savedWorks,
       Component: () => {
         return <VisualClueDot style={{ left: -29, alignSelf: "flex-end", marginTop: 15 }} />
       },

@@ -2,6 +2,7 @@ import { Flex, Spacer, Spinner, Tabs, useScreenDimensions, useSpace } from "@art
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
@@ -26,6 +27,7 @@ const PAGE_SIZE = isPad() ? 23 : 11
 
 export const ArtworkLists = () => {
   const space = useSpace()
+  useDismissSavedHighlight()
   const artworkListsColCount = useArtworkListsColCount()
   const [refreshing, setRefreshing] = useState(false)
   const queryData = useLazyLoadQuery<ArtworkListsQuery>(

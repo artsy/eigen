@@ -2,6 +2,7 @@ import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveA
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
+import { useOnSaveArtwork } from "app/Components/ProgressiveOnboarding/useOnSaveArtwork"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
@@ -17,6 +18,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const isArtworkListsFFEnabled = useFeatureFlag("AREnableArtworksLists")
   const isArtworkListsEnabled = !options.saveToDefaultCollectionOnly && isArtworkListsFFEnabled
   const { onSave, dispatch } = useArtworkListsContext()
+  const { updateProfileTab } = useOnSaveArtwork()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
@@ -92,6 +94,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const saveArtworkToLists = () => {
     if (!isArtworkListsEnabled) {
       legacySaveArtworkToDefaultArtworkList()
+      updateProfileTab()
       return
     }
 
@@ -101,6 +104,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     }
 
     newSaveArtworkToDefaultArtworkList()
+    // updateProfileTab()
   }
 
   return {

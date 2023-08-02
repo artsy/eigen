@@ -15,11 +15,20 @@ interface UnseenCounts {
   notifications: number
 }
 
+type ProfileTabType = Record<
+  Extract<"profile", BottomTabType>,
+  {
+    savedArtwork?: boolean
+  }
+>
+
+type TabProps = Partial<Record<Exclude<BottomTabType, "profile">, any> & ProfileTabType>
+
 export interface BottomTabsModel {
   sessionState: {
     unreadCounts: UnreadCounts
     unseenCounts: UnseenCounts
-    tabProps: Partial<{ [k in BottomTabType]: object }>
+    tabProps: TabProps
     selectedTab: BottomTabType
   }
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
