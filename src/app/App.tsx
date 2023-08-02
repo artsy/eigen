@@ -173,7 +173,8 @@ const InnerApp = () => (
 
 const codePushOptions = ArtsyNativeModule.isBetaOrDev
   ? {
+      deploymentKey: Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY,
       checkFrequency: codePush.CheckFrequency.MANUAL,
     }
-  : {}
+  : { deploymentKey: Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY }
 export const App = codePush(codePushOptions)(InnerApp)
