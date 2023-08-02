@@ -173,7 +173,6 @@ const InnerApp = () => (
 
 const codePushOptions = ArtsyNativeModule.isBetaOrDev
   ? {
-      deploymentKey: "7K1pucybOoS3QVFxWhw-vnptkPjt6yfBmwPCr",
       checkFrequency: codePush.CheckFrequency.MANUAL,
     }
   : {}
