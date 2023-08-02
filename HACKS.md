@@ -68,18 +68,6 @@ When we upgrade our deps to a version of react-native that includes removal of d
 
 When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
 
-## react-native-scrollable-tab-view patch
-
-#### When can we remove this:
-
-When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes or when we migrate to the new tab component from palette. It's only used on inbox and city components right now.
-
-#### Explanation/Context:
-
-When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
-
-The second part of the the patch is to fix a crash on android https://github.com/artsy/eigen/pull/8847
-
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:
@@ -327,16 +315,6 @@ We either need to find a library that gives us masonry layout using a Virtualize
 
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
-
-## react-native-scrollable-tab-view pointing to a commit hash
-
-#### When we can remove this:
-
-When the fix is in a release in the library or when we stop using this library.
-
-#### Explanation/Context
-
-With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
 
 ## @storybook/react-native patch
 

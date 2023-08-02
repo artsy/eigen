@@ -104,9 +104,8 @@
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "react-spring": "Try removing this! We have reanimated now.",
-    "deprecated-react-native-prop-types": "Needed for patching react-native-scrollable-tab-view, react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
-    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled",
-    "react-native-dev-menu-android": "Needed for react-native dev menu on android see https://github.com/artsy/eigen/pull/8660"
+    "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
+    "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
     "@artsy/cohesion": "4.136.0",
@@ -195,7 +194,6 @@
     "react-native-render-html": "6.3.4",
     "react-native-safe-area-context": "3.4.0",
     "react-native-screens": "3.20.0",
-    "react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view#a7f46de184123be9703c57b0a7618ae0557c8a87",
     "react-native-shake": "5.3.2",
     "react-native-share": "8.2.1",
     "react-native-svg": "9.13.3",

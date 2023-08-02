@@ -1,5 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
-import { CssTransition, Spacer, Flex, Text, Separator } from "@artsy/palette-mobile"
+import { Spacer, Flex, Separator, Tabs, Skeleton, SkeletonText } from "@artsy/palette-mobile"
+import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -11,52 +12,8 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
 import React from "react"
-import { EmitterSubscription, View, ViewProps } from "react-native"
-// @ts-expect-error @types file generates duplicate declaration problems
-import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
+import { EmitterSubscription } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-
-const BIDS_TAB_INDEX = 0
-const INQUIRIES_TAB_INDEX = 1
-// Tabs
-interface TabWrapperProps extends ViewProps {
-  tabLabel: string
-  _tests_isActiveTab: boolean
-}
-
-const TabWrapper = (props: TabWrapperProps) => <View {...props} />
-
-export const InboxTabs = (props: TabBarProps) => (
-  <>
-    <Flex flexDirection="row" px={2} mb={2}>
-      {props.tabs?.map((name: JSX.Element, page: number) => {
-        const isTabActive = props.activeTab === page
-        return (
-          <CssTransition
-            style={[{ opacity: isTabActive ? 1 : 0.3 }]}
-            animate={["opacity"]}
-            duration={200}
-            key={`inbox-tab-${name}`}
-          >
-            <Text
-              mr={2}
-              color="black100"
-              variant="lg-display"
-              onPress={() => {
-                if (!__TEST__) {
-                  props.goToPage?.(page)
-                }
-              }}
-            >
-              {name}
-            </Text>
-          </CssTransition>
-        )
-      })}
-    </Flex>
-    <Separator />
-  </>
-)
 
 enum Tab {
   bids = "bids",
@@ -117,48 +74,28 @@ export class Inbox extends React.Component<Props, State> {
       action_name: ActionNames.InboxTab,
     }
   })
-  handleNavigationTab(tabIndex: number) {
-    const newTab: Tab = tabIndex === 0 ? Tab.bids : Tab.inquiries
-    this.setState({ activeTab: newTab })
+  handleNavigationTab(tabName: string) {
+    this.setState({ activeTab: tabName as Tab })
   }
   render() {
     const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
-    const initialPageNumber = hasActiveBids ? BIDS_TAB_INDEX : INQUIRIES_TAB_INDEX
+    const initialPageName = hasActiveBids ? "bids" : "inquiries"
 
     return (
-      <ScrollableTabView
-        style={{ paddingTop: 30 }}
-        initialPage={initialPageNumber}
-        renderTabBar={() => <InboxTabs />}
-        onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
+      <TabsContainer
+        initialTabName={initialPageName}
+        onTabChange={({ tabName }) => this.handleNavigationTab(tabName)}
       >
-        <TabWrapper
-          tabLabel="Bids"
-          key="bids"
-          style={{ flexGrow: 1, justifyContent: "center" }}
-          // this is for testing purposes
-          _tests_isActiveTab={initialPageNumber === BIDS_TAB_INDEX}
-          testID="tabWrapper-bids"
-        >
-          <MyBidsContainer
-            isActiveTab={!!this.props.isVisible && this.state.activeTab === Tab.bids}
-            me={this.props.me}
-          />
-        </TabWrapper>
-        <TabWrapper
-          tabLabel="Inquiries"
-          key="inquiries"
-          style={{ flex: 1, justifyContent: "flex-start" }}
-          // this is fr testing purposes
-          _tests_isActiveTab={initialPageNumber === INQUIRIES_TAB_INDEX}
-          testID="tabWrapper-inquiries"
-        >
+        <Tabs.Tab name="bids" label="Bids">
+          <MyBidsContainer isActiveTab={this.state.activeTab === Tab.bids} me={this.props.me} />
+        </Tabs.Tab>
+        <Tabs.Tab name="inquiries" label="Inquiries">
           <ConversationsContainer
             me={this.props.me}
-            isActiveTab={!!this.props.isVisible && this.state.activeTab === Tab.inquiries}
+            isActiveTab={this.state.activeTab === Tab.inquiries}
           />
-        </TabWrapper>
-      </ScrollableTabView>
+        </Tabs.Tab>
+      </TabsContainer>
     )
   }
 }
@@ -219,15 +156,15 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
 
 export const InboxPlaceholder = () => {
   return (
-    <Flex height="100%" testID="inbox-placeholder">
-      <Flex flexDirection="row" mx={2} mt={4} mb={1}>
-        <PlaceholderText width={60} height={26} />
-        <Spacer x={1} />
-        <PlaceholderText width={80} height={26} />
-      </Flex>
-      <Flex>
-        <Separator mx={1} />
-      </Flex>
+    <>
+      <Skeleton>
+        {/* Tabs */}
+        <Flex justifyContent="space-around" flexDirection="row" px={2} pt={1}>
+          <SkeletonText variant="sm">Bids</SkeletonText>
+          <SkeletonText variant="sm">Inbox</SkeletonText>
+        </Flex>
+        <Separator mt={1} />
+      </Skeleton>
       <Flex flex={1} px={2}>
         <Flex my="auto" alignItems="center">
           <PlaceholderText width={240} />
@@ -243,6 +180,6 @@ export const InboxPlaceholder = () => {
           <PlaceholderBox width={176} height={50} borderRadius={25} />
         </Flex>
       </Flex>
-    </Flex>
+    </>
   )
 }

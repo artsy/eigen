@@ -1,4 +1,4 @@
-import { Box, Text, Separator, SimpleMessage } from "@artsy/palette-mobile"
+import { Box, Text, Separator, SimpleMessage, Tabs } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
@@ -92,8 +92,9 @@ export class EventList extends React.Component<Props> {
 
   hasEventsComponent = () => {
     const { bucket, onScroll, header, renderedInTab } = this.props
+    const EventFlatList = renderedInTab ? Tabs.FlatList : FlatList
     return (
-      <FlatList
+      <EventFlatList
         ListHeaderComponent={() => {
           if (!!header) {
             return (
@@ -119,25 +120,33 @@ export class EventList extends React.Component<Props> {
   }
 
   hasNoEventsComponent = () => {
-    const { type, cityName } = this.props
+    const { type, cityName, renderedInTab } = this.props
+    const EmptyStateContainer = renderedInTab ? Tabs.ScrollView : React.Fragment
+
     switch (type) {
       case "saved":
         return (
-          <Box py={2} mx={2}>
-            <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
-          </Box>
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
         )
       case "fairs":
         return (
-          <Box py={2} mx={2}>
-            <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
-          </Box>
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
         )
       default:
         return (
-          <Box py={2} mx={2}>
-            <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
-          </Box>
+          <EmptyStateContainer>
+            <Box py={2}>
+              <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+            </Box>
+          </EmptyStateContainer>
         )
     }
   }

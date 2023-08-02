@@ -1,26 +1,20 @@
-import { Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Button, Tabs } from "@artsy/palette-mobile"
+import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { themeGet } from "@styled-system/theme-get"
-import { ScrollableTab } from "app/Components/ScrollableTabBar"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { EventEmitter } from "app/Scenes/Map/EventEmitter"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { MapTab, RelayErrorState } from "app/Scenes/Map/types"
 import { Schema, screenTrack, track } from "app/utils/track"
 import React, { Component } from "react"
-import { View } from "react-native"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import ScrollableTabView from "react-native-scrollable-tab-view"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
-import TabBar from "./Components/LegacyTabBar"
 import { cityTabs } from "./cityTabs"
 
 interface Props {
-  verticalMargin?: number
   isDrawerOpen?: boolean
-  initialTab?: number
   citySlug: string
   tracking: any
 }
@@ -33,7 +27,6 @@ interface State {
   citySlug: string
   relayErrorState?: RelayErrorState
 }
-const AllCityMetaTab = 0
 
 @screenTrack<Props>((props) => ({
   context_screen: Schema.PageNames.CityGuide,
@@ -51,8 +44,6 @@ export class CityView extends Component<Props, State> {
     citySlug: "",
     relayErrorState: null,
   }
-
-  scrollViewVerticalStart = 0
 
   handleEvent = ({
     filter,
@@ -105,9 +96,8 @@ export class CityView extends Component<Props, State> {
     EventEmitter.unsubscribe("map:error", this.handleError)
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  setSelectedTab(selectedTab) {
-    EventEmitter.dispatch("filters:change", selectedTab.i)
+  setSelectedTab(index: number) {
+    EventEmitter.dispatch("filters:change", index)
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARLocalDiscoveryCityGotScrollView",
       {}
@@ -154,34 +144,8 @@ export class CityView extends Component<Props, State> {
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  renderTabBar(props) {
-    return (
-      <View>
-        <TabBar {...props} spaceEvenly={false} />
-      </View>
-    )
-  }
-
-  // TODO: Is it correct that we have these two similar ones?
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onScrollableTabViewLayout = (layout) => {
-    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-  }
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onScrollViewLayout = (layout) => {
-    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(
-      "ARLocalDiscoveryCityGotScrollView",
-      {}
-    )
-  }
-
   render() {
     const { buckets, cityName, citySlug, relayErrorState } = this.state
-    const { verticalMargin } = this.props
-    // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
-    const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
 
     return buckets || relayErrorState ? (
       <Flex style={{ flex: 1 }}>
@@ -191,48 +155,42 @@ export class CityView extends Component<Props, State> {
         {relayErrorState ? (
           <ErrorScreen relayErrorState={relayErrorState} key="error" />
         ) : (
-          <ScrollableTabView
-            initialPage={this.props.initialTab || AllCityMetaTab}
-            onChangeTab={this.setSelectedTab}
-            renderTabBar={this.renderTabBar}
-            prerenderingSiblingsNumber={2}
-            onLayout={this.onScrollableTabViewLayout}
-            // These are the ScrollView props for inside the scrollable tab view
-            contentProps={{
-              contentInset: { bottom: bottomInset },
-              onLayout: this.onScrollViewLayout,
+          <TabsContainer
+            onTabChange={(tab) => {
+              this.setSelectedTab(Number(tab.index))
             }}
           >
-            <ScrollableTab tabLabel="All" key="all">
-              <AllEvents
-                cityName={cityName}
-                citySlug={citySlug}
-                key={cityName}
-                buckets={buckets as any /* STRICTNESS_MIGRATION */}
-                relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
-              />
-            </ScrollableTab>
-
-            {cityTabs
-              .filter((tab) => tab.id !== "all")
-              .map((tab) => {
+            {cityTabs.map((tab) => {
+              if (tab.id === "all") {
                 return (
-                  <ScrollableTab tabLabel={tab.text} key={tab.id}>
-                    <EventList
-                      key={cityName + tab.id}
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      bucket={buckets[tab.id]}
-                      type={tab.id}
+                  <Tabs.Tab name={tab.id} label={tab.text} key={tab.id}>
+                    <AllEvents
                       cityName={cityName}
                       citySlug={citySlug}
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      relay={this.state.relay}
-                      renderedInTab
+                      key={cityName}
+                      buckets={buckets as any /* STRICTNESS_MIGRATION */}
+                      relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
                     />
-                  </ScrollableTab>
+                  </Tabs.Tab>
                 )
-              })}
-          </ScrollableTabView>
+              }
+              return (
+                <Tabs.Tab name={tab.id} label={tab.text} key={tab.id}>
+                  <EventList
+                    key={cityName + tab.id}
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    bucket={buckets[tab.id]}
+                    type={tab.id}
+                    cityName={cityName}
+                    citySlug={citySlug}
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    relay={this.state.relay}
+                    renderedInTab
+                  />
+                </Tabs.Tab>
+              )
+            })}
+          </TabsContainer>
         )}
       </Flex>
     ) : null

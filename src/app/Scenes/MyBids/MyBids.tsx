@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Text, Separator, Join } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator, Join, Tabs } from "@artsy/palette-mobile"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -8,7 +8,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useEffect, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
@@ -60,7 +60,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         // context_screen_referrer_type: ,
       })}
     >
-      <ScrollView
+      <Tabs.ScrollView
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: !somethingToShow ? "center" : "flex-start",
@@ -162,7 +162,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
           </Flex>
         )}
         <Spacer y={2} />
-      </ScrollView>
+      </Tabs.ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
