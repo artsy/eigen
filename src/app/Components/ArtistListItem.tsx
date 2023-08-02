@@ -98,7 +98,7 @@ const ArtistListItem: React.FC<Props> = ({
       return (
         <Flex>
           {!!tombstoneText && (
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="black60" numberOfLines={1}>
               {tombstoneText}
             </Text>
           )}
@@ -138,7 +138,12 @@ const ArtistListItem: React.FC<Props> = ({
           underlayColor={color("black5")}
           style={containerStyle}
         >
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            // backgroundColor="green"
+          >
             <Flex flex={1}>
               <EntityHeader
                 mr={1}
