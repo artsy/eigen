@@ -50,9 +50,10 @@ export const Versions = {
   AddPushPromptStateToAuthModel: 37,
   AddUserPreferredArtistsView: 38,
   AddPushPromptLogicModel: 39,
+  AddProgressiveOnboardingModel: 40,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddPushPromptLogicModel
+export const CURRENT_APP_VERSION = Versions.AddProgressiveOnboardingModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -289,6 +290,16 @@ export const artsyAppMigrations: Migrations = {
       pushNotificationSettingsPromptSeen: false,
       pushNotificationSystemDialogSeen: false,
       pushPermissionsRequestedThisSession: false,
+    }
+  },
+  [Versions.AddProgressiveOnboardingModel]: (state) => {
+    state.progressiveOnboarding = {
+      dismissed: [
+        ...state.visualClue.seenVisualClues.map((clue: string) => ({
+          key: clue,
+          timestamp: Date.now(),
+        })),
+      ],
     }
   },
 }
