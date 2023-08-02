@@ -7,7 +7,7 @@ set -euxo pipefail
 echo 'Clear gradle cache'
 if [ -d node_modules ]; then
 	cd android
-	./gradlew clean cleanBuildCache
+	./gradlew clean
 	cd -
 fi
 
