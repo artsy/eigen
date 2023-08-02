@@ -29,14 +29,13 @@ export const updateUserInterest = (
       variables: {
         input,
       },
-      // @ts-ignore
       optimisticResponse: {
         updateUserInterest: {
           userInterestOrError: {
             __typename: "UpdateUserInterestSuccess",
             userInterest: {
               id: input.id,
-              private: input.private,
+              private: !!input.private,
             },
           },
         },
