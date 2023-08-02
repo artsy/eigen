@@ -138,12 +138,7 @@ const ArtistListItem: React.FC<Props> = ({
           underlayColor={color("black5")}
           style={containerStyle}
         >
-          <Flex
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            // backgroundColor="green"
-          >
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex flex={1}>
               <EntityHeader
                 mr={1}
