@@ -20,6 +20,7 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
+import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
@@ -158,7 +159,7 @@ const Main = () => {
   )
 }
 
-export const App = () => (
+const InnerApp = () => (
   <Providers>
     <AsyncStorageDevtools />
 
@@ -169,3 +170,11 @@ export const App = () => (
     <DynamicIslandStagingIndicator />
   </Providers>
 )
+
+const codePushOptions = ArtsyNativeModule.isBetaOrDev
+  ? {
+      deploymentKey: "7K1pucybOoS3QVFxWhw-vnptkPjt6yfBmwPCr",
+      checkFrequency: codePush.CheckFrequency.MANUAL,
+    }
+  : {}
+export const App = codePush(codePushOptions)(InnerApp)
