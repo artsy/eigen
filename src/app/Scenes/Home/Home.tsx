@@ -27,6 +27,7 @@ import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
+import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
@@ -130,6 +131,9 @@ export interface HomeProps extends ViewProps {
 }
 
 const Home = memo((props: HomeProps) => {
+  useDismissSavedArtwork(
+    props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
+  )
   const viewedRails = useRef<Set<string>>(new Set()).current
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
@@ -473,6 +477,9 @@ export const HomeFragmentContainer = memo(
       `,
       meAbove: graphql`
         fragment Home_meAbove on Me {
+          counts {
+            savedArtworks
+          }
           ...EmailConfirmationBanner_me
           lotsByFollowedArtistsConnectionCount: lotsByFollowedArtistsConnection(
             first: 1
