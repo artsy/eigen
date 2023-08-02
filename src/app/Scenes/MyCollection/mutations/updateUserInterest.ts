@@ -1,12 +1,19 @@
-import { UpdateUserInterestMutationInput } from "__generated__/updateUserInterestMutation.graphql"
+import {
+  UpdateUserInterestMutationInput,
+  updateUserInterestMutation,
+  updateUserInterestMutation$data,
+} from "__generated__/updateUserInterestMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const updateUserInterest = (input: UpdateUserInterestMutationInput) => {
+export const updateUserInterest = (
+  input: UpdateUserInterestMutationInput
+): Promise<updateUserInterestMutation$data> => {
   return new Promise((resolve, reject) => {
-    commitMutation(getRelayEnvironment(), {
+    commitMutation<updateUserInterestMutation>(getRelayEnvironment(), {
       mutation: graphql`
-        mutation updateUserInterestMutation($input: UpdateUserInterestMutationInput!) {
+        mutation updateUserInterestMutation($input: UpdateUserInterestMutationInput!)
+        @raw_response_type {
           updateUserInterest(input: $input) {
             userInterestOrError {
               ... on UpdateUserInterestSuccess {
@@ -22,14 +29,13 @@ export const updateUserInterest = (input: UpdateUserInterestMutationInput) => {
       variables: {
         input,
       },
-      // @ts-expect-error
       optimisticResponse: {
         updateUserInterest: {
           userInterestOrError: {
             __typename: "UpdateUserInterestSuccess",
             userInterest: {
               id: input.id,
-              private: input.private,
+              private: !!input.private,
             },
           },
         },

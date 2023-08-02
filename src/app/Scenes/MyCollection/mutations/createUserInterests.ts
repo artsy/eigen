@@ -1,10 +1,16 @@
+import {
+  createUserInterestsMutation,
+  createUserInterestsMutation$data,
+} from "__generated__/createUserInterestsMutation.graphql"
 import { CreateUserInterestsMutationInput } from "__generated__/useCreateUserInterestsMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const createUserInterests = (input: CreateUserInterestsMutationInput) => {
+export const createUserInterests = (
+  input: CreateUserInterestsMutationInput
+): Promise<createUserInterestsMutation$data> => {
   return new Promise((resolve, reject) => {
-    commitMutation(getRelayEnvironment(), {
+    commitMutation<createUserInterestsMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation createUserInterestsMutation($input: CreateUserInterestsMutationInput!) {
           createUserInterests(input: $input) {
