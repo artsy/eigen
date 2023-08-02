@@ -133,6 +133,12 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
           <Separator my="1" />
         </Flex>
 
+        <CodePushOptions />
+
+        <Flex mx={2}>
+          <Separator my="1" />
+        </Flex>
+
         <EnvironmentOptions onClose={onClose} />
 
         <Flex mx={2}>
@@ -190,15 +196,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
                 />
               </Flex>
             }
-          />
-          <DevMenuButtonItem
-            title="Code push"
-            onPress={() => {
-              codePush.sync()
-              codePush.getUpdateMetadata(codePush.UpdateState.PENDING).then((metadata) => {
-                console.log("Codepush data:", metadata)
-              })
-            }}
           />
           <DevMenuButtonItem
             title="Open Art Quiz"
@@ -453,6 +450,48 @@ function envMenuOption(
       }
     },
   }
+}
+
+const CodePushOptions: React.FC = () => {
+  return (
+    <CollapseMenu title="Code push">
+      <DevMenuButtonItem
+        title="Run canary"
+        onPress={() => {
+          codePush.sync({ deploymentKey: Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY })
+          codePush.getUpdateMetadata(codePush.UpdateState.PENDING).then((metadata) => {
+            console.log("Codepush data:", metadata)
+          })
+        }}
+      />
+      <DevMenuButtonItem
+        title="Run staging"
+        onPress={() => {
+          codePush.sync({ deploymentKey: Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY })
+          codePush.getUpdateMetadata(codePush.UpdateState.PENDING).then((metadata) => {
+            console.log("Codepush data:", metadata)
+          })
+        }}
+      />
+      <DevMenuButtonItem
+        title="Run production"
+        onPress={() => {
+          codePush.sync({ deploymentKey: Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY })
+          codePush.getUpdateMetadata(codePush.UpdateState.PENDING).then((metadata) => {
+            console.log("Codepush data:", metadata)
+          })
+        }}
+      />
+      <DevMenuButtonItem
+        title="Running build"
+        onPress={() => {
+          codePush.getUpdateMetadata(codePush.UpdateState.RUNNING).then((metadata) => {
+            console.log("Codepush data:", metadata)
+          })
+        }}
+      />
+    </CollapseMenu>
+  )
 }
 
 const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
