@@ -907,3 +907,27 @@ describe("App version Versions.AddPushPromptLogicModel", () => {
     })
   })
 })
+
+describe("App version Versions.AddProgressiveOnboardingModel", () => {
+  const migrationToTest = Versions.AddProgressiveOnboardingModel
+
+  it("migrates visualClue.seenVisualClues to dismissed", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+    previousState.visualClue.seenVisualClues = ["visual-clue-a", "visual-clue-b"]
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.progressiveOnboarding).toEqual({
+      dismissed: [
+        expect.objectContaining({ key: "visual-clue-a" }),
+        expect.objectContaining({ key: "visual-clue-b" }),
+      ],
+    })
+  })
+})

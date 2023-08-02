@@ -12,6 +12,10 @@ import {
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import {
+  ProgressiveOnboardingModel,
+  getProgressiveOnboardingModel,
+} from "app/store/ProgressiveOnboardingModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -52,6 +56,7 @@ interface GlobalStoreStateModel {
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
   recentPriceRanges: RecentPriceRangesModel
+  progressiveOnboarding: ProgressiveOnboardingModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -139,6 +144,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
+  progressiveOnboarding: getProgressiveOnboardingModel(),
 
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }

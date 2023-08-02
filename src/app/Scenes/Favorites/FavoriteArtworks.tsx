@@ -3,6 +3,7 @@ import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graph
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/system/navigation/navigate"
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
+  useDismissSavedHighlight()
   const { width } = useScreenDimensions()
   const [refreshingFromPull, setRefreshingFromPull] = useState<boolean>(false)
   const [fetchingMoreData, setFetchingMoreData] = useState<boolean>(false)
