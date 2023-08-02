@@ -1,12 +1,4 @@
-import {
-  Touchable,
-  Flex,
-  Text,
-  useScreenDimensions,
-  useSpace,
-  ScreenDimensionsProvider,
-  Screen,
-} from "@artsy/palette-mobile"
+import { Touchable, Flex, Text, useScreenDimensions, useSpace, Screen } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
@@ -196,9 +188,7 @@ const ArtQuizArtworksScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ScreenDimensionsProvider>
-        <ArtQuizArtworksScreen />
-      </ScreenDimensionsProvider>
+      <ArtQuizArtworksScreen />
     </Suspense>
   )
 }

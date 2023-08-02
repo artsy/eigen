@@ -17,7 +17,8 @@ import { NativeModules } from "react-native"
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 import diff from "snapshot-diff"
-
+// 👇 needed after upgrading to reanimated 3 otherwise tests break
+require("setimmediate")
 /**
  * General Preparation
  */
