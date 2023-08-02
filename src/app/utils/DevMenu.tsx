@@ -40,6 +40,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native"
+import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
@@ -189,6 +190,15 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
                 />
               </Flex>
             }
+          />
+          <DevMenuButtonItem
+            title="Code push"
+            onPress={() => {
+              codePush.sync()
+              codePush.getUpdateMetadata(codePush.UpdateState.PENDING).then((metadata) => {
+                console.log("Codepush data:", metadata)
+              })
+            }}
           />
           <DevMenuButtonItem
             title="Open Art Quiz"
