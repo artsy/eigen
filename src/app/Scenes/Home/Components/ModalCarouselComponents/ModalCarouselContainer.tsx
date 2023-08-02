@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, switchTab } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { screen } from "app/utils/track/helpers"
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
@@ -15,7 +16,7 @@ export interface FullScreenCarouselProps {
   toggleModal: (isVisible: boolean) => void
 }
 
-export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
+export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
   children,
   isVisible,
   initialPage = 0,
@@ -185,6 +186,7 @@ export const FooterButtons = ({
 }) => {
   const { trackEvent } = useTracking()
   const { bottom: bottomInset } = useSafeAreaInsets()
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   // Animate how the last step buttons appear in the last step
   useEffect(() => {
@@ -195,6 +197,44 @@ export const FooterButtons = ({
   }, [isLastStep])
 
   if (isLastStep) {
+    if (!!enableCollectedArtists) {
+      return (
+        <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
+          <Button
+            variant="outline"
+            mb={2}
+            block
+            onPress={() => {
+              switchTab("profile")
+              dismissModal()
+              requestAnimationFrame(() => {
+                navigate("my-collection/artworks/new", {
+                  passProps: {
+                    source: Tab.collection,
+                  },
+                })
+                trackEvent(tracks.addCollectedArtwork())
+              })
+            }}
+          >
+            Add Artwork
+          </Button>
+          <Button
+            variant="outline"
+            block
+            onPress={() => {
+              dismissModal()
+              requestAnimationFrame(() => {
+                navigate("my-collection/artists/new")
+              })
+            }}
+          >
+            Add Artists
+          </Button>
+        </Flex>
+      )
+    }
+
     return (
       <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
         <Button

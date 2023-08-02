@@ -4,7 +4,7 @@ import { navigate, switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
-import { FooterButtons } from "./HomeFeedModalCarouselContainer"
+import { FooterButtons } from "./ModalCarouselContainer"
 
 const mockDismissModal = jest.fn()
 const mockGoToNextPage = jest.fn()

@@ -5,8 +5,8 @@ import { switchTab } from "app/system/navigation/navigate"
 import { memo, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
+import { ModalCarousel } from "./ModalCarouselComponents/ModalCarousel"
 
 interface HomeFeedOnboardingRailProps {
   title: string
@@ -42,14 +42,14 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
       visible: onboardingModule.showMyCollectionCard,
       jsx: (
         <>
-          <HomeFeedModalCarousel
+          <ModalCarousel
             isVisible={isMyCollectionModalVisible}
             toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
           />
           <HomeFeedOnboardingCard
             title="Manage your collection"
             subtitle="Get powerful market insights about artworks you own."
-            image={require("images/homefeed-my-collection-inboarding-0.webp")}
+            image={require("images/homefeed-my-collection-onboarding-0.webp")}
             buttonText="Explore My Collection"
             onPress={() => {
               setIsMyCollectionModalVisible(true)
@@ -66,7 +66,7 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         <HomeFeedOnboardingCard
           title="Sell with Artsy"
           subtitle="Get the best sales options for artworks from your collection."
-          image={require("images/homefeed-my-collection-inboarding-1.webp")}
+          image={require("images/homefeed-my-collection-onboarding-1.webp")}
           buttonText="Learn more"
           onPress={() => {
             switchTab("sell")

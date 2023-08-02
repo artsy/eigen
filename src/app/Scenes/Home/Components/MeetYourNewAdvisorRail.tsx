@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { HomeFeedModalCarousel } from "app/Scenes/Home/Components/HomeFeedModalCarousel/HomeFeedModalCarousel"
+import { ModalCarousel } from "app/Scenes/Home/Components/ModalCarouselComponents/ModalCarousel"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { useState } from "react"
 import { useTracking } from "react-tracking"
@@ -53,7 +53,7 @@ export const MeetYourNewAdvisorRail: React.FC<MeetYourNewAdvisorRailProps> = (pr
     {
       jsx: (
         <>
-          <HomeFeedModalCarousel
+          <ModalCarousel
             isVisible={isMyCollectionModalVisible}
             toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
           />

@@ -3,15 +3,17 @@ import { isValidElement } from "react"
 import { Image, ImageSourcePropType } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-interface HomeFeedModalCarouselScreenWrapperProps {
+interface ModalCarouselScreenWrapperProps {
   title: string
   imgSrc?: ImageSourcePropType
   description: string | JSX.Element
 }
 
-export const HomeFeedModalCarouselScreenWrapper: React.FC<
-  HomeFeedModalCarouselScreenWrapperProps
-> = ({ description, imgSrc, title }) => {
+export const ModalCarouselScreenWrapper: React.FC<ModalCarouselScreenWrapperProps> = ({
+  description,
+  imgSrc,
+  title,
+}) => {
   const { bottom: bottomInset } = useSafeAreaInsets()
   return (
     <Flex pt={2} flex={1}>
