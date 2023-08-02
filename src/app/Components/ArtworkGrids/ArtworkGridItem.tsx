@@ -23,6 +23,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
+import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -350,6 +351,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
                         width={SAVE_ICON_SIZE}
                         fill="blue100"
                       />
+                    ) : itemIndex === 0 ? (
+                      <ProgressiveOnboardingSaveArtwork>
+                        <HeartIcon
+                          testID="empty-heart-icon"
+                          height={SAVE_ICON_SIZE}
+                          width={SAVE_ICON_SIZE}
+                        />
+                      </ProgressiveOnboardingSaveArtwork>
                     ) : (
                       <HeartIcon
                         testID="empty-heart-icon"

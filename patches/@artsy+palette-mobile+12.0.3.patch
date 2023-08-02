@@ -1,0 +1,13 @@
+diff --git a/node_modules/@artsy/palette-mobile/dist/elements/Popover/Popover.js b/node_modules/@artsy/palette-mobile/dist/elements/Popover/Popover.js
+index 074358f..9bb5600 100644
+--- a/node_modules/@artsy/palette-mobile/dist/elements/Popover/Popover.js
++++ b/node_modules/@artsy/palette-mobile/dist/elements/Popover/Popover.js
+@@ -14,7 +14,7 @@ const Flex_1 = require("../Flex");
+ const Touchable_1 = require("../Touchable");
+ const Popover = ({ variant = "dark", children, visible, onPressOutside, onDismiss, onCloseComplete, placement = "top", title, content, noCloseIcon, }) => {
+     const style = exports.POPOVER_VARIANTS[variant];
+-    return ((0, jsx_runtime_1.jsx)(react_native_popover_view_1.default, { backgroundStyle: { opacity: 1, backgroundColor: "transparent" }, popoverStyle: [{ backgroundColor: style.backgroundColor }, style.shadow], from: children, isVisible: visible, onCloseComplete: onCloseComplete, onRequestClose: onPressOutside, placement: placement, arrowSize: { height: 11, width: 22 }, animationConfig: {
++    return ((0, jsx_runtime_1.jsx)(react_native_popover_view_1.default, { backgroundStyle: { opacity: 0.5, backgroundColor: palette_tokens_1.THEME.colors["black100"] }, popoverStyle: [{ backgroundColor: style.backgroundColor }, style.shadow], from: children, isVisible: visible, onCloseComplete: onCloseComplete, onRequestClose: onPressOutside, placement: placement, arrowSize: { height: 11, width: 22 }, animationConfig: {
+             duration: 400,
+             easing: react_native_reanimated_1.Easing.out(react_native_reanimated_1.Easing.exp),
+         }, children: (0, jsx_runtime_1.jsxs)(Container, { variant: variant, p: 1, children: [(0, jsx_runtime_1.jsxs)(Flex_1.Flex, { flexDirection: "row", justifyContent: "space-between", alignItems: "center", children: [title ? title : (0, jsx_runtime_1.jsx)(Flex_1.Flex, {}), !noCloseIcon && ((0, jsx_runtime_1.jsx)(Touchable_1.Touchable, { onPress: onDismiss, children: (0, jsx_runtime_1.jsx)(Flex_1.Flex, { ml: 0.5, children: (0, jsx_runtime_1.jsx)(svgs_1.CloseIcon, { width: 18, height: 18, fill: style.fill }) }) }))] }), content] }) }));
