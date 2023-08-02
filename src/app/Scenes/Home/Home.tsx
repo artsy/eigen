@@ -377,7 +377,7 @@ const Home = memo((props: HomeProps) => {
         ListHeaderComponent={<HomeHeader />}
         ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
         ItemSeparatorComponent={ModuleSeparator}
-        keyExtractor={(_item) => _item.title}
+        keyExtractor={(_item) => _item.key}
       />
       {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
     </View>
