@@ -114,7 +114,7 @@ const HowItWorksScreenNew = () => {
         />
         <StepWithImage
           title="Sell with Ease"
-          text="Access free price estimates and sales options from our experts on eligible artworks."
+          text="Inquire about sales options directly from My Collection for eligible artworks."
           icon={SellWithEaseIcon}
         />
       </Join>
