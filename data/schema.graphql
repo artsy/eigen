@@ -1336,6 +1336,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   auctionResultsConnection(
     after: String
 
+    # Lits of aggregations fot auction results
+    aggregations: [AuctionResultsAggregation]
+
     # Allow auction results with empty created date values
     allowEmptyCreatedDates: Boolean = true
     before: String
@@ -1347,6 +1350,12 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     earliestCreatedYear: Int
     first: Int
 
+    # Includes auction results with suitable estimate ranges
+    includeEstimateRange: Boolean = false
+
+    # Includes auction results without price
+    includeUnknownPrices: Boolean = true
+
     # Filter by artwork title or description keyword search
     keyword: String
     last: Int
@@ -1357,6 +1366,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # Filter auction results by organizations
     organizations: [String]
     page: Int
+
+    # Filter auction results by price
+    priceRange: String
 
     # When true, will only return records for allowed artists.
     recordsTrusted: Boolean = false
@@ -2767,6 +2779,7 @@ type AuctionResult implements Node {
 
 # A connection to a list of items.
 type AuctionResultConnection {
+  aggregations: [AuctionResultsAggregationType]
   createdYearRange: YearRange
 
   # A list of edges.
@@ -2798,6 +2811,16 @@ type AuctionResultPriceRealized {
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
   ): String
+}
+
+enum AuctionResultsAggregation {
+  SIMPLE_PRICE_HISTOGRAM
+}
+
+# The results for one of the requested aggregations
+type AuctionResultsAggregationType {
+  counts: [AggregationCount]
+  slice: AuctionResultsAggregation
 }
 
 # An auction lot result
