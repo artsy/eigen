@@ -46,9 +46,9 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       updateUserInterest({
         id: interestId,
         private: isPrivate,
+      }).then(() => {
+        refreshMyCollection()
       })
-
-      refreshMyCollection()
     },
     300,
     [isPrivate]
