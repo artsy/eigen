@@ -42,10 +42,13 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       if (me.userInterest?.private === isPrivate) {
         return
       }
+
       updateUserInterest({
         id: interestId,
         private: isPrivate,
       })
+
+      refreshMyCollection()
     },
     300,
     [isPrivate]
