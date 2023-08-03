@@ -1,5 +1,6 @@
 import { Flex, Spacer, Spinner } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistsView_me$key } from "__generated__/MyCollectionCollectedArtistsView_me.graphql"
+import { FilteredArtworkGridZeroState as FilteredArtistsZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
@@ -49,29 +50,35 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
 
       <Spacer y={1} />
 
-      <FlatList
-        data={filteredUserInterests}
-        key="list"
-        keyExtractor={(item) => "list" + item?.internalID}
-        renderItem={({ item }) => {
-          if (item?.node) {
-            return (
-              <MyCollectionCollectedArtistItem
-                artist={item.node!}
-                key={item.internalID}
-                compact
-                interestId={item.internalID}
-                isPrivate={item.private}
-              />
-            )
-          }
-          return null
-        }}
-        onEndReached={handleLoadMore}
-        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
-        ItemSeparatorComponent={() => <Spacer y={2} />}
-        refreshControl={RefreshControl}
-      />
+      {filteredUserInterests.length > 0 ? (
+        <FlatList
+          data={filteredUserInterests}
+          key="list"
+          keyExtractor={(item) => "list" + item?.internalID}
+          renderItem={({ item }) => {
+            if (item?.node) {
+              return (
+                <MyCollectionCollectedArtistItem
+                  artist={item.node!}
+                  key={item.internalID}
+                  compact
+                  interestId={item.internalID}
+                  isPrivate={item.private}
+                />
+              )
+            }
+            return null
+          }}
+          onEndReached={handleLoadMore}
+          ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer y={2} />}
+          ItemSeparatorComponent={() => <Spacer y={2} />}
+          refreshControl={RefreshControl}
+        />
+      ) : (
+        <Flex py={6} px={2}>
+          <FilteredArtistsZeroState hideClearButton />
+        </Flex>
+      )}
     </Flex>
   )
 }
