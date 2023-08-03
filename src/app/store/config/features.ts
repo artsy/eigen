@@ -229,7 +229,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableMyCollectionCollectedArtists: {
     description: "Enable Collected Artists in My Collection",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionCollectedArtists",
   },
@@ -265,7 +265,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   ARShowCollectedArtistOnboarding: {
     description: "Show Collected Artist Onboarding",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARShowCollectedArtistOnboarding",
   },
