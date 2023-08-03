@@ -1506,6 +1506,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
       CRITICALLY_ACCLAIMED
       RECENT_CAREER_EVENT
       ARTSY_VANGUARD_YEAR
+      CURATORS_PICK_EMERGING
+      TRENDING_NOW
       GAINING_FOLLOWERS
       SOLO_SHOW
       GROUP_SHOW
@@ -1728,6 +1730,7 @@ enum ArtistInsightKind {
   BIENNIAL
   COLLECTED
   CRITICALLY_ACCLAIMED
+  CURATORS_PICK_EMERGING
   GAINING_FOLLOWERS
   GROUP_SHOW
   HIGH_AUCTION_RECORD
@@ -1736,6 +1739,7 @@ enum ArtistInsightKind {
   RESIDENCIES
   REVIEWED
   SOLO_SHOW
+  TRENDING_NOW
 }
 
 type ArtistInsightsCount {
