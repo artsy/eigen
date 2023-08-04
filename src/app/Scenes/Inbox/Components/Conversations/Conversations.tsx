@@ -147,7 +147,7 @@ export const Conversations: React.FC<Props> = (props) => {
         onEndReachedThreshold={0.2}
         contentContainerStyle={{
           flexGrow: 1,
-          justifyContent: !conversations.length ? "center" : "flex-start",
+          justifyContent: "flex-start",
         }}
         ListEmptyComponent={<NoMessages />}
       />
