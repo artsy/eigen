@@ -7,7 +7,6 @@ import {
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { MyCollectionArtworkEdge } from "app/Scenes/MyCollection/MyCollection"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { normalizeText } from "app/utils/normalizeText"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
@@ -17,7 +16,6 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
   const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
   const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
-  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const initLocalArtworkFilter = (artworks: any[]) => {
     setFilterType("local")
@@ -113,12 +111,6 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
     ])
     setFilterOptions(
       compact([
-        enableCollectedArtists && {
-          configType: FilterConfigTypes.FilterScreenViewOptions,
-          displayText: "View As",
-          filterType: "viewAs",
-          ScreenComponent: "FilterOptionsScreen",
-        },
         {
           configType: FilterConfigTypes.FilterScreenCheckboxItem,
           displayText: "Show Only Submitted Artworks",
