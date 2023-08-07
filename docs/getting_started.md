@@ -165,6 +165,19 @@ yarn android
 
 This will start the Artsy app in an Android emulator, pointed at Artsy's staging environment.
 
+#### Wifi setup on Android emulators
+
+In order to have internet access on android emulator you need to add Google's DNS servers to your device's network settings. You can do that by following these steps:
+
+1. Click Apple menu > System Preferences > Search for DNS.
+1. Click DNS Domains.
+1. Select the DNS tab.
+1. Add 8.8.8.8 and 8.8.4.4
+1. Click OK > Apply.
+1. Restart the emulator with **cold boot** now. (Android Studio > Device Manager > Three Dots (settings) > Cold Boot Now)
+
+> :warning: You might need to run the last step above after you get setup with [Artsy's VPN](https://www.notion.so/artsy/VPN-Configuration-60798c292185407687356997bf251d8c) or if you edit your DNS settings!
+
 ## Run native tests
 
 We can only run tests in one specific environment, today that is iPhone 12 Pro with the iOS 14.2 Simulator. This is because we use visual snapshots for UI regressions.
