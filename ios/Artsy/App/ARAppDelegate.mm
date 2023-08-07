@@ -82,6 +82,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @end
 
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperPerformancePlugin.h>
+#endif
 
 @implementation ARAppDelegate
 
@@ -179,6 +183,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  #ifdef FB_SONARKIT_ENABLED
+    FlipperClient *client = [FlipperClient sharedClient];
+    [client addPlugin:[FlipperPerformancePlugin new]];
+  #endif
   RCTAppSetupPrepareApp(application);
 
     [self setupForAppLaunch:launchOptions];
