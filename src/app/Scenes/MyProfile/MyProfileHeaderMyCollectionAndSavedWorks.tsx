@@ -60,6 +60,12 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
                 setVisualClueAsSeen("MyCollectionInsights")
               }
             }}
+            // FYI: We're disabling horizontal scroll between Profile tabs as it
+            // conflicts with the horizontal scroll of the Artists rail within
+            // the My Collection tab.
+            pagerProps={{
+              scrollEnabled: false,
+            }}
           >
             <Tabs.Tab name={Tab.collection} label={Tab.collection}>
               <Tabs.Lazy>
