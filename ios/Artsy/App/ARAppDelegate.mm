@@ -31,7 +31,6 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
-
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
@@ -54,7 +53,6 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTAppSetupUtils.h>
 
-#import <React/RCTAppSetupUtils.h>
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -82,7 +80,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @end
 
-#ifdef FB_SONARKIT_ENABLED
+#if defined(FB_SONARKIT_ENABLED) && !defined(CI_DISABLE_FLIPPER)
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperPerformancePlugin.h>
 #endif
@@ -183,7 +181,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  #ifdef FB_SONARKIT_ENABLED
+  #if defined(FB_SONARKIT_ENABLED) && !defined(CI_DISABLE_FLIPPER)
     FlipperClient *client = [FlipperClient sharedClient];
     [client addPlugin:[FlipperPerformancePlugin new]];
   #endif
