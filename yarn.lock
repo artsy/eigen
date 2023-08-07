@@ -24,10 +24,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-12.0.0.tgz#eba93ab3a40751d2967b20250d9a8bcec1c0d760"
-  integrity sha512-4Qu/Idf/iQ/Ek9H0+AWOcrmSh2eLJJtiANaLsdy/E+vmINbyKrkj80ib85lWB9mTObwc97I5WH3sJ9AQDrFqgw==
+"@artsy/palette-mobile@12.0.1":
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-12.0.1.tgz#39e0dee6719a50fc37b62df3d2430f70b00c88f1"
+  integrity sha512-q3s4m8e7zE1/No9FV9oIr+qa/R7fD3iMhRdINtwxGla5b1ooKFAdRhurUx54dpuLXgw2ImvPPVZV8+4MxaOzFg==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@styled-system/core" "^5.1.2"
@@ -36,7 +36,7 @@
     lodash "^4.17.21"
     moti "^0.25.3"
     react-nanny "^2.15.0"
-    react-native-collapsible-tab-view "^6.1.4"
+    react-native-collapsible-tab-view "^6.2.0"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "^6.2.0"
     react-native-popover-view "^5.1.7"
@@ -14408,10 +14408,10 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-collapsible-tab-view@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-6.1.4.tgz#011c8abab29d9229a22caa287395f0081fae644e"
-  integrity sha512-eGGAdze91WgXOrd+8wPsd18YxdrQvp8WlR4bv7GjgGwkzM72Ka7esz3GhHeDb6F6MxDYAvwfgm2Q4kDLvxaRTw==
+react-native-collapsible-tab-view@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-6.2.0.tgz#f57409f40e4f5a1a9eefdc7d32cad0fd61d2ef56"
+  integrity sha512-EAlsatGZpoqr2SBRU0iAO6mUENoXB8yXhjqVD/e/S+9yNlWyJBR5JxqIWhtbqOt/WAqpwb18ipDECusRoDkbiA==
   dependencies:
     use-deep-compare "^1.1.0"
 
