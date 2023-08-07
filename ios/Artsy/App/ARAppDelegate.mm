@@ -80,7 +80,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @end
 
-#if defined(FB_SONARKIT_ENABLED) && !defined(CI_DISABLE_FLIPPER)
+#if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperPerformancePlugin.h>
 #endif
@@ -181,7 +181,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  #if defined(FB_SONARKIT_ENABLED) && !defined(CI_DISABLE_FLIPPER)
+  #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
     FlipperClient *client = [FlipperClient sharedClient];
     [client addPlugin:[FlipperPerformancePlugin new]];
   #endif
