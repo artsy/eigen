@@ -26,6 +26,7 @@ Flipper is a platform for debugging iOS, Android and React Native apps. Visualiz
 - [Advanced Async Storage](https://github.com/lbaldy/flipper-plugin-async-storage-advanced) - Inspect and modify AsyncStorage values.
 - [Relay Dev Tools](https://github.com/th3rdwave/flipper-plugin-relay-devtools) - Visualize Relay data store.
 - [Redux Debugger](https://github.com/jk-gan/redux-flipper) - Inspect Redux state.
+- [Performance Monitoring](https://github.com/bamlab/react-native-flipper-performance-monitor) - Performance Monitoring (read this [great article](https://www.bam.tech/article/measuring-and-improving-performance-on-a-react-native-app) on how to use)
 
 You can find more about how to install them on the next section.
 
