@@ -5,6 +5,6 @@ source ./scripts/source-for-bash-env
 
 ./scripts/setup-distribute
 
-xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk iphonesimulator build -destination platform="$DEVICE_HOST_PLAT",OS="$DEVICE_HOST_OS",name="$DEVICE_HOST_NAME" -derivedDataPath "$DERIVED_DATA_PATH" GCC_PREPROCESSOR_DEFINITIONS="FB_SONARKIT_ENABLED=0" |
+xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk iphonesimulator build -destination platform="$DEVICE_HOST_PLAT",OS="$DEVICE_HOST_OS",name="$DEVICE_HOST_NAME" -derivedDataPath "$DERIVED_DATA_PATH" GCC_PREPROCESSOR_DEFINITIONS='$(inherited) FB_SONARKIT_ENABLED=0' |
 	tee ./xcode_build_raw.log |
 	bundle exec xcpretty -c
