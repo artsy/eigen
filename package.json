@@ -27,7 +27,7 @@
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
     "clean": "yarn clean-ios; yarn clean-android",
-    "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
+    "clean-android": "cd android; ./gradlew clean; cd -",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
     "danger": "danger",
     "dead-code": "./scripts/check-dead-code.sh",
