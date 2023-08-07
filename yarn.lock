@@ -24,12 +24,12 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.2.17":
-  version "11.2.17"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.2.17.tgz#97fe8d8e0e34ae275037b84d7c9633d198e3b4b0"
-  integrity sha512-fWT5rcmXRVB6ibCYr3UmBC9P3Yz61kB7RIFh40RnCPfyqTug1WRJgeHojEW1wNH7uLCg8oKgEGJS0gCLr5YstQ==
+"@artsy/palette-mobile@12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-12.0.0.tgz#eba93ab3a40751d2967b20250d9a8bcec1c0d760"
+  integrity sha512-4Qu/Idf/iQ/Ek9H0+AWOcrmSh2eLJJtiANaLsdy/E+vmINbyKrkj80ib85lWB9mTObwc97I5WH3sJ9AQDrFqgw==
   dependencies:
-    "@artsy/palette-tokens" "^4.0.1"
+    "@artsy/palette-tokens" "^5.0.0"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
@@ -43,10 +43,10 @@
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-4.0.1.tgz#ef171c0449f3c0a1c0765253a06beec160b0eed1"
-  integrity sha512-JQ4t6eCAL3LpYnwyIMJCKc3UiVWY17IvKadNXRXfplo+GFZUqZs61nFGlchNWZvtNESpHkGKOksA5dZq3G1wiw==
+"@artsy/palette-tokens@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-5.0.0.tgz#d1e1917d8163d88e7a9f877cf06b609fa8c8178c"
+  integrity sha512-nloC0ubH5XDVNiplehwTtDLEgY0vjeE3l8QUYppEIHFCgadntXm6aVlmEC79inO7L3lDYN7JckYlIYRrTJg3vw==
 
 "@artsy/to-title-case@1.1.0":
   version "1.1.0"
