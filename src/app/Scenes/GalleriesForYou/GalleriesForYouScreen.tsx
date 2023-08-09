@@ -158,13 +158,13 @@ export const GalleriesForYouQueryVariables = {
 
 const GalleriesForYouQuery = graphql`
   query GalleriesForYouScreenQuery(
-    $includePartnersNearIpBasedLocation: Boolean
+    $includePartnersNearIpBasedLocation: Boolean!
     $includePartnersWithFollowedArtists: Boolean
     $near: String
     $count: Int
     $after: String
   ) {
-    requestLocation {
+    requestLocation @optionalField @include(if: $includePartnersNearIpBasedLocation) {
       coordinates {
         lat
         lng
