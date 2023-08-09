@@ -62,10 +62,6 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     setHasRefetched(true)
   }, [partners])
 
-  if (!partners.length) {
-    return <NoGalleries />
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
@@ -100,6 +96,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
                 <ActivityIndicator />
               </Flex>
             )}
+            ListEmptyComponent={() => <NoGalleries />}
           />
         </Screen.Body>
       </Screen>
@@ -227,11 +224,4 @@ const GalleriesForYouPlaceholder: React.FC = () => {
   )
 }
 
-const NoGalleries: React.FC = () => (
-  <Screen>
-    <Screen.Header onBack={goBack} />
-    <GalleriesForYouHeader />
-
-    <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
-  </Screen>
-)
+const NoGalleries: React.FC = () => <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
