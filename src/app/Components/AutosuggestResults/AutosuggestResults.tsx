@@ -252,7 +252,6 @@ const AutosuggestResultsContainer = createPaginationContainer(
       ) {
         results: searchConnection(
           query: $query
-          mode: AUTOSUGGEST
           first: $count
           after: $cursor
           entities: $entities
