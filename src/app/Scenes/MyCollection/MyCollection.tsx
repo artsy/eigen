@@ -174,6 +174,7 @@ const MyCollection: React.FC<{
           justifyContent: "flex-start",
           paddingHorizontal: 0,
         }}
+        refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
       >
         {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
 
