@@ -16425,6 +16425,7 @@ type SearchCriteria {
   attributionClass: [String!]!
   colors: [String!]!
   dimensionRange: String
+  displayName: String!
   height: String
   href: String!
   inquireableOnly: Boolean
