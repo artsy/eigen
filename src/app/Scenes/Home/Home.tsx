@@ -502,17 +502,17 @@ export const HomeFragmentContainer = memo(
 
           ...ArtworkRecommendationsRail_me
 
-          # auctionResultsByFollowedArtistsPast: auctionResultsByFollowedArtists(
-          #   first: 12
-          #   state: PAST
-          # ) {
-          #   ...AuctionResultsRail_auctionResults
-          #   edges {
-          #     node {
-          #       internalID
-          #     }
-          #   }
-          # }
+          auctionResultsByFollowedArtistsPast: auctionResultsByFollowedArtists(
+            first: 12
+            state: PAST
+          ) {
+            ...AuctionResultsRail_auctionResults
+            edges {
+              node {
+                internalID
+              }
+            }
+          }
         }
       `,
       articlesConnection: graphql`
