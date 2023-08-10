@@ -783,6 +783,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
         `,
         variables: {
           version: worksForYouRecommendationsModel.payload || "B",
+          // do we need this? see also https://github.com/artsy/eigen/blob/45e9269079465d5fd65dd8262e27bbbaaba97cbb/src/app/system/relay/middlewares/errorMiddleware.ts#L158
           useNewErrorMiddleware: true,
         },
       }}

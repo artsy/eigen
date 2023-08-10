@@ -155,10 +155,11 @@ export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: Gra
 
   const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
 
-  const isScreenUsingNewErrorMiddleware = req.variables.useNewErrorMiddleware === true
+  // Do we want to differenciate between screens with a flag in the query variables?
+  // const isScreenUsingNewErrorMiddleware = req.variables.useNewErrorMiddleware === true
 
-  const enableNewErrorMiddleware =
-    useNewErrorMiddlewareFeatureFlag || isScreenUsingNewErrorMiddleware
+  const enableNewErrorMiddleware = useNewErrorMiddlewareFeatureFlag
+  //  || isScreenUsingNewErrorMiddleware do we want to use this???
 
   if (!!enableNewErrorMiddleware) {
     return newErrorMiddleware(req, res)
