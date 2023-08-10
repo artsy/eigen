@@ -1,14 +1,12 @@
-import { useSpace, useScreenDimensions, Flex, Text, Tabs } from "@artsy/palette-mobile"
+import { useSpace, useScreenDimensions, Flex, Tabs } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { extractNodes } from "app/utils/extractNodes"
-import { Schema } from "app/utils/track"
 import React, { useCallback, useMemo } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist$data
@@ -19,25 +17,25 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
 
 // type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
 
-const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
+const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay }) => {
   // const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
   //   useShowArtworksFilterModal({ artist })
-  const tracking = useTracking()
+  // const tracking = useTracking()
   const space = useSpace()
-  const { width, height } = useScreenDimensions()
+  const { width } = useScreenDimensions()
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   // const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.ArtworkGrid,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-  }
+  // const trackClear = (id: string, slug: string) => {
+  //   tracking.trackEvent({
+  //     action_name: "clearFilters",
+  //     context_screen: Schema.ContextModules.ArtworkGrid,
+  //     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+  //     context_screen_owner_id: id,
+  //     context_screen_owner_slug: slug,
+  //     action_type: Schema.ActionTypes.Tap,
+  //   })
+  // }
 
   const loadMoreStuff = useCallback(() => {
     // console.warn("onEndReached")
