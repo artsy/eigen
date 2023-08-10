@@ -4322,7 +4322,7 @@
     xcode "3.0.1"
     yargs "^16.2.0"
 
-"@shopify/flash-list@^1.5.0":
+"@shopify/flash-list@1.5.0", "@shopify/flash-list@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.5.0.tgz#f1cf3c4f9bb706a58c3d1f794ddfaedb5872f431"
   integrity sha512-XeocevDIXastr6jh3TPo1MzV5XkdqTyWtw/j8kUhz9EOBc2SzNWbpJWyzrAsYKlqYNrnxxs0P9C0amlX2jaQnw==
