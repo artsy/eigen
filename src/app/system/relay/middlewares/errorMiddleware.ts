@@ -135,12 +135,20 @@ export const legacyErrorMiddleware = async (
 
 export const newErrorMiddleware = async (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
   const resJson = res?.json as GraphQLSingularResponse
+  const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
   // This represents whether or not the query experienced an error and that error was thrown while resolving
   // a field marked with the @principalField directive, or any sub-selection of such a field.
   const principalFieldWasInvolvedInError = isErrorStatus(
     resJson.extensions?.principalField?.httpStatusCode
   )
+
+  // errors that are not from principalFields for tracking purposes
+  if (!requestHasPrincipalField && !!res?.errors?.length) {
+    // here we should track why the query failed + the error
+    // FYI trackError is not sentry, its VolleyClient maybe we need BOTH
+    console.warn(res.errors)
+  }
 
   if (principalFieldWasInvolvedInError) {
     trackError(req.operation.name, req.operation.kind, "principalField")
