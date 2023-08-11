@@ -17479,13 +17479,19 @@ type UpdateArtistFailure {
 }
 
 input UpdateArtistMutationInput {
+  alternateNames: [String!]
+  birthday: String
   clientMutationId: String
   coverArtworkId: String
+  deathday: String
   displayName: String
   first: String
+  gender: String
+  hometown: String
   id: String!
   last: String
   middle: String
+  nationality: String
 }
 
 type UpdateArtistMutationPayload {
