@@ -5,6 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   ruby: circleci/ruby@2.1.0
+  jq: circleci/jq@2.2.0
 
 commands:
   await-previous-builds:
@@ -21,6 +22,11 @@ commands:
       - node/install:
           install-yarn: true
           node-version: "16.18.0"
+  check-native-code:
+    steps:
+      - run:
+          name: Check Native Code
+          command: ./scripts/codepush/check-native-code.sh
   generate-checksums:
     steps:
       - run:
@@ -228,6 +234,14 @@ jobs:
       - run-relay-compiler
       - run:
           command: yarn type-check
+
+  check-native-code:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - check-native-code
 
   update-metaphysics:
     executor:
@@ -456,17 +470,20 @@ workflows:
                 - release
                 - staging
 
-      - test-js:
+      - type-check:
           filters:
             branches:
               ignore:
                 - app_store_submission
                 - play_store_submission
 
-      - type-check:
+      - check-native-code:
           filters:
             branches:
               ignore:
+                - main
+                - beta-ios
+                - beta-android
                 - app_store_submission
                 - play_store_submission
 
@@ -478,6 +495,13 @@ workflows:
                 - main
                 - beta-ios
                 - beta-android
+                - app_store_submission
+                - play_store_submission
+
+      - test-js:
+          filters:
+            branches:
+              ignore:
                 - app_store_submission
                 - play_store_submission
 
