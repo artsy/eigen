@@ -104,15 +104,6 @@ type addOrderedSetItemSuccess {
   setItem: OrderedSetItem
 }
 
-input AddressInput {
-  addressLine1: String!
-  addressLine2: String
-  city: String
-  country: String!
-  postalCode: String!
-  region: String
-}
-
 type addUserRoleFailure {
   mutationError: GravityMutationError
 }
@@ -15458,7 +15449,7 @@ type Query {
   ): VanityURLEntityType
 
   # Verify a given address.
-  verifyAddress(address: AddressInput!): VerifyAddressType
+  verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
@@ -18939,6 +18930,27 @@ enum VerificationStatuses {
   VERIFIED_WITH_CHANGES
 }
 
+type VerifyAddressFailureType {
+  mutationError: GravityMutationError
+}
+
+input VerifyAddressInput {
+  addressLine1: String!
+  addressLine2: String
+  city: String
+  clientMutationId: String
+  country: String!
+  postalCode: String!
+  region: String
+}
+
+union VerifyAddressMutationType = VerifyAddressFailureType | VerifyAddressType
+
+type VerifyAddressPayload {
+  clientMutationId: String
+  verifyAddressOrError: VerifyAddressMutationType
+}
+
 type VerifyAddressType {
   inputAddress: InputAddressFields!
   suggestedAddresses: [SuggestedAddressFields]!
@@ -19842,7 +19854,7 @@ type Viewer {
   ): VanityURLEntityType
 
   # Verify a given address.
-  verifyAddress(address: AddressInput!): VerifyAddressType
+  verifyAddress(input: VerifyAddressInput!): VerifyAddressPayload
   viewingRoomsConnection(
     after: String
     first: Int
