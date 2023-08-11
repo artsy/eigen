@@ -1,25 +1,40 @@
 #!/bin/bash
 
 # Directory paths to be checked for changes
-declare -a paths_to_check=(
-    "./android"
-    "./ios"
-    "./ios/Podfile.lock"
-)
+declare -a android_paths_to_check=("./android/app/src")
+declare -a android_extensions_to_check=("*.java" "*.kt" "*.cpp")
+declare -a ios_paths_to_check=("./ios")
+declare -a ios_exclusions=("ios/Pods/" "ios/build/generated/" "ios/ArtsyTests/")
+declare -a ios_extensions_to_check=("*.m" "*.mm" "*.swift" "*.h")
 
-# Generate a hash from the contents of the above paths
-# Also print the contents of each file being hashed
-echo "Files and their content:"
-for path in $(find ${paths_to_check[@]} -type f | sort); do
-  echo "File: $path"
-  cat $path
-  echo ""
+# File to store the hashes
+hashes_file="file_hashes.txt"
+rm -f $hashes_file
+
+# Generate a hash from the contents of the Android paths
+for path in ${android_paths_to_check[@]}; do
+  find $path -type f \( -name "${android_extensions_to_check[0]}" $(printf " -o -name %s" "${android_extensions_to_check[@]:1}") \) -print0 | xargs -0 shasum >> $hashes_file
 done
 
-calculated_hash=$(find ${paths_to_check[@]} -type f -print0 | sort -z | xargs -0 shasum | shasum | awk '{print $1}')
+find "./ios/Podfile.lock" -type f -print0 | xargs -0 shasum >> $hashes_file
 
-# Print hashes for debugging
-echo "Calculated Hash: $calculated_hash"
+# Loop through the iOS paths and apply exclusions
+for path in ${ios_paths_to_check[@]}; do
+  echo "Checking path $path"
+  exclusion_string=""
+  for exclusion in ${ios_exclusions[@]}; do
+    echo "Excluding $exclusion"
+    exclusion_string+=" -not -path ./${exclusion}\*"
+  done
+
+  find_command="find $path -type f \( -name \"${ios_extensions_to_check[0]}\" $(printf " -o -name \"%s\"" "${ios_extensions_to_check[@]:1}") \) $exclusion_string -print0"
+
+  echo $find_command
+  eval $find_command | xargs -0 shasum >> $hashes_file
+done
+
+# Calculate the final hash
+calculated_hash=$(shasum $hashes_file | awk '{print $1}')
 
 # Get the latest native code version
 native_code_version=$(jq -r '.nativeCodeVersion | to_entries | reduce .[] as $item (0; . as $key | if $item.key | tonumber > $key then $item.key | tonumber else $key end)' app.json)
@@ -27,10 +42,8 @@ native_code_version=$(jq -r '.nativeCodeVersion | to_entries | reduce .[] as $it
 # Get the corresponding hash value
 stored_hash=$(jq -r --arg version "$native_code_version" '.nativeCodeVersion[$version]' app.json)
 
-# Print hashes for debugging
-echo "Stored Hash: $stored_hash"
-
 if [ "$stored_hash" != "$calculated_hash" ]; then
+  echo "$stored_hash $calculated_hash" # Output the hashes
   echo "Native code has changed but the native code version hasn't been incremented."
   exit 1
 fi
