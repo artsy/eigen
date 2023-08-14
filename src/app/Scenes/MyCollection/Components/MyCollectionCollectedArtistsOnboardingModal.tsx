@@ -53,10 +53,11 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
               my={2}
               block
               onPress={() => {
-                setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
                 setTimeout(() => {
-                  navigate("/my-collection/collected-artists/privacy-settings")
-                }, 1000)
+                  setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
+                }, 2000)
+
+                navigate("/my-collection/collected-artists/privacy-settings")
               }}
             >
               Select Artists to Share
