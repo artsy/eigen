@@ -157,8 +157,9 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
           <ToolTip
             enabled={
               !!enableCollectedArtistsOnboarding &&
+              showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip2") &&
               !showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
-              showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip2")
+              !showVisualClue("MyCollectionArtistsCollectedOnboarding")
             }
             initialToolTipText="Tap to add more artists or artworks"
             position="BOTTOM"

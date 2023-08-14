@@ -70,7 +70,8 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
                 enabled={
                   !!enableCollectedArtistsOnboarding &&
                   index === 1 &&
-                  showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1")
+                  showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
+                  !showVisualClue("MyCollectionArtistsCollectedOnboarding")
                 }
                 initialToolTipText="Tap to review your artist"
                 onPress={() => {
