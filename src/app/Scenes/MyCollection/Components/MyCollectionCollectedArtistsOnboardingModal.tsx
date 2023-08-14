@@ -29,7 +29,7 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
     return () => {
       clearTimeout(showModalTimeout)
     }
-  }, [])
+  }, [activeTab, isFocused])
 
   if (!showMyCollectionCollectedArtistsOnboarding || !showModal) {
     return null
