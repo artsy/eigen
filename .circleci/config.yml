@@ -195,8 +195,36 @@ jobs:
       - checkout
       - install-node
       - run:
-          name: Deploy beta
+          name: Deploy betas
           command: ./scripts/deploy-beta-both
+
+  check-and-deploy:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
+
+    steps:
+      - checkout
+      - install-node
+      - run:
+          name: Check if native code has changed
+          command: ./check-native-code.sh
+      - run:
+          name: Determine Deployment Type
+          command: ./determine-deployment-type.sh
+      - run:
+          name: Deploy Based on Deployment Type
+          command: |
+            if [ $? -eq 0 ]; then
+              echo "Triggering CodePush deployment..."
+              ./scripts/codepush/deploy-to-codepush.sh Staging
+            else
+              echo "Triggering TestFlight and Firebase App Tester deployment..."
+              ./scripts/deploy-beta-both
+            fi
 
   test-js:
     parallelism: 8
@@ -440,6 +468,14 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
+
+  deploy:
+    jobs:
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
 
   flag-check:
     triggers:
