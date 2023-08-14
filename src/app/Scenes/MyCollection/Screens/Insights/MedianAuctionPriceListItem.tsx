@@ -1,6 +1,8 @@
-import { NoArtworkIcon, Flex, useColor, Text, Touchable, ToolTip } from "@artsy/palette-mobile"
+import { Flex, NoArtworkIcon, Text, ToolTip, Touchable, useColor } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { VisualCluesConstMap } from "app/store/config/visualClues"
+import { setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { isNil } from "lodash"
 
 export type MedianSalePriceArtwork = NonNullable<
@@ -72,7 +74,9 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
                 initialToolTipText="Tap to interact with graph"
                 position="TOP"
                 tapToDismiss
-                // default yOffset is 5. Adjust however you see fit
+                onPress={() => {
+                  setVisualClueAsSeen(VisualCluesConstMap.MedianAuctionPriceListItemTooltip)
+                }}
               >
                 <Text variant="xs" weight="medium">
                   {firstMedianSalePriceDisplayText}
