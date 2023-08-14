@@ -42,6 +42,8 @@ native_code_version=$(jq -r '.nativeCodeVersion | to_entries | reduce .[] as $it
 # Get the corresponding hash value
 stored_hash=$(jq -r --arg version "$native_code_version" '.nativeCodeVersion[$version]' app.json)
 
+cat $hashes_file
+
 if [ "$stored_hash" != "$calculated_hash" ]; then
   echo "$stored_hash $calculated_hash" # Output the hashes
   echo "Native code has changed but the native code version hasn't been incremented."
