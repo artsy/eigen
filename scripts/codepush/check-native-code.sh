@@ -33,6 +33,9 @@ for path in ${ios_paths_to_check[@]}; do
   eval $find_command | xargs -0 shasum >> $hashes_file
 done
 
+# Sort the files to ensure consistency accross systems
+sort $hashes_file -o $hashes_file
+
 # Calculate the final hash
 calculated_hash=$(shasum $hashes_file | awk '{print $1}')
 
