@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -25,6 +26,13 @@ describe(FooterButtons, () => {
   })
 
   describe("when the active step is the last one", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableMyCollectionCollectedArtists: false,
+        ARShowCollectedArtistOnboarding: true,
+      })
+    })
+
     it("the Upload Artwork button is rendered and navigates to the upload artwork screen", async () => {
       const component = renderWithWrappers(
         <FooterButtons isLastStep dismissModal={mockDismissModal} goToNextPage={mockGoToNextPage} />
