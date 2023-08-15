@@ -5,6 +5,7 @@ import {
   CloseIcon,
   Flex,
   Spacer,
+  ToolTip,
   Touchable,
   useSpace,
 } from "@artsy/palette-mobile"
@@ -84,7 +85,9 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
 }
 
 export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtworks }) => {
+  const enableCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
   const closeIconRef = useRef(null)
+  const { showVisualClue } = useVisualClue()
 
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
 
@@ -120,7 +123,13 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
 
   return (
     <>
-      <Flex alignItems="center" flexDirection="row" justifyContent="space-between" p={2}>
+      <Flex
+        alignItems="center"
+        flexDirection="row"
+        justifyContent="space-between"
+        p={2}
+        position="relative"
+      >
         <AnimatedCloseIcon closeIconRef={closeIconRef} />
 
         {/* Pills */}
@@ -144,14 +153,33 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         </Flex>
 
         {/* Seach and Add */}
-        <Flex justifyContent="center" alignItems="center" flexDirection="row">
-          <Touchable
-            onPress={handleCreateButtonPress}
-            haptic
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        <Flex justifyContent="center" alignItems="center" flexDirection="row" pt={0.5}>
+          <ToolTip
+            enabled={
+              !!enableCollectedArtistsOnboarding &&
+              showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip2") &&
+              !showVisualClue("MyCollectionArtistsCollectedOnboardingTooltip1") &&
+              !showVisualClue("MyCollectionArtistsCollectedOnboarding")
+            }
+            initialToolTipText="Tap to add more artists or artworks"
+            position="BOTTOM"
+            tapToDismiss
+            yOffset={13}
+            xOffset={-5}
           >
-            <AddIcon width={24} height={24} />
-          </Touchable>
+            <Touchable
+              onPress={() => {
+                handleCreateButtonPress()
+
+                if (!enableCollectedArtistsOnboarding) return
+                setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
+              }}
+              haptic
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <AddIcon width={24} height={24} />
+            </Touchable>
+          </ToolTip>
         </Flex>
       </Flex>
     </>
