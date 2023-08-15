@@ -475,7 +475,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - brian/codepush-sdk
 
   flag-check:
     triggers:
