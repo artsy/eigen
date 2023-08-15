@@ -8,9 +8,8 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
-import { prefetchQuery } from "app/utils/queryPrefetching"
 import { times } from "lodash"
-import { Suspense, memo, useEffect } from "react"
+import { Suspense, memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,7 +26,9 @@ const NUMBER_OF_SHOWS = 10
 export const ShowsRail: React.FC<ShowsRailProps> = memo(({ disableLocation, location, title }) => {
   const tracking = useTracking()
 
-  const queryVariables = getQueryVariables(location, disableLocation)
+  const queryVariables = location
+    ? { near: location }
+    : { includeShowsNearIpBasedLocation: !disableLocation && !location }
 
   const queryData = useLazyLoadQuery<ShowsRailQuery>(ShowsQuery, queryVariables)
 
@@ -165,25 +166,4 @@ const ShowsRailPlaceholder: React.FC = () => {
       </Flex>
     </Flex>
   )
-}
-
-const getQueryVariables = (location: Location | null | undefined, disableLocation: boolean) => {
-  return location
-    ? { near: location }
-    : { includeShowsNearIpBasedLocation: !disableLocation && !location }
-}
-
-export const usePreloadShowsRail = (disableLocation: boolean) => {
-  const { location, isLoading } = useLocation({
-    disabled: disableLocation,
-    skipPermissionRequests: true,
-  })
-
-  useEffect(() => {
-    if (!isLoading) {
-      return
-    }
-
-    prefetchQuery(ShowsQuery, getQueryVariables(location, disableLocation))
-  }, [isLoading])
 }

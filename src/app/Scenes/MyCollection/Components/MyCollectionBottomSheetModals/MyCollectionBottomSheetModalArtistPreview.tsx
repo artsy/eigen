@@ -78,17 +78,15 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   return (
     <BottomSheetView>
       <Flex px={2} pt={2}>
-        <Join separator={<Spacer y={4} />}>
-          <Join separator={<Spacer y={2} />}>
-            <ArtistListItemContainer
-              artist={artist}
-              disableNavigation={!!artist?.isPersonalArtist}
-              uploadsCount={artworksCountWithinMyCollection}
-              isPrivate={me.userInterest?.private}
-              showFollowButton={!artist?.isPersonalArtist}
-            />
-            <ArtistKindPills artist={artist} />
-          </Join>
+        <Join separator={<Spacer y={2} />}>
+          <ArtistListItemContainer
+            artist={artist}
+            disableNavigation={!!artist?.isPersonalArtist}
+            uploadsCount={artworksCountWithinMyCollection}
+            isPrivate={me.userInterest?.private}
+            showFollowButton={!artist?.isPersonalArtist}
+          />
+          <ArtistKindPills artist={artist} />
 
           <Flex flexDirection="row" alignItems="flex-start">
             <Checkbox

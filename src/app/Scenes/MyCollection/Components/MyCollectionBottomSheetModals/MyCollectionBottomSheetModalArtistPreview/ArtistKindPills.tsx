@@ -13,7 +13,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
   const space = useSpace()
   const data = useFragment(ArtistKindPillsFragment, artist)
 
-  if (!data.insights) return null
+  if (!data.insights || data.insights.length === 0) return null
 
   return (
     <ScrollView
@@ -21,6 +21,7 @@ export const ArtistKindPills: React.FC<ArtistKindPillsProps> = ({ artist }) => {
       showsHorizontalScrollIndicator={false}
       style={{
         marginHorizontal: -space(2),
+        marginBottom: space(2),
       }}
       contentContainerStyle={{
         paddingHorizontal: space(2),

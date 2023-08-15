@@ -157,7 +157,17 @@ describe("MyCollectionArtworkForm", () => {
 
         const mockOperations = mockEnvironment.mock.getAllOperations()
 
-        const updatePreferencesOperation = mockOperations[0]
+        // debugger
+
+        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
+        expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
+          .toMatchInlineSnapshot(`
+          {
+            "artistID": "internal-id",
+          }
+        `)
+
+        const updatePreferencesOperation = mockOperations[1]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -167,7 +177,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const createArtworkOperation = mockOperations[1]
+        const createArtworkOperation = mockOperations[2]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -304,7 +314,19 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
         fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button"))
+
+        await flushPromiseQueue()
+
+        // Add Artist Screen
+
+        fireEvent.changeText(getByPlaceholderText("Artist Name"), "My Artist")
+        fireEvent.changeText(getByPlaceholderText("Nationality"), "bar foo")
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByTestId("submit-add-artist-button"))
 
         await flushPromiseQueue()
 
@@ -312,7 +334,7 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe("foo bar")
+        expect(getByText("My Artist")).toBeTruthy()
         expect(getByTestId("TitleInput").props.value).toBe("")
         expect(getByTestId("DateInput").props.value).toBe(undefined)
         expect(getByTestId("MaterialsInput").props.value).toBe(undefined)

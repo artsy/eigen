@@ -451,7 +451,10 @@ export const modules = defineModules({
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
-  GalleriesForYou: reactModule(GalleriesForYouScreen),
+  GalleriesForYou: reactModule(GalleriesForYouScreen, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   Gene: reactModule(GeneQueryRenderer, {
     fullBleed: true,
     hidesBackButton: true,

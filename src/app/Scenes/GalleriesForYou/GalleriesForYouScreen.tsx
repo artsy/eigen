@@ -1,11 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { GalleriesForYouScreenQuery } from "__generated__/GalleriesForYouScreenQuery.graphql"
 import { GalleriesForYouScreen_partnersConnection$key } from "__generated__/GalleriesForYouScreen_partnersConnection.graphql"
 import {
   MAX_PARTNER_LIST_ITEM_WIDTH,
   PartnerListItem,
 } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -14,10 +15,9 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { times } from "lodash"
 import { Suspense, useEffect, useState } from "react"
-import { ActivityIndicator, Animated } from "react-native"
+import { ActivityIndicator } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface GalleriesForYouProps {
@@ -47,16 +47,6 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const partners = extractNodes(data.partnersConnection)
 
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5}>
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          Galleries For You
-        </Text>
-      </Flex>
-    ),
-  })
-
   // Refetch in case the user doesn't follow artists and there are no results
   // This will show results even in case the user doesn't follow any artists
   const [hasRefetched, setHasRefetched] = useState(false)
@@ -72,47 +62,44 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
     setHasRefetched(true)
   }, [partners])
 
-  if (!partners.length) {
-    return <NoGalleries />
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
-      <Flex mb={2}>
-        {!!visualizeLocation && (
-          <Text ml={6} color="red">
-            Location: {location ? JSON.stringify(location) : "Using IP-based location"}
-          </Text>
-        )}
-
-        <Animated.FlatList
-          data={partners}
-          ListHeaderComponent={<GalleriesForYouHeader />}
-          refreshControl={RefreshControl}
-          onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
-          renderItem={({ item }) => {
-            return <PartnerListItem partner={item} userLocation={userLocation} />
-          }}
-          keyExtractor={(item) => item.internalID}
-          ItemSeparatorComponent={() => <Spacer y={4} />}
-          ListFooterComponent={() => (
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              p={4}
-              pb={6}
-              style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
-            >
-              <ActivityIndicator />
-            </Flex>
+      <Screen>
+        <Screen.AnimatedHeader title="Galeries For You" onBack={goBack} />
+        <Screen.Body fullwidth>
+          {!!visualizeLocation && (
+            <Text ml={6} color="red">
+              Location: {location ? JSON.stringify(location) : "Using IP-based location"}
+            </Text>
           )}
-          {...scrollProps}
-        />
 
-        {headerElement}
-      </Flex>
+          <Screen.FlatList
+            data={partners}
+            ListHeaderComponent={<GalleriesForYouHeader />}
+            refreshControl={RefreshControl}
+            onEndReached={() => loadNext(GalleriesForYouQueryVariables.count)}
+            renderItem={({ item }) => {
+              return <PartnerListItem partner={item} userLocation={userLocation} />
+            }}
+            keyExtractor={(item) => item.internalID}
+            ItemSeparatorComponent={() => <Spacer y={4} />}
+            ListFooterComponent={() => (
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                p={4}
+                pb={6}
+                style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
+              >
+                <ActivityIndicator />
+              </Flex>
+            )}
+            ListEmptyComponent={() => <NoGalleries />}
+          />
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -171,13 +158,13 @@ export const GalleriesForYouQueryVariables = {
 
 const GalleriesForYouQuery = graphql`
   query GalleriesForYouScreenQuery(
-    $includePartnersNearIpBasedLocation: Boolean
+    $includePartnersNearIpBasedLocation: Boolean!
     $includePartnersWithFollowedArtists: Boolean
     $near: String
     $count: Int
     $after: String
   ) {
-    requestLocation {
+    requestLocation @optionalField @include(if: $includePartnersNearIpBasedLocation) {
       coordinates {
         lat
         lng
@@ -196,7 +183,7 @@ const GalleriesForYouQuery = graphql`
 
 const GalleriesForYouHeader: React.FC = () => {
   return (
-    <Flex mx={2} mb={4} mt={6}>
+    <Flex mx={2} mb={4}>
       <Text variant="lg-display" mb={0.5}>
         Galleries For You
       </Text>
@@ -215,29 +202,26 @@ const GalleriesForYouPlaceholder: React.FC = () => {
 
   return (
     <ProvidePlaceholderContext>
-      <Flex testID="PlaceholderGrid">
-        <GalleriesForYouHeader />
+      <Screen testID="PlaceholderGrid">
+        <Screen.Header onBack={goBack} />
+        <Screen.Body fullwidth>
+          <GalleriesForYouHeader />
 
-        <Flex px={2} mx="auto">
-          {times(5).map((i) => {
-            return (
-              <Flex mb={4} key={i}>
-                <PlaceholderBox width={width} height={width / 1.33} />
-                <Spacer y={1} />
-                <PlaceholderBox width={width} height={60} />
-              </Flex>
-            )
-          })}
-        </Flex>
-      </Flex>
+          <Flex px={2} mx="auto">
+            {times(5).map((i) => {
+              return (
+                <Flex mb={4} key={i}>
+                  <PlaceholderBox width={width} height={width / 1.33} />
+                  <Spacer y={1} />
+                  <PlaceholderBox width={width} height={60} />
+                </Flex>
+              )
+            })}
+          </Flex>
+        </Screen.Body>
+      </Screen>
     </ProvidePlaceholderContext>
   )
 }
 
-const NoGalleries: React.FC = () => (
-  <Flex>
-    <GalleriesForYouHeader />
-
-    <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
-  </Flex>
-)
+const NoGalleries: React.FC = () => <Text mx={2}>Sorry, we couldn’t find any results for you.</Text>
