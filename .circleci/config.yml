@@ -211,10 +211,10 @@ jobs:
       - install-node
       - run:
           name: Check if native code has changed
-          command: ./check-native-code.sh
+          command: ./scripts/codepush/check-native-code.sh
       - run:
           name: Determine Deployment Type
-          command: ./determine-deployment-type.sh
+          command: ./scripts/codepush/determine-deployment-type.sh
       - run:
           name: Deploy Based on Deployment Type
           command: |
