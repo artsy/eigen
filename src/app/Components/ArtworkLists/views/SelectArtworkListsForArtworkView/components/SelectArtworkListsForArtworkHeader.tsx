@@ -1,7 +1,7 @@
 import {
+  AddIcon,
   Box,
   Button,
-  AddIcon,
   Flex,
   Message,
   Spacer,
@@ -37,11 +37,12 @@ export const SelectArtworkListsForArtworkHeader = () => {
             onPress={openCreateNewArtworkListView}
             icon={<AddIcon />}
             ml={-1}
+            my="auto"
           >
             Create New List
           </Button>
 
-          <Text variant="xs" textAlign="center" color="black60">
+          <Text variant="xs" textAlign="center" color="black60" my="auto">
             {getSelectedListsCountText(totalCount)}
           </Text>
         </Flex>
