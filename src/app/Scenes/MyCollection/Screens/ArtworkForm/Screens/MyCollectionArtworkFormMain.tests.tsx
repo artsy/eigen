@@ -177,6 +177,7 @@ describe("AddEditArtwork", () => {
 
   describe("delete artwork button", () => {
     it("fires delete artwork action on delete button click when artists collected feature flag is disabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
       const artworkForm = (
         <MyCollectionArtworkStore.Provider
           runtimeModel={{

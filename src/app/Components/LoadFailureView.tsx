@@ -65,7 +65,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
       <Text variant="sm-display" mb={1}>
         Please try again
       </Text>
-      {isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
+      {!!isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
       <Touchable
         onPress={debounce(() => {
           if (!isAnimating) {
