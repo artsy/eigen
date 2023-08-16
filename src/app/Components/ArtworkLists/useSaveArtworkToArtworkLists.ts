@@ -28,14 +28,16 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
   let isSaved = artwork.isSaved
 
-  if (artworkListID !== null) {
-    const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
-      (artworkID) => artworkID === artwork.internalID
-    )
+  if (!options.saveToDefaultCollectionOnly) {
+    if (artworkListID !== null) {
+      const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
+        (artworkID) => artworkID === artwork.internalID
+      )
 
-    isSaved = !isArtworkRemovedFromArtworkList
-  } else {
-    isSaved = artwork.isSaved || isSavedToCustomArtworkLists
+      isSaved = !isArtworkRemovedFromArtworkList
+    } else {
+      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
+    }
   }
 
   const saveArtworkToDefaultArtworkList = useSaveArtwork({
@@ -76,6 +78,10 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
 
   const saveArtworkToLists = () => {
+    if (options.saveToDefaultCollectionOnly) {
+      saveArtworkToDefaultArtworkList()
+    }
+
     if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
       return
