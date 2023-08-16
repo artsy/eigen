@@ -27,6 +27,12 @@ export const visualClues = defineVisualClues({
   MyCollectionArtistsCollectedOnboarding: {
     description: "Tha modal that shows the onboarding for the collected artists",
   },
+  MyCollectionArtistsCollectedOnboardingTooltip1: {
+    description: "Collected Artists: Tap to review your artist tooltip",
+  },
+  MyCollectionArtistsCollectedOnboardingTooltip2: {
+    description: "Collected Artists: Tap to add more artists or artworks tooltip.",
+  },
 })
 
 export const visualClueNames = Object.keys(visualClues)

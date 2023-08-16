@@ -174,7 +174,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
     // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
     newSaleArtwork: ORDERED_NEW_SALE_ARTWORK_SORTS,
-    showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
+    showArtwork: [GALLERY_CURATED_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
     geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],
     tagArtwork: [DEFAULT_TAG_SORT, ...ORDERED_ARTWORK_SORTS],

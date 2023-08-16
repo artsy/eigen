@@ -22,10 +22,12 @@ import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyColl
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { GlobalStore } from "app/store/GlobalStore"
+import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
@@ -83,6 +85,20 @@ const MyCollection: React.FC<{
   // We are using a ref of the hasCollectedArtists to prevent the modal from showing up as soon as you upload your first artist
   const showCollectedArtistsOnboardingModal =
     showCollectedArtistsOnboarding && hasCollectedArtistsRef
+
+  const { showVisualClue } = useVisualClue()
+  const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
+    "MyCollectionArtistsCollectedOnboarding"
+  )
+
+  useEffect(() => {
+    // Don't show onboarding tooltips if user's have already been onboarded
+    // because the tooltip onboarding was introduced two weeks after the feature was released
+    if (!showMyCollectionCollectedArtistsOnboarding) {
+      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip1)
+      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip2)
+    }
+  }, [])
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)

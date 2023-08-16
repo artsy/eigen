@@ -70,7 +70,8 @@ describe("MyCollection", () => {
       ).toBeTruthy()
     })
 
-    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed when collected artists ff is disabled", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
       const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
