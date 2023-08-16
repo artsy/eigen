@@ -2,8 +2,6 @@ import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveA
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useLegacySaveArtwork } from "app/utils/mutations/useLegacySaveArtwork"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
@@ -14,8 +12,6 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const isArtworkListsFFEnabled = useFeatureFlag("AREnableArtworksLists")
-  const isArtworkListsEnabled = !options.saveToDefaultCollectionOnly && isArtworkListsFFEnabled
   const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
@@ -32,27 +28,17 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
   let isSaved = artwork.isSaved
 
-  if (isArtworkListsEnabled) {
-    if (artworkListID !== null) {
-      const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
-        (artworkID) => artworkID === artwork.internalID
-      )
+  if (artworkListID !== null) {
+    const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
+      (artworkID) => artworkID === artwork.internalID
+    )
 
-      isSaved = !isArtworkRemovedFromArtworkList
-    } else {
-      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
-    }
+    isSaved = !isArtworkRemovedFromArtworkList
+  } else {
+    isSaved = artwork.isSaved || isSavedToCustomArtworkLists
   }
 
-  const legacySaveArtworkToDefaultArtworkList = useLegacySaveArtwork({
-    ...restOptions,
-    id: artwork.id,
-    internalID: artwork.internalID,
-    isSaved: artwork.isSaved,
-    onCompleted,
-  })
-
-  const newSaveArtworkToDefaultArtworkList = useSaveArtwork({
+  const saveArtworkToDefaultArtworkList = useSaveArtwork({
     ...restOptions,
     id: artwork.id,
     internalID: artwork.internalID,
@@ -90,17 +76,12 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   }
 
   const saveArtworkToLists = () => {
-    if (!isArtworkListsEnabled) {
-      legacySaveArtworkToDefaultArtworkList()
-      return
-    }
-
     if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
       return
     }
 
-    newSaveArtworkToDefaultArtworkList()
+    saveArtworkToDefaultArtworkList()
   }
 
   return {
