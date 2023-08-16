@@ -153,7 +153,19 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         </Flex>
 
         {/* Seach and Add */}
-        <Flex justifyContent="center" alignItems="center" flexDirection="row" pt={0.5}>
+        <Flex flexDirection="row">
+          <Touchable
+            onPress={() => {
+              handleCreateButtonPress()
+
+              if (!enableCollectedArtistsOnboarding) return
+              setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
+            }}
+            haptic
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <AddIcon width={24} height={24} />
+          </Touchable>
           <ToolTip
             enabled={
               !!enableCollectedArtistsOnboarding &&
@@ -165,20 +177,9 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
             position="BOTTOM"
             tapToDismiss
             yOffset={13}
-            xOffset={-5}
+            xOffset={-18}
           >
-            <Touchable
-              onPress={() => {
-                handleCreateButtonPress()
-
-                if (!enableCollectedArtistsOnboarding) return
-                setVisualClueAsSeen("MyCollectionArtistsCollectedOnboardingTooltip2")
-              }}
-              haptic
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <AddIcon width={24} height={24} />
-            </Touchable>
+            <Flex></Flex>
           </ToolTip>
         </Flex>
       </Flex>
