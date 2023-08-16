@@ -176,8 +176,8 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
             initialToolTipText="Tap to add more artists or artworks"
             position="BOTTOM"
             tapToDismiss
-            yOffset={13}
-            xOffset={-18}
+            yOffset={9}
+            xOffset={-17}
           >
             <Flex></Flex>
           </ToolTip>
