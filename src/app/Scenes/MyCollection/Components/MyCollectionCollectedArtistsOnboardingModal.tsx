@@ -1,8 +1,7 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
-import { useIsFocused } from "@react-navigation/native"
-import { GlobalStore } from "app/store/GlobalStore"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { navigate } from "app/system/navigation/navigate"
+import { useIsFocusedInTab } from "app/utils/hooks/useIsFocusedInTab"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import React, { useEffect, useState } from "react"
 import { Image, Modal } from "react-native"
@@ -11,8 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   const { showVisualClue } = useVisualClue()
   const [showModal, setShowModal] = useState(false)
-  const isFocused = useIsFocused()
-  const activeTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+  const isFocused = useIsFocusedInTab("profile")
 
   const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
     "MyCollectionArtistsCollectedOnboarding"
@@ -21,7 +19,7 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
   useEffect(() => {
     // Only show the modal after a delay to avoid hiding my collection content immediately
     const showModalTimeout = setTimeout(() => {
-      if (activeTab === "profile" || isFocused) {
+      if (isFocused) {
         setShowModal(true)
       }
     }, 1000)
@@ -29,7 +27,7 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
     return () => {
       clearTimeout(showModalTimeout)
     }
-  }, [activeTab, isFocused])
+  }, [isFocused])
 
   if (!showMyCollectionCollectedArtistsOnboarding || !showModal) {
     return null
