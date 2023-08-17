@@ -26,7 +26,7 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-# Run the appcenter codepush release-react command with the specified deployment option and description
-appcenter codepush release-react -a mobile-artsy/Eigen -d $deployment --plist-file-prefix ios/Artsy/App_Resources --description "$description"
+# Deploy to codepush
+bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description"
 
 echo "Release to $deployment deployment successful."
