@@ -1,15 +1,19 @@
 import {
-  Spacer,
-  Flex,
-  Box,
-  Text,
-  Button,
   ArrowRightIcon,
-  Touchable,
+  Box,
+  Button,
+  Flex,
   Pill,
+  Spacer,
+  Text,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { FormQuery } from "__generated__/FormQuery.graphql"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -18,11 +22,16 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
+import { omit } from "lodash"
+import { useLazyLoadQuery } from "react-relay"
+import { graphql } from "relay-runtime"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
+  attributes: SearchCriteriaAttributes
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
   isLoading?: boolean
@@ -36,25 +45,43 @@ interface FormProps {
   onRemovePill: (pill: SavedSearchPill) => void
 }
 
-export const Form: React.FC<FormProps> = (props) => {
-  const {
-    pills,
-    savedSearchAlertId,
-    isLoading,
-    hasChangedFilters,
-    shouldShowEmailWarning,
-    onDeletePress,
-    onSubmitPress,
-    onUpdateEmailPreferencesPress,
-    onTogglePushNotification,
-    onToggleEmailNotification,
-    onRemovePill,
-  } = props
+export const Form: React.FC<FormProps> = ({
+  attributes,
+  pills,
+  savedSearchAlertId,
+  isLoading,
+  hasChangedFilters,
+  shouldShowEmailWarning,
+  onDeletePress,
+  onSubmitPress,
+  onUpdateEmailPreferencesPress,
+  onTogglePushNotification,
+  onToggleEmailNotification,
+  onRemovePill,
+}) => {
+  const queryData = useLazyLoadQuery<FormQuery>(
+    graphql`
+      query FormQuery($attributes: PreviewSavedSearchAttributes!) {
+        previewSavedSearch(attributes: $attributes) {
+          displayName
+        }
+      }
+    `,
+    {
+      // TODO: Check why typing don't work and dimensionRange attribute is allowed.
+      attributes: omit(attributes, ["displayName", "dimensionRange"]),
+    }
+  )
+
+  const isFallbackToGeneratedAlertNamesEnabled = useExperimentFlag(
+    "onyx_force-fallback-to-generated-alert-names"
+  )
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
+
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
   const priceControlEnabled = useFeatureFlag("AREnablePriceControlForCreateAlertFlow")
@@ -95,6 +122,10 @@ export const Form: React.FC<FormProps> = (props) => {
     })
   }
 
+  const placeholder = isFallbackToGeneratedAlertNamesEnabled
+    ? queryData?.previewSavedSearch?.displayName
+    : entity.artists[0]?.name
+
   const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (
@@ -108,7 +139,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <Input
           title="Name"
-          placeholder={entity.placeholder}
+          placeholder={placeholder}
           value={values.name}
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}

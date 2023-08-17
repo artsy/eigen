@@ -57,7 +57,6 @@ jest.mock("@react-navigation/native", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Placeholder",
   artists: [{ id: "artistId", name: "artistName" }],
   owner: {
     type: OwnerType.artist,

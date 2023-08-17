@@ -794,7 +794,6 @@ describe("SavedSearchAlertForm", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Artist Name",
   artists: [{ id: "artistID", name: "artistName" }],
   owner: {
     type: OwnerType.artist,

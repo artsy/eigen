@@ -249,6 +249,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
+          attributes={attributes}
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
           hasChangedFilters={hasChangedFilters}

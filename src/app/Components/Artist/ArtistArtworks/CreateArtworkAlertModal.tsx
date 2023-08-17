@@ -89,7 +89,6 @@ export const computeArtworkAlertProps = (artwork: CreateArtworkAlertModal_artwor
   }))
 
   const entity: SavedSearchEntity = {
-    placeholder: artists[0]?.name ?? "",
     artists: formattedArtists,
     owner: {
       type: OwnerType.artwork,

@@ -28,6 +28,7 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               attributionClass
               colors
               dimensionRange
+              displayName
               sizes
               height
               inquireableOnly
@@ -38,8 +39,8 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               partnerIDs
               priceRange
               userAlertSettings {
-                name
                 email
+                name
                 push
               }
               width

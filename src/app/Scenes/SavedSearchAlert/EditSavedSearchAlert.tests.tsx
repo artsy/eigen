@@ -56,9 +56,7 @@ describe("EditSavedSearchAlert", () => {
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
-          userAlertSettings: {
-            name: "updated-name",
-          },
+          displayName: "updated-name",
         }),
       })
     })
@@ -103,8 +101,8 @@ describe("EditSavedSearchAlert", () => {
           artistIDs: ["artistID"],
           materialsTerms: ["paper"],
         },
+        displayName: "unique-name",
         userAlertSettings: {
-          name: "unique-name",
           push: true,
           email: true,
         },
@@ -118,9 +116,9 @@ describe("EditSavedSearchAlert", () => {
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => ({
         ...searchCriteria,
+        name: "",
         userAlertSettings: {
           ...searchCriteria.userAlertSettings,
-          name: "",
         },
       }),
     })
@@ -254,6 +252,7 @@ const searchCriteria = {
   attributionClass: [],
   colors: [],
   dimensionRange: null,
+  name: "unique-name",
   sizes: [],
   height: null,
   inquireableOnly: null,
@@ -265,7 +264,6 @@ const searchCriteria = {
   priceRange: null,
   width: null,
   userAlertSettings: {
-    name: "unique-name",
     push: true,
     email: true,
   },
