@@ -95,8 +95,8 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
   const prsWithoutChangelog: PullsGetResponse[] = []
   const prsWithNoChangelog: PullsGetResponse[] = []
   for (const pr of prs) {
-    // pr body without comments
-    const prBody = pr.body.replace(/<!--.*?-->/g, "")
+    // pr body without comments except <!-- end_changelog_updates --> (used in parseSectionPositions)
+    const prBody = pr.body.replace(/<!--((?!end_changelog).)*-->/g, "")
     let prHasChangelog = false
     for (const section of SECTIONS) {
       const positions = parseSectionPositions(section, prBody)
@@ -110,7 +110,9 @@ async function getChangelogFromPrs(prs: PullsGetResponse[]) {
       }
     }
     if (!prHasChangelog) {
-      prBody.includes("#nochangelog") ? prsWithNoChangelog.push(pr) : prsWithoutChangelog.push(pr)
+      prBody.toLocaleLowerCase().includes("#nochangelog")
+        ? prsWithNoChangelog.push(pr)
+        : prsWithoutChangelog.push(pr)
     }
   }
   return { changelog, prsWithoutChangelog, prsWithNoChangelog }
