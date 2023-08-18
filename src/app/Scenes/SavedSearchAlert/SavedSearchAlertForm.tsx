@@ -54,7 +54,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
@@ -72,14 +71,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     enableReinitialize: true,
     initialErrors: {},
     onSubmit: async (values) => {
-      let alertName = values.name
-
-      if (alertName.length === 0) {
-        alertName = entity.placeholder
-      }
-
       const userAlertSettings: SavedSearchAlertFormValues = {
-        name: alertName,
+        name: values.name,
         email: values.email,
         push: values.push,
       }
