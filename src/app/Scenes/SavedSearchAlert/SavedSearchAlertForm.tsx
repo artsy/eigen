@@ -5,7 +5,7 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import React, { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
@@ -242,47 +242,50 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const shouldShowEmailWarning = !!savedSearchAlertId && !!initialValues.email && !userAllowsEmails
 
   return (
-    <FormikProvider value={formik}>
-      <ScrollView
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
-      >
-        <Form
-          attributes={attributes}
-          pills={pills}
-          savedSearchAlertId={savedSearchAlertId}
-          hasChangedFilters={hasChangedFilters}
-          onDeletePress={handleDeletePress}
-          onSubmitPress={formik.handleSubmit}
-          onTogglePushNotification={handleTogglePushNotification}
-          onToggleEmailNotification={handleToggleEmailNotification}
-          onRemovePill={handleRemovePill}
-          shouldShowEmailWarning={shouldShowEmailWarning}
-          {...other}
-        />
-      </ScrollView>
-      {!!savedSearchAlertId && (
-        <Dialog
-          isVisible={visibleDeleteDialog}
-          title="Delete Alert"
-          detail="You will no longer receive notifications for artworks matching the criteria in this alert."
-          primaryCta={{
-            text: "Delete",
-            onPress: () => {
-              onDelete()
-              setVisibleDeleteDialog(false)
-            },
-          }}
-          secondaryCta={{
-            text: "Keep Alert",
-            onPress: () => {
-              setVisibleDeleteDialog(false)
-            },
-          }}
-        />
-      )}
-    </FormikProvider>
+    // TODO: Add fallback
+    <Suspense fallback={null}>
+      <FormikProvider value={formik}>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+        >
+          <Form
+            attributes={attributes}
+            pills={pills}
+            savedSearchAlertId={savedSearchAlertId}
+            hasChangedFilters={hasChangedFilters}
+            onDeletePress={handleDeletePress}
+            onSubmitPress={formik.handleSubmit}
+            onTogglePushNotification={handleTogglePushNotification}
+            onToggleEmailNotification={handleToggleEmailNotification}
+            onRemovePill={handleRemovePill}
+            shouldShowEmailWarning={shouldShowEmailWarning}
+            {...other}
+          />
+        </ScrollView>
+        {!!savedSearchAlertId && (
+          <Dialog
+            isVisible={visibleDeleteDialog}
+            title="Delete Alert"
+            detail="You will no longer receive notifications for artworks matching the criteria in this alert."
+            primaryCta={{
+              text: "Delete",
+              onPress: () => {
+                onDelete()
+                setVisibleDeleteDialog(false)
+              },
+            }}
+            secondaryCta={{
+              text: "Keep Alert",
+              onPress: () => {
+                setVisibleDeleteDialog(false)
+              },
+            }}
+          />
+        )}
+      </FormikProvider>
+    </Suspense>
   )
 }
 
