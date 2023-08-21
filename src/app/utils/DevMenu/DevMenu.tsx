@@ -26,9 +26,11 @@ import { Versions } from "app/store/migration"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { CodePushOptions } from "app/utils/DevMenu/CodePushOptions"
+import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
-import { useState } from "react"
+import React, { useState } from "react"
 import {
   Alert,
   AlertButton,
@@ -44,7 +46,6 @@ import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
   .filter(([_, { showInDevMenu }]) => showInDevMenu)
@@ -58,6 +59,7 @@ const configurableDevToggleKeys = sortBy(
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
+
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
@@ -133,6 +135,12 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         </Flex>
 
         <EnvironmentOptions onClose={onClose} />
+
+        <Flex mx={2}>
+          <Separator my="1" />
+        </Flex>
+
+        <CodePushOptions />
 
         <Flex mx={2}>
           <Separator my="1" />
