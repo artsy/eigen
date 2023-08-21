@@ -7,7 +7,7 @@ import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
-import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
+import { DevMenuWrapper } from "app/utils/DevMenu/DevMenuWrapper"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { addTrackingProvider } from "app/utils/track"
 import {
