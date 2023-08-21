@@ -8,6 +8,7 @@ import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { GoBackProps, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
@@ -41,6 +42,17 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, fetchingMore, refreshMode, onRefresh, onLoadMore } = props
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
+
+  const refresh = () => {
+    onRefresh("default")
+  }
+
+  useEffect(() => {
+    RefreshEvents.addListener(SAVED_ALERT_REFRESH_KEY, refresh)
+    return () => {
+      RefreshEvents.removeListener(SAVED_ALERT_REFRESH_KEY, refresh)
+    }
+  }, [])
 
   if (refreshMode === "delete") {
     return (
