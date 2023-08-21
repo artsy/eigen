@@ -242,7 +242,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const shouldShowEmailWarning = !!savedSearchAlertId && !!initialValues.email && !userAllowsEmails
 
   return (
-    // TODO: Add fallback
     <Suspense fallback={null}>
       <FormikProvider value={formik}>
         <ScrollView
