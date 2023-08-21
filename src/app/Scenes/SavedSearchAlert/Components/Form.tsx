@@ -22,7 +22,6 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { omit } from "lodash"
@@ -68,13 +67,12 @@ export const Form: React.FC<FormProps> = ({
       }
     `,
     {
-      // TODO: Check why typing don't work and dimensionRange attribute is allowed.
       attributes: omit(attributes, ["displayName", "dimensionRange"]),
     }
   )
 
-  const isFallbackToGeneratedAlertNamesEnabled = useExperimentFlag(
-    "onyx_force-fallback-to-generated-alert-names"
+  const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
+    "AREnableFallbackToGeneratedAlertNames"
   )
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =

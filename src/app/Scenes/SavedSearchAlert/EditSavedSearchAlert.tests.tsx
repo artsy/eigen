@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
@@ -10,16 +11,13 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
-jest.mock("app/utils/experiments/hooks", () => ({
-  useExperimentFlag: (name: string) =>
-    ["onyx_force-fallback-to-generated-alert-names"].includes(name),
-}))
-
 describe("EditSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFallbackToGeneratedAlertNames: true })
+
     mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
