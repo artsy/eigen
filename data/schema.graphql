@@ -18411,6 +18411,12 @@ type User implements Node {
 
   # The given location of the user as structured data
   location: Location
+  myCollectionArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 
   # The given name of the user.
   name: String!
