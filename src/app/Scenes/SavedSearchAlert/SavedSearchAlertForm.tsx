@@ -3,6 +3,7 @@ import { Dialog, quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
@@ -162,6 +163,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
 
       navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
+      refreshSavedAlerts()
       onComplete?.(result)
     } catch (error) {
       console.error(error)
