@@ -59,6 +59,8 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     onComplete: handleComplete,
   }
 
+  if (!visible) return null
+
   return <CreateSavedSearchAlert visible={visible} params={params} />
 }
 
