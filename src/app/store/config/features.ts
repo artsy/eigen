@@ -269,6 +269,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "ARShowCollectedArtistOnboarding",
   },
+  AREnableAuctionHeaderAlertCTA: {
+    description: "Enable Auction Header Alert CTA",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {
