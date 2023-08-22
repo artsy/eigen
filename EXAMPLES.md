@@ -116,3 +116,7 @@ Links:
 - [Search.tsx](src/app/Scenes/Search/Search.tsx)
 - [AnimatableHeaderLargeTitle.tsx](src/app/Components/AnimatableHeader/AnimatableHeaderLargeTitle.tsx)
 - [AnimatableHeader.tsx](src/app/Components/AnimatableHeader/AnimatableHeader.tsx)
+
+## I want to skip CI checks for a commit.
+
+We use `[skip ci]` in the commit message for that.
