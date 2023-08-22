@@ -230,7 +230,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       if (enableAuctionHeaderAlertCTA) {
         sections.push({
           key: "auctionHeaderAlertCTA",
-          element: <ArtworkAuctionCreateAlertHeader />,
+          element: <ArtworkAuctionCreateAlertHeader artwork={artworkAboveTheFold} />,
           excludeSeparator: true,
           excludeVerticalMargin: true,
           mt: 2,
@@ -514,6 +514,7 @@ export const ArtworkContainer = createRefetchContainer(
   {
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
+        ...ArtworkAuctionCreateAlertHeader_artwork
         ...ArtworkScreenHeader_artwork
         ...ArtworkHeader_artwork
         ...ArtworkLotDetails_artwork
