@@ -119,4 +119,4 @@ Links:
 
 ## I want to skip CI checks for a commit.
 
-We use `[skip ci]` in the commit message for that.
+We use `[skip ci]` in the commit message for that. We need to pay attention not to include it in the title of the commit, but in the body of the commit message only, so we don't accidentally skip CI for main when we squash merge the PR.
