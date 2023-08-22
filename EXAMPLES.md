@@ -116,7 +116,3 @@ Links:
 - [Search.tsx](src/app/Scenes/Search/Search.tsx)
 - [AnimatableHeaderLargeTitle.tsx](src/app/Components/AnimatableHeader/AnimatableHeaderLargeTitle.tsx)
 - [AnimatableHeader.tsx](src/app/Components/AnimatableHeader/AnimatableHeader.tsx)
-
-## I want to skip CI checks for a commit.
-
-We use `[skip ci]` in the commit message for that. We need to pay attention not to include it in the title of the commit, but in the body of the commit message only, so we don't accidentally skip CI for main when we squash merge the PR.
