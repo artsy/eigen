@@ -1,9 +1,8 @@
-import { Button, Flex, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, ProgressBar, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { CollapseMenu } from "app/Components/CollapseMenu"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
 import Config from "react-native-config"
-import { space } from "styled-system"
 
 interface CodePushRelease {
   description: string
@@ -20,33 +19,30 @@ const codePushDeploymentKeys: { [key: string]: string } = {
 }
 
 export const CodePushOptions = () => {
-  // CODEPUSH States
   const [selectedDeployment, setSelectedDeployment] = useState("")
   const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(null)
   const [loading, setLoading] = useState(false)
+  const [loadStatus, setLoadStatus] = useState("")
+  const [loadProgress, setLoadProgress] = useState(0)
 
   const updateMetadata = () => {
-    console.log("CODEPUSH: Called updateMetadata")
     CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((update) => {
-      console.log("CODEPUSH: Update metadata callback")
       if (update) {
-        console.log("CODEPUSH: Update metadata callback found update", update)
         setCurrentRelease({
           description: update.description,
           deployment: selectedDeployment,
           label: update.label,
         })
-        update.install(CodePush.InstallMode.IMMEDIATE).then((result) => {
-          console.log("CODEPUSH: Install result", result)
-        })
       }
     })
   }
 
-  const chevronStyle = { marginRight: space(1) }
+  useEffect(() => {
+    updateMetadata()
+  }, [])
 
   return (
-    <CollapseMenu title="Code Push" chevronStyle={chevronStyle}>
+    <CollapseMenu title="Code Push" chevronStyle={{ marginRight: 10 }}>
       <Flex mx={2} my={2}>
         {!!currentRelease && (
           <>
@@ -75,34 +71,62 @@ export const CodePushOptions = () => {
 
         <Spacer y={2} />
 
+        {loadProgress > 0 && (
+          <>
+            <Text>{loadStatus}</Text>
+            <ProgressBar progress={loadProgress} />
+          </>
+        )}
+
+        <Spacer y={2} />
+
         <Button
           block
           loading={loading}
           onPress={() => {
             const deploymentKey = codePushDeploymentKeys[selectedDeployment]
-            console.log("CODEPUSH: Got selected deployment key for deployment", {
-              selectedDeployment,
-              deploymentKey,
-            })
             setLoading(true)
             CodePush.sync(
-              { deploymentKey: deploymentKey },
+              { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
               (status) => {
                 switch (status) {
                   case CodePush.SyncStatus.UPDATE_INSTALLED:
+                    setLoadStatus("Update installed")
                     setLoading(false)
-                    updateMetadata()
+                    break
+                  case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
+                    setLoadStatus("Checking server for update")
+                    break
+                  case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
+                    setLoadStatus("Downloading update")
+                    break
+                  case CodePush.SyncStatus.INSTALLING_UPDATE:
+                    setLoadStatus("Installing update, app will restart")
+                    break
+                  case CodePush.SyncStatus.UP_TO_DATE:
+                    setLoadStatus("No updates available, checking for pending updates")
+                    CodePush.getUpdateMetadata(CodePush.UpdateState.PENDING).then((update) => {
+                      if (update) {
+                        setLoadStatus("Update found, installing, the app will restart")
+                        setLoading(false)
+                        update.install(CodePush.InstallMode.IMMEDIATE)
+                      } else {
+                        setLoadStatus("No update found, check the deployment in codepush")
+                        setLoading(false)
+                      }
+                    })
                     break
                   case CodePush.SyncStatus.UNKNOWN_ERROR:
+                    setLoadStatus("Sync failed with error, try again or check deployment")
                     setLoading(false)
-                    // Optionally, you can also handle the error or display an error message here
                     break
                   default:
                     break
                 }
               },
               (progress) => {
-                console.log("CODEPUSH: Syncing with progress", progress)
+                const loadProgress = (progress.receivedBytes / progress.totalBytes) * 100
+                setLoadProgress(loadProgress)
               }
             )
           }}
