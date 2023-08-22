@@ -1,7 +1,8 @@
 import { BellIcon, Button, Flex, Spacer, Text, apostrophe } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
+import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { useTimer } from "app/utils/useTimer"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface SaleAttributes {
@@ -35,7 +36,11 @@ interface ArtworkAuctionCreateAlertHeaderProps {
 export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeaderProps> = ({
   artwork,
 }) => {
-  const artworkData = useFragment(artworkAuctionCreateAlertHeaderFragment, artwork)
+  const artworkData = useFragment<ArtworkAuctionCreateAlertHeader_artwork$key>(
+    artworkAuctionCreateAlertHeaderFragment,
+    artwork
+  )
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const { title, artistNames, isInAuction, sale, saleArtwork } = artworkData
   const formattedArtistNames = artistNames ? ", " + artistNames : ""
   const hasArtists = artistNames?.length ?? 0 > 0 // TODO: check on different artworks
@@ -53,43 +58,51 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
   // TODO: apostrophe open and close symbols do not exist in palette
   return (
-    <Flex flexDirection="column">
-      <Text variant="lg">
-        Bidding for{" "}
-        <Text variant="lg" italic>
-          {apostrophe}
-          {title?.trim()}
-          {apostrophe}
+    <>
+      <CreateArtworkAlertModal
+        artwork={artworkData}
+        onClose={() => setShowCreateArtworkAlertModal(false)}
+        visible={showCreateArtworkAlertModal}
+      />
+
+      <Flex flexDirection="column">
+        <Text variant="lg">
+          Bidding for{" "}
+          <Text variant="lg" italic>
+            {apostrophe}
+            {title?.trim()}
+            {apostrophe}
+          </Text>
+          {formattedArtistNames} has closed.
         </Text>
-        {formattedArtistNames} has closed.
-      </Text>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
 
-      <Text variant="sm" color="black60">
-        Get notified when similar works become abailable, or browse hand picked artworks that match
-        this lot.
-      </Text>
+        <Text variant="sm" color="black60">
+          Get notified when similar works become abailable, or browse hand picked artworks that
+          match this lot.
+        </Text>
 
-      <Spacer y={2} />
+        <Spacer y={2} />
 
-      <Button
-        size="large"
-        variant="fillDark"
-        haptic
-        onPress={() => {}}
-        icon={<BellIcon fill="white100" />}
-        flex={1}
-      >
-        Create Alert
-      </Button>
+        <Button
+          size="large"
+          variant="fillDark"
+          haptic
+          onPress={() => setShowCreateArtworkAlertModal(true)}
+          icon={<BellIcon fill="white100" />}
+          flex={1}
+        >
+          Create Alert
+        </Button>
 
-      <Spacer y={1} />
+        <Spacer y={1} />
 
-      <Button size="large" variant="outline" haptic onPress={() => {}} flex={1}>
-        Browse Similar Artworks
-      </Button>
-    </Flex>
+        <Button size="large" variant="outline" haptic onPress={() => {}} flex={1}>
+          Browse Similar Artworks
+        </Button>
+      </Flex>
+    </>
   )
 }
 
@@ -107,5 +120,6 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
       endedAt
       extendedBiddingEndAt
     }
+    ...CreateArtworkAlertModal_artwork
   }
 `
