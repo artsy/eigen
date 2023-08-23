@@ -109,7 +109,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.136.0",
-    "@artsy/palette-mobile": "12.0.4",
+    "@artsy/palette-mobile": "12.0.5",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@formatjs/intl-datetimeformat": "6.8.0",
