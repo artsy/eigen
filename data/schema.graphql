@@ -1332,6 +1332,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
     # Allow auction results with empty created date values
     allowEmptyCreatedDates: Boolean = true
+
+    # Include auction results with unspecified created dates
+    allowUnspecifiedSaleDates: Boolean = true
     before: String
 
     # Filter auction results by category (medium)
@@ -1366,6 +1369,12 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
     # When true, will only return records for allowed artists.
     recordsTrusted: Boolean = false
+
+    # Filter auction results by end sale date year
+    saleEndYear: Int
+
+    # Filter auction results by start sale end date
+    saleStartYear: Int
     size: Int
 
     # Filter auction results by Artwork sizes
@@ -2809,6 +2818,7 @@ type AuctionResultPriceRealized {
 
 enum AuctionResultsAggregation {
   CURRENCIES_COUNT
+  LOTS_BY_SALE_YEAR
   SIMPLE_PRICE_HISTOGRAM
 }
 
