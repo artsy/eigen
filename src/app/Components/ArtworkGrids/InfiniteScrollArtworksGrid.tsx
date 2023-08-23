@@ -45,6 +45,9 @@ import Artwork, { ArtworkProps } from "./ArtworkGridItem"
  */
 
 export interface Props extends ArtworkActionTrackingProps {
+  /** Do not show add to artworks list prompt */
+  disableArtworksListPrompt?: boolean
+
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection?: string
 
@@ -161,38 +164,39 @@ export const DEFAULT_SECTION_MARGIN = 20
 export const DEFAULT_ITEM_MARGIN = 20
 
 const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
+  autoFetch = true,
+  connection,
+  contextScreen,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
+  contextScreenOwnerType,
+  contextScreenQuery,
+  disableArtworksListPrompt = false,
+  FooterComponent,
+  hasMore,
+  HeaderComponent,
+  hidePartner = false,
+  hideSaveIcon = false,
+  hideUrgencyTags,
+  isLoading,
+  isMyCollection = false,
+  itemComponentProps,
+  itemMargin = DEFAULT_ITEM_MARGIN,
+  loadMore,
+  localSortAndFilterArtworks,
+  onScroll,
+  pageSize = PAGE_SIZE,
+  refreshControl,
+  scrollEventThrottle,
   sectionCount = Dimensions.get("window").width > 700 ? 3 : 2,
   sectionMargin = DEFAULT_SECTION_MARGIN,
-  itemMargin = DEFAULT_ITEM_MARGIN,
   shouldAddPadding = false,
-  autoFetch = true,
-  pageSize = PAGE_SIZE,
-  hidePartner = false,
-  isMyCollection = false,
-  useParentAwareScrollView = Platform.OS === "android",
   showLoadingSpinner = false,
-  hideSaveIcon = false,
-  updateRecentSearchesOnTap = false,
-  itemComponentProps,
-  width,
-  hasMore,
-  isLoading,
-  loadMore,
-  connection,
-  localSortAndFilterArtworks,
-  HeaderComponent,
-  FooterComponent,
-  stickyHeaderIndices,
-  onScroll,
-  scrollEventThrottle,
   showLotLabel,
-  hideUrgencyTags,
-  contextScreen,
-  contextScreenQuery,
-  contextScreenOwnerSlug,
-  contextScreenOwnerId,
-  contextScreenOwnerType,
-  refreshControl,
+  stickyHeaderIndices,
+  updateRecentSearchesOnTap = false,
+  useParentAwareScrollView = Platform.OS === "android",
+  width,
 }) => {
   const artworks = extractNodes(connection)
 
@@ -303,6 +307,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
           ? {}
           : {
               hideSaveIcon,
+              disableArtworksListPrompt,
             }
         const ItemComponent = isMyCollection
           ? MyCollectionArtworkGridItemFragmentContainer
