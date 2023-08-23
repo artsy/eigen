@@ -1,4 +1,12 @@
-import { Button, Flex, ProgressBar, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Message,
+  ProgressBar,
+  RadioButton,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { CollapseMenu } from "app/Components/CollapseMenu"
 import React, { useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
@@ -52,16 +60,18 @@ export const CodePushOptions = () => {
     updateMetadata()
   }, [])
 
+  const activeReleaseText = `
+    Description: ${currentRelease?.description || "N/A"}
+    Deployment: ${currentRelease?.deployment || "N/A"}
+    Label: ${currentRelease?.label || "N/A"}
+  `
+
   return (
     <CollapseMenu title="Code Push" chevronStyle={{ marginRight: 10 }}>
       <Flex mx={2} my={2}>
         {!!currentRelease && (
           <>
-            <Text>Active Release:</Text>
-            <Text>Description: {currentRelease?.description || "N/A"}</Text>
-            <Text>Deployment: {currentRelease?.deployment || "N/A"}</Text>
-            <Text>Label: {currentRelease?.label || "N/A"}</Text>
-
+            <Message title="Active Release" text={activeReleaseText} variant="info" />
             <Spacer y={2} />
           </>
         )}
