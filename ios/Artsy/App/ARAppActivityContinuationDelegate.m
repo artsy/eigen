@@ -23,36 +23,9 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler;
 {
-    NSURL *URL = nil;
-    if ([userActivity.activityType isEqualToString:CSSearchableItemActionType]) {
-        URL = [NSURL URLWithString:userActivity.userInfo[CSSearchableItemActivityIdentifier]];
-    } else {
-        URL = userActivity.webpageURL;
-    }
-
-    DecodeURL(URL, ^(NSURL *decodedURL) {
-        // Show the screen they clicked on
-        if ([[ARUserManager sharedManager] hasExistingAccount]) {
-            [RCTLinkingManager application:application
-                      continueUserActivity:userActivity
-                        restorationHandler:restorationHandler];
-        }
-    });
-    return YES;
-}
-
-static void
-DecodeURL(NSURL *URL, void (^callback)(NSURL *URL)) {
-    if ([URL.host isEqualToString:@"click.artsy.net"]) {
-        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (response.URL) {
-                callback(response.URL);
-            }
-        }];
-        [task resume];
-    } else {
-        callback(URL);
-    }
+    return [RCTLinkingManager application:application
+                     continueUserActivity:userActivity
+                       restorationHandler:restorationHandler];
 }
 
 @end
