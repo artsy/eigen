@@ -10,28 +10,26 @@ interface CodePushRelease {
   label: string
 }
 
-const localKey = "local"
-const stagingKey = Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY ?? ""
-const productionKey = Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY ?? ""
-const canaryKey = Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY ?? ""
+const stagingKey = Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY ?? "Staging_Key"
+const productionKey = Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY ?? "Production_Key"
+const canaryKey = Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY ?? "Canary_Key"
 
-type CodePushDeployment = "Local" | "Staging" | "Production" | "Canary"
+type CodePushDeployment = "Staging" | "Production" | "Canary"
 
 const codePushDeploymentKeys: Record<CodePushDeployment, string> = {
-  Local: localKey,
   Staging: stagingKey,
   Production: productionKey,
   Canary: canaryKey,
 }
 
 const codePushKeyToDeployment: { [key: string]: CodePushDeployment } = {
-  stagingKey: "Staging",
-  productionKey: "Production",
-  canaryKey: "Canary",
+  [stagingKey]: "Staging",
+  [productionKey]: "Production",
+  [canaryKey]: "Canary",
 }
 
 export const CodePushOptions = () => {
-  const [selectedDeployment, setSelectedDeployment] = useState<CodePushDeployment>("Local")
+  const [selectedDeployment, setSelectedDeployment] = useState<CodePushDeployment>("Staging")
   const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(null)
   const [loading, setLoading] = useState(false)
   const [loadStatus, setLoadStatus] = useState("")
