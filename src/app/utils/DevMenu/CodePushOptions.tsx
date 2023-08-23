@@ -10,16 +10,28 @@ interface CodePushRelease {
   label: string
 }
 
-const codePushDeployments: string[] = ["Local", "Staging", "Production", "Canary"]
-const codePushDeploymentKeys: { [key: string]: string } = {
-  Local: "local",
-  Staging: Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY ?? "",
-  Production: Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY ?? "",
-  Canary: Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY ?? "",
+const localKey = "local"
+const stagingKey = Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY ?? ""
+const productionKey = Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY ?? ""
+const canaryKey = Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY ?? ""
+
+type CodePushDeployment = "Local" | "Staging" | "Production" | "Canary"
+
+const codePushDeploymentKeys: Record<CodePushDeployment, string> = {
+  Local: localKey,
+  Staging: stagingKey,
+  Production: productionKey,
+  Canary: canaryKey,
+}
+
+const codePushKeyToDeployment: { [key: string]: CodePushDeployment } = {
+  stagingKey: "Staging",
+  productionKey: "Production",
+  canaryKey: "Canary",
 }
 
 export const CodePushOptions = () => {
-  const [selectedDeployment, setSelectedDeployment] = useState("")
+  const [selectedDeployment, setSelectedDeployment] = useState<CodePushDeployment>("Local")
   const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(null)
   const [loading, setLoading] = useState(false)
   const [loadStatus, setLoadStatus] = useState("")
@@ -28,9 +40,10 @@ export const CodePushOptions = () => {
   const updateMetadata = () => {
     CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((update) => {
       if (update) {
+        const deployment = codePushKeyToDeployment[update.deploymentKey] ?? "unknown"
         setCurrentRelease({
           description: update.description,
-          deployment: selectedDeployment,
+          deployment: deployment,
           label: update.label,
         })
       }
@@ -54,14 +67,13 @@ export const CodePushOptions = () => {
             <Spacer y={2} />
           </>
         )}
-
-        {codePushDeployments.map((deployment) => {
+        {Object.keys(codePushDeploymentKeys).map((deployment) => {
           return (
             <React.Fragment key={deployment}>
               <Flex flexDirection="row">
                 <RadioButton
                   selected={deployment == selectedDeployment}
-                  onPress={() => setSelectedDeployment(deployment)}
+                  onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
                 />
                 <Text>{deployment}</Text>
               </Flex>
