@@ -14310,6 +14310,26 @@ type Query {
     sort: SavedSearchesSortEnum
   ): SearchCriteriaConnection
 
+  # List of more general partner facing search criteria data
+  _unused_gravity_searchCriteriaConnection(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artistID: ID
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+    highQuality: Boolean
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    partnerID: ID
+    previewByArtist: Boolean
+    since: Int
+  ): SearchCriteriaConnection
+
   # List enabled Two-Factor Authentication factors
   _unused_gravity_secondFactors(kinds: [SecondFactorKind!] = [app, sms, backup]): [SecondFactor!]!
 
@@ -16490,6 +16510,7 @@ type SearchCriteria {
   colors: [String!]!
   dimensionRange: String
   displayName: String!
+  hasRecentlyEnabledUserSearchCriteria: Boolean!
   height: String
   href: String!
   inquireableOnly: Boolean
@@ -16505,7 +16526,12 @@ type SearchCriteria {
   partnerIDs: [String!]!
   priceRange: String
   sizes: [String!]!
+  totalUserSearchCriteriaCount: Int
+  totalWithAdditionalGeneIdsCount: Int
+  totalWithAttributionClassCount: Int
+  totalWithPriceRangeCount: Int
   userAlertSettings: SavedSearchUserAlertSettings!
+  userSearchCriteriaCount: Int!
   width: String
 }
 
