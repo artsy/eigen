@@ -14751,7 +14751,7 @@ react-native-bootsplash@3.2.0:
     fs-extra "^9.1.0"
     jimp "^0.16.1"
 
-react-native-code-push@7:
+react-native-code-push@7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-7.1.0.tgz#9767518d684017993ff32875bfd349ce01298d35"
   integrity sha512-ZBc4166cbdPUP0m/013IzVZBVwrHdyFAp/JJCYuVyL0G6ki3Yp8a9f7zGm6xTvMzanOT6cm051iYqqNznvGiCA==
