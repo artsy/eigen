@@ -19,6 +19,7 @@ const appVersion = (version: string) => ({
   nativeCodeVersion: {
     "1": "some-hash",
   },
+  codePushBuildVersion: "none",
 })
 
 const _echoLaunchJsonActual = loads.echoLaunchJson()
