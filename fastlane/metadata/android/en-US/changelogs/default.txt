@@ -1,7 +1,3 @@
-This update includes a number of improvements and bug fixes including:
-
-  - New way to list the artists you collect in My Collection.
-  - Option to select which artists in My Collection are shared with galleries.
-  - Enhanced image quality on the home screen.
+This update includes a number of improvements and bug fixes.
 
 Have feedback? Email us at support@artsy.net
