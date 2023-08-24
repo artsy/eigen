@@ -27,6 +27,7 @@ jest.mock("app/store/GlobalStore", () => ({
     actions: {
       bottomTabs: {
         setTabProps: jest.fn(),
+        setSelectedTab: jest.fn(),
       },
     },
   },
@@ -193,6 +194,7 @@ describe(navigate, () => {
 
   it("switches tab and pops the view stack when routing to a root tab view", async () => {
     await navigate("/search")
+    expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("search")
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
     expect(
       LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
@@ -201,6 +203,7 @@ describe(navigate, () => {
 
   it("passes tab props when switching", async () => {
     await navigate("/search?query=banksy")
+    expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("search")
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
     expect(
       LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
@@ -213,6 +216,7 @@ describe(navigate, () => {
 
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
+    expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("inbox")
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("inbox")
     await flushPromiseQueue()
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
@@ -241,6 +245,7 @@ describe(navigate, () => {
 
     await flushPromiseQueue()
 
+    expect(GlobalStore.actions.bottomTabs.setSelectedTab).toHaveBeenCalledWith("profile")
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("profile")
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`

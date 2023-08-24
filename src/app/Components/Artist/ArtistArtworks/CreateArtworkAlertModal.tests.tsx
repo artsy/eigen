@@ -83,7 +83,7 @@ describe("computeArtworkAlertProps", () => {
         additionalGeneIDs: ["test-gene"],
       },
       entity: {
-        placeholder: "Artworks like: Test Artwork",
+        placeholder: "foo",
         artists: [{ id: "bar", name: "foo" }],
         owner: { type: "artwork", id: "2", slug: "test-artwork" },
       },
@@ -102,7 +102,7 @@ describe("computeArtworkAlertProps", () => {
         additionalGeneIDs: [],
       },
       entity: {
-        placeholder: "Artworks like: Test Artwork",
+        placeholder: "foo",
         artists: [{ id: "bar", name: "foo" }],
         owner: { type: "artwork", id: "2", slug: "test-artwork" },
       },
