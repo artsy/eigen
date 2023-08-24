@@ -245,6 +245,7 @@ export const ArtworkMetaProps = graphql`
     height
     attributionClass {
       name
+      shortDescription
     }
     id
     images(includeAll: true) {
