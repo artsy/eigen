@@ -108,6 +108,19 @@ lane :set_build_version_ios do
   end
 end
 
+def set_codepush_release_name(deployment_name:)
+  date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+  app_json_path = "../app.json"
+  app_json = JSON.parse(File.read(app_json_path))
+  latest_version = app_json['version']
+  release_name = "codepush-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
+  app_json['codepushReleaseName'] = release_name
+  File.open(app_json_path, 'w') do |file|
+    file.puts JSON.pretty_generate(app_json)
+  end
+  [release_name, date_str]
+end
+
 build_gradle = "../android/app/build.gradle"
 lane :set_build_version_android do |options|
 
@@ -366,18 +379,15 @@ lane :upload_sentry_artifacts do |options|
     UI.user_error!("Sentry distribution version not specified")
   end
 
-  source_map_path = ''
+  sourcemap_path = ''
   bundle_path = ''
-  outfile = ''
   if platform == "ios"
-    source_map_path = 'dist/main.jsbundle.map'
+    sourcemap_path = 'dist/main.jsbundle.map'
     bundle_path = 'dist/main.jsbundle'
-    outfile = '~/main.jsbundle'
   else
     # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
-    source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
+    sourcemap_path = 'android/app/src/main/assets/index.android.bundle.map'
     bundle_path = 'android/app/src/main/assets/index.android.bundle'
-    outfile = '~/index.android.bundle'
   end
 
   begin
@@ -423,14 +433,34 @@ lane :upload_sentry_artifacts do |options|
     end
   end
 
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: sentry_release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+  )
+end
+
+lane :upload_sentry_sourcemaps do |options|
+  sentry_cli_path = options[:sentry_cli_path]
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+  sentry_release_name = options[:sentry_release_name]
+  dist = options[:dist]
+  bundle_path = options[:bundle_path]
+  sourcemap_path = options[:sourcemap_path]
+
   begin
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
                           sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,
-                            dist: dist_version,
-                            sourcemap: [bundle_path, source_map_path],
+                            dist: dist,
+                            sourcemap: [bundle_path, sourcemap_path],
                             rewrite: true)
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
@@ -558,14 +588,38 @@ lane :deploy_to_codepush do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
 
-  puts "Deploying to #{deployment_name} with description #{description}"
+  # important! this much match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  release_name, dist_version = set_codepush_release_name(deployment_name: deployment_name)
+  tag_and_push(tag: release_name)
 
   codepush_release_react(
     app_name: "mobile-artsy/Eigen",
     deployment_name: deployment_name,
     description: "'#{description}'",
+    sourcemap_output: "./build/CodePush/main.jsbundle.map",
+    output_dir: "./build",
     plist_file: "ios/Artsy/App_Resources/Info.plist",
   )
+
+  # Sentry config
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
+  project_slug = 'eigen'
+  org_slug = 'artsynet'
+  bundle_path = './build/CodePush/main.jsbundle'
+  sourcemap_path = './build/CodePush/main.jsbundle.map'
+
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+  )
+
+  puts "Deploying to #{deployment_name} with description #{description}"
 end
 
 lane :check_flags do
