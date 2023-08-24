@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
@@ -7,7 +8,7 @@ import DeviceInfo from "react-native-device-info"
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
   const prefix = Platform.OS === "ios" ? "ios" : "android"
-  const buildNumber = DeviceInfo.getBuildNumber()
+  const buildNumber = appJson().codepush_build_version ?? DeviceInfo.getBuildNumber()
   const version = DeviceInfo.getVersion()
   return prefix + "-" + version + "-" + buildNumber
 }
