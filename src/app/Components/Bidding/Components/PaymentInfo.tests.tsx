@@ -9,12 +9,6 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { PaymentInfo } from "./PaymentInfo"
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
-
 let nextStep: NavigatorIOSPushArgs
 const mockNavigator: Partial<NavigatorIOS> = {
   push: (route) => {
