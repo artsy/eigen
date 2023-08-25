@@ -159,9 +159,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     <Tabs.Masonry
       data={artworks}
       numColumns={numColumns}
-      // estimatedItemSize={272}
+      estimatedItemSize={272}
       keyboardShouldPersistTaps="handled"
-      // contentContainerStyle={{ paddingBottom: 80 }}
       ListEmptyComponent={
         <Box mb="80px" pt={2}>
           <FilteredArtworkGridZeroState
