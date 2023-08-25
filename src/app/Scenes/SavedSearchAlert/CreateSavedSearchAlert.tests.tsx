@@ -7,6 +7,7 @@ import {
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -67,6 +68,10 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
+  __globalStoreTestUtils__?.injectFeatureFlags({
+    AREnableFallbackToGeneratedAlertNames: true,
+  })
+
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
@@ -111,9 +116,6 @@ describe("CreateSavedSearchAlert", () => {
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
 
     expect(getByText("Bid")).toBeTruthy()
@@ -126,9 +128,6 @@ describe("CreateSavedSearchAlert", () => {
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
@@ -145,9 +144,6 @@ describe("CreateSavedSearchAlert", () => {
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -181,9 +177,6 @@ describe("CreateSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => ({
             notificationPreferences: [
               { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
@@ -204,9 +197,6 @@ describe("CreateSavedSearchAlert", () => {
       renderWithWrappers(<TestRenderer />)
 
       await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
-        })
         resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => ({
             notificationPreferences: [
