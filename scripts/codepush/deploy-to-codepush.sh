@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 # Check if the correct number of arguments is provided
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
