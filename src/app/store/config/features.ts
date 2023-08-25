@@ -274,6 +274,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableFallbackToGeneratedAlertNames: {
+    description: "Enable fallback to generated alert names",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableFallbackToGeneratedAlertNames",
+  },
 }
 
 export interface DevToggleDescriptor {

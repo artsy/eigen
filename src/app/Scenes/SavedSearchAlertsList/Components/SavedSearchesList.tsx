@@ -235,9 +235,6 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
             node {
               internalID
               displayName
-              userAlertSettings {
-                name
-              }
             }
           }
         }

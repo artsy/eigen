@@ -1,8 +1,10 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -14,6 +16,8 @@ describe("EditSavedSearchAlert", () => {
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFallbackToGeneratedAlertNames: true })
+
     mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
@@ -24,30 +28,43 @@ describe("EditSavedSearchAlert", () => {
     return <EditSavedSearchAlertQueryRenderer savedSearchAlertId="savedSearchAlertId" />
   }
 
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     const { getAllByTestId, getByTestId } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
-    })
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Viewer: () => viewerMocked,
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        SearchCriteria: () => searchCriteria,
+      })
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Viewer: () => viewerMocked,
+      })
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
 
     expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["name-1", "Lithograph", "Paper"])
-    expect(getByTestId("alert-input-name").props.value).toBe("unique-name")
+    expect(getByTestId("alert-input-name").props.value).toBe("")
+    expect(getByTestId("alert-input-name").props.placeholder).toBe("Banana")
   })
 
   it("should navigate go back if the update mutation is successful", async () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
-    })
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Viewer: () => viewerMocked,
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        SearchCriteria: () => searchCriteria,
+      })
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Viewer: () => viewerMocked,
+      })
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -55,11 +72,7 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => ({
-          userAlertSettings: {
-            name: "updated-name",
-          },
-        }),
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
     })
 
@@ -80,6 +93,12 @@ describe("EditSavedSearchAlert", () => {
       }),
       FilterArtworksConnection: () => filterArtworks,
     })
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      PreviewSavedSearch: () => ({ displayName: "Banana" }),
+    })
+
+    await flushPromiseQueue()
 
     fireEvent.press(getByText("Lithograph"))
     fireEvent.press(getAllByText("Save Alert")[0])
@@ -104,57 +123,68 @@ describe("EditSavedSearchAlert", () => {
           materialsTerms: ["paper"],
         },
         userAlertSettings: {
-          name: "unique-name",
           push: true,
           email: true,
+          name: "",
         },
       })
     })
   })
 
-  it("should display artist name as placeholder for input name", async () => {
+  it("should display saved search preview display name as placeholder for input name", async () => {
     const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      SearchCriteria: () => ({
-        ...searchCriteria,
-        userAlertSettings: {
-          ...searchCriteria.userAlertSettings,
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        SearchCriteria: () => ({
+          ...searchCriteria,
           name: "",
-        },
-      }),
-    })
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artist: () => ({
-        internalID: "artistID",
-        name: "Artist Name",
-        slug: "artistSlug",
-      }),
-      FilterArtworksConnection: () => filterArtworks,
-      Viewer: () => viewerMocked,
+          userAlertSettings: {
+            ...searchCriteria.userAlertSettings,
+          },
+        }),
+      })
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({
+          internalID: "artistID",
+          name: "Artist Name",
+          slug: "artistSlug",
+        }),
+        FilterArtworksConnection: () => filterArtworks,
+        Viewer: () => viewerMocked,
+      })
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
 
-    expect(getByPlaceholderText("Artist Name")).toBeTruthy()
+    expect(getByPlaceholderText("Banana")).toBeTruthy()
   })
 
   describe("Notificaton toggles", () => {
     it("email and push toggles are enabled", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => searchCriteria,
-      })
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => ({
-          notificationPreferences: [
-            {
-              channel: "email",
-              name: "custom_alerts",
-              status: "SUBSCRIBED",
-            },
-          ],
-        }),
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => searchCriteria,
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          FilterArtworksConnection: () => filterArtworks,
+          Viewer: () => ({
+            notificationPreferences: [
+              {
+                channel: "email",
+                name: "custom_alerts",
+                status: "SUBSCRIBED",
+              },
+            ],
+          }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
       })
 
       expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(2)
@@ -163,19 +193,24 @@ describe("EditSavedSearchAlert", () => {
     it("email and push toggles are disabled", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => ({
-          ...searchCriteria,
-          userAlertSettings: {
-            ...searchCriteria.userAlertSettings,
-            email: false,
-            push: false,
-          },
-        }),
-      })
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => viewerMocked,
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => ({
+            ...searchCriteria,
+            userAlertSettings: {
+              ...searchCriteria.userAlertSettings,
+              email: false,
+              push: false,
+            },
+          }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          FilterArtworksConnection: () => filterArtworks,
+          Viewer: () => viewerMocked,
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
       })
 
       expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
@@ -189,18 +224,23 @@ describe("EditSavedSearchAlert", () => {
     it("email toggle is enabled, push toggle is disabled", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => ({
-          ...searchCriteria,
-          userAlertSettings: {
-            ...searchCriteria.userAlertSettings,
-            push: false,
-          },
-        }),
-      })
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => viewerMocked,
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => ({
+            ...searchCriteria,
+            userAlertSettings: {
+              ...searchCriteria.userAlertSettings,
+              push: false,
+            },
+          }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          FilterArtworksConnection: () => filterArtworks,
+          Viewer: () => viewerMocked,
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
       })
 
       expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
@@ -214,26 +254,31 @@ describe("EditSavedSearchAlert", () => {
     it("push toggle is enabled, email toggle is disabled", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => ({
-          ...searchCriteria,
-          userAlertSettings: {
-            ...searchCriteria.userAlertSettings,
-            email: false,
-          },
-        }),
-      })
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => ({
-          notificationPreferences: [
-            {
-              channel: "email",
-              name: "custom_alerts",
-              status: "SUBSCRIBED",
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => ({
+            ...searchCriteria,
+            userAlertSettings: {
+              ...searchCriteria.userAlertSettings,
+              email: false,
             },
-          ],
-        }),
+          }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          FilterArtworksConnection: () => filterArtworks,
+          Viewer: () => ({
+            notificationPreferences: [
+              {
+                channel: "email",
+                name: "custom_alerts",
+                status: "SUBSCRIBED",
+              },
+            ],
+          }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
       })
 
       expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
@@ -254,6 +299,7 @@ const searchCriteria = {
   attributionClass: [],
   colors: [],
   dimensionRange: null,
+  name: "unique-name",
   sizes: [],
   height: null,
   inquireableOnly: null,
@@ -265,7 +311,7 @@ const searchCriteria = {
   priceRange: null,
   width: null,
   userAlertSettings: {
-    name: "unique-name",
+    name: null,
     push: true,
     email: true,
   },

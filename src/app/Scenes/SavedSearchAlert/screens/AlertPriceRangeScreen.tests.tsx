@@ -111,7 +111,6 @@ describe("AlertPriceRangeScreen", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Placeholder",
   artists: [{ id: "artistID", name: "artistName" }],
   owner: {
     type: OwnerType.artist,

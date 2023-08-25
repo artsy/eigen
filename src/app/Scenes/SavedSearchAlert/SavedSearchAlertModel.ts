@@ -40,8 +40,8 @@ export type CreateSavedSearchAlertNavigationStack = {
 
 export interface EditSavedSearchAlertParams {
   userAlertSettings?: {
-    name: string | null
     email: boolean
+    name?: string | null
     push: boolean
   }
   savedSearchAlertId?: string

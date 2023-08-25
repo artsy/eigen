@@ -4,10 +4,11 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
-  getNotificationPermissionsStatus,
   PushAuthorizationStatus,
+  getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
+import { omit } from "lodash"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
 export const requestNotificationPermissions = () => {
@@ -101,7 +102,7 @@ export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => 
     }
   })
 
-  return clearedAttributes
+  return omit(clearedAttributes, "displayName")
 }
 
 export const showWarningMessageForDuplicateAlert = ({

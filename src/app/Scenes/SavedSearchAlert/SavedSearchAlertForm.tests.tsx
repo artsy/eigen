@@ -5,6 +5,7 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
@@ -18,6 +19,10 @@ import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./Saved
 import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 describe("SavedSearchAlertForm", () => {
+  __globalStoreTestUtils__?.injectFeatureFlags({
+    AREnableFallbackToGeneratedAlertNames: true,
+  })
+
   const spyAlert = jest.spyOn(Alert, "alert")
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
@@ -72,7 +77,7 @@ describe("SavedSearchAlertForm", () => {
     it("correctly renders default placeholder for input name", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      expect(getByTestId("alert-input-name").props.placeholder).toEqual("Artist Name")
+      expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName")
     })
 
     it("calls onComplete when mutation is completed", async () => {
@@ -794,7 +799,6 @@ describe("SavedSearchAlertForm", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Artist Name",
   artists: [{ id: "artistID", name: "artistName" }],
   owner: {
     type: OwnerType.artist,
