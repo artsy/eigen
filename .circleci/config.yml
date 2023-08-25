@@ -209,10 +209,6 @@ jobs:
     steps:
       - checkout
       - install-node
-      - install-gems
-      - run:
-          name: Install app center cli
-          command: yarn global add appcenter-cli
       - run:
           name: Check if native code has changed
           command: ./scripts/codepush/check-native-code.sh
@@ -224,6 +220,9 @@ jobs:
           command: |
             if [ "$DEPLOYMENT_TYPE" == "codepush" ]; then
               echo "Triggering CodePush deployment..."
+              yarn global add appcenter-cli
+              bundle install
+              yarn install
               ./scripts/codepush/deploy-to-codepush.sh Staging
             else
               echo "Triggering TestFlight and Firebase App Tester deployment..."
