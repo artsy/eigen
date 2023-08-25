@@ -109,17 +109,27 @@ describe("CreateSavedSearchAlert", () => {
   it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+    })
 
     expect(getByText("Bid")).toBeTruthy()
     expect(getByText("Open Edition")).toBeTruthy()
   })
 
-  it("should call onClosePress handler when the close button is pressed", () => {
+  it("should call onClosePress handler when the close button is pressed", async () => {
     const onClosePressMock = jest.fn()
     const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+    })
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
     expect(onClosePressMock).toBeCalled()
@@ -133,7 +143,12 @@ describe("CreateSavedSearchAlert", () => {
       <TestRenderer onComplete={onCompleteMock} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+    })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByText("Save Alert"))
@@ -164,12 +179,17 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [
-            { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
-          ],
-        }),
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => ({
+            notificationPreferences: [
+              { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
+            ],
+          }),
+        })
       })
 
       await flushPromiseQueue()
@@ -183,12 +203,17 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [
-            { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
-          ],
-        }),
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => ({
+            notificationPreferences: [
+              { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
+            ],
+          }),
+        })
       })
 
       await flushPromiseQueue()
@@ -198,9 +223,15 @@ describe("CreateSavedSearchAlert", () => {
       })
     })
 
-    it("push toggle is enabled by default when push permissions are enabled", () => {
+    it("push toggle is enabled by default when push permissions are enabled", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
+
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+      })
 
       expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
         selected: true,
