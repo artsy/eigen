@@ -211,6 +211,9 @@ jobs:
       - install-node
       - install-gems
       - run:
+          name: Install app center cli
+          command: yarn global add appcenter-cli
+      - run:
           name: Check if native code has changed
           command: ./scripts/codepush/check-native-code.sh
       - run:
