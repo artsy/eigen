@@ -9,6 +9,7 @@ import {
   Button,
   Spacer,
   BellIcon,
+  Spinner,
 } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
@@ -97,7 +98,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     })
   }
 
-  const loadMoreStuff = useCallback(() => {
+  const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
     }
@@ -155,44 +156,54 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   return (
-    <>
-      <Tabs.Masonry
-        data={artworks}
-        numColumns={numColumns}
-        estimatedItemSize={272}
-        keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={
-          <Box mb="80px" pt={2}>
-            <FilteredArtworkGridZeroState
-              id={artist.id}
-              slug={artist.slug}
-              trackClear={trackClear}
-              hideClearButton={!appliedFilters.length}
-            />
-          </Box>
-        }
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, columnIndex }) => {
-          const imgAspectRatio = item.image?.aspectRatio ?? 1
-          // TODO: figure out a better solution for space(2) - space(1)
-          const imgWidth = width / numColumns - space(2) - space(1)
-          const imgHeight = imgWidth / imgAspectRatio
+    <Tabs.Masonry
+      data={artworks}
+      numColumns={numColumns}
+      // estimatedItemSize={272}
+      keyboardShouldPersistTaps="handled"
+      // contentContainerStyle={{ paddingBottom: 80 }}
+      ListEmptyComponent={
+        <Box mb="80px" pt={2}>
+          <FilteredArtworkGridZeroState
+            id={artist.id}
+            slug={artist.slug}
+            trackClear={trackClear}
+            hideClearButton={!appliedFilters.length}
+          />
+        </Box>
+      }
+      keyExtractor={(item) => item.id}
+      renderItem={({ item, columnIndex }) => {
+        const imgAspectRatio = item.image?.aspectRatio ?? 1
+        // TODO: figure out a better solution for space(2) - space(1)
+        const imgWidth = width / numColumns - space(2) - space(1)
+        const imgHeight = imgWidth / imgAspectRatio
 
-          return (
-            <Flex
-              pl={columnIndex === 0 ? 0 : 1}
-              pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
-              mt={2}
-            >
-              <ArtworkGridItem hideUrgencyTags artwork={item} height={imgHeight} />
-            </Flex>
-          )
-        }}
-        onEndReached={loadMoreStuff}
-        // TODO: make this sticky
-        ListHeaderComponent={<ArtistArtworksFilterHeader artist={artist} />}
-        // TODO: add spinner when loading more, ListFooterComponent?
-      />
+        return (
+          <Flex
+            pl={columnIndex === 0 ? 0 : 1}
+            pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
+            mt={2}
+          >
+            <ArtworkGridItem hideUrgencyTags artwork={item} height={imgHeight} />
+          </Flex>
+        )
+      }}
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.3}
+      // TODO: make this sticky
+      // this is to reset the padding of the list for the ArtistArtworksFilterHeader component
+      ListHeaderComponentStyle={{ marginHorizontal: -space(2) }}
+      ListHeaderComponent={<ArtistArtworksFilterHeader artist={artist} />}
+      // TODO: add spinner when loading more, ListFooterComponent?
+      ListFooterComponent={
+        relay.isLoading() ? (
+          <Flex my={4} flexDirection="row" justifyContent="center">
+            <Spinner />
+          </Flex>
+        ) : null
+      }
+    >
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
@@ -204,7 +215,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
-    </>
+    </Tabs.Masonry>
   )
 }
 
