@@ -101,8 +101,6 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
-  console.log({ attributes1: attributes })
-
   const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (

@@ -241,7 +241,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const shouldShowEmailWarning = !!savedSearchAlertId && !!initialValues.email && !userAllowsEmails
 
-  console.log({ attributes })
   return (
     <FormikProvider value={formik}>
       <ScrollView

@@ -45,8 +45,6 @@ interface SavedSearchNameInputQueryRendererProps {
 export const SavedSearchNameInputQueryRenderer: React.FC<
   SavedSearchNameInputQueryRendererProps
 > = ({ attributes }) => {
-  console.log({ attributes2: attributes })
-
   return (
     <QueryRenderer<SavedSearchNameInputQuery>
       environment={getRelayEnvironment()}
