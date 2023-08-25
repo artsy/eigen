@@ -2,6 +2,8 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
 
+type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
+
 interface UseShowArtworksFilterModalProps {
   artist: {
     internalID: string
@@ -18,7 +20,7 @@ export const useShowArtworksFilterModal = (props: UseShowArtworksFilterModalProp
     (state) => state.setShowFilterArtworksModal
   )
 
-  const openFilterArtworksModal = (openedFrom: "sortAndFilter" | "createAlert") => {
+  const openFilterArtworksModal = (openedFrom: FilterModalOpenedFrom) => {
     if (openedFrom === "sortAndFilter") {
       tracking.trackEvent({
         action_name: "filter",
