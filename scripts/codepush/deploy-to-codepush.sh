@@ -19,7 +19,8 @@ if [ "$deployment" != "Canary" ] && [ "$deployment" != "Staging" ]; then
 fi
 
 # Get the description from the command-line argument if provided, otherwise use the last commit hash and description
-if [ -n "$2" ]; then
+description=""
+if [ -n "${2:-}" ]; then
   description="$2"
 else
   commit_hash=$(git rev-parse --short HEAD)
