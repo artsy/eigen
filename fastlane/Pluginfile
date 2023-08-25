@@ -1,4 +1,4 @@
 gem "sentry-ruby"
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-firebase_app_distribution'
-gem 'fastlane-plugin-codepush'
+gem 'fastlane-plugin-appcenter'

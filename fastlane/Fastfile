@@ -118,7 +118,7 @@ def set_codepush_release_name(deployment_name:)
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
-  [release_name, date_str]
+  [release_name, date_str, latest_version]
 end
 
 build_gradle = "../android/app/build.gradle"
@@ -583,23 +583,23 @@ lane :create_next_app_version do |options|
 end
 
 lane :deploy_to_codepush do |options|
-  codepush_login
-
   deployment_name = options[:deployment_name]
   description = options[:description]
 
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  release_name, dist_version = set_codepush_release_name(deployment_name: deployment_name)
+  release_name, dist_version, release_version = set_codepush_release_name(deployment_name: deployment_name)
   tag_and_push(tag: release_name)
 
-  codepush_release_react(
-    app_name: "mobile-artsy/Eigen",
-    deployment_name: deployment_name,
+  appcenter_codepush_release_react(
+    api_token: ENV['APP_CENTER_API_TOKEN'],
+    owner_name: "mobile-artsy",
+    app_name: "Eigen",
     description: "'#{description}'",
+    deployment: deployment_name,
     sourcemap_output: "./build/CodePush/main.jsbundle.map",
     output_dir: "./build",
-    plist_file: "ios/Artsy/App_Resources/Info.plist",
+    target_version: release_version,
   )
 
   # Sentry config
