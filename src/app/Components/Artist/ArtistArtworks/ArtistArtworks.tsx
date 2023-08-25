@@ -195,7 +195,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       // this is to reset the padding of the list for the ArtistArtworksFilterHeader component
       ListHeaderComponentStyle={{ marginHorizontal: -space(2) }}
       ListHeaderComponent={<ArtistArtworksFilterHeader artist={artist} />}
-      // TODO: add spinner when loading more, ListFooterComponent?
       ListFooterComponent={
         relay.isLoading() ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
