@@ -51,6 +51,10 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
         return
       }
 
+      if (options.saveToDefaultCollectionOnly) {
+        return
+      }
+
       if (isArtworkSaved) {
         onSave({
           action: ResultAction.SavedToDefaultArtworkList,
@@ -80,6 +84,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const saveArtworkToLists = () => {
     if (options.saveToDefaultCollectionOnly) {
       saveArtworkToDefaultArtworkList()
+      return
     }
 
     if (artworkListID || isSavedToCustomArtworkLists) {
