@@ -26,6 +26,7 @@ import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/In
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
+import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -83,9 +84,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     setInitialFilterStateAction(filters)
   }, [])
 
-  const isIPad = width > 700
-
-  const numColumns = isIPad ? 3 : 2
+  const numColumns = isTablet() ? 3 : 2
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
