@@ -9,12 +9,9 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { FormQuery } from "__generated__/FormQuery.graphql"
-import {
-  SearchCriteria,
-  SearchCriteriaAttributes,
-} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
+import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -24,13 +21,9 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
-import { omit } from "lodash"
-import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
-  attributes: SearchCriteriaAttributes
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
   isLoading?: boolean
@@ -45,7 +38,6 @@ interface FormProps {
 }
 
 export const Form: React.FC<FormProps> = ({
-  attributes,
   pills,
   savedSearchAlertId,
   isLoading,
@@ -58,22 +50,11 @@ export const Form: React.FC<FormProps> = ({
   onToggleEmailNotification,
   onRemovePill,
 }) => {
-  const queryData = useLazyLoadQuery<FormQuery>(
-    graphql`
-      query FormQuery($attributes: PreviewSavedSearchAttributes!) {
-        previewSavedSearch(attributes: $attributes) {
-          displayName
-        }
-      }
-    `,
-    {
-      attributes: omit(attributes, ["displayName", "dimensionRange"]),
-    }
-  )
-
   const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
     "AREnableFallbackToGeneratedAlertNames"
   )
+
+  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
@@ -120,9 +101,7 @@ export const Form: React.FC<FormProps> = ({
     })
   }
 
-  const placeholder = isFallbackToGeneratedAlertNamesEnabled
-    ? queryData?.previewSavedSearch?.displayName
-    : entity.artists[0]?.name
+  console.log({ attributes1: attributes })
 
   const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
@@ -135,16 +114,20 @@ export const Form: React.FC<FormProps> = ({
       )}
 
       <Box mb={2}>
-        <Input
-          title="Name"
-          placeholder={placeholder}
-          value={values.name}
-          onChangeText={handleChange("name")}
-          onBlur={handleBlur("name")}
-          error={errors.name}
-          testID="alert-input-name"
-          maxLength={75}
-        />
+        {isFallbackToGeneratedAlertNamesEnabled ? (
+          <SavedSearchNameInputQueryRenderer attributes={attributes} />
+        ) : (
+          <Input
+            title="Name"
+            placeholder={entity.artists[0]?.name}
+            value={values.name}
+            onChangeText={handleChange("name")}
+            onBlur={handleBlur("name")}
+            error={errors.name}
+            testID="alert-input-name"
+            maxLength={75}
+          />
+        )}
       </Box>
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>

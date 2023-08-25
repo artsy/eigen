@@ -1,5 +1,5 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { ArtworkSizes } from "__generated__/FormQuery.graphql"
+import { ArtworkSizes } from "__generated__/SavedSearchNameInputQuery.graphql"
 
 export enum SearchCriteria {
   artistID = "artistID",
