@@ -1,14 +1,13 @@
+import { Checkbox } from "@artsy/palette-mobile"
+import { createToken } from "@stripe/stripe-react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { Select } from "app/Components/Select"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { waitUntil } from "app/utils/tests/waitUntil"
-import { Checkbox } from "@artsy/palette-mobile"
-import { Select } from "app/Components/Select"
 import "react-native"
 import relay from "react-relay"
-// @ts-expect-error
-import stripe from "tipsi-stripe"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 import { SelectMaxBid } from "./Screens/SelectMaxBid"
 
@@ -20,10 +19,8 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () =>
   bidderPositionQuery: jest.fn(),
 }))
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
+jest.mock("@stripe/stripe-react-native", () => ({
+  createToken: jest.fn(),
 }))
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
@@ -89,8 +86,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   screen = fakeNavigator.nextStep()
 
   expect(extractText(screen.root)).toContain("Confirm your bid")
-
-  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
   relay.commitMutation = jest
     .fn()
     .mockImplementationOnce((_, { onCompleted }) =>
@@ -138,7 +134,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
 })
 
 const stripeToken = {
-  tokenId: "token-id",
+  id: "token-id",
   created: 1528817746,
   livemode: 10,
   card: {

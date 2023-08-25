@@ -4707,6 +4707,11 @@
     resolve-from "^5.0.0"
     store2 "^2.12.0"
 
+"@stripe/stripe-react-native@0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.30.0.tgz#75fd976ee6cf153569523ba1ccc221ddd160d99f"
+  integrity sha512-uh8XKUA7jmvr/10vf9eCTaLJ3xQ/3IFPpW+oQz2OEi1hUF2gOAEyZU6IDjMu23FX7aYlubBzgtN+iZfP5zuHEQ==
+
 "@styled-system/background@^5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@styled-system/background/-/background-5.1.2.tgz#75c63d06b497ab372b70186c0bf608d62847a2ba"
@@ -16554,10 +16559,6 @@ tinycolor2@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
-
-"tipsi-stripe@https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop":
-  version "7.5.0"
-  resolved "https://github.com/artsy/tipsi-stripe.git#aeb742baf1a8329ba371d9c94c7650104a112807"
 
 tmp@0.2.1:
   version "0.2.1"
