@@ -2289,6 +2289,9 @@ type Artwork implements Node & Searchable & Sellable {
   sale: Sale
   saleArtwork(saleID: String = null): SaleArtwork
   saleMessage: String
+
+  # Schema related to saved searches based on this artwork
+  savedSearch: ArtworkSavedSearch
   series(format: Format): String
 
   # The country an artwork will be shipped from.
@@ -2551,6 +2554,16 @@ type ArtworkPriceInsights {
 type ArtworksAggregationResults {
   counts: [AggregationCount]
   slice: ArtworkAggregation
+}
+
+type ArtworkSavedSearch {
+  # Based on the artworks attributes (usually considered for saved searches).
+  suggestedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 }
 
 type ArtworksCollectionsBatchUpdateCounts {
