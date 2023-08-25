@@ -14,6 +14,11 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionContainer } from "./MyCollection"
 
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return { ...actualNav, useIsFocused: () => true }
+})
+
 describe("MyCollection", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionTestsQuery>({
     Component: (props) => {

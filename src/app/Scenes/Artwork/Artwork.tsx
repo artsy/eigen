@@ -11,6 +11,7 @@ import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Com
 import { usePageableScreensContext } from "app/Components/PageableScreensView/PageableScreensContext"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -77,6 +78,8 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
   const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
   const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
   const auctionTimerState = ArtworkStore.useStoreState((state) => state.auctionState)
+
+  const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
 
   const shouldRenderPartner = () => {
     const { sale, partner } = artworkBelowTheFold ?? {}
@@ -224,6 +227,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     const sections: ArtworkPageSection[] = []
 
     if (artworkAboveTheFold) {
+      if (enableAuctionHeaderAlertCTA) {
+        sections.push({
+          key: "auctionHeaderAlertCTA",
+          element: <ArtworkAuctionCreateAlertHeader />,
+          excludeSeparator: true,
+          excludeVerticalMargin: true,
+          mt: 2,
+        })
+      }
+
       sections.push({
         key: "header",
         element: (
@@ -396,7 +409,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           const { leadingItem: item } = props
 
           if (item.excludeSeparator) {
-            return <Box mt={4} />
+            return <Box mt={item.excludeVerticalMargin ? 0 : 4} />
           }
 
           return (
@@ -409,7 +422,11 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
-          return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
+          return (
+            <Box px={item.excludePadding ? 0 : 2} mt={item.mt}>
+              {item.element}
+            </Box>
+          )
         }}
       />
 
@@ -430,6 +447,8 @@ interface ArtworkPageSection {
   excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section
   verticalMargin?: SpacingUnit
+  excludeVerticalMargin?: boolean
+  mt?: SpacingUnit
 }
 
 const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {

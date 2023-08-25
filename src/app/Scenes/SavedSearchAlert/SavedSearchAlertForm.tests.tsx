@@ -72,7 +72,7 @@ describe("SavedSearchAlertForm", () => {
     it("correctly renders default placeholder for input name", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      expect(getByTestId("alert-input-name").props.placeholder).toEqual("Placeholder")
+      expect(getByTestId("alert-input-name").props.placeholder).toEqual("Artist Name")
     })
 
     it("calls onComplete when mutation is completed", async () => {
@@ -129,7 +129,7 @@ describe("SavedSearchAlertForm", () => {
             input: {
               attributes,
               userAlertSettings: {
-                name: "Placeholder",
+                name: "",
               },
             },
           })
@@ -164,7 +164,7 @@ describe("SavedSearchAlertForm", () => {
           expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
             input: {
               userAlertSettings: {
-                name: `Placeholder`,
+                name: "",
               },
             },
           })
@@ -794,7 +794,7 @@ describe("SavedSearchAlertForm", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Placeholder",
+  placeholder: "Artist Name",
   artists: [{ id: "artistID", name: "artistName" }],
   owner: {
     type: OwnerType.artist,

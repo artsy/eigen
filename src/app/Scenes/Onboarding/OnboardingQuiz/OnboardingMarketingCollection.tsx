@@ -53,6 +53,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           hasMore={() => false}
           connection={marketingCollection?.artworks}
           shouldAddPadding
+          disableArtworksListPrompt
         />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>

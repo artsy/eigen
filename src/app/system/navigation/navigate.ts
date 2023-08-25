@@ -152,6 +152,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
+  GlobalStore.actions.bottomTabs.setSelectedTab(tab)
   LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
   saveDevNavigationStateSelectedTab(tab)
 }

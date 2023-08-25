@@ -27,16 +27,12 @@ describe("SavedSearches", () => {
         edges: [
           {
             node: {
-              userAlertSettings: {
-                name: "one",
-              },
+              displayName: "one",
             },
           },
           {
             node: {
-              userAlertSettings: {
-                name: "two",
-              },
+              displayName: "two",
             },
           },
         ],
@@ -63,16 +59,12 @@ describe("SavedSearches", () => {
         edges: [
           {
             node: {
-              userAlertSettings: {
-                name: "one",
-              },
+              displayName: "one",
             },
           },
           {
             node: {
-              userAlertSettings: {
-                name: null,
-              },
+              displayName: null,
             },
           },
         ],
