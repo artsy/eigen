@@ -38,6 +38,8 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   predefinedFilters?: FilterArray
 }
 
+const ESTIMATED_ITEM_SIZE = 272
+
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   artist,
   relay,
@@ -159,7 +161,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     <Tabs.Masonry
       data={artworks}
       numColumns={numColumns}
-      estimatedItemSize={272}
+      // this number is the estimated size of the artworkGridItem component
+      estimatedItemSize={ESTIMATED_ITEM_SIZE}
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         <Box mb="80px" pt={2}>
@@ -174,7 +177,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       keyExtractor={(item) => item.id}
       renderItem={({ item, columnIndex }) => {
         const imgAspectRatio = item.image?.aspectRatio ?? 1
-        // TODO: figure out a better solution for space(2) - space(1)
         const imgWidth = width / numColumns - space(2) - space(1)
         const imgHeight = imgWidth / imgAspectRatio
 
@@ -190,9 +192,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       }}
       onEndReached={loadMore}
       onEndReachedThreshold={0.3}
-      // TODO: make this sticky
       // this is to reset the padding of the list for the ArtistArtworksFilterHeader component
       ListHeaderComponentStyle={{ marginHorizontal: -space(2) }}
+      // TODO: make this sticky
       ListHeaderComponent={<ArtistArtworksFilterHeader artist={artist} />}
       ListFooterComponent={
         relay.isLoading() ? (
