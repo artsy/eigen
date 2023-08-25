@@ -209,6 +209,7 @@ jobs:
     steps:
       - checkout
       - install-node
+      - install-gems
       - run:
           name: Check if native code has changed
           command: ./scripts/codepush/check-native-code.sh
