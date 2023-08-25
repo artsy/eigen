@@ -145,6 +145,7 @@ jest.mock("react-native-device-info", () => ({
   getUserAgentSync: jest.fn(),
   getDeviceType: jest.fn(),
   hasNotch: jest.fn(),
+  isTablet: jest.fn(),
 }))
 
 jest.mock("rn-fetch-blob", () => ({
