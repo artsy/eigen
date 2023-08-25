@@ -13417,6 +13417,17 @@ type Partner implements Node {
   profile: Profile
   profileArtistsLayout: String
   profileBannerDisplay: String
+  searchCriteriaConnection(
+    after: String
+    artistID: ID
+    before: String
+    first: Int
+    highQuality: Boolean
+    last: Int
+    partnerID: String
+    previewByArtist: Boolean
+    since: Int
+  ): SearchCriteriaConnection
   showPromoted: Boolean
 
   # A connection of shows from a Partner.
@@ -16518,6 +16529,15 @@ type SearchCriteria {
   additionalGeneIDs: [String!]!
   artistID: String @deprecated(reason: "Deprecated in favor of artistIDs array")
   artistIDs: [String!]
+  artistsConnection(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+    sort: ArtistSorts
+    term: String
+  ): ArtistConnection
   atAuction: Boolean
   attributionClass: [String!]!
   colors: [String!]!
