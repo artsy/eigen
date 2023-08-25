@@ -14,6 +14,7 @@ export const getMockCollapsibleTabs = () => {
       Lazy: React.View,
       ScrollView: React.ScrollView,
       Tab: MockedTabs,
+      MasonryFlashList: React.FlatList,
     },
     useCurrentTabScrollY: () => ({ value: 0 }),
     useFocusedTab: () => "SomeFocusedTab",
