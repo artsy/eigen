@@ -15464,6 +15464,17 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+  searchCriteriaConnection(
+    after: String
+    artistID: ID
+    before: String
+    first: Int
+    highQuality: Boolean
+    last: Int
+    partnerID: String
+    previewByArtist: Boolean
+    since: Int
+  ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
   # A Show
