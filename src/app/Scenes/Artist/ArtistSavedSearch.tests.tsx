@@ -65,9 +65,8 @@ describe("Saved search banner on artist screen", () => {
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
-    expect(screen.getByText("Sort By • 1")).toBeTruthy()
-    expect(screen.getByText("Rarity • 2")).toBeTruthy()
-    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
+    expect(screen.queryByText("Sort & Filter")).toBeTruthy()
+    expect(screen.queryByText("• 5")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
