@@ -687,9 +687,9 @@ PODS:
   - RNScreens (3.23.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.2.13):
+  - RNSentry (5.9.1):
     - React-Core
-    - Sentry (= 7.9.0)
+    - Sentry/HybridSDK (= 8.10.0)
   - RNShare (8.2.1):
     - React-Core
   - RNSVG (9.13.3):
@@ -706,9 +706,9 @@ PODS:
   - Segment-Appboy/Full-SDK (4.5.0):
     - Analytics
     - Appboy-iOS-SDK (~> 4.4.1)
-  - Sentry (7.9.0):
-    - Sentry/Core (= 7.9.0)
-  - Sentry/Core (7.9.0)
+  - Sentry/HybridSDK (8.10.0):
+    - SentryPrivate (= 8.10.0)
+  - SentryPrivate (8.10.0)
   - Sift (2.1.1)
   - sift-react-native (0.1.8):
     - React
@@ -950,6 +950,7 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - Segment-Appboy
     - Sentry
+    - SentryPrivate
     - Sift
     - SocketRocket
     - Specta
@@ -1296,13 +1297,14 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: d814cd5a3abf1d042b11b986ac886ac8485ce420
   RNScreens: 6a8a3c6b808aa48dca1780df7b73ea524f602c63
-  RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
+  RNSentry: 0a1daa8ee81e2776f977ae8c66e67c8d85587828
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
-  Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
+  Sentry: 71cd4427146ac56eab6e70401ac7a24384c3d3b5
+  SentryPrivate: 9334613897c85a9e30f2c9d7a331af8aaa4fe71f
   Sift: 8cd26419e0a9b0d94bd733b296353b68c44192aa
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
