@@ -1,9 +1,15 @@
-import { FilterIcon, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import {
+  FilterIcon,
+  Flex,
+  Box,
+  Text,
+  Separator,
+  TouchableHighlightColor,
+} from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 
 export interface FilterProps {
   total: number
@@ -61,10 +67,8 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
 
   useEffect(() => {
     // orientation changed, allow for recalculation of pageY
-    Dimensions.addEventListener("change", orientationChanged)
-    return () => {
-      Dimensions.removeEventListener("change", orientationChanged)
-    }
+    const dimensionsEventSubscription = Dimensions.addEventListener("change", orientationChanged)
+    return () => dimensionsEventSubscription.remove()
   }, [])
 
   const orientationChanged = () => {
