@@ -455,6 +455,10 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
+/**
+ * @deprecated
+ * Please use `Tabs.Masonry` instead if possible. (see ArtistArtworks.tsx)
+ */
 export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
   InfiniteScrollArtworksGridMapper,
   {
