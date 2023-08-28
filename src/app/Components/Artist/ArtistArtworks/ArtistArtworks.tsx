@@ -24,6 +24,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
@@ -54,6 +55,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const { width } = useScreenDimensions()
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   useArtworkFilters({
     relay,
@@ -186,7 +189,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
             mt={2}
           >
-            <ArtworkGridItem hideUrgencyTags artwork={item} height={imgHeight} />
+            <ArtworkGridItem
+              {...props}
+              contextScreenOwnerType={OwnerType.artist}
+              contextScreenOwnerId={artist.internalID}
+              contextScreenOwnerSlug={artist.slug}
+              artwork={item}
+              height={imgHeight}
+              navigateToPageableRoute={navigateToPageableRoute}
+            />
           </Flex>
         )
       }}
@@ -262,6 +273,7 @@ export default createPaginationContainer(
           edges {
             node {
               id
+              slug
               image(includeAll: false) {
                 aspectRatio
               }
