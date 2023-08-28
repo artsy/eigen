@@ -213,7 +213,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
-          relay.isLoading() ? (
+          !!relay.isLoading() && !!relay.hasMore() ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
