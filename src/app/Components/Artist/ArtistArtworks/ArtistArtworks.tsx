@@ -161,72 +161,77 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   return (
-    <Tabs.Masonry
-      data={artworks}
-      numColumns={numColumns}
-      // this number is the estimated size of the artworkGridItem component
-      estimatedItemSize={ESTIMATED_ITEM_SIZE}
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        <Box mb="80px" pt={2}>
-          <FilteredArtworkGridZeroState
-            id={artist.id}
-            slug={artist.slug}
-            trackClear={trackClear}
-            hideClearButton={!appliedFilters.length}
-          />
-        </Box>
-      }
-      keyExtractor={(item) => item.id}
-      renderItem={({ item, columnIndex }) => {
-        const imgAspectRatio = item.image?.aspectRatio ?? 1
-        const imgWidth = width / numColumns - space(2) - space(1)
-        const imgHeight = imgWidth / imgAspectRatio
-
-        return (
-          <Flex
-            pl={columnIndex === 0 ? 0 : 1}
-            pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
-            mt={2}
-          >
-            <ArtworkGridItem
-              {...props}
-              contextScreenOwnerType={OwnerType.artist}
-              contextScreenOwnerId={artist.internalID}
-              contextScreenOwnerSlug={artist.slug}
-              artwork={item}
-              height={imgHeight}
-              navigateToPageableRoute={navigateToPageableRoute}
+    <>
+      <Tabs.Masonry
+        data={artworks}
+        numColumns={numColumns}
+        // this number is the estimated size of the artworkGridItem component
+        estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState
+              id={artist.id}
+              slug={artist.slug}
+              trackClear={trackClear}
+              hideClearButton={!appliedFilters.length}
             />
-          </Flex>
-        )
-      }}
-      onEndReached={loadMore}
-      onEndReachedThreshold={0.3}
-      // this is to reset the padding of the list for the ArtistArtworksFilterHeader component
-      ListHeaderComponentStyle={{ marginHorizontal: -space(2) }}
-      // TODO: make this sticky
-      ListHeaderComponent={<ArtistArtworksFilterHeader artist={artist} />}
-      ListFooterComponent={
-        relay.isLoading() ? (
-          <Flex my={4} flexDirection="row" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : null
-      }
-    >
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / numColumns - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
+
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                {...props}
+                contextScreenOwnerType={OwnerType.artist}
+                contextScreenOwnerId={artist.internalID}
+                contextScreenOwnerSlug={artist.slug}
+                artwork={item}
+                height={imgHeight}
+                navigateToPageableRoute={navigateToPageableRoute}
+              />
+            </Flex>
+          )
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.3}
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <Tabs.SubTabBar>
+            <ArtistArtworksFilterHeader artist={artist} />
+          </Tabs.SubTabBar>
+        }
+        ListFooterComponent={
+          relay.isLoading() ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+      />
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
         slug={artist.slug}
-        visible={showFilterArtworksModal}
+        visible={!!showFilterArtworksModal}
         name={artist.name ?? ""}
         exitModal={closeFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
-    </Tabs.Masonry>
+    </>
   )
 }
 
