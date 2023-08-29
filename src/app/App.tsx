@@ -1,5 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore } from "app/store/GlobalStore"
+import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
@@ -171,10 +172,4 @@ const InnerApp = () => (
   </Providers>
 )
 
-const codePushOptions = ArtsyNativeModule.isBetaOrDev
-  ? {
-      deploymentKey: Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY,
-      checkFrequency: codePush.CheckFrequency.MANUAL,
-    }
-  : { deploymentKey: Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY }
 export const App = codePush(codePushOptions)(InnerApp)
