@@ -135,23 +135,21 @@ describe("ArtworkActions", () => {
   })
 
   describe("Save button", () => {
-    describe("whith lists feature flag enabled", () => {
-      it("should trigger save mutation when user presses save button", () => {
-        const { env } = renderWithRelay({
-          Artwork: () => ({
-            ...artworkActionsArtwork,
-            isSaved: false,
-          }),
-        })
-
-        expect(screen.getByLabelText("Save artwork")).toBeTruthy()
-
-        fireEvent.press(screen.getByLabelText("Save artwork"))
-
-        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-          "SelectArtworkListsForArtworkQuery"
-        )
+    it("should trigger save mutation when user presses save button", () => {
+      const { env } = renderWithRelay({
+        Artwork: () => ({
+          ...artworkActionsArtwork,
+          isSaved: false,
+        }),
       })
+
+      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "SelectArtworkListsForArtworkQuery"
+      )
     })
   })
 })
