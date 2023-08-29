@@ -111,7 +111,6 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US.  Note that
  * this variant is about 6MiB larger per architecture than default.
  */
-def jscFlavor = 'org.webkit:android-jsc-intl:+'
 
 // order matters here, this must be set before the react.gradle apply
 project.ext.react = [
@@ -321,8 +320,6 @@ dependencies {
         implementation("com.facebook.react:hermes-engine:+") { // From node_modules
             exclude group:'com.facebook.fbjni'
         }
-    } else {
-        implementation jscFlavor
     }
 }
 
