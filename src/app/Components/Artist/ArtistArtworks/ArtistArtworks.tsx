@@ -107,7 +107,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
     }
-  }, [relay.hasMore()])
+  }, [relay.hasMore(), relay.isLoading()])
 
   if (!artist.statuses?.artworks) {
     return (
