@@ -1,4 +1,4 @@
-import { BellIcon, Button, Flex, Spacer, Text, apostrophe } from "@artsy/palette-mobile"
+import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { useTimer } from "app/utils/useTimer"
@@ -42,8 +42,8 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const { title, artistNames, isInAuction, sale, saleArtwork } = artworkData
-  const formattedArtistNames = artistNames ? ", " + artistNames : ""
-  const hasArtists = artistNames?.length ?? 0 > 0 // TODO: check on different artworks
+  const formattedArtistNames = artistNames ? artistNames + ", " : ""
+  const hasArtists = artistNames?.length ?? 0 > 0
 
   // TODO: consider moving this logic to Metaphysics
   //       error prone, LotCloseInfo uses fields other than Force.
@@ -67,13 +67,12 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
       <Flex flexDirection="column">
         <Text variant="lg">
-          Bidding for{" "}
+          Bidding for
+          {formattedArtistNames}{" "}
           <Text variant="lg" italic>
-            {apostrophe}
             {title?.trim()}
-            {apostrophe}
           </Text>
-          {formattedArtistNames} has closed.
+          has closed.
         </Text>
 
         <Spacer y={1} />
