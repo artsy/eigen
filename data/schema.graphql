@@ -1660,7 +1660,7 @@ type ArtistCounts {
     format: String
     label: String
   ): FormattedNumber
-  auctionResults: Int
+  auctionResults: Int @deprecated(reason: "Favor `statuses#auctionLots`")
   duplicates: Int
   ecommerceArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
