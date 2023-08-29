@@ -6,15 +6,15 @@ import {
   Stopwatch,
   Text,
   useColor,
+  Touchable,
 } from "@artsy/palette-mobile"
-import { addBreadcrumb, Severity } from "@sentry/react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Touchable } from "@artsy/palette-mobile"
 import { useState } from "react"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -98,7 +98,7 @@ const AuctionResultListItem: React.FC<Props> = ({
               onError={() => {
                 addBreadcrumb({
                   message: `Failed to load auction result image for id: ${auctionResult.internalID}`,
-                  level: Severity.Info,
+                  level: "info",
                 })
                 setCouldNotLoadImage(true)
               }}
