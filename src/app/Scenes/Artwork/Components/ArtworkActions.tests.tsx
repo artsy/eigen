@@ -3,8 +3,6 @@ import { ArtworkActionsTestQuery } from "__generated__/ArtworkActionsTestQuery.g
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
@@ -137,51 +135,7 @@ describe("ArtworkActions", () => {
   })
 
   describe("Save button", () => {
-    // TODO: remove skip when lists feature flag is readyForRelease: true
-    describe.skip("whith lists feature flag enabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: true })
-      it("should trigger save mutation when user presses save button", () => {
-        const { env } = renderWithRelay({
-          Artwork: () => ({
-            ...artworkActionsArtwork,
-            isSaved: false,
-          }),
-        })
-
-        expect(screen.getByLabelText("Save artwork")).toBeTruthy()
-
-        fireEvent.press(screen.getByLabelText("Save artwork"))
-
-        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-          "useSaveArtworkMutation"
-        )
-      })
-    })
-
-    describe("whith lists feature flag disabled", () => {
-      it("should trigger save mutation when user presses save button", () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: false })
-
-        const { env } = renderWithRelay({
-          Artwork: () => ({
-            ...artworkActionsArtwork,
-            isSaved: false,
-          }),
-        })
-
-        expect(screen.getByLabelText("Save artwork")).toBeTruthy()
-
-        fireEvent.press(screen.getByLabelText("Save artwork"))
-
-        expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-          "useLegacySaveArtworkMutation"
-        )
-      })
-    })
-
-    it("should track save event when user saves and artwork successfully", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksLists: false })
-
+    it("should trigger save mutation when user presses save button", () => {
       const { env } = renderWithRelay({
         Artwork: () => ({
           ...artworkActionsArtwork,
@@ -189,19 +143,13 @@ describe("ArtworkActions", () => {
         }),
       })
 
+      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
       fireEvent.press(screen.getByLabelText("Save artwork"))
 
-      resolveMostRecentRelayOperation(env, {})
-
-      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        [
-          {
-            "action_name": "artworkSave",
-            "action_type": "success",
-            "context_module": "ArtworkActions",
-          },
-        ]
-      `)
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "SelectArtworkListsForArtworkQuery"
+      )
     })
   })
 })

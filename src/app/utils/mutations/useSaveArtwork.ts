@@ -1,4 +1,5 @@
 import { useSaveArtworkMutation } from "__generated__/useSaveArtworkMutation.graphql"
+import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { useRef } from "react"
 import { useMutation } from "react-relay"
 import { Disposable, RecordSourceSelectorProxy, graphql } from "relay-runtime"
@@ -47,6 +48,7 @@ export const useSaveArtwork = ({
       onCompleted: () => {
         clearPrevCommit()
         onCompleted?.(nextSavedState)
+        refreshOnArtworkSave()
       },
       onError: (error) => {
         clearPrevCommit()
