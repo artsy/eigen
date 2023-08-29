@@ -14352,6 +14352,9 @@ type Query {
     partnerID: ID
     previewByArtist: Boolean
     since: Int
+
+    # Returns search criteria sorted by input (default: by high quality and count desc)
+    sort: [SearchCriteriaSortEnum!] = [HIGH_QUALITY_DESC, COUNT_DESC]
   ): SearchCriteriaConnection
 
   # List enabled Two-Factor Authentication factors
@@ -16645,6 +16648,14 @@ type SearchCriteriaLabel {
 
 # A search criteria or errors object
 union SearchCriteriaOrErrorsUnion = Errors | SearchCriteria
+
+enum SearchCriteriaSortEnum {
+  # Sort by most popular search criteria in descending order
+  COUNT_DESC
+
+  # Sort by high quality priority listed first
+  HIGH_QUALITY_DESC
+}
 
 enum SearchEntity {
   ARTICLE
@@ -19952,6 +19963,17 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+  searchCriteriaConnection(
+    after: String
+    artistID: ID
+    before: String
+    first: Int
+    highQuality: Boolean
+    last: Int
+    partnerID: String
+    previewByArtist: Boolean
+    since: Int
+  ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
   # A Show
