@@ -192,7 +192,6 @@ const aggregations: Aggregations = [
 ]
 
 const entity: SavedSearchEntity = {
-  placeholder: "Placeholder title for alert",
   artists: [
     {
       id: "david-hockney",

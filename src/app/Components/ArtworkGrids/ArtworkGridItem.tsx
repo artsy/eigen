@@ -28,6 +28,7 @@ import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableR
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
   ArtworkActionTrackingProps,
@@ -43,59 +44,60 @@ const SAVE_ICON_SIZE = 22
 
 export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
-  /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string) => void
-  trackingFlow?: string
-  /** Pass Tap to override generic ing, used for home tracking in rails */
-  trackTap?: (artworkSlug: string, index?: number) => void
-  itemIndex?: number
-
-  /** Hide urgency tags (3 Days left, 1 hour left) */
-  hideUrgencyTags?: boolean
+  /** styles for each field: allows for customization of each field */
+  artistNamesTextStyle?: TextProps
+  disableArtworksListPrompt?: boolean
+  /** Hide sale info */
+  height?: number
   /** Hide partner name */
   hidePartner?: boolean
-  /** Hide sale info */
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  height?: number
+  /** Hide urgency tags (3 Days left, 1 hour left) */
+  hideUrgencyTags?: boolean
+  /** Pass Tap to override generic ing, used for home tracking in rails */
+  itemIndex?: number
+  lotLabelTextStyle?: TextProps
+  /** Overrides onPress and prevents the default behaviour. */
+  onPress?: (artworkID: string) => void
+  partnerNameTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
-  /** styles for each field: allows for customization of each field */
-  urgencyTagTextStyle?: TextProps
-  lotLabelTextStyle?: TextProps
-  artistNamesTextStyle?: TextProps
   titleTextStyle?: TextProps
-  saleInfoTextStyle?: TextProps
-  partnerNameTextStyle?: TextProps
+  trackTap?: (artworkSlug: string, index?: number) => void
+  trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
+  urgencyTagTextStyle?: TextProps
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
+  artistNamesTextStyle,
   artwork,
-  onPress,
-  navigateToPageableRoute,
-  trackTap,
-  itemIndex,
-  height,
   contextModule,
+  contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   contextScreenQuery,
-  contextScreen,
-  hideUrgencyTags = false,
+  disableArtworksListPrompt = false,
+  height,
   hidePartner = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  showLotLabel = false,
-  urgencyTagTextStyle,
+  hideUrgencyTags = false,
+  itemIndex,
   lotLabelTextStyle,
-  artistNamesTextStyle,
-  titleTextStyle,
-  saleInfoTextStyle,
+  navigateToPageableRoute,
+  onPress,
   partnerNameTextStyle,
+  saleInfoTextStyle,
+  showLotLabel = false,
+  titleTextStyle,
+  trackTap,
   updateRecentSearchesOnTap = false,
+  urgencyTagTextStyle,
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
@@ -159,6 +161,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
+    onCompleted: onArtworkSavedOrUnSaved,
+  })
+
+  const handleArtworkSave = useSaveArtwork({
+    id: artwork.id,
+    internalID: artwork.internalID,
+    isSaved: artwork.isSaved,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
@@ -342,7 +351,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Flex>
               {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
                 <Flex>
-                  <Touchable haptic onPress={saveArtworkToLists} testID="save-artwork-icon">
+                  <Touchable
+                    haptic
+                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                    testID="save-artwork-icon"
+                  >
                     {isSaved ? (
                       <HeartFillIcon
                         testID="filled-heart-icon"
@@ -460,6 +473,7 @@ export default createFragmentContainer(Artwork, {
       isBiddable
       isInquireable
       isOfferable
+      isSaved
       artistNames
       href
       sale {

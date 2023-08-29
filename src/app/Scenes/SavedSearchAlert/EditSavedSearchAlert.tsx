@@ -19,13 +19,13 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
-import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
+import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
 import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
@@ -63,7 +63,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     name: artist.name!,
   }))
   const entity: SavedSearchEntity = {
-    placeholder: formattedArtists[0].name ?? "",
     artists: formattedArtists,
     owner: {
       type: OwnerType.savedSearch,

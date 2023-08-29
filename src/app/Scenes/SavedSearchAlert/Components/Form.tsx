@@ -1,16 +1,17 @@
 import {
-  Spacer,
-  Flex,
-  Box,
-  Text,
-  Button,
   ArrowRightIcon,
-  Touchable,
+  Box,
+  Button,
+  Flex,
   Pill,
+  Spacer,
+  Text,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Input, InputTitle } from "app/Components/Input"
+import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -36,25 +37,30 @@ interface FormProps {
   onRemovePill: (pill: SavedSearchPill) => void
 }
 
-export const Form: React.FC<FormProps> = (props) => {
-  const {
-    pills,
-    savedSearchAlertId,
-    isLoading,
-    hasChangedFilters,
-    shouldShowEmailWarning,
-    onDeletePress,
-    onSubmitPress,
-    onUpdateEmailPreferencesPress,
-    onTogglePushNotification,
-    onToggleEmailNotification,
-    onRemovePill,
-  } = props
+export const Form: React.FC<FormProps> = ({
+  pills,
+  savedSearchAlertId,
+  isLoading,
+  hasChangedFilters,
+  shouldShowEmailWarning,
+  onDeletePress,
+  onSubmitPress,
+  onUpdateEmailPreferencesPress,
+  onTogglePushNotification,
+  onToggleEmailNotification,
+  onRemovePill,
+}) => {
+  const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
+    "AREnableFallbackToGeneratedAlertNames"
+  )
+
+  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
+
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
   const priceControlEnabled = useFeatureFlag("AREnablePriceControlForCreateAlertFlow")
@@ -106,16 +112,20 @@ export const Form: React.FC<FormProps> = (props) => {
       )}
 
       <Box mb={2}>
-        <Input
-          title="Name"
-          placeholder={entity.placeholder}
-          value={values.name}
-          onChangeText={handleChange("name")}
-          onBlur={handleBlur("name")}
-          error={errors.name}
-          testID="alert-input-name"
-          maxLength={75}
-        />
+        {isFallbackToGeneratedAlertNamesEnabled ? (
+          <SavedSearchNameInputQueryRenderer attributes={attributes} />
+        ) : (
+          <Input
+            title="Name"
+            placeholder={entity.artists[0]?.name}
+            value={values.name}
+            onChangeText={handleChange("name")}
+            onBlur={handleBlur("name")}
+            error={errors.name}
+            testID="alert-input-name"
+            maxLength={75}
+          />
+        )}
       </Box>
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>

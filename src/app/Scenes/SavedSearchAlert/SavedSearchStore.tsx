@@ -5,7 +5,7 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { action, Action, createContextStore } from "easy-peasy"
+import { Action, action, createContextStore } from "easy-peasy"
 
 interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
@@ -34,7 +34,6 @@ export const savedSearchModel: SavedSearchModel = {
   aggregations: [],
   dirty: false,
   entity: {
-    placeholder: "",
     artists: [],
     owner: {
       type: OwnerType.artist,
