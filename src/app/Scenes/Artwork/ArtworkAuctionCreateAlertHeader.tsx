@@ -56,7 +56,6 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     return null
   }
 
-  // TODO: apostrophe open and close symbols do not exist in palette
   return (
     <>
       <CreateArtworkAlertModal
@@ -70,7 +69,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           Bidding for
           {formattedArtistNames}{" "}
           <Text variant="lg" italic>
-            {title?.trim()}
+            {title?.trim() + " "}
           </Text>
           has closed.
         </Text>
