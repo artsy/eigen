@@ -103,6 +103,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     })
   }
 
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
       relay.loadMore(10)
@@ -213,7 +215,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           </Tabs.SubTabBar>
         }
         ListFooterComponent={
-          !!relay.isLoading() && !!relay.hasMore() ? (
+          shouldDisplaySpinner ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
