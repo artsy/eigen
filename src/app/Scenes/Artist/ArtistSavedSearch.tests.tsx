@@ -65,9 +65,9 @@ describe("Saved search banner on artist screen", () => {
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
-    expect(screen.getByText("Sort By • 1")).toBeTruthy()
-    expect(screen.getByText("Rarity • 2")).toBeTruthy()
-    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
+    expect(screen.queryByText("Sort By • 1")).toBeOnTheScreen()
+    expect(screen.queryByText("Rarity • 2")).toBeOnTheScreen()
+    expect(screen.queryByText("Ways to Buy • 2")).toBeOnTheScreen()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -78,8 +78,8 @@ describe("Saved search banner on artist screen", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText("Sorry, an error occured")).toBeTruthy()
-    expect(screen.getByText("Failed to get saved search criteria")).toBeTruthy()
+    expect(screen.getByText("Sorry, an error occured")).toBeOnTheScreen()
+    expect(screen.getByText("Failed to get saved search criteria")).toBeOnTheScreen()
   })
 
   it("should render saved search component", async () => {

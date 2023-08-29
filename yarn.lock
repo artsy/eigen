@@ -12862,9 +12862,9 @@ moti@0.24.2:
     framer-motion "^6.5.1"
 
 moti@^0.25.3:
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/moti/-/moti-0.25.3.tgz#022213cb1fc545d13245daeeaed31940050b80c0"
-  integrity sha512-n6YR56i+tQdIuiOfspeCCvNR8vAJtPdfclt4998rX6S6kQn+/5DmfBWkOneN63JFTWM/oYnZHwwpF4z4LUXohQ==
+  version "0.25.4"
+  resolved "https://registry.yarnpkg.com/moti/-/moti-0.25.4.tgz#772f50eda85ee65d6a31bdc601d6c43d08a736b3"
+  integrity sha512-UiH0WcWzUYlUmo8Y1F+iyVW+qVVZ3YkXO3Q/gQUZzOhje6+Q0MdllYfqKW2m5IhFs+Vxt2i+osjvWBxXKK2yOw==
   dependencies:
     framer-motion "^6.5.1"
 
