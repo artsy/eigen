@@ -276,7 +276,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableFallbackToGeneratedAlertNames: {
     description: "Enable fallback to generated alert names",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableFallbackToGeneratedAlertNames",
   },
