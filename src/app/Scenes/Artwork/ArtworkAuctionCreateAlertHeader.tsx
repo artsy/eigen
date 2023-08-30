@@ -77,7 +77,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         <Spacer y={1} />
 
         <Text variant="sm" color="black60">
-          Get notified when similar works become abailable, or browse hand picked artworks that
+          Get notified when similar works become available, or browse hand picked artworks that
           match this lot.
         </Text>
 
