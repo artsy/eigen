@@ -43,10 +43,8 @@ export const ProvideScreenDimensions: React.FC = ({ children }) => {
     const onChange = () => {
       setDimensions(getCurrentDimensions())
     }
-    Dimensions.addEventListener("change", onChange)
-    return () => {
-      Dimensions.removeEventListener("change", onChange)
-    }
+    const dimensionsEventSubscription = Dimensions.addEventListener("change", onChange)
+    return () => dimensionsEventSubscription.remove()
   }, [])
 
   return (

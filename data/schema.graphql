@@ -1660,7 +1660,7 @@ type ArtistCounts {
     format: String
     label: String
   ): FormattedNumber
-  auctionResults: Int
+  auctionResults: Int @deprecated(reason: "Favor `statuses#auctionLots`")
   duplicates: Int
   ecommerceArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
@@ -16614,12 +16614,12 @@ type SearchCriteriaConnection {
 
   # A list of nodes.
   nodes: [SearchCriteria]
+  pageCursors: PageCursors
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
-
-  # Total count of matching nodes, before pagination
-  totalCount: Int!
+  totalCount: Int
+  totalPages: Int
 }
 
 # An edge in a connection.
