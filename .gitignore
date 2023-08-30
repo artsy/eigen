@@ -65,6 +65,7 @@ yalc.lock
 # Custom
 .apphub
 .awcache
+.cxx/
 .vscode/.browse.VC.db
 .vscode/.react/
 .vscode/launchReactNative.js
