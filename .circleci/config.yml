@@ -478,7 +478,7 @@ workflows:
           filters:
             branches:
               only:
-                - brian/codepush-sdk
+                - brian/codepush-ci-sentry
 
   flag-check:
     triggers:
