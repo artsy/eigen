@@ -1,5 +1,4 @@
 import { Box, Text, Button } from "@artsy/palette-mobile"
-import { createToken, Token } from "@stripe/stripe-react-native"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
@@ -8,11 +7,13 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
+// @ts-expect-error
+import stripe, { StripeToken } from "tipsi-stripe"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS
   params?: PaymentCardTextFieldParams
-  onSubmit: (t: Token.Result, p: PaymentCardTextFieldParams) => void
+  onSubmit: (t: StripeToken, p: PaymentCardTextFieldParams) => void
 }
 
 interface CreditCardFormState {
@@ -54,14 +55,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     const { params } = this.state
 
     try {
-      const token = await createToken({ ...params, type: "Card" })
-
-      if (token.error) {
-        throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
-      }
-
+      const token = await stripe.createTokenWithCard({ ...params })
       // If the form is valid we can assume all params have been filled
-      this.props.onSubmit(token.token, this.state.params as PaymentCardTextFieldParams)
+      this.props.onSubmit(token, this.state.params as PaymentCardTextFieldParams)
       this.setState({ isLoading: false })
       this.props.navigator.pop()
     } catch (error) {

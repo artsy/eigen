@@ -1,5 +1,4 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
-import { createToken } from "@stripe/stripe-react-native"
 import { RenderAPI } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
@@ -15,6 +14,8 @@ import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import stripe from "tipsi-stripe"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
@@ -22,8 +23,10 @@ import { Registration } from "./Registration"
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
-jest.mock("@stripe/stripe-react-native", () => ({
-  createToken: jest.fn(),
+jest.mock("tipsi-stripe", () => ({
+  setOptions: jest.fn(),
+  paymentRequestWithCardForm: jest.fn(),
+  createTokenWithCard: jest.fn(),
 }))
 
 let nextStep: any
@@ -181,7 +184,8 @@ describe("when pressing register button", () => {
         onCompleted?.(mockRequestResponses.qualifiedBidder, null)
         return null
       }) as any
-    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
     const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
@@ -285,7 +289,8 @@ describe("when pressing register button", () => {
       .mockImplementationOnce((_, { onCompleted }) =>
         onCompleted(mockRequestResponses.updateMyUserProfile)
       )
-    ;(createToken as jest.Mock).mockImplementation(() => {
+
+    stripe.createTokenWithCard.mockImplementation(() => {
       throw new Error("Error tokenizing card")
     })
     console.error = jest.fn() // Silences component logging.
@@ -395,7 +400,7 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a creditCardMutation failure", () => {
     console.error = jest.fn() // Silences component logging.
-    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -431,7 +436,7 @@ describe("when pressing register button", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
-    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -469,7 +474,7 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
-    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       .mockImplementationOnce((_, { onCompleted }) => {
@@ -680,17 +685,15 @@ const billingAddress: Partial<Address> = {
 }
 
 const stripeToken = {
-  token: {
-    id: "fake-token",
-    created: "1528229731",
-    livemode: 0,
-    card: {
-      brand: "VISA",
-      last4: "4242",
-    },
-    bankAccount: null,
-    extra: null,
+  tokenId: "fake-token",
+  created: "1528229731",
+  livemode: 0,
+  card: {
+    brand: "VISA",
+    last4: "4242",
   },
+  bankAccount: null,
+  extra: null,
 }
 
 const sale: Partial<Registration_sale$data> = {

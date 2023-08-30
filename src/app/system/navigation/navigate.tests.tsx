@@ -15,6 +15,8 @@ jest.mock("app/utils/hooks/useVisualClue", () => ({
   setVisualClueAsSeen: jest.fn(),
 }))
 
+jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
+
 jest.mock("app/store/GlobalStore", () => ({
   unsafe__getSelectedTab: jest.fn().mockReturnValue("home"),
   unsafe__getEnvironment: jest.fn().mockReturnValue({

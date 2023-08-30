@@ -1,11 +1,14 @@
 import { Text, Button } from "@artsy/palette-mobile"
-import { createToken } from "@stripe/stripe-react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+// @ts-expect-error
+import stripe from "tipsi-stripe"
 import { CreditCardForm } from "./CreditCardForm"
 
-jest.mock("@stripe/stripe-react-native", () => ({
-  createToken: jest.fn(),
+jest.mock("tipsi-stripe", () => ({
+  setOptions: jest.fn(),
+  PaymentCardTextField: () => "PaymentCardTextField",
+  createTokenWithCard: jest.fn(),
 }))
 
 const onSubmitMock = jest.fn()
@@ -23,7 +26,7 @@ it("renders without throwing an error", () => {
 })
 
 it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
-  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   const wrappedComponent = renderWithWrappersLEGACY(
     <CreditCardForm
       onSubmit={onSubmitMock}
@@ -41,11 +44,11 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
 
   await flushPromiseQueue()
 
-  expect(onSubmitMock).toHaveBeenCalledWith(stripeToken.token, creditCard)
+  expect(onSubmitMock).toHaveBeenCalledWith(stripeToken, creditCard)
 })
 
 it("is disabled while the form is invalid", () => {
-  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers({
     legacyFakeTimers: true,
   })
@@ -66,7 +69,7 @@ it("is disabled while the form is invalid", () => {
 })
 
 it("is enabled while the form is valid", () => {
-  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   jest.useFakeTimers({
     legacyFakeTimers: true,
   })
@@ -86,14 +89,16 @@ it("is enabled while the form is valid", () => {
   expect(component.findByType(Button).props.disabled).toEqual(false)
 })
 
-// Running this test isolated it's fine, but running altogether fails
-// needs to be re-visited to be fixed
-it.skip("shows an error when stripe's API returns an error", async () => {
+it("shows an error when stripe's API returns an error", () => {
   console.error = jest.fn()
+
+  stripe.createTokenWithCard = jest.fn()
+  stripe.createTokenWithCard.mockImplementationOnce(() => {
+    throw new Error("Error tokenizing card")
+  })
   jest.useFakeTimers({
     legacyFakeTimers: true,
   })
-  ;(createToken as jest.Mock).mockResolvedValueOnce({ error: "error" })
   const wrappedComponent = renderWithWrappersLEGACY(
     <CreditCardForm
       onSubmit={onSubmitMock}
@@ -109,11 +114,10 @@ it.skip("shows an error when stripe's API returns an error", async () => {
   component.instance.setState({ valid: true, params: creditCard })
   component.findByType(Button).props.onPress()
 
-  jest.runAllTicks()
-
-  expect(
-    wrappedComponent.root.findByType(CreditCardForm).findAllByType(Text)[2].props.children
-  ).toEqual("There was an error. Please try again.")
+  // jest.runAllTicks()
+  expect(component.findAllByType(Text)[2].props.children).toEqual(
+    "There was an error. Please try again."
+  )
 })
 
 const creditCard = {
@@ -124,15 +128,13 @@ const creditCard = {
 }
 
 const stripeToken = {
-  token: {
-    id: "fake-token",
-    created: "1528229731",
-    livemode: 0,
-    card: {
-      brand: "VISA",
-      last4: "4242",
-    },
-    bankAccount: null,
-    extra: null,
+  tokenId: "fake-token",
+  created: "1528229731",
+  livemode: 0,
+  card: {
+    brand: "VISA",
+    last4: "4242",
   },
+  bankAccount: null,
+  extra: null,
 }

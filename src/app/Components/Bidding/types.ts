@@ -83,3 +83,12 @@ export interface PaymentCardTextFieldParams {
   addressState?: string
   addressZip?: string
 }
+
+export interface StripeToken {
+  tokenId: string
+  created: number
+  livemode: 1 | 0
+  card: any
+  bankAccount: any
+  extra: any
+}
