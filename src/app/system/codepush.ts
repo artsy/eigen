@@ -4,7 +4,7 @@ import Config from "react-native-config"
 
 /**
  * CodePush options documented here: https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-api-ref
- * We could for example show an update alert to the user when an update is available in betas.
+ * For example we could show an update alert to the user when an update is available in betas.
  */
 export const codePushOptions = ArtsyNativeModule.isBetaOrDev
   ? {
