@@ -103,6 +103,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         <Tabs.TabsWithHeader
           initialTabName={initialTab}
           title={artistAboveTheFold.name!}
+          showLargeHeaderText={false}
           headerProps={{
             rightElements: (
               <TouchableOpacity onPress={handleSharePress}>
