@@ -30,7 +30,7 @@ import { CodePushOptions } from "app/utils/DevMenu/CodePushOptions"
 import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   Alert,
   AlertButton,
