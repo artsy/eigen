@@ -1,7 +1,9 @@
 import {
+  Button,
   ChevronIcon,
   CloseIcon,
   Flex,
+  Input,
   ReloadIcon,
   Screen,
   Separator,
@@ -58,6 +60,7 @@ const configurableDevToggleKeys = sortBy(
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
+  const [url, setUrl] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
@@ -111,23 +114,28 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             navigate("/storybook")
           }}
         />
-        <DevMenuButtonItem
-          title="Navigate to..."
-          onPress={() =>
-            Alert.prompt("Navigate to...", "Where should we navigate to?", [
-              {
-                text: "Go",
-                onPress: (url) => {
-                  if (!url) {
-                    return
-                  }
+        <CollapseMenu title="Navigate to" chevronStyle={chevronStyle}>
+          <Flex mx={2} flexDirection="row">
+            <Input
+              placeholder="Url to navigate to"
+              onChangeText={(text) => setUrl(text)}
+              autoCapitalize="none"
+              returnKeyType="go"
+            />
+            <Spacer x={1} />
+            <Button
+              onPress={() => {
+                if (!url) {
+                  return
+                }
 
-                  dismissModal(() => navigate(url))
-                },
-              },
-            ])
-          }
-        />
+                dismissModal(() => navigate(url))
+              }}
+            >
+              Go
+            </Button>
+          </Flex>
+        </CollapseMenu>
         <Flex mx={2}>
           <Separator my="1" />
         </Flex>
