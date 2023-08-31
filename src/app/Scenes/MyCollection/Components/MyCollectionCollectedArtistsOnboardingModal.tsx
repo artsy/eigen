@@ -44,8 +44,7 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
           <Flex mx={2} position="relative" flex={1}>
             <Text variant="lg-display">Share Artists You Collect</Text>
             <Text mt={1} variant="sm-display">
-              Boost your chances of a positive response when you contact a gallery by sharing which
-              artists you collect.
+              Build relationships with galleries on Artsy by sharing the artists in your collection.
             </Text>
             <Flex mt={2} flex={1} justifyContent="flex-end">
               <Image
