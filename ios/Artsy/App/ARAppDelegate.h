@@ -1,5 +1,5 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
-#import <React/RCTBridgeDelegate.h>
+#import <RCTAppDelegate.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
@@ -10,11 +10,10 @@
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, RCTBridgeDelegate>
+@interface ARAppDelegate : RCTAppDelegate <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 
-@property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
 
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;

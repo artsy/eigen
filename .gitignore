@@ -135,6 +135,11 @@ Brewfile.lock.json
 # for tsconfig `incremental`
 tsconfig.tsbuildinfo
 
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+# testing
+/coverage
+
 #########################################################
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.

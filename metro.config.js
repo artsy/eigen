@@ -1,6 +1,13 @@
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config")
 const { FileStore } = require("metro-cache")
 
-module.exports = {
+/**
+ * Metro configuration
+ * https://facebook.github.io/metro/docs/configuration
+ *
+ * @type {import('metro-config').MetroConfig}
+ */
+const config = {
   // metro cache locally
   cacheStores: [new FileStore({ root: "./.cache/metro" })],
 
@@ -20,3 +27,5 @@ module.exports = {
     resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
   },
 }
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config)

@@ -299,7 +299,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (>= 1.11.3)
+  cocoapods (>= 1.12)
   cocoapods-check
   dotenv
   down
