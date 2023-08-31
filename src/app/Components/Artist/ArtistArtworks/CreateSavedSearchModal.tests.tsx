@@ -122,11 +122,15 @@ describe("CreateSavedSearchModal", () => {
       ),
     })
 
-    renderWithRelay()
+    const { mockResolveLastOperation } = renderWithRelay()
 
     await waitFor(() => {
-      expect(screen.getByText("Save Alert")).toBeOnTheScreen()
+      mockResolveLastOperation({
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
+
+    expect(screen.getByText("Save Alert")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Save Alert"))
     await flushPromiseQueue()
