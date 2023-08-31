@@ -147,7 +147,9 @@ describe("CreateSavedSearchAlert", () => {
     )
 
     await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
       resolveMostRecentRelayOperation(mockEnvironment)
     })
 
@@ -181,8 +183,9 @@ describe("CreateSavedSearchAlert", () => {
       renderWithWrappers(<TestRenderer />)
 
       await waitFor(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {})
-
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
         resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => ({
             notificationPreferences: [
