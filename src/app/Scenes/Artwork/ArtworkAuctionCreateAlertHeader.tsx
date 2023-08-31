@@ -1,33 +1,10 @@
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { useTimer } from "app/utils/useTimer"
+import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
+import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
-
-interface SaleAttributes {
-  isClosed: boolean | null
-}
-
-interface SaleArtworkAttributes {
-  endedAt: string | null
-}
-
-// TODO: duplites Force's logic
-//       consider moving this to Metaphysics
-export const lotIsClosed = (
-  sale: SaleAttributes | null,
-  saleArtwork: SaleArtworkAttributes | null
-): boolean => {
-  // If there is no sale or saleArtwork, we can't determine if the lot is closed
-  // so we return true to be safe.
-  if (!sale || !saleArtwork) return true
-
-  if ("isClosed" in sale && sale.isClosed) return true
-  if (saleArtwork.endedAt) return true
-
-  return false
-}
 
 interface ArtworkAuctionCreateAlertHeaderProps {
   artwork: ArtworkAuctionCreateAlertHeader_artwork$key
@@ -45,12 +22,9 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
-  // TODO: consider moving this logic to Metaphysics
-  //       error prone, LotCloseInfo uses fields other than Force.
-  const biddingEndAt = saleArtwork?.extendedBiddingEndAt ?? saleArtwork?.endAt
-  const { hasEnded } = useTimer(biddingEndAt!, sale?.startAt!)
-  const isLotClosed = hasEnded || lotIsClosed(sale, saleArtwork)
-  const displayAuctionCreateAlertHeader = hasArtists && isInAuction && isLotClosed
+  const isLotClosedOrBiddingEnded =
+    hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
+  const displayAuctionCreateAlertHeader = hasArtists && isInAuction && isLotClosedOrBiddingEnded
 
   if (!displayAuctionCreateAlertHeader) {
     return null
