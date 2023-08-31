@@ -114,7 +114,7 @@ def set_codepush_release_name(deployment_name:)
   app_json = JSON.parse(File.read(app_json_path))
   latest_version = app_json['version']
   release_name = "codepush-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
-  app_json['codepushReleaseName'] = release_name
+  app_json['codePushReleaseName'] = release_name
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
