@@ -115,7 +115,9 @@ describe("CreateSavedSearchAlert", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
 
     expect(getByText("Bid")).toBeTruthy()
@@ -127,7 +129,9 @@ describe("CreateSavedSearchAlert", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
     await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
     })
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
@@ -143,6 +147,7 @@ describe("CreateSavedSearchAlert", () => {
     )
 
     await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment)
       resolveMostRecentRelayOperation(mockEnvironment)
     })
 
@@ -176,6 +181,8 @@ describe("CreateSavedSearchAlert", () => {
       renderWithWrappers(<TestRenderer />)
 
       await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {})
+
         resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => ({
             notificationPreferences: [
