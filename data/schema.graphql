@@ -15778,6 +15778,7 @@ type RequestCredentialsForAssetUploadPayload {
 
 type RequestLocation {
   cached: Int
+  city: String
   coordinates: LatLng
   country: String
   countryCode: String
