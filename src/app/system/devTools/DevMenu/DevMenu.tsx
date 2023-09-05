@@ -25,9 +25,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
 import { DevToggleName, FeatureName, devToggles, features } from "app/store/config/features"
 import { Versions } from "app/store/migration"
+import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
+import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { capitalize, compact, sortBy } from "lodash"
 import { useState } from "react"
@@ -46,7 +48,6 @@ import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
   .filter(([_, { showInDevMenu }]) => showInDevMenu)
@@ -141,6 +142,12 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         </Flex>
 
         <EnvironmentOptions onClose={onClose} />
+
+        <Flex mx={2}>
+          <Separator my="1" />
+        </Flex>
+
+        <CodePushOptions />
 
         <Flex mx={2}>
           <Separator my="1" />

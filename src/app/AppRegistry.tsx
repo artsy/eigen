@@ -141,7 +141,7 @@ import {
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
-import { DevMenu } from "./utils/DevMenu"
+import { DevMenu } from "./system/devTools/DevMenu/DevMenu"
 import { Schema, addTrackingProvider, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
