@@ -207,7 +207,7 @@ const MyCollection: React.FC<{
         <MyCollectionCollectedArtists me={me} />
         {selectedTab === null && (
           <Flex px={2}>
-            <Separator my={4} />
+            <Separator mb={4} mt={2} />
             <MyCollectionZeroStateArtworks />
           </Flex>
         )}
