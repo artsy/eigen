@@ -14352,7 +14352,7 @@ type Query {
     since: SearchCriteriaSinceEnum
 
     # Returns search criteria sorted by input (default: by high quality and count desc)
-    sort: [SearchCriteriaSortEnum!] = [HIGH_QUALITY_DESC, COUNT_DESC]
+    sort: [SearchCriteriaSortEnum!] = [COUNT_DESC]
   ): SearchCriteriaConnection
 
   # List enabled Two-Factor Authentication factors
@@ -16571,6 +16571,9 @@ type SearchCriteria {
   partnerIDs: [String!]!
   priceRange: String
   sizes: [String!]!
+
+  # Summary of the fields selected
+  summary: JSON
   totalUserSearchCriteriaCount: Int
   totalWithAdditionalGeneIdsCount: Int
   totalWithAttributionClassCount: Int
