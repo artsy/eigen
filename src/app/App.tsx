@@ -1,5 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore } from "app/store/GlobalStore"
+import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
@@ -20,6 +21,7 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
+import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
@@ -145,7 +147,7 @@ const Main = () => {
   )
 }
 
-export const App = () => (
+const InnerApp = () => (
   <Providers>
     <AsyncStorageDevtools />
 
@@ -156,3 +158,5 @@ export const App = () => (
     <DynamicIslandStagingIndicator />
   </Providers>
 )
+
+export const App = codePush(codePushOptions)(InnerApp)

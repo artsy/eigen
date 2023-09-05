@@ -121,6 +121,9 @@ eigen-firebase-app-distribution.json
 google-services.json
 GoogleService-Info.plist
 
+# App center files
+AppCenter-Config.plist
+
 metaflags.json
 
 # Relay
