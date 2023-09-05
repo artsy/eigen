@@ -1,4 +1,4 @@
-import { Spacer, Tabs } from "@artsy/palette-mobile"
+import { Flex, Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
@@ -94,8 +94,12 @@ export class Shows extends Component<Props, State> {
         }
         ListFooterComponent={
           this.state.fetchingMoreData ? (
-            <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-          ) : null
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : (
+            <Spacer y={2} />
+          )
         }
         renderItem={({ item }) => {
           return <ShowItemRow show={item} isListItem />
