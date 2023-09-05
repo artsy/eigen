@@ -13,7 +13,7 @@ export const MyCollectionZeroStateArtworks: React.FC = () => {
       <Text variant="xs" color="black60">
         Access price and market insights and build an online record of your collection.
       </Text>
-      <Flex mt={2} flexDirection="row" justifyContent="space-between">
+      <Flex mt={2} flexDirection="row">
         <Button
           testID="add-artwork-button-zero-artworks-state"
           onPress={() => {
