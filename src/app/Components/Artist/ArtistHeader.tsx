@@ -1,14 +1,16 @@
-import { bullet, Flex, Box, Text } from "@artsy/palette-mobile"
+import { bullet, Flex, Box, Text, Image, useScreenDimensions, Spacer } from "@artsy/palette-mobile"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { FollowButton } from "app/Components/Button/FollowButton"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
+import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const ARTIST_HEADER_HEIGHT = 156
+const ARTIST_IMAGE_TABLET_HEIGHT = 375
 
 interface Props {
   artist: ArtistHeader_artist$data
@@ -17,6 +19,8 @@ interface Props {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
+  const { width } = useScreenDimensions()
+  const isTablet = isPad()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
 
@@ -117,31 +121,50 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   const bylineRequired = artist.nationality || artist.birthday
 
-  return (
-    <Box px={2} pb={1}>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Flex flex={1}>
-          {!!bylineRequired && (
-            <Text variant="sm" mr={1}>
-              {descriptiveString}
-            </Text>
-          )}
-          <Text variant="sm">
-            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-            {!!artist?.counts?.follows && artist.counts.follows > 1 && (
-              <>
-                {` ${bullet} `}
-                {formatLargeNumberOfItems(artist.counts.follows, "follower")}
-              </>
-            )}
-          </Text>
-        </Flex>
+  const imageSize = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
 
-        <Flex>
-          <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
+  return (
+    <>
+      {!!artist.coverArtwork?.image?.url && (
+        <>
+          <Image
+            accessibilityLabel={`${artist.name} cover image`}
+            src={artist.coverArtwork.image.url}
+            pointerEvents="none"
+            aspectRatio={width / imageSize}
+            width={width}
+            height={imageSize}
+            style={{ alignSelf: "center" }}
+          />
+          <Spacer y={2} />
+        </>
+      )}
+      <Box px={2} pb={1}>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flex={1}>
+            <Text variant="lg">{artist.name}</Text>
+            {!!bylineRequired && (
+              <Text variant="sm" mr={1}>
+                {descriptiveString}
+              </Text>
+            )}
+            <Text variant="sm">
+              {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
+              {!!artist?.counts?.follows && artist.counts.follows > 1 && (
+                <>
+                  {` ${bullet} `}
+                  {formatLargeNumberOfItems(artist.counts.follows, "follower")}
+                </>
+              )}
+            </Text>
+          </Flex>
+
+          <Flex>
+            <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
+          </Flex>
         </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </>
   )
 }
 
@@ -155,6 +178,11 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       name
       nationality
       birthday
+      coverArtwork {
+        image {
+          url(version: "large")
+        }
+      }
       counts {
         artworks
         follows

@@ -17,28 +17,28 @@ describe("ArtistHeader", () => {
     variables: { artistID: "artist-id" },
   })
 
-  it("displays follow button for artist", () => {
+  it("renders", () => {
     renderWithRelay({
       Artist: () => mockArtist,
     })
 
-    expect(screen.queryByText("Follow")).toBeTruthy()
+    expect(screen.queryByText("Follow")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
   })
 
   it("does not show followers count when it is < 2", () => {
-    mockArtist.counts.follows = 1
-
     renderWithRelay({
-      Artist: () => mockArtist,
+      Artist: () => ({ ...mockArtist, counts: { follows: 1 } }),
     })
 
-    expect(screen.queryByText("1 followers")).toBeFalsy()
+    expect(screen.queryByText("1 followers")).not.toBeOnTheScreen()
   })
 })
 
 const mockArtist = {
   internalID: "some-id",
   id: "marcel-duchamp",
+  name: "Marcel",
   nationality: "French",
   birthday: "11/17/1992",
   counts: {
