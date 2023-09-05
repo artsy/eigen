@@ -57,8 +57,6 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
 
   return (
     <Flex testID="my-collection-collected-artists-rail">
-      <Flex position="absolute" top={0} left={0} right={0} height={1} bg="black5"></Flex>
-
       <Animated.FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -103,13 +101,13 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         contentContainerStyle={{
           paddingTop: space(2),
           paddingBottom: space(4),
-          paddingHorizontal: space(2),
+          paddingLeft: space(2),
         }}
         ListFooterComponent={
-          <Flex flexDirection="row" mr={4}>
+          <Flex flexDirection="row">
             {!!isLoadingNext && (
               <Flex
-                mr={1}
+                mr={2}
                 width={ARTIST_CIRCLE_DIAMETER}
                 height={ARTIST_CIRCLE_DIAMETER}
                 alignItems="center"
