@@ -104,10 +104,10 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
           paddingLeft: space(2),
         }}
         ListFooterComponent={
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" mr={1}>
             {!!isLoadingNext && (
               <Flex
-                mr={2}
+                mr={1}
                 width={ARTIST_CIRCLE_DIAMETER}
                 height={ARTIST_CIRCLE_DIAMETER}
                 alignItems="center"
