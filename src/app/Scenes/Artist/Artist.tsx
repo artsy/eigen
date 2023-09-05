@@ -18,6 +18,7 @@ import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import {
   FilterArray,
   filterArtworksParams,
@@ -29,6 +30,7 @@ import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortO
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { FollowButton } from "app/Components/Button/FollowButton"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
@@ -51,6 +53,7 @@ interface ArtistProps {
   fetchCriteriaError: Error | null
   predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
+  environment?: RelayModernEnvironment
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
@@ -66,6 +69,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
+  const { handleFollowToggle } = useFollowArtist(props.artistAboveTheFold)
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -106,9 +110,25 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
-              <TouchableOpacity onPress={handleSharePress}>
-                <ShareIcon width={23} height={23} />
-              </TouchableOpacity>
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="flex-end"
+                width={185}
+                py={1}
+              >
+                <TouchableOpacity onPress={handleSharePress}>
+                  <ShareIcon width={23} height={23} />
+                </TouchableOpacity>
+                <Flex flexDirection="row" alignItems="center" ml={1}>
+                  <FollowButton
+                    haptic
+                    isFollowed={!!artistAboveTheFold?.isFollowed}
+                    followCount={artistAboveTheFold?.counts?.follows}
+                    onPress={handleFollowToggle}
+                  />
+                </Flex>
+              </Flex>
             ),
             onBack: goBack,
           }}
@@ -170,10 +190,16 @@ export const ArtistScreenQuery = graphql`
     artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
+      ...useFollowArtist_artist
+      id
       internalID
       slug
       href
       name
+      isFollowed
+      counts {
+        follows
+      }
       image {
         url(version: "large")
       }

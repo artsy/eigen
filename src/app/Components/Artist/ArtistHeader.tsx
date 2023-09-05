@@ -1,13 +1,8 @@
-import { bullet, Flex, Box, Text, Image, useScreenDimensions, Spacer } from "@artsy/palette-mobile"
-import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import { Flex, Box, Text, Image, useScreenDimensions, Spacer } from "@artsy/palette-mobile"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { isPad } from "app/utils/hardware"
-import { Schema } from "app/utils/track"
-import { useState } from "react"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { useTracking } from "react-tracking"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
 const ARTIST_IMAGE_TABLET_HEIGHT = 375
@@ -17,12 +12,9 @@ interface Props {
   relay: RelayProp
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
-  const { trackEvent } = useTracking()
+export const ArtistHeader: React.FC<Props> = ({ artist }) => {
   const { width } = useScreenDimensions()
   const isTablet = isPad()
-
-  const [isFollowedChanging, setIsFollowedChanging] = useState(false)
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -39,82 +31,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     }
 
     return leadingSubstring + " " + birthday
-  }
-
-  const handleFollowChange = () => {
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistUnfollow
-        : Schema.ActionNames.ArtistFollow,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-
-    if (isFollowedChanging) {
-      return
-    }
-
-    setIsFollowedChanging(true)
-
-    commitMutation<ArtistHeaderFollowArtistMutation>(relay.environment, {
-      mutation: graphql`
-        mutation ArtistHeaderFollowArtistMutation($input: FollowArtistInput!) {
-          followArtist(input: $input) {
-            artist {
-              id
-              isFollowed
-            }
-          }
-        }
-      `,
-      variables: {
-        input: {
-          artistID: artist.slug,
-          unfollow: artist.isFollowed,
-        },
-      },
-      // @ts-ignore RELAY 12 MIGRATION
-      optimisticResponse: {
-        followArtist: {
-          artist: {
-            id: artist.id,
-            isFollowed: !artist.isFollowed,
-          },
-        },
-      },
-      onCompleted: () => successfulFollowChange(),
-      onError: () => failedFollowChange(),
-    })
-  }
-
-  const successfulFollowChange = () => {
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistUnfollow
-        : Schema.ActionNames.ArtistFollow,
-      action_type: Schema.ActionTypes.Success,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-
-    setIsFollowedChanging(false)
-  }
-
-  const failedFollowChange = () => {
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistFollow
-        : Schema.ActionNames.ArtistUnfollow,
-      action_type: Schema.ActionTypes.Fail,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-    // callback for analytics purposes
-    setIsFollowedChanging(false)
   }
 
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
@@ -150,17 +66,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
             )}
             <Text variant="sm">
               {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-              {!!artist?.counts?.follows && artist.counts.follows > 1 && (
-                <>
-                  {` ${bullet} `}
-                  {formatLargeNumberOfItems(artist.counts.follows, "follower")}
-                </>
-              )}
             </Text>
-          </Flex>
-
-          <Flex>
-            <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
           </Flex>
         </Flex>
       </Box>
