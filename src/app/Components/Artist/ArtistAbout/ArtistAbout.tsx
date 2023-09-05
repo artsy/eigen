@@ -10,6 +10,7 @@ import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
+import { ArtistCareerHighlights } from "./ArtistCareerHighlights"
 
 interface Props {
   artist: ArtistAbout_artist$data
@@ -29,7 +30,14 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
         <>
           <Spacer y={2} />
           <Join separator={<Spacer y={4} />}>
-            {!!artist.hasMetadata && <Biography artist={artist} />}
+            {!!artist.hasMetadata && (
+              <>
+                <Spacer y={1} />
+                <Biography artist={artist} />
+              </>
+            )}
+
+            <ArtistCareerHighlights artist={artist} />
 
             <ArtistSeriesMoreSeriesFragmentContainer
               contextScreenOwnerId={artist.internalID}
@@ -67,6 +75,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...ArtistSeriesMoreSeries_artist
       ...Articles_artist
       ...ArtistAboutShows_artist
+      ...ArtistCareerHighlights_artist
       related {
         artistsConnection(first: 12) {
           edges {
