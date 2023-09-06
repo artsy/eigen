@@ -6,6 +6,8 @@ import { graphql, useFragment } from "react-relay"
 
 const MAX_CHARS = 250
 
+export const MAX_WIDTH = 650
+
 interface BiographyProps {
   artist: Biography_artist$key
 }
@@ -23,7 +25,7 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   const canExpand = text.length > MAX_CHARS
 
   return (
-    <Flex maxWidth={650}>
+    <Flex maxWidth={MAX_WIDTH}>
       <SectionTitle title="Biography" />
       <Text>
         <Text>{`${expanded ? text : truncatedText}${
