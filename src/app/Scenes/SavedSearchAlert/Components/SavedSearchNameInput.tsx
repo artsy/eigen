@@ -6,6 +6,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFormikContext } from "formik"
 import { omit } from "lodash"
 import { useEffect, useState } from "react"
+import { Platform } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 interface SavedSearchNameInputProps {
@@ -34,6 +35,10 @@ export const SavedSearchNameInput: React.FC<SavedSearchNameInputProps> = ({ plac
       error={errors.name}
       testID="alert-input-name"
       maxLength={75}
+      // Android doesn't ellipsize long text, and instead wraps it to the next line.
+      // This makes the text look like it's cut off
+      // See: https://github.com/facebook/react-native/issues/29663
+      multiline={Platform.OS === "android"}
     />
   )
 }

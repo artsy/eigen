@@ -2,12 +2,12 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
+import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
-import { DevMenuWrapper } from "app/utils/DevMenu/DevMenuWrapper"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -45,19 +45,6 @@ import useSyncNativeAuthState from "./utils/useSyncAuthState"
 if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
-}
-
-if (Platform.OS === "ios") {
-  // Polyfills required to use Intl with Hermes engine for iOS
-  require("@formatjs/intl-getcanonicallocales/polyfill").default
-  require("@formatjs/intl-locale/polyfill").default
-  require("@formatjs/intl-pluralrules/polyfill").default
-  require("@formatjs/intl-pluralrules/locale-data/en").default
-  require("@formatjs/intl-numberformat/polyfill").default
-  require("@formatjs/intl-numberformat/locale-data/en").default
-  require("@formatjs/intl-datetimeformat/polyfill").default
-  require("@formatjs/intl-datetimeformat/locale-data/en").default
-  require("@formatjs/intl-datetimeformat/add-all-tz").default
 }
 
 setupFlipper()
