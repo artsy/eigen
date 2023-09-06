@@ -591,23 +591,15 @@ lane :deploy_to_codepush do |options|
   release_name, dist_version, release_version = set_codepush_release_name(deployment_name: deployment_name)
   tag_and_push(tag: release_name)
 
-  appcenter_codepush_release_react(
-    api_token: ENV['APP_CENTER_API_TOKEN'],
-    owner_name: "mobile-artsy",
-    app_name: "Eigen",
-    description: "'#{description}'",
-    deployment: deployment_name,
-    sourcemap_output: "./build/CodePush/main.jsbundle.map",
-    output_dir: "./build",
-    target_version: release_version,
-  )
+  sh("yarn bundle:ios")
+  sh("appcenter codepush release -a mobile-artsy/Eigen -c ../dist -d #{deployment_name} -t #{release_version} --description '#{description}'")
 
   # Sentry config
   sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
   project_slug = 'eigen'
   org_slug = 'artsynet'
-  bundle_path = './build/CodePush/main.jsbundle'
-  sourcemap_path = './build/CodePush/main.jsbundle.map'
+  bundle_path = './dist/main.jsbundle'
+  sourcemap_path = './dist/main.jsbundle.map'
 
   upload_sentry_sourcemaps(
     sentry_cli_path: sentry_cli_path,
