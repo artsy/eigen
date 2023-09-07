@@ -9,17 +9,14 @@ type ProgressiveOnboardingFindSavedArtworkProps = {
 export const ProgressiveOnboardingFindSavedArtwork: React.FC<
   ProgressiveOnboardingFindSavedArtworkProps
 > = ({ children, tab }) => {
-  const { isDismissed: _isDismissed } = GlobalStore.useAppState(
-    (state) => state.progressiveOnboarding
-  )
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const profileTabProps = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.profile
   )
 
-  const isDismissed = _isDismissed("find-saved-artwork").status
-
-  const isFindSavedArtworkDisplayable = !isDismissed && !!profileTabProps?.savedArtwork
+  const isFindSavedArtworkDisplayable =
+    !isDismissed("find-saved-artwork").status && !!profileTabProps?.savedArtwork
 
   if (tab !== "profile") {
     return <>{children}</>
