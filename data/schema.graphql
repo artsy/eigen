@@ -16594,6 +16594,7 @@ type SearchCriteria {
   materialsTerms: [String!]!
   offerable: Boolean
   partnerIDs: [String!]!
+  priceArray: [Float!]!
   priceRange: String
   sizes: [String!]!
 
