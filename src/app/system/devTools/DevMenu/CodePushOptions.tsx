@@ -11,6 +11,7 @@ import { CollapseMenu } from "app/Components/CollapseMenu"
 import React, { useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
 import Config from "react-native-config"
+import DeviceInfo from "react-native-device-info"
 
 interface CodePushRelease {
   description: string
@@ -41,6 +42,7 @@ export const CodePushOptions = () => {
   const [currentRelease, setCurrentRelease] = useState<CodePushRelease | null>(null)
   const [loading, setLoading] = useState(false)
   const [loadStatus, setLoadStatus] = useState("")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loadProgress, setLoadProgress] = useState(0)
 
   const updateMetadata = () => {
@@ -98,15 +100,19 @@ export const CodePushOptions = () => {
           </>
         )}
 
+        {!!errorMessage && (
+          <Message title="Something went wrong" text={errorMessage} variant="error" />
+        )}
+
         <Spacer y={2} />
 
         <Button
           block
           loading={loading}
-          onPress={() => {
+          onPress={async () => {
             const deploymentKey = codePushDeploymentKeys[selectedDeployment]
             setLoading(true)
-            CodePush.sync(
+            await CodePush.sync(
               { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
               (status) => {
                 switch (status) {
@@ -137,7 +143,7 @@ export const CodePushOptions = () => {
                     })
                     break
                   case CodePush.SyncStatus.UNKNOWN_ERROR:
-                    setLoadStatus("Sync failed with error, try again or check deployment")
+                    setErrorMessage("Sync failed with error, try again or check deployment")
                     setLoading(false)
                     break
                   default:
@@ -147,6 +153,19 @@ export const CodePushOptions = () => {
               (progress) => {
                 const loadProgress = (progress.receivedBytes / progress.totalBytes) * 100
                 setLoadProgress(loadProgress)
+              },
+              (codePushPackage) => {
+                // binary version mismatch
+                const appVersion = DeviceInfo.getVersion()
+                const updateTargetVersion = codePushPackage.appVersion
+                const errorMessage = [
+                  "An update is available but it doesn't match your current app version.",
+                  "Maybe you need to update?",
+                  `app version: ${appVersion}`,
+                  `update target version: ${updateTargetVersion}`,
+                ].join("\n")
+                setErrorMessage(errorMessage)
+                setLoading(false)
               }
             )
           }}
