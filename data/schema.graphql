@@ -1503,6 +1503,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # A list of genes associated with an artist
   genes: [Gene]
+  groupIndicator: ArtistGroupIndicator
   hasMetadata: Boolean
   highlights: ArtistHighlights
   hometown: String
@@ -1605,7 +1606,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # Use this attribute to sort by when sorting a collection of Artists
   sortableID: String
   statuses: ArtistStatuses
-  targetSupply: ArtistTargetSupply
+  targetSupply: ArtistTargetSupply!
   vanguardYear: String
   verifiedRepresentatives: [VerifiedRepresentative!]!
   years: String
@@ -1704,6 +1705,13 @@ type ArtistGroup {
 
   # Letter artists group belongs to
   letter: String
+}
+
+enum ArtistGroupIndicator {
+  DUO
+  GROUP
+  INDIVIDUAL
+  N_A
 }
 
 type ArtistHighlights {
@@ -1987,11 +1995,13 @@ type ArtistTargetSupply {
   isInMicrofunnel: Boolean
 
   # True if an artist is a P1 artist.
-  isP1: Boolean
+  isP1: Boolean @deprecated(reason: "Use \"priority\" field instead.")
 
   # True if artist is in target supply list.
   isTargetSupply: Boolean
   microfunnel: ArtistTargetSupplyMicrofunnel
+  priority: ArtistTargetSupplyPriority
+  type: ArtistTargetSupplyType
 }
 
 type ArtistTargetSupplyMicrofunnel {
@@ -2006,6 +2016,20 @@ type ArtistTargetSupplyMicrofunnel {
     randomize: Boolean
   ): ArtworkConnection
   metadata: TargetSupplyMicrofunnelMetadata
+}
+
+enum ArtistTargetSupplyPriority {
+  P1
+  P2
+}
+
+enum ArtistTargetSupplyType {
+  BLUE_CHIP
+  CRITICALLY_ACCLAIMED
+  NEW_AND_NOTEWORTHY
+  STREET_AND_URBAN
+  TRENDING_EMERGING
+  ULTRA_HIGH_DEMAND
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -17657,12 +17681,15 @@ input UpdateArtistMutationInput {
   displayName: String
   first: String
   gender: String
+  groupIndicator: ArtistGroupIndicator
   hometown: String
   id: String!
   last: String
   location: String
   middle: String
   nationality: String
+  targetSupplyPriority: ArtistTargetSupplyPriority
+  targetSupplyType: ArtistTargetSupplyType
 }
 
 type UpdateArtistMutationPayload {
