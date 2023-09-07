@@ -23,7 +23,7 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
   const {
     state: { hasUnsavedChanges },
   } = useArtworkListsContext()
-  const { updateProfileTab } = useOnSaveArtwork()
+  const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = useBottomSheetModal()
 
   const { save, inProgress } = useSaveArtworkListsChanges({
@@ -38,7 +38,7 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
     } else {
       dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
     }
-    updateProfileTab()
+    setProfileTabSavedArtwork()
   }
 
   return (

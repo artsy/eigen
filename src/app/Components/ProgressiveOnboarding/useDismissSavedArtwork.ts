@@ -4,7 +4,7 @@ import { useEffect } from "react"
 
 // Dismiss "save-artwork" onboarding alert if an artwork was saved before
 export const useDismissSavedArtwork = (saved?: boolean | null) => {
-  const { updateProfileTab } = useOnSaveArtwork()
+  const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
@@ -18,7 +18,7 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
     // If an Artwork was saved before and wasn't dismissed, dismiss and enable bottom tab notification
     if (saved && !dismissed) {
       dismiss("save-artwork")
-      updateProfileTab()
+      setProfileTabSavedArtwork()
     }
-  }, [saved, dismissed, dismiss, updateProfileTab])
+  }, [saved, dismissed, dismiss, setProfileTabSavedArtwork])
 }

@@ -9,12 +9,12 @@ export const useOnSaveArtwork = () => {
     ...state.progressiveOnboarding,
   }))
 
-  const updateProfileTab = useCallback(() => {
+  const setProfileTabSavedArtwork = useCallback(() => {
     if (!isDismissed("save-artwork").status) {
       dismiss("save-artwork")
     }
     setTabProps({ tab: "profile", props: { ...tabProps.profile, savedArtwork: true } })
   }, [tabProps.profile?.savedArtwork, setTabProps, isDismissed, dismiss])
 
-  return { updateProfileTab }
+  return { setProfileTabSavedArtwork }
 }
