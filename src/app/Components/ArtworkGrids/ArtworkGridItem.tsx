@@ -357,37 +357,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                     testID="save-artwork-icon"
                   >
-                    {() => {
-                      if (isSaved) {
-                        return (
-                          <HeartFillIcon
-                            testID="filled-heart-icon"
-                            height={SAVE_ICON_SIZE}
-                            width={SAVE_ICON_SIZE}
-                            fill="blue100"
-                          />
-                        )
-                      }
-                      if (itemIndex === 0) {
-                        return (
-                          // We only try to show the save onboard Popover in the 1st element
-                          <ProgressiveOnboardingSaveArtwork>
-                            <HeartIcon
-                              testID="empty-heart-icon"
-                              height={SAVE_ICON_SIZE}
-                              width={SAVE_ICON_SIZE}
-                            />
-                          </ProgressiveOnboardingSaveArtwork>
-                        )
-                      }
-                      return (
-                        <HeartIcon
-                          testID="empty-heart-icon"
-                          height={SAVE_ICON_SIZE}
-                          width={SAVE_ICON_SIZE}
-                        />
-                      )
-                    }}
+                    <ArtworkHeartIcon isSaved={isSaved} index={itemIndex} />
                   </Touchable>
                 </Flex>
               )}
@@ -403,6 +373,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
       />
     </>
   )
+}
+
+const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
+  isSaved,
+  index,
+}) => {
+  const iconProps = { height: SAVE_ICON_SIZE, width: SAVE_ICON_SIZE, testID: "empty-heart-icon" }
+
+  if (isSaved) {
+    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
+  }
+  if (index === 0) {
+    // We only try to show the save onboard Popover in the 1st element
+    return (
+      <ProgressiveOnboardingSaveArtwork>
+        <HeartIcon {...iconProps} />
+      </ProgressiveOnboardingSaveArtwork>
+    )
+  }
+  return <HeartIcon {...iconProps} />
 }
 
 /**
