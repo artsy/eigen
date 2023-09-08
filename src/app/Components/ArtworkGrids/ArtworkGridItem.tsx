@@ -357,29 +357,37 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                     testID="save-artwork-icon"
                   >
-                    {isSaved ? (
-                      <HeartFillIcon
-                        testID="filled-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
-                        fill="blue100"
-                      />
-                    ) : itemIndex === 0 ? (
-                      // We only try to show the save onboard Popover in the 1st element
-                      <ProgressiveOnboardingSaveArtwork>
+                    {() => {
+                      if (isSaved) {
+                        return (
+                          <HeartFillIcon
+                            testID="filled-heart-icon"
+                            height={SAVE_ICON_SIZE}
+                            width={SAVE_ICON_SIZE}
+                            fill="blue100"
+                          />
+                        )
+                      }
+                      if (itemIndex === 0) {
+                        return (
+                          // We only try to show the save onboard Popover in the 1st element
+                          <ProgressiveOnboardingSaveArtwork>
+                            <HeartIcon
+                              testID="empty-heart-icon"
+                              height={SAVE_ICON_SIZE}
+                              width={SAVE_ICON_SIZE}
+                            />
+                          </ProgressiveOnboardingSaveArtwork>
+                        )
+                      }
+                      return (
                         <HeartIcon
                           testID="empty-heart-icon"
                           height={SAVE_ICON_SIZE}
                           width={SAVE_ICON_SIZE}
                         />
-                      </ProgressiveOnboardingSaveArtwork>
-                    ) : (
-                      <HeartIcon
-                        testID="empty-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
-                      />
-                    )}
+                      )
+                    }}
                   </Touchable>
                 </Flex>
               )}

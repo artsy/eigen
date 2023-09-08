@@ -44,6 +44,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
       },
     })
   }
+  // if the progress of saved artwork onboarding reached the final stage of the chain we show the dot
   if (isDismissed("find-saved-artwork").status && !isDismissed("save-highlight").status) {
     indicators.push({
       tabName: Tab.savedWorks,
