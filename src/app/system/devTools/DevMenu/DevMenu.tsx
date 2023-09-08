@@ -67,6 +67,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
+  const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
   const space = useSpace()
   const toast = useToast()
 
@@ -235,6 +236,10 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             onPress={() => {
               RelayCache.clearAll()
             }}
+          />
+          <DevMenuButtonItem
+            title="Clear Progressive Onboarding progress"
+            onPress={__clearDissmissed}
           />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
