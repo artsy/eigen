@@ -10,6 +10,7 @@ import {
   Spacer,
   BellIcon,
   Spinner,
+  Message,
 } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
@@ -111,6 +112,29 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
+  const CreateAlertButton = () => {
+    return (
+      <Button
+        variant="outline"
+        mx="auto"
+        icon={<BellIcon />}
+        onPress={() => {
+          openFilterArtworksModal("createAlert")
+
+          tracking.trackEvent({
+            action: ActionType.tappedCreateAlert,
+            context_screen_owner_type: OwnerType.artist,
+            context_screen_owner_id: artist.internalID,
+            context_screen_owner_slug: artist.slug,
+            context_module: ContextModule.artworkGrid,
+          })
+        }}
+      >
+        Create Alert
+      </Button>
+    )
+  }
+
   if (!artist.statuses?.artworks) {
     return (
       <Tabs.ScrollView>
@@ -127,24 +151,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <Button
-          variant="outline"
-          mx="auto"
-          icon={<BellIcon />}
-          onPress={() => {
-            openFilterArtworksModal("createAlert")
-
-            tracking.trackEvent({
-              action: ActionType.tappedCreateAlert,
-              context_screen_owner_type: OwnerType.artist,
-              context_screen_owner_id: artist.internalID,
-              context_screen_owner_slug: artist.slug,
-              context_module: ContextModule.artworkGrid,
-            })
-          }}
-        >
-          Create Alert
-        </Button>
+        <CreateAlertButton />
 
         <Spacer y={6} />
         <ArtworkFilterNavigator
@@ -160,6 +167,30 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         />
       </Tabs.ScrollView>
     )
+  }
+
+  const ListFooterComponenet = () => {
+    if (shouldDisplaySpinner) {
+      return (
+        <Flex my={4} flexDirection="row" justifyContent="center">
+          <Spinner />
+        </Flex>
+      )
+    }
+
+    if (!relay.hasMore()) {
+      return (
+        <Message
+          title="Lorem ipsum dolor sit amet ita Consectetur adipiscing elit"
+          containerStyle={{ mb: `${space(2)}px` }}
+          IconComponent={() => {
+            return <CreateAlertButton />
+          }}
+          showCloseButton
+        />
+      )
+    }
+    return null
   }
 
   return (
@@ -214,13 +245,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             <ArtistArtworksFilterHeader artist={artist} />
           </Tabs.SubTabBar>
         }
-        ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
-        }
+        ListFooterComponent={<ListFooterComponenet />}
       />
       <ArtworkFilterNavigator
         {...props}
