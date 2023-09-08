@@ -1546,7 +1546,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # Whether the artist has been created by a user.
   isPersonalArtist: Boolean
-  isPublic: Boolean
+  isPublic: Boolean!
   isShareable: Boolean
   last: String
   location: String
@@ -17676,6 +17676,7 @@ type UpdateArtistFailure {
 input UpdateArtistMutationInput {
   alternateNames: [String!]
   birthday: String
+  blurb: String
   clientMutationId: String
   coverArtworkId: String
   deathday: String
@@ -17689,6 +17690,7 @@ input UpdateArtistMutationInput {
   location: String
   middle: String
   nationality: String
+  public: Boolean
   targetSupplyPriority: ArtistTargetSupplyPriority
   targetSupplyType: ArtistTargetSupplyType
 }
