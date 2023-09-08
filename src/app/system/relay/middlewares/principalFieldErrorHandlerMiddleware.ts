@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { isErrorStatus, throwError, trackError } from "app/system/relay/middlewares/helpers"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
@@ -20,7 +21,8 @@ export const principalFieldErrorHandlerMiddleware = async (
   if (!requestHasPrincipalField && !!res?.errors?.length) {
     // here we should track why the query failed + the error
     // FYI trackError is not sentry, its VolleyClient maybe we need BOTH
-    console.warn(res.errors)
+    trackError(req.operation.name, req.operation.kind, "default")
+    captureMessage("query failed", "log")
   }
 
   if (principalFieldWasInvolvedInError) {
