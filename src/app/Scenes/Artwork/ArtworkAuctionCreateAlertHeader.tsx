@@ -1,6 +1,7 @@
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { navigate } from "app/system/navigation/navigate"
 import { useTimer } from "app/utils/useTimer"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -96,7 +97,24 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
         <Spacer y={1} />
 
-        <Button size="large" variant="outline" haptic onPress={() => {}} flex={1}>
+        <Button
+          size="large"
+          variant="outline"
+          haptic
+          onPress={() =>
+            navigate("/artwork-browse-similar-works", {
+              passProps: {
+                inputProps: {
+                  // TODO: remove mock values
+                  additionalGeneIDs: ["prints"],
+                  artistIDs: ["4d8b92ad4eb68a1b2c0003ae"],
+                  attributionClass: ["limited edition"],
+                },
+              },
+            })
+          }
+          flex={1}
+        >
           Browse Similar Artworks
         </Button>
       </Flex>
