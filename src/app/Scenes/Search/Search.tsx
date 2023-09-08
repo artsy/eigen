@@ -176,7 +176,7 @@ export const Search: React.FC = () => {
 
 export const SearchScreenQuery = graphql`
   query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
-    viewer @skip(if: $skipSearchQuery) {
+    viewer @skip(if: $skipSearchQuery) @principalField {
       ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections

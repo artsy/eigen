@@ -131,7 +131,7 @@ export const InboxContainer = createRefetchContainer(
 
 export const InboxScreenQuery = graphql`
   query InboxQuery {
-    me {
+    me @principalField {
       ...Inbox_me
     }
   }
