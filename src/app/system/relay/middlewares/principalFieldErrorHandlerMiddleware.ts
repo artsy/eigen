@@ -23,6 +23,7 @@ export const principalFieldErrorHandlerMiddleware = async (
     // FYI trackError is not sentry, its VolleyClient maybe we need BOTH
     trackError(req.operation.name, req.operation.kind, "default")
     captureMessage("query failed", "log")
+    console.warn("Error reported to sentry and volley", res?.errors)
   }
 
   if (principalFieldWasInvolvedInError) {

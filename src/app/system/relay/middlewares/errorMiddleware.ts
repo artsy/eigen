@@ -5,6 +5,8 @@ import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
+const newErrorMiddlewareOptedInQueries = ["HomeAboveTheFoldQuery", "HomeBelowTheFoldQuery"]
+
 export const legacyErrorMiddleware = async (
   req: GraphQLRequest,
   res: RelayNetworkLayerResponse
@@ -58,11 +60,12 @@ export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: Gra
 
   const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
 
-  // Do we want to differenciate between screens with a flag in the query variables?
-  // const isScreenUsingNewErrorMiddleware = !!req.variables.useNewErrorMiddleware
+  const isScreenUsingNewErrorMiddleware = newErrorMiddlewareOptedInQueries.includes(
+    req.operation.name
+  )
 
-  const enableNewErrorMiddleware = useNewErrorMiddlewareFeatureFlag
-  // && isScreenUsingNewErrorMiddleware
+  const enableNewErrorMiddleware =
+    useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware
 
   if (!!enableNewErrorMiddleware) {
     return principalFieldErrorHandlerMiddleware(req, res)
