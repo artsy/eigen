@@ -16582,6 +16582,15 @@ type SearchCriteria {
   displayName: String!
   hasRecentlyEnabledUserSearchCriteria: Boolean!
   height: String
+  highPriceAmount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
   href: String!
   inquireableOnly: Boolean
   internalID: ID!
@@ -16590,6 +16599,15 @@ type SearchCriteria {
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel!]!
   locationCities: [String!]!
+  lowPriceAmount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
   majorPeriods: [String!]!
   materialsTerms: [String!]!
   offerable: Boolean
