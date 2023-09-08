@@ -67,7 +67,7 @@
     "setup:artsy:update!": "scripts/update-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
     "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-distribute-macos",
-    "start": "DEBUG=true concurrently 'yarn relay:watch' 'react-native start'",
+    "start": "concurrently 'yarn relay:watch' 'react-native start'",
     "start-storybook": "STORYBOOK=1 yarn start",
     "start:reset-cache": "yarn start --reset-cache",
     "storybook-android": "npx artsy open -a storybook",
