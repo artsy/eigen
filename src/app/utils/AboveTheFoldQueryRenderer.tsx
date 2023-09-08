@@ -132,7 +132,7 @@ export function AboveTheFoldQueryRenderer<
         fetchPolicy={props.fetchPolicy}
         cacheConfig={props.cacheConfig || null}
       />
-      {(renderBelowTheFold || aboveArgs?.props) && (
+      {(!!renderBelowTheFold || !!aboveArgs?.props) && (
         <QueryRenderer
           environment={props.environment}
           query={props.below.query}
