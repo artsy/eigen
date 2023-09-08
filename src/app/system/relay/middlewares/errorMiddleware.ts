@@ -1,5 +1,5 @@
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
-import { throwError, trackError } from "app/system/relay/middlewares/helpers"
+import { isErrorStatus, throwError, trackError } from "app/system/relay/middlewares/helpers"
 import { principalFieldErrorHandlerMiddleware } from "app/system/relay/middlewares/principalFieldErrorHandlerMiddleware"
 import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
@@ -40,7 +40,6 @@ export const legacyErrorMiddleware = async (
 
   // This represents whether or not the query experienced an error and that error was thrown while resolving
   // a field marked with the @principalField directive, or any sub-selection of such a field.
-  // @ts-ignore RELAY 12 MIGRATION
   const principalFieldWasInvolvedInError = isErrorStatus(
     // @ts-ignore RELAY 12 MIGRATION
     resJson.extensions?.principalField?.httpStatusCode
