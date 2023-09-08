@@ -1,30 +1,40 @@
-import { Flex, Pill, Text, useTheme } from "@artsy/palette-mobile"
+import { Flex, Pill, Text, useTheme, Box, Spacer } from "@artsy/palette-mobile"
 import { ArtworkBrowseSimilarWorksQuery } from "__generated__/ArtworkBrowseSimilarWorksQuery.graphql"
 import { ArtworkBrowseSimilarWorks_artworksConnection$data } from "__generated__/ArtworkBrowseSimilarWorks_artworksConnection.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
+import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
+import { PlaceholderBox, PlaceholderRaggedText } from "app/utils/placeholders"
+import { ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 export const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 interface SimilarWorksrops {
   artworksConnection: ArtworkBrowseSimilarWorks_artworksConnection$data
+  artistNames: string[]
 }
 
-const SimilarWorks: React.FC<SimilarWorksrops> = ({ artworksConnection }) => {
+const SimilarWorks: React.FC<SimilarWorksrops> = ({ artworksConnection, artistNames }) => {
   const artworksConnectionNodes = extractNodes(artworksConnection)
   const screen = useScreenDimensions()
   const { space } = useTheme()
+  const { bottom: bottomInset } = useSafeAreaInsets()
 
   return (
-    <>
-      <FancyModalHeader onLeftButtonPress={goBack}>Works by</FancyModalHeader>
-      <Flex mx={2}>
+    <Box flex={1}>
+      <FancyModalHeader onLeftButtonPress={goBack}>{`Works by ${artistNames}`}</FancyModalHeader>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: bottomInset,
+          paddingHorizontal: space(2),
+        }}
+      >
         <Text color="black60" my={2}>
           Available works you may have missed based on similar filters listed below.
         </Text>
@@ -41,8 +51,8 @@ const SimilarWorks: React.FC<SimilarWorksrops> = ({ artworksConnection }) => {
             navigate(`artwork/${slug}`)
           }}
         />
-      </Flex>
-    </>
+      </ScrollView>
+    </Box>
   )
 }
 
@@ -60,11 +70,12 @@ const SimilarWorksFragmentContainer = createFragmentContainer(SimilarWorks, {
 
 interface ArtworkBrowseSimilarWorksQueryRendererProps extends SearchCriteriaAttributes {
   inputProps: SearchCriteriaAttributes
+  artistNames: string[]
 }
 
 export const ArtworkBrowseSimilarWorksQueryRenderer: React.FC<
   ArtworkBrowseSimilarWorksQueryRendererProps
-> = ({ inputProps }) => {
+> = ({ inputProps, artistNames }) => {
   return (
     <QueryRenderer<ArtworkBrowseSimilarWorksQuery>
       environment={getRelayEnvironment()}
@@ -90,11 +101,32 @@ export const ArtworkBrowseSimilarWorksQueryRenderer: React.FC<
         }
 
         if (!props?.artworksConnection) {
-          // TODO: render Placeholder
-          return <></>
+          return <Placeholder />
         }
-        return <SimilarWorksFragmentContainer artworksConnection={props.artworksConnection} />
+        return (
+          <SimilarWorksFragmentContainer
+            artworksConnection={props.artworksConnection}
+            artistNames={artistNames}
+          />
+        )
       }}
     />
+  )
+}
+
+const Placeholder: React.FC = () => {
+  const screen = useScreenDimensions()
+  const { space } = useTheme()
+  return (
+    <Box flex={1}>
+      <FancyModalHeader onLeftButtonPress={goBack} />
+      <Box p={2}>
+        <PlaceholderRaggedText numLines={2} textHeight={25} />
+        <Spacer y={1} />
+        <PlaceholderBox width={60} height={30} />
+        <Spacer y={2} />
+        <GenericGridPlaceholder width={screen.width - space(4)} />
+      </Box>
+    </Box>
   )
 }

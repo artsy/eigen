@@ -110,6 +110,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
                   artistIDs: ["4d8b92ad4eb68a1b2c0003ae"],
                   attributionClass: ["limited edition"],
                 },
+                artistNames: artistNames ?? [],
               },
             })
           }
