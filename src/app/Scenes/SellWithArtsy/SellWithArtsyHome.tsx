@@ -155,10 +155,10 @@ interface SellWithArtsyHomeQueryRendererProps {
 
 export const SellWithArtsyHomeScreenQuery = graphql`
   query SellWithArtsyHomeQuery {
-    recentlySoldArtworks @principalField {
+    recentlySoldArtworks {
       ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
     }
-    me @principalField {
+    me {
       ...SellWithArtsyHome_me
     }
   }

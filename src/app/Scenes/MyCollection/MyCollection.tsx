@@ -349,7 +349,7 @@ export const FetchAuctionResultsQuery = graphql`
 
 export const MyCollectionScreenQuery = graphql`
   query MyCollectionQuery {
-    me @principalField {
+    me {
       ...MyCollection_me
     }
   }
