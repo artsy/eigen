@@ -461,12 +461,12 @@ export const HomeFragmentContainer = memo(
             ...OldCollectionsRail_collectionsModule
             ...CollectionsRail_collectionsModule
           }
-          _onboardingModule: onboardingModule {
+          _onboardingModule: onboardingModule @optionalField {
             showMyCollectionCard
             showSWACard
           }
 
-          onboardingModule {
+          onboardingModule @optionalField {
             ...HomeFeedOnboardingRail_onboardingModule
           }
         }
@@ -544,29 +544,30 @@ export const HomeFragmentContainer = memo(
     },
     graphql`
       query HomeRefetchQuery($version: String) {
-        homePage {
+        homePage @optionalField {
           ...Home_homePageAbove
         }
-        homePageBelow: homePage {
+        homePageBelow: homePage @optionalField {
           ...Home_homePageBelow
         }
-        me {
+        me @optionalField {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
         }
-        meBelow: me {
+        meBelow: me @optionalField {
           ...Home_meBelow
         }
-        featured: viewingRooms(featured: true) {
+        featured: viewingRooms(featured: true) @optionalField {
           ...Home_featured
         }
-        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+          @optionalField {
           ...Home_articlesConnection
         }
         newWorksForYou: viewer {
           ...Home_newWorksForYou
         }
-        emergingPicks: marketingCollection(slug: "curators-picks-emerging") {
+        emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
           ...Home_emergingPicks
         }
       }
@@ -741,16 +742,16 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
-            homePage {
+            homePage @optionalField {
               ...Home_homePageAbove
             }
-            me {
+            me @optionalField {
               ...Home_meAbove
             }
-            newWorksForYou: viewer {
+            newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
-            heroUnitsConnection(first: 10, private: false) {
+            heroUnitsConnection(first: 10, private: false) @optionalField {
               ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
             }
@@ -763,20 +764,21 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
       below={{
         query: graphql`
           query HomeBelowTheFoldQuery {
-            homePage {
+            homePage @optionalField {
               ...Home_homePageBelow
             }
-            emergingPicks: marketingCollection(slug: "curators-picks-emerging") {
+            emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
               ...Home_emergingPicks
             }
-            featured: viewingRooms(featured: true) {
+            featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured
             }
-            me {
+            me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+              @optionalField {
               ...Home_articlesConnection
             }
           }
