@@ -30,6 +30,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
+import { Dimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -184,11 +185,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     if (showCreateAlertAtEndOfList && !relay.hasMore()) {
       return (
         <Message
-          title="Lorem ipsum dolor sit amet ita Consectetur adipiscing elit"
-          containerStyle={{ mb: `${space(2)}px` }}
+          title="Get notified when new works are added."
+          containerStyle={{ width: Dimensions.get("window").width, left: -space(2) }}
           IconComponent={() => {
             return <CreateAlertButton />
           }}
+          iconPosition="right"
           showCloseButton
         />
       )
