@@ -20,7 +20,6 @@ describe("ArtistHeader", () => {
   it("displays the artwork count for an artist when present", () => {
     renderWithRelay({ Artist: () => mockArtist })
 
-    expect(screen.queryByText("Follow")).toBeOnTheScreen()
     expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
   })
 })

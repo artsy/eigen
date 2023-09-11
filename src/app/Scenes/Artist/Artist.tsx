@@ -17,6 +17,7 @@ import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.g
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import {
@@ -30,7 +31,6 @@ import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortO
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
@@ -38,8 +38,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect } from "react"
-import { ActivityIndicator, TouchableOpacity, View } from "react-native"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -67,6 +67,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     auctionResultsInitialFilters,
   } = props
 
+  const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
   const { handleFollowToggle } = useFollowArtist(props.artistAboveTheFold)
@@ -110,30 +111,23 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
-              <Flex
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="flex-end"
-                width={185}
-                py={1}
-              >
-                <TouchableOpacity onPress={handleSharePress}>
-                  <ShareIcon width={23} height={23} />
-                </TouchableOpacity>
-                <Flex flexDirection="row" alignItems="center" ml={1}>
-                  <FollowButton
-                    haptic
-                    isFollowed={!!artistAboveTheFold?.isFollowed}
-                    followCount={artistAboveTheFold?.counts?.follows}
-                    onPress={handleFollowToggle}
-                  />
-                </Flex>
-              </Flex>
+              <ArtistHeaderNavRight
+                artist={artistAboveTheFold}
+                onSharePress={handleSharePress}
+                onFollowPress={handleFollowToggle}
+              />
             ),
             onBack: goBack,
           }}
           BelowTitleHeaderComponent={() => (
-            <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
+            <ArtistHeaderFragmentContainer
+              artist={artistAboveTheFold!}
+              onLayout={({ nativeEvent }) => {
+                if (headerHeight !== nativeEvent.layout.height) {
+                  setHeaderHeight(nativeEvent.layout.height)
+                }
+              }}
+            />
           )}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
@@ -191,15 +185,12 @@ export const ArtistScreenQuery = graphql`
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
       ...useFollowArtist_artist
+      ...ArtistHeaderNavRight_artist
       id
       internalID
       slug
       href
       name
-      isFollowed
-      counts {
-        follows
-      }
       image {
         url(version: "large")
       }
