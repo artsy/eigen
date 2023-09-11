@@ -186,7 +186,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       return (
         <Message
           title="Get notified when new works are added."
-          containerStyle={{ width: Dimensions.get("window").width, left: -space(2) }}
+          containerStyle={{ width: Dimensions.get("window").width, left: -space(2), mt: 2 }}
           IconComponent={() => {
             return <CreateAlertButton />
           }}
