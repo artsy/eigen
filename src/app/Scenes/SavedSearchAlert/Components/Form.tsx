@@ -120,7 +120,7 @@ export const Form: React.FC<FormProps> = ({
             tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
           }}
           maxModalHeight={300}
-          modalTitle="Auction Results"
+          modalTitle="Create Alert"
           modalContent={
             <Flex py={1}>
               <Text>
