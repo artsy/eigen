@@ -27,6 +27,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { isTablet } from "react-native-device-info"
@@ -54,6 +55,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
+  const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -118,6 +120,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         variant="outline"
         mx="auto"
         icon={<BellIcon />}
+        size="small"
         onPress={() => {
           openFilterArtworksModal("createAlert")
 
@@ -126,7 +129,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             context_screen_owner_type: OwnerType.artist,
             context_screen_owner_id: artist.internalID,
             context_screen_owner_slug: artist.slug,
-            context_module: ContextModule.artworkGrid,
+            context_module: ContextModule.artistArtworksGridEnd,
           })
         }}
       >
@@ -178,7 +181,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       )
     }
 
-    if (!relay.hasMore()) {
+    if (showCreateAlertAtEndOfList && !relay.hasMore()) {
       return (
         <Message
           title="Lorem ipsum dolor sit amet ita Consectetur adipiscing elit"
