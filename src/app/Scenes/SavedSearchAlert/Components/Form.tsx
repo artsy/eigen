@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArrowRightIcon,
   Box,
@@ -22,6 +23,7 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
+import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -55,6 +57,7 @@ export const Form: React.FC<FormProps> = ({
     "AREnableFallbackToGeneratedAlertNames"
   )
 
+  const tracking = useTracking()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
@@ -113,6 +116,9 @@ export const Form: React.FC<FormProps> = ({
               Create Alert
             </Text>
           }
+          trackEvent={() => {
+            tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
+          }}
           maxModalHeight={300}
           modalTitle="Auction Results"
           modalContent={
@@ -244,4 +250,12 @@ export const Form: React.FC<FormProps> = ({
       </Box>
     </Box>
   )
+}
+
+const tracks = {
+  tappedCreateAlertHeaderButton: () => ({
+    action: ActionType.tappedCreateAlertHeader,
+    context_module: ContextModule.createAlertHeader,
+    context_screen_owner_type: OwnerType.createAlert,
+  }),
 }
