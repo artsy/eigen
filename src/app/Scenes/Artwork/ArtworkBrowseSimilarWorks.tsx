@@ -1,4 +1,4 @@
-import { Flex, Pill, Text, useTheme, Box, Spacer } from "@artsy/palette-mobile"
+import { Flex, Pill, Text, useTheme, Box, Spacer, Button } from "@artsy/palette-mobile"
 import { ArtworkBrowseSimilarWorksQuery } from "__generated__/ArtworkBrowseSimilarWorksQuery.graphql"
 import { ArtworkBrowseSimilarWorks_artworksConnection$data } from "__generated__/ArtworkBrowseSimilarWorks_artworksConnection.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -51,6 +51,9 @@ const SimilarWorks: React.FC<SimilarWorksrops> = ({ artworksConnection, artistNa
             navigate(`artwork/${slug}`)
           }}
         />
+        <Button mt={2} block>
+          Explore more on Artsy
+        </Button>
       </ScrollView>
     </Box>
   )
@@ -68,7 +71,7 @@ const SimilarWorksFragmentContainer = createFragmentContainer(SimilarWorks, {
   `,
 })
 
-interface ArtworkBrowseSimilarWorksQueryRendererProps extends SearchCriteriaAttributes {
+interface ArtworkBrowseSimilarWorksQueryRendererProps {
   inputProps: SearchCriteriaAttributes
   artistNames: string[]
 }
