@@ -10,6 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input, InputTitle } from "app/Components/Input"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import {
@@ -106,9 +107,23 @@ export const Form: React.FC<FormProps> = ({
   return (
     <Box>
       {!isEditMode && (
-        <Text variant="lg-display" mb={4}>
-          Create Alert
-        </Text>
+        <InfoButton
+          titleElement={
+            <Text variant="lg-display" mb={1} mr={0.5}>
+              Create Alert
+            </Text>
+          }
+          maxModalHeight={300}
+          modalTitle="Auction Results"
+          modalContent={
+            <Flex py={1}>
+              <Text>
+                On the hunt for a particular work? Create an alert and we’ll let you know when
+                matching works are added to Artsy.
+              </Text>
+            </Flex>
+          }
+        />
       )}
 
       <Box mb={2}>
