@@ -285,6 +285,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  ARShowCreateAlertInArtistArtworksListFooter: {
+    description: "Show create alert in artist artworks list footer",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
+  },
 }
 
 export interface DevToggleDescriptor {
