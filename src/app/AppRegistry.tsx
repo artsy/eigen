@@ -11,7 +11,6 @@ import { FadeIn } from "app/Components/FadeIn"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
-import { ArtworkBrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/ArtworkBrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
@@ -386,10 +385,6 @@ export const modules = defineModules({
     fullBleed: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
-  }),
-  ArtworkBrowseSimilarWorks: reactModule(ArtworkBrowseSimilarWorksQueryRenderer, {
-    hidesBottomTabs: true,
-    hidesBackButton: true,
   }),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity, {
     fullBleed: true,

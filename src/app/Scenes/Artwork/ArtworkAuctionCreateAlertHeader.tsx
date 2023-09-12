@@ -1,7 +1,7 @@
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { navigate } from "app/system/navigation/navigate"
+import { BrowseSimilarWorksModal } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModal"
 import { useTimer } from "app/utils/useTimer"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -42,6 +42,8 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     artwork
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+  const [browseSimilarWorksModal, setBrowseSimilarWorksModal] = useState(false)
+
   const { title, artistNames, isInAuction, sale, saleArtwork } = artworkData
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
@@ -63,6 +65,12 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
+      />
+
+      <BrowseSimilarWorksModal
+        artwork={artworkData}
+        onClose={() => setBrowseSimilarWorksModal(false)}
+        visible={browseSimilarWorksModal}
       />
 
       <Flex flexDirection="column">
@@ -101,19 +109,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           size="large"
           variant="outline"
           haptic
-          onPress={() =>
-            navigate("/artwork-browse-similar-works", {
-              passProps: {
-                inputProps: {
-                  // TODO: remove mock values
-                  additionalGeneIDs: ["prints"],
-                  artistIDs: ["4d8b92ad4eb68a1b2c0003ae"],
-                  attributionClass: ["limited edition"],
-                },
-                artistNames: artistNames ?? [],
-              },
-            })
-          }
+          onPress={() => setBrowseSimilarWorksModal(true)}
           flex={1}
         >
           Browse Similar Artworks
@@ -138,5 +134,6 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
       extendedBiddingEndAt
     }
     ...CreateArtworkAlertModal_artwork
+    ...BrowseSimilarWorksModal_artwork
   }
 `

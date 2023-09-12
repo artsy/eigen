@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { BrowseSimilarWorksModal_artwork$data } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
 import {
   CreateArtworkAlertModal_artwork$data,
   CreateArtworkAlertModal_artwork$key,
@@ -65,7 +66,9 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
   )
 }
 
-export const computeArtworkAlertProps = (artwork: CreateArtworkAlertModal_artwork$data) => {
+export const computeArtworkAlertProps = (
+  artwork: CreateArtworkAlertModal_artwork$data | BrowseSimilarWorksModal_artwork$data
+) => {
   const artistsArray = artwork.artistsArray ?? []
   const hasArtists = artistsArray.length > 0
 
