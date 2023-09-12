@@ -116,6 +116,18 @@ def generate_spaceship_token
   )
 end
 
+def format_build_number(build_number)
+  # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
+  # So we need to add back leading zeroes
+  return nil if build_number.nil?
+
+  build_version_components = build_number.split('.')
+  detruncated_components = build_version_components.map do |comp|
+    comp.length == 1 ? '0' + comp : comp
+  end
+  detruncated_components.join('.')
+end
+
 def write_contents_to_file(path, contents)
   File.open(path, 'w') do |file|
     file.puts contents
