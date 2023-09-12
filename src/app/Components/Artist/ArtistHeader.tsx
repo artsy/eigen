@@ -60,8 +60,10 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
     }
   }
 
+  // TODO: Remove this when we have real data
   const hasAlerts = true
   const numberOfAlerts = 2
+
   return (
     <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artist.coverArtwork?.image?.url && (
@@ -95,7 +97,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
           <Touchable
             haptic
             onPress={() => {
-              navigate("/artist/artistID/alerts")
+              navigate(`/my-profile/saved-search-alerts?artistIDs=${artist.internalID}`)
             }}
           >
             <Text variant="xs" color="blue100">
@@ -112,14 +114,15 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeader, {
   artist: graphql`
     fragment ArtistHeader_artist on Artist {
-      name
-      nationality
       birthday
       coverArtwork {
         image {
           url(version: "large")
         }
       }
+      internalID
+      name
+      nationality
     }
   `,
 })

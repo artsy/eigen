@@ -7,7 +7,10 @@ import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlerts
 import { SavedSearchesListPaginationContainer } from "./Components/SavedSearchesList"
 import { SortButton } from "./Components/SortButton"
 
-export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
+interface Props {
+  artistIDs?: string[]
+}
+export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistIDs = [] }) => {
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
       environment={getRelayEnvironment()}
@@ -18,7 +21,9 @@ export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
           }
         }
       `}
-      variables={{}}
+      variables={{
+        artistIDs,
+      }}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: SavedSearchesListPaginationContainer,
@@ -27,6 +32,9 @@ export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
             <SavedSearchAlertsListPlaceholder />
           </PageWithSimpleHeader>
         ),
+        initialProps: {
+          artistIDs,
+        },
       })}
     />
   )
