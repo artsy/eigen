@@ -164,7 +164,8 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
-    fastlane-plugin-firebase_app_distribution (0.6.1)
+    fastlane-plugin-firebase_app_distribution (0.7.3)
+      google-apis-firebaseappdistribution_v1 (~> 0.3.0)
     fastlane-plugin-sentry (1.15.0)
       os (~> 1.1, >= 1.1.4)
     ffi (1.15.5)
@@ -182,6 +183,8 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
+    google-apis-firebaseappdistribution_v1 (0.3.0)
+      google-apis-core (>= 0.11.0, < 2.a)
     google-apis-iamcredentials_v1 (0.17.0)
       google-apis-core (>= 0.11.0, < 2.a)
     google-apis-playcustomapp_v1 (0.13.0)
