@@ -108,9 +108,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         <Text variant="xs" color="grey" mx={2}>
           Email: <Text variant="xs">{userEmail}</Text>
         </Text>
-        <Text variant="xs" color="grey" mx={2}>
-          Route: <Text variant="xs"></Text>
-        </Text>
 
         <DevMenuButtonItem
           title="Open RN Dev Menu"
