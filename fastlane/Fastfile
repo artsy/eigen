@@ -23,7 +23,7 @@ IOS_TARGETS = {
   'net.artsy.artsy.BrazePushServiceExtension' => { :name => 'BrazePushServiceExtension', :plist_path => '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
-BETA_LANES = [:ship_beta, :ship_beta_ios, :ship_beta_android_play_store, :ship_beta_android_firebase].freeze
+BETA_LANES = [:ship_beta, :ship_beta_ios, :ship_beta_android].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
 GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
@@ -173,18 +173,20 @@ end
 
 # Android Lanes
 
-desc "Ship android beta to play store"
-lane :ship_beta_android_play_store do
+desc "Ship android beta to play store or firebase"
+lane :ship_beta_android do |options|
+  deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
+
   sh("yarn jetifier")
   sh("yarn relay")
+
+  is_android_beta = deployment_target == 'firebase'
+  flag_android_beta(is_android_beta: is_android_beta)
 
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-
-  # build again with flag set to false for release candidates
-  flag_android_beta(is_android_beta: false)
 
   sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
@@ -196,40 +198,28 @@ lane :ship_beta_android_play_store do
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
-  supply(
-    track: "alpha",
-    skip_upload_apk: true,
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true
-  )
+  deploy_android_beta(deployment_target: deployment_target)
 end
 
-desc "Ship android beta to firebase"
-lane :ship_beta_android_firebase do
-  sh("yarn jetifier")
-  sh("yarn relay")
-
-  flag_android_beta(is_android_beta: true)
-
-  vname, vcode = set_build_version_android
-
-  sentry_release_name = "android-#{vname}-#{vcode}"
-
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon -x bundleReleaseJsAndAssets",
-  )
-
-  firebase_app_distribution(
-    app: ENV["FIREBASE_APP_ID"],
-    groups: 'artsy-people',
-    android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
-  )
+def deploy_android_beta(deployment_target:)
+  if deployment_target == 'play_store'
+    supply(
+      track: "alpha",
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  elsif deployment_target == 'firebase'
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      groups: 'artsy-people',
+      android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
+    )
+  else
+    UI.error("Unknown deployment target: #{deployment_target}")
+  end
 end
 
 desc "Promote a play store android beta to production"
