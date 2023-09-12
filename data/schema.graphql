@@ -2250,6 +2250,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPriceRange: Boolean
   isSaved: Boolean
 
+  # Checks if artwork is saved to user's lists
+  isSavedToList(default: Boolean = false, saves: Boolean = true): Boolean!
+
   # Should the video be used as the cover image
   isSetVideoAsCover: Boolean
   isShareable: Boolean
