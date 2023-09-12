@@ -1,43 +1,20 @@
-import { BrowseSimilarWorksModal_artwork$key } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
+import { Box } from "@artsy/palette-mobile"
+import { BrowseSimilarWorksModalQuery } from "__generated__/BrowseSimilarWorksModalQuery.graphql"
 import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { BrowseSimilarWorksModalContentWrapper } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
-import { graphql, useFragment } from "react-relay"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
-interface BrowseSimilarWorksModalProps {
-  artwork: BrowseSimilarWorksModal_artwork$key
-  visible: boolean
-  onClose: () => void
+const BrowseSimilarWorksPlaceholder: React.FC<{}> = () => {
+  return <Box backgroundColor="red" height={200}></Box>
 }
-export const BrowseSimilarWorksModal: React.FC<BrowseSimilarWorksModalProps> = ({
-  artwork,
-  onClose,
-  visible,
-}) => {
-  const data = useFragment<BrowseSimilarWorksModalProps["artwork"]>(
-    graphql`
-      fragment BrowseSimilarWorksModal_artwork on Artwork {
-        title
-        internalID
-        slug
-        artistsArray: artists {
-          internalID
-          name
-        }
-        attributionClass {
-          internalID
-        }
-        mediumType {
-          filterGene {
-            slug
-            name
-          }
-        }
-      }
-    `,
-    artwork
-  )
 
-  const artworkAlert = computeArtworkAlertProps(data)
+export const BrowseSimilarWorksModal: React.FC<{ artworkID: string }> = withSuspense((props) => {
+  const data = useLazyLoadQuery<BrowseSimilarWorksModalQuery>(SimilarWorksModalQuery, {
+    artworkID: props.artworkID,
+  })
+
+  const artworkAlert = computeArtworkAlertProps(data.artwork)
 
   if (!artworkAlert.hasArtists) {
     return null
@@ -45,11 +22,32 @@ export const BrowseSimilarWorksModal: React.FC<BrowseSimilarWorksModalProps> = (
 
   return (
     <BrowseSimilarWorksModalContentWrapper
-      visible={visible}
       entity={artworkAlert.entity!}
       attributes={artworkAlert.attributes!}
       aggregations={artworkAlert.aggregations!}
-      closeModal={onClose}
     />
   )
-}
+}, BrowseSimilarWorksPlaceholder)
+
+const SimilarWorksModalQuery = graphql`
+  query BrowseSimilarWorksModalQuery($artworkID: String!) {
+    artwork(id: $artworkID) {
+      title
+      internalID
+      slug
+      artistsArray: artists {
+        internalID
+        name
+      }
+      attributionClass {
+        internalID
+      }
+      mediumType {
+        filterGene {
+          slug
+          name
+        }
+      }
+    }
+  }
+`

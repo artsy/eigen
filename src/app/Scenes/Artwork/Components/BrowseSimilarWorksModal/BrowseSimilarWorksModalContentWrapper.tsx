@@ -7,29 +7,23 @@ import { BrowseSimilarWorksModalContent } from "app/Scenes/Artwork/Components/Br
 import { CreateSavedSearchAlertParams } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 
 export interface BrowseSimilarWorksModalContentWrapperProps {
-  visible: boolean
   entity: SavedSearchEntity
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
-  closeModal: () => void
 }
 
 export const BrowseSimilarWorksModalContentWrapper: React.FC<
   BrowseSimilarWorksModalContentWrapperProps
 > = (props) => {
-  const { visible, entity, attributes, aggregations, closeModal } = props
+  const { entity, attributes, aggregations } = props
 
   const params: CreateSavedSearchAlertParams = {
     aggregations,
     attributes,
     entity,
-    onClosePress: () => {
-      closeModal() // close the alert modal
-    },
+    onClosePress: () => {},
     onComplete: () => {},
   }
 
-  if (!visible) return null
-
-  return <BrowseSimilarWorksModalContent visible={visible} params={params} />
+  return <BrowseSimilarWorksModalContent params={params} />
 }

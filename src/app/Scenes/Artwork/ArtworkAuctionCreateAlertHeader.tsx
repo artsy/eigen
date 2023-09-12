@@ -1,9 +1,9 @@
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { BrowseSimilarWorksModal } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -19,9 +19,8 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     artwork
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const [browseSimilarWorksModal, setBrowseSimilarWorksModal] = useState(false)
 
-  const { title, artistNames, isInAuction, sale, saleArtwork } = artworkData
+  const { title, artistNames, isInAuction, sale, saleArtwork, internalID } = artworkData
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
@@ -39,12 +38,6 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
-      />
-
-      <BrowseSimilarWorksModal
-        artwork={artworkData}
-        onClose={() => setBrowseSimilarWorksModal(false)}
-        visible={browseSimilarWorksModal}
       />
 
       <Flex flexDirection="column">
@@ -83,7 +76,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           size="large"
           variant="outline"
           haptic
-          onPress={() => setBrowseSimilarWorksModal(true)}
+          onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`, {})}
           flex={1}
         >
           Browse Similar Artworks
@@ -96,6 +89,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 const artworkAuctionCreateAlertHeaderFragment = graphql`
   fragment ArtworkAuctionCreateAlertHeader_artwork on Artwork {
     title
+    internalID
     artistNames
     isInAuction
     sale {
@@ -108,6 +102,5 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
       extendedBiddingEndAt
     }
     ...CreateArtworkAlertModal_artwork
-    ...BrowseSimilarWorksModal_artwork
   }
 `
