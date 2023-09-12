@@ -170,17 +170,17 @@ end
 lane :set_build_version_ios do
   bundle_version = DateTime.now.strftime("%Y.%m.%d.%H")
   IOS_TARGETS.each do |id, meta|
-    system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{APP_JSON['version']}\" #{meta[:plist_path]}")
-    system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{bundle_version}\" #{meta[:plist_path]}")
+    set_info_plist_value(path: meta[:plist_path], key: 'CFBundleShortVersionString', value: APP_JSON['version'])
+    set_info_plist_value(path: meta[:plist_path], key: 'CFBundleVersion', value: bundle_version)
   end
   bundle_version
 end
 
 lane :set_git_properties_ios do
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitShortHash #{GIT_COMMIT_SHORT_HASH}\" #{APP_PLIST}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitHash #{GIT_COMMIT_HASH}\" #{APP_PLIST}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitDate #{GIT_COMMIT_DATE_STR}\" #{APP_PLIST}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{GIT_REMOTE_ORIGIN_URL}\" #{APP_PLIST}")
+  set_info_plist_value(path: APP_PLIST, key: 'GITCommitShortHash', value: GIT_COMMIT_SHORT_HASH)
+  set_info_plist_value(path: APP_PLIST, key: 'GITCommitHash', value: GIT_COMMIT_HASH)
+  set_info_plist_value(path: APP_PLIST, key: 'GITCommitDate', value: GIT_COMMIT_DATE_STR)
+  set_info_plist_value(path: APP_PLIST, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
 # This is a lane that is used to release the app on Apple Store Connect
