@@ -48,13 +48,7 @@ end
 
 desc "Ships iOS beta to TestFlight"
 lane :ship_beta_ios do
-  api_key = app_store_connect_api_key(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false,
-  )
+  api_key = generate_app_store_connect_api_key
 
   bundle_version = set_build_version_ios
 
@@ -106,23 +100,10 @@ lane :ship_beta_ios do
 end
 
 lane :promote_beta_ios do
-  api_key = app_store_connect_api_key(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false,
-  )
+  api_key = generate_app_store_connect_api_key
 
   # There seems to be some delta between spaceship + deliver token format
-  token = Spaceship::ConnectAPI::Token.create(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false
-  )
-
+  token = generate_spaceship_token
   Spaceship::ConnectAPI.token = token
 
   app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
@@ -189,15 +170,8 @@ end
 # This is a lane that is used to release the app on Apple Store Connect
 # When it has been approved an it's pending developer release
 lane :release_ios_app do |options|
-
   # There seems to be some delta between spaceship + deliver token format
-   token = Spaceship::ConnectAPI::Token.create(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false
-  )
+  token = generate_spaceship_token
 
   Spaceship::ConnectAPI.token = token
 
@@ -210,13 +184,7 @@ lane :release_ios_app do |options|
 end
 
 lane :create_next_app_version do |options|
-  api_key = app_store_connect_api_key(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false,
-  )
+  api_key = generate_app_store_connect_api_key
 
   next_version = options[:next_version_code]
 

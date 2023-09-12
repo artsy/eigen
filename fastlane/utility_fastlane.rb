@@ -96,6 +96,26 @@ lane :check_flags do
   slack(message: message, default_payloads: [])
 end
 
+def generate_app_store_connect_api_key
+  app_store_connect_api_key(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false,
+  )
+end
+
+def generate_spaceship_token
+  Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+end
+
 def write_contents_to_file(path, contents)
   File.open(path, 'w') do |file|
     file.puts contents
