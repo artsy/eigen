@@ -73,12 +73,12 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key) => {
           "follows"
         )
       },
-      onCompleted: successfulFollowChange,
-      onError: failedFollowChange,
+      onCompleted: onFollowChangeSuccess,
+      onError: onFollowChangeError,
     })
   }
 
-  const successfulFollowChange = () => {
+  const onFollowChangeSuccess = () => {
     if (!data) {
       return
     }
@@ -95,7 +95,7 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key) => {
     setIsLoading(false)
   }
 
-  const failedFollowChange = () => {
+  const onFollowChangeError = () => {
     if (!data) {
       return
     }
