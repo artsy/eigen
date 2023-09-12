@@ -8,6 +8,7 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useSaveArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSaveArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
+import { useOnSaveArtwork } from "app/Components/ProgressiveOnboarding/useOnSaveArtwork"
 import { FC } from "react"
 
 const STICKY_BOTTOM_CONTENT_HEIGHT = 100
@@ -22,6 +23,7 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
   const {
     state: { hasUnsavedChanges },
   } = useArtworkListsContext()
+  const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = useBottomSheetModal()
 
   const { save, inProgress } = useSaveArtworkListsChanges({
@@ -36,6 +38,7 @@ export const StickyBottomContent: FC<BottomSheetFooterProps> = ({ animatedFooter
     } else {
       dismiss(ArtworkListsViewName.SelectArtworkListsForArtwork)
     }
+    setProfileTabSavedArtwork()
   }
 
   return (

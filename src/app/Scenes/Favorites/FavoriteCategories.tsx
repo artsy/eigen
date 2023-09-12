@@ -1,4 +1,4 @@
-import { Spacer, Tabs } from "@artsy/palette-mobile"
+import { Flex, Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
@@ -94,8 +94,12 @@ export class Categories extends React.Component<Props, State> {
         }
         ListFooterComponent={
           this.state.fetchingMoreData ? (
-            <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-          ) : null
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : (
+            <Spacer y={2} />
+          )
         }
         renderItem={({ item }) => {
           return (

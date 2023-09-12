@@ -316,16 +316,6 @@ We either need to find a library that gives us masonry layout using a Virtualize
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
 
-## @storybook/react-native patch
-
-#### When we can remove this:
-
-When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or when storybook supports rendering outside the safe area.
-
-#### Explanation/Context
-
-Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
-
 ## Podfile postinstall code_signing_required = NO
 
 #### When can we remove this:
@@ -379,3 +369,13 @@ When we upgrade to Reanimated 3.4.0
 #### Explanation/Context:
 
 Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
+
+# Patch-package for react-native-codepush
+
+#### When can we remove this:
+
+When this issue is fixed: https://github.com/microsoft/react-native-code-push/issues/1578
+
+#### Explanation/Context:
+
+Release builds fail on Android without this patch, more explanation in the issue: https://github.com/microsoft/react-native-code-push/issues/1578

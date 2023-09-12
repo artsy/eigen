@@ -280,6 +280,17 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFallbackToGeneratedAlertNames",
   },
+  ARUseNewErrorMiddleware: {
+    description: "Use updated error middleware",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  ARShowCreateAlertInArtistArtworksListFooter: {
+    description: "Show create alert in artist artworks list footer",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
+  },
 }
 
 export interface DevToggleDescriptor {

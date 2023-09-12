@@ -77,7 +77,11 @@ describe("SavedSearchAlertForm", () => {
     it("correctly renders default placeholder for input name", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      expect(getByTestId("alert-input-name").props.placeholder).toEqual("artistName")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+
+      expect(getByTestId("alert-input-name").props.placeholder).toEqual("Banana")
     })
 
     it("calls onComplete when mutation is completed", async () => {
@@ -85,6 +89,12 @@ describe("SavedSearchAlertForm", () => {
       const { getByTestId } = renderWithWrappers(
         <TestRenderer onComplete={onCompleteMock} savedSearchAlertId="savedSearchAlertId" />
       )
+
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+      })
 
       fireEvent.changeText(getByTestId("alert-input-name"), "something new")
       fireEvent.press(getByTestId("save-alert-button"))
@@ -207,6 +217,12 @@ describe("SavedSearchAlertForm", () => {
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
+        await waitFor(() => {
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            PreviewSavedSearch: () => ({ displayName: "Banana" }),
+          })
+        })
+
         fireEvent.press(getByTestId("delete-alert-button"))
         fireEvent.press(getByTestId("dialog-primary-action-button"))
 
@@ -221,6 +237,12 @@ describe("SavedSearchAlertForm", () => {
         const { getByTestId } = renderWithWrappers(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
+
+        await waitFor(() => {
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            PreviewSavedSearch: () => ({ displayName: "Banana" }),
+          })
+        })
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
         fireEvent.press(getByTestId("save-alert-button"))

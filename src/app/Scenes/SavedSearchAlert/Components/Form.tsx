@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArrowRightIcon,
   Box,
@@ -10,6 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input, InputTitle } from "app/Components/Input"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import {
@@ -21,6 +23,7 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
+import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -54,6 +57,7 @@ export const Form: React.FC<FormProps> = ({
     "AREnableFallbackToGeneratedAlertNames"
   )
 
+  const tracking = useTracking()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
@@ -106,9 +110,26 @@ export const Form: React.FC<FormProps> = ({
   return (
     <Box>
       {!isEditMode && (
-        <Text variant="lg-display" mb={4}>
-          Create Alert
-        </Text>
+        <InfoButton
+          titleElement={
+            <Text variant="lg-display" mb={1} mr={0.5}>
+              Create Alert
+            </Text>
+          }
+          trackEvent={() => {
+            tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
+          }}
+          maxModalHeight={300}
+          modalTitle="Create Alert"
+          modalContent={
+            <Flex py={1}>
+              <Text>
+                On the hunt for a particular work? Create an alert and we’ll let you know when
+                matching works are added to Artsy.
+              </Text>
+            </Flex>
+          }
+        />
       )}
 
       <Box mb={2}>
@@ -229,4 +250,12 @@ export const Form: React.FC<FormProps> = ({
       </Box>
     </Box>
   )
+}
+
+const tracks = {
+  tappedCreateAlertHeaderButton: () => ({
+    action: ActionType.tappedCreateAlertHeader,
+    context_module: ContextModule.createAlertHeader,
+    context_screen_owner_type: OwnerType.createAlert,
+  }),
 }

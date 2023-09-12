@@ -1,4 +1,4 @@
-import { Spacer, ClassTheme, Tabs } from "@artsy/palette-mobile"
+import { Spacer, ClassTheme, Tabs, Flex } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
@@ -95,8 +95,12 @@ class Artists extends React.Component<Props, State> {
             ItemSeparatorComponent={() => <Spacer y={1} />}
             ListFooterComponent={
               this.state.fetchingMoreData ? (
-                <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-              ) : null
+                <Flex my={4} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              ) : (
+                <Spacer y={2} />
+              )
             }
             renderItem={({ item }) => {
               return (

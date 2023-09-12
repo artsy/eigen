@@ -10,6 +10,7 @@ import {
   Spacer,
   BellIcon,
   Spinner,
+  Message,
 } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
@@ -26,8 +27,10 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
+import { Dimensions } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -53,6 +56,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
+  const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -111,6 +115,30 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
+  const CreateAlertButton = () => {
+    return (
+      <Button
+        variant="outline"
+        mx="auto"
+        icon={<BellIcon />}
+        size="small"
+        onPress={() => {
+          openFilterArtworksModal("createAlert")
+
+          tracking.trackEvent({
+            action: ActionType.tappedCreateAlert,
+            context_screen_owner_type: OwnerType.artist,
+            context_screen_owner_id: artist.internalID,
+            context_screen_owner_slug: artist.slug,
+            context_module: ContextModule.artistArtworksGridEnd,
+          })
+        }}
+      >
+        Create Alert
+      </Button>
+    )
+  }
+
   if (!artist.statuses?.artworks) {
     return (
       <Tabs.ScrollView>
@@ -127,24 +155,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <Button
-          variant="outline"
-          mx="auto"
-          icon={<BellIcon />}
-          onPress={() => {
-            openFilterArtworksModal("createAlert")
-
-            tracking.trackEvent({
-              action: ActionType.tappedCreateAlert,
-              context_screen_owner_type: OwnerType.artist,
-              context_screen_owner_id: artist.internalID,
-              context_screen_owner_slug: artist.slug,
-              context_module: ContextModule.artworkGrid,
-            })
-          }}
-        >
-          Create Alert
-        </Button>
+        <CreateAlertButton />
 
         <Spacer y={6} />
         <ArtworkFilterNavigator
@@ -160,6 +171,31 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         />
       </Tabs.ScrollView>
     )
+  }
+
+  const ListFooterComponenet = () => {
+    if (shouldDisplaySpinner) {
+      return (
+        <Flex my={4} flexDirection="row" justifyContent="center">
+          <Spinner />
+        </Flex>
+      )
+    }
+
+    if (showCreateAlertAtEndOfList && !relay.hasMore()) {
+      return (
+        <Message
+          title="Get notified when works you're looking for are added."
+          containerStyle={{ width: Dimensions.get("window").width, left: -space(2), mt: 2 }}
+          IconComponent={() => {
+            return <CreateAlertButton />
+          }}
+          iconPosition="right"
+          showCloseButton
+        />
+      )
+    }
+    return null
   }
 
   return (
@@ -214,13 +250,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             <ArtistArtworksFilterHeader artist={artist} />
           </Tabs.SubTabBar>
         }
-        ListFooterComponent={
-          shouldDisplaySpinner ? (
-            <Flex my={4} flexDirection="row" justifyContent="center">
-              <Spinner />
-            </Flex>
-          ) : null
-        }
+        ListFooterComponent={<ListFooterComponenet />}
       />
       <ArtworkFilterNavigator
         {...props}

@@ -100,7 +100,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     }
   }
 
-  return artists.length ? (
+  if (!artists.length) {
+    return null
+  }
+
+  return (
     <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
@@ -142,7 +146,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         }}
       />
     </Flex>
-  ) : null
+  )
 }
 
 export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
