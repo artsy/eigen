@@ -53,7 +53,7 @@ lane :ship_beta_ios do
     in_house: false,
   )
 
-  set_build_version_ios
+  bundle_version = set_build_version_ios
 
   latest_version = APP_JSON['version']
 
@@ -73,8 +73,6 @@ lane :ship_beta_ios do
     )
   end
 
-  root = File.expand_path('..', __dir__)
-  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'ios/Artsy/App_Resources/Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
   # important! this much match the release version specified
@@ -170,11 +168,12 @@ lane :promote_beta_ios do
 end
 
 lane :set_build_version_ios do
-  date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+  bundle_version = DateTime.now.strftime("%Y.%m.%d.%H")
   IOS_TARGETS.each do |id, meta|
     system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{APP_JSON['version']}\" #{meta[:plist_path]}")
-    system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{meta[:plist_path]}")
+    system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{bundle_version}\" #{meta[:plist_path]}")
   end
+  bundle_version
 end
 
 lane :set_git_properties_ios do
