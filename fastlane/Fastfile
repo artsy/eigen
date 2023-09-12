@@ -23,6 +23,8 @@ IOS_TARGETS = {
   'net.artsy.artsy.BrazePushServiceExtension' => { :name => 'BrazePushServiceExtension', :plist_path => '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
+BETA_LANES = [:ship_beta, :ship_beta_ios, :ship_beta_android_play_store, :ship_beta_android_firebase].freeze
+
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
 GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
 GIT_COMMIT_DATE_STR = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
@@ -313,20 +315,12 @@ lane :flag_android_beta do |options|
 end
 
 error do |lane, exception|
-  if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
-    # Set this var if you want to silence beta failure alerts for a while
-    # E.g. you are working on a ci change
-    # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
-    silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
-    if silence_beta_failures_until != nil
-      silence_until_date = Date.parse(silence_beta_failures_until)
-      if silence_until_date <= Date.today
-        notify_beta_failed(exception: exception)
-      else
-        puts("Ignoring beta failure, make sure to unset FASTLANE_SILENCE_BETA_FAILURES_UNTIL to receive alerts")
-      end
-    else
-      notify_beta_failed(exception: exception)
-    end
+  return unless BETA_LANES.include?(lane)
+
+  if should_silence_beta_failure?
+    puts("Ignoring beta failure, make sure to unset FASTLANE_SILENCE_BETA_FAILURES_UNTIL to receive alerts")
+    return
   end
+
+  notify_beta_failed(exception: exception)
 end

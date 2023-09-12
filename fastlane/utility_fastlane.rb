@@ -128,6 +128,14 @@ def format_build_number(build_number)
   detruncated_components.join('.')
 end
 
+def should_silence_beta_failure?
+  silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
+  return false unless silence_beta_failures_until
+
+  silence_until_date = Date.parse(silence_beta_failures_until)
+  silence_until_date > Date.today
+end
+
 def write_contents_to_file(path, contents)
   File.open(path, 'w') do |file|
     file.puts contents
