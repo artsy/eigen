@@ -1,9 +1,19 @@
-import { Flex, Box, Text, Image, useScreenDimensions, Spacer } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Image,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
+import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
+import { pluralize } from "app/utils/pluralize"
 import { LayoutChangeEvent, ViewProps } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
 const ARTIST_IMAGE_TABLET_HEIGHT = 375
@@ -50,10 +60,12 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
     }
   }
 
+  const hasAlerts = true
+  const numberOfAlerts = 2
   return (
-    <Flex pointerEvents="none" onLayout={handleOnLayout}>
+    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artist.coverArtwork?.image?.url && (
-        <>
+        <Flex pointerEvents="none">
           <Image
             accessibilityLabel={`${artist.name} cover image`}
             src={artist.coverArtwork.image.url}
@@ -63,9 +75,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             style={{ alignSelf: "center" }}
           />
           <Spacer y={2} />
-        </>
+        </Flex>
       )}
-      <Box px={2} pb={1}>
+      <Box px={2} pointerEvents="none">
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
             <Text variant="lg">{artist.name}</Text>
@@ -77,6 +89,22 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
           </Flex>
         </Flex>
       </Box>
+
+      {!!hasAlerts && (
+        <Box mx={2} maxWidth={120}>
+          <Touchable
+            haptic
+            onPress={() => {
+              navigate("/artist/artistID/alerts")
+            }}
+          >
+            <Text variant="xs" color="blue100">
+              {numberOfAlerts} {pluralize("Alert", numberOfAlerts)} Set
+            </Text>
+          </Touchable>
+        </Box>
+      )}
+      <Spacer y={1} />
     </Flex>
   )
 }
