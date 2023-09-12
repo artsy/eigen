@@ -374,6 +374,28 @@ lane :update_version_string do
   write_contents_to_file(APP_JSON_PATH, JSON.pretty_generate(APP_JSON))
 end
 
+private_lane :upload_dsyms_to_sentry do |options|
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+  sentry_cli_path = options[:sentry_cli_path]
+
+  # make individual dSYM archives available to the sentry-cli tool.
+  root = File.expand_path('..', __dir__)
+  dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
+  dsyms_path = File.join(root, 'dSYMs')
+  sh "unzip -d #{dsyms_path} #{dsym_archive}"
+
+  Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
+    # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
+    sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
+                       sentry_cli_path: sentry_cli_path,
+                       org_slug: org_slug,
+                       project_slug: project_slug,
+                       dsym_path: dsym_path)
+    puts "Uploaded dsym for #{project_slug}"
+  end
+end
+
 desc "Uploads sourcemaps, bundles and dsyms to sentry"
 lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
@@ -392,19 +414,10 @@ lane :upload_sentry_artifacts do |options|
     UI.user_error!("Sentry distribution version not specified")
   end
 
-  source_map_path = ''
-  bundle_path = ''
-  outfile = ''
-  if platform == "ios"
-    source_map_path = 'dist/main.jsbundle.map'
-    bundle_path = 'dist/main.jsbundle'
-    outfile = '~/main.jsbundle'
-  else
-    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
-    source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
-    bundle_path = 'android/app/src/main/assets/index.android.bundle'
-    outfile = '~/index.android.bundle'
-  end
+  paths = platform_settings(options[:platform])
+  source_map_path = settings[:source_map_path]
+  bundle_path = settings[:bundle_path]
+  outfile = settings[:outfile]
 
   begin
     sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
@@ -414,44 +427,23 @@ lane :upload_sentry_artifacts do |options|
       version: sentry_release_name,
       finalize: false)
   rescue StandardError => e
-      message = 'Creating release for sentry failed. This can happen if sentry cli is out of date.'
-      puts message
-      slack(
-        message: message,
-        success: false,
-        payload: {
-          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
-          'Exception' => e.message
-        },
-        default_payloads: [:last_git_commit_hash]
-      )
-      puts e.message
-      puts e.backtrace.join("\n\t")
+    message = 'Creating release for sentry failed. This can happen if sentry cli is out of date.'
+    handle_error(e, message)
   end
 
   puts "Created a release for #{project_slug}"
 
   if platform == "ios"
-    # make individual dSYM archives available to the sentry-cli tool.
-    root = File.expand_path('..', __dir__)
-    dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
-    dsyms_path = File.join(root, 'dSYMs')
-    sh "unzip -d #{dsyms_path} #{dsym_archive}"
-
-    Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-      # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-      sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
-                         sentry_cli_path: sentry_cli_path,
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         dsym_path: dsym_path)
-      puts "Uploaded dsym for #{project_slug}"
-    end
+    upload_dsyms_to_sentry(
+      org_slug: org_slug,
+      project_slug: project_slug,
+      sentry_cli_path: sentry_cli_path
+    )
   end
 
   begin
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
-                          sentry_cli_path: sentry_cli_path,
+                            sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,
@@ -460,19 +452,8 @@ lane :upload_sentry_artifacts do |options|
                             rewrite: true)
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
-      message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
-      puts message
-      slack(
-        message: message,
-        success: false,
-        payload: {
-          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
-          'Exception' => e.message
-        },
-        default_payloads: [:last_git_commit_hash]
-      )
-      puts e.message
-      puts e.backtrace.join("\n\t")
+    message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
+    handle_error(e, message)
   end
 end
 
@@ -571,6 +552,37 @@ def write_contents_to_file(path, contents)
   end
 rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
+end
+
+def handle_error(e, message)
+  puts message
+  slack(
+    message: message,
+    success: false,
+    payload: {
+      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+      'Exception' => e.message
+    },
+    default_payloads: [:last_git_commit_hash]
+  )
+  puts e.message
+  puts e.backtrace.join("\n\t")
+end
+
+def platform_settings(platform)
+  settings = {
+    ios: {
+      source_map_path: 'dist/main.jsbundle.map',
+      bundle_path: 'dist/main.jsbundle',
+      outfile: '~/main.jsbundle'
+    },
+    android: {
+      source_map_path: 'android/app/src/main/assets/index.android.bundle.map',
+      bundle_path: 'android/app/src/main/assets/index.android.bundle',
+      outfile: '~/index.android.bundle'
+    }
+  }
+  settings[platform.to_sym]
 end
 
 error do |lane, exception|
