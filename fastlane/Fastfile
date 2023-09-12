@@ -10,23 +10,25 @@ Dotenv.load('../.env.shared')
 
 skip_docs
 
-app_json_path = "../app.json"
-app_json = JSON.parse(File.read(app_json_path))
+# Constants and Path Configurations
+APP_JSON_PATH = '../app.json'
+APP_JSON = JSON.parse(File.read(APP_JSON_PATH))
+APP_PLIST = '../ios/Artsy/App_Resources/Info.plist'
+BUILD_GRADLE = '../android/app/build.gradle'
 
-app_plist = '../ios/Artsy/App_Resources/Info.plist'
-
-ios_targets = {
-  'net.artsy.artsy' => { :name => 'Artsy', :plist_path => app_plist },
+IOS_TARGETS = {
+  'net.artsy.artsy' => { :name => 'Artsy', :plist_path => APP_PLIST },
   'net.artsy.artsy.Artsy-Stickers' => { :name => 'ArtsyStickers', :plist_path => '../ios/ArtsyStickers/Info.plist' },
   'net.artsy.artsy.ArtsyWidget' => { :name => 'ArtsyWidgetExtension', :plist_path => '../ios/ArtsyWidget/Info.plist' },
   'net.artsy.artsy.BrazePushServiceExtension' => { :name => 'BrazePushServiceExtension', :plist_path => '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
-git_commit_short_hash = `git log -n1 --format='%h'`.chomp
-git_commit_hash = `git log -n1 --format='%H'`.chomp
-git_commit_date_str = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
-git_remote_origin_url = `git config --get remote.origin.url`.chomp
+GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
+GIT_COMMIT_HASH = `git log -n1 --format='%H'`.chomp
+GIT_COMMIT_DATE_STR = DateTime.parse(`git log -n1 --format='%ci'`.chomp).iso8601
+GIT_REMOTE_ORIGIN_URL = `git config --get remote.origin.url`.chomp
 
+# Circle CI Setup
 
 before_all do
   setup_circle_ci
@@ -53,16 +55,16 @@ lane :ship_beta_ios do
 
   set_build_version_ios
 
-  latest_version = app_json['version']
+  latest_version = APP_JSON['version']
 
   # TODO: Once changelog infra is nailed down we should get release notes from there
   beta_readme = "Thanks for using the Artsy beta!"
 
   # Builds the app
-  ios_target_ids = ios_targets.keys
+  ios_target_ids = IOS_TARGETS.keys
   sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
 
-  ios_targets.each do |id, meta|
+  IOS_TARGETS.each do |id, meta|
     disable_automatic_code_signing(
       path: 'ios/Artsy.xcodeproj',
       team_id: '23KMWZ572J',
@@ -142,7 +144,7 @@ lane :promote_beta_ios do
 
   deliver(
     api_key: api_key,
-    app_version: app_json['version'],
+    app_version: APP_JSON['version'],
     build_number: build_number,
     submit_for_review: true,
     automatic_release: true,
@@ -167,19 +169,19 @@ lane :promote_beta_ios do
   UI.success('All done!')
 end
 
-date_str = DateTime.now.strftime("%Y.%m.%d.%H")
 lane :set_build_version_ios do
-  ios_targets.each do |id, meta|
-    system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{meta[:plist_path]}")
+  date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+  IOS_TARGETS.each do |id, meta|
+    system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{APP_JSON['version']}\" #{meta[:plist_path]}")
     system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{meta[:plist_path]}")
   end
 end
 
 lane :set_git_properties_ios do
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitShortHash #{git_commit_short_hash}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitHash #{git_commit_hash}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITCommitDate #{git_commit_date_str}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{git_remote_origin_url}\" #{app_plist}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitShortHash #{GIT_COMMIT_SHORT_HASH}\" #{APP_PLIST}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitHash #{GIT_COMMIT_HASH}\" #{APP_PLIST}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITCommitDate #{GIT_COMMIT_DATE_STR}\" #{APP_PLIST}")
+  system("/usr/libexec/PlistBuddy -c \"Set GITRemoteOriginURL #{GIT_REMOTE_ORIGIN_URL}\" #{APP_PLIST}")
 end
 
 # This is a lane that is used to release the app on Apple Store Connect
@@ -323,11 +325,10 @@ lane :promote_beta_android do
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
-build_gradle = "../android/app/build.gradle"
 lane :set_build_version_android do |options|
   version_code = options[:version_code]
 
-  next_version_name = app_json['version']
+  next_version_name = APP_JSON['version']
 
   if version_code.nil?
     current_version_code = google_play_track_version_codes(
@@ -338,12 +339,12 @@ lane :set_build_version_android do |options|
 
   next_version_code = version_code
 
-  contents = File.read(build_gradle)
+  contents = File.read(BUILD_GRADLE)
 
   contents = contents.gsub(/(versionName) .*/, "\\1 \"#{next_version_name}\"")
   contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{next_version_code}")
 
-  File.open(build_gradle, 'w') do |file|
+  File.open(BUILD_GRADLE, 'w') do |file|
     file.puts contents
   end
 
@@ -351,23 +352,23 @@ lane :set_build_version_android do |options|
 end
 
 lane :set_git_properties_android do
-  contents = File.read(build_gradle)
+  contents = File.read(BUILD_GRADLE)
 
-  contents = contents.gsub(/(GITCommitShortHash.* '").*("')/, "\\1#{git_commit_short_hash}\\2")
-  contents = contents.gsub(/(GITCommitHash.* '").*("')/, "\\1#{git_commit_hash}\\2")
-  contents = contents.gsub(/(GITCommitDate.* '").*("')/, "\\1#{git_commit_date_str}\\2")
-  contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{git_remote_origin_url}\\2")
+  contents = contents.gsub(/(GITCommitShortHash.* '").*("')/, "\\1#{GIT_COMMIT_SHORT_HASH}\\2")
+  contents = contents.gsub(/(GITCommitHash.* '").*("')/, "\\1#{GIT_COMMIT_HASH}\\2")
+  contents = contents.gsub(/(GITCommitDate.* '").*("')/, "\\1#{GIT_COMMIT_DATE_STR}\\2")
+  contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{GIT_REMOTE_ORIGIN_URL}\\2")
 
-  File.open(build_gradle, 'w') do |file|
+  File.open(BUILD_GRADLE, 'w') do |file|
     file.puts contents
   end
 end
 
 lane :flag_android_beta do |options|
   is_android_beta = options[:is_android_beta]
-  app_json['isAndroidBeta'] = is_android_beta
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
+  APP_JSON['isAndroidBeta'] = is_android_beta
+  File.open(APP_JSON_PATH, 'w') do |file|
+    file.puts JSON.pretty_generate(APP_JSON)
   end
 end
 
@@ -376,9 +377,9 @@ end
 desc "Updates the version string in app.json"
 lane :update_version_string do
   new_version = prompt(text: "What is the new human-readable release version?")
-  app_json['version'] = new_version
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
+  APP_JSON['version'] = new_version
+  File.open(APP_JSON_PATH, 'w') do |file|
+    file.puts JSON.pretty_generate(APP_JSON)
   end
 end
 
