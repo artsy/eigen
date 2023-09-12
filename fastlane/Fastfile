@@ -343,9 +343,7 @@ lane :set_build_version_android do |options|
   contents = contents.gsub(/(versionName) .*/, "\\1 \"#{next_version_name}\"")
   contents = contents.gsub(/(versionCode) (.*)/, "\\1 #{next_version_code}")
 
-  File.open(BUILD_GRADLE, 'w') do |file|
-    file.puts contents
-  end
+  write_contents_to_file(BUILD_GRADLE, contents)
 
   [next_version_name, next_version_code]
 end
@@ -358,17 +356,13 @@ lane :set_git_properties_android do
   contents = contents.gsub(/(GITCommitDate.* '").*("')/, "\\1#{GIT_COMMIT_DATE_STR}\\2")
   contents = contents.gsub(/(GITRemoteOriginURL.* '").*("')/, "\\1#{GIT_REMOTE_ORIGIN_URL}\\2")
 
-  File.open(BUILD_GRADLE, 'w') do |file|
-    file.puts contents
-  end
+  write_contents_to_file(BUILD_GRADLE, contents)
 end
 
 lane :flag_android_beta do |options|
   is_android_beta = options[:is_android_beta]
   APP_JSON['isAndroidBeta'] = is_android_beta
-  File.open(APP_JSON_PATH, 'w') do |file|
-    file.puts JSON.pretty_generate(APP_JSON)
-  end
+  write_contents_to_file(APP_JSON_PATH, JSON.pretty_generate(APP_JSON))
 end
 
 # Utility and Notification Lanes
@@ -377,9 +371,7 @@ desc "Updates the version string in app.json"
 lane :update_version_string do
   new_version = prompt(text: "What is the new human-readable release version?")
   APP_JSON['version'] = new_version
-  File.open(APP_JSON_PATH, 'w') do |file|
-    file.puts JSON.pretty_generate(APP_JSON)
-  end
+  write_contents_to_file(APP_JSON_PATH, JSON.pretty_generate(APP_JSON))
 end
 
 desc "Uploads sourcemaps, bundles and dsyms to sentry"
@@ -571,6 +563,14 @@ lane :check_flags do
     https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
   MSG
   slack(message: message, default_payloads: [])
+end
+
+def write_contents_to_file(path, contents)
+  File.open(path, 'w') do |file|
+    file.puts contents
+  end
+rescue => e
+  UI.error("Failed to write to #{path}: #{e.message}")
 end
 
 error do |lane, exception|
