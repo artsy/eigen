@@ -37,13 +37,6 @@ before_all do
   setup_circle_ci
 end
 
-# Common shipping lanes
-
-lane :ship_beta do
-  ship_beta_ios
-  ship_beta_android
-end
-
 # iOS Lanes
 
 desc "Ships iOS beta to TestFlight"
@@ -98,6 +91,7 @@ lane :ship_beta_ios do
         groups: ['Artsy People', 'Applause People'])
 end
 
+desc "Promote a testflight iOS beta to the app store"
 lane :promote_beta_ios do
   api_key = generate_app_store_connect_api_key
 
@@ -140,6 +134,7 @@ lane :promote_beta_ios do
   UI.success('All done!')
 end
 
+desc "Set the build version in the iOS app plist"
 lane :set_build_version_ios do
   bundle_version = DateTime.now.strftime("%Y.%m.%d.%H")
   IOS_TARGETS.each do |id, meta|
@@ -149,6 +144,7 @@ lane :set_build_version_ios do
   bundle_version
 end
 
+desc "Set some git properties in iOS for reading in builds"
 lane :set_git_properties_ios do
   set_info_plist_value(path: APP_PLIST, key: 'GITCommitShortHash', value: GIT_COMMIT_SHORT_HASH)
   set_info_plist_value(path: APP_PLIST, key: 'GITCommitHash', value: GIT_COMMIT_HASH)
@@ -156,6 +152,7 @@ lane :set_git_properties_ios do
   set_info_plist_value(path: APP_PLIST, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
+desc "Create a new version in app store connect"
 lane :create_next_app_version do |options|
   api_key = generate_app_store_connect_api_key
 
@@ -174,6 +171,7 @@ end
 
 # Android Lanes
 
+desc "Ship android beta to play store"
 lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
@@ -212,6 +210,7 @@ lane :ship_beta_android_play_store do
   )
 end
 
+desc "Ship android beta to firebase"
 lane :ship_beta_android_firebase do
   sh("yarn jetifier")
   sh("yarn relay")
@@ -237,6 +236,7 @@ lane :ship_beta_android_firebase do
   )
 end
 
+desc "Promote a play store android beta to production"
 lane :promote_beta_android do
   # android versions are listed most recent first, limit to 20
   version_codes = google_play_track_version_codes(
@@ -268,6 +268,7 @@ lane :promote_beta_android do
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
+desc "Set the build version in the android app build.gradle"
 lane :set_build_version_android do |options|
   version_code = options[:version_code]
 
@@ -292,6 +293,7 @@ lane :set_build_version_android do |options|
   [next_version_name, next_version_code]
 end
 
+desc "Set some git properties on android for reading in builds"
 lane :set_git_properties_android do
   contents = File.read(BUILD_GRADLE)
 
@@ -303,6 +305,7 @@ lane :set_git_properties_android do
   write_contents_to_file(BUILD_GRADLE, contents)
 end
 
+desc "Set the android beta flag so we can differentiate betas in code"
 lane :flag_android_beta do |options|
   is_android_beta = options[:is_android_beta]
   $APP_JSON['isAndroidBeta'] = is_android_beta
