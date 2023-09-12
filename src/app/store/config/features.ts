@@ -282,8 +282,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   ARUseNewErrorMiddleware: {
     description: "Use updated error middleware",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "ARUseNewErrorMiddleware",
   },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
