@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -90,6 +91,50 @@ describe("Artist", () => {
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
       context_screen_owner_type: "Artist",
+    })
+  })
+
+  it("displays follow button for artist with formatted follow count", () => {
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          isFollowed: true,
+          counts: {
+            follows: 22000,
+          },
+        }
+      },
+    })
+
+    expect(getByText(/Following/)).toBeTruthy()
+    expect(getByText("22.0K")).toBeTruthy()
+  })
+
+  it("tracks follow change on follow button click", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          isFollowed: false,
+        }
+      },
+    })
+
+    expect(getByText("Follow")).toBeTruthy()
+    fireEvent.press(getByText("Follow"))
+
+    await flushPromiseQueue()
+
+    expect(postEventToProviders).toHaveBeenCalledTimes(2)
+    expect(postEventToProviders).toHaveBeenCalledWith({
+      action_name: "artistFollow",
+      action_type: "tap",
+      owner_id: '<mock-value-for-field-"internalID">',
+      owner_slug: '<mock-value-for-field-"slug">',
+      owner_type: "Artist",
     })
   })
 })

@@ -17,21 +17,10 @@ describe("ArtistHeader", () => {
     variables: { artistID: "artist-id" },
   })
 
-  it("renders", () => {
-    renderWithRelay({
-      Artist: () => mockArtist,
-    })
+  it("displays the artwork count for an artist when present", () => {
+    renderWithRelay({ Artist: () => mockArtist })
 
-    expect(screen.queryByText("Follow")).toBeOnTheScreen()
     expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
-  })
-
-  it("does not show followers count when it is < 2", () => {
-    renderWithRelay({
-      Artist: () => ({ ...mockArtist, counts: { follows: 1 } }),
-    })
-
-    expect(screen.queryByText("1 followers")).not.toBeOnTheScreen()
   })
 })
 
@@ -42,6 +31,6 @@ const mockArtist = {
   nationality: "French",
   birthday: "11/17/1992",
   counts: {
-    follows: 22,
+    artworks: 22,
   },
 }

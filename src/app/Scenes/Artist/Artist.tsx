@@ -17,7 +17,9 @@ import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.g
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import {
   FilterArray,
   filterArtworksParams,
@@ -36,8 +38,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect } from "react"
-import { ActivityIndicator, TouchableOpacity, View } from "react-native"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -51,6 +53,7 @@ interface ArtistProps {
   fetchCriteriaError: Error | null
   predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
+  environment?: RelayModernEnvironment
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
@@ -64,8 +67,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     auctionResultsInitialFilters,
   } = props
 
+  const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
+  const { handleFollowToggle } = useFollowArtist(props.artistAboveTheFold)
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -106,14 +111,23 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
-              <TouchableOpacity onPress={handleSharePress}>
-                <ShareIcon width={23} height={23} />
-              </TouchableOpacity>
+              <ArtistHeaderNavRight
+                artist={artistAboveTheFold}
+                onSharePress={handleSharePress}
+                onFollowPress={handleFollowToggle}
+              />
             ),
             onBack: goBack,
           }}
           BelowTitleHeaderComponent={() => (
-            <ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />
+            <ArtistHeaderFragmentContainer
+              artist={artistAboveTheFold!}
+              onLayout={({ nativeEvent }) => {
+                if (headerHeight !== nativeEvent.layout.height) {
+                  setHeaderHeight(nativeEvent.layout.height)
+                }
+              }}
+            />
           )}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
@@ -170,6 +184,9 @@ export const ArtistScreenQuery = graphql`
     artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
+      ...useFollowArtist_artist
+      ...ArtistHeaderNavRight_artist
+      id
       internalID
       slug
       href
