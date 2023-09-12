@@ -1,12 +1,10 @@
+import { Button, Flex, Pill, Text, useScreenDimensions, useTheme, Box } from "@artsy/palette-mobile"
 import {
-  Button,
-  Flex,
-  Pill,
-  Text,
-  Box,
-  /* useScreenDimensions ,*/ useTheme,
-} from "@artsy/palette-mobile"
+  BrowseSimilarWorksModalContentQuery,
+  FilterArtworksInput,
+} from "__generated__/BrowseSimilarWorksModalContentQuery.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CreateSavedSearchAlertProps } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -15,15 +13,20 @@ import {
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
+import { navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, useLazyLoadQuery } from "react-relay"
+
+const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 export const BrowseSimilarWorksModalContent: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
   const { attributes, aggregations, entity, onClosePress } = params
   const { localizedUnit } = useLocalizedUnit()
-  // const screen = useScreenDimensions()
   const { space } = useTheme()
   const { bottom: bottomInset } = useSafeAreaInsets()
 
@@ -60,13 +63,7 @@ export const BrowseSimilarWorksModalContent: React.FC<CreateSavedSearchAlertProp
                 </Pill>
               ))}
             </Flex>
-            {/* <GenericGrid
-          width={screen.width - space(2)}
-          artworks={artworksConnectionNodes}
-          onPress={(slug: string) => {
-            navigate(`artwork/${slug}`)
-          }}
-        /> */}
+            <SimilarArtworksContainer attributes={attributes} />
             <Button mt={2} block>
               Explore more on Artsy
             </Button>
@@ -76,3 +73,55 @@ export const BrowseSimilarWorksModalContent: React.FC<CreateSavedSearchAlertProp
     </SavedSearchStoreProvider>
   )
 }
+
+const similarArtworksQuery = graphql`
+  query BrowseSimilarWorksModalContentQuery($input: FilterArtworksInput, $first: Int) {
+    artworksConnection(first: $first, input: $input) {
+      counts {
+        total
+      }
+      edges {
+        node {
+          slug
+          ...GenericGrid_artworks
+        }
+      }
+    }
+  }
+`
+
+const SimilarArtworksPlaceholder: React.FC = () => {
+  const screen = useScreenDimensions()
+  const { space } = useTheme()
+  return <GenericGridPlaceholder width={screen.width - space(4)} />
+}
+
+const SimilarArtworksContainer: React.FC<{ attributes: any }> = withSuspense(({ attributes }) => {
+  const screen = useScreenDimensions()
+  const { space } = useTheme()
+
+  const data = useLazyLoadQuery<BrowseSimilarWorksModalContentQuery>(similarArtworksQuery, {
+    first: NUMBER_OF_ARTWORKS_TO_SHOW,
+    input: {
+      ...attributes,
+      forSale: true,
+      sort: "-published_at",
+    } as FilterArtworksInput,
+  })
+
+  if (!data || !data.artworksConnection) {
+    return null
+  }
+
+  const artworks = extractNodes(data.artworksConnection)
+
+  return (
+    <GenericGrid
+      width={screen.width - space(2)}
+      artworks={artworks}
+      onPress={(slug: string) => {
+        navigate(`artwork/${slug}`)
+      }}
+    />
+  )
+}, SimilarArtworksPlaceholder)

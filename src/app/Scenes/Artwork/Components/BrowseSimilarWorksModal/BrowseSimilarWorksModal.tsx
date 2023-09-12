@@ -1,8 +1,6 @@
 import { BrowseSimilarWorksModal_artwork$key } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
 import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-// import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { BrowseSimilarWorksModalContentWrapper } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
-
 import { graphql, useFragment } from "react-relay"
 
 interface BrowseSimilarWorksModalProps {
