@@ -167,22 +167,6 @@ lane :set_git_properties_ios do
   set_info_plist_value(path: APP_PLIST, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
-# This is a lane that is used to release the app on Apple Store Connect
-# When it has been approved an it's pending developer release
-lane :release_ios_app do |options|
-  # There seems to be some delta between spaceship + deliver token format
-  token = generate_spaceship_token
-
-  Spaceship::ConnectAPI.token = token
-
-  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
-  version = app.get_pending_release_app_store_version
-
-  unless version.nil?
-    Spaceship::ConnectAPI.post_app_store_version_release_request(app_store_version_id: version.id)
-  end
-end
-
 lane :create_next_app_version do |options|
   api_key = generate_app_store_connect_api_key
 
