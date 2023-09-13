@@ -14348,6 +14348,9 @@ type Query {
     # Returns the elements in the list that come after the specified cursor.
     after: String
 
+    # Returns saved searches associated with the provided artist IDs
+    artistIDs: [ID!]
+
     # Returns the elements in the list that come before the specified cursor.
     before: String
 
@@ -16566,7 +16569,12 @@ type SearchAggregationResults {
 # Search criteria
 type SearchCriteria {
   acquireable: Boolean
+
+  # Medium slug
   additionalGeneIDs: [String!]!
+
+  # Medium name
+  additionalGeneNames: [String!]!
   artistID: String @deprecated(reason: "Deprecated in favor of artistIDs array")
   artistIDs: [String!]
   artistsConnection(
