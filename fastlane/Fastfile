@@ -72,9 +72,17 @@ lane :ship_beta_ios do
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
   sh("yarn bundle:ios")
-  build_ios_app(workspace: 'ios/Artsy.xcworkspace', configuration: 'Store', silent: true)
+  build_ios_app(
+    workspace: 'ios/Artsy.xcworkspace',
+    configuration: 'Store',
+    silent: true
+  )
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
+  upload_sentry_artifacts(
+    sentry_release_name: sentry_release_name,
+    dist_version: bundle_version,
+    platform: "ios"
+  )
 
   # Send to the app store
   beta_app_review_info = {
@@ -86,12 +94,14 @@ lane :ship_beta_ios do
     demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
   }
 
-  pilot(api_key: api_key,
-        beta_app_review_info: beta_app_review_info,
-        changelog: beta_readme,
-        itc_provider: 'ArtsyInc',
-        distribute_external: true,
-        groups: ['Artsy People', 'Applause People'])
+  pilot(
+    api_key: api_key,
+    beta_app_review_info: beta_app_review_info,
+    changelog: beta_readme,
+    itc_provider: 'ArtsyInc',
+    distribute_external: true,
+    groups: ['Artsy People', 'Applause People']
+  )
 end
 
 desc "Promote a testflight iOS beta to the app store"
@@ -141,18 +151,20 @@ desc "Set the build version in the iOS app plist"
 lane :set_build_version_ios do
   bundle_version = DateTime.now.strftime("%Y.%m.%d.%H")
   IOS_TARGETS.each do |id, meta|
-    set_info_plist_value(path: meta[:plist_path], key: 'CFBundleShortVersionString', value: $APP_JSON['version'])
-    set_info_plist_value(path: meta[:plist_path], key: 'CFBundleVersion', value: bundle_version)
+    absolute_path = File.expand_path(meta[:plist_path])
+    set_info_plist_value(path: absolute_path, key: 'CFBundleShortVersionString', value: $APP_JSON['version'])
+    set_info_plist_value(path: absolute_path, key: 'CFBundleVersion', value: bundle_version)
   end
   bundle_version
 end
 
 desc "Set some git properties in iOS for reading in builds"
 lane :set_git_properties_ios do
-  set_info_plist_value(path: APP_PLIST, key: 'GITCommitShortHash', value: GIT_COMMIT_SHORT_HASH)
-  set_info_plist_value(path: APP_PLIST, key: 'GITCommitHash', value: GIT_COMMIT_HASH)
-  set_info_plist_value(path: APP_PLIST, key: 'GITCommitDate', value: GIT_COMMIT_DATE_STR)
-  set_info_plist_value(path: APP_PLIST, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
+  absolute_path = File.expand_path(APP_PLIST)
+  set_info_plist_value(path: absolute_path, key: 'GITCommitShortHash', value: GIT_COMMIT_SHORT_HASH)
+  set_info_plist_value(path: absolute_path, key: 'GITCommitHash', value: GIT_COMMIT_HASH)
+  set_info_plist_value(path: absolute_path, key: 'GITCommitDate', value: GIT_COMMIT_DATE_STR)
+  set_info_plist_value(path: absolute_path, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
 desc "Create a new version in app store connect"
@@ -199,7 +211,11 @@ lane :ship_beta_android do |options|
     flags: "--no-daemon -x bundleReleaseJsAndAssets",
   )
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+  upload_sentry_artifacts(
+    sentry_release_name: sentry_release_name,
+    dist_version: "#{vcode}",
+    platform: "android"
+  )
 
   deploy_android_beta(deployment_target: deployment_target)
 end
