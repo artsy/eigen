@@ -12,10 +12,10 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 interface Props {
   artist: ArtistHeader_artist$data
   relay: RelayProp
-  handleLayoutChange?: ViewProps["onLayout"]
+  onLayout?: ViewProps["onLayout"]
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, handleLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist, onLayout }) => {
   const { width } = useScreenDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const isTablet = isPad()
@@ -46,7 +46,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, handleLayoutChange }) =>
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
       updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
-      handleLayoutChange?.({ nativeEvent, ...rest })
+      onLayout?.({ nativeEvent, ...rest })
     }
   }
 
