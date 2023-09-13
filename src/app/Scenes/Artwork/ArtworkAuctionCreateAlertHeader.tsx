@@ -63,10 +63,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           size="large"
           variant="fillDark"
           haptic
-          onPress={() => {
-            tracking.trackEvent(tracks.tappedCreateAlertHeaderButton(id, slug))
-            setShowCreateArtworkAlertModal(true)
-          }}
+          onPress={() => setShowCreateArtworkAlertModal(true)}
           icon={<BellIcon fill="white100" />}
           flex={1}
         >
@@ -112,14 +109,6 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
 `
 
 const tracks = {
-  tappedCreateAlertHeaderButton: (id: string, slug: string) => ({
-    action: ActionType.tappedCreateAlert,
-    context_module: ContextModule.artworkClosedLotHeader,
-    context_screen_owner_type: OwnerType.artwork,
-    context_screen_owner_id: id,
-    context_screen_owner_slug: slug,
-  }),
-
   tappedBrowseSimilarWorksHeaderButton: (id: string, slug: string) => ({
     action: ActionType.tappedBrowseSimilarArtworks,
     context_module: ContextModule.artworkClosedLotHeader,
