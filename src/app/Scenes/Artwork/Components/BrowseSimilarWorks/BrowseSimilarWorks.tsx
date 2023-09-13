@@ -1,13 +1,13 @@
 import { Flex, Screen, Box, Spacer } from "@artsy/palette-mobile"
-import { BrowseSimilarWorksModalQuery } from "__generated__/BrowseSimilarWorksModalQuery.graphql"
-import { BrowseSimilarWorksModal_artwork$key } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
+import { BrowseSimilarWorksQuery } from "__generated__/BrowseSimilarWorksQuery.graphql"
+import { BrowseSimilarWorks_artwork$key } from "__generated__/BrowseSimilarWorks_artwork.graphql"
 import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { BrowseSimilarWorksModalContent } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContent"
+import { BrowseSimilarWorksContent } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksContent"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderRaggedText } from "app/utils/placeholders"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -35,16 +35,14 @@ const BrowseSimilarWorksPlaceholder: React.FC<{}> = () => {
   )
 }
 
-export interface BrowseSimilarWorksModalContentWrapperProps {
+export interface BrowseSimilarWorksProps {
   entity: SavedSearchEntity
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
 }
 
-const BrowseSimilarWorksModal: React.FC<{ artwork: BrowseSimilarWorksModal_artwork$key }> = (
-  props
-) => {
-  const artwork = useFragment(similarWorksModalFragment, props.artwork)
+const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> = (props) => {
+  const artwork = useFragment(similarWorksFragment, props.artwork)
 
   const artworkAlert = computeArtworkAlertProps(artwork)
 
@@ -52,28 +50,28 @@ const BrowseSimilarWorksModal: React.FC<{ artwork: BrowseSimilarWorksModal_artwo
     return null
   }
 
-  const params: BrowseSimilarWorksModalContentWrapperProps = {
+  const params: BrowseSimilarWorksProps = {
     aggregations: artworkAlert.aggregations!,
     attributes: artworkAlert.attributes!,
     entity: artworkAlert.entity!,
   }
 
-  return <BrowseSimilarWorksModalContent params={params} />
+  return <BrowseSimilarWorksContent params={params} />
 }
 
-export const BrowseSimilarWorksModalQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
+export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
   (props) => {
-    const data = useLazyLoadQuery<BrowseSimilarWorksModalQuery>(SimilarWorksModalQuery, {
+    const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(SimilarWorksQuery, {
       artworkID: props.artworkID,
     })
 
-    return <BrowseSimilarWorksModal artwork={data.artwork!} />
+    return <BrowseSimilarWorks artwork={data.artwork!} />
   },
   BrowseSimilarWorksPlaceholder
 )
 
-const similarWorksModalFragment = graphql`
-  fragment BrowseSimilarWorksModal_artwork on Artwork {
+const similarWorksFragment = graphql`
+  fragment BrowseSimilarWorks_artwork on Artwork {
     title
     internalID
     slug
@@ -93,10 +91,10 @@ const similarWorksModalFragment = graphql`
   }
 `
 
-const SimilarWorksModalQuery = graphql`
-  query BrowseSimilarWorksModalQuery($artworkID: String!) {
+const SimilarWorksQuery = graphql`
+  query BrowseSimilarWorksQuery($artworkID: String!) {
     artwork(id: $artworkID) {
-      ...BrowseSimilarWorksModal_artwork
+      ...BrowseSimilarWorks_artwork
     }
   }
 `

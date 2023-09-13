@@ -1,11 +1,11 @@
 import { Button, Flex, Pill, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import {
-  BrowseSimilarWorksModalContentQuery,
+  BrowseSimilarWorksContentQuery,
   FilterArtworksInput,
-} from "__generated__/BrowseSimilarWorksModalContentQuery.graphql"
+} from "__generated__/BrowseSimilarWorksContentQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { BrowseSimilarWorksModalContentWrapperProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
+import { BrowseSimilarWorksProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -17,13 +17,11 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
-export interface BrowseSimilarWorksModalContentProps {
-  params: BrowseSimilarWorksModalContentWrapperProps
+export interface BrowseSimilarWorksContentProps {
+  params: BrowseSimilarWorksProps
 }
 
-export const BrowseSimilarWorksModalContent: React.FC<BrowseSimilarWorksModalContentProps> = (
-  props
-) => {
+export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps> = (props) => {
   const { params } = props
   const { attributes, aggregations, entity } = params
   const { localizedUnit } = useLocalizedUnit()
@@ -61,7 +59,7 @@ export const BrowseSimilarWorksModalContent: React.FC<BrowseSimilarWorksModalCon
 }
 
 const similarArtworksQuery = graphql`
-  query BrowseSimilarWorksModalContentQuery($input: FilterArtworksInput, $first: Int) {
+  query BrowseSimilarWorksContentQuery($input: FilterArtworksInput, $first: Int) {
     artworksConnection(first: $first, input: $input) {
       counts {
         total
@@ -86,7 +84,7 @@ const SimilarArtworksContainer: React.FC<{ attributes: any }> = withSuspense(({ 
   const screen = useScreenDimensions()
   const { space } = useTheme()
 
-  const data = useLazyLoadQuery<BrowseSimilarWorksModalContentQuery>(similarArtworksQuery, {
+  const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
     first: NUMBER_OF_ARTWORKS_TO_SHOW,
     input: {
       ...attributes,
