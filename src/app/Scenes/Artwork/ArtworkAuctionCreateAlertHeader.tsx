@@ -21,7 +21,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     artwork
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const { title, artistNames, isInAuction, sale, saleArtwork, id, slug } = artworkData
+  const { title, artistNames, isInAuction, sale, saleArtwork, internalID, slug } = artworkData
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
@@ -78,7 +78,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           variant="outline"
           haptic
           onPress={() => {
-            tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(id, slug))
+            tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
           }}
           flex={1}
         >
@@ -94,7 +94,7 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
     title
     artistNames
     isInAuction
-    id
+    internalID
     slug
     sale {
       isClosed
@@ -110,11 +110,11 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
 `
 
 const tracks = {
-  tappedBrowseSimilarWorksHeaderButton: (id: string, slug: string) => ({
+  tappedBrowseSimilarWorksHeaderButton: (internalID: string, slug: string) => ({
     action: ActionType.tappedBrowseSimilarArtworks,
     context_module: ContextModule.artworkClosedLotHeader,
     context_screen_owner_type: OwnerType.artwork,
-    context_screen_owner_id: id,
+    context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
   }),
 }
