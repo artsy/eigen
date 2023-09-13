@@ -95,6 +95,20 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
+  const renderBelowTheHeaderComponent = useCallback(
+    () => (
+      <ArtistHeaderFragmentContainer
+        artist={artistAboveTheFold!}
+        onLayout={({ nativeEvent }) => {
+          if (headerHeight !== nativeEvent.layout.height) {
+            setHeaderHeight(nativeEvent.layout.height)
+          }
+        }}
+      />
+    ),
+    [artistAboveTheFold, headerHeight]
+  )
+
   return (
     <ProvideScreenTracking
       info={{
@@ -119,20 +133,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             ),
             onBack: goBack,
           }}
-          // TODO: fix how we pass the element in palette-mobile, probably needs to be ReactNode type/pattern
-          BelowTitleHeaderComponent={useCallback(
-            () => (
-              <ArtistHeaderFragmentContainer
-                artist={artistAboveTheFold!}
-                onLayout={({ nativeEvent }) => {
-                  if (headerHeight !== nativeEvent.layout.height) {
-                    setHeaderHeight(nativeEvent.layout.height)
-                  }
-                }}
-              />
-            ),
-            []
-          )}
+          BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
