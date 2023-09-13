@@ -74,7 +74,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             icon={<BellIcon fill="black100" />}
             flex={1}
           >
-            Manage Alerts
+            Manage your Alerts
           </Button>
         ) : (
           <Button
