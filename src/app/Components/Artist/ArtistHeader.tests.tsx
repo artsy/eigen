@@ -6,15 +6,18 @@ import { graphql } from "react-relay"
 
 describe("ArtistHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({
-    Component: ({ artist }) => <ArtistHeaderFragmentContainer artist={artist!} />,
+    Component: ({ artist, me }) => <ArtistHeaderFragmentContainer artist={artist!} me={me} />,
     query: graphql`
-      query ArtistHeaderTestsQuery($artistID: String!) @relay_test_operation {
+      query ArtistHeaderTestsQuery($artistID: String!, $artistIDAsID: ID!) @relay_test_operation {
         artist(id: $artistID) {
           ...ArtistHeader_artist
         }
+        me {
+          ...ArtistHeader_me @arguments(artistID: $artistIDAsID)
+        }
       }
     `,
-    variables: { artistID: "artist-id" },
+    variables: { artistID: "artist-id", artistIDAsID: "artist-id" },
   })
 
   it("displays the artwork count for an artist when present", () => {

@@ -9,6 +9,7 @@ import {
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
+import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
 import { pluralize } from "app/utils/pluralize"
@@ -21,11 +22,12 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$data
+  me: ArtistHeader_me$data
   relay: RelayProp
   onLayoutChange?: ViewProps["onLayout"]
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
   const { width } = useScreenDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const isTablet = isPad()
@@ -64,6 +66,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const hasAlerts = true
   const numberOfAlerts = 2
 
+  console.log("me.savedSearchesConnection!.totalCount", me.savedSearchesConnection!.totalCount)
+
   return (
     <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artist.coverArtwork?.image?.url && (
@@ -92,7 +96,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
         </Flex>
       </Box>
 
-      {!!hasAlerts && (
+      {Number(me?.savedSearchesConnection?.totalCount) > 0 && (
         <Box mx={2} maxWidth={120}>
           <Touchable
             haptic
@@ -101,7 +105,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             }}
           >
             <Text variant="xs" color="blue100">
-              {numberOfAlerts} {pluralize("Alert", numberOfAlerts)} Set
+              {me.savedSearchesConnection!.totalCount}{" "}
+              {pluralize("Alert", me.savedSearchesConnection!.totalCount!)} Set
             </Text>
           </Touchable>
         </Box>
@@ -123,6 +128,13 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       internalID
       name
       nationality
+    }
+  `,
+  me: graphql`
+    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "ID!" }) {
+      savedSearchesConnection(first: 10, artistIDs: [$artistID]) {
+        totalCount
+      }
     }
   `,
 })
