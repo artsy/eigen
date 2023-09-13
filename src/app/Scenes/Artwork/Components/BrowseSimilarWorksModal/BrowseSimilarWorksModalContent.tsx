@@ -68,9 +68,6 @@ export const BrowseSimilarWorksModalContent: React.FC<BrowseSimilarWorksModalCon
             ))}
           </Flex>
           <SimilarArtworksContainer attributes={attributes} />
-          <Button mt={2} block>
-            Explore more on Artsy
-          </Button>
         </ScrollView>
       </Flex>
     </SavedSearchStoreProvider>
@@ -113,18 +110,23 @@ const SimilarArtworksContainer: React.FC<{ attributes: any }> = withSuspense(({ 
   })
 
   if (!data || !data.artworksConnection) {
-    return null
+    return <Text>There aren’t any works available that meet the criteria at this time.</Text>
   }
 
   const artworks = extractNodes(data.artworksConnection)
 
   return (
-    <GenericGrid
-      width={screen.width - space(2)}
-      artworks={artworks}
-      onPress={(slug: string) => {
-        navigate(`artwork/${slug}`)
-      }}
-    />
+    <>
+      <GenericGrid
+        width={screen.width - space(2)}
+        artworks={artworks}
+        onPress={(slug: string) => {
+          navigate(`artwork/${slug}`)
+        }}
+      />
+      <Button mt={2} block>
+        Explore more on Artsy
+      </Button>
+    </>
   )
 }, SimilarArtworksPlaceholder)
