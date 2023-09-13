@@ -28,10 +28,14 @@ import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/In
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { Dimensions } from "react-native"
-import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -41,8 +45,6 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   relay: RelayPaginationProp
   predefinedFilters?: FilterArray
 }
-
-const ESTIMATED_ITEM_SIZE = 272
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   artist,
@@ -93,8 +95,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
     setInitialFilterStateAction(filters)
   }, [])
-
-  const numColumns = isTablet() ? 3 : 2
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -202,9 +202,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     <>
       <Tabs.Masonry
         data={artworks}
-        numColumns={numColumns}
-        // this number is the estimated size of the artworkGridItem component
-        estimatedItemSize={ESTIMATED_ITEM_SIZE}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
@@ -217,19 +216,20 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           </Box>
         }
         keyExtractor={(item) => item.id}
-        renderItem={({ item, columnIndex }) => {
+        renderItem={({ item, index, columnIndex }) => {
           const imgAspectRatio = item.image?.aspectRatio ?? 1
-          const imgWidth = width / numColumns - space(2) - space(1)
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
           const imgHeight = imgWidth / imgAspectRatio
 
           return (
             <Flex
               pl={columnIndex === 0 ? 0 : 1}
-              pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
               mt={2}
             >
               <ArtworkGridItem
                 {...props}
+                itemIndex={index}
                 contextScreenOwnerType={OwnerType.artist}
                 contextScreenOwnerId={artist.internalID}
                 contextScreenOwnerSlug={artist.slug}
@@ -241,7 +241,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           )
         }}
         onEndReached={loadMore}
-        onEndReachedThreshold={0.3}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
