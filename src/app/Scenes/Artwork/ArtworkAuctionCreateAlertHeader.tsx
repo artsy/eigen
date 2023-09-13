@@ -68,7 +68,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           haptic
           onPress={() => setShowCreateArtworkAlertModal(true)}
           icon={<BellIcon fill="white100" />}
-          flex={1}
+          block
         >
           Create Alert
         </Button>
@@ -79,7 +79,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             variant="outline"
             haptic
             onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`)}
-            flex={1}
+            block
             mt={1}
           >
             Browse Similar Artworks

@@ -1,8 +1,16 @@
-import { Button, Flex, Pill, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Pill,
+  SimpleMessage,
+  Text,
+  useScreenDimensions,
+  useTheme,
+} from "@artsy/palette-mobile"
 import {
   BrowseSimilarWorksContentQuery,
   FilterArtworksInput,
 } from "__generated__/BrowseSimilarWorksContentQuery.graphql"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { BrowseSimilarWorksProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
@@ -61,12 +69,9 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
 const similarArtworksQuery = graphql`
   query BrowseSimilarWorksContentQuery($input: FilterArtworksInput, $first: Int) {
     artworksConnection(first: $first, input: $input) {
-      counts {
-        total
-      }
       edges {
         node {
-          slug
+          internalID
           ...GenericGrid_artworks
         }
       }
@@ -80,37 +85,39 @@ const SimilarArtworksPlaceholder: React.FC = () => {
   return <GenericGridPlaceholder width={screen.width - space(4)} />
 }
 
-const SimilarArtworksContainer: React.FC<{ attributes: any }> = withSuspense(({ attributes }) => {
-  const screen = useScreenDimensions()
-  const { space } = useTheme()
+const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes }> = withSuspense(
+  ({ attributes }) => {
+    const screen = useScreenDimensions()
+    const { space } = useTheme()
 
-  const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
-    first: NUMBER_OF_ARTWORKS_TO_SHOW,
-    input: {
-      ...attributes,
-      forSale: true,
-      sort: "-published_at",
-    } as FilterArtworksInput,
-  })
+    const data = useLazyLoadQuery<BrowseSimilarWorksContentQuery>(similarArtworksQuery, {
+      first: NUMBER_OF_ARTWORKS_TO_SHOW,
+      input: {
+        ...attributes,
+        forSale: true,
+        sort: "-published_at",
+      } as FilterArtworksInput,
+    })
 
-  if (!data || !data.artworksConnection) {
-    return <Text>There aren’t any works available that meet the criteria at this time.</Text>
-  }
+    if (!data || !data.artworksConnection) {
+      return (
+        <SimpleMessage>
+          There aren’t any works available that meet the criteria at this time.
+        </SimpleMessage>
+      )
+    }
 
-  const artworks = extractNodes(data.artworksConnection)
+    const artworks = extractNodes(data.artworksConnection)
 
-  return (
-    <>
+    return (
       <GenericGrid
         width={screen.width - space(2)}
         artworks={artworks}
-        onPress={(slug: string) => {
-          navigate(`artwork/${slug}`)
+        onPress={(internalID: string) => {
+          navigate(`artwork/${internalID}`)
         }}
       />
-      <Button mt={2} block>
-        Explore more on Artsy
-      </Button>
-    </>
-  )
-}, SimilarArtworksPlaceholder)
+    )
+  },
+  SimilarArtworksPlaceholder
+)
