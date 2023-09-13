@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
@@ -6,6 +7,7 @@ import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworkAuctionCreateAlertHeaderProps {
   artwork: ArtworkAuctionCreateAlertHeader_artwork$key
@@ -14,12 +16,13 @@ interface ArtworkAuctionCreateAlertHeaderProps {
 export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeaderProps> = ({
   artwork,
 }) => {
+  const tracking = useTracking()
   const artworkData = useFragment<ArtworkAuctionCreateAlertHeader_artwork$key>(
     artworkAuctionCreateAlertHeaderFragment,
     artwork
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const { title, artistNames, isInAuction, sale, saleArtwork } = artworkData
+  const { title, artistNames, isInAuction, sale, saleArtwork, internalID, slug } = artworkData
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
@@ -40,13 +43,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
       <CreateArtworkAlertModal
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
+        contextModule={ContextModule.artworkClosedLotHeader}
         visible={showCreateArtworkAlertModal}
       />
 
       <Flex flexDirection="column">
         <Text variant="lg">
-          Bidding for
-          {formattedArtistNames}{" "}
+          Bidding for {formattedArtistNames}{" "}
           <Text variant="lg" italic>
             {title?.trim() + " "}
           </Text>
@@ -91,7 +94,15 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
         <Spacer y={1} />
 
-        <Button size="large" variant="outline" haptic onPress={() => {}} flex={1}>
+        <Button
+          size="large"
+          variant="outline"
+          haptic
+          onPress={() => {
+            tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+          }}
+          flex={1}
+        >
           Browse Similar Artworks
         </Button>
       </Flex>
@@ -104,6 +115,8 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
     title
     artistNames
     isInAuction
+    internalID
+    slug
     sale {
       isClosed
       startAt
@@ -119,3 +132,13 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
     ...CreateArtworkAlertModal_artwork
   }
 `
+
+const tracks = {
+  tappedBrowseSimilarWorksHeaderButton: (internalID: string, slug: string) => ({
+    action: ActionType.tappedBrowseSimilarArtworks,
+    context_module: ContextModule.artworkClosedLotHeader,
+    context_screen_owner_type: OwnerType.artwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+  }),
+}
