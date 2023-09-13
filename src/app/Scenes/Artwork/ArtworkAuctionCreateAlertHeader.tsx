@@ -3,6 +3,7 @@ import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/Artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -30,6 +31,10 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     return null
   }
 
+  const isBidder = artworkData.myLotStandingManageAlerts?.[0]
+  const isHighest = artworkData.myLotStandingManageAlerts?.[0]?.isHighestBidder
+  const hasLostBid = isBidder && !isHighest
+
   return (
     <>
       <CreateArtworkAlertModal
@@ -51,22 +56,38 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         <Spacer y={1} />
 
         <Text variant="sm" color="black60">
-          Get notified when similar works become available, or browse hand picked artworks that
-          match this lot.
+          {hasLostBid
+            ? "We've created an alert for you for similar works. Browse hand picked artworks that match this lot"
+            : "Get notified when similar works become available, or browse hand picked artworks that match this lot."}
         </Text>
 
         <Spacer y={2} />
 
-        <Button
-          size="large"
-          variant="fillDark"
-          haptic
-          onPress={() => setShowCreateArtworkAlertModal(true)}
-          icon={<BellIcon fill="white100" />}
-          flex={1}
-        >
-          Create Alert
-        </Button>
+        {hasLostBid ? (
+          <Button
+            size="large"
+            variant="outline"
+            haptic
+            onPress={() => {
+              navigate("/my-profile/saved-search-alerts")
+            }}
+            icon={<BellIcon fill="black100" />}
+            flex={1}
+          >
+            Manage your Alerts
+          </Button>
+        ) : (
+          <Button
+            size="large"
+            variant="fillDark"
+            haptic
+            onPress={() => setShowCreateArtworkAlertModal(true)}
+            icon={<BellIcon fill="white100" />}
+            flex={1}
+          >
+            Create Alert
+          </Button>
+        )}
 
         <Spacer y={1} />
 
@@ -91,6 +112,9 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
       endAt
       endedAt
       extendedBiddingEndAt
+    }
+    myLotStandingManageAlerts: myLotStanding {
+      isHighestBidder
     }
     ...CreateArtworkAlertModal_artwork
   }
