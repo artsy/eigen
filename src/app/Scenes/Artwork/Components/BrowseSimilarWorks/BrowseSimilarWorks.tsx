@@ -20,10 +20,9 @@ const BrowseSimilarWorksPlaceholder: React.FC<{}> = () => {
         testID="MatchingArtworksPlaceholder"
         borderTopWidth={1}
         borderTopColor="black30"
-        pt={1}
-        pb={2}
+        mt={1}
       />
-      <Flex mx={2}>
+      <Flex mx={2} my={2}>
         <PlaceholderRaggedText numLines={2} textHeight={20} />
         <Spacer y={2} />
         <Flex flexDirection="row">
