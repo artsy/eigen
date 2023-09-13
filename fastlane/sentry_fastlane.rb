@@ -38,11 +38,16 @@ lane :upload_sentry_artifacts do |options|
   puts "Created a release for #{project_slug}"
 
   if platform == "ios"
-    upload_dsyms_to_sentry(
-      org_slug: org_slug,
-      project_slug: project_slug,
-      sentry_cli_path: sentry_cli_path
-    )
+    begin
+      upload_dsyms_to_sentry(
+        org_slug: org_slug,
+        project_slug: project_slug,
+        sentry_cli_path: sentry_cli_path
+      )
+    rescue StandardError => e
+      message = 'Uploading dsyms to sentry failed.'
+      handle_error(e, message)
+    end
   end
 
   begin
@@ -99,16 +104,18 @@ def platform_settings(platform)
 end
 
 def handle_error(e, message)
-  puts message
-  slack(
-    message: message,
-    success: false,
-    payload: {
-      'Circle Build' => ENV['CIRCLE_BUILD_URL'],
-      'Exception' => e.message
-    },
-    default_payloads: [:last_git_commit_hash]
-  )
-  puts e.message
-  puts e.backtrace.join("\n\t")
+  if is_ci
+    slack(
+      message: message,
+      success: false,
+      payload: {
+        'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+        'Exception' => e.message
+      },
+      default_payloads: [:last_git_commit_hash]
+    )
+  end
+  UI.error(message)
+  UI.error(e.message)
+  UI.message(e.backtrace.join("\n\t"))
 end
