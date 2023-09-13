@@ -11839,6 +11839,9 @@ type Me implements Node {
   savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
   savedSearchesConnection(
     after: String
+
+    # Returns saved searches associated with the provided artist IDs
+    artistIDs: [ID!]
     before: String
     first: Int
     last: Int
