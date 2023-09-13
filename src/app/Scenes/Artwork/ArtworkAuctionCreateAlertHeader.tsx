@@ -24,6 +24,9 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
+  const shouldShowBrowseMoreButton =
+    artworkData.savedSearch?.suggestedArtworksConnection?.totalCount ?? 0
+
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
   const displayAuctionCreateAlertHeader = hasArtists && isInAuction && isLotClosedOrBiddingEnded
@@ -70,17 +73,18 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           Create Alert
         </Button>
 
-        <Spacer y={1} />
-
-        <Button
-          size="large"
-          variant="outline"
-          haptic
-          onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`)}
-          flex={1}
-        >
-          Browse Similar Artworks
-        </Button>
+        {shouldShowBrowseMoreButton > 0 && (
+          <Button
+            size="large"
+            variant="outline"
+            haptic
+            onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`)}
+            flex={1}
+            mt={1}
+          >
+            Browse Similar Artworks
+          </Button>
+        )}
       </Flex>
     </>
   )
@@ -100,6 +104,11 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
       endAt
       endedAt
       extendedBiddingEndAt
+    }
+    savedSearch {
+      suggestedArtworksConnection {
+        totalCount
+      }
     }
     ...CreateArtworkAlertModal_artwork
   }
