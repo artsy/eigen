@@ -46,6 +46,7 @@ lane :ship_beta_ios do
   api_key = generate_app_store_connect_api_key
 
   bundle_version = set_build_version_ios
+  set_git_properties_ios
 
   latest_version = $APP_JSON['version']
 
@@ -183,7 +184,9 @@ lane :ship_beta_android do |options|
   is_android_beta = deployment_target == 'firebase'
   flag_android_beta(is_android_beta: is_android_beta)
 
+
   vname, vcode = set_build_version_android
+  set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
