@@ -369,7 +369,6 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   Artwork: reactModule(
-    // here
     ArtworkPageableScreen,
     {
       hidesBackButton: true,

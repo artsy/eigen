@@ -3,16 +3,11 @@ import {
   BrowseSimilarWorksModalContentQuery,
   FilterArtworksInput,
 } from "__generated__/BrowseSimilarWorksModalContentQuery.graphql"
-import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { CreateSavedSearchAlertParams } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import {
-  SavedSearchStoreProvider,
-  savedSearchModel,
-} from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { BrowseSimilarWorksModalContentWrapperProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
@@ -23,14 +18,14 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
 export interface BrowseSimilarWorksModalContentProps {
-  params: CreateSavedSearchAlertParams
+  params: BrowseSimilarWorksModalContentWrapperProps
 }
 
 export const BrowseSimilarWorksModalContent: React.FC<BrowseSimilarWorksModalContentProps> = (
   props
 ) => {
   const { params } = props
-  const { attributes, aggregations, entity, onClosePress } = params
+  const { attributes, aggregations, entity } = params
   const { localizedUnit } = useLocalizedUnit()
   const { space } = useTheme()
   const { bottom: bottomInset } = useSafeAreaInsets()
@@ -38,39 +33,30 @@ export const BrowseSimilarWorksModalContent: React.FC<BrowseSimilarWorksModalCon
   const pills = extractPills({ attributes, aggregations, unit: localizedUnit, entity })
 
   return (
-    <SavedSearchStoreProvider
-      runtimeModel={{
-        ...savedSearchModel,
-        attributes: attributes as SearchCriteriaAttributes,
-        aggregations,
-        entity,
-      }}
-    >
-      <Flex flex={1}>
-        <FancyModalHeader
-          onLeftButtonPress={onClosePress}
-        >{`Works by ${entity.artists[0].name}`}</FancyModalHeader>
-        <ScrollView
-          contentContainerStyle={{
-            paddingBottom: bottomInset,
-            paddingHorizontal: space(2),
-          }}
-        >
-          <Text color="black60" my={2}>
-            Available works you may have missed based on similar filters listed below.
-          </Text>
+    <Flex flex={1}>
+      <FancyModalHeader
+        onLeftButtonPress={goBack}
+      >{`Works by ${entity.artists[0].name}`}</FancyModalHeader>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: bottomInset,
+          paddingHorizontal: space(2),
+        }}
+      >
+        <Text color="black60" my={2}>
+          Available works you may have missed based on similar filters listed below.
+        </Text>
 
-          <Flex flexDirection="row" flexWrap="wrap" mb={2}>
-            {pills.map((pill, index) => (
-              <Pill key={index} variant="filter" disabled mr={1}>
-                {pill.label}
-              </Pill>
-            ))}
-          </Flex>
-          <SimilarArtworksContainer attributes={attributes} />
-        </ScrollView>
-      </Flex>
-    </SavedSearchStoreProvider>
+        <Flex flexDirection="row" flexWrap="wrap" mb={2}>
+          {pills.map((pill, index) => (
+            <Pill key={index} variant="filter" disabled mr={1}>
+              {pill.label}
+            </Pill>
+          ))}
+        </Flex>
+        <SimilarArtworksContainer attributes={attributes} />
+      </ScrollView>
+    </Flex>
   )
 }
 

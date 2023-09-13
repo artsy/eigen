@@ -2,7 +2,12 @@ import { Flex, Screen, Box, Spacer } from "@artsy/palette-mobile"
 import { BrowseSimilarWorksModalQuery } from "__generated__/BrowseSimilarWorksModalQuery.graphql"
 import { BrowseSimilarWorksModal_artwork$key } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
 import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { BrowseSimilarWorksModalContentWrapper } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { BrowseSimilarWorksModalContent } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContent"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderRaggedText } from "app/utils/placeholders"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -30,6 +35,12 @@ const BrowseSimilarWorksPlaceholder: React.FC<{}> = () => {
   )
 }
 
+export interface BrowseSimilarWorksModalContentWrapperProps {
+  entity: SavedSearchEntity
+  attributes: SearchCriteriaAttributes
+  aggregations: Aggregations
+}
+
 const BrowseSimilarWorksModal: React.FC<{ artwork: BrowseSimilarWorksModal_artwork$key }> = (
   props
 ) => {
@@ -41,13 +52,13 @@ const BrowseSimilarWorksModal: React.FC<{ artwork: BrowseSimilarWorksModal_artwo
     return null
   }
 
-  return (
-    <BrowseSimilarWorksModalContentWrapper
-      entity={artworkAlert.entity!}
-      attributes={artworkAlert.attributes!}
-      aggregations={artworkAlert.aggregations!}
-    />
-  )
+  const params: BrowseSimilarWorksModalContentWrapperProps = {
+    aggregations: artworkAlert.aggregations!,
+    attributes: artworkAlert.attributes!,
+    entity: artworkAlert.entity!,
+  }
+
+  return <BrowseSimilarWorksModalContent params={params} />
 }
 
 export const BrowseSimilarWorksModalQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(

@@ -76,7 +76,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           size="large"
           variant="outline"
           haptic
-          onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`, {})}
+          onPress={() => navigate(`/artwork/${internalID}/browse-similar-works`)}
           flex={1}
         >
           Browse Similar Artworks
