@@ -25,15 +25,17 @@ export interface CreateSavedSearchModalProps {
   aggregations: Aggregations
   closeModal: () => void
   onComplete?: () => void
+  contextModule?: ContextModule
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, entity, attributes, aggregations, closeModal, onComplete } = props
+  const { visible, entity, attributes, aggregations, closeModal, onComplete, contextModule } = props
   const tracking = useTracking()
 
   useEffect(() => {
     if (visible) {
       const event = tracks.tappedCreateAlert({
+        contextModule: contextModule,
         ownerId: entity?.owner.id!,
         ownerType: entity?.owner.type!,
         ownerSlug: entity?.owner.slug!,
@@ -65,6 +67,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 }
 
 interface TappedCreateAlertOptions {
+  contextModule?: ContextModule
   ownerType: ScreenOwnerType
   ownerId: string
   ownerSlug: string
@@ -72,6 +75,7 @@ interface TappedCreateAlertOptions {
 
 export const tracks = {
   tappedCreateAlert: ({
+    contextModule,
     ownerType,
     ownerId,
     ownerSlug,
@@ -80,7 +84,7 @@ export const tracks = {
     context_screen_owner_type: ownerType,
     context_screen_owner_id: ownerId,
     context_screen_owner_slug: ownerSlug,
-    context_module: "ArtworkScreenHeader" as ContextModule,
+    context_module: contextModule ? contextModule : ("ArtworkScreenHeader" as ContextModule),
   }),
   toggleSavedSearch: (
     enabled: boolean,

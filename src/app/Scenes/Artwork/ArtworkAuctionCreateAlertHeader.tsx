@@ -38,6 +38,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
       <CreateArtworkAlertModal
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
+        contextModule={ContextModule.artworkClosedLotHeader}
         visible={showCreateArtworkAlertModal}
       />
 
