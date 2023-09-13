@@ -67,7 +67,7 @@ export const CodePushOptions = () => {
   `
 
   return (
-    <CollapseMenu title="Code Push" chevronStyle={{ marginRight: 10 }}>
+    <CollapseMenu title="Code Push" chevronStyle={{ marginRight: 10 }} closed>
       <Flex mx={2} my={2}>
         {!!currentRelease && (
           <>
