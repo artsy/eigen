@@ -1,13 +1,33 @@
-import { Box } from "@artsy/palette-mobile"
+import { Flex, Screen, Box, Spacer } from "@artsy/palette-mobile"
 import { BrowseSimilarWorksModalQuery } from "__generated__/BrowseSimilarWorksModalQuery.graphql"
 import { BrowseSimilarWorksModal_artwork$key } from "__generated__/BrowseSimilarWorksModal_artwork.graphql"
 import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { BrowseSimilarWorksModalContentWrapper } from "app/Scenes/Artwork/Components/BrowseSimilarWorksModal/BrowseSimilarWorksModalContentWrapper"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { PlaceholderBox, PlaceholderRaggedText } from "app/utils/placeholders"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 const BrowseSimilarWorksPlaceholder: React.FC<{}> = () => {
-  return <Box backgroundColor="red" height={200}></Box>
+  return (
+    <Box>
+      <Screen.Header />
+      <Box
+        testID="MatchingArtworksPlaceholder"
+        borderTopWidth={1}
+        borderTopColor="black30"
+        pt={1}
+        pb={2}
+      />
+      <Flex mx={2}>
+        <PlaceholderRaggedText numLines={2} textHeight={20} />
+        <Spacer y={2} />
+        <Flex flexDirection="row">
+          <PlaceholderBox width={70} height={30} marginRight={10} />
+          <PlaceholderBox width={100} height={30} />
+        </Flex>
+      </Flex>
+    </Box>
+  )
 }
 
 const BrowseSimilarWorksModal: React.FC<{ artwork: BrowseSimilarWorksModal_artwork$key }> = (
