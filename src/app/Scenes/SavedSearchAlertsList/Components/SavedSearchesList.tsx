@@ -220,7 +220,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(
-        artistIDs: { type: "[ID!]", defaultValue: [] }
+        artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
         sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
@@ -255,7 +255,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     },
     query: graphql`
       query SavedSearchesListQuery(
-        $artistIDs: [ID!]
+        $artistIDs: [String!]
         $count: Int!
         $cursor: String
         $sort: SavedSearchesSortEnum

@@ -48,17 +48,18 @@ describe("Saved search banner on artist screen", () => {
   const getTree = (searchCriteriaID?: string) =>
     renderWithHookWrappersTL(
       <ArtistQueryRenderer
-        artistID="ignored"
+        artistID="ignore"
         environment={environment as unknown as RelayModernEnvironment}
         searchCriteriaID={searchCriteriaID}
         initialTab="Artworks"
       />
     )
 
-  it("should convert the criteria attributes to the filter params format", async () => {
+  fit("should convert the criteria attributes to the filter params format", async () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
+
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
@@ -97,19 +98,21 @@ describe("Saved search banner on artist screen", () => {
 const MockSearchCriteriaQuery = {
   Me() {
     return {
-      savedSearch: {
-        attributionClass: ["limited edition", "open edition"],
-        acquireable: true,
-        inquireableOnly: true,
-        offerable: null,
-        atAuction: null,
-        width: null,
-        height: null,
+      me: {
+        savedSearch: {
+          attributionClass: ["limited edition", "open edition"],
+          acquireable: true,
+          inquireableOnly: true,
+          offerable: null,
+          atAuction: null,
+          width: null,
+          height: null,
+        },
       },
     }
   },
 }
-const MockArtistAboveTheFoldQuery = {
+const MockArtistAboveTheFoldQuery: MockResolvers = {
   Artist() {
     return {
       has_metadata: true,

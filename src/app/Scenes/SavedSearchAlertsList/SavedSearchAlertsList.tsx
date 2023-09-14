@@ -8,21 +8,21 @@ import { SavedSearchesListPaginationContainer } from "./Components/SavedSearches
 import { SortButton } from "./Components/SortButton"
 
 interface Props {
-  artistIDs?: string[]
+  artistID: string
 }
-export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistIDs = [] }) => {
+export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistID }) => {
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query SavedSearchAlertsListQuery {
+        query SavedSearchAlertsListQuery($artistIDs: [String!]) {
           me {
-            ...SavedSearchesList_me
+            ...SavedSearchesList_me @arguments(artistIDs: $artistIDs)
           }
         }
       `}
       variables={{
-        artistIDs,
+        artistIDs: [artistID],
       }}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
@@ -33,7 +33,7 @@ export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistIDs 
           </PageWithSimpleHeader>
         ),
         initialProps: {
-          artistIDs,
+          artistIDs: [artistID],
         },
       })}
     />

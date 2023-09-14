@@ -62,12 +62,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
     }
   }
 
-  // TODO: Remove this when we have real data
-  const hasAlerts = true
-  const numberOfAlerts = 2
-
-  console.log("me.savedSearchesConnection!.totalCount", me.savedSearchesConnection!.totalCount)
-
   return (
     <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artist.coverArtwork?.image?.url && (
@@ -101,7 +95,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           <Touchable
             haptic
             onPress={() => {
-              navigate(`/my-profile/saved-search-alerts?artistIDs=${artist.internalID}`)
+              navigate(`/my-profile/saved-search-alerts?artistID=${artist.internalID}`)
             }}
           >
             <Text variant="xs" color="blue100">
@@ -111,7 +105,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           </Touchable>
         </Box>
       )}
-      <Spacer y={1} />
     </Flex>
   )
 }
@@ -131,7 +124,7 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
     }
   `,
   me: graphql`
-    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "ID!" }) {
+    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
       savedSearchesConnection(first: 10, artistIDs: [$artistID]) {
         totalCount
       }

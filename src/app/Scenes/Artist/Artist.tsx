@@ -188,11 +188,7 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery(
-    $artistID: String!
-    $artistIDAsID: ID!
-    $input: FilterArtworksInput
-  ) {
+  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
     artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
@@ -208,7 +204,7 @@ export const ArtistScreenQuery = graphql`
       }
     }
     me {
-      ...ArtistHeader_me @arguments(artistID: $artistIDAsID)
+      ...ArtistHeader_me @arguments(artistID: $artistID)
     }
   }
 `
@@ -263,7 +259,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 query: ArtistScreenQuery,
                 variables: {
                   artistID,
-                  artistIDAsID: artistID,
                   input: input as FilterArtworksInput,
                 },
               }}
