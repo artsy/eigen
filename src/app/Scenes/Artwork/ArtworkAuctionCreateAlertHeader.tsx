@@ -26,8 +26,8 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
-  const shouldShowBrowseMoreButton =
-    artworkData.savedSearch?.suggestedArtworksConnection?.totalCount ?? 0
+  const hasArtworksSuggestions =
+    (artworkData.savedSearch?.suggestedArtworksConnection?.totalCount ?? 0) > 0
 
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
@@ -95,7 +95,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
           </Button>
         )}
 
-        {shouldShowBrowseMoreButton > 0 && (
+        {!!hasArtworksSuggestions && (
           <Button
             size="large"
             variant="outline"

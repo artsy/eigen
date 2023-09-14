@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { BrowseSimilarWorks_artwork$data } from "__generated__/BrowseSimilarWorks_artwork.graphql"
 import {
   CreateArtworkAlertModal_artwork$data,
