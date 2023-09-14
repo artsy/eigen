@@ -2,6 +2,7 @@ import {
   Flex,
   Pill,
   SimpleMessage,
+  Spacer,
   Text,
   useScreenDimensions,
   useTheme,
@@ -14,6 +15,7 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { BrowseSimilarWorksProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
+import { BrowseSimilarWorksExploreMoreButton } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksExploreMoreButton"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -110,13 +112,17 @@ const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes 
     const artworks = extractNodes(data.artworksConnection)
 
     return (
-      <GenericGrid
-        width={screen.width - space(2)}
-        artworks={artworks}
-        onPress={(internalID: string) => {
-          navigate(`artwork/${internalID}`)
-        }}
-      />
+      <>
+        <GenericGrid
+          width={screen.width - space(2)}
+          artworks={artworks}
+          onPress={(internalID: string) => {
+            navigate(`artwork/${internalID}`)
+          }}
+        />
+        <Spacer y={2} />
+        <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
+      </>
     )
   },
   SimilarArtworksPlaceholder
