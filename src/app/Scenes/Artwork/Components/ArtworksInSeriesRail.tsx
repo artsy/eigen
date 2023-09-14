@@ -20,6 +20,10 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
+  if (!artwork) {
+    return null
+  }
+
   const firstArtistSeries = extractNodes(artwork?.artistSeriesConnection)[0]
   const artworks = extractNodes(firstArtistSeries?.filterArtworksConnection)
 

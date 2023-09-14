@@ -11,6 +11,7 @@ export const principalFieldErrorHandlerMiddleware = async (
   const resJson = res?.json as GraphQLSingularResponse
   const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
+  console.log("[flipper] principalFieldErrorHandlerMiddleware queryName:", req.operation.name)
   // This represents whether or not the query experienced an error and that error was thrown while resolving
   // a field marked with the @principalField directive, or any sub-selection of such a field.
   const principalFieldWasInvolvedInError = isErrorStatus(

@@ -124,8 +124,10 @@ export function persistedQueryMiddleware(): Middleware {
         captureMessage(e.stack)
         body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
         req.fetchOpts.body = JSON.stringify(body)
+        console.log("[flipper] if block")
         return await next(req)
       } else {
+        console.log("[flipper] else throw block")
         throw e
       }
     }

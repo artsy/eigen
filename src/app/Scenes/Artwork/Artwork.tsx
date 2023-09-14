@@ -270,7 +270,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         key: "lotDetailsSection",
         element: (
           <ArtworkLotDetails
-            artwork={artworkAboveTheFold!}
+            artwork={artworkAboveTheFold}
             auctionState={auctionTimerState as AuctionTimerState}
           />
         ),
@@ -340,7 +340,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
       sections.push({
         key: "shippingAndTaxes",
-        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -358,29 +358,29 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       })
     }
 
-    if (artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
-      sections.push({
-        key: "artistSeriesMoreSeries",
-        element: (
-          <ArtistSeriesMoreSeries
-            contextScreenOwnerId={artworkAboveTheFold.internalID}
-            contextScreenOwnerSlug={artworkAboveTheFold.slug}
-            contextScreenOwnerType={OwnerType.artwork}
-            artist={artist}
-            artistSeriesHeader="Series from this artist"
-            headerVariant="md"
-          />
-        ),
-      })
-    }
+    // if (artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
+    //   sections.push({
+    //     key: "artistSeriesMoreSeries",
+    //     element: (
+    //       <ArtistSeriesMoreSeries
+    //         contextScreenOwnerId={artworkAboveTheFold.internalID}
+    //         contextScreenOwnerSlug={artworkAboveTheFold.slug}
+    //         contextScreenOwnerType={OwnerType.artwork}
+    //         artist={artist}
+    //         artistSeriesHeader="Series from this artist"
+    //         headerVariant="md"
+    //       />
+    //     ),
+    //   })
+    // }
 
-    if (shouldRenderOtherWorks()) {
-      sections.push({
-        key: "otherWorks",
-        // @ts-expect-error
-        element: <OtherWorks artwork={artworkBelowTheFold} />,
-      })
-    }
+    // if (shouldRenderOtherWorks()) {
+    //   sections.push({
+    //     key: "otherWorks",
+    //     // @ts-expect-error
+    //     element: <OtherWorks artwork={artworkBelowTheFold} />,
+    //   })
+    // }
 
     return sections
   }
@@ -555,15 +555,15 @@ export const ArtworkContainer = createRefetchContainer(
           type
           isInquireable
         }
-        artist {
-          biographyBlurb {
-            text
-          }
-          artistSeriesConnection(first: 4) {
-            totalCount
-          }
-          ...ArtistSeriesMoreSeries_artist
-        }
+        # artist {
+        #   biographyBlurb {
+        #     text
+        #   }
+        #   artistSeriesConnection(first: 4) {
+        #     totalCount
+        #   }
+        #   ...ArtistSeriesMoreSeries_artist
+        # }
         sale {
           isBenefit
           isGalleryAuction
@@ -584,19 +584,19 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        artistSeriesConnection(first: 1) {
-          edges {
-            node {
-              filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
-                edges {
-                  node {
-                    id
-                  }
-                }
-              }
-            }
-          }
-        }
+        # artistSeriesConnection(first: 1) {
+        #   edges {
+        #     node {
+        #       filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
+        #         edges {
+        #           node {
+        #             id
+        #           }
+        #         }
+        #       }
+        #     }
+        #   }
+        # }
         artists {
           isConsignable
         }
