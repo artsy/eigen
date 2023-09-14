@@ -11,6 +11,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
+import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
@@ -418,6 +419,10 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
+  BrowseSimilarWorks: reactModule(BrowseSimilarWorksQueryRenderer, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
     alwaysPresentModally: true,
     hidesBackButton: true,

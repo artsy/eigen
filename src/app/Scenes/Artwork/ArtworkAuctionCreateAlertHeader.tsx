@@ -26,6 +26,9 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
   const hasArtists = artistNames?.length ?? 0 > 0
 
+  const hasArtworksSuggestions =
+    (artworkData.savedSearch?.suggestedArtworksConnection?.totalCount ?? 0) > 0
+
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
   const displayAuctionCreateAlertHeader = hasArtists && isInAuction && isLotClosedOrBiddingEnded
@@ -75,7 +78,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
               navigate("/my-profile/saved-search-alerts")
             }}
             icon={<BellIcon fill="black100" />}
-            flex={1}
+            block
           >
             Manage your Alerts
           </Button>
@@ -86,25 +89,27 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             haptic
             onPress={() => setShowCreateArtworkAlertModal(true)}
             icon={<BellIcon fill="white100" />}
-            flex={1}
+            block
           >
             Create Alert
           </Button>
         )}
 
-        <Spacer y={1} />
-
-        <Button
-          size="large"
-          variant="outline"
-          haptic
-          onPress={() => {
-            tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
-          }}
-          flex={1}
-        >
-          Browse Similar Artworks
-        </Button>
+        {!!hasArtworksSuggestions && (
+          <Button
+            size="large"
+            variant="outline"
+            haptic
+            onPress={() => {
+              tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+              navigate(`/artwork/${internalID}/browse-similar-works`)
+            }}
+            block
+            mt={1}
+          >
+            Browse Similar Artworks
+          </Button>
+        )}
       </Flex>
     </>
   )
@@ -113,6 +118,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 const artworkAuctionCreateAlertHeaderFragment = graphql`
   fragment ArtworkAuctionCreateAlertHeader_artwork on Artwork {
     title
+    internalID
     artistNames
     isInAuction
     internalID
@@ -128,6 +134,11 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
     }
     myLotStandingManageAlerts: myLotStanding {
       isHighestBidder
+    }
+    savedSearch {
+      suggestedArtworksConnection {
+        totalCount
+      }
     }
     ...CreateArtworkAlertModal_artwork
   }
