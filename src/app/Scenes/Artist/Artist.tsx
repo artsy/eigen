@@ -38,7 +38,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -95,6 +95,20 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
+  const renderBelowTheHeaderComponent = useCallback(
+    () => (
+      <ArtistHeaderFragmentContainer
+        artist={artistAboveTheFold!}
+        onLayoutChange={({ nativeEvent }) => {
+          if (headerHeight !== nativeEvent.layout.height) {
+            setHeaderHeight(nativeEvent.layout.height)
+          }
+        }}
+      />
+    ),
+    [artistAboveTheFold, headerHeight]
+  )
+
   return (
     <ProvideScreenTracking
       info={{
@@ -119,16 +133,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
             ),
             onBack: goBack,
           }}
-          BelowTitleHeaderComponent={() => (
-            <ArtistHeaderFragmentContainer
-              artist={artistAboveTheFold!}
-              onLayout={({ nativeEvent }) => {
-                if (headerHeight !== nativeEvent.layout.height) {
-                  setHeaderHeight(nativeEvent.layout.height)
-                }
-              }}
-            />
-          )}
+          BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
