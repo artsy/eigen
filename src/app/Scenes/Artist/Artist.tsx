@@ -99,7 +99,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     () => (
       <ArtistHeaderFragmentContainer
         artist={artistAboveTheFold!}
-        onLayout={({ nativeEvent }) => {
+        onLayoutChange={({ nativeEvent }) => {
           if (headerHeight !== nativeEvent.layout.height) {
             setHeaderHeight(nativeEvent.layout.height)
           }
