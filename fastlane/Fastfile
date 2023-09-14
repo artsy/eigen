@@ -317,6 +317,40 @@ lane :flag_android_beta do |options|
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
 end
 
+# Codepush
+
+lane :deploy_to_codepush do |options|
+  deployment_name = options[:deployment_name]
+  description = options[:description]
+
+  # important! this much match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  release_name, dist_version, release_version = set_codepush_release_name(deployment_name: deployment_name)
+  tag_and_push(tag: release_name)
+
+  sh("yarn bundle:ios")
+  sh("appcenter codepush release -a mobile-artsy/Eigen -c ../dist -d #{deployment_name} -t #{release_version} --description '#{description}'")
+
+  # Sentry config
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
+  project_slug = 'eigen'
+  org_slug = 'artsynet'
+  bundle_path = './dist/main.jsbundle'
+  sourcemap_path = './dist/main.jsbundle.map'
+
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+  )
+
+  puts "Deploying to #{deployment_name} with description #{description}"
+end
+
 error do |lane, exception|
   return unless BETA_LANES.include?(lane)
 
