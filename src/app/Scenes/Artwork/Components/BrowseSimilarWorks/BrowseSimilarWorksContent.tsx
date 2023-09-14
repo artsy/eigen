@@ -49,13 +49,13 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
           paddingHorizontal: space(2),
         }}
       >
-        <Text color="black60" my={2}>
+        <Text color="black60" mt={2} mb={1}>
           Available works you may have missed based on similar filters listed below.
         </Text>
 
         <Flex flexDirection="row" flexWrap="wrap" mb={2}>
           {pills.map((pill, index) => (
-            <Pill key={index} variant="filter" disabled mr={1}>
+            <Pill key={index} variant="filter" disabled mr={1} mt={1}>
               {pill.label}
             </Pill>
           ))}
