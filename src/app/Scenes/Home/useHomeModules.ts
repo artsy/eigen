@@ -18,6 +18,16 @@ export const useHomeModules = (props: HomeProps) => {
     const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
       {
+        contextModule: ContextModule.activityRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
+        data: props.notificationsConnection,
+        isEmpty: isEmpty(props.notificationsConnection),
+        key: "latestActivityRail",
+        title: "Latest Activity",
+        type: "activity",
+      },
+      {
         contextModule: ContextModule.newWorksForYouRail,
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
@@ -236,6 +246,7 @@ export const useHomeModules = (props: HomeProps) => {
     props.homePageBelow?.recentlyViewedWorksArtworkModule,
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
+    props.notificationsConnection,
     props.homePageBelow?.fairsModule,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
