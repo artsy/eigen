@@ -46,6 +46,7 @@ import {
 } from "react-native"
 import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
+import FastImage from "react-native-fast-image"
 import Keychain from "react-native-keychain"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -238,6 +239,13 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             title="Clear Relay Cache"
             onPress={() => {
               RelayCache.clearAll()
+            }}
+          />
+          <DevMenuButtonItem
+            title="Clear FastImage Cache"
+            onPress={() => {
+              FastImage.clearMemoryCache()
+              FastImage.clearDiskCache()
             }}
           />
           <DevMenuButtonItem

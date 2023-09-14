@@ -38,7 +38,7 @@ const HeroUnit: React.FC<HeroUnitProps> = ({ item }) => {
   return (
     <Touchable key={item.internalID} onPress={handlePress}>
       <Flex bg="black100" flexDirection="row" height={CARD_HEIGHT} width={screenWidth}>
-        <Image height={CARD_HEIGHT} src={imageSrc} width={cardImageWidth} performResize={false} />
+        <Image height={CARD_HEIGHT} src={imageSrc} width={cardImageWidth} />
         <Box p={2} width={screenWidth - cardImageWidth}>
           <Text color="white100" mb={1} numberOfLines={2} variant="lg-display">
             {item.title}
