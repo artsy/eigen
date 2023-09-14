@@ -1,5 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
-import { quoteLeft, quoteRight, Box, useTheme, Text } from "@artsy/palette-mobile"
+import {
+  quoteLeft,
+  quoteRight,
+  Box,
+  useTheme,
+  Text,
+  Flex,
+  useScreenDimensions,
+  Spinner,
+} from "@artsy/palette-mobile"
+import { MasonryFlashList } from "@shopify/flash-list"
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -7,13 +17,20 @@ import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { extractNodes } from "app/utils/extractNodes"
+import {
+  NUM_COLUMNS_MASONRY,
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import React, { useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,11 +40,6 @@ export interface SearchArtworksGridProps {
   keyword: string
 }
 
-interface ArtworkSection {
-  key: string
-  content: JSX.Element
-}
-
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, keyword }) => {
   const { space } = useTheme()
   const { trackEvent } = useTracking()
@@ -35,6 +47,11 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
+  const artworks = extractNodes(viewer.artworks)
+  const { width } = useScreenDimensions()
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
   const handleCloseFilterArtworksModal = (withFiltersApplying = false) => {
     if (!withFiltersApplying) {
@@ -47,7 +64,12 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     setFilterArtworkModalVisible(true)
   }
 
-  const artworksCount = viewer.artworks?.edges?.length
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(10)
+    }
+  }, [relay.hasMore(), relay.isLoading()])
+
   const appliedFiltersCount = useSelectedFiltersCount()
 
   useArtworkFilters({
@@ -65,23 +87,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     }
   }, [setFiltersCountAction])
 
-  const content: ArtworkSection[] = [
-    {
-      key: "ARTWORKS",
-      content: (
-        <InfiniteScrollArtworksGridContainer
-          shouldAddPadding
-          connection={viewer.artworks!}
-          loadMore={relay.loadMore}
-          hasMore={relay.hasMore}
-          updateRecentSearchesOnTap
-          contextScreenOwnerType={OwnerType.search}
-          contextScreenQuery={keyword}
-          contextScreen={Schema.PageNames.Search}
-        />
-      ),
-    },
-  ]
   return (
     <>
       <ArtworkFilterNavigator
@@ -95,26 +100,63 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         selectedFiltersCount={appliedFiltersCount}
         onFilterPress={handleOpenFilterArtworksModal}
       />
-      {artworksCount === 0 ? (
-        <Box mb="80px" pt={6}>
-          <Box px={2}>
-            <Text variant="sm-display" textAlign="center">
-              Sorry, we couldn’t find any Artworks for {quoteLeft}
-              {keyword}.{quoteRight}
-            </Text>
-            <Text variant="sm-display" color="black60" textAlign="center">
-              Please try searching again with a different spelling.
-            </Text>
-          </Box>
-        </Box>
-      ) : (
-        <FlatList<ArtworkSection>
-          data={content}
-          contentContainerStyle={{ paddingTop: space(2) }}
-          renderItem={({ item }) => item.content}
-          keyExtractor={({ key }) => key}
+      <Flex flex={1} justifyContent="center" mx={2}>
+        <MasonryFlashList
+          showsVerticalScrollIndicator={false}
+          data={artworks}
+          keyExtractor={(item) => item.id}
+          numColumns={NUM_COLUMNS_MASONRY}
+          // this number is the estimated size of the artworkGridItem component
+          estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+          keyboardShouldPersistTaps="handled"
+          ListEmptyComponent={
+            <Box mb="80px" pt={6}>
+              <Box px={2}>
+                <Text variant="sm-display" textAlign="center">
+                  Sorry, we couldn’t find any Artworks for {quoteLeft}
+                  {keyword}.{quoteRight}
+                </Text>
+                <Text variant="sm-display" color="black60" textAlign="center">
+                  Please try searching again with a different spelling.
+                </Text>
+              </Box>
+            </Box>
+          }
+          onEndReached={loadMore}
+          onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+          ListFooterComponent={
+            shouldDisplaySpinner ? (
+              <Flex my={4} flexDirection="row" justifyContent="center">
+                <Spinner />
+              </Flex>
+            ) : null
+          }
+          renderItem={({ item, index, columnIndex }) => {
+            const imgAspectRatio = item.image?.aspectRatio ?? 1
+            const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+
+            const imgHeight = imgWidth / imgAspectRatio
+
+            return (
+              <Flex
+                pl={columnIndex === 0 ? 0 : 1}
+                pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+                mt={2}
+              >
+                <ArtworkGridItem
+                  itemIndex={index}
+                  contextScreenOwnerType={OwnerType.search}
+                  contextScreenQuery={keyword}
+                  contextScreen={Schema.PageNames.Search}
+                  artwork={item}
+                  height={imgHeight}
+                  navigateToPageableRoute={navigateToPageableRoute}
+                />
+              </Flex>
+            )
+          }}
         />
-      )}
+      </Flex>
     </>
   )
 }
@@ -163,9 +205,13 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
