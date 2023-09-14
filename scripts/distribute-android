@@ -5,10 +5,10 @@ set -exo pipefail
 
 DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
 if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
-  bundle exec fastlane ship_beta_android_firebase
+  bundle exec fastlane ship_beta_android deployment_target:firebase
 elif [ $DISTRIBUTION_TARGET == "PLAY_STORE" ]; then
-  bundle exec fastlane ship_beta_android_play_store
+  bundle exec fastlane ship_beta_android deployment_target:play_store
 elif [ $DISTRIBUTION_TARGET == "BOTH" ]; then
-  bundle exec fastlane ship_beta_android_firebase
-  bundle exec fastlane ship_beta_android_play_store
+  bundle exec fastlane ship_beta_android deployment_target:firebase
+  bundle exec fastlane ship_beta_android deployment_target:play_store
 fi
