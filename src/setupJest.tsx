@@ -640,6 +640,14 @@ jest.mock("react-native-collapsible-tab-view", () => {
   return getMockCollapsibleTabs()
 })
 
+jest.mock("@shopify/flash-list", () => {
+  const { FlatList } = require("react-native")
+  return {
+    ...jest.requireActual("@shopify/flash-list"),
+    MasonryFlashList: FlatList,
+  }
+})
+
 jest.mock("@react-native-community/geolocation", () => ({
   addListener: jest.fn(),
   getCurrentPosition: jest.fn(),

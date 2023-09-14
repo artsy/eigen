@@ -2,6 +2,7 @@ import { Flex, Spacer, Spinner, Tabs, useScreenDimensions, useSpace } from "@art
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
@@ -93,11 +94,15 @@ export const ArtworkLists = () => {
   )
 }
 
-export const ArtworkListsQR = () => (
-  <Suspense fallback={<ArtworkListsPlaceHolder />}>
-    <ArtworkLists />
-  </Suspense>
-)
+export const ArtworkListsQR = () => {
+  useDismissSavedHighlight()
+
+  return (
+    <Suspense fallback={<ArtworkListsPlaceHolder />}>
+      <ArtworkLists />
+    </Suspense>
+  )
+}
 
 const LoadingIndicator = () => {
   return (

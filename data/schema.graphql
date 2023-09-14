@@ -1503,6 +1503,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # A list of genes associated with an artist
   genes: [Gene]
+  groupIndicator: ArtistGroupIndicator
   hasMetadata: Boolean
   highlights: ArtistHighlights
   hometown: String
@@ -1545,7 +1546,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
   # Whether the artist has been created by a user.
   isPersonalArtist: Boolean
-  isPublic: Boolean
+  isPublic: Boolean!
   isShareable: Boolean
   last: String
   location: String
@@ -1605,7 +1606,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # Use this attribute to sort by when sorting a collection of Artists
   sortableID: String
   statuses: ArtistStatuses
-  targetSupply: ArtistTargetSupply
+  targetSupply: ArtistTargetSupply!
   vanguardYear: String
   verifiedRepresentatives: [VerifiedRepresentative!]!
   years: String
@@ -1704,6 +1705,13 @@ type ArtistGroup {
 
   # Letter artists group belongs to
   letter: String
+}
+
+enum ArtistGroupIndicator {
+  DUO
+  GROUP
+  INDIVIDUAL
+  N_A
 }
 
 type ArtistHighlights {
@@ -1987,11 +1995,13 @@ type ArtistTargetSupply {
   isInMicrofunnel: Boolean
 
   # True if an artist is a P1 artist.
-  isP1: Boolean
+  isP1: Boolean @deprecated(reason: "Use \"priority\" field instead.")
 
   # True if artist is in target supply list.
   isTargetSupply: Boolean
   microfunnel: ArtistTargetSupplyMicrofunnel
+  priority: ArtistTargetSupplyPriority
+  type: ArtistTargetSupplyType
 }
 
 type ArtistTargetSupplyMicrofunnel {
@@ -2006,6 +2016,20 @@ type ArtistTargetSupplyMicrofunnel {
     randomize: Boolean
   ): ArtworkConnection
   metadata: TargetSupplyMicrofunnelMetadata
+}
+
+enum ArtistTargetSupplyPriority {
+  P1
+  P2
+}
+
+enum ArtistTargetSupplyType {
+  BLUE_CHIP
+  CRITICALLY_ACCLAIMED
+  NEW_AND_NOTEWORTHY
+  STREET_AND_URBAN
+  TRENDING_EMERGING
+  ULTRA_HIGH_DEMAND
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -2225,6 +2249,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPriceHidden: Boolean
   isPriceRange: Boolean
   isSaved: Boolean
+
+  # Checks if artwork is saved to user's lists
+  isSavedToList(default: Boolean = false, saves: Boolean = true): Boolean!
 
   # Should the video be used as the cover image
   isSetVideoAsCover: Boolean
@@ -2831,6 +2858,7 @@ type AuctionResultPriceRealized {
 
 enum AuctionResultsAggregation {
   CURRENCIES_COUNT
+  LOTS_BY_CREATED_YEAR
   LOTS_BY_SALE_YEAR
   SIMPLE_PRICE_HISTOGRAM
 }
@@ -11811,6 +11839,9 @@ type Me implements Node {
   savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
   savedSearchesConnection(
     after: String
+
+    # Returns saved searches associated with the provided artist IDs
+    artistIDs: [String!]
     before: String
     first: Int
     last: Int
@@ -13425,7 +13456,7 @@ type Partner implements Node {
     highQuality: Boolean
     last: Int
     partnerID: String
-    since: Int
+    since: SearchCriteriaSinceEnum
   ): SearchCriteriaConnection
   showPromoted: Boolean
 
@@ -13916,6 +13947,9 @@ type PreviewSavedSearch {
   # A suggestion for a name that describes a set of saved search criteria in a conventional format
   displayName: String!
 
+  # URL for a user to view the artwork grid with applied filters matching saved search criteria attributes
+  href: String
+
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel]!
 }
@@ -14319,6 +14353,9 @@ type Query {
   _unused_gravity_savedSearchesConnection(
     # Returns the elements in the list that come after the specified cursor.
     after: String
+
+    # Returns saved searches associated with the provided artist IDs (or slugs)
+    artistIDs: [String!]
 
     # Returns the elements in the list that come before the specified cursor.
     before: String
@@ -15473,7 +15510,7 @@ type Query {
     highQuality: Boolean
     last: Int
     partnerID: String
-    since: Int
+    since: SearchCriteriaSinceEnum
   ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
@@ -16538,7 +16575,12 @@ type SearchAggregationResults {
 # Search criteria
 type SearchCriteria {
   acquireable: Boolean
+
+  # Medium slug
   additionalGeneIDs: [String!]!
+
+  # Medium name
+  additionalGeneNames: [String!]!
   artistID: String @deprecated(reason: "Deprecated in favor of artistIDs array")
   artistIDs: [String!]
   artistsConnection(
@@ -16557,6 +16599,15 @@ type SearchCriteria {
   displayName: String!
   hasRecentlyEnabledUserSearchCriteria: Boolean!
   height: String
+  highPriceAmount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
   href: String!
   inquireableOnly: Boolean
   internalID: ID!
@@ -16565,10 +16616,20 @@ type SearchCriteria {
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel!]!
   locationCities: [String!]!
+  lowPriceAmount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
   majorPeriods: [String!]!
   materialsTerms: [String!]!
   offerable: Boolean
   partnerIDs: [String!]!
+  priceArray: [Float]
   priceRange: String
   sizes: [String!]!
 
@@ -17650,18 +17711,23 @@ type UpdateArtistFailure {
 input UpdateArtistMutationInput {
   alternateNames: [String!]
   birthday: String
+  blurb: String
   clientMutationId: String
   coverArtworkId: String
   deathday: String
   displayName: String
   first: String
   gender: String
+  groupIndicator: ArtistGroupIndicator
   hometown: String
   id: String!
   last: String
   location: String
   middle: String
   nationality: String
+  public: Boolean
+  targetSupplyPriority: ArtistTargetSupplyPriority
+  targetSupplyType: ArtistTargetSupplyType
 }
 
 type UpdateArtistMutationPayload {
@@ -19145,6 +19211,7 @@ type VerifyAddressPayload {
 }
 
 type VerifyAddressType {
+  addressVerificationId: String!
   inputAddress: InputAddressFields!
   suggestedAddresses: [SuggestedAddressFields]!
   verificationStatus: VerificationStatuses!
@@ -19990,7 +20057,7 @@ type Viewer {
     highQuality: Boolean
     last: Int
     partnerID: String
-    since: Int
+    since: SearchCriteriaSinceEnum
   ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 

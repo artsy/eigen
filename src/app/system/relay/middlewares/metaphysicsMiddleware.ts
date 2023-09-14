@@ -109,12 +109,8 @@ export function persistedQueryMiddleware(): Middleware {
     let body: { variables?: object; query?: string; documentID?: string } = {}
     const queryID = req.getID()
     const variables = req.getVariables()
-    if (__DEV__) {
-      body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }
-      ;(req as any).operation.text = body.query ?? null
-    } else {
-      body = { documentID: queryID, variables }
-    }
+
+    body = { documentID: queryID, variables }
 
     if (body && (body.query || body.documentID)) {
       req.fetchOpts.body = JSON.stringify(body)
@@ -123,7 +119,7 @@ export function persistedQueryMiddleware(): Middleware {
     try {
       return await next(req)
     } catch (e: any) {
-      if (!__DEV__ && e.toString().includes("Unable to serve persisted query with ID")) {
+      if (e.toString().includes("Unable to serve persisted query with ID")) {
         // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
         captureMessage(e.stack)
         body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }

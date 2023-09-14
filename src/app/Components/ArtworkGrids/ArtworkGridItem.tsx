@@ -23,6 +23,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
+import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -356,20 +357,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                     testID="save-artwork-icon"
                   >
-                    {isSaved ? (
-                      <HeartFillIcon
-                        testID="filled-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
-                        fill="blue100"
-                      />
-                    ) : (
-                      <HeartIcon
-                        testID="empty-heart-icon"
-                        height={SAVE_ICON_SIZE}
-                        width={SAVE_ICON_SIZE}
-                      />
-                    )}
+                    <ArtworkHeartIcon isSaved={isSaved} index={itemIndex} />
                   </Touchable>
                 </Flex>
               )}
@@ -385,6 +373,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
       />
     </>
   )
+}
+
+const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
+  isSaved,
+  index,
+}) => {
+  const iconProps = { height: SAVE_ICON_SIZE, width: SAVE_ICON_SIZE, testID: "empty-heart-icon" }
+
+  if (isSaved) {
+    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
+  }
+  if (index === 0) {
+    // We only try to show the save onboard Popover in the 1st element
+    return (
+      <ProgressiveOnboardingSaveArtwork>
+        <HeartIcon {...iconProps} />
+      </ProgressiveOnboardingSaveArtwork>
+    )
+  }
+  return <HeartIcon {...iconProps} />
 }
 
 /**

@@ -1,3 +1,8 @@
+# Deprecation info
+
+Visual clue deviated a little from the simplistic idea of progressive onboarding as we have in Force.
+We adopted a simpler form with the Progressive Onboarding store, please check the [doc](./add_progressive_onboarding.md) for more information how to use it.
+
 # Adding a New Visual Clue
 
 To add a visual clue to the app, you will need to do the following:

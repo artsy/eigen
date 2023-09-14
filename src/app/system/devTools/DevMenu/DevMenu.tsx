@@ -67,6 +67,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
+  const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
   const space = useSpace()
   const toast = useToast()
 
@@ -98,11 +99,14 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         contentContainerStyle={{ paddingVertical: 10 }}
       >
         <Text variant="xs" color="grey" mx={2}>
-          eigen v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
-          {ArtsyNativeModule.gitCommitShortHash})
+          Build:{" "}
+          <Text variant="xs">
+            v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
+            {ArtsyNativeModule.gitCommitShortHash})
+          </Text>
         </Text>
         <Text variant="xs" color="grey" mx={2}>
-          {userEmail}
+          Email: <Text variant="xs">{userEmail}</Text>
         </Text>
 
         <DevMenuButtonItem
@@ -115,7 +119,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             navigate("/storybook")
           }}
         />
-        <CollapseMenu title="Navigate to" chevronStyle={chevronStyle}>
+        <CollapseMenu title="Navigate to" chevronStyle={chevronStyle} closed>
           <Flex mx={2} flexDirection="row">
             <Input
               placeholder="Url to navigate to"
@@ -153,7 +157,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
           <Separator my="1" />
         </Flex>
 
-        <CollapseMenu title="Feature Flags" chevronStyle={chevronStyle}>
+        <CollapseMenu title="Feature Flags" chevronStyle={chevronStyle} closed>
           <Flex px={2} mb={1}>
             <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
           </Flex>
@@ -176,7 +180,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         <Flex mx={2}>
           <Separator my="1" />
         </Flex>
-        <CollapseMenu title="Dev tools" chevronStyle={chevronStyle}>
+        <CollapseMenu title="Dev tools" chevronStyle={chevronStyle} closed>
           <Flex px={2} mb={1}>
             <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
           </Flex>
@@ -235,6 +239,10 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             onPress={() => {
               RelayCache.clearAll()
             }}
+          />
+          <DevMenuButtonItem
+            title="Clear Progressive Onboarding progress"
+            onPress={__clearDissmissed}
           />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 

@@ -4,12 +4,12 @@ import { useEffect, useState } from "react"
 import { LayoutAnimation, ViewStyle } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
-export const CollapseMenu: React.FC<{ title: string; chevronStyle?: ViewStyle }> = ({
-  title,
-  children,
-  chevronStyle,
-}) => {
-  const [showContent, setShowContent] = useState(true)
+export const CollapseMenu: React.FC<{
+  chevronStyle?: ViewStyle
+  closed?: boolean
+  title: string
+}> = ({ chevronStyle, children, closed = false, title }) => {
+  const [showContent, setShowContent] = useState(!closed)
 
   useEffect(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)

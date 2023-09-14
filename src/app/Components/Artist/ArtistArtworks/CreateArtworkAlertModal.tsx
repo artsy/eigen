@@ -1,4 +1,5 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { BrowseSimilarWorks_artwork$data } from "__generated__/BrowseSimilarWorks_artwork.graphql"
 import {
   CreateArtworkAlertModal_artwork$data,
   CreateArtworkAlertModal_artwork$key,
@@ -17,12 +18,14 @@ interface CreateArtworkAlertModalProps {
   artwork: CreateArtworkAlertModal_artwork$key
   visible: boolean
   onClose: () => void
+  contextModule?: ContextModule
 }
 
 export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = ({
   artwork,
-  onClose,
   visible,
+  onClose,
+  contextModule,
 }) => {
   const data = useFragment<CreateArtworkAlertModalProps["artwork"]>(
     graphql`
@@ -61,11 +64,14 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
       attributes={artworkAlert.attributes!}
       aggregations={artworkAlert.aggregations!}
       closeModal={onClose}
+      contextModule={contextModule}
     />
   )
 }
 
-export const computeArtworkAlertProps = (artwork: CreateArtworkAlertModal_artwork$data) => {
+export const computeArtworkAlertProps = (
+  artwork: CreateArtworkAlertModal_artwork$data | BrowseSimilarWorks_artwork$data
+) => {
   const artistsArray = artwork.artistsArray ?? []
   const hasArtists = artistsArray.length > 0
 
