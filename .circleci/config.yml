@@ -73,7 +73,7 @@ commands:
   install-ruby:
     steps:
       - ruby/install:
-          version: "2.7"
+          version: "2.7.4"
   install-gems:
     steps:
       - restore_cache:
