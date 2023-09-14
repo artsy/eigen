@@ -269,6 +269,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node
+      - install-ruby
       - install-gems
       - run:
           name: Check flags
