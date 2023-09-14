@@ -50,15 +50,37 @@ lane :upload_sentry_artifacts do |options|
     end
   end
 
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: sentry_release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+  )
+end
+
+lane :upload_sentry_sourcemaps do |options|
+  sentry_cli_path = options[:sentry_cli_path]
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+  sentry_release_name = options[:sentry_release_name]
+  dist = options[:dist]
+  bundle_path = options[:bundle_path]
+  sourcemap_path = options[:sourcemap_path]
+
   begin
-    sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
-                            sentry_cli_path: sentry_cli_path,
-                            org_slug: org_slug,
-                            project_slug: project_slug,
-                            version: sentry_release_name,
-                            dist: dist_version,
-                            sourcemap: [bundle_path, source_map_path],
-                            rewrite: true)
+    sentry_upload_sourcemap(
+      auth_token: ENV['SentryUploadAuthKey'],
+      sentry_cli_path: sentry_cli_path,
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_release_name,
+      dist: dist,
+      sourcemap: [bundle_path, sourcemap_path],
+      rewrite: true
+    )
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
     message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
