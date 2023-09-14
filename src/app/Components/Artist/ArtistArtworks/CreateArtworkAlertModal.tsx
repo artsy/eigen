@@ -18,12 +18,14 @@ interface CreateArtworkAlertModalProps {
   artwork: CreateArtworkAlertModal_artwork$key
   visible: boolean
   onClose: () => void
+  contextModule?: ContextModule
 }
 
 export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = ({
   artwork,
-  onClose,
   visible,
+  onClose,
+  contextModule,
 }) => {
   const data = useFragment<CreateArtworkAlertModalProps["artwork"]>(
     graphql`
@@ -62,6 +64,7 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
       attributes={artworkAlert.attributes!}
       aggregations={artworkAlert.aggregations!}
       closeModal={onClose}
+      contextModule={contextModule}
     />
   )
 }

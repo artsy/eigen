@@ -2250,6 +2250,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPriceRange: Boolean
   isSaved: Boolean
 
+  # Checks if artwork is saved to user's lists
+  isSavedToList(default: Boolean = false, saves: Boolean = true): Boolean!
+
   # Should the video be used as the cover image
   isSetVideoAsCover: Boolean
   isShareable: Boolean
@@ -11836,6 +11839,9 @@ type Me implements Node {
   savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
   savedSearchesConnection(
     after: String
+
+    # Returns saved searches associated with the provided artist IDs
+    artistIDs: [ID!]
     before: String
     first: Int
     last: Int
@@ -13941,6 +13947,9 @@ type PreviewSavedSearch {
   # A suggestion for a name that describes a set of saved search criteria in a conventional format
   displayName: String!
 
+  # URL for a user to view the artwork grid with applied filters matching saved search criteria attributes
+  href: String
+
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel]!
 }
@@ -14344,6 +14353,9 @@ type Query {
   _unused_gravity_savedSearchesConnection(
     # Returns the elements in the list that come after the specified cursor.
     after: String
+
+    # Returns saved searches associated with the provided artist IDs
+    artistIDs: [ID!]
 
     # Returns the elements in the list that come before the specified cursor.
     before: String
@@ -16563,7 +16575,12 @@ type SearchAggregationResults {
 # Search criteria
 type SearchCriteria {
   acquireable: Boolean
+
+  # Medium slug
   additionalGeneIDs: [String!]!
+
+  # Medium name
+  additionalGeneNames: [String!]!
   artistID: String @deprecated(reason: "Deprecated in favor of artistIDs array")
   artistIDs: [String!]
   artistsConnection(
