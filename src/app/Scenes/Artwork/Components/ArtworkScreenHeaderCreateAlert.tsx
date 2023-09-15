@@ -27,9 +27,9 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
   const enableAuctionHeaderAlertCTA = useFeatureFlag("AREnableAuctionHeaderAlertCTA")
 
   const displayCreateAlertHeader =
-    hasArtists && isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
+    isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
 
-  if (!!displayCreateAlertHeader) {
+  if (!!displayCreateAlertHeader || !hasArtists) {
     return null
   }
 
