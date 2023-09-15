@@ -4,7 +4,7 @@ import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecent
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 

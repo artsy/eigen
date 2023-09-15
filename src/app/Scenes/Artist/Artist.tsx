@@ -200,6 +200,9 @@ export const ArtistScreenQuery = graphql`
         url(version: "large")
       }
     }
+    me {
+      name
+    }
   }
 `
 
