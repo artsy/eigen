@@ -20,6 +20,7 @@ const appVersion = (version: string) => ({
     "1": "some-hash",
   },
   codePushReleaseName: "none",
+  codePushDist: "none",
 })
 
 const _echoLaunchJsonActual = loads.echoLaunchJson()
