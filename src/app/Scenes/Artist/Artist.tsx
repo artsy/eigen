@@ -39,7 +39,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, View } from "react-native"
+import { ActivityIndicator, Text, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -274,7 +274,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 variables: { artistID },
               }}
               render={{
-                renderPlaceholder: () => <ArtistSkeleton />,
+                renderPlaceholder: () => <Text>Loading</Text>,
                 renderComponent: ({ above, below }) => {
                   if (!above.artist) {
                     throw new Error("no artist data")

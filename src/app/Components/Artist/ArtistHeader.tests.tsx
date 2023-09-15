@@ -47,7 +47,7 @@ describe("ArtistHeader", () => {
       expect(screen.queryByText("2 Alerts Set")).toBeOnTheScreen()
     })
 
-    it("hudes the numbers of alerts if the user has no alerts for an artist", () => {
+    it("hides the numbers of alerts if the user has no alerts for an artist", () => {
       renderWithRelay({
         Artist() {
           return mockArtist

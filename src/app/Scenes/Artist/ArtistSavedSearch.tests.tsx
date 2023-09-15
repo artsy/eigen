@@ -95,23 +95,22 @@ describe("Saved search banner on artist screen", () => {
   })
 })
 
-const MockSearchCriteriaQuery = {
+const MockSearchCriteriaQuery: MockResolvers = {
   Me() {
     return {
-      me: {
-        savedSearch: {
-          attributionClass: ["limited edition", "open edition"],
-          acquireable: true,
-          inquireableOnly: true,
-          offerable: null,
-          atAuction: null,
-          width: null,
-          height: null,
-        },
+      savedSearch: {
+        attributionClass: ["limited edition", "open edition"],
+        acquireable: true,
+        inquireableOnly: true,
+        offerable: null,
+        atAuction: null,
+        width: null,
+        height: null,
       },
     }
   },
 }
+
 const MockArtistAboveTheFoldQuery: MockResolvers = {
   Artist() {
     return {
@@ -119,6 +118,13 @@ const MockArtistAboveTheFoldQuery: MockResolvers = {
       counts: { articles: 0, related_artists: 0, artworks: 1, partner_shows: 0 },
       auctionResultsConnection: {
         totalCount: 0,
+      },
+    }
+  },
+  Me() {
+    return {
+      savedSearchesConnection: {
+        totalCount: 2,
       },
     }
   },
