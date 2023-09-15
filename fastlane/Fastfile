@@ -325,7 +325,7 @@ lane :deploy_to_codepush do |options|
 
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  release_name, dist_version, release_version = set_codepush_release_name(deployment_name: deployment_name)
+  release_name, dist_version, release_version = set_codepush_release_values(deployment_name: deployment_name)
 
   appcenter_codepush_release_react(
     api_token: ENV['APP_CENTER_API_TOKEN'],
@@ -360,11 +360,12 @@ lane :deploy_to_codepush do |options|
   puts "Deploying to #{deployment_name} with description #{description}"
 end
 
-def set_codepush_release_name(deployment_name:)
+def set_codepush_release_values(deployment_name:)
   date_str = DateTime.now.strftime("%Y.%m.%d.%H")
   latest_version = $APP_JSON['version']
   release_name = "codepush-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
   $APP_JSON['codePushReleaseName'] = release_name
+  $APP_JSON['codePushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
   [release_name, date_str, latest_version]
 end

@@ -18,6 +18,15 @@ export const eigenSentryReleaseName = () => {
   }
 }
 
+const eigenSentryDist = () => {
+  const codePushDist = appJson().codePushDist
+  if (codePushDist && codePushDist !== "none") {
+    return codePushDist
+  } else {
+    return DeviceInfo.getBuildNumber()
+  }
+}
+
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   const sentryDSN = Config.SENTRY_DSN
   const ossUser = Config.OSS === "true"
@@ -42,7 +51,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   Sentry.init({
     dsn: sentryDSN,
     release: eigenSentryReleaseName(),
-    dist: DeviceInfo.getBuildNumber(),
+    dist: eigenSentryDist(),
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,

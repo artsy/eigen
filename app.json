@@ -5,5 +5,6 @@
     "1": "c367d6fc7a6ba6ba622ce8a1e420c52eaa4aace8"
   },
   "isAndroidBeta": false,
-  "codePushReleaseName": "none"
+  "codePushReleaseName": "none",
+  "codePushDist": "none"
 }
