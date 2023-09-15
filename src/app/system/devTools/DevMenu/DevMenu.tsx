@@ -232,20 +232,25 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
           <DevMenuButtonItem
             title="Clear AsyncStorage"
             onPress={() => {
-              AsyncStorage.clear()
+              AsyncStorage.clear().then(() => {
+                toast.show("AsyncStorage cleared ✅", "middle")
+              })
             }}
           />
           <DevMenuButtonItem
             title="Clear Relay Cache"
             onPress={() => {
-              RelayCache.clearAll()
+              RelayCache.clearAll().then(() => {
+                toast.show("Relay cache cleared ✅", "middle")
+              })
             }}
           />
           <DevMenuButtonItem
             title="Clear FastImage Cache"
             onPress={() => {
-              FastImage.clearMemoryCache()
-              FastImage.clearDiskCache()
+              Promise.all([FastImage.clearMemoryCache(), FastImage.clearDiskCache()]).then(() => {
+                toast.show("FastImage cache cleared ✅", "middle")
+              })
             }}
           />
           <DevMenuButtonItem
@@ -570,7 +575,7 @@ export const DevMenuButtonItem: React.FC<{
 }> = ({ disabled = false, onPress, title, titleColor = "black100", value }) => {
   const color = useColor()
   return (
-    <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
+    <Touchable onPress={onPress} underlayColor={color("black30")} disabled={disabled}>
       <Flex
         flexDirection="row"
         alignItems="center"
