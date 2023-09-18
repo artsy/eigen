@@ -1,9 +1,9 @@
-import { ContextModule, OwnerType, tappedEntityGroup } from "@artsy/cohesion"
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ActivityRail_notificationsConnection$key } from "__generated__/ActivityRail_notificationsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FlatList } from "react-native"
@@ -36,13 +36,14 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
   }
 
   return (
-    <Flex>
-      <Flex pl={2} pr={2}>
+    <Flex pt={2}>
+      <Flex px={2}>
         <SectionTitle
           fontWeight="bold"
           title={title}
           onPress={() => {
-            trackEvent(tracks.tappedHeader())
+            trackEvent(HomeAnalytics.activityHeaderTapEvent())
+
             navigate("/activity")
           }}
         />
@@ -55,8 +56,8 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
         ListFooterComponent={() => <Spacer x={2} />}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
-        keyExtractor={(item) => `${item.internalID}`}
-        renderItem={({ item, index }) => <ActivityRailItem item={item} />}
+        keyExtractor={(item) => item.internalID}
+        renderItem={({ item }) => <ActivityRailItem item={item} />}
       />
     </Flex>
   )
@@ -80,23 +81,3 @@ const notificationsConnectionFragment = graphql`
     }
   }
 `
-
-const tracks = {
-  tappedHeader: () =>
-    tappedEntityGroup({
-      contextModule: ContextModule.activityRail,
-      contextScreenOwnerType: OwnerType.home,
-      destinationScreenOwnerType: OwnerType.activities,
-      type: "header",
-    }),
-  tappedThumbnail: () =>
-    tappedEntityGroup({
-      contextScreenOwnerType: OwnerType.home,
-      destinationScreenOwnerId: articleID,
-      destinationScreenOwnerSlug: articleSlug,
-      destinationScreenOwnerType: OwnerType.article,
-      contextModule: ContextModule.articleRail,
-      horizontalSlidePosition: index,
-      type: "thumbnail",
-    }),
-}

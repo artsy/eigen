@@ -9,6 +9,7 @@ import { isEmpty } from "lodash"
 import { useMemo } from "react"
 
 export const useHomeModules = (props: HomeProps) => {
+  const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
@@ -26,6 +27,7 @@ export const useHomeModules = (props: HomeProps) => {
         key: "latestActivityRail",
         title: "Latest Activity",
         type: "activity",
+        hidden: !enableLatestActivityRail,
       },
       {
         contextModule: ContextModule.newWorksForYouRail,
