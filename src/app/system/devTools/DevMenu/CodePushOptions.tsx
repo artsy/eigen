@@ -8,9 +8,9 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { CollapseMenu } from "app/Components/CollapseMenu"
+import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
 import React, { useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
-import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 
 interface CodePushRelease {
@@ -18,10 +18,6 @@ interface CodePushRelease {
   deployment: string
   label: string
 }
-
-const stagingKey = Config.CODE_PUSH_STAGING_DEPLOYMENT_KEY ?? "Staging_Key"
-const productionKey = Config.CODE_PUSH_PRODUCTION_DEPLOYMENT_KEY ?? "Production_Key"
-const canaryKey = Config.CODE_PUSH_CANARY_DEPLOYMENT_KEY ?? "Canary_Key"
 
 type CodePushDeployment = "Staging" | "Production" | "Canary"
 
