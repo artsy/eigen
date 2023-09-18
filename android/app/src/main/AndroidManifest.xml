@@ -87,7 +87,6 @@
                 <data android:pathPrefix="/article" />
                 <data android:pathPrefix="/articles" />
                 <data android:pathPrefix="/artist" />
-                <data android:pathPrefix="/artist2" />
                 <data android:pathPrefix="/artists" />
                 <data android:pathPrefix="/artwork-classifications" />
                 <data android:pathPrefix="/artwork-certificate-of-authenticity" />
