@@ -24,11 +24,10 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const isDisplayable =
     artist.hasMetadata || !!articles.length || !!relatedArtists.length || !!relatedGenes.length
 
-  const hasInsights = artist.artistInsights.length > 0
-  const hasArtistSeries = artist._artistSeriesConnection?.totalCount ?? 0 > 0
-  const hasShows = artist._artistShows?.totalCount ?? 0 > 0
-  console.log("artist._biographyBlurb?.text", artist._biographyBlurb?.text)
-  const hasBiography = !!artist._biographyBlurb?.text
+  const hasInsights = artist.hasArtistInsights.length > 0
+  const hasArtistSeries = artist.hasArtistSeriesConnection?.totalCount ?? 0 > 0
+  const hasShows = artist.hasArtistShows?.totalCount ?? 0 > 0
+  const hasBiography = !!artist.hasBiographyBlurb?.text
   const hasArticles = articles.length > 0
   const hasRelatedArtists = relatedArtists.length > 0
   const hasRelatedGenes = relatedGenes.length > 0
@@ -74,18 +73,18 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
-      _artistSeriesConnection: artistSeriesConnection(first: 1) {
+      hasArtistSeriesConnection: artistSeriesConnection(first: 1) {
         totalCount
       }
-      _biographyBlurb: biographyBlurb(format: PLAIN, partnerBio: false) {
+      hasBiographyBlurb: biographyBlurb(format: PLAIN, partnerBio: false) {
         text
       }
       hasMetadata
       internalID
-      artistInsights: insights {
+      hasArtistInsights: insights {
         entities
       }
-      _artistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
+      hasArtistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
         totalCount
       }
       slug
