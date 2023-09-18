@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Flex, SpacingUnit, useTheme, Text, TextProps } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, SpacingUnit, Text, TextProps, useTheme } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { TouchableOpacity } from "react-native"
 
@@ -15,6 +15,7 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
 }
 
 export const SectionTitle: React.FC<{
+  fontWeight?: string
   title: React.ReactNode
   titleVariant?: TextProps["variant"]
   subtitle?: React.ReactNode
@@ -23,6 +24,7 @@ export const SectionTitle: React.FC<{
   mb?: SpacingUnit
   capitalized?: boolean
 }> = ({
+  fontWeight,
   title,
   titleVariant = "sm-display",
   subtitle,
@@ -48,6 +50,7 @@ export const SectionTitle: React.FC<{
             ellipsizeMode="tail"
             numberOfLines={1}
             testID="title"
+            fontWeight={fontWeight}
           >
             {typeof title === "string" ? titleText : title}
           </Text>
