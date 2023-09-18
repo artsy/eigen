@@ -11,6 +11,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
+import { Artist2 } from "app/Scenes/Artist/Artist2"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
@@ -362,6 +363,7 @@ export const modules = defineModules({
   Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
     ArtistScreenQuery,
   ]),
+  Artist2: reactModule(Artist2),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
