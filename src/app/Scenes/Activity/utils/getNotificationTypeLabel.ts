@@ -19,20 +19,3 @@ export const getNotificationTypeColor = (notificationType: NotificationTypesEnum
       return "black60"
   }
 }
-
-// const getNotificationTypeLabel = (notificationType: NotificationTypesEnum) => {
-//   switch (notificationType) {
-//     case "ARTICLE_FEATURED_ARTIST":
-//       return "Editorial"
-//     case "ARTWORK_ALERT":
-//       return "Alert"
-//     case "ARTWORK_PUBLISHED":
-//       return "Artist"
-//     case "PARTNER_SHOW_OPENED":
-//       return "Gallery"
-//     case "VIEWING_ROOM_PUBLISHED":
-//       return "Viewing Room"
-//     default:
-//       return null
-//   }
-// }
