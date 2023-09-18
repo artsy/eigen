@@ -24,9 +24,18 @@ export const canaryKey = codePushCanaryKey ?? "Canary_Key"
  * CodePush options documented here: https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-api-ref
  * We could for example show an update alert to the user when an update is available in betas.
  */
-export const codePushOptions = ArtsyNativeModule.isBetaOrDev
-  ? {
+
+const options = () => {
+  if (__TEST__) {
+    return {}
+  } else if (ArtsyNativeModule.isBetaOrDev) {
+    return {
       deploymentKey: stagingKey,
       checkFrequency: codePush.CheckFrequency.MANUAL,
     }
-  : { deploymentKey: codePushProdKey }
+  } else {
+    return { deploymentKey: codePushProdKey }
+  }
+}
+
+export const codePushOptions = options()
