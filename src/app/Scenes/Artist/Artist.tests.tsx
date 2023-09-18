@@ -112,7 +112,7 @@ describe("Artist", () => {
     expect(getByText("22.0K")).toBeTruthy()
   })
 
-  fit("tracks follow change on follow button click", async () => {
+  it("tracks follow change on follow button click", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
