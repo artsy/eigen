@@ -110,7 +110,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.147.0",
-    "@artsy/palette-mobile": "13.0.8",
+    "@artsy/palette-mobile": "v13.0.10",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",
