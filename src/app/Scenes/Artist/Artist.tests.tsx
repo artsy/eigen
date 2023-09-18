@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -112,7 +112,7 @@ describe("Artist", () => {
     expect(getByText("22.0K")).toBeTruthy()
   })
 
-  it("tracks follow change on follow button click", async () => {
+  fit("tracks follow change on follow button click", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
@@ -128,13 +128,16 @@ describe("Artist", () => {
 
     await flushPromiseQueue()
 
-    expect(postEventToProviders).toHaveBeenCalledTimes(2)
-    expect(postEventToProviders).toHaveBeenCalledWith({
-      action_name: "artistFollow",
-      action_type: "tap",
-      owner_id: '<mock-value-for-field-"internalID">',
-      owner_slug: '<mock-value-for-field-"slug">',
-      owner_type: "Artist",
+    // Wait until the follow mutation has been triggered - this comes after a debounce
+    waitFor(() => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      expect(postEventToProviders).toHaveBeenCalledWith({
+        action_name: "artistFollow",
+        action_type: "tap",
+        owner_id: '<mock-value-for-field-"internalID">',
+        owner_slug: '<mock-value-for-field-"slug">',
+        owner_type: "Artist",
+      })
     })
   })
 })
