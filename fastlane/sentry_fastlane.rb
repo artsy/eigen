@@ -19,7 +19,7 @@ lane :upload_sentry_artifacts do |options|
   end
 
   settings = platform_settings(options[:platform])
-  source_map_path = settings[:source_map_path]
+  sourcemap_path = settings[:sourcemap_path]
   bundle_path = settings[:bundle_path]
   outfile = settings[:outfile]
 
@@ -114,11 +114,11 @@ end
 def platform_settings(platform)
   settings = {
     ios: {
-      source_map_path: 'dist/main.jsbundle.map',
+      sourcemap_path: 'dist/main.jsbundle.map',
       bundle_path: 'dist/main.jsbundle'
     },
     android: {
-      source_map_path: 'android/app/src/main/assets/index.android.bundle.map',
+      sourcemap_path: 'android/app/src/main/assets/index.android.bundle.map',
       bundle_path: 'android/app/src/main/assets/index.android.bundle'
     }
   }
