@@ -24,37 +24,42 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const isDisplayable =
     artist.hasMetadata || !!articles.length || !!relatedArtists.length || !!relatedGenes.length
 
+  const hasInsights = artist.hasArtistInsights.length > 0
+  const hasArtistSeries = artist.hasArtistSeriesConnection?.totalCount ?? 0 > 0
+  const hasShows = artist.hasArtistShows?.totalCount ?? 0 > 0
+  const hasBiography = !!artist.hasBiographyBlurb?.text
+  const hasArticles = articles.length > 0
+  const hasRelatedArtists = relatedArtists.length > 0
+  const hasRelatedGenes = relatedGenes.length > 0
+
   return (
     <Tabs.ScrollView>
       {isDisplayable ? (
         <>
           <Spacer y={2} />
           <Join separator={<Spacer y={4} />}>
-            {!!artist.hasMetadata && (
+            {!!hasBiography && (
               <>
                 <Spacer y={1} />
                 <Biography artist={artist} />
               </>
             )}
+            {!!hasInsights && <ArtistCareerHighlights artist={artist} />}
+            {!!hasArtistSeries && (
+              <ArtistSeriesMoreSeriesFragmentContainer
+                contextScreenOwnerId={artist.internalID}
+                contextScreenOwnerSlug={artist.slug}
+                contextScreenOwnerType={OwnerType.artist}
+                contextModule={ContextModule.artistSeriesRail}
+                artist={artist}
+                artistSeriesHeader="Top Artist Series"
+              />
+            )}
+            {!!hasArticles && <Articles articles={articles} artist={artist} />}
+            {!!hasShows && <ArtistAboutShowsFragmentContainer artist={artist} />}
 
-            <ArtistCareerHighlights artist={artist} />
-
-            <ArtistSeriesMoreSeriesFragmentContainer
-              contextScreenOwnerId={artist.internalID}
-              contextScreenOwnerSlug={artist.slug}
-              contextScreenOwnerType={OwnerType.artist}
-              contextModule={ContextModule.artistSeriesRail}
-              artist={artist}
-              artistSeriesHeader="Top Artist Series"
-            />
-
-            {!!articles.length && <Articles articles={articles} artist={artist} />}
-
-            <ArtistAboutShowsFragmentContainer artist={artist} />
-
-            {!!relatedArtists.length && <RelatedArtistsRail artists={relatedArtists} />}
-
-            {!!relatedGenes.length && <ArtistAboutRelatedGenes genes={relatedGenes} />}
+            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} />}
+            {!!hasRelatedGenes && <ArtistAboutRelatedGenes genes={relatedGenes} />}
           </Join>
           <Spacer y={4} />
         </>
@@ -68,8 +73,20 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
   artist: graphql`
     fragment ArtistAbout_artist on Artist {
+      hasArtistSeriesConnection: artistSeriesConnection(first: 1) {
+        totalCount
+      }
+      hasBiographyBlurb: biographyBlurb(format: PLAIN, partnerBio: false) {
+        text
+      }
       hasMetadata
       internalID
+      hasArtistInsights: insights {
+        entities
+      }
+      hasArtistShows: showsConnection(first: 1, sort: END_AT_ASC, status: "running") {
+        totalCount
+      }
       slug
       ...Biography_artist
       ...ArtistSeriesMoreSeries_artist

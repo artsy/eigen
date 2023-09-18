@@ -9,6 +9,7 @@ import { isEmpty } from "lodash"
 import { useMemo } from "react"
 
 export const useHomeModules = (props: HomeProps) => {
+  const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
@@ -17,6 +18,17 @@ export const useHomeModules = (props: HomeProps) => {
   return useMemo(() => {
     const allModules: Array<HomeModule> = [
       // Above-The-Fold Modules
+      {
+        contextModule: ContextModule.activityRail,
+        contextScreen: "home",
+        contextScreenOwnerType: OwnerType.home,
+        data: props.notificationsConnection,
+        isEmpty: isEmpty(props.notificationsConnection),
+        key: "latestActivityRail",
+        title: "Latest Activity",
+        type: "activity",
+        hidden: !enableLatestActivityRail,
+      },
       {
         contextModule: ContextModule.newWorksForYouRail,
         contextScreen: "home",
@@ -236,6 +248,7 @@ export const useHomeModules = (props: HomeProps) => {
     props.homePageBelow?.recentlyViewedWorksArtworkModule,
     props.homePageBelow?.similarToRecentlyViewedArtworkModule,
     props.featured,
+    props.notificationsConnection,
     props.homePageBelow?.fairsModule,
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
