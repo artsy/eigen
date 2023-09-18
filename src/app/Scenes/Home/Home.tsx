@@ -635,6 +635,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 
 const HomePlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
+  const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
 
   return (
     <Flex>
@@ -647,28 +648,31 @@ const HomePlaceholder: React.FC = () => {
       <Spacer y={4} />
 
       {/* Activity Rail */}
-      <Box ml={2} mr={2}>
-        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Spacer y={0.5} />
-        <Flex flexDirection="row">
-          <Join separator={<Spacer x="15px" />}>
-            {times(3 + useMemoizedRandom() * 10).map((index) => (
-              <Flex key={index} flexDirection="row">
-                <PlaceholderBox
-                  height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                  width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-                />
-                <Flex ml={1}>
-                  <PlaceholderText width={100} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+      {!!enableLatestActivityRail && (
+        <Box ml={2} mr={2}>
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+          <Spacer y={0.5} />
+          <Flex flexDirection="row">
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex key={index} flexDirection="row">
+                  <PlaceholderBox
+                    height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                    width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                  />
+                  <Flex ml={1}>
+                    <PlaceholderText width={100} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                  </Flex>
                 </Flex>
-              </Flex>
-            ))}
-          </Join>
-        </Flex>
-      </Box>
-      <ModuleSeparator />
+              ))}
+            </Join>
+          </Flex>
+
+          <ModuleSeparator />
+        </Box>
+      )}
 
       {/* Small tiles to mimic the artwork rails  */}
       <Box ml={2} mr={2}>
