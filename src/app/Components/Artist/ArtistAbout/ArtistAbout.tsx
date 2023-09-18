@@ -27,6 +27,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const hasInsights = artist.artistInsights.length > 0
   const hasArtistSeries = artist._artistSeriesConnection?.totalCount ?? 0 > 0
   const hasShows = artist._artistShows?.totalCount ?? 0 > 0
+  console.log("artist._biographyBlurb?.text", artist._biographyBlurb?.text)
   const hasBiography = !!artist._biographyBlurb?.text
   const hasArticles = articles.length > 0
   const hasRelatedArtists = relatedArtists.length > 0
