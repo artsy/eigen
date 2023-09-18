@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
+  ruby: circleci/ruby@2.1.0
 
 commands:
   await-previous-builds:
@@ -69,6 +70,10 @@ commands:
       - run:
           name: Compile query map
           command: yarn relay
+  install-ruby:
+    steps:
+      - ruby/install:
+          version: "2.7"
   install-gems:
     steps:
       - restore_cache:
@@ -142,6 +147,7 @@ commands:
       - install-node-modules
       - run-relay-compiler
       - update-echo
+      - install-ruby
       - install-gems
   build-app-android:
     steps:
@@ -177,7 +183,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
-      resource_class: macos.m1.medium.gen1
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
@@ -257,7 +263,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
-      resource_class: macos.m1.medium.gen1
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - checkout
@@ -307,7 +313,7 @@ jobs:
 
     macos:
       xcode: 14.1.0
-      resource_class: macos.m1.medium.gen1
+      resource_class: macos.x86.medium.gen2
 
     steps:
       - attach_workspace:
@@ -400,7 +406,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 14.1.0
-      resource_class: macos.m1.medium.gen1
+      resource_class: macos.x86.medium.gen2
     steps:
       - checkout
       - install-gems
