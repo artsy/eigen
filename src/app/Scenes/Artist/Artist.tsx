@@ -5,6 +5,7 @@ import {
   Separator,
   ShareIcon,
   Skeleton,
+  SkeletonBox,
   SkeletonText,
   Spacer,
   Tabs,
@@ -16,7 +17,10 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import {
+  ArtistHeaderFragmentContainer,
+  useArtistHeaderImageDimensions,
+} from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
@@ -270,6 +274,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
+                  // return <ArtistSkeleton />
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }
@@ -312,12 +317,16 @@ const LoadingPage: React.FC<{}> = ({}) => {
 }
 
 const ArtistSkeleton: React.FC = () => {
+  const { height, width } = useArtistHeaderImageDimensions()
+
   return (
     <Screen>
       <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
           <Flex px={2}>
+            <SkeletonBox width={width} height={height} />
+            <Spacer y={2} />
             <Join separator={<Spacer y={0.5} />}>
               <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
               <SkeletonText variant="xs">American, b. 1945</SkeletonText>
