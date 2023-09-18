@@ -178,6 +178,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
             tapToDismiss
             yOffset={9}
             xOffset={-17}
+            flowDirection="LEFT"
           >
             <Flex></Flex>
           </ToolTip>
