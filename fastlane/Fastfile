@@ -320,20 +320,27 @@ end
 # Codepush
 
 lane :deploy_to_codepush do |options|
+  platform = options[:platform]
   deployment_name = options[:deployment_name]
   description = options[:description]
 
+  puts "Got platform #{platform}"
+
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  release_name, dist_version, release_version = set_codepush_release_values(deployment_name: deployment_name)
+  release_name, dist_version, release_version = set_codepush_release_values(deployment_name, platform)
+
+  app_name = platform == "ios" ? "Eigen" : "Eigen-Android"
+  sourcemap_output = platform == "ios" ? "./build/CodePush/main.jsbundle.map" : "./build/CodePush/index.android.bundle.map"
+  bundle_path = platform == "ios" ? "./build/CodePush/main.jsbundle" : "./build/CodePush/index.android.bundle"
 
   appcenter_codepush_release_react(
     api_token: ENV['APP_CENTER_API_TOKEN'],
     owner_name: "mobile-artsy",
-    app_name: "Eigen",
+    app_name: app_name,
     description: "'#{description}'",
     deployment: deployment_name,
-    sourcemap_output: "./build/CodePush/main.jsbundle.map",
+    sourcemap_output: sourcemap_output,
     output_dir: "./build",
     target_version: release_version,
   )
@@ -342,8 +349,6 @@ lane :deploy_to_codepush do |options|
   sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
   project_slug = 'eigen'
   org_slug = 'artsynet'
-  bundle_path = './build/CodePush/main.jsbundle'
-  sourcemap_path = './build/CodePush/main.jsbundle.map'
 
   upload_sentry_sourcemaps(
     sentry_cli_path: sentry_cli_path,
@@ -352,18 +357,18 @@ lane :deploy_to_codepush do |options|
     sentry_release_name: release_name,
     dist: dist_version,
     bundle_path: bundle_path,
-    sourcemap_path: sourcemap_path,
+    sourcemap_path: sourcemap_output,
   )
 
   tag_and_push(tag: release_name)
 
-  puts "Deploying to #{deployment_name} with description #{description}"
+  puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
 end
 
-def set_codepush_release_values(deployment_name:)
+def set_codepush_release_values(deployment_name, platform)
   date_str = DateTime.now.strftime("%Y.%m.%d.%H")
   latest_version = $APP_JSON['version']
-  release_name = "codepush-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
+  release_name = "codepush-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
   $APP_JSON['codePushReleaseName'] = release_name
   $APP_JSON['codePushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
