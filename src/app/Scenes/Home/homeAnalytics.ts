@@ -5,10 +5,10 @@ import {
   OwnerType,
   RailViewed,
   Screen,
+  TappedEntityDestinationType,
   TappedEntityGroup,
   tappedEntityGroup,
 } from "@artsy/cohesion"
-import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 
 type ValidHomeDestination =
@@ -98,10 +98,24 @@ export default class HomeAnalytics {
     })
   }
 
-  static activityThumbnailTapEvent(notificationType: string): ClickedActivityPanelNotificationItem {
+  static activityViewAllTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.activityRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.activities,
+      type: "viewAll",
+    })
+  }
+
+  static activityThumbnailTapEvent(index: number, destinationModule: string): TappedEntityGroup {
     return {
-      action: ActionType.clickedActivityPanelNotificationItem,
-      notification_type: notificationType,
+      action: ActionType.tappedActivityGroup,
+      context_module: ContextModule.activityRail,
+      context_screen_owner_type: OwnerType.home,
+      destination_screen_owner_type: destinationModule.toLowerCase() as TappedEntityDestinationType,
+      horizontal_slide_position: index,
+      module_height: "single",
+      type: "thumbnail",
     }
   }
 

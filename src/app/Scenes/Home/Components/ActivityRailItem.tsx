@@ -1,31 +1,32 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { ActivityRailItem_item$key } from "__generated__/ActivityRailItem_item.graphql"
+import {
+  ActivityRailItem_item$data,
+  ActivityRailItem_item$key,
+} from "__generated__/ActivityRailItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getNotificationTypeLabel } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { extractNodes } from "app/utils/extractNodes"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface ActivityRailItemProps {
   item: ActivityRailItem_item$key
+  onPress?: (item: ActivityRailItem_item$data) => void
 }
 
 export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
 const MAX_WIDTH = 220
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
-  const { trackEvent } = useTracking()
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
 
   const handlePress = () => {
-    trackEvent(HomeAnalytics.activityThumbnailTapEvent(item.notificationType))
+    props.onPress?.(item)
 
     markAsRead(item)
 
