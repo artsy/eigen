@@ -27,9 +27,9 @@ describe("ArtistAbout", () => {
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
       renderWithRelay({
-        Boolean: (context) => {
-          if (context.name === "hasMetadata") {
-            return true
+        ArtistBlurb: () => {
+          return {
+            text: "a biography",
           }
         },
       })
@@ -39,9 +39,9 @@ describe("ArtistAbout", () => {
 
     it("is hidden when the artist has metadata", () => {
       renderWithRelay({
-        Boolean: (context) => {
-          if (context.name === "hasMetadata") {
-            return false
+        ArtistBlurb: () => {
+          return {
+            text: "",
           }
         },
       })
