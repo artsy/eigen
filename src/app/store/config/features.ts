@@ -271,8 +271,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
   AREnableFallbackToGeneratedAlertNames: {
     description: "Enable fallback to generated alert names",
