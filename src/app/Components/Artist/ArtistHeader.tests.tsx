@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -30,8 +31,14 @@ describe("ArtistHeader", () => {
     expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
   })
   describe("alerts set", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARShowArtistsAlertsSet: true,
+      })
+    })
+
     it("displays the numbers of alerts if the user has alerts for an artist", () => {
-      renderWithRelay({
+      const { getByText } = renderWithRelay({
         Artist() {
           return mockArtist
         },
@@ -44,11 +51,11 @@ describe("ArtistHeader", () => {
         },
       })
 
-      expect(screen.queryByText("2 Alerts Set")).toBeOnTheScreen()
+      expect(getByText("2 Alerts Set")).toBeDefined()
     })
 
     it("hides the numbers of alerts if the user has no alerts for an artist", () => {
-      renderWithRelay({
+      const { getByText } = renderWithRelay({
         Artist() {
           return mockArtist
         },
@@ -61,7 +68,7 @@ describe("ArtistHeader", () => {
         },
       })
 
-      expect(screen.queryByText("2 Alerts Set")).not.toBeOnTheScreen()
+      expect(() => getByText("2 Alerts Set")).toThrow()
     })
   })
 })

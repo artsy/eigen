@@ -45,7 +45,7 @@ export const useArtistHeaderImageDimensions = () => {
 export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
-  const showArtistsAlertsSet = useFeatureFlag("ARShowArtistsAlertsSet")
+  const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -67,6 +67,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
 
   const bylineRequired = artist.nationality || artist.birthday
+
+  const showAlertsSet =
+    !!showArtistsAlertsSetFeatureFlag && Number(me?.savedSearchesConnection?.totalCount) > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
@@ -103,7 +106,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
         </Flex>
       </Box>
 
-      {!!showArtistsAlertsSet && Number(me?.savedSearchesConnection?.totalCount) > 0 && (
+      {!!showAlertsSet && (
         <Box mx={2} maxWidth={120}>
           <Touchable
             haptic
