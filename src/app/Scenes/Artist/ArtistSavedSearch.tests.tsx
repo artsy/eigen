@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -55,7 +55,7 @@ describe("Saved search banner on artist screen", () => {
       />
     )
 
-  fit("should convert the criteria attributes to the filter params format", async () => {
+  it("should convert the criteria attributes to the filter params format", async () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
@@ -64,11 +64,12 @@ describe("Saved search banner on artist screen", () => {
 
     await flushPromiseQueue()
 
-    fireEvent.press(screen.getByText("Sort & Filter"))
-
-    expect(screen.queryByText("Sort By • 1")).toBeOnTheScreen()
-    expect(screen.queryByText("Rarity • 2")).toBeOnTheScreen()
-    expect(screen.queryByText("Ways to Buy • 2")).toBeOnTheScreen()
+    waitFor(() => {
+      fireEvent.press(screen.getByText("Sort & Filter"))
+      expect(screen.queryByText("Sort By • 1")).toBeOnTheScreen()
+      expect(screen.queryByText("Rarity • 2")).toBeOnTheScreen()
+      expect(screen.queryByText("Ways to Buy • 2")).toBeOnTheScreen()
+    })
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -91,7 +92,9 @@ describe("Saved search banner on artist screen", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
+    waitFor(() => {
+      expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
+    })
   })
 })
 
@@ -120,6 +123,9 @@ const MockArtistAboveTheFoldQuery: MockResolvers = {
         totalCount: 0,
       },
     }
+  },
+  ArtistInsight() {
+    return { entities: ["test"] }
   },
   Me() {
     return {

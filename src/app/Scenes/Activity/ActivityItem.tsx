@@ -1,23 +1,14 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
-import { captureMessage } from "@sentry/react-native"
-import {
-  ActivityItemMarkAsReadMutation,
-  ActivityItemMarkAsReadMutation$data,
-} from "__generated__/ActivityItemMarkAsReadMutation.graphql"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
-import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
-import { navigate } from "app/system/navigation/navigate"
+import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
+import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { extractNodes } from "app/utils/extractNodes"
-import { last } from "lodash"
-import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
-import { graphql, useFragment, useMutation } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RecordSourceSelectorProxy } from "relay-runtime"
 import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 import { shouldDisplayNotificationTypeLabel } from "./utils/shouldDisplayNotificationTypeLabel"
@@ -26,20 +17,11 @@ interface ActivityItemProps {
   item: ActivityItem_item$key
 }
 
-const updater = (
-  id: string,
-  store: RecordSourceSelectorProxy<ActivityItemMarkAsReadMutation$data>
-) => {
-  const notification = store.get(id)
-
-  notification?.setValue(false, "isUnread")
-}
-
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
-  const [markAsRead] = useMutation<ActivityItemMarkAsReadMutation>(markNotificationAsRead)
+  const markAsRead = useMarkNotificationAsRead()
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
@@ -48,43 +30,12 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
     isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
 
   const handlePress = () => {
-    const splittedQueryParams = item.targetHref.split("?")
-    const queryParams = last(splittedQueryParams) ?? ""
-    const parsed = parseQueryString(queryParams)
-
-    const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
-      (sortEntity) => sortEntity.paramValue === "-published_at"
-    )!
-
-    const navigateToActivityItem = () =>
-      navigate(item.targetHref, {
-        passProps: {
-          predefinedFilters: [sortFilterItem] as FilterArray,
-          searchCriteriaID: parsed.search_criteria_id,
-        },
-      })
-
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
 
-    navigateToActivityItem()
+    navigateToActivityItem(item.targetHref)
 
     if (item.isUnread) {
-      markAsRead({
-        variables: {
-          input: {
-            id: item.internalID,
-          },
-        },
-        optimisticUpdater: (store) => {
-          updater(item.id, store)
-        },
-        updater: (store) => {
-          updater(item.id, store)
-        },
-        onError: (error) => {
-          captureMessage(error?.stack!)
-        },
-      })
+      markAsRead(item)
     }
   }
 
@@ -183,20 +134,3 @@ const tracks = {
     notification_type: notificationType,
   }),
 }
-
-const markNotificationAsRead = graphql`
-  mutation ActivityItemMarkAsReadMutation($input: MarkNotificationAsReadInput!) {
-    markNotificationAsRead(input: $input) {
-      responseOrError {
-        ... on MarkNotificationAsReadSuccess {
-          success
-        }
-        ... on MarkNotificationAsReadFailure {
-          mutationError {
-            message
-          }
-        }
-      }
-    }
-  }
-`

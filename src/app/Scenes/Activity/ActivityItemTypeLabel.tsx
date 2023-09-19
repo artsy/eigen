@@ -1,22 +1,17 @@
 import { Text } from "@artsy/palette-mobile"
+import { NotificationTypesEnum } from "__generated__/ActivityRail_notificationsConnection.graphql"
+import {
+  getNotificationTypeColor,
+  getNotificationTypeLabel,
+} from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 
 interface Props {
-  notificationType: string
+  notificationType: NotificationTypesEnum
 }
 
 export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => {
-  const getNotificationType = () => {
-    if (notificationType === "ARTWORK_ALERT") {
-      return "Alert"
-    }
-    if (notificationType === "ARTICLE_FEATURED_ARTIST") {
-      return "Artsy Editorial"
-    }
-
-    return null
-  }
-  const notificationTypeLabel = getNotificationType()
-  const notificationTypeColor = notificationType == "ARTWORK_ALERT" ? "blue100" : "black60"
+  const notificationTypeLabel = getNotificationTypeLabel(notificationType)
+  const notificationTypeColor = getNotificationTypeColor(notificationType)
 
   return (
     <Text

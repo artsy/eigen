@@ -5,6 +5,7 @@ import {
   Separator,
   ShareIcon,
   Skeleton,
+  SkeletonBox,
   SkeletonText,
   Spacer,
   Tabs,
@@ -16,10 +17,12 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import {
+  ArtistHeaderFragmentContainer,
+  useArtistHeaderImageDimensions,
+} from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
-import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import {
   FilterArray,
   filterArtworksParams,
@@ -39,7 +42,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Text, View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -72,7 +75,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
-  const { handleFollowToggle } = useFollowArtist(props.artistAboveTheFold)
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -128,11 +130,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
-              <ArtistHeaderNavRight
-                artist={artistAboveTheFold}
-                onSharePress={handleSharePress}
-                onFollowPress={handleFollowToggle}
-              />
+              <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
             ),
             onBack: goBack,
           }}
@@ -192,7 +190,6 @@ export const ArtistScreenQuery = graphql`
     artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
-      ...useFollowArtist_artist
       ...ArtistHeaderNavRight_artist
       id
       internalID
@@ -274,8 +271,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 variables: { artistID },
               }}
               render={{
-                renderPlaceholder: () => <Text>Loading</Text>,
+                renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
+                  // return <ArtistSkeleton />
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }
@@ -319,12 +317,16 @@ const LoadingPage: React.FC<{}> = ({}) => {
 }
 
 const ArtistSkeleton: React.FC = () => {
+  const { height, width } = useArtistHeaderImageDimensions()
+
   return (
     <Screen>
       <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
           <Flex px={2}>
+            <SkeletonBox width={width} height={height} />
+            <Spacer y={2} />
             <Join separator={<Spacer y={0.5} />}>
               <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
               <SkeletonText variant="xs">American, b. 1945</SkeletonText>

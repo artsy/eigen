@@ -1,27 +1,37 @@
 import { Flex, NAVBAR_HEIGHT, ShareIcon } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
+import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { FollowButton } from "app/Components/Button/FollowButton"
+import { useState } from "react"
 import { TouchableOpacity } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
+import useDebounce from "react-use/lib/useDebounce"
 
 interface ArtistHeaderNavRightProps {
   artist: ArtistHeaderNavRight_artist$key
   onSharePress: () => void
-  onFollowPress: () => void
 }
 
 export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist,
   onSharePress,
-  onFollowPress,
 }) => {
   const { currentScrollY, scrollYOffset } = useScreenScrollContext()
   const data = useFragment(fragment, artist)
+  const [isFollowed, setIsFollowed] = useState(!!data?.isFollowed)
 
-  if (!data) {
-    return null
-  }
+  const { handleFollowToggle } = useFollowArtist(data!)
+
+  useDebounce(
+    () => {
+      if (isFollowed !== data?.isFollowed) {
+        handleFollowToggle()
+      }
+    },
+    350,
+    [isFollowed]
+  )
 
   const displayFollowButton = !scrollYOffset || currentScrollY < scrollYOffset + NAVBAR_HEIGHT
 
@@ -34,9 +44,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       {!!displayFollowButton && (
         <FollowButton
           haptic
-          isFollowed={!!data.isFollowed}
-          followCount={data.counts.follows}
-          onPress={onFollowPress}
+          isFollowed={isFollowed}
+          followCount={data!.counts.follows}
+          onPress={() => setIsFollowed(!isFollowed)}
           ml={1}
         />
       )}
@@ -50,5 +60,6 @@ const fragment = graphql`
     counts @required(action: NONE) {
       follows
     }
+    ...useFollowArtist_artist
   }
 `

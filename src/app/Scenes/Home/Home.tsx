@@ -21,6 +21,7 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
@@ -29,6 +30,8 @@ import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/Art
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
+import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
+import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
@@ -122,6 +125,7 @@ export interface HomeProps extends ViewProps {
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
   newWorksForYou: Home_newWorksForYou$data | null
+  notificationsConnection: Home_notificationsConnection$data | null
   loading: boolean
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
@@ -309,6 +313,8 @@ const Home = memo((props: HomeProps) => {
           )
         case "galleriesForYouBanner":
           return <GalleriesForYouBanner />
+        case "activity":
+          return <ActivityRail title={item.title} notificationsConnection={item.data} />
         case "lotsByFollowedArtists":
           return (
             <LotsByFollowedArtistsRailContainer
@@ -522,6 +528,12 @@ export const HomeFragmentContainer = memo(
           }
         }
       `,
+      notificationsConnection: graphql`
+        fragment Home_notificationsConnection on Viewer {
+          ...ActivityRail_notificationsConnection
+        }
+      `,
+
       articlesConnection: graphql`
         fragment Home_articlesConnection on ArticleConnection {
           ...ArticlesRail_articlesConnection
@@ -556,6 +568,9 @@ export const HomeFragmentContainer = memo(
         }
         homePageBelow: homePage @optionalField {
           ...Home_homePageBelow
+        }
+        notificationsConnection: viewer @optionalField {
+          ...Home_notificationsConnection
         }
         me @optionalField {
           ...Home_meAbove
@@ -620,6 +635,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 
 const HomePlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
+  const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
 
   return (
     <Flex>
@@ -631,17 +647,41 @@ const HomePlaceholder: React.FC = () => {
       </Box>
       <Spacer y={4} />
 
-      {
-        // Small tiles to mimic the artwork rails
+      {/* Activity Rail */}
+      {!!enableLatestActivityRail && (
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer y={0.5} />
           <Flex flexDirection="row">
-            <LargeArtworkRailPlaceholder />
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex key={index} flexDirection="row">
+                  <PlaceholderBox
+                    height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                    width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                  />
+                  <Flex ml={1}>
+                    <PlaceholderText width={100} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                  </Flex>
+                </Flex>
+              ))}
+            </Join>
           </Flex>
-        </Box>
-      }
 
+          <ModuleSeparator />
+        </Box>
+      )}
+
+      {/* Small tiles to mimic the artwork rails  */}
+      <Box ml={2} mr={2}>
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+        <Spacer y={0.5} />
+        <Flex flexDirection="row">
+          <LargeArtworkRailPlaceholder />
+        </Flex>
+      </Box>
       <ModuleSeparator />
 
       {/* Larger tiles to mimic the artist rails */}
@@ -662,7 +702,6 @@ const HomePlaceholder: React.FC = () => {
           <ModuleSeparator />
         </Flex>
       </Box>
-
       <Flex ml={2} mt={4}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
         <Flex flexDirection="row">
@@ -758,6 +797,9 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
+            notificationsConnection: viewer @optionalField {
+              ...Home_notificationsConnection
+            }
             heroUnitsConnection(first: 10, private: false) @optionalField {
               ...Home_heroUnits
               ...HeroUnitsRail_heroUnitsConnection
@@ -808,6 +850,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
               newWorksForYou={above.newWorksForYou}
+              notificationsConnection={above.notificationsConnection}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}

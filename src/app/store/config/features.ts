@@ -271,8 +271,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableAuctionHeaderAlertCTA: {
     description: "Enable Auction Header Alert CTA",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
   AREnableFallbackToGeneratedAlertNames: {
     description: "Enable fallback to generated alert names",
@@ -291,6 +292,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
+  },
+  AREnableLatestActivityRail: {
+    description: "Enable Latest Activity Rail",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableLatestActivityRail",
   },
 }
 
