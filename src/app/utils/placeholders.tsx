@@ -23,6 +23,9 @@ export const ProvidePlaceholderContext: React.FC = ({ children }) => (
 // if we ever want to do some fancy skeleton, this code seems pretty simple and nice.
 // https://github.com/asaeed14/react-native-animated-skeleton/blob/master/src/Skeleton/useSkeletonAnimation.ts
 
+/**
+ * @deprecated use `SkeletonBox` from palette-mobile instead instead
+ */
 export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
   const color = useColor()
   const animatedStyle = useSkeletonAnimation({})
@@ -39,6 +42,9 @@ export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => 
 const TEXT_HEIGHT = 12
 const TEXT_MARGIN = 7
 
+/**
+ * @deprecated use `SkeletonText` from palette-mobile instead instead
+ */
 export const PlaceholderText: React.FC<ViewStyle> = ({ ...props }) => (
   <PlaceholderBox height={TEXT_HEIGHT} marginBottom={TEXT_MARGIN} {...props} />
 )
