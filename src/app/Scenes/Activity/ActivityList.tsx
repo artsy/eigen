@@ -75,8 +75,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     let headerOffset = 0
     if (typeof headerMeasurements.height.value === "number") {
       headerOffset = -headerMeasurements.height.value
-    } else {
-      headerOffset = 0
     }
 
     return (
