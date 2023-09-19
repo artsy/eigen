@@ -141,7 +141,7 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
   `,
   me: graphql`
     fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
-      savedSearchesConnection(first: 10, artistIDs: [$artistID]) {
+      savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
         totalCount
       }
     }
