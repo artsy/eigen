@@ -19,7 +19,15 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
   return (
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="sm-display">{`Artsy Editorial Featuring ${artistData.name}`}</Text>
+        <Flex flex={1}>
+          <Text
+            variant="sm-display"
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            // Avoid having the title and the view all button getting too close
+            pr={1}
+          >{`Artsy Editorial Featuring ${artistData.name}`}</Text>
+        </Flex>
         <Touchable onPress={() => navigate(`artist/${artistData.slug}/articles`)}>
           <Text variant="xs" underline>
             View All
