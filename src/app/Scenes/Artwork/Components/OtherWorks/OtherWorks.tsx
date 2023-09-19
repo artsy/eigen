@@ -25,70 +25,65 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   }
 }
 
-// @ts-expect-error
-export const OtherWorksFragmentContainer = createFragmentContainer<{
-  artwork: OtherWorks_artwork$data
-}>(
-  // @ts-expect-error
-  (props) => {
-    const { width } = useScreenDimensions()
-    const space = useSpace()
-    const grids = props.artwork.contextGrids
-    const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
+const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork }) => {
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const grids = artwork.contextGrids
+  const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
-    if (gridsToShow && gridsToShow.length > 0) {
-      return (
-        <Join
-          separator={
-            <Box my={4}>
-              <Separator />
-            </Box>
-          }
-        >
-          {gridsToShow.map((grid, index) => (
-            <React.Fragment key={`Grid-${index}`}>
-              <Text variant="md" textAlign="left">
-                {grid.title}
-              </Text>
-              <Spacer y={2} />
-              <GenericGrid
-                trackingFlow={Schema.Flow.RecommendedArtworks}
-                contextModule={grid.__typename as ContextModule}
-                artworks={extractNodes(grid.artworks)}
-                width={width - space(2)}
-              />
-              <Box mt={2}>
-                <ContextGridCTA
-                  contextModule={grid.__typename}
-                  href={grid.ctaHref || undefined}
-                  label={grid.ctaTitle!}
-                />
-              </Box>
-            </React.Fragment>
-          ))}
-        </Join>
-      )
-    } else {
-      return null
-    }
-  },
-  {
-    artwork: graphql`
-      fragment OtherWorks_artwork on Artwork {
-        contextGrids {
-          __typename
-          title
-          ctaTitle
-          ctaHref
-          artworks: artworksConnection(first: 6) {
-            edges {
-              node {
-                ...GenericGrid_artworks
-              }
+  if (!grids?.length || gridsToShow.length === 0) {
+    return null
+  }
+
+  return (
+    <Join
+      separator={
+        <Box my={4}>
+          <Separator />
+        </Box>
+      }
+    >
+      {gridsToShow.map((grid, index) => (
+        <React.Fragment key={`Grid-${index}`}>
+          <Text variant="md" textAlign="left">
+            {grid.title}
+          </Text>
+          <Spacer y={2} />
+          <GenericGrid
+            trackingFlow={Schema.Flow.RecommendedArtworks}
+            contextModule={grid.__typename as ContextModule}
+            artworks={extractNodes(grid.artworks)}
+            width={width - space(2)}
+          />
+          <Box mt={2}>
+            <ContextGridCTA
+              contextModule={grid.__typename}
+              href={grid.ctaHref || undefined}
+              label={grid.ctaTitle!}
+            />
+          </Box>
+        </React.Fragment>
+      ))}
+    </Join>
+  )
+}
+
+export const OtherWorksFragmentContainer = createFragmentContainer(OtherWorks, {
+  artwork: graphql`
+    fragment OtherWorks_artwork on Artwork {
+      contextGrids {
+        __typename
+        title
+        ctaTitle
+        ctaHref
+        artworks: artworksConnection(first: 6) {
+          edges {
+            node {
+              ...GenericGrid_artworks
             }
           }
         }
       }
-    `,
-  }
-)
+    }
+  `,
+})

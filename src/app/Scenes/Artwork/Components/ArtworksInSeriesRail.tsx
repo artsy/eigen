@@ -27,10 +27,6 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
   const firstArtistSeries = extractNodes(artwork?.artistSeriesConnection)[0]
   const artworks = extractNodes(firstArtistSeries?.filterArtworksConnection)
 
-  if (!artworks) {
-    return null
-  }
-
   return (
     <Flex>
       <SectionTitle

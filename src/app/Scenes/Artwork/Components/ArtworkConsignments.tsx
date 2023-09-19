@@ -30,6 +30,10 @@ export const ArtworkConsignments: React.FC<ArtworkConsignmentsProps> = ({ artwor
     navigate(isSellTab ? "/collections/my-collection/marketing-landing" : "/sales")
   }
 
+  if (!artists.length) {
+    return null
+  }
+
   return (
     <Text variant="sm-display">
       Want to sell a work by {label}?{" "}
