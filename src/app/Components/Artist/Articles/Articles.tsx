@@ -24,6 +24,8 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
             variant="sm-display"
             numberOfLines={2}
             ellipsizeMode="tail"
+            // Avoid having the title and the view all button getting too close
+            pr={1}
           >{`Artsy Exitorial Featuring ${artistData.name}`}</Text>
         </Flex>
         <Touchable onPress={() => navigate(`artist/${artistData.slug}/articles`)}>
