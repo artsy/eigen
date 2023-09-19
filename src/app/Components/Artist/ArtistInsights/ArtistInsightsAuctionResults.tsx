@@ -26,7 +26,13 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { LayoutChangeEvent, SectionList, View } from "react-native"
+import {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  SectionList,
+  View,
+} from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,6 +42,7 @@ interface Props {
   scrollToTop: () => void
   initialFilters?: FilterArray
   onLayout?: (event: LayoutChangeEvent) => void
+  onScrollEndDragChange: ((event: NativeSyntheticEvent<NativeScrollEvent>) => void) | undefined
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
@@ -44,6 +51,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   scrollToTop,
   initialFilters,
   onLayout,
+  onScrollEndDragChange,
 }) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
@@ -276,6 +284,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Text>
             </Flex>
           )}
+          onScrollEndDrag={onScrollEndDragChange}
           ItemSeparatorComponent={AuctionResultListSeparator}
           style={{ width: screenWidth, left: -20 }}
           onEndReached={loadMoreAuctionResults}
