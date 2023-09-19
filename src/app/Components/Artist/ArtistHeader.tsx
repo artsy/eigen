@@ -6,7 +6,7 @@ import { LayoutChangeEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
-const ARTIST_IMAGE_TABLET_HEIGHT = 375
+export const ARTIST_IMAGE_TABLET_HEIGHT = 375
 const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
@@ -15,10 +15,23 @@ interface Props {
   onLayoutChange?: ViewProps["onLayout"]
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const useArtistHeaderImageDimensions = () => {
   const { width } = useScreenDimensions()
-  const { updateScrollYOffset } = useScreenScrollContext()
   const isTablet = isPad()
+
+  const height = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
+  const aspectRatio = width / height
+
+  return {
+    aspectRatio,
+    height,
+    width,
+  }
+}
+
+export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+  const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
+  const { updateScrollYOffset } = useScreenScrollContext()
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -41,8 +54,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 
   const bylineRequired = artist.nationality || artist.birthday
 
-  const imageSize = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
-
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
       updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
@@ -57,9 +68,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
           <Image
             accessibilityLabel={`${artist.name} cover image`}
             src={artist.coverArtwork.image.url}
-            aspectRatio={width / imageSize}
+            aspectRatio={aspectRatio}
             width={width}
-            height={imageSize}
+            height={height}
             style={{ alignSelf: "center" }}
           />
           <Spacer y={2} />
