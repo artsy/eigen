@@ -19,12 +19,12 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
   return (
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex maxWidth="80%">
+        <Flex flex={1}>
           <Text
             variant="sm-display"
             numberOfLines={2}
             ellipsizeMode="tail"
-          >{`Artsy Editorial Featuring ${artistData.name}`}</Text>
+          >{`Artsy Exitorial Featuring ${artistData.name}`}</Text>
         </Flex>
         <Touchable onPress={() => navigate(`artist/${artistData.slug}/articles`)}>
           <Text variant="xs" underline>
