@@ -43,8 +43,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
     }
   }
 
-  console.log("[flipper] error LoadFailureView", error)
-
   useEffect(() => {
     trackLoadFailureView(error)
   }, [error])
