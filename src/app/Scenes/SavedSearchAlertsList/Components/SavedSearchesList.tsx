@@ -220,11 +220,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(
+        artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
         sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
       ) {
-        savedSearchesConnection(first: $count, after: $cursor, sort: $sort)
+        savedSearchesConnection(first: $count, after: $cursor, artistIDs: $artistIDs, sort: $sort)
           @connection(key: "SavedSearches_savedSearchesConnection") {
           pageInfo {
             hasNextPage
@@ -253,9 +254,15 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
       return props.me.savedSearchesConnection
     },
     query: graphql`
-      query SavedSearchesListQuery($count: Int!, $cursor: String, $sort: SavedSearchesSortEnum) {
+      query SavedSearchesListQuery(
+        $artistIDs: [String!]
+        $count: Int!
+        $cursor: String
+        $sort: SavedSearchesSortEnum
+      ) {
         me {
-          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...SavedSearchesList_me
+            @arguments(artistIDs: $artistIDs, count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,

@@ -11,7 +11,11 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
+type ArtistQueries =
+  | "SearchCriteriaQuery"
+  | "ArtistAboveTheFoldQuery"
+  | "ArtistBelowTheFoldQuery"
+  | "MarketStatsQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -73,9 +77,21 @@ describe("Artist", () => {
   it("should render all tabs", async () => {
     const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
-    expect(queryByText("Artworks")).toBeTruthy()
-    expect(queryByText("Auction Results")).toBeTruthy()
-    expect(queryByText("About")).toBeTruthy()
+    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    mockMostRecentOperation("ArtistBelowTheFoldQuery", {
+      ArtistInsight() {
+        return { entities: ["test"] }
+      },
+    })
+    mockMostRecentOperation("MarketStatsQuery")
+
+    await flushPromiseQueue()
+
+    waitFor(() => {
+      expect(queryByText("Artworks")).toBeTruthy()
+      expect(queryByText("Auction Results")).toBeTruthy()
+      expect(queryByText("About")).toBeTruthy()
+    })
   })
 
   it("tracks a page view", async () => {

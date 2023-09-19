@@ -1,16 +1,20 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("ArtistHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({
-    Component: ({ artist }) => <ArtistHeaderFragmentContainer artist={artist!} />,
+    Component: ({ artist, me }) => <ArtistHeaderFragmentContainer artist={artist!} me={me!} />,
     query: graphql`
       query ArtistHeaderTestsQuery($artistID: String!) @relay_test_operation {
         artist(id: $artistID) {
           ...ArtistHeader_artist
+        }
+        me {
+          ...ArtistHeader_me @arguments(artistID: $artistID)
         }
       }
     `,
@@ -18,9 +22,54 @@ describe("ArtistHeader", () => {
   })
 
   it("displays the artwork count for an artist when present", () => {
-    renderWithRelay({ Artist: () => mockArtist })
+    renderWithRelay({
+      Artist() {
+        return mockArtist
+      },
+    })
 
     expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
+  })
+  describe("alerts set", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARShowArtistsAlertsSet: true,
+      })
+    })
+
+    it("displays the numbers of alerts if the user has alerts for an artist", () => {
+      const { getByText } = renderWithRelay({
+        Artist() {
+          return mockArtist
+        },
+        Me() {
+          return {
+            savedSearchesConnection: {
+              totalCount: 2,
+            },
+          }
+        },
+      })
+
+      expect(getByText("2 Alerts Set")).toBeDefined()
+    })
+
+    it("hides the numbers of alerts if the user has no alerts for an artist", () => {
+      const { getByText } = renderWithRelay({
+        Artist() {
+          return mockArtist
+        },
+        Me() {
+          return {
+            savedSearchesConnection: {
+              totalCount: 0,
+            },
+          }
+        },
+      })
+
+      expect(() => getByText("2 Alerts Set")).toThrow()
+    })
   })
 })
 

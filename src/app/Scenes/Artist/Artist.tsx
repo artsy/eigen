@@ -51,23 +51,25 @@ const INITIAL_TAB = "Artworks"
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-  initialTab?: string
-  searchCriteria: SearchCriteriaAttributes | null
-  fetchCriteriaError: Error | null
-  predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
   environment?: RelayModernEnvironment
+  fetchCriteriaError: Error | null
+  initialTab?: string
+  me: ArtistAboveTheFoldQuery["response"]["me"]
+  predefinedFilters?: FilterArray
+  searchCriteria: SearchCriteriaAttributes | null
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
   const {
     artistAboveTheFold,
     artistBelowTheFold,
-    initialTab = INITIAL_TAB,
-    searchCriteria,
-    fetchCriteriaError,
-    predefinedFilters,
     auctionResultsInitialFilters,
+    fetchCriteriaError,
+    initialTab = INITIAL_TAB,
+    me,
+    predefinedFilters,
+    searchCriteria,
   } = props
 
   const [headerHeight, setHeaderHeight] = useState(0)
@@ -101,6 +103,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     () => (
       <ArtistHeaderFragmentContainer
         artist={artistAboveTheFold!}
+        me={me!}
         onLayoutChange={({ nativeEvent }) => {
           if (headerHeight !== nativeEvent.layout.height) {
             setHeaderHeight(nativeEvent.layout.height)
@@ -197,6 +200,9 @@ export const ArtistScreenQuery = graphql`
         url(version: "large")
       }
     }
+    me {
+      ...ArtistHeader_me @arguments(artistID: $artistID)
+    }
   }
 `
 
@@ -275,6 +281,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     <Artist
                       artistAboveTheFold={above.artist}
                       artistBelowTheFold={below?.artist}
+                      me={above.me}
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
