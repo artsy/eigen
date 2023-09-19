@@ -12,6 +12,7 @@ import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.grap
 import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { LayoutChangeEvent, ViewProps } from "react-native"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
@@ -44,6 +45,7 @@ export const useArtistHeaderImageDimensions = () => {
 export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
+  const showArtistsAlertsSet = useFeatureFlag("ARShowArtistsAlertsSet")
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -101,7 +103,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
         </Flex>
       </Box>
 
-      {Number(me?.savedSearchesConnection?.totalCount) > 0 && (
+      {!!showArtistsAlertsSet && Number(me?.savedSearchesConnection?.totalCount) > 0 && (
         <Box mx={2} maxWidth={120}>
           <Touchable
             haptic

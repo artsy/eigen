@@ -299,6 +299,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
   },
+  ARShowArtistsAlertsSet: {
+    description: "Show Artists Alerts Set in Artist Page",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowArtistsAlertsSet",
+  },
 }
 
 export interface DevToggleDescriptor {
