@@ -8,6 +8,7 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isEmpty } from "lodash"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -20,7 +21,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
-  if (!artwork) {
+  if (isEmpty(artwork)) {
     return null
   }
 
