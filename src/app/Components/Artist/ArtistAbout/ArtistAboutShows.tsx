@@ -1,4 +1,4 @@
-import { Spacer, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useScreenDimensions, useTheme } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
 import { ArtistAboutShow } from "app/Components/Artist/ArtistAbout/ArtistAboutShow"
 import { extractNodes } from "app/utils/extractNodes"
@@ -19,8 +19,8 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
   }
 
   return (
-    <>
-      <Text variant="sm-display" pb={4}>
+    <Flex>
+      <Text variant="sm-display" pb={4} px={2}>
         Shows Featuring {artist.name}
       </Text>
       <FlatList
@@ -30,10 +30,10 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
         keyExtractor={(show) => show.internalID}
         showsHorizontalScrollIndicator={false}
         horizontal
-        contentContainerStyle={{ paddingRight: space(4) }}
+        contentContainerStyle={{ marginHorizontal: space(2) }}
         style={{ width }}
       />
-    </>
+    </Flex>
   )
 }
 

@@ -25,7 +25,7 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   const canExpand = text.length > MAX_CHARS
 
   return (
-    <Flex maxWidth={MAX_WIDTH}>
+    <Flex maxWidth={MAX_WIDTH} px={2}>
       <SectionTitle title="Biography" />
       <Text>
         <Text>{`${expanded ? text : truncatedText}${

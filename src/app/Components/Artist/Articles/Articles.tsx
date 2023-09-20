@@ -17,7 +17,7 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
   const artistData = useFragment(artistQuery, artist)
 
   return (
-    <Flex>
+    <Flex px={2}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex flex={1}>
           <Text
