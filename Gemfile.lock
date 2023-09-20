@@ -3,11 +3,12 @@ GEM
   specs:
     CFPropertyList (3.0.6)
       rexml
-    activesupport (7.0.5)
+    activesupport (6.1.7.6)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     algoliasearch (1.27.5)
@@ -297,6 +298,7 @@ GEM
       rouge (~> 2.0.7)
     xcpretty-travis-formatter (1.0.1)
       xcpretty (~> 0.2, >= 0.0.7)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
@@ -316,4 +318,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   2.4.3
+   2.3.26
