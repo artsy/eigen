@@ -17,10 +17,8 @@ export const principalFieldErrorHandlerMiddleware = async (
     resJson.extensions?.principalField?.httpStatusCode
   )
 
-  // errors that are not from principalFields for tracking purposes maybe move to different middleware?
   if (!requestHasPrincipalField && !!res?.errors?.length) {
-    // here we should track why the query failed + the error
-    // FYI trackError is not sentry, its VolleyClient maybe we need BOTH
+    // query did not have a principal field, but experienced an error, we report it to sentry and volley
     trackError(req.operation.name, req.operation.kind, "default")
     captureMessage("query failed", "log")
     console.warn("Error reported to sentry and volley", res?.errors)
