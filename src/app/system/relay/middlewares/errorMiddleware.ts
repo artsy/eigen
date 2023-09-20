@@ -5,12 +5,7 @@ import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
-const newErrorMiddlewareOptedInQueries = [
-  "HomeAboveTheFoldQuery",
-  "HomeBelowTheFoldQuery",
-  "ArtworkAboveTheFoldQuery",
-  "ArtworkBelowTheFoldQuery",
-]
+const newErrorMiddlewareOptedInQueries = ["HomeAboveTheFoldQuery", "HomeBelowTheFoldQuery"]
 
 export const legacyErrorMiddleware = async (
   req: GraphQLRequest,

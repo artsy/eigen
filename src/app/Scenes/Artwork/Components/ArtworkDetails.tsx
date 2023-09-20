@@ -94,10 +94,6 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
 
   const displayItems = listItems.filter((item) => !!item.value)
 
-  if (!displayItems.length) {
-    return null
-  }
-
   return (
     <Box accessibilityLabel="Artwork Details">
       <Join separator={<Spacer y={1} />}>

@@ -25,10 +25,6 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const displaySections = sections.filter((i) => i.value != null)
   const textLimit = truncatedTextLimit()
 
-  if (!displaySections.length) {
-    return null
-  }
-
   return (
     <Join separator={<Spacer y={4} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
