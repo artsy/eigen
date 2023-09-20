@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtistCareerHighlights_artist$key } from "__generated__/ArtistCareerHighlights_artist.graphql"
 import { Expandable } from "app/Components/Expandable"
 import React from "react"
@@ -21,7 +21,7 @@ export const ArtistCareerHighlights: React.FC<ArtistCareerHighlightsProps> = ({ 
       : data.insights
 
   return (
-    <>
+    <Flex px={2}>
       <Text color="black60" pb={1}>
         Highlights and Achievements
       </Text>
@@ -36,7 +36,7 @@ export const ArtistCareerHighlights: React.FC<ArtistCareerHighlightsProps> = ({ 
           </Expandable>
         )
       })}
-    </>
+    </Flex>
   )
 }
 

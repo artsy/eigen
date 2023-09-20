@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { RelatedArtistsRail_artists$key } from "__generated__/RelatedArtistsRail_artists.graphql"
 import { RelatedArtistsRailCell } from "app/Components/Artist/RelatedArtistsRailCell"
 import { FlatList } from "react-native"
@@ -10,6 +10,7 @@ interface RelatedArtistsRailProps {
 
 export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists }) => {
   const data = useFragment(query, artists)
+  const space = useSpace()
 
   if (!data) {
     return null
@@ -17,7 +18,9 @@ export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists 
 
   return (
     <Flex>
-      <Text pb={4}>Related Artists</Text>
+      <Text pb={4} px={2}>
+        Related Artists
+      </Text>
 
       <FlatList
         data={data}
@@ -26,6 +29,7 @@ export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists 
         keyExtractor={(item) => `related-artists-rail-item-${item.id}`}
         horizontal
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ marginHorizontal: space(2) }}
       />
     </Flex>
   )
