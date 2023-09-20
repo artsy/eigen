@@ -1,7 +1,7 @@
-import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text, Join, Button } from "@artsy/palette-mobile"
 import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
-import { ReadMore } from "app/Components/ReadMore"
+import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -40,15 +40,17 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
       </Flex>
       {!!hasSingleArtist && !!text && (
         <Box mt={2}>
-          <ReadMore
-            content={text}
-            contextModule={Schema.ContextModules.ArtistBiography}
-            maxChars={textLimit}
-            textStyle="new"
-            trackingFlow={Schema.Flow.AboutTheArtist}
-            textVariant="sm"
-            linkTextVariant="sm-display"
-          />
+          <Button
+            block
+            onPress={() => {
+              const artist = artists[0]
+              if (artist?.slug) {
+                navigate("/artist/" + artist.slug + "/bio")
+              }
+            }}
+          >
+            Artist Bio
+          </Button>
         </Box>
       )}
     </>
@@ -60,6 +62,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
     fragment AboutArtist_artwork on Artwork {
       artists {
         id
+        slug
         biographyBlurb {
           text
         }
