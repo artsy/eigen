@@ -42,8 +42,8 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
             block
             onPress={() => {
               const artist = artists[0]
-              if (artist?.id) {
-                navigate("/artist/" + artist.id + "/bio")
+              if (artist?.slug) {
+                navigate("/artist/" + artist.slug + "/bio")
               }
             }}
           >
@@ -60,6 +60,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
     fragment AboutArtist_artwork on Artwork {
       artists {
         id
+        slug
         biographyBlurb {
           text
         }
