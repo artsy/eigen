@@ -28,7 +28,7 @@ describe("PartnerFollowButton", () => {
       }),
     })
 
-    expect(queryByText(/Following 670/)).toBeTruthy()
+    expect(queryByText(/Following 670/)).toBeOnTheScreen()
   })
 
   it("renders without followers count correctly", async () => {
@@ -44,7 +44,7 @@ describe("PartnerFollowButton", () => {
       }),
     })
 
-    expect(queryByText(/Following/)).toBeTruthy()
+    expect(queryByText(/Following/)).toBeOnTheScreen()
   })
 
   it("renders button state correctly", async () => {
@@ -58,6 +58,6 @@ describe("PartnerFollowButton", () => {
       }),
     })
 
-    expect(queryByText(/Follow/)).toBeTruthy()
+    expect(queryByText(/Follow/)).toBeOnTheScreen()
   })
 })
