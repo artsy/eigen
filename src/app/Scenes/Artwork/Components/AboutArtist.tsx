@@ -1,8 +1,10 @@
 import { Spacer, Flex, Box, Text, Join, Button } from "@artsy/palette-mobile"
 import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -18,6 +20,8 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
   const text =
     hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
   const textLimit = truncatedTextLimit()
+
+  const shouldShowNewArtistBio = useFeatureFlag("AREnableNewArtistBio")
 
   return (
     <>
@@ -38,21 +42,35 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
           )}
         </Join>
       </Flex>
-      {!!hasSingleArtist && !!text && (
-        <Box mt={2}>
-          <Button
-            block
-            onPress={() => {
-              const artist = artists[0]
-              if (artist?.slug) {
-                navigate("/artist/" + artist.slug + "/bio")
-              }
-            }}
-          >
-            Artist Bio
-          </Button>
-        </Box>
-      )}
+      {!!hasSingleArtist &&
+        !!text &&
+        (shouldShowNewArtistBio ? (
+          <Box mt={2}>
+            <Button
+              block
+              onPress={() => {
+                const artist = artists[0]
+                if (artist?.slug) {
+                  navigate("/artist/" + artist.slug + "/bio")
+                }
+              }}
+            >
+              Artist Bio
+            </Button>
+          </Box>
+        ) : (
+          <Box mt={2}>
+            <ReadMore
+              content={text}
+              contextModule={Schema.ContextModules.ArtistBiography}
+              maxChars={textLimit}
+              textStyle="new"
+              trackingFlow={Schema.Flow.AboutTheArtist}
+              textVariant="sm"
+              linkTextVariant="sm-display"
+            />
+          </Box>
+        ))}
     </>
   )
 }
