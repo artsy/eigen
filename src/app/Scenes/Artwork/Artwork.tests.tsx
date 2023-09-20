@@ -13,7 +13,6 @@ import {
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -65,7 +64,6 @@ describe("Artwork", () => {
 
   beforeEach(() => {
     environment = getMockRelayEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionHeaderAlertCTA: false })
   })
 
   afterEach(() => {
