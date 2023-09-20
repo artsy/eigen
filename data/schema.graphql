@@ -2225,6 +2225,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Artwork is eligible for on-platform transaction
   isEligibleForOnPlatformTransaction: Boolean!
+
+  # Artwork meets minimum metadata criteria to have an alert created from it
+  isEligibleToCreateAlert: Boolean!
   isEmbeddableVideo: Boolean
   isForSale: Boolean
   isHangable: Boolean
