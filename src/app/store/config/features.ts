@@ -305,6 +305,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "ARShowArtistsAlertsSet",
   },
+  AREnableNewArtistBio: {
+    description: "Enable New Artist Bio",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {
