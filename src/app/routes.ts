@@ -138,6 +138,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       initialTab: "Insights",
     })),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
+    addRoute("/artist/:artistID/bio", "ArtistBio"),
 
     // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
     // MUST go together The following two

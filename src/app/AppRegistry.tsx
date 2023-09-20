@@ -1,4 +1,5 @@
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
+import { ArtistBio } from "app/Components/Artist/ArtistBio/ArtistBio"
 import { BidFlow } from "app/Components/Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "app/Components/Containers/Inbox"
 import { InquiryQueryRenderer } from "app/Components/Containers/Inquiry"
@@ -362,6 +363,7 @@ export const modules = defineModules({
   Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
     ArtistScreenQuery,
   ]),
+  ArtistBio: reactModule(ArtistBio),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
