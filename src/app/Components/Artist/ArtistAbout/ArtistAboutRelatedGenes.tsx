@@ -1,4 +1,4 @@
-import { Spacer, Text } from "@artsy/palette-mobile"
+import { Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistAboutRelatedGenes_genes$key } from "__generated__/ArtistAboutRelatedGenes_genes.graphql"
 import { Pill } from "app/Components/Pill"
 import { navigate } from "app/system/navigation/navigate"
@@ -17,6 +17,7 @@ const MAX_GENES = 24
 export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = ({ genes }) => {
   const data = useFragment(query, genes)
   const isTablet = isPad()
+  const space = useSpace()
 
   if (!data) {
     return null
@@ -28,13 +29,17 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
 
   return (
     <>
-      <Text variant="sm-display" pb={4}>
+      <Text variant="sm-display" pb={4} px={2}>
         Related Categories
       </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ maxWidth: isTablet ? "100%" : MAX_WIDTH, flexWrap: "wrap" }}
+        contentContainerStyle={{
+          maxWidth: isTablet ? "100%" : MAX_WIDTH,
+          flexWrap: "wrap",
+          marginHorizontal: space(2),
+        }}
       >
         {data.slice(0, MAX_GENES).map(({ name, href, internalID }) => (
           <Fragment key={`gene-${internalID}`}>

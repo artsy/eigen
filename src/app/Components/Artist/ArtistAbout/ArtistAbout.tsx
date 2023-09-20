@@ -33,7 +33,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const hasRelatedGenes = relatedGenes.length > 0
 
   return (
-    <Tabs.ScrollView>
+    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
       {isDisplayable ? (
         <>
           <Spacer y={2} />
