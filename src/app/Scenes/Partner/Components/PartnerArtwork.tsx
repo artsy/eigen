@@ -12,7 +12,11 @@ import { TabEmptyState } from "app/Components/TabEmptyState"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 
-import { ESTIMATED_MASONRY_ITEM_SIZE, NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import React, { useCallback, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -84,7 +88,7 @@ export const PartnerArtwork: React.FC<{
           )
         }}
         onEndReached={loadMore}
-        onEndReachedThreshold={0.3}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
         ListFooterComponent={
           shouldDisplaySpinner ? (
             <Flex my={4} flexDirection="row" justifyContent="center">
