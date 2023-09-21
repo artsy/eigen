@@ -51,11 +51,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
   },
-  AREnableOrderHistoryOption: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableOrderHistoryOption",
-    description: "Enable Order History in settings",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
