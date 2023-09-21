@@ -67,7 +67,7 @@ lane :ship_beta_ios do
 
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-  # important! this much match the release version specified
+  # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
@@ -326,7 +326,7 @@ lane :deploy_to_codepush do |options|
 
   puts "Got platform #{platform}"
 
-  # important! this much match the release version specified
+  # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   release_name, dist_version, release_version = set_codepush_release_values(deployment_name, platform)
 

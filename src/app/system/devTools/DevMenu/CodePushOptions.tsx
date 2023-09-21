@@ -9,7 +9,7 @@ import {
 } from "@artsy/palette-mobile"
 import { CollapseMenu } from "app/Components/CollapseMenu"
 import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
-import React, { useEffect, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
 import DeviceInfo from "react-native-device-info"
 
@@ -75,7 +75,7 @@ export const CodePushOptions = () => {
         )}
         {Object.keys(codePushDeploymentKeys).map((deployment) => {
           return (
-            <React.Fragment key={deployment}>
+            <Fragment key={deployment}>
               <Flex flexDirection="row">
                 <RadioButton
                   selected={deployment == selectedDeployment}
@@ -83,7 +83,7 @@ export const CodePushOptions = () => {
                 />
                 <Text>{deployment}</Text>
               </Flex>
-            </React.Fragment>
+            </Fragment>
           )
         })}
 
@@ -108,6 +108,9 @@ export const CodePushOptions = () => {
           onPress={async () => {
             const deploymentKey = codePushDeploymentKeys[selectedDeployment]
             setLoading(true)
+            setLoadProgress(0)
+            setLoadStatus("")
+            setErrorMessage(null)
             await CodePush.sync(
               { deploymentKey: deploymentKey, installMode: CodePush.InstallMode.IMMEDIATE },
               (status) => {
