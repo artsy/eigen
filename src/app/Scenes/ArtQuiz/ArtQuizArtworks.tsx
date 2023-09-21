@@ -44,9 +44,9 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
-    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
-    setActiveCardIndex(activeIndex + 1)
+  const handleSwipe = (swipeDirection: "left" | "right") => {
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeCardIndex)
+    setActiveCardIndex(activeCardIndex + 1)
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
@@ -181,8 +181,8 @@ const ArtQuizArtworksScreen = () => {
       <Screen.Body>
         <FancySwiper
           cards={artworkCards}
-          onSwipeRight={() => handleSwipe("right", activeCardIndex)}
-          onSwipeLeft={() => handleSwipe("left", activeCardIndex)}
+          onSwipeRight={() => handleSwipe("right")}
+          onSwipeLeft={() => handleSwipe("left")}
         />
       </Screen.Body>
     </Screen>
