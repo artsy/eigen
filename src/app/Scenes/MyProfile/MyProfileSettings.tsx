@@ -12,7 +12,6 @@ interface MyProfileSettingsProps {
 }
 
 export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
-  const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
 
   const color = useColor()
@@ -41,12 +40,8 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Follows" onPress={() => navigate("favorites")} />
         <Separator my={1} borderColor={separatorColor} />
-        {!!showOrderHistory && (
-          <>
-            <MenuItem title="Order History" onPress={() => navigate("/orders")} />
-            <Separator my={1} borderColor={separatorColor} />
-          </>
-        )}
+        <MenuItem title="Order History" onPress={() => navigate("/orders")} />
+        <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
         <Separator my={1} borderColor={separatorColor} />
         {!!darkModeSupport && (

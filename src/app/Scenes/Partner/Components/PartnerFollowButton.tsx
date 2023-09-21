@@ -32,7 +32,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { slug: partnerSlug, profile } = partner
     // We can only follow partners who have a profile, so we can assume if the follow
     // button is rendered, then we do have a profile.
-    const { isFollowed: partnerFollowed, internalID: profileID } = profile!
+    const { isFollowed: partnerFollowed, internalID: profileID, counts } = profile!
 
     this.setState(
       {
@@ -50,6 +50,9 @@ export class PartnerFollowButton extends React.Component<Props, State> {
                   slug
                   internalID
                   isFollowed
+                  counts {
+                    follows
+                  }
                 }
               }
             }
@@ -68,6 +71,9 @@ export class PartnerFollowButton extends React.Component<Props, State> {
                 internalID: profileID,
                 slug: partnerSlug,
                 isFollowed: !partnerFollowed,
+                counts: {
+                  follows: partnerFollowed ? counts?.follows - 1 : counts?.follows + 1,
+                },
               },
             },
           },
@@ -84,13 +90,16 @@ export class PartnerFollowButton extends React.Component<Props, State> {
 
   render() {
     const { partner } = this.props
-
+    const hasFollows = partner.profile?.counts?.follows >= 500
     return (
-      <FollowButton
-        haptic
-        isFollowed={!!partner.profile?.isFollowed}
-        onPress={this.handleFollowPartner.bind(this)}
-      />
+      <>
+        <FollowButton
+          haptic
+          isFollowed={!!partner.profile?.isFollowed}
+          onPress={this.handleFollowPartner.bind(this)}
+          {...(hasFollows && { followCount: partner.profile?.counts?.follows })}
+        />
+      </>
     )
   }
 }
@@ -104,6 +113,9 @@ export const PartnerFollowButtonFragmentContainer = createFragmentContainer(Part
         id
         internalID
         isFollowed
+        counts {
+          follows
+        }
       }
     }
   `,

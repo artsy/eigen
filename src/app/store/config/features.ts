@@ -47,20 +47,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
   },
-  AROptionsLotConditionReport: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsLotConditionReport",
-  },
-  AREnableOrderHistoryOption: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableOrderHistoryOption",
-    description: "Enable Order History in settings",
-  },
-  AREnableQueriesPrefetching: {
-    readyForRelease: true,
-    description: "Enable query prefetching",
-    echoFlagKey: "AREnableQueriesPrefetching",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
@@ -69,11 +55,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
-  },
-  AREnableNewOpaqueImageComponent: {
-    readyForRelease: true,
-    description: "Enable New Image Component",
-    echoFlagKey: "AREnableNewOpaqueImageComponent",
   },
   AREnableConversationalBuyNow: {
     readyForRelease: true,
@@ -89,11 +70,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
-  AREnableCollectionsInOnboarding: {
-    readyForRelease: true,
-    description: "Replace genes with collections in onboarding",
-    echoFlagKey: "AREnableCollectionsInOnboarding",
   },
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
@@ -138,11 +114,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable Sell With Artsy Inquiry",
     readyForRelease: true,
     echoFlagKey: "AREnableConsignmentInquiry",
-  },
-  ARShowArtQuizApp: {
-    description: "Show Art Quiz App",
-    readyForRelease: true,
-    echoFlagKey: "ARShowArtQuizApp",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
@@ -289,7 +260,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
@@ -298,6 +269,18 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
+  },
+  ARShowArtistsAlertsSet: {
+    description: "Show Artists Alerts Set in Artist Page",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowArtistsAlertsSet",
+  },
+  AREnableSingleActivityPanelScreen: {
+    description: "Enable Single Activity Panel screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
 }
 

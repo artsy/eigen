@@ -71,7 +71,11 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   if (notifications.length === 0) {
     // In order to center content, we need to offset the stickytabs header height
-    const headerOffset = -(headerMeasurements.height.value as number) ?? 0
+
+    let headerOffset = 0
+    if (typeof headerMeasurements.height.value === "number") {
+      headerOffset = -headerMeasurements.height.value
+    }
 
     return (
       <Tabs.ScrollView

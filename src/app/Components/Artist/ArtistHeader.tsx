@@ -1,24 +1,51 @@
-import { Flex, Box, Text, Image, useScreenDimensions, Spacer } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Image,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
+import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
+import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { pluralize } from "app/utils/pluralize"
 import { LayoutChangeEvent, ViewProps } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
-const ARTIST_IMAGE_TABLET_HEIGHT = 375
+export const ARTIST_IMAGE_TABLET_HEIGHT = 375
 const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$data
+  me: ArtistHeader_me$data
   relay: RelayProp
   onLayoutChange?: ViewProps["onLayout"]
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const useArtistHeaderImageDimensions = () => {
   const { width } = useScreenDimensions()
-  const { updateScrollYOffset } = useScreenScrollContext()
   const isTablet = isPad()
+
+  const height = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
+  const aspectRatio = width / height
+
+  return {
+    aspectRatio,
+    height,
+    width,
+  }
+}
+
+export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
+  const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
+  const { updateScrollYOffset } = useScreenScrollContext()
+  const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -41,7 +68,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 
   const bylineRequired = artist.nationality || artist.birthday
 
-  const imageSize = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
+  const showAlertsSet =
+    !!showArtistsAlertsSetFeatureFlag && Number(me?.savedSearchesConnection?.totalCount) > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
@@ -51,21 +79,21 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   }
 
   return (
-    <Flex pointerEvents="none" onLayout={handleOnLayout}>
+    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artist.coverArtwork?.image?.url && (
-        <>
+        <Flex pointerEvents="none">
           <Image
             accessibilityLabel={`${artist.name} cover image`}
             src={artist.coverArtwork.image.url}
-            aspectRatio={width / imageSize}
+            aspectRatio={aspectRatio}
             width={width}
-            height={imageSize}
+            height={height}
             style={{ alignSelf: "center" }}
           />
           <Spacer y={2} />
-        </>
+        </Flex>
       )}
-      <Box px={2} pb={1}>
+      <Box px={2} pointerEvents="none">
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
             <Text variant="lg">{artist.name}</Text>
@@ -77,6 +105,22 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
           </Flex>
         </Flex>
       </Box>
+
+      {!!showAlertsSet && (
+        <Box mx={2} maxWidth={120}>
+          <Touchable
+            haptic
+            onPress={() => {
+              navigate(`/my-profile/saved-search-alerts?artistID=${artist.internalID}`)
+            }}
+          >
+            <Text variant="xs" color="blue100">
+              {me.savedSearchesConnection!.totalCount}{" "}
+              {pluralize("Alert", me.savedSearchesConnection!.totalCount!)} Set
+            </Text>
+          </Touchable>
+        </Box>
+      )}
     </Flex>
   )
 }
@@ -84,13 +128,21 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeader, {
   artist: graphql`
     fragment ArtistHeader_artist on Artist {
-      name
-      nationality
       birthday
       coverArtwork {
         image {
           url(version: "large")
         }
+      }
+      internalID
+      name
+      nationality
+    }
+  `,
+  me: graphql`
+    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
+      savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
+        totalCount
       }
     }
   `,

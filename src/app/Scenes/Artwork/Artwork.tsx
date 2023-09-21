@@ -270,7 +270,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         key: "lotDetailsSection",
         element: (
           <ArtworkLotDetails
-            artwork={artworkAboveTheFold!}
+            artwork={artworkAboveTheFold}
             auctionState={auctionTimerState as AuctionTimerState}
           />
         ),
@@ -340,7 +340,7 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
       sections.push({
         key: "shippingAndTaxes",
-        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -377,7 +377,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     if (shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
-        // @ts-expect-error
         element: <OtherWorks artwork={artworkBelowTheFold} />,
       })
     }

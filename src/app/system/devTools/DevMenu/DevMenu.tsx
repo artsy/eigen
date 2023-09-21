@@ -4,6 +4,8 @@ import {
   CloseIcon,
   Flex,
   Input,
+  Join,
+  LogoutIcon,
   ReloadIcon,
   Screen,
   Separator,
@@ -97,7 +99,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       </Flex>
       <ScrollView
         style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
-        contentContainerStyle={{ paddingVertical: 10 }}
+        contentContainerStyle={{ paddingTop: space(1), paddingBottom: 80 }}
       >
         <Text variant="xs" color="grey" mx={2}>
           Build:{" "}
@@ -316,10 +318,34 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 }
 
 const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
+  const isLoggedIn = !!GlobalStore.useAppState((state) => !!state.auth.userID)
+
   return (
     <Flex style={{ flexDirection: "row", alignItems: "center" }} pb={2} px={2}>
-      {!!__DEV__ && (
-        <>
+      <Join separator={<Spacer x={2} />}>
+        {!!isLoggedIn && (
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert("Log out", undefined, [
+                {
+                  text: "Log out",
+                  onPress() {
+                    GlobalStore.actions.auth.signOut()
+                  },
+                },
+                {
+                  text: "Cancel",
+                  style: "destructive",
+                },
+              ])
+            }}
+            hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+          >
+            <LogoutIcon fill="red100" width={24} height={24} />
+          </TouchableOpacity>
+        )}
+
+        {!!__DEV__ && (
           <TouchableOpacity
             onPress={() => {
               RelayCache.clearAll()
@@ -328,15 +354,13 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
             }}
             hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           >
-            <ReloadIcon width={16} height={16} />
+            <ReloadIcon width={20} height={20} />
           </TouchableOpacity>
-          <Spacer x={2} />
-        </>
-      )}
-
-      <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-        <CloseIcon />
-      </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+          <CloseIcon width={24} height={24} />
+        </TouchableOpacity>
+      </Join>
     </Flex>
   )
 }

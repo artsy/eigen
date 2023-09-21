@@ -9,7 +9,6 @@ describe("OtherWorks", () => {
   const { renderWithRelay } = setupTestWrapper<OtherWorksTestsQuery>({
     Component: (props) => {
       if (props?.artwork) {
-        // @ts-expect-error
         return <OtherWorksFragmentContainer artwork={props.artwork} />
       }
 

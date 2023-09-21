@@ -10,6 +10,8 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
   ProgressiveOnboardingFindSavedArtworkProps
 > = ({ children, tab }) => {
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const isFirstSession = GlobalStore.useAppState((state) => state.auth.sessionState.isFirstSession)
+
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const profileTabProps = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.profile
@@ -18,7 +20,7 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
   const isFindSavedArtworkDisplayable =
     !isDismissed("find-saved-artwork").status && !!profileTabProps?.savedArtwork
 
-  if (tab !== "profile") {
+  if (tab !== "profile" || isFirstSession) {
     return <>{children}</>
   }
 

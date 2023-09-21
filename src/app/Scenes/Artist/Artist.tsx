@@ -5,6 +5,7 @@ import {
   Separator,
   ShareIcon,
   Skeleton,
+  SkeletonBox,
   SkeletonText,
   Spacer,
   Tabs,
@@ -16,10 +17,12 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import {
+  ArtistHeaderFragmentContainer,
+  useArtistHeaderImageDimensions,
+} from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
-import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import {
   FilterArray,
   filterArtworksParams,
@@ -48,29 +51,30 @@ const INITIAL_TAB = "Artworks"
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-  initialTab?: string
-  searchCriteria: SearchCriteriaAttributes | null
-  fetchCriteriaError: Error | null
-  predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
   environment?: RelayModernEnvironment
+  fetchCriteriaError: Error | null
+  initialTab?: string
+  me: ArtistAboveTheFoldQuery["response"]["me"]
+  predefinedFilters?: FilterArray
+  searchCriteria: SearchCriteriaAttributes | null
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
   const {
     artistAboveTheFold,
     artistBelowTheFold,
-    initialTab = INITIAL_TAB,
-    searchCriteria,
-    fetchCriteriaError,
-    predefinedFilters,
     auctionResultsInitialFilters,
+    fetchCriteriaError,
+    initialTab = INITIAL_TAB,
+    me,
+    predefinedFilters,
+    searchCriteria,
   } = props
 
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
-  const { handleFollowToggle } = useFollowArtist(props.artistAboveTheFold)
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -99,6 +103,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     () => (
       <ArtistHeaderFragmentContainer
         artist={artistAboveTheFold!}
+        me={me!}
         onLayoutChange={({ nativeEvent }) => {
           if (headerHeight !== nativeEvent.layout.height) {
             setHeaderHeight(nativeEvent.layout.height)
@@ -125,11 +130,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
-              <ArtistHeaderNavRight
-                artist={artistAboveTheFold}
-                onSharePress={handleSharePress}
-                onFollowPress={handleFollowToggle}
-              />
+              <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
             ),
             onBack: goBack,
           }}
@@ -189,7 +190,6 @@ export const ArtistScreenQuery = graphql`
     artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
-      ...useFollowArtist_artist
       ...ArtistHeaderNavRight_artist
       id
       internalID
@@ -199,6 +199,9 @@ export const ArtistScreenQuery = graphql`
       image {
         url(version: "large")
       }
+    }
+    me {
+      ...ArtistHeader_me @arguments(artistID: $artistID)
     }
   }
 `
@@ -270,6 +273,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
+                  // return <ArtistSkeleton />
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }
@@ -277,6 +281,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     <Artist
                       artistAboveTheFold={above.artist}
                       artistBelowTheFold={below?.artist}
+                      me={above.me}
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
@@ -312,12 +317,16 @@ const LoadingPage: React.FC<{}> = ({}) => {
 }
 
 const ArtistSkeleton: React.FC = () => {
+  const { height, width } = useArtistHeaderImageDimensions()
+
   return (
     <Screen>
       <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
           <Flex px={2}>
+            <SkeletonBox width={width} height={height} />
+            <Spacer y={2} />
             <Join separator={<Spacer y={0.5} />}>
               <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
               <SkeletonText variant="xs">American, b. 1945</SkeletonText>

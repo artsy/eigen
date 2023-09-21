@@ -6,6 +6,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Schema } from "app/utils/track"
 import { guardFactory } from "app/utils/types/guardFactory"
+import { isEmpty } from "lodash"
 import { useState } from "react"
 import { Button, Modal } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -39,6 +40,10 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const imageFigures = artwork.images.filter(guardFactory("__typename", "Image"))
   const currentImage = (imageFigures ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.imageURL ?? "").replace(":version", "large")
+
+  if (isEmpty(artwork)) {
+    return null
+  }
 
   return (
     <>

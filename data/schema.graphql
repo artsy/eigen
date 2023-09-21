@@ -2225,6 +2225,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Artwork is eligible for on-platform transaction
   isEligibleForOnPlatformTransaction: Boolean!
+
+  # Artwork meets minimum metadata criteria to have an alert created from it
+  isEligibleToCreateAlert: Boolean!
   isEmbeddableVideo: Boolean
   isForSale: Boolean
   isHangable: Boolean
@@ -11735,6 +11738,12 @@ type Me implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+
+  # Retrieve one user's notification by notification ID
+  notification(
+    # The ID of the Notification
+    id: String!
+  ): Notification
   orders(
     after: String
     before: String
@@ -16597,6 +16606,9 @@ type SearchCriteria {
   colors: [String!]!
   dimensionRange: String
   displayName: String!
+
+  # Human readable price range value
+  formattedPriceRange: String
   hasRecentlyEnabledUserSearchCriteria: Boolean!
   height: String
   highPriceAmount(

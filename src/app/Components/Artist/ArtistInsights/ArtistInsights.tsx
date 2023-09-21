@@ -14,7 +14,7 @@ import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
@@ -57,16 +57,13 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     }
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
-  // Show or hide floating filter button depending on the scroll position
-  const onScrollEndDrag = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    contentYScrollOffset.current = event.nativeEvent.contentOffset.y
-
+  const onScrollEndDragChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (event.nativeEvent.contentOffset.y > FILTER_BUTTON_OFFSET) {
       setIsFilterButtonVisible(true)
-      return
+    } else {
+      setIsFilterButtonVisible(false)
     }
-    setIsFilterButtonVisible(false)
-  }, [])
+  }
 
   const components = useMemo(
     () => [
@@ -87,6 +84,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             onLayout={({ nativeEvent }) => {
               auctionResultsYCoordinate.current = nativeEvent.layout.y
             }}
+            onScrollEndDragChange={onScrollEndDragChange}
           />
         ),
       },
@@ -109,7 +107,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
           marginTop: space(2),
           paddingBottom: space(4),
         }}
-        onScrollEndDrag={onScrollEndDrag}
         data={components}
         keyExtractor={(_, index) => `ArtistInsight-FlatList-element-${index}`}
         renderItem={({ item: { Component } }) => <Component />}

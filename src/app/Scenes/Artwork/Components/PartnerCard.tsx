@@ -17,9 +17,13 @@ interface PartnerCardProps {
 export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQuestions }) => {
   const handleTap = (href: string) => navigateToPartner(href)
 
-  const partner = artwork.partner!
+  const partner = artwork.partner
 
   const galleryOrBenefitAuction = artwork.sale?.isBenefit ?? artwork.sale?.isGalleryAuction
+
+  if (!partner) {
+    return null
+  }
 
   if (partner.type === "Auction House" || galleryOrBenefitAuction) {
     return null

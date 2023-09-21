@@ -38,6 +38,10 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
       presentationStyle="fullScreen"
       visible={showMyCollectionCollectedArtistsOnboarding}
       animationType="slide"
+      onRequestClose={() => {
+        setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
+        setShowModal(false)
+      }}
     >
       <SafeAreaView style={{ flex: 1 }}>
         <Flex flexGrow={1} mt={4}>
@@ -56,11 +60,10 @@ export const MyCollectionCollectedArtistsOnboardingModal: React.FC<{}> = () => {
               my={2}
               block
               onPress={() => {
+                setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
                 setTimeout(() => {
-                  setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboarding)
-                }, 2000)
-
-                navigate("/my-collection/collected-artists/privacy-settings")
+                  navigate("/my-collection/collected-artists/privacy-settings")
+                }, 500)
               }}
             >
               Select Artists to Share
