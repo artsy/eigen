@@ -21,6 +21,7 @@ const ArtQuizArtworksScreen = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+
   const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
     (edge) => edge?.interactedAt === null
   )
@@ -44,14 +45,18 @@ const ArtQuizArtworksScreen = () => {
   }, [])
 
   const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
-    setActiveCardIndex(activeIndex + 1)
     handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
+    setActiveCardIndex(activeIndex + 1)
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
     const currentArtwork = artworks[activeIndex]
+
+    if (!currentArtwork) {
+      return
+    }
 
     if (action === "Like") {
       submitSave({
@@ -176,9 +181,8 @@ const ArtQuizArtworksScreen = () => {
       <Screen.Body>
         <FancySwiper
           cards={artworkCards}
-          activeIndex={activeCardIndex}
-          onSwipeRight={(index) => handleSwipe("right", index)}
-          onSwipeLeft={(index) => handleSwipe("left", index)}
+          onSwipeRight={() => handleSwipe("right", activeCardIndex)}
+          onSwipeLeft={() => handleSwipe("left", activeCardIndex)}
         />
       </Screen.Body>
     </Screen>
