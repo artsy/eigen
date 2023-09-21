@@ -276,6 +276,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "ARShowArtistsAlertsSet",
   },
+  AREnableSingleActivityPanelScreen: {
+    description: "Enable Single Activity Panel screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableSingleActivityPanelScreen",
+  },
 }
 
 export interface DevToggleDescriptor {
