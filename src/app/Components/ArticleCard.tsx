@@ -1,9 +1,7 @@
 import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
 import {
   GestureResponderEvent,
@@ -33,7 +31,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   const { space } = useTheme()
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <Flex width={isFluid ? "100%" : WIDTH}>
@@ -42,26 +39,18 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
           {!!imageURL &&
             (isFluid ? (
               <>
-                {enableNewOpaqueImageView ? (
-                  <View style={{ width }}>
-                    <OpaqueImageView
-                      imageURL={imageURL}
-                      // aspect ratio is fixed to 1.33 to match the old image aspect ratio
-                      aspectRatio={1.33}
-                      // 40 here comes from the mx={2} from the parent component
-                      width={width - 2 * space(2)}
-                    />
-                  </View>
-                ) : (
-                  <View style={{ width: "100%", aspectRatio: 1.33 }}>
-                    <ImageView imageURL={imageURL} style={{ flex: 1 }} />
-                  </View>
-                )}
+                <View style={{ width }}>
+                  <OpaqueImageView
+                    imageURL={imageURL}
+                    // aspect ratio is fixed to 1.33 to match the old image aspect ratio
+                    aspectRatio={1.33}
+                    // 40 here comes from the mx={2} from the parent component
+                    width={width - 2 * space(2)}
+                  />
+                </View>
               </>
-            ) : enableNewOpaqueImageView ? (
-              <OpaqueImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ) : (
-              <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
+              <OpaqueImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
           <Spacer y={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
