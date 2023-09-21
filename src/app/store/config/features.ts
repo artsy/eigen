@@ -70,11 +70,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableNewOpaqueImageComponent: {
-    readyForRelease: true,
-    description: "Enable New Image Component",
-    echoFlagKey: "AREnableNewOpaqueImageComponent",
-  },
   AREnableConversationalBuyNow: {
     readyForRelease: true,
     description: "Conversational Buy Now",

@@ -20,7 +20,6 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
@@ -104,7 +103,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const color = useColor()
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   let filterParams: any = undefined
@@ -232,18 +230,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
           <View ref={itemRef}>
             {!!artwork.image && (
               <View>
-                {enableNewOpaqueImageView ? (
-                  <NewOpaqueImageView
-                    aspectRatio={artwork.image?.aspectRatio ?? 1}
-                    imageURL={artwork.image?.url}
-                    height={height}
-                  />
-                ) : (
-                  <OpaqueImageView
-                    aspectRatio={artwork.image?.aspectRatio ?? 1}
-                    imageURL={artwork.image?.url}
-                  />
-                )}
+                <NewOpaqueImageView
+                  aspectRatio={artwork.image?.aspectRatio ?? 1}
+                  imageURL={artwork.image?.url}
+                  height={height}
+                />
                 {Boolean(
                   !hideUrgencyTags &&
                     urgencyTag &&
