@@ -10,6 +10,7 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isEmpty } from "lodash"
 import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
 
@@ -57,6 +58,10 @@ const ArtQuizArtworksScreen = () => {
     popoverMessage.hide()
 
     const currentArtwork = artworks[activeIndex]
+
+    if (isEmpty(currentArtwork)) {
+      return
+    }
 
     if (action === "Like") {
       submitSave({
