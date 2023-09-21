@@ -9,9 +9,8 @@
  */
 
 const { spawnSync } = require("child_process")
-const chalk = require("chalk")
-const checkDependencies = require("check-dependencies")
 const fs = require("fs")
+const chalk = require("chalk")
 
 const exec = (command, cwd) => {
   const task = spawnSync(command, { shell: true, cwd })
@@ -99,15 +98,25 @@ const checkBundlerDependenciesAreUpToDate = () => {
 }
 
 const checkNodeDependenciesAreUpToDate = async () => {
-  const res = await checkDependencies()
+  try {
+    const output = exec("yarn check --integrity")
 
-  if (res.error.length > 0) {
+    // If the output contains the "success" message, everything is in sync
+    if (output.includes("success Folder in sync.")) {
+      YES(`Your ${g`node dependencies`} match the ones specified in package.json.`)
+    } else {
+      NO(
+        `Your ${r`node dependencies`} are out of sync.`,
+        `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
+      )
+    }
+  } catch (error) {
+    NO(error)
+    // If there's an error thrown (for example, if `yarn check --integrity` returns a non-zero exit code)
     NO(
       `Your ${r`node dependencies`} are out of sync.`,
       `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
     )
-  } else {
-    YES(`Your ${g`node dependencies`} match the ones specifed in package.json.`)
   }
 }
 
