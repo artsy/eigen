@@ -8,17 +8,11 @@ export const OFFSET_X = 100
 
 interface FancySwiperProps {
   cards: Card[]
-  activeIndex: number
-  onSwipeRight: (index: number) => void
-  onSwipeLeft: (index: number) => void
+  onSwipeRight: () => void
+  onSwipeLeft: () => void
 }
 
-export const FancySwiper = ({
-  cards,
-  activeIndex,
-  onSwipeRight,
-  onSwipeLeft,
-}: FancySwiperProps) => {
+export const FancySwiper = ({ cards, onSwipeRight, onSwipeLeft }: FancySwiperProps) => {
   const remainingCards = cards.reverse()
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
@@ -28,12 +22,12 @@ export const FancySwiper = ({
       swiper.setValue({ x: 0, y: 0 })
 
       if (swipeDirection === "right") {
-        onSwipeRight(activeIndex)
+        onSwipeRight()
       } else {
-        onSwipeLeft(activeIndex)
+        onSwipeLeft()
       }
     },
-    [remainingCards, activeIndex, swiper]
+    [remainingCards, swiper]
   )
 
   const panResponder = PanResponder.create({

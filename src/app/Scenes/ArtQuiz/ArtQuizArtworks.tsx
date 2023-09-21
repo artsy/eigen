@@ -10,6 +10,7 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isEmpty } from "lodash"
 import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
 
@@ -21,6 +22,7 @@ const ArtQuizArtworksScreen = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+
   const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
     (edge) => edge?.interactedAt === null
   )
@@ -43,15 +45,23 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
-    setActiveCardIndex(activeIndex + 1)
-    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
+  const handleSwipe = (swipeDirection: "left" | "right") => {
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeCardIndex)
+
+    // No need to swipe through the last card, just navigate to the results screen
+    if (activeCardIndex + 1 < artworks.length) {
+      setActiveCardIndex(activeCardIndex + 1)
+    }
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
     const currentArtwork = artworks[activeIndex]
+
+    if (isEmpty(currentArtwork)) {
+      return
+    }
 
     if (action === "Like") {
       submitSave({
@@ -176,9 +186,8 @@ const ArtQuizArtworksScreen = () => {
       <Screen.Body>
         <FancySwiper
           cards={artworkCards}
-          activeIndex={activeCardIndex}
-          onSwipeRight={(index) => handleSwipe("right", index)}
-          onSwipeLeft={(index) => handleSwipe("left", index)}
+          onSwipeRight={() => handleSwipe("right")}
+          onSwipeLeft={() => handleSwipe("left")}
         />
       </Screen.Body>
     </Screen>
