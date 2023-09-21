@@ -20,6 +20,11 @@ const exec = (command, cwd) => {
   return task.stdout.toString()
 }
 
+const execReturnErrors = (command, cwd) => {
+  const task = spawnSync(command, { shell: true, cwd, encoding: "utf8" })
+  return { stdout: task.stdout, stderr: task.stderr, status: task.status }
+}
+
 const NO = (message, suggestion) => {
   console.log(`🔴 ${message}`)
   if (suggestion) console.log(`└──> ${suggestion}`)
@@ -120,15 +125,39 @@ const checkNodeDependenciesAreUpToDate = async () => {
   }
 }
 
-const checkPodDependenciesAreUpToDate = () => {
+const checkPodDependenciesAreUpToDate = async () => {
   try {
-    exec("bundle exec pod check")
-    YES(`Your ${g`pod dependencies`} are ready to go.`)
-  } catch (e) {
-    NO(
-      `Your ${r`pod dependencies`} are out of sync.`,
-      `Run ${g`yarn install:all`} or ${g`bundle exec pod install`} first.`
-    )
+    const { stdout, stderr, status } = execReturnErrors("bundle exec pod check", "./ios")
+
+    // https://github.com/square/cocoapods-check/issues/18
+    // This is a bug for some react native deps in cocoapods-check
+    // might be a nice OSS contribution opportunity!
+    const knownException = `~RNImageCropPicker, ~RNPermissions, ~React-Codegen\n[!] \`pod install\` will install 3 Pods.`
+
+    // pod check will return status 1 even for only warnings
+    if (status !== 0) {
+      if (stderr.includes("warning:")) {
+        // If there are only warnings, we might still want to proceed with checking stdout
+        console.warn("Warnings encountered during pod check:", stderr)
+      } else {
+        NO(
+          `Your ${r`pod dependencies`} are out of sync.`,
+          `Run ${g`bundle exec pod install`} in the iOS directory.`
+        )
+      }
+    }
+
+    if (stdout.includes(knownException) || !stdout.includes("[!]")) {
+      YES(`Your ${g`pod dependencies`} are correctly installed.`)
+    } else {
+      NO(
+        `Your ${r`pod dependencies`} are out of sync.`,
+        `Run ${g`bundle exec pod install`} in the iOS directory.`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Your ${r`pod dependencies`} encountered an error during verification.`)
   }
 }
 
@@ -154,7 +183,7 @@ const main = async () => {
 
   checkBundlerDependenciesAreUpToDate()
   await checkNodeDependenciesAreUpToDate()
-  // checkPodDependenciesAreUpToDate() // this is broken right now.. pod check is always reporting an error.
+  checkPodDependenciesAreUpToDate()
 
   checkDetectSecretsExists()
 }
