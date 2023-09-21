@@ -2,7 +2,6 @@ import { modules } from "app/AppRegistry"
 import { matchRoute } from "app/routes"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import {
@@ -109,9 +108,7 @@ const prefetchUrl = async <TQuery extends OperationType>(
 }
 
 export const usePrefetch = () => {
-  const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
-
-  if (!enablePrefetching || __TEST__) {
+  if (__TEST__) {
     return () => null
   }
 

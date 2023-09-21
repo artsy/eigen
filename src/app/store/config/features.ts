@@ -56,11 +56,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
   },
-  AREnableQueriesPrefetching: {
-    readyForRelease: true,
-    description: "Enable query prefetching",
-    echoFlagKey: "AREnableQueriesPrefetching",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
