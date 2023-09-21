@@ -289,7 +289,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
