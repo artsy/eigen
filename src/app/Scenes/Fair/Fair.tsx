@@ -14,8 +14,8 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View } from "react-native"
+import React, { useRef, useState } from "react"
+import { FlatList } from "react-native"
 import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -78,41 +78,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-
-  /*
-  This function is necessary to achieve the effect whereby the sticky tab
-  has the necessary top-padding to avoid the status bar at the top of the screen,
-  BUT does not appear to have that padding when rendered within the list.
-  We achieve that by applying a negative bottom margin to the component
-  directly above the tabs, and applying the same top margin to the tab component.
-
-  The tricky thing is to make sure the top component is on top of the tabs margin!
-  This was only possible by using the `CellRendererComponent` prop on FlatList.
-
-  See https://github.com/facebook/react-native/issues/28751 for more information!
-  */
-  const cellItemRenderer = useCallback(({ index, item, children, ...props }) => {
-    let zIndex
-
-    // These zIndex values are finicky/important. We found that 11 and 20 worked.
-    if (index < stickyIndex) {
-      zIndex = 11
-    } else if (index === stickyIndex) {
-      zIndex = 20
-    }
-    return (
-      <View
-        {...props}
-        key={`${item}`}
-        style={{
-          zIndex,
-          marginBottom: index === stickyIndex - 1 ? -safeAreaInsets.top : undefined,
-        }}
-      >
-        {children}
-      </View>
-    )
-  }, [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -194,8 +159,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           stickyHeaderIndices={[stickyIndex]}
           onScroll={scrollHandler}
           scrollEventThrottle={100}
-          // @ts-ignore
-          CellRendererComponent={cellItemRenderer}
           keyboardShouldPersistTaps="handled"
           renderItem={({ item }): null | any => {
             switch (item) {
