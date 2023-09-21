@@ -46,17 +46,17 @@ const ArtQuizArtworksScreen = () => {
 
   const handleSwipe = (swipeDirection: "left" | "right") => {
     handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeCardIndex)
-    setActiveCardIndex(activeCardIndex + 1)
+
+    // No need to swipe through the last card, just navigate to the results screen
+    if (activeCardIndex + 1 < artworks.length) {
+      setActiveCardIndex(activeCardIndex + 1)
+    }
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
     const currentArtwork = artworks[activeIndex]
-
-    if (!currentArtwork) {
-      return
-    }
 
     if (action === "Like") {
       submitSave({
