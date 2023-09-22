@@ -56,11 +56,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: true,
-    description: "Enable My Collection artworks from non-Artsy artists",
-    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
