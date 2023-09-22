@@ -1,7 +1,6 @@
 import { BorderBox, Flex, Text, RadioButton, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { EditionSelectBox_editionSet$data } from "__generated__/EditionSelectBox_editionSet.graphql"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -21,11 +20,8 @@ interface Props {
 }
 
 export const EditionSelectBox: React.FC<Props> = ({ editionSet, selected, onPress }) => {
-  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const available =
-    !!editionSet.isOfferableFromInquiry ||
-    !!editionSet.isOfferable ||
-    (enableConversationalBuyNow && !!editionSet.isAcquireable)
+    !!editionSet.isOfferableFromInquiry || !!editionSet.isOfferable || !!editionSet.isAcquireable
 
   return (
     <Touchable onPress={() => onPress(editionSet.internalID, available)}>
