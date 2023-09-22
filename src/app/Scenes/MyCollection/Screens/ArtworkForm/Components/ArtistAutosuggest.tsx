@@ -25,7 +25,6 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
 }) => {
-  const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const { formik } = useArtworkForm()
@@ -42,40 +41,35 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const collectedArtists = extractNodes(queryData.me?.userInterestsConnection).filter(
     (node) => node.__typename === "Artist"
   )
-  const filteredCollecteArtists = enableArtworksFromNonArtsyArtists
-    ? sortBy(
-        filterArtistsByKeyword(
-          collectedArtists as Array<{ displayLabel: string | null }>,
-          trimmedQuery
-        ),
-        ["displayLabel"]
-      )
-    : []
+  const filteredCollecteArtists = sortBy(
+    filterArtistsByKeyword(
+      collectedArtists as Array<{ displayLabel: string | null }>,
+      trimmedQuery
+    ),
+    ["displayLabel"]
+  )
 
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
   const onlyShowCollectedArtists = filteredCollecteArtists.length && trimmedQuery.length < 2
 
-  const HeaderComponent = () =>
-    enableArtworksFromNonArtsyArtists ? (
-      <>
-        <Flex flexDirection="row" mt={1} mb={2}>
-          <Text variant="xs" color="black60">
-            Can't find the artist?{" "}
+  const HeaderComponent = () => (
+    <>
+      <Flex flexDirection="row" mt={1} mb={2}>
+        <Text variant="xs" color="black60">
+          Can't find the artist?{" "}
+        </Text>
+        <Touchable
+          onPress={() => onSkipPress?.(trimmedQuery)}
+          testID="my-collection-artwork-form-artist-skip-button"
+          hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+        >
+          <Text variant="xs" color="black60" underline>
+            Add their name.
           </Text>
-          <Touchable
-            onPress={() => onSkipPress?.(trimmedQuery)}
-            testID="my-collection-artwork-form-artist-skip-button"
-            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          >
-            <Text variant="xs" color="black60" underline>
-              Add their name.
-            </Text>
-          </Touchable>
-        </Flex>
-      </>
-    ) : (
-      <></>
-    )
+        </Touchable>
+      </Flex>
+    </>
+  )
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -90,9 +84,8 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
         />
-        {!enableArtworksFromNonArtsyArtists && <Spacer y={1} />}
         {showResults ? (
-          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={6}>
+          <Box height="100%" pb={6}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}
@@ -102,34 +95,28 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               onResultPress={onResultPress}
               HeaderComponent={HeaderComponent}
               ListHeaderComponent={() =>
-                enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
+                onlyShowCollectedArtists ? (
                   <Text mb={2} mt={2}>
                     Artists in My Collection
                   </Text>
-                ) : enableArtworksFromNonArtsyArtists ? (
-                  <Spacer y={2} />
-                ) : null
-              }
-              ListEmptyComponent={() =>
-                enableArtworksFromNonArtsyArtists ? (
-                  <Flex width="100%" my={2}>
-                    <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
-                    <Text>You can add their name in the artwork details.</Text>
-                    <Button
-                      variant="outline"
-                      onPress={() => onSkipPress?.(trimmedQuery)}
-                      mt={4}
-                      block
-                    >
-                      Add Artist
-                    </Button>
-                  </Flex>
                 ) : (
-                  <Flex width="100%">
-                    <Text>We couldn't find any results for "{trimmedQuery}"</Text>
-                  </Flex>
+                  <Spacer y={2} />
                 )
               }
+              ListEmptyComponent={() => (
+                <Flex width="100%" my={2}>
+                  <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
+                  <Text>You can add their name in the artwork details.</Text>
+                  <Button
+                    variant="outline"
+                    onPress={() => onSkipPress?.(trimmedQuery)}
+                    mt={4}
+                    block
+                  >
+                    Add Artist
+                  </Button>
+                </Flex>
+              )}
               ListFooterComponent={() =>
                 !onlyShowCollectedArtists && !!enableCollectedArtists ? (
                   <Touchable

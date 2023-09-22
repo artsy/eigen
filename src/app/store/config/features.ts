@@ -61,11 +61,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Conversational Buy Now",
     echoFlagKey: "AREnableConversationalBuyNow",
   },
-  AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: true,
-    description: "Enable My Collection artworks from non-Artsy artists",
-    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
