@@ -293,17 +293,6 @@ When https://github.com/react-native-async-storage/async-storage/issues/746 is s
 The types in this package are not correct, and there is a type error that comes up when we try to use it.
 It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
 
-## rn-async-storage-flipper patch
-
-#### When can we remove this:
-
-Unsure.
-
-#### Explanation/Context:
-
-The types in this package are not correct, and there is a type error that comes up when we try to use it.
-It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
-
 ## ParentAwareScrollView
 
 #### When can we remove this:

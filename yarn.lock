@@ -15630,11 +15630,6 @@ rimraf@~2.6.2:
   dependencies:
     glob "^7.1.3"
 
-rn-async-storage-flipper@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/rn-async-storage-flipper/-/rn-async-storage-flipper-0.0.10.tgz#c7ddeffef9f2fa0871652e4a4e09e612907ee589"
-  integrity sha512-Bp8B3oWufAHhc1okewR6EXZL7gRkMQMODYepTpsTgvFq7Iae57Ow4ZIDjumb6BxoCfipFSFBnxvfPhy3PDDBRQ==
-
 rn-fetch-blob@0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/rn-fetch-blob/-/rn-fetch-blob-0.12.0.tgz#ec610d2f9b3f1065556b58ab9c106eeb256f3cba"
