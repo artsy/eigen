@@ -1,0 +1,61 @@
+diff --git a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORSplitStackView.h b/Pods/ORStackView/Classes/ios/ORSplitStackView.h
+index 6b718377ee..7bd01b95bf 100644
+--- a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORSplitStackView.h
++++ b/Pods/ORStackView/Classes/ios/ORSplitStackView.h
+@@ -7,6 +7,7 @@
+ //
+ 
+ #import "ORStackView.h"
++#import <UIKit/UIKit.h>
+ 
+ /// A wrapper for two ORStackView's that will be the height of the
+ /// lowest stack. 
+diff --git a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORStackScrollView.h b/Pods/ORStackView/Classes/ios/ORStackScrollView.h
+index 39421e4e33..1b9c0c0d19 100755
+--- a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORStackScrollView.h
++++ b/Pods/ORStackView/Classes/ios/ORStackScrollView.h
+@@ -8,6 +8,7 @@
+ 
+ #import "ORStackScrollView.h"
+ #import "ORStackView.h"
++#import <UIKit/UIKit.h>
+ 
+ /// A UIScrollView subclass that is automatically set up with the
+ /// common constraints for a scrollable ORStackView
+diff --git a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORStackView.h b/Pods/ORStackView/Classes/ios/ORStackView.h
+index c029c7be53..8a1e5d6318 100644
+--- a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORStackView.h
++++ b/Pods/ORStackView/Classes/ios/ORStackView.h
+@@ -9,6 +9,8 @@
+ /// A view that will handle vertical stacking subviews for you
+ /// allowing arbitrary insertion or removal
+ 
++#import <UIKit/UIKit.h>
++
+ @interface ORStackView : UIView
+ 
+ /// Adds a view to the heirarchy, if it's the first it is
+diff --git a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORTagBasedAutoStackView.h b/Pods/ORStackView/Classes/ios/ORTagBasedAutoStackView.h
+index 73586c3159..de7be246b4 100644
+--- a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/ORTagBasedAutoStackView.h
++++ b/Pods/ORStackView/Classes/ios/ORTagBasedAutoStackView.h
+@@ -7,6 +7,7 @@
+ //
+ 
+ #import "ORStackView.h"
++#import <UIKit/UIKit.h>
+ 
+ /// A ORStackView subclass that will use view.tag intergers to determine
+ /// the order of a view heirarchy. Will add above any view with a number higher
+diff --git a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/private/ORStackView+Private.h b/Pods/ORStackView/Classes/ios/private/ORStackView+Private.h
+index 5565543865..f424b81cc0 100644
+--- a/cocoapods-patch-20230922-39567-gr4eo4/ORStackView/Classes/ios/private/ORStackView+Private.h
++++ b/Pods/ORStackView/Classes/ios/private/ORStackView+Private.h
+@@ -7,6 +7,7 @@
+ //
+ 
+ #import "ORStackView.h"
++#import <UIKit/UIKit.h>
+ 
+ // Private interfaces for ORStackView ///////////////////////
+ 

@@ -180,23 +180,6 @@ target 'Artsy' do
         end
     end
 
-    # TODO:
-    # * ORStackView: Move Laura's changes into master and update
-    # * Send PRs for the rest
-    %w[
-      Pods/ORStackView/Classes/ios/ORStackView.h
-    ].flat_map { |x| Dir.glob(x) }.each do |header|
-      system("chmod +w #{header}")
-      addition = "#import <UIKit/UIKit.h>\n"
-      contents = File.read(header)
-      next if contents.include?(addition)
-
-      File.open(header, 'w') do |file|
-        file.puts addition
-        file.puts contents
-      end
-    end
-
     # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
     %w[
       Pods/Nimble/Sources/NimbleObjectiveC

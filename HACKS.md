@@ -250,7 +250,7 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
-# `ORStackView` pod postinstall modification (add UIKit import)
+# `ORStackView` patch (add UIKit import)
 
 #### When can we remove this:
 
