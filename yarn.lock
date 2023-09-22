@@ -3280,12 +3280,12 @@
   resolved "https://registry.yarnpkg.com/@jsamr/react-native-li/-/react-native-li-2.3.1.tgz#12a5b5f6e3971cec77b96bee58104eed0ae9314a"
   integrity sha512-Qbo4NEj48SQ4k8FZJHFE2fgZDKTWaUGmVxcIQh3msg5JezLdTMMHuRRDYctfdHI6L0FZGObmEv3haWbIvmol8w==
 
-"@kesha-antonov/react-native-action-cable@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@kesha-antonov/react-native-action-cable/-/react-native-action-cable-1.1.0.tgz#12abe6d2ee66f90a7f869dc1ac05d3ddbf7c71d4"
-  integrity sha512-k+l53sXy06vFTeg9pHmX1SXlv6O+HT+Kv9sM8TZr3Wojx5IXRGtc4jOFCKWnq2dZCNszCQgLEIWwyxOk/Z9pxA==
+"@kesha-antonov/react-native-action-cable@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@kesha-antonov/react-native-action-cable/-/react-native-action-cable-1.1.4.tgz#117d48aba33476a1c3f7b5a1c3a32ba8ec43524f"
+  integrity sha512-Qy0jozu8fcAy9d0Reb/fIkWKr+0RXtt4nkwDKPz2xx6tD3it6XhgyfX1fVk1UMqnjwy8YyPCcB61TEAH2RbeYA==
   dependencies:
-    eventemitter3 "4.0.4"
+    eventemitter3 "4.0.7"
 
 "@mapbox/geo-viewport@>= 0.4.0":
   version "0.4.1"
@@ -8786,10 +8786,10 @@ event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
-eventemitter3@4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.4.tgz#b5463ace635a083d018bdc7c917b4c5f10a85384"
-  integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
+eventemitter3@4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
+  integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
 events@3.3.0, events@^3.3.0:
   version "3.3.0"
