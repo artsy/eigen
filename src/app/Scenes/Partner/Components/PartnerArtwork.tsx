@@ -1,58 +1,112 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import { Box, Flex, Spinner, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
-  AnimatedArtworkFilterButton,
-  ArtworkFilterNavigator,
-  FilterModalMode,
-} from "app/Components/ArtworkFilter"
-import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { TabsFlatList } from "app/Components/TabsFlatlist"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { extractNodes } from "app/utils/extractNodes"
 
-import { get } from "app/utils/get"
-import React, { useState } from "react"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
+import React, { useCallback, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
+  const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
+
+  const space = useSpace()
+  const { width } = useScreenDimensions()
+
   useArtworkFilters({
     relay,
     aggregations: partner.artworks?.aggregations,
     componentPath: "PartnerArtwork/PartnerArtwork",
     pageSize: 30,
   })
+  const appliedFiltersCount = useSelectedFiltersCount()
 
-  const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
+  const artworks = extractNodes(partner.artworks)
 
-  const artworks = get(partner, (p) => p.artworks)
-  const artworksCount = (artworks?.edges ?? []).length
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(10)
+    }
+  }, [relay.hasMore(), relay.isLoading()])
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
 
   return (
     <>
-      <TabsFlatList>
-        <Spacer y={2} />
+      <Tabs.Masonry
+        data={artworks}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <TabEmptyState text={emptyText} />
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
 
-        {artworksCount > 0 ? (
-          <InfiniteScrollArtworksGrid
-            connection={artworks!}
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-          />
-        ) : (
-          <TabEmptyState text={emptyText} />
-        )}
-      </TabsFlatList>
-
-      <AnimatedArtworkFilterButton
-        isVisible
-        onPress={() => {
-          setIsFilterArtworksModalVisible(true)
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                contextScreenOwnerType={OwnerType.partner}
+                contextScreenOwnerId={partner.internalID}
+                contextScreenOwnerSlug={partner.slug}
+                artwork={item}
+                height={imgHeight}
+                navigateToPageableRoute={navigateToPageableRoute}
+              />
+            </Flex>
+          )
         }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        ListFooterComponent={
+          shouldDisplaySpinner ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <Tabs.SubTabBar>
+            <ArtworksFilterHeader
+              selectedFiltersCount={appliedFiltersCount}
+              onFilterPress={() => setIsFilterArtworksModalVisible(true)}
+            />
+          </Tabs.SubTabBar>
+        }
       />
 
       <ArtworkFilterNavigator
@@ -102,7 +156,6 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           aggregations {
             slice
             counts {
-              count
               name
               value
             }
@@ -110,9 +163,13 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
