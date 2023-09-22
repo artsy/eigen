@@ -71,6 +71,8 @@ GEM
       typhoeus (~> 1.0)
     cocoapods-deintegrate (1.0.5)
     cocoapods-downloader (1.6.3)
+    cocoapods-patch (1.2.0)
+      cocoapods (~> 1.12.0)
     cocoapods-plugins (1.0.0)
       nap
     cocoapods-search (1.0.1)
@@ -304,6 +306,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods (>= 1.11.3)
   cocoapods-check
+  cocoapods-patch
   dotenv
   down
   fastlane

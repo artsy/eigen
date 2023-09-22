@@ -17,6 +17,8 @@ inhibit_all_warnings! # ignore all warnings from all pods
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
+plugin 'cocoapods-patch'
+
 
 def check_for_existing_netrc_file
   mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
