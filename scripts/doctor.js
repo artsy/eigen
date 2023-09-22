@@ -173,6 +173,30 @@ const checkDetectSecretsExists = () => {
   }
 }
 
+const checkXcodeVersion = () => {
+  try {
+    const desiredVersion = "15.0" // Replace with the desired version of Xcode
+    const output = exec("xcodebuild -version")
+
+    const versionMatch = output.match(/Xcode (\d+\.\d+(\.\d+)?)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Xcode version.")
+    }
+
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersion) {
+      YES(`Xcode is installed and the version is correct (${installedVersion}).`)
+    } else {
+      NO(
+        `Xcode is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Xcode is not installed or there was an error determining the version.`)
+  }
+}
+
 const main = async () => {
   checkEnvVariablesAreUpToDate()
 
@@ -186,6 +210,7 @@ const main = async () => {
   checkPodDependenciesAreUpToDate()
 
   checkDetectSecretsExists()
+  checkXcodeVersion()
 }
 
 main()
