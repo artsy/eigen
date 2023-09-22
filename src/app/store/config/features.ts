@@ -75,16 +75,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable Scroll/Pan on StaticHeader",
     readyForRelease: false,
   },
-  AREnableSearchDiscoveryContentIOS: {
-    description: "Display discovery content on Search tab on iOS",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentIOS",
-  },
-  AREnableSearchDiscoveryContentAndroid: {
-    description: "Display discovery content on Search tab on Android",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
-  },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
     readyForRelease: true,

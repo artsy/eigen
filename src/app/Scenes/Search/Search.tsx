@@ -25,7 +25,6 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
-import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
@@ -35,7 +34,6 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
-  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -153,15 +151,9 @@ export const Search: React.FC = () => {
                 <RecentSearches />
               </HorizontalPadding>
 
-              {!!isSearchDiscoveryContentEnabled ? (
-                <>
-                  <Spacer y={4} />
-                  <TrendingArtists data={queryData} mb={4} />
-                  <CuratedCollections collections={queryData} mb={4} />
-                </>
-              ) : (
-                <Spacer y={4} />
-              )}
+              <Spacer y={4} />
+              <TrendingArtists data={queryData} mb={4} />
+              <CuratedCollections collections={queryData} mb={4} />
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 

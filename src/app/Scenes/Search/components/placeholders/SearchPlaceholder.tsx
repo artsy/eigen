@@ -2,7 +2,6 @@ import { Spacer, Flex, Box, Join } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
-import { useSearchDiscoveryContentEnabled } from "app/Scenes/Search/useSearchDiscoveryContentEnabled"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -113,8 +112,6 @@ const CuratedCollectionsPlaceholder = () => {
 }
 
 export const SearchPlaceholder: React.FC = () => {
-  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
-
   return (
     <ProvidePlaceholderContext>
       <Box m={2} mb={0} testID="search-placeholder">
@@ -125,13 +122,9 @@ export const SearchPlaceholder: React.FC = () => {
         <RecentSearchesPlaceholder />
         <Spacer y={4} />
 
-        {!!isSearchDiscoveryContentEnabled && (
-          <>
-            <TrendingArtistPlaceholder />
-            <Spacer y={4} />
-            <CuratedCollectionsPlaceholder />
-          </>
-        )}
+        <TrendingArtistPlaceholder />
+        <Spacer y={4} />
+        <CuratedCollectionsPlaceholder />
       </Box>
     </ProvidePlaceholderContext>
   )
