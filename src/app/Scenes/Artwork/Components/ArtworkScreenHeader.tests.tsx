@@ -31,7 +31,7 @@ describe("ArtworkScreenHeader", () => {
   it("renders the header", () => {
     renderWithRelay({
       Artwork: () => ({
-        artists: [{ name: "test" }],
+        isEligibleToCreateAlert: true,
       }),
     })
 
@@ -51,10 +51,10 @@ describe("ArtworkScreenHeader", () => {
   })
 
   describe("Create alert button", () => {
-    it("renders the header but not the create alert button if the artwork doesn't have an associated artist", () => {
+    it("renders the header but not the create alert button if the artwork isn't eligible", () => {
       renderWithRelay({
         Artwork: () => ({
-          artists: [],
+          isEligibleToCreateAlert: false,
         }),
       })
 
@@ -67,7 +67,7 @@ describe("ArtworkScreenHeader", () => {
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
-          artistsArray: [{ name: "some-artist-name" }],
+          isEligibleToCreateAlert: true,
         }),
       })
 

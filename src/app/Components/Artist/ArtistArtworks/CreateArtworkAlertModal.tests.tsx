@@ -23,10 +23,10 @@ describe("CreateArtworkAlertModal", () => {
     `,
   })
 
-  it("returns null if no artists", () => {
+  it("returns null if artwork is ineligible", () => {
     const { queryByText } = renderWithRelay({
       Artwork: () => ({
-        artistsArray: [],
+        isEligibleToCreateAlert: false,
       }),
     })
 
@@ -42,6 +42,7 @@ describe("CreateArtworkAlertModal", () => {
 describe("computeArtworkAlertProps", () => {
   const artwork = {
     artistsArray: [{ name: "foo", internalID: "bar" }],
+    isEligibleToCreateAlert: true,
     attributionClass: {
       internalID: "1",
     },
@@ -56,18 +57,17 @@ describe("computeArtworkAlertProps", () => {
     },
   } as unknown as CreateArtworkAlertModal_artwork$data
 
-  it("should return default props when no artists are provided", () => {
-    const result = computeArtworkAlertProps({ ...artwork, artistsArray: [] })
+  it("should return default props when artwork is ineligible for alert", () => {
+    const result = computeArtworkAlertProps({ ...artwork, isEligibleToCreateAlert: false })
 
     expect(result).toEqual({
-      hasArtists: false,
       entity: null,
       attributes: null,
       aggregations: null,
     })
   })
 
-  it("should return correct props when artists are provided", () => {
+  it("should return correct props when artwork is eligible for alert", () => {
     const result = computeArtworkAlertProps(artwork)
 
     expect(result).toEqual({
@@ -86,7 +86,6 @@ describe("computeArtworkAlertProps", () => {
         artists: [{ id: "bar", name: "foo" }],
         owner: { type: "artwork", id: "2", slug: "test-artwork" },
       },
-      hasArtists: true,
     })
   })
 
@@ -104,7 +103,6 @@ describe("computeArtworkAlertProps", () => {
         artists: [{ id: "bar", name: "foo" }],
         owner: { type: "artwork", id: "2", slug: "test-artwork" },
       },
-      hasArtists: true,
     })
   })
 })

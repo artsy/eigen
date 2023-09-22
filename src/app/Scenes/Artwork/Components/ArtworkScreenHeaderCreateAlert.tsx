@@ -19,8 +19,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
     artworkRef
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const { isForSale, sale, saleArtwork, isInAuction } = artwork
-  const hasArtists = !!artwork?.artists?.length
+  const { isForSale, sale, saleArtwork, isInAuction, isEligibleToCreateAlert } = artwork
 
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
@@ -29,7 +28,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
   const displayCreateAlertHeader =
     isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
 
-  if (!!displayCreateAlertHeader || !hasArtists) {
+  if (!!displayCreateAlertHeader || !isEligibleToCreateAlert) {
     return null
   }
 
@@ -56,6 +55,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
 
 const ArtworkScreenHeaderCreateAlert_artwork = graphql`
   fragment ArtworkScreenHeaderCreateAlert_artwork on Artwork {
+    isEligibleToCreateAlert
     isInAuction
     ...CreateArtworkAlertModal_artwork
     artists {

@@ -33,6 +33,7 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
         title
         internalID
         slug
+        isEligibleToCreateAlert
         artistsArray: artists {
           internalID
           name
@@ -51,11 +52,13 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
     artwork
   )
 
-  const artworkAlert = computeArtworkAlertProps(data)
+  const { isEligibleToCreateAlert } = data
 
-  if (!artworkAlert.hasArtists) {
+  if (!isEligibleToCreateAlert) {
     return null
   }
+
+  const artworkAlert = computeArtworkAlertProps(data)
 
   return (
     <CreateSavedSearchModal
@@ -72,12 +75,10 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
 export const computeArtworkAlertProps = (
   artwork: CreateArtworkAlertModal_artwork$data | BrowseSimilarWorks_artwork$data
 ) => {
-  const artistsArray = artwork.artistsArray ?? []
-  const hasArtists = artistsArray.length > 0
+  const { isEligibleToCreateAlert } = artwork
 
-  if (!hasArtists) {
+  if (!isEligibleToCreateAlert) {
     return {
-      hasArtists,
       entity: null,
       attributes: null,
       aggregations: null,
@@ -129,6 +130,5 @@ export const computeArtworkAlertProps = (
     entity,
     attributes,
     aggregations,
-    hasArtists,
   }
 }
