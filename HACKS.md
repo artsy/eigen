@@ -379,3 +379,15 @@ When this issue is fixed: https://github.com/microsoft/react-native-code-push/is
 #### Explanation/Context:
 
 Release builds fail on Android without this patch, more explanation in the issue: https://github.com/microsoft/react-native-code-push/issues/1578
+
+# Pod patch for NimbleSnapshots type failure
+
+#### When can we remove this:
+
+When this PR is release in a new pod version: https://github.com/ashfurrow/Nimble-Snapshots/pull/268
+And we update to the new version.
+
+#### Explanation/Context:
+
+Test compilations started failing in Xcode 15 due to a type conflict:
+https://github.com/ashfurrow/Nimble-Snapshots/pull/268
