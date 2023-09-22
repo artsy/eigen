@@ -10,8 +10,6 @@ interface MyCollectionCollectedArtistsPrivacyArtistsListProps {
   me: MyCollectionCollectedArtistsPrivacyArtistsList_me$key
 }
 
-export const ARTIST_CIRCLE_DIAMETER = 100
-
 export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
   MyCollectionCollectedArtistsPrivacyArtistsListProps
 > = ({ me }) => {

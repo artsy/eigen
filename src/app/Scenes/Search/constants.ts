@@ -68,8 +68,6 @@ export const SEARCH_PILLS: PillType[] = [
   SHOW_PILL,
 ]
 
-export const DEFAULT_PILLS: PillType[] = [TOP_PILL, ARTWORKS_PILL]
-
 export const SEARCH_PILLS_WITH_AN_ARTICLE: PillType[] = [
   ARTIST_PILL,
   ARTIST_SERIES_PILL,
