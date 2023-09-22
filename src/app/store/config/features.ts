@@ -76,11 +76,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
-  ARReorderSWAArtworkSubmissionFlow: {
-    description: "Reorder SWA Artwork submission flow",
-    readyForRelease: true,
-    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     readyForRelease: false,
