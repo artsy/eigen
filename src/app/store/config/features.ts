@@ -66,11 +66,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableNewRequestPriceEstimateLogic: {
-    description: "Enable new request price estimate logic",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     readyForRelease: false,
