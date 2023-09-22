@@ -12,6 +12,13 @@ const { spawnSync } = require("child_process")
 const fs = require("fs")
 const chalk = require("chalk")
 
+const desiredVersions = {
+  xcode: "15.0",
+  androidStudio: "2022.3",
+  ruby: "2.7.4",
+  bundler: "2.4.3",
+}
+
 const exec = (command, cwd) => {
   const task = spawnSync(command, { shell: true, cwd })
   if (task.status != 0) {
@@ -75,19 +82,40 @@ const checkYarnExists = () => {
 
 const checkRubyExists = () => {
   try {
-    exec("ruby --version")
-    YES(`Your ${g`ruby`} is ready to go.`)
+    const output = exec("ruby --version")
+    const versionMatch = output.match(/ruby (\d+\.\d+\.\d+)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Ruby version")
+    }
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersions.ruby) {
+      YES(`Ruby is installed and version is correct: ${installedVersion}`)
+    } else {
+      WARN(`Ruby version is ${installedVersion}, but ${desiredVersions.ruby} is expected`)
+    }
   } catch (e) {
-    NO(`You don't have ${r`ruby`}.`, `Install ${g`ruby`} first.`)
+    NO(`Error checking Ruby: ${e.message}`, `Install ${g`ruby`} ${desiredVersions.ruby} first.`)
   }
 }
 
 const checkBundlerExists = () => {
   try {
-    exec("bundle --version")
-    YES(`Your ${g`bundler`} is ready to go.`)
+    const output = exec("bundle --version")
+    const versionMatch = output.match(/Bundler version (\d+\.\d+\.\d+)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Bundler version")
+    }
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersions.bundler) {
+      YES(`Bundler is installed and version is correct: ${installedVersion}`)
+    } else {
+      WARN(`Bundler version is ${installedVersion}, but ${desiredVersions.bundler} is expected`)
+    }
   } catch (e) {
-    NO(`You don't have ${r`bundler`}.`, `Install ${g`bundler`} first.`)
+    NO(
+      `Error checking Bundler: ${e.message}`,
+      `Install ${g`bundler`} ${desiredVersions.bundler} first.`
+    )
   }
 }
 
@@ -177,7 +205,6 @@ const checkDetectSecretsExists = () => {
 
 const checkXcodeVersion = () => {
   try {
-    const desiredVersion = "15.0" // Replace with the desired version of Xcode
     const output = exec("xcodebuild -version")
 
     const versionMatch = output.match(/Xcode (\d+\.\d+(\.\d+)?)/)
@@ -186,10 +213,10 @@ const checkXcodeVersion = () => {
     }
 
     const installedVersion = versionMatch[1]
-    if (installedVersion === desiredVersion) {
+    if (installedVersion === desiredVersions.xcode) {
       YES(`Xcode is installed and the version is correct (${installedVersion}).`)
     } else {
-      NO(
+      WARN(
         `Xcode is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
       )
     }
@@ -201,13 +228,12 @@ const checkXcodeVersion = () => {
 
 const checkAndroidStudioVersion = () => {
   try {
-    const desiredVersion = "2022.3"
     const plistPath = "/Applications/Android\\ Studio.app/Contents/Info.plist"
     const plistBuddyCmd = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${plistPath}`
 
     const installedVersion = exec(plistBuddyCmd).trim()
 
-    if (installedVersion === desiredVersion) {
+    if (installedVersion === desiredVersions.androidStudio) {
       YES(`Android Studio is installed and the version is correct (${installedVersion}).`)
     } else {
       WARN(
