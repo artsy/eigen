@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
+  macos: circleci/macos@2.4.0
 
 commands:
   await-previous-builds:
@@ -346,6 +347,10 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
+      - macos/preboot-simulator:
+          version: "17.0"
+          platform: "iOS"
+          device: "iPhone 15 Pro"
       - build-app-ios
       - run:
           name: Run tests if native code has changed
