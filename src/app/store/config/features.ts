@@ -56,11 +56,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableConversationalBuyNow: {
-    readyForRelease: true,
-    description: "Conversational Buy Now",
-    echoFlagKey: "AREnableConversationalBuyNow",
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",

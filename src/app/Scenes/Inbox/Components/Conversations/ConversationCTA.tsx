@@ -1,6 +1,5 @@
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
@@ -13,15 +12,14 @@ interface Props {
 
 export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   const liveArtwork = conversation?.items?.[0]?.liveArtwork
-  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
   if (liveArtwork?.__typename !== "Artwork") {
     return null
   }
 
   const isOfferableFromInquiry = liveArtwork?.isOfferableFromInquiry
-  const isOfferableConversationalBuyNow = liveArtwork?.isOfferable && enableConversationalBuyNow
-  const conversationalBuyNow = liveArtwork?.isAcquireable && enableConversationalBuyNow
+  const isOfferableConversationalBuyNow = liveArtwork?.isOfferable
+  const conversationalBuyNow = liveArtwork?.isAcquireable
 
   // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
   const conversationID = conversation.conversationID!

@@ -3,7 +3,6 @@ import { Spacer, ShieldIcon, Flex, Text, Button } from "@artsy/palette-mobile"
 import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
@@ -19,11 +18,10 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
   conversationID,
 }) => {
   const { trackEvent } = useTracking()
-  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const { isEdition, editionSets, internalID, isOfferableFromInquiry, isAcquireable, isOfferable } =
     artwork
-  const isAcquireableFromInquiry = isAcquireable && enableConversationalBuyNow
-  const isOfferableConversationalBuyNow = isOfferable && enableConversationalBuyNow
+  const isAcquireableFromInquiry = isAcquireable
+  const isOfferableConversationalBuyNow = isOfferable
   const isEditionSet = !!isEdition && editionSets?.length! > 1
 
   return (

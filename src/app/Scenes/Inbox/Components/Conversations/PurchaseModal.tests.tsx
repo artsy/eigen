@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { PurchaseModalTestQuery } from "__generated__/PurchaseModalTestQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
@@ -20,8 +19,6 @@ describe("PurchaseModal", () => {
   })
 
   it("renders edition sets radio buttons", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-
     const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
@@ -50,8 +47,6 @@ describe("PurchaseModal", () => {
   })
 
   it("doesn't allow edition set selection when it's not isAcquireable", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-
     const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
@@ -81,8 +76,6 @@ describe("PurchaseModal", () => {
   })
 
   it("enables confirm button when an edition set is selected", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-
     const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
