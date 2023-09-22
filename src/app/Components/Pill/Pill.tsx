@@ -228,7 +228,7 @@ const Container = styled(Flex)<PillProps>`
   border-width: 1px;
 `
 
-export const OpaqueImageViewContainer = styled(OpaqueImageView)`
+const OpaqueImageViewContainer = styled(OpaqueImageView)`
   width: 30px;
   height: 30px;
   border-radius: 15px;
