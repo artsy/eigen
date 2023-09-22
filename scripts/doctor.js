@@ -30,6 +30,7 @@ const NO = (message, suggestion) => {
   if (suggestion) console.log(`└──> ${suggestion}`)
 }
 const YES = (message) => console.log(`🟢 ${message}`)
+const WARN = (message) => console.log(`🟡 ${message}`)
 const g = (text) => chalk.bold.green(text)
 const r = (text) => chalk.bold.red(text)
 
@@ -116,7 +117,7 @@ const checkNodeDependenciesAreUpToDate = async () => {
       )
     }
   } catch (error) {
-    NO(error)
+    console.error(error)
     // If there's an error thrown (for example, if `yarn check --integrity` returns a non-zero exit code)
     NO(
       `Your ${r`node dependencies`} are out of sync.`,
@@ -138,7 +139,7 @@ const checkPodDependenciesAreUpToDate = async () => {
     if (status !== 0) {
       if (stderr.includes("warning:")) {
         // If there are only warnings, we might still want to proceed with checking stdout
-        console.warn("Warnings encountered during pod check:", stderr)
+        WARN("Warnings encountered during pod check: " + stderr)
       } else {
         NO(
           `Your ${r`pod dependencies`} are out of sync.`,
@@ -166,6 +167,7 @@ const checkDetectSecretsExists = () => {
     exec("detect-secrets-hook --version")
     YES(`Your ${g`detect-secrets`} is ready to go.`)
   } catch (e) {
+    console.error(e)
     NO(
       `Your ${r`detect-secrets`} is missing or not linked.`,
       `Run ${g`yarn install:all`} to install, and then make sure it's in your $PATH.`
@@ -197,6 +199,27 @@ const checkXcodeVersion = () => {
   }
 }
 
+const checkAndroidStudioVersion = () => {
+  try {
+    const desiredVersion = "2022.3"
+    const plistPath = "/Applications/Android\\ Studio.app/Contents/Info.plist"
+    const plistBuddyCmd = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${plistPath}`
+
+    const installedVersion = exec(plistBuddyCmd).trim()
+
+    if (installedVersion === desiredVersion) {
+      YES(`Android Studio is installed and the version is correct (${installedVersion}).`)
+    } else {
+      WARN(
+        `Android Studio is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Android Studio is not installed or there was an error determining the version.`)
+  }
+}
+
 const main = async () => {
   checkEnvVariablesAreUpToDate()
 
@@ -211,6 +234,7 @@ const main = async () => {
 
   checkDetectSecretsExists()
   checkXcodeVersion()
+  checkAndroidStudioVersion()
 }
 
 main()
