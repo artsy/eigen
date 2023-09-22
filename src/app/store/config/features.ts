@@ -66,10 +66,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableNewRequestPriceEstimateLogic: {
-    description: "Enable new request price estimate logic",
+  ARReorderSWAArtworkSubmissionFlow: {
+    description: "Reorder SWA Artwork submission flow",
     readyForRelease: true,
-    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
+    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",

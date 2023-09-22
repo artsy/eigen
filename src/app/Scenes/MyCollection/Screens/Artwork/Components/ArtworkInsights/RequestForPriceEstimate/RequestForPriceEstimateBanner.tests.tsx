@@ -44,11 +44,6 @@ describe("RequestForPriceEstimateBanner", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewRequestPriceEstimateLogic: true })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
     __globalStoreTestUtils__?.reset()
