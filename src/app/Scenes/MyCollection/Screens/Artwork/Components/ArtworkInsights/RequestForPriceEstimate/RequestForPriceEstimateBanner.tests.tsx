@@ -44,6 +44,10 @@ describe("RequestForPriceEstimateBanner", () => {
     />
   )
 
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
     __globalStoreTestUtils__?.reset()
