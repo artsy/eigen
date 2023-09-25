@@ -8,6 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
@@ -337,6 +338,9 @@ export const modules = defineModules({
   Activity: reactModule(Activity, {
     fullBleed: true,
     hidesBackButton: true,
+  }),
+  ActivityItem: reactModule(ActivityItemScreenQueryRenderer, {
+    hidesBottomTabs: true,
   }),
   About: reactModule(About),
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
