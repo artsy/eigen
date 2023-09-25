@@ -54,6 +54,20 @@ lane :notify_beta_failed do |options|
   )
 end
 
+desc "Notifies in slack if a new beta is needed"
+lane :notify_beta_needed do
+  message = <<~MSG
+              :x: :iphone:
+              Native code has changed, new testflight needed!
+              Deploy new betas from main to keep testing.
+            MSG
+  slack(
+    message: message,
+    success: false,
+    default_payloads: []
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only

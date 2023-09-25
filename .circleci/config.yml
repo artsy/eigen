@@ -213,21 +213,8 @@ jobs:
           name: Check if native code has changed
           command: ./scripts/codepush/check-native-code.sh
       - run:
-          name: Determine Deployment Type
-          command: echo 'export DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)' >> $BASH_ENV
-      - run:
-          name: Deploy Based on Deployment Type
-          command: |
-            if [ "$DEPLOYMENT_TYPE" == "codepush" ]; then
-              echo "Triggering CodePush deployment..."
-              yarn global add appcenter-cli
-              bundle install
-              yarn install
-              ./scripts/codepush/deploy-to-codepush.sh Staging
-            else
-              echo "Triggering TestFlight and Firebase App Tester deployment..."
-              ./scripts/deploy-beta-both
-            fi
+          name: Deploy or notify
+          command: ./scripts/codepush/deploy-or-notify.sh
 
   test-js:
     parallelism: 8
