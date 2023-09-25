@@ -17,6 +17,8 @@ inhibit_all_warnings! # ignore all warnings from all pods
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
+plugin 'cocoapods-patch'
+
 
 def check_for_existing_netrc_file
   mapbox_token = ENV['MAPBOX_DOWNLOAD_TOKEN']
@@ -176,35 +178,6 @@ target 'Artsy' do
             config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
             config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
         end
-    end
-
-    # TODO:
-    # * ORStackView: Move Laura's changes into master and update
-    # * Send PRs for the rest
-    %w[
-      Pods/ORStackView/Classes/ios/ORStackView.h
-    ].flat_map { |x| Dir.glob(x) }.each do |header|
-      system("chmod +w #{header}")
-      addition = "#import <UIKit/UIKit.h>\n"
-      contents = File.read(header)
-      next if contents.include?(addition)
-
-      File.open(header, 'w') do |file|
-        file.puts addition
-        file.puts contents
-      end
-    end
-
-    # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
-    %w[
-      Pods/Nimble/Sources/NimbleObjectiveC
-      Pods/Nimble-Snapshots
-      Pods/Quick/Sources/QuickObjectiveC
-    ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
-      system("chmod +w #{header}")
-      contents = File.read(header)
-      patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
-      File.write(header, patched) if Regexp.last_match
     end
   end
 end
