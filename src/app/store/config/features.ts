@@ -236,7 +236,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableLatestActivityRail: {
     description: "Enable Latest Activity Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
   },
