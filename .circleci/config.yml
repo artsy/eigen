@@ -4,6 +4,7 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
+  jq: circleci/jq@2.2.0
   ruby: circleci/ruby@2.1.0
 
 commands:
@@ -21,6 +22,11 @@ commands:
       - node/install:
           install-yarn: true
           node-version: "16.18.0"
+  check-native-code:
+    steps:
+      - run:
+          name: Check Native Code
+          command: ./scripts/codepush/check-native-code.sh
   generate-checksums:
     steps:
       - run:
@@ -189,8 +195,26 @@ jobs:
       - checkout
       - install-node
       - run:
-          name: Deploy beta
+          name: Deploy betas
           command: ./scripts/deploy-beta-both
+
+  check-and-deploy:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 14.1.0
+      resource_class: macos.x86.medium.gen2
+
+    steps:
+      - checkout
+      - install-node
+      - run:
+          name: Check if native code has changed
+          command: ./scripts/codepush/check-native-code.sh
+      - run:
+          name: Deploy or notify
+          command: ./scripts/codepush/deploy-or-notify.sh
 
   test-js:
     parallelism: 8
@@ -228,6 +252,14 @@ jobs:
       - run-relay-compiler
       - run:
           command: yarn type-check
+
+  check-native-code:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - check-native-code
 
   update-metaphysics:
     executor:
@@ -427,6 +459,14 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
+  deploy:
+    jobs:
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
+
   flag-check:
     triggers:
       - schedule:
@@ -456,17 +496,20 @@ workflows:
                 - release
                 - staging
 
-      - test-js:
+      - type-check:
           filters:
             branches:
               ignore:
                 - app_store_submission
                 - play_store_submission
 
-      - type-check:
+      - check-native-code:
           filters:
             branches:
               ignore:
+                - main
+                - beta-ios
+                - beta-android
                 - app_store_submission
                 - play_store_submission
 
@@ -478,6 +521,13 @@ workflows:
                 - main
                 - beta-ios
                 - beta-android
+                - app_store_submission
+                - play_store_submission
+
+      - test-js:
+          filters:
+            branches:
+              ignore:
                 - app_store_submission
                 - play_store_submission
 

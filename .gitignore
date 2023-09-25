@@ -88,6 +88,7 @@ data/complete.queryMap.json
 
 # native code hash
 native-code-checksum.hash
+file_hashes.txt
 
 .manifests
 
