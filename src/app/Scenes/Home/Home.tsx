@@ -77,16 +77,7 @@ import {
 } from "app/utils/track/ArtworkActions"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import React, {
-  RefObject,
-  createRef,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
   ListRenderItem,
@@ -394,28 +385,27 @@ const Home = memo((props: HomeProps) => {
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
   const [isRefreshing, setIsRefreshing] = useState(false)
-  return useMemo(() => {
-    const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-    const handleRefresh = async () => {
-      setIsRefreshing(true)
+  const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-      relay.refetch(
-        { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
-        {},
-        (error) => {
-          if (error) {
-            console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
-          }
-          setIsRefreshing(false)
-          scrollRailsToTop()
-        },
-        { force: true }
-      )
-    }
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
 
-    return { scrollRefs, isRefreshing, handleRefresh }
-  }, [modules.join(""), relay])
+    relay.refetch(
+      { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+      {},
+      (error) => {
+        if (error) {
+          console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
+        }
+        setIsRefreshing(false)
+        scrollRailsToTop()
+      },
+      { force: true }
+    )
+  }
+
+  return { scrollRefs, isRefreshing, handleRefresh }
 }
 
 export const HomeFragmentContainer = memo(
