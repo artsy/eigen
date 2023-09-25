@@ -18,7 +18,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -40,11 +39,7 @@ export enum STEPS {
   ContactInformation = "ContactInformation",
 }
 
-const DEFAULT_STEPS_IN_ORDER: STEPS[] = [
-  STEPS.ArtworkDetails,
-  STEPS.UploadPhotos,
-  STEPS.ContactInformation,
-]
+const STEPS_IN_ORDER: STEPS[] = [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
 
 type SubmitArtworkScreenNavigationProps = StackScreenProps<
   SubmitArtworkOverviewNavigationStack,
@@ -54,11 +49,6 @@ type SubmitArtworkScreenNavigationProps = StackScreenProps<
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
 }) => {
-  const enableReorderedSubmissionFlow = useFeatureFlag("ARReorderSWAArtworkSubmissionFlow")
-  const STEPS_IN_ORDER: typeof DEFAULT_STEPS_IN_ORDER = enableReorderedSubmissionFlow
-    ? [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
-    : DEFAULT_STEPS_IN_ORDER
-
   return <SubmitSWAArtworkFlow navigation={navigation} stepsInOrder={STEPS_IN_ORDER} />
 }
 

@@ -1,10 +1,10 @@
 {
   "appName": "eigen",
-  "version": "8.21.0",
+  "version": "8.22.0",
+  "isAndroidBeta": false,
   "nativeCodeVersion": {
     "1": "c367d6fc7a6ba6ba622ce8a1e420c52eaa4aace8"
   },
-  "isAndroidBeta": false,
   "codePushReleaseName": "none",
   "codePushDist": "none"
 }

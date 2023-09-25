@@ -1,5 +1,4 @@
 import { format } from "util"
-// @ts-expect-error
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 // @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"

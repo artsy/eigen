@@ -282,28 +282,6 @@ When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-1
 
 The app restarts when the user takes a picture to pass to `react-native-image-crop-picker` (https://github.com/ivpusic/react-native-image-crop-picker/issues/1704). We do not know exactly why this is happening. And it seems to happen on random devices, but mostly on android-10 and android-11s. This hack silently clears the cache on android before taking the photo.
 
-## @react-native-async-storage/async-storage patch
-
-#### When can we remove this:
-
-When https://github.com/react-native-async-storage/async-storage/issues/746 is solved.
-
-#### Explanation/Context:
-
-The types in this package are not correct, and there is a type error that comes up when we try to use it.
-It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
-
-## rn-async-storage-flipper patch
-
-#### When can we remove this:
-
-Unsure.
-
-#### Explanation/Context:
-
-The types in this package are not correct, and there is a type error that comes up when we try to use it.
-It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
-
 ## ParentAwareScrollView
 
 #### When can we remove this:

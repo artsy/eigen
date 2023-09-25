@@ -56,44 +56,14 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableConversationalBuyNow: {
-    readyForRelease: true,
-    description: "Conversational Buy Now",
-    echoFlagKey: "AREnableConversationalBuyNow",
-  },
-  AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: true,
-    description: "Enable My Collection artworks from non-Artsy artists",
-    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableNewRequestPriceEstimateLogic: {
-    description: "Enable new request price estimate logic",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
-  },
-  ARReorderSWAArtworkSubmissionFlow: {
-    description: "Reorder SWA Artwork submission flow",
-    readyForRelease: true,
-    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     readyForRelease: false,
-  },
-  AREnableSearchDiscoveryContentIOS: {
-    description: "Display discovery content on Search tab on iOS",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentIOS",
-  },
-  AREnableSearchDiscoveryContentAndroid: {
-    description: "Display discovery content on Search tab on Android",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
@@ -266,7 +236,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableLatestActivityRail: {
     description: "Enable Latest Activity Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
   },

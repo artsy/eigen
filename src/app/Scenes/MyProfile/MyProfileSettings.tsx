@@ -1,4 +1,4 @@
-import { Spacer, Flex, useColor, Text, Separator, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Separator, Button } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
@@ -79,12 +79,6 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
     </>
   )
 }
-
-export const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Text variant="sm-display" color="black60" mb={1} mx={2}>
-    {title}
-  </Text>
-)
 
 export function confirmLogout() {
   Alert.alert("Log out?", "Are you sure you want to log out?", [

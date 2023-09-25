@@ -524,8 +524,6 @@ PODS:
     - React-Core
   - react-native-geolocation (3.0.6):
     - React-Core
-  - react-native-image-resizer (1.4.5):
-    - React-Core
   - react-native-in-app-review (4.2.1):
     - React-Core
   - react-native-mapbox-gl (8.5.0):
@@ -638,7 +636,7 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.16.1):
+  - RNCAsyncStorage (1.19.3):
     - React-Core
   - RNCClipboard (1.7.0):
     - React-Core
@@ -652,7 +650,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFlashList (1.5.0):
     - React-Core
-  - RNGestureHandler (2.5.0):
+  - RNGestureHandler (2.13.1):
     - React-Core
   - RNGoogleSignin (6.0.0):
     - GoogleSignIn (~> 5.0.0)
@@ -847,7 +845,6 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-flipper-performance-plugin (from `../node_modules/react-native-flipper-performance-plugin`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
-  - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -1073,8 +1070,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-flipper-performance-plugin"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
-  react-native-image-resizer:
-    :path: "../node_modules/react-native-image-resizer"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
   react-native-mapbox-gl:
@@ -1295,7 +1290,6 @@ SPEC CHECKSUMS:
   react-native-flipper: 457f5d70546cdd4281e748ff3726385ffa06ba41
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
-  react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
@@ -1323,13 +1317,13 @@ SPEC CHECKSUMS:
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
+  RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
   RNDateTimePicker: 6f1f0b4cf7c71b6e2aea7a3aa62969111084bbd1
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d
-  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
+  RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
