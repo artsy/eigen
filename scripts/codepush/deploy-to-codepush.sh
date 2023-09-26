@@ -28,6 +28,8 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
+yarn global add appcenter-cli
+
 # Deploy to codepush
 bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:ios --verbose
 bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:android --verbose

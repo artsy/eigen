@@ -204,8 +204,6 @@ jobs:
     steps:
       - checkout
       - install-node
-      - macos/switch-ruby:
-          version: "2.7"
       - install-gems
       - jq/install:
           version: jq-1.7
@@ -223,9 +221,9 @@ jobs:
               circleci-agent step halt
             fi
       - install-node-modules
-      - run:
-          name: Install CodePush CLI
-          command: yarn global add appcenter-cli
+      # - run:
+      #     name: Install CodePush CLI
+      #     command: yarn global add appcenter-cli
       - run-relay-compiler
       - run:
           name: Handle Deployment for codepush
