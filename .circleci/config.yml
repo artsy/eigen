@@ -459,14 +459,6 @@ workflows:
     jobs:
       - deploy-nightly-beta
 
-  deploy:
-    jobs:
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
-
   flag-check:
     triggers:
       - schedule:
@@ -523,6 +515,12 @@ workflows:
                 - beta-android
                 - app_store_submission
                 - play_store_submission
+
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - brian/codepush-follow-up-3
 
       - test-js:
           filters:
