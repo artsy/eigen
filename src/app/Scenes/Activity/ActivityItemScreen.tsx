@@ -1,4 +1,4 @@
-import { Box, Button, Flex, SkeletonBox, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import { Box, Flex, SkeletonBox, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import {
   ActivityItemScreenQuery,
   ActivityItemScreenQuery$data,
@@ -40,9 +40,9 @@ const PlaceholderComponent: FC = () => {
         <ActivityItemArtworksGridPlaceholder />
 
         <Flex flex={1}>
-          <Button variant="outline" haptic block onPress={() => {}} disabled>
+          <Text underline textAlign="center">
             View more
-          </Button>
+          </Text>
         </Flex>
       </ScrollView>
     </Flex>
@@ -88,16 +88,15 @@ const ActivityItemScreen: FC<ActivityItemScreenProps> = ({ me }) => {
         <ActivityItemArtworksGrid notification={notification} />
 
         <Flex flex={1}>
-          <Button
-            variant="outline"
-            haptic
-            block
+          <Text
+            underline
+            textAlign="center"
             onPress={() => {
               navigateToActivityItem(notification.targetHref)
             }}
           >
             View more
-          </Button>
+          </Text>
         </Flex>
       </ScrollView>
     </Flex>
