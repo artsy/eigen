@@ -536,7 +536,7 @@ workflows:
           filters:
             branches:
               only:
-                - brian/codepush-follow-up-3
+                - main
 
       - test-js:
           filters:
