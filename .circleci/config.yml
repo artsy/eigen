@@ -205,26 +205,26 @@ jobs:
       - checkout
       - install-node
       - install-gems
-      - jq/install:
-          version: jq-1.7
-      - run:
-          name: Determine Deployment Type
-          command: |
-            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
-            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
-      - run:
-          name: Handle Deployment for beta
-          command: |
-            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-              echo "Native code changed, notifying new beta needed!"
-              bundle exec fastlane notify_beta_needed
-              circleci-agent step halt
-            fi
-      - install-node-modules
+      # - jq/install:
+      #     version: jq-1.7
+      # - run:
+      #     name: Determine Deployment Type
+      #     command: |
+      #       DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+      #       echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      # - run:
+      #     name: Handle Deployment for beta
+      #     command: |
+      #       if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+      #         echo "Native code changed, notifying new beta needed!"
+      #         bundle exec fastlane notify_beta_needed
+      #         circleci-agent step halt
+      #       fi
+      # - install-node-modules
       # - run:
       #     name: Install CodePush CLI
       #     command: yarn global add appcenter-cli
-      - run-relay-compiler
+      # - run-relay-compiler
       - run:
           name: Handle Deployment for codepush
           command: |
