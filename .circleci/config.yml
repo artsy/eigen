@@ -220,7 +220,7 @@ jobs:
       #         bundle exec fastlane notify_beta_needed
       #         circleci-agent step halt
       #       fi
-      # - install-node-modules
+      - install-node-modules
       # - run:
       #     name: Install CodePush CLI
       #     command: yarn global add appcenter-cli
