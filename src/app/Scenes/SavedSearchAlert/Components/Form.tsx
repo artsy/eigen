@@ -4,7 +4,9 @@ import {
   Box,
   Button,
   Flex,
+  Join,
   Pill,
+  Separator,
   Spacer,
   Text,
   Touchable,
@@ -13,6 +15,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input, InputTitle } from "app/Components/Input"
+import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import {
   CreateSavedSearchAlertNavigationStack,
@@ -133,101 +136,118 @@ export const Form: React.FC<FormProps> = ({
         />
       )}
 
-      <Box>
-        {isFallbackToGeneratedAlertNamesEnabled ? (
-          <SavedSearchNameInputQueryRenderer attributes={attributes} />
-        ) : (
-          <Input
-            title="Name"
-            placeholder={entity.artists[0]?.name}
-            value={values.name}
-            onChangeText={handleChange("name")}
-            onBlur={handleBlur("name")}
-            error={errors.name}
-            testID="alert-input-name"
-            maxLength={75}
-          />
-        )}
-      </Box>
+      <Join separator={enableAlertsFilters ? <Separator my={1} /> : <></>}>
+        <Box>
+          {isFallbackToGeneratedAlertNamesEnabled ? (
+            <SavedSearchNameInputQueryRenderer attributes={attributes} />
+          ) : (
+            <Input
+              title="Name"
+              placeholder={entity.artists[0]?.name}
+              value={values.name}
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              error={errors.name}
+              testID="alert-input-name"
+              maxLength={75}
+            />
+          )}
 
-      <Spacer y={2} />
+          <Spacer y={2} />
 
-      <Box>
-        <InputTitle>Filters</InputTitle>
-        <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill
-              testID="alert-pill"
-              m={0.5}
-              variant="filter"
-              disabled={isArtistPill(pill)}
-              key={`filter-label-${index}`}
-              onPress={() => onRemovePill(pill)}
-            >
-              {pill.label}
-            </Pill>
-          ))}
-        </Flex>
-      </Box>
-
-      <Spacer y={2} />
-
-      {/* Price range is part of the new filters screen, no need to show it here anymore */}
-      {!enableAlertsFilters && (
-        <Flex mt={2} mb={4}>
-          <Touchable
-            accessibilityLabel="Set price range"
-            accessibilityRole="button"
-            onPress={() => navigation.navigate("AlertPriceRange")}
-          >
-            <Flex flexDirection="row" alignItems="center" py={1}>
-              <Flex flex={1}>
-                <Text variant="sm-display">Set price range you are interested in</Text>
-              </Flex>
-              <Flex alignSelf="center" mt={0.5}>
-                <ArrowRightIcon />
-              </Flex>
+          <Box>
+            <InputTitle>Filters</InputTitle>
+            <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+              {pills.map((pill, index) => (
+                <Pill
+                  testID="alert-pill"
+                  m={0.5}
+                  variant="filter"
+                  disabled={isArtistPill(pill)}
+                  key={`filter-label-${index}`}
+                  onPress={() => onRemovePill(pill)}
+                >
+                  {pill.label}
+                </Pill>
+              ))}
             </Flex>
-          </Touchable>
-        </Flex>
-      )}
+          </Box>
+        </Box>
 
-      <SavedSearchAlertSwitch
-        label="Mobile Alerts"
-        onChange={onTogglePushNotification}
-        active={values.push}
-      />
+        {!!enableAlertsFilters ? (
+          <>
+            <MenuItem
+              title="Add Filters:"
+              description="Including price, rarity, medium, size, color"
+              onPress={() => {
+                // navigate to filters screen
+              }}
+              px={0}
+            />
+          </>
+        ) : null}
+
+        {/* Price range is part of the new filters screen, no need to show it here anymore */}
+        {!enableAlertsFilters && (
+          <Flex mt={2} mb={4}>
+            <Touchable
+              accessibilityLabel="Set price range"
+              accessibilityRole="button"
+              onPress={() => navigation.navigate("AlertPriceRange")}
+            >
+              <Flex flexDirection="row" alignItems="center" py={1}>
+                <Flex flex={1}>
+                  <Text variant="sm-display">Set price range you are interested in</Text>
+                </Flex>
+                <Flex alignSelf="center" mt={0.5}>
+                  <ArrowRightIcon />
+                </Flex>
+              </Flex>
+            </Touchable>
+          </Flex>
+        )}
+
+        <Box>
+          <SavedSearchAlertSwitch
+            label="Mobile Alerts"
+            onChange={onTogglePushNotification}
+            active={values.push}
+          />
+
+          <Spacer y={1} />
+
+          <SavedSearchAlertSwitch
+            label="Email Alerts"
+            onChange={onToggleEmailNotification}
+            active={values.email}
+          />
+
+          {!!shouldShowEmailWarning && (
+            <Box backgroundColor="orange10" my={1} p={2}>
+              <Text variant="xs" color="orange150">
+                Change your email preferences
+              </Text>
+              <Text variant="xs" mt={0.5}>
+                To receive Email Alerts, please update your email preferences.
+              </Text>
+            </Box>
+          )}
+
+          {!!values.email && (
+            <Text
+              onPress={handleUpdateEmailPreferencesPress}
+              variant="xs"
+              color="black60"
+              style={{ textDecorationLine: "underline" }}
+              mt={1}
+            >
+              Update email preferences
+            </Text>
+          )}
+        </Box>
+      </Join>
 
       <Spacer y={2} />
-
-      <SavedSearchAlertSwitch
-        label="Email Alerts"
-        onChange={onToggleEmailNotification}
-        active={values.email}
-      />
-
-      {!!shouldShowEmailWarning && (
-        <Box backgroundColor="orange10" my={1} p={2}>
-          <Text variant="xs" color="orange150">
-            Change your email preferences
-          </Text>
-          <Text variant="xs" mt={0.5}>
-            To receive Email Alerts, please update your email preferences.
-          </Text>
-        </Box>
-      )}
-
-      {!!values.email && (
-        <Text
-          onPress={handleUpdateEmailPreferencesPress}
-          variant="xs"
-          color="black60"
-          style={{ textDecorationLine: "underline" }}
-          mt={1}
-        >
-          Update email preferences
-        </Text>
-      )}
 
       <Box mt={6}>
         <Button
