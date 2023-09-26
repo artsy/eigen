@@ -132,7 +132,7 @@ export const Form: React.FC<FormProps> = ({
         />
       )}
 
-      <Box mb={2}>
+      <Box>
         {isFallbackToGeneratedAlertNamesEnabled ? (
           <SavedSearchNameInputQueryRenderer attributes={attributes} />
         ) : (
@@ -148,7 +148,10 @@ export const Form: React.FC<FormProps> = ({
           />
         )}
       </Box>
-      <Box mb={2}>
+
+      <Spacer y={2} />
+
+      <Box>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
           {pills.map((pill, index) => (
@@ -165,9 +168,11 @@ export const Form: React.FC<FormProps> = ({
           ))}
         </Flex>
       </Box>
+
+      <Spacer y={2} />
+
       {!!priceControlEnabled && (
-        <>
-          <Spacer y={2} />
+        <Flex mt={2} mb={4}>
           <Touchable
             accessibilityLabel="Set price range"
             accessibilityRole="button"
@@ -182,20 +187,23 @@ export const Form: React.FC<FormProps> = ({
               </Flex>
             </Flex>
           </Touchable>
-          <Spacer y={4} />
-        </>
+        </Flex>
       )}
+
       <SavedSearchAlertSwitch
         label="Mobile Alerts"
         onChange={onTogglePushNotification}
         active={values.push}
       />
+
       <Spacer y={2} />
+
       <SavedSearchAlertSwitch
         label="Email Alerts"
         onChange={onToggleEmailNotification}
         active={values.email}
       />
+
       {!!shouldShowEmailWarning && (
         <Box backgroundColor="orange10" my={1} p={2}>
           <Text variant="xs" color="orange150">
@@ -206,6 +214,7 @@ export const Form: React.FC<FormProps> = ({
           </Text>
         </Box>
       )}
+
       {!!values.email && (
         <Text
           onPress={handleUpdateEmailPreferencesPress}
@@ -217,6 +226,7 @@ export const Form: React.FC<FormProps> = ({
           Update email preferences
         </Text>
       )}
+
       <Box mt={6}>
         <Button
           testID="save-alert-button"
