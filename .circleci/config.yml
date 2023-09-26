@@ -204,7 +204,6 @@ jobs:
     steps:
       - checkout
       - install-node
-      - install-ruby
       - install-gems
       - run:
           name: Determine Deployment Type
