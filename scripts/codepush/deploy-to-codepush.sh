@@ -29,7 +29,7 @@ else
 fi
 
 # Deploy to codepush
-bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:ios
-bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:android
+bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:ios --verbose
+bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:android --verbose
 
 echo "Release to $deployment deployment successful."
