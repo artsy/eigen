@@ -201,9 +201,11 @@ jobs:
   check-and-deploy:
     environment:
       BUNDLE_PATH: .vendor
+
     macos:
       xcode: 14.1.0
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
+
     steps:
       - checkout
       - install-node
