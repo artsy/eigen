@@ -343,6 +343,7 @@ lane :deploy_to_codepush do |options|
     deployment: deployment_name,
     sourcemap_output: sourcemap_output,
     output_dir: "./build",
+    mandatory: false,
     target_version: release_version,
   )
 
