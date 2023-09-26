@@ -152,6 +152,7 @@ export const Form: React.FC<FormProps> = ({
             />
           )}
 
+<<<<<<< HEAD
           <Box mt={2}>
             <InputTitle>Filters</InputTitle>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
@@ -169,6 +170,72 @@ export const Form: React.FC<FormProps> = ({
               ))}
             </Flex>
           </Box>
+=======
+      <Spacer y={2} />
+
+      <Box>
+        <InputTitle>Filters</InputTitle>
+        <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+          {pills.map((pill, index) => (
+            <Pill
+              testID="alert-pill"
+              m={0.5}
+              variant="filter"
+              disabled={isArtistPill(pill)}
+              key={`filter-label-${index}`}
+              onPress={() => onRemovePill(pill)}
+            >
+              {pill.label}
+            </Pill>
+          ))}
+        </Flex>
+      </Box>
+
+      <Spacer y={2} />
+
+      {/* Price range is part of the new filters screen, no need to show it here anymore */}
+      {!enableAlertsFilters && (
+        <Flex mt={2} mb={4}>
+          <Touchable
+            accessibilityLabel="Set price range"
+            accessibilityRole="button"
+            onPress={() => navigation.navigate("AlertPriceRange")}
+          >
+            <Flex flexDirection="row" alignItems="center" py={1}>
+              <Flex flex={1}>
+                <Text variant="sm-display">Set price range you are interested in</Text>
+              </Flex>
+              <Flex alignSelf="center" mt={0.5}>
+                <ArrowRightIcon />
+              </Flex>
+            </Flex>
+          </Touchable>
+        </Flex>
+      )}
+
+      <SavedSearchAlertSwitch
+        label="Mobile Alerts"
+        onChange={onTogglePushNotification}
+        active={values.push}
+      />
+
+      <Spacer y={2} />
+
+      <SavedSearchAlertSwitch
+        label="Email Alerts"
+        onChange={onToggleEmailNotification}
+        active={values.email}
+      />
+
+      {!!shouldShowEmailWarning && (
+        <Box backgroundColor="orange10" my={1} p={2}>
+          <Text variant="xs" color="orange150">
+            Change your email preferences
+          </Text>
+          <Text variant="xs" mt={0.5}>
+            To receive Email Alerts, please update your email preferences.
+          </Text>
+>>>>>>> 81d47deaa8 (feat: hide price range filters when new alerts filters are enabled)
         </Box>
 
         {!!enableAlertsFilters ? (
