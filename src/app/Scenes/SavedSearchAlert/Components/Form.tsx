@@ -67,7 +67,6 @@ export const Form: React.FC<FormProps> = ({
 
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
-  const priceControlEnabled = useFeatureFlag("AREnablePriceControlForCreateAlertFlow")
 
   // Data has not changed
   if (isEditMode && !dirty) {
@@ -171,24 +170,22 @@ export const Form: React.FC<FormProps> = ({
 
       <Spacer y={2} />
 
-      {!!priceControlEnabled && (
-        <Flex mt={2} mb={4}>
-          <Touchable
-            accessibilityLabel="Set price range"
-            accessibilityRole="button"
-            onPress={() => navigation.navigate("AlertPriceRange")}
-          >
-            <Flex flexDirection="row" alignItems="center" py={1}>
-              <Flex flex={1}>
-                <Text variant="sm-display">Set price range you are interested in</Text>
-              </Flex>
-              <Flex alignSelf="center" mt={0.5}>
-                <ArrowRightIcon />
-              </Flex>
+      <Flex mt={2} mb={4}>
+        <Touchable
+          accessibilityLabel="Set price range"
+          accessibilityRole="button"
+          onPress={() => navigation.navigate("AlertPriceRange")}
+        >
+          <Flex flexDirection="row" alignItems="center" py={1}>
+            <Flex flex={1}>
+              <Text variant="sm-display">Set price range you are interested in</Text>
             </Flex>
-          </Touchable>
-        </Flex>
-      )}
+            <Flex alignSelf="center" mt={0.5}>
+              <ArrowRightIcon />
+            </Flex>
+          </Flex>
+        </Touchable>
+      </Flex>
 
       <SavedSearchAlertSwitch
         label="Mobile Alerts"
