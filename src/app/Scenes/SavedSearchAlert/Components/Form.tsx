@@ -6,6 +6,7 @@ import {
   Flex,
   Join,
   Pill,
+  Separator,
   Spacer,
   Text,
   Touchable,
@@ -135,7 +136,11 @@ export const Form: React.FC<FormProps> = ({
         />
       )}
 
+<<<<<<< HEAD
       <Join separator={<Spacer y={2} />}>
+=======
+      <Join separator={enableAlertsFilters ? <Separator my={1} /> : <></>}>
+>>>>>>> 3d5b0b1671 (feat: add Add Filters button to create alert modal)
         <Box>
           {isFallbackToGeneratedAlertNamesEnabled ? (
             <SavedSearchNameInputQueryRenderer attributes={attributes} />
@@ -152,6 +157,7 @@ export const Form: React.FC<FormProps> = ({
             />
           )}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
           <Box mt={2}>
             <InputTitle>Filters</InputTitle>
@@ -172,55 +178,105 @@ export const Form: React.FC<FormProps> = ({
           </Box>
 =======
       <Spacer y={2} />
+=======
+          <Spacer y={2} />
+>>>>>>> 3d5b0b1671 (feat: add Add Filters button to create alert modal)
 
-      <Box>
-        <InputTitle>Filters</InputTitle>
-        <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill
-              testID="alert-pill"
-              m={0.5}
-              variant="filter"
-              disabled={isArtistPill(pill)}
-              key={`filter-label-${index}`}
-              onPress={() => onRemovePill(pill)}
-            >
-              {pill.label}
-            </Pill>
-          ))}
-        </Flex>
-      </Box>
-
-      <Spacer y={2} />
-
-      {/* Price range is part of the new filters screen, no need to show it here anymore */}
-      {!enableAlertsFilters && (
-        <Flex mt={2} mb={4}>
-          <Touchable
-            accessibilityLabel="Set price range"
-            accessibilityRole="button"
-            onPress={() => navigation.navigate("AlertPriceRange")}
-          >
-            <Flex flexDirection="row" alignItems="center" py={1}>
-              <Flex flex={1}>
-                <Text variant="sm-display">Set price range you are interested in</Text>
-              </Flex>
-              <Flex alignSelf="center" mt={0.5}>
-                <ArrowRightIcon />
-              </Flex>
+          <Box>
+            <InputTitle>Filters</InputTitle>
+            <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+              {pills.map((pill, index) => (
+                <Pill
+                  testID="alert-pill"
+                  m={0.5}
+                  variant="filter"
+                  disabled={isArtistPill(pill)}
+                  key={`filter-label-${index}`}
+                  onPress={() => onRemovePill(pill)}
+                >
+                  {pill.label}
+                </Pill>
+              ))}
             </Flex>
-          </Touchable>
-        </Flex>
-      )}
+          </Box>
+        </Box>
 
-      <SavedSearchAlertSwitch
-        label="Mobile Alerts"
-        onChange={onTogglePushNotification}
-        active={values.push}
-      />
+        {!!enableAlertsFilters ? (
+          <>
+            <MenuItem
+              title="Add Filters:"
+              description="Including price, rarity, medium, size, color"
+              onPress={() => {
+                // navigate to filters screen
+              }}
+              px={0}
+            />
+          </>
+        ) : null}
+
+        {/* Price range is part of the new filters screen, no need to show it here anymore */}
+        {!enableAlertsFilters && (
+          <Flex mt={2} mb={4}>
+            <Touchable
+              accessibilityLabel="Set price range"
+              accessibilityRole="button"
+              onPress={() => navigation.navigate("AlertPriceRange")}
+            >
+              <Flex flexDirection="row" alignItems="center" py={1}>
+                <Flex flex={1}>
+                  <Text variant="sm-display">Set price range you are interested in</Text>
+                </Flex>
+                <Flex alignSelf="center" mt={0.5}>
+                  <ArrowRightIcon />
+                </Flex>
+              </Flex>
+            </Touchable>
+          </Flex>
+        )}
+
+        <Box>
+          <SavedSearchAlertSwitch
+            label="Mobile Alerts"
+            onChange={onTogglePushNotification}
+            active={values.push}
+          />
+
+          <Spacer y={1} />
+
+          <SavedSearchAlertSwitch
+            label="Email Alerts"
+            onChange={onToggleEmailNotification}
+            active={values.email}
+          />
+
+          {!!shouldShowEmailWarning && (
+            <Box backgroundColor="orange10" my={1} p={2}>
+              <Text variant="xs" color="orange150">
+                Change your email preferences
+              </Text>
+              <Text variant="xs" mt={0.5}>
+                To receive Email Alerts, please update your email preferences.
+              </Text>
+            </Box>
+          )}
+
+          {!!values.email && (
+            <Text
+              onPress={handleUpdateEmailPreferencesPress}
+              variant="xs"
+              color="black60"
+              style={{ textDecorationLine: "underline" }}
+              mt={1}
+            >
+              Update email preferences
+            </Text>
+          )}
+        </Box>
+      </Join>
 
       <Spacer y={2} />
 
+<<<<<<< HEAD
       <SavedSearchAlertSwitch
         label="Email Alerts"
         onChange={onToggleEmailNotification}
@@ -313,6 +369,8 @@ export const Form: React.FC<FormProps> = ({
 
       <Spacer y={2} />
 
+=======
+>>>>>>> 3d5b0b1671 (feat: add Add Filters button to create alert modal)
       <Box mt={6}>
         <Button
           testID="save-alert-button"
