@@ -4,7 +4,6 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
-  jq: circleci/jq@3.0.0
   macos: circleci/macos@2.4.0
 
 commands:
@@ -205,21 +204,22 @@ jobs:
       - checkout
       - install-node
       - install-gems
-      # - jq/install:
-      #     version: jq-1.7
-      # - run:
-      #     name: Determine Deployment Type
-      #     command: |
-      #       DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
-      #       echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
-      # - run:
-      #     name: Handle Deployment for beta
-      #     command: |
-      #       if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-      #         echo "Native code changed, notifying new beta needed!"
-      #         bundle exec fastlane notify_beta_needed
-      #         circleci-agent step halt
-      #       fi
+      - run:
+          name: Install jq
+          command: brew install jq
+      - run:
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, notifying new beta needed!"
+              bundle exec fastlane notify_beta_needed
+              circleci-agent step halt
+            fi
       - install-node-modules
       - run:
           name: Install CodePush CLI
