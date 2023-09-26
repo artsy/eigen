@@ -33,20 +33,22 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     navigateToActivityItem(item.targetHref)
   }
 
-  const imageURL = artworks[0].image?.preview?.src
+  const imageURL = artworks[0]?.image?.preview?.src
 
   const notificationTypeLabel = getNotificationTypeLabel(item.notificationType)
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row">
-        <Flex mr={1} accessibilityLabel="Activity Artwork Image">
-          <OpaqueImageView
-            imageURL={imageURL}
-            width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-            height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-          />
-        </Flex>
+        {!!imageURL ? (
+          <Flex mr={1} accessibilityLabel="Activity Artwork Image">
+            <OpaqueImageView
+              imageURL={imageURL}
+              width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+              height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+            />
+          </Flex>
+        ) : null}
 
         <Flex maxWidth={MAX_WIDTH} overflow="hidden">
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
