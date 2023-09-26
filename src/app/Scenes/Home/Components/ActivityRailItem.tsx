@@ -40,7 +40,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     }
   }
 
-  const imageURL = artworks[0].image?.preview?.src
+  const imageURL = artworks[0]?.image?.preview?.src
 
   const notificationTypeLabel = getNotificationTypeLabel(item.notificationType)
 
