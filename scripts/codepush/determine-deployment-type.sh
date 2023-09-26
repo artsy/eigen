@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 # Get the native code version before the merge (from the main branch)
 pre_merge_native_code_version=$(git show main:app.json | jq -r '.nativeCodeVersion | to_entries | reduce .[] as $item (0; . as $key | if $item.key | tonumber > $key then $item.key | tonumber else $key end)')

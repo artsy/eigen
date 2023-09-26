@@ -204,6 +204,8 @@ jobs:
     steps:
       - checkout
       - install-node
+      - macos/switch-ruby:
+          version: "2.7"
       - install-gems
       - jq/install:
           version: jq-1.7
