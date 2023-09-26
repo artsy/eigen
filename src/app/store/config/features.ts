@@ -252,6 +252,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
+  AREnableAlertsFilters: {
+    description: "Enable filters in alerts screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {
