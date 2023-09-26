@@ -8,6 +8,7 @@ if [ "$DEPLOYMENT_TYPE" == "codepush" ]; then
   yarn global add appcenter-cli
   bundle install
   yarn install
+  yarn relay
   ./scripts/codepush/deploy-to-codepush.sh Staging
 else
   echo "Native code changed, notifying new beta needed!"
