@@ -1,7 +1,6 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Platform } from "react-native"
 
 type ProgressiveOnboardingFindSavedArtworkProps = {
   tab: BottomTabType
@@ -21,7 +20,7 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
   const isFindSavedArtworkDisplayable =
     !isDismissed("find-saved-artwork").status && !!profileTabProps?.savedArtwork
 
-  if (tab !== "profile" || isFirstSession || Platform.OS === "android") {
+  if (tab !== "profile" || isFirstSession) {
     return <>{children}</>
   }
 
