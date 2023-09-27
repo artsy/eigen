@@ -30,7 +30,7 @@ export const legacyErrorMiddleware = async (
     resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
   if (allErrorsAreOptional) {
-    trackError(req.operation.name, req.operation.kind, "optionalField")
+    trackError(req.operation.name, req.operation.operationKind, "optionalField")
     return res
   }
 
@@ -39,7 +39,7 @@ export const legacyErrorMiddleware = async (
   const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
   if (!requestHasPrincipalField) {
-    trackError(req.operation.name, req.operation.kind, "default")
+    trackError(req.operation.name, req.operation.operationKind, "default")
     return throwError(req, res)
   }
 
@@ -53,7 +53,7 @@ export const legacyErrorMiddleware = async (
   )
 
   if (principalFieldWasInvolvedInError) {
-    trackError(req.operation.name, req.operation.kind, "principalField")
+    trackError(req.operation.name, req.operation.operationKind, "principalField")
     return throwError(req, res)
   }
 

@@ -17,15 +17,14 @@ export const principalFieldErrorHandlerMiddleware = async (
     resJson.extensions?.principalField?.httpStatusCode
   )
 
+  // query did not have a principal field, but experienced an error, we report it to sentry and volley
   if (!requestHasPrincipalField && !!res?.errors?.length) {
-    // query did not have a principal field, but experienced an error, we report it to sentry and volley
-    trackError(req.operation.name, req.operation.kind, "default")
-    captureMessage("query failed", "log")
-    console.warn("Error reported to sentry and volley", res?.errors)
+    trackError(req.operation.operationKind, req.operation.operationKind, "default")
+    captureMessage(`${req.operation.operationKind} failed: ${req.operation.operationKind}`, "log")
   }
 
   if (principalFieldWasInvolvedInError) {
-    trackError(req.operation.name, req.operation.kind, "principalField")
+    trackError(req.operation.operationKind, req.operation.operationKind, "principalField")
     return throwError(req, res)
   } else {
     return res

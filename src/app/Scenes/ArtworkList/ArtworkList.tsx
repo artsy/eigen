@@ -1,15 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListQuery, CollectionArtworkSorts } from "__generated__/ArtworkListQuery.graphql"
 import { ArtworkList_artworksConnection$key } from "__generated__/ArtworkList_artworksConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { ArtworkListProvider } from "app/Components/ArtworkLists/ArtworkListContext"
 import { SortOption, SortByModal } from "app/Components/SortByModal/SortByModal"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ArtworkListArtworksGridHeader } from "app/Scenes/ArtworkList/ArtworkListArtworksGridHeader"
 import { ArtworkListEmptyState } from "app/Scenes/ArtworkList/ArtworkListEmptyState"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
+import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -78,6 +79,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
 
   const artworkList = data?.artworkList!
   const artworksCount = artworkList.artworks?.totalCount ?? 0
+  const artworks = extractNodes(data?.artworkList?.artworks)
 
   if (artworksCount === 0) {
     return <ArtworkListEmptyState me={queryData.me!} refreshControl={RefreshControl} />
@@ -86,19 +88,20 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListProvider artworkListID={listID}>
       <ArtworkListHeader me={queryData.me} />
-      <InfiniteScrollArtworksGridContainer
-        connection={data?.artworkList?.artworks}
-        loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
-        hasMore={() => hasNext}
-        isLoading={() => isLoadingNext}
-        HeaderComponent={
-          <ArtworkListArtworksGridHeader
-            title={artworkList.name}
-            artworksCount={artworksCount}
-            onSortButtonPress={openSortModal}
-          />
+      <MasonryInfiniteScrollArtworkGrid
+        artworks={artworks}
+        loadMore={(pageSize) => loadNext(pageSize)}
+        hasMore={hasNext}
+        isLoading={isLoadingNext}
+        ListHeaderComponent={
+          <Box mx={-2}>
+            <ArtworkListArtworksGridHeader
+              title={artworkList.name}
+              artworksCount={artworksCount}
+              onSortButtonPress={openSortModal}
+            />
+          </Box>
         }
-        shouldAddPadding
         refreshControl={RefreshControl}
       />
       <SortByModal
@@ -148,10 +151,14 @@ const artworkListFragment = graphql`
         totalCount
         edges {
           node {
-            internalID
+            id
+            slug
+            image(includeAll: false) {
+              aspectRatio
+            }
+            ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
           }
         }
-        ...InfiniteScrollArtworksGrid_connection
       }
     }
   }

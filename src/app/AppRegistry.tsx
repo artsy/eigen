@@ -80,7 +80,7 @@ import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversati
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
-  LotsByArtistsYouFollowQueryRenderer,
+  LotsByArtistsYouFollowScreen,
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map/MapContainer"
@@ -475,7 +475,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, [
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowScreen, {}, [
     LotsByArtistsYouFollowScreenQuery,
   ]),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
