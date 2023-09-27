@@ -1,10 +1,12 @@
-import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -16,23 +18,24 @@ interface LotsByArtistsYouFollowProps {
 }
 
 export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ me, relay }) => {
+  const { hasMore, isLoading, loadMore } = relay
+  const hasNext = hasMore()
+  const loading = isLoading()
+
+  const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+  // PAGINATION NOT WORKING FIX IT
+  // NO ANALYTICS
   return (
     <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <Box>
-        {!!me?.lotsByFollowedArtistsConnection?.edges?.length ? (
-          <InfiniteScrollArtworksGridContainer
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            connection={me.lotsByFollowedArtistsConnection}
-            shouldAddPadding
-            HeaderComponent={<Spacer y={2} />}
-            useParentAwareScrollView={false}
-            showLoadingSpinner
-          />
-        ) : (
+      <MasonryInfiniteScrollArtworkGrid
+        artworks={artworks}
+        ListEmptyComponent={
           <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-        )}
-      </Box>
+        }
+        hasMore={hasNext}
+        loadMore={() => loadMore(PAGE_SIZE)}
+        isLoading={loading}
+      />
     </PageWithSimpleHeader>
   )
 }
@@ -63,8 +66,15 @@ export const LotsByArtistsYouFollowFragmentContainer = createPaginationContainer
         ) @connection(key: "LotsByArtistsYouFollow_lotsByFollowedArtistsConnection") {
           edges {
             cursor
+            node {
+              id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+            }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
