@@ -1731,7 +1731,7 @@ type ArtistInsight {
 
   # Number of entities relevant to the insight.
   count: Int!
-  description: String
+  description(format: Format): String
 
   # List of entities relevant to the insight.
   entities: [String!]!
