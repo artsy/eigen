@@ -1,11 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Box, Text } from "@artsy/palette-mobile"
-import { SaleLotsList_saleArtworksConnection$data } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
+import { SaleLotsList_unfilteredArtworks$data } from "__generated__/SaleLotsList_unfilteredArtworks.graphql"
+import { SaleLotsList_viewer$data } from "__generated__/SaleLotsList_viewer.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
-  FilterParams,
+  prepareFilterArtworksParamsForInput,
   ViewAsValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -14,64 +14,31 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
+import { MutableRefObject, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
-interface Props {
-  saleArtworksConnection: SaleLotsList_saleArtworksConnection$data
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection$data | null
-  relay: RelayPaginationProp
+interface SaleLotsListProps {
+  unfilteredArtworks: SaleLotsList_unfilteredArtworks$data | null
+  viewer: SaleLotsList_viewer$data | null
   saleID: string
   saleSlug: string
-  scrollToTop: () => void
+  relay: RelayPaginationProp
   artworksRefetchRef?: MutableRefObject<() => void>
+  scrollToTop: () => void
 }
 
-export const SaleLotsListSortMode = ({
-  filterParams,
-  filteredTotal,
-  totalCount,
-}: {
-  filterParams: FilterParams
-  filteredTotal: number | null | undefined
-  totalCount: number | null | undefined
-}) => {
-  const getSortDescription = useCallback(() => {
-    const sortMode = ORDERED_SALE_ARTWORK_SORTS.find(
-      (sort) => sort.paramValue === filterParams?.sort
-    )
-    if (sortMode) {
-      return sortMode.displayText
-    }
-  }, [filterParams])
-
-  return (
-    <Flex px={2} mb={2}>
-      <Text variant="sm-display" ellipsizeMode="tail">
-        Sorted by {getSortDescription()?.toLowerCase()}
-      </Text>
-
-      {!!filteredTotal && !!totalCount && (
-        <Text color="black60" variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</Text>
-      )}
-    </Flex>
-  )
-}
-
-export const SaleLotsList: React.FC<Props> = ({
-  saleArtworksConnection,
-  unfilteredSaleArtworksConnection,
-  relay,
+export const SaleLotsList: React.FC<SaleLotsListProps> = ({
+  unfilteredArtworks,
+  viewer,
   saleID,
   saleSlug,
+  relay,
   artworksRefetchRef,
   scrollToTop,
 }) => {
-  const [totalCount, setTotalCount] = useState<number | null>(null)
   const tracking = useTracking()
-
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
@@ -85,38 +52,9 @@ export const SaleLotsList: React.FC<Props> = ({
   const viewAsFilter = appliedFiltersState.find(
     (filter) => filter.paramName === FilterParamName.viewAs
   )
-  const counts = saleArtworksConnection.saleArtworksConnection?.counts
-
-  // Add the new medium to geneIDs array
-  const refetchVariables = {
-    ...filterParams,
-    saleID: saleSlug,
-    geneIDs: filterParams.additionalGeneIDs || [],
-    includeArtworksByFollowedArtists: !!filterParams.includeArtworksByFollowedArtists,
-  }
-
-  useArtworkFilters({
-    relay,
-    aggregations: saleArtworksConnection.saleArtworksConnection?.aggregations,
-    componentPath: "Sale/SaleLotsList",
-    refetchVariables,
-    onApply: () => scrollToTop(),
-    refetchRef: artworksRefetchRef,
-  })
-
-  useEffect(() => {
-    setFilterTypeAction("saleArtwork")
-  }, [])
-
-  useEffect(() => {
-    setTotalCount(saleArtworksConnection.saleArtworksConnection?.counts?.total || 0)
-  }, [])
-
-  useEffect(() => {
-    if (saleArtworksConnection.saleArtworksConnection?.counts) {
-      setFiltersCountAction(saleArtworksConnection.saleArtworksConnection?.counts)
-    }
-  }, [])
+  const counts = viewer?.artworksConnection?.counts?.total
+  const totalCount = unfilteredArtworks?.counts?.total
+  const sortMode = ORDERED_SALE_ARTWORK_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -129,11 +67,36 @@ export const SaleLotsList: React.FC<Props> = ({
     })
   }
 
-  if (unfilteredSaleArtworksConnection?.counts?.total === 0) {
+  useEffect(() => {
+    setFilterTypeAction("saleArtwork")
+
+    if (unfilteredArtworks?.counts) {
+      setFiltersCountAction(unfilteredArtworks.counts)
+    }
+  }, [])
+
+  const input = prepareFilterArtworksParamsForInput(filterParams)
+  const refetchVariables = {
+    input: {
+      priceRange: filterParams.estimateRange,
+      ...input,
+    },
+  }
+
+  useArtworkFilters({
+    relay,
+    aggregations: unfilteredArtworks?.aggregations,
+    componentPath: "Sale/SaleLotsList",
+    refetchVariables,
+    refetchRef: artworksRefetchRef,
+    onApply: () => scrollToTop(),
+  })
+
+  if (totalCount === 0) {
     return null
   }
 
-  if (!saleArtworksConnection.saleArtworksConnection?.edges?.length) {
+  if (!viewer?.artworksConnection?.edges?.length) {
     return (
       <Box my="80px">
         <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
@@ -143,15 +106,19 @@ export const SaleLotsList: React.FC<Props> = ({
 
   return (
     <Flex flex={0} my={4}>
-      <SaleLotsListSortMode
-        filterParams={filterParams}
-        filteredTotal={counts?.total}
-        totalCount={totalCount}
-      />
+      <Flex px={2} mb={2}>
+        <Text variant="sm-display" ellipsizeMode="tail">
+          Sorted by {sortMode?.displayText}
+        </Text>
+
+        <Text color="black60" variant="sm">
+          Showing {counts} of {totalCount}
+        </Text>
+      </Flex>
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer
-          connection={saleArtworksConnection.saleArtworksConnection!}
+          connection={viewer.artworksConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
           isLoading={relay.isLoading}
@@ -162,7 +129,7 @@ export const SaleLotsList: React.FC<Props> = ({
       ) : (
         <Flex px={2}>
           <InfiniteScrollArtworksGridContainer
-            connection={saleArtworksConnection.saleArtworksConnection!}
+            connection={viewer.artworksConnection}
             contextScreenOwnerType={OwnerType.sale}
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
@@ -182,46 +149,39 @@ export const SaleLotsList: React.FC<Props> = ({
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,
   {
-    unfilteredSaleArtworksConnection: graphql`
-      fragment SaleLotsList_unfilteredSaleArtworksConnection on SaleArtworksConnection {
+    unfilteredArtworks: graphql`
+      fragment SaleLotsList_unfilteredArtworks on FilterArtworksConnection {
         counts {
+          followedArtists
           total
+        }
+
+        aggregations {
+          slice
+          counts {
+            count
+            name
+            value
+          }
         }
       }
     `,
-    saleArtworksConnection: graphql`
-      fragment SaleLotsList_saleArtworksConnection on Query
+    viewer: graphql`
+      fragment SaleLotsList_viewer on Viewer
       @argumentDefinitions(
+        saleID: { type: "ID" }
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
-        artistIDs: { type: "[String]", defaultValue: [] }
-        geneIDs: { type: "[String]", defaultValue: [] }
-        estimateRange: { type: "String", defaultValue: "" }
-        sort: { type: "String", defaultValue: "position" }
-        includeArtworksByFollowedArtists: { type: "Boolean", defaultValue: false }
-        saleID: { type: "ID" }
+        input: { type: "FilterArtworksInput" }
       ) {
-        saleArtworksConnection(
-          after: $cursor
+        artworksConnection(
           saleID: $saleID
-          artistIDs: $artistIDs
-          geneIDs: $geneIDs
-          aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
-          estimateRange: $estimateRange
           first: $count
-          includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-          sort: $sort
-        ) @connection(key: "SaleLotsList_saleArtworksConnection") {
-          aggregations {
-            slice
-            counts {
-              count
-              name
-              value
-            }
-          }
+          after: $cursor
+          input: $input
+          aggregations: [TOTAL, FOLLOWED_ARTISTS]
+        ) @connection(key: "SaleLotsList__artworksConnection") {
           counts {
-            followedArtists
             total
           }
           edges {
@@ -237,7 +197,7 @@ export const SaleLotsListContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props?.saleArtworksConnection?.saleArtworksConnection
+      return props.viewer?.artworksConnection
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
@@ -247,29 +207,16 @@ export const SaleLotsListContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query SaleLotsListQuery(
-        $geneIDs: [String]
-        $artistIDs: [String]
-        $count: Int!
+      query SaleLotsListRefetchQuery(
+        $saleID: ID!
+        $count: Int
         $cursor: String
-        $estimateRange: String
-        $saleID: ID
-        $sort: String
-        $includeArtworksByFollowedArtists: Boolean
-      )
-      # $saleID: ID
-      @raw_response_type {
-        ...SaleLotsList_saleArtworksConnection
-          @arguments(
-            geneIDs: $geneIDs
-            artistIDs: $artistIDs
-            count: $count
-            cursor: $cursor
-            sort: $sort
-            estimateRange: $estimateRange
-            saleID: $saleID
-            includeArtworksByFollowedArtists: $includeArtworksByFollowedArtists
-          )
+        $input: FilterArtworksInput
+      ) {
+        viewer {
+          ...SaleLotsList_viewer
+            @arguments(saleID: $saleID, count: $count, cursor: $cursor, input: $input)
+        }
       }
     `,
   }

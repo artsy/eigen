@@ -11,11 +11,10 @@ import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
@@ -36,10 +35,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 }) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
-  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
-
-  const { width } = useScreenDimensions()
-  const isTablet = width > 700
+  const initialNumToRender = isTablet() ? 10 : 5
 
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -73,18 +69,12 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={salesModule.results}
-        initialNumToRender={isTablet ? 10 : 5}
+        initialNumToRender={initialNumToRender}
         renderItem={({ item: result, index }) => {
-          let imageURLs
-
-          if (isArtworksConnectionEnabled) {
-            imageURLs = extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url)
-          } else {
-            imageURLs = extractNodes(
-              result?.saleArtworksConnection,
-              (artwork) => artwork.artwork?.image?.url
-            )
-          }
+          const imageURLs = extractNodes(
+            result?.artworksConnection,
+            (artwork) => artwork.image?.url
+          )
 
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.

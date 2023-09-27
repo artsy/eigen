@@ -12,9 +12,7 @@ interface BuyNowArtworksRailProps {
 }
 
 export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) => {
-  const artworks = extractNodes(sale.promotedSale?.saleArtworksConnection).map(
-    (saleArtwork) => saleArtwork.artwork
-  )
+  const artworks = extractNodes(sale.promotedSale?.artworksConnection)
 
   if (!artworks?.length) {
     return null
@@ -41,13 +39,11 @@ export const BuyNowArtworksRailContainer = createFragmentContainer(BuyNowArtwork
     @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
       internalID
       promotedSale {
-        saleArtworksConnection(first: $count, after: $cursor)
-          @connection(key: "Sale_saleArtworksConnection") {
+        artworksConnection(first: $count, after: $cursor)
+          @connection(key: "BuyNowArtworksRail_artworksConnection") {
           edges {
             node {
-              artwork {
-                ...SmallArtworkRail_artworks
-              }
+              ...SmallArtworkRail_artworks
             }
           }
         }

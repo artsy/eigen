@@ -1,16 +1,16 @@
-import { NewSaleLotsListTestsQuery } from "__generated__/NewSaleLotsListTestsQuery.graphql"
+import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { NewSaleLotsListContainer } from "./NewSaleLotsList"
+import { SaleLotsListContainer } from "./SaleLotsList"
 
-describe("NewSaleLotsList", () => {
-  const { renderWithRelay } = setupTestWrapper<NewSaleLotsListTestsQuery>({
+describe("SaleLotsList", () => {
+  const { renderWithRelay } = setupTestWrapper<SaleLotsListTestsQuery>({
     Component: (props) => {
       if (props?.viewer) {
         return (
           <ArtworkFiltersStoreProvider>
-            <NewSaleLotsListContainer
+            <SaleLotsListContainer
               viewer={props.viewer}
               unfilteredArtworks={props.viewer.unfilteredArtworks}
               saleID="saleID"
@@ -23,16 +23,16 @@ describe("NewSaleLotsList", () => {
       return null
     },
     query: graphql`
-      query NewSaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
+      query SaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
         viewer {
           unfilteredArtworks: artworksConnection(
             saleID: $saleID
             aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
             first: 0
           ) {
-            ...NewSaleLotsList_unfilteredArtworks
+            ...SaleLotsList_unfilteredArtworks
           }
-          ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
+          ...SaleLotsList_viewer @arguments(saleID: $saleID)
         }
       }
     `,
