@@ -40,6 +40,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerSlug,
   refreshControl,
   ListEmptyComponent,
+  ListHeaderComponent,
   hasMore,
   loadMore,
   isLoading,
@@ -47,9 +48,10 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const space = useSpace()
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
+  const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
   const onEndReached = useCallback(() => {
-    if (!!hasMore && !!isLoading && !!loadMore) {
+    if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
   }, [hasMore, isLoading])
@@ -77,6 +79,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
       numColumns={NUM_COLUMNS_MASONRY}
       estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+      ListHeaderComponent={shouldDisplayHeader ? ListHeaderComponent : null}
       ListEmptyComponent={ListEmptyComponent}
       refreshControl={refreshControl}
       renderItem={renderItem}
