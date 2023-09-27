@@ -27,13 +27,16 @@ const eigenSentryDist = () => {
   }
 }
 
-export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
+interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {
+  captureExceptionsInSentryOnDev?: boolean
+}
+export function setupSentry(props: SetupSentryProps = {}) {
   const sentryDSN = Config.SENTRY_DSN
   const ossUser = Config.OSS === "true"
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
-  if (__DEV__) {
+  if (__DEV__ && !props.captureExceptionsInSentryOnDev) {
     console.log("[dev] Sentry disabled in dev mode.")
     return
   }

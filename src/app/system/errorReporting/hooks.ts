@@ -10,7 +10,7 @@ export function useErrorReporting() {
 
   useEffect(() => {
     if (captureExceptions) {
-      setupSentry({ environment })
+      setupSentry({ environment, captureExceptionsInSentryOnDev })
     }
   }, [environment, captureExceptions])
 }
