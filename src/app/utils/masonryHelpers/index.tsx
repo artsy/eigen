@@ -1,4 +1,5 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
+import { ActivityIndicator, Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { FragmentRefs } from "relay-runtime"
 
@@ -32,7 +33,9 @@ export const MasonryListFooterComponent: React.FC<MasonryListFooterComponentProp
   shouldDisplaySpinner,
 }) =>
   shouldDisplaySpinner ? (
-    <Flex my={4} flexDirection="row" justifyContent="center">
-      <Spinner />
+    <Flex width="100%" position="absolute">
+      <Flex mt={2}>
+        <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+      </Flex>
     </Flex>
   ) : null

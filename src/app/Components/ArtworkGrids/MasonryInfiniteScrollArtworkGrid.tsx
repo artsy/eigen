@@ -72,7 +72,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   return (
     <MasonryFlashList
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: space(2) }}
+      contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: space(6) }}
       data={artworks}
       keyExtractor={(item) => item.id}
       onEndReached={onEndReached}
