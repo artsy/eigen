@@ -35,7 +35,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { Platform, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -375,7 +375,7 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
   if (isSaved) {
     return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
   }
-  if (index === 0 && Platform.OS === "ios") {
+  if (index === 0) {
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>
