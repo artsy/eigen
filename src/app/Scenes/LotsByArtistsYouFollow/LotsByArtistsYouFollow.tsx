@@ -1,93 +1,85 @@
-import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
-import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { LotsByArtistsYouFollow_me$key } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { PAGE_SIZE } from "app/Components/constants"
+import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useRefreshControl } from "app/utils/refreshHelpers"
+import { Suspense } from "react"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const SCREEN_TITLE = "Auction Lots for You"
-interface LotsByArtistsYouFollowProps {
-  me: LotsByArtistsYouFollow_me$data
-  relay: RelayPaginationProp
-}
 
-export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ me, relay }) => {
+export const LotsByArtistsYouFollow: React.FC = () => {
+  const queryData = useLazyLoadQuery<LotsByArtistsYouFollowQuery>(
+    LotsByArtistsYouFollowScreenQuery,
+    lotsByArtistsYouFollowDefaultVariables()
+  )
+
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
+    LotsByArtistsYouFollowQuery,
+    LotsByArtistsYouFollow_me$key
+  >(artworkConnectionFragment, queryData.me)
+
+  const RefreshControl = useRefreshControl(refetch)
+  const artworks = extractNodes(data?.lotsByFollowedArtistsConnection)
+
   return (
     <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <Box>
-        {!!me?.lotsByFollowedArtistsConnection?.edges?.length ? (
-          <InfiniteScrollArtworksGridContainer
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            connection={me.lotsByFollowedArtistsConnection}
-            shouldAddPadding
-            HeaderComponent={<Spacer y={2} />}
-            useParentAwareScrollView={false}
-            showLoadingSpinner
-          />
-        ) : (
+      <MasonryInfiniteScrollArtworkGrid
+        artworks={artworks}
+        ListEmptyComponent={
           <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-        )}
-      </Box>
+        }
+        hasMore={hasNext}
+        loadMore={() => loadNext(PAGE_SIZE)}
+        isLoading={isLoadingNext}
+        refreshControl={RefreshControl}
+      />
     </PageWithSimpleHeader>
   )
 }
 
 export const lotsByArtistsYouFollowDefaultVariables = () => ({
-  count: 10,
+  count: PAGE_SIZE,
 })
 
 export const LotsByArtistsYouFollowScreenQuery = graphql`
-  query LotsByArtistsYouFollowQuery($count: Int!, $cursor: String) {
+  query LotsByArtistsYouFollowQuery($count: Int!, $after: String) {
     me {
-      ...LotsByArtistsYouFollow_me @arguments(count: $count, cursor: $cursor)
+      ...LotsByArtistsYouFollow_me @arguments(count: $count, after: $after)
     }
   }
 `
 
-export const LotsByArtistsYouFollowFragmentContainer = createPaginationContainer(
-  LotsByArtistsYouFollow,
-  {
-    me: graphql`
-      fragment LotsByArtistsYouFollow_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        lotsByFollowedArtistsConnection(
-          first: $count
-          after: $cursor
-          liveSale: true
-          isAuction: true
-        ) @connection(key: "LotsByArtistsYouFollow_lotsByFollowedArtistsConnection") {
-          edges {
-            cursor
+const artworkConnectionFragment = graphql`
+  fragment LotsByArtistsYouFollow_me on Me
+  @refetchable(queryName: "LotsByArtistsYouFollow_meRefetch")
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+    lotsByFollowedArtistsConnection(first: $count, after: $after, liveSale: true, isAuction: true)
+      @connection(key: "LotsByArtistsYouFollow_lotsByFollowedArtistsConnection") {
+      edges {
+        node {
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
           }
-          ...InfiniteScrollArtworksGrid_connection
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
-    getVariables: (_props, { count, cursor }) => ({ count, cursor }),
-    query: LotsByArtistsYouFollowScreenQuery,
+    }
   }
-)
+`
 
-export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
+export const LotsByArtistsYouFollowScreen: React.FC = () => {
   return (
-    <QueryRenderer<LotsByArtistsYouFollowQuery>
-      environment={getRelayEnvironment()}
-      query={LotsByArtistsYouFollowScreenQuery}
-      variables={lotsByArtistsYouFollowDefaultVariables()}
-      render={renderWithPlaceholder({
-        Container: LotsByArtistsYouFollowFragmentContainer,
-        renderPlaceholder: Placeholder,
-        renderFallback: () => null,
-      })}
-    />
+    <Suspense fallback={<Placeholder />}>
+      <LotsByArtistsYouFollow />
+    </Suspense>
   )
 }
 

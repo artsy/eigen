@@ -3,7 +3,7 @@ import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { SimilarToRecentlyViewedQuery } from "__generated__/SimilarToRecentlyViewedQuery.graphql"
 import { SimilarToRecentlyViewed_artworksConnection$key } from "__generated__/SimilarToRecentlyViewed_artworksConnection.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
@@ -35,22 +35,18 @@ export const SimilarToRecentlyViewed: React.FC = () => {
       info={screen({ context_screen_owner_type: OwnerType.similarToRecentlyViewed })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        {artworks.length ? (
-          <InfiniteScrollArtworksGridContainer
-            connection={data?.similarToRecentlyViewedConnection}
-            loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
-            hasMore={() => hasNext}
-            isLoading={() => isLoadingNext}
-            pageSize={PAGE_SIZE}
-            contextScreenOwnerType={OwnerType.similarToRecentlyViewed}
-            contextScreen={OwnerType.similarToRecentlyViewed}
-            HeaderComponent={<Spacer y={2} />}
-            shouldAddPadding
-            refreshControl={RefreshControl}
-          />
-        ) : (
-          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-        )}
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          contextScreenOwnerType={OwnerType.similarToRecentlyViewed}
+          contextScreen={OwnerType.similarToRecentlyViewed}
+          ListEmptyComponent={
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+          }
+          refreshControl={RefreshControl}
+          hasMore={hasNext}
+          loadMore={(pageSize) => loadNext(pageSize)}
+          isLoading={isLoadingNext}
+        />
       </PageWithSimpleHeader>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -75,12 +71,15 @@ const artworkConnectionFragment = graphql`
     similarToRecentlyViewedConnection(first: $count, after: $after)
       @connection(key: "SimilarToRecentlyViewed_similarToRecentlyViewedConnection") {
       edges {
-        cursor
         node {
-          internalID
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
-      ...InfiniteScrollArtworksGrid_connection
     }
   }
 `
