@@ -22,15 +22,7 @@ export const ArticleSectionImageCollectionImage: React.FC<
   const height = (data.image?.height ?? width) * widthShrinkPercentage
   const aspectRatio = width / height
 
-  return (
-    <Image
-      src={data.image.url}
-      width={width}
-      height={height}
-      aspectRatio={aspectRatio}
-      performResize={false}
-    />
-  )
+  return <Image src={data.image.url} width={width} height={height} aspectRatio={aspectRatio} />
 }
 
 const ArticleSectionImageCollectionImageQuery = graphql`
