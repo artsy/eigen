@@ -4,7 +4,6 @@ orbs:
   node: circleci/node@5.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
-  jq: circleci/jq@3.0.0
   macos: circleci/macos@2.4.0
 
 commands:
@@ -183,7 +182,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.1.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -195,21 +194,42 @@ jobs:
 
   check-and-deploy:
     environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
+      BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 14.1.0
-      resource_class: macos.x86.medium.gen2
+      xcode: 14.3.1
+      resource_class: macos.m1.medium.gen1
 
     steps:
       - checkout
       - install-node
+      - install-gems
       - run:
-          name: Check if native code has changed
-          command: ./scripts/codepush/check-native-code.sh
+          name: Install jq
+          command: brew install jq
       - run:
-          name: Deploy or notify
-          command: ./scripts/codepush/deploy-or-notify.sh
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, notifying new beta needed!"
+              bundle exec fastlane notify_beta_needed
+              circleci-agent step halt
+            fi
+      - install-node-modules
+      - run:
+          name: Install CodePush CLI
+          command: yarn global add appcenter-cli
+      - run-relay-compiler
+      - run:
+          name: Handle Deployment for codepush
+          command: |
+            echo "Triggering CodePush deployment..."
+            ./scripts/codepush/deploy-to-codepush.sh Staging
 
   test-js:
     parallelism: 8
@@ -289,7 +309,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.1.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -339,7 +359,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.1.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -433,7 +453,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.1.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
     steps:
       - checkout
@@ -454,14 +474,6 @@ workflows:
                 - main
     jobs:
       - deploy-nightly-beta
-
-  deploy:
-    jobs:
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
 
   flag-check:
     triggers:
@@ -519,6 +531,12 @@ workflows:
                 - beta-android
                 - app_store_submission
                 - play_store_submission
+
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
 
       - test-js:
           filters:
