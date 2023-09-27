@@ -28,7 +28,7 @@ export const ArticleSectionImageCollectionImage: React.FC<
       width={width}
       height={height}
       aspectRatio={aspectRatio}
-      geminiResizeMode="fill"
+      performResize={false}
     />
   )
 }
@@ -38,7 +38,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleImageSection {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -46,7 +46,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on Artwork {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -54,7 +54,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
