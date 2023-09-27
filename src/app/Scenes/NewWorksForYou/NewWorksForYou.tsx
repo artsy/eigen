@@ -1,13 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
+import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -26,29 +27,23 @@ interface NewWorksForYouProps {
 }
 
 const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
+  const artworks = extractNodes(viewer.artworks)
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Box>
-          {!!viewer.artworks?.edges?.length ? (
-            <InfiniteScrollArtworksGridContainer
-              connection={viewer.artworks!}
-              loadMore={() => null}
-              hasMore={() => false}
-              pageSize={PAGE_SIZE}
-              contextScreenOwnerType={OwnerType.newWorksForYou}
-              contextScreen={OwnerType.newWorksForYou as string}
-              HeaderComponent={<Spacer y={2} />}
-              shouldAddPadding
-              showLoadingSpinner
-              useParentAwareScrollView={false}
-            />
-          ) : (
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          pageSize={PAGE_SIZE}
+          contextScreenOwnerType={OwnerType.newWorksForYou}
+          contextScreen={OwnerType.newWorksForYou}
+          ListEmptyComponent={
             <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          )}
-        </Box>
+          }
+          hasMore={false}
+        />
       </PageWithSimpleHeader>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -76,9 +71,13 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
