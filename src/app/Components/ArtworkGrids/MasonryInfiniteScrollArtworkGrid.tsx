@@ -31,6 +31,12 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   isLoading?: boolean
 }
 
+/**
+ * Reusable component for displaying a masonry grid of artworks with infinite scroll.
+ * Note that it is only intended to be used for full screen grids. If you want to use
+ * a masonry grid in a Tab surface, use Tabs.Masonry instead.
+ *
+ */
 export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArtworkGridProps> = ({
   artworks,
   pageSize = PAGE_SIZE,
