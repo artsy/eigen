@@ -71,7 +71,6 @@ const artworkConnectionFragment = graphql`
     similarToRecentlyViewedConnection(first: $count, after: $after)
       @connection(key: "SimilarToRecentlyViewed_similarToRecentlyViewedConnection") {
       edges {
-        cursor
         node {
           id
           slug
