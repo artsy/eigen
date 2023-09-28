@@ -236,7 +236,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   ARShowArtistsAlertsSet: {
     description: "Show Artists Alerts Set in Artist Page",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "ARShowArtistsAlertsSet",
   },
