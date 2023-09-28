@@ -24,18 +24,6 @@ jest.mock("app/utils/useWebViewEvent", () => ({
   }),
 }))
 
-jest.mock("react-native-webview", () => {
-  const React = require("react")
-  const { View } = require("react-native")
-
-  return {
-    __esModule: true,
-    default: React.forwardRef((props: any, ref: any) => {
-      return <View ref={ref} {...props} />
-    }),
-  }
-})
-
 const mockOnNavigationStateChange: WebViewNavigation = {
   navigationType: "click",
   url: "https://gooooogle.com",

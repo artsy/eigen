@@ -133,6 +133,18 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
+jest.mock("react-native-webview", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    default: React.forwardRef((props: any, ref: any) => {
+      return <View ref={ref} {...props} />
+    }),
+  }
+})
+
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
