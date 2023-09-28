@@ -22,7 +22,7 @@ export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
 const MAX_WIDTH = 220
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
-  const navigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
@@ -33,7 +33,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
     markAsRead(item)
 
-    if (navigateToASingleNotification) {
+    if (enableNavigateToASingleNotification) {
       navigate(`/activity/${item.internalID}`)
     } else {
       navigateToActivityItem(item.targetHref)

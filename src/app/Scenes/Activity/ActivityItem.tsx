@@ -23,7 +23,7 @@ const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
-  const navigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const markAsRead = useMarkNotificationAsRead()
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
@@ -39,7 +39,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       markAsRead(item)
     }
 
-    if (navigateToASingleNotification) {
+    if (enableNavigateToASingleNotification) {
       navigate(`/activity/${item.internalID}`)
     } else {
       navigateToActivityItem(item.targetHref)

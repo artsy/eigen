@@ -8,7 +8,8 @@ import { useWindowDimensions } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 const TOTAL_HORIZONTAL_PADDING = 40
-const IMAGE_OFFSET = 10
+const IMAGES_PER_ROW = 2
+const GAP_BETWEEN_IMAGES = 1
 
 interface ActivityItemArtworksGridProps {
   notification: ActivityItemArtworksGrid_notification$key
@@ -28,53 +29,29 @@ export const ActivityItemArtworksGrid: FC<ActivityItemArtworksGridProps> = ({ no
   }
 
   const imageURLs = compact(artworkNodes.map((node) => node.image?.resized?.url ?? null))
-  const rowImageWidth = (width - (TOTAL_HORIZONTAL_PADDING + IMAGE_OFFSET)) / 2
+  const rowImageWidth = (width - TOTAL_HORIZONTAL_PADDING - 10) / IMAGES_PER_ROW
 
   return (
     <>
-      <Box>
-        <Flex flexDirection="row">
-          <ArtworkImage
-            imageURL={imageURLs[0]}
-            size={rowImageWidth}
-            artworkHref={artworkNodes[0].href!}
-          />
-          <Spacer x={`${IMAGE_OFFSET}px`} />
-
-          {artworkNodes.length > 1 && (
-            <ArtworkImage
-              imageURL={imageURLs[1]}
-              size={rowImageWidth}
-              artworkHref={artworkNodes[1].href!}
-            />
-          )}
-        </Flex>
-
-        {artworkNodes.length > 2 && (
-          <>
-            <Spacer y={`${IMAGE_OFFSET}px`} />
-
-            <Flex flexDirection="row">
+      <Flex flex={1} flexDirection="row" flexWrap="wrap">
+        {imageURLs.map((imageURL, index) => {
+          return (
+            <Box
+              key={`artwork-image-${index}`}
+              mr={index % 2 == 0 ? GAP_BETWEEN_IMAGES : 0}
+              mb={GAP_BETWEEN_IMAGES}
+            >
               <ArtworkImage
-                imageURL={imageURLs[2]}
+                imageURL={imageURL}
                 size={rowImageWidth}
-                artworkHref={artworkNodes[2].href!}
+                artworkHref={artworkNodes[index].href!}
               />
-              <Spacer x={`${IMAGE_OFFSET}px`} />
+            </Box>
+          )
+        })}
+      </Flex>
 
-              {artworkNodes.length > 3 && (
-                <ArtworkImage
-                  imageURL={imageURLs[3]}
-                  size={rowImageWidth}
-                  artworkHref={artworkNodes[3].href!}
-                />
-              )}
-            </Flex>
-          </>
-        )}
-      </Box>
-
-      <Spacer y={2} />
+      <Spacer y={1} />
     </>
   )
 }
@@ -113,31 +90,25 @@ const ArtworkImage: FC<ArtworkImageProps> = ({ imageURL, size, artworkHref, ...r
 
 export const ActivityItemArtworksGridPlaceholder: FC = () => {
   const { width } = useWindowDimensions()
-  const rowImageWidth = (width - (TOTAL_HORIZONTAL_PADDING + IMAGE_OFFSET)) / 2
+  const rowImageWidth = (width - TOTAL_HORIZONTAL_PADDING - 10) / IMAGES_PER_ROW
 
   return (
     <>
-      <Box>
-        <Flex flexDirection="row">
-          <SkeletonBox width={rowImageWidth} height={rowImageWidth} />
-          <Spacer x={`${IMAGE_OFFSET}px`} />
+      <Flex flex={1} flexDirection="row" flexWrap="wrap">
+        {Array.from(Array(4)).map((_, index) => {
+          return (
+            <SkeletonBox
+              key={`artwork-image-placeholder-${index}`}
+              mr={index % 2 == 0 ? GAP_BETWEEN_IMAGES : 0}
+              mb={GAP_BETWEEN_IMAGES}
+              width={rowImageWidth}
+              height={rowImageWidth}
+            />
+          )
+        })}
+      </Flex>
 
-          <SkeletonBox width={rowImageWidth} height={rowImageWidth} />
-        </Flex>
-
-        <>
-          <Spacer y={`${IMAGE_OFFSET}px`} />
-
-          <Flex flexDirection="row">
-            <SkeletonBox width={rowImageWidth} height={rowImageWidth} />
-            <Spacer x={`${IMAGE_OFFSET}px`} />
-
-            <SkeletonBox width={rowImageWidth} height={rowImageWidth} />
-          </Flex>
-        </>
-      </Box>
-
-      <Spacer y={2} />
+      <Spacer y={1} />
     </>
   )
 }

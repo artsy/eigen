@@ -129,7 +129,6 @@ const ActivityItemQuery = graphql`
         notificationType
         publishedAt(format: "RELATIVE")
         targetHref
-
         ...ActivityItemArtworksGrid_notification
       }
     }
