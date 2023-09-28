@@ -22,15 +22,7 @@ export const ArticleSectionImageCollectionImage: React.FC<
   const height = (data.image?.height ?? width) * widthShrinkPercentage
   const aspectRatio = width / height
 
-  return (
-    <Image
-      src={data.image.url}
-      width={width}
-      height={height}
-      aspectRatio={aspectRatio}
-      geminiResizeMode="fill"
-    />
-  )
+  return <Image src={data.image.url} width={width} height={height} aspectRatio={aspectRatio} />
 }
 
 const ArticleSectionImageCollectionImageQuery = graphql`
@@ -38,7 +30,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleImageSection {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -46,7 +38,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on Artwork {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -54,7 +46,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }

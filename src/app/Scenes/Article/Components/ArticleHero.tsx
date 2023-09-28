@@ -60,7 +60,7 @@ const ArticleHeroFragment = graphql`
       ... on ArticleFeatureSection {
         image {
           aspectRatio
-          url
+          url(version: ["main", "normalized", "larger", "large"])
         }
       }
     }
