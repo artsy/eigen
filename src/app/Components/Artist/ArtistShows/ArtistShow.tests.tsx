@@ -27,14 +27,22 @@ const showStyles = {
     width: 100,
   },
   image: {
-    width: 50,
-    height: 50,
+    marginRight: 10,
   },
+}
+
+const imageDimensions = {
+  width: 50,
+  height: 50,
 }
 
 it("renders without throwing an error with all props", () => {
   renderWithWrappersLEGACY(
-    <ArtistShowFragmentContainer show={showProps as any} styles={showStyles} />
+    <ArtistShowFragmentContainer
+      show={showProps as any}
+      styles={showStyles}
+      imageDimensions={imageDimensions}
+    />
   )
 })
 
@@ -45,6 +53,10 @@ it("renders without throwing an error with null show kind", () => {
   }
 
   renderWithWrappersLEGACY(
-    <ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />
+    <ArtistShowFragmentContainer
+      show={showPropsNullKind as any}
+      styles={showStyles}
+      imageDimensions={imageDimensions}
+    />
   )
 })

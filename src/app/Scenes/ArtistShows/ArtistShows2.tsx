@@ -1,7 +1,10 @@
 import { Spacer, Flex, Text, Spinner } from "@artsy/palette-mobile"
 import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
 import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
-import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
+import {
+  ArtistShowFragmentContainer,
+  ImageDimensions,
+} from "app/Components/Artist/ArtistShows/ArtistShow"
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -9,8 +12,9 @@ import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useElasticOverscroll } from "app/utils/useElasticOverscroll"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Animated, StyleSheet, View, ViewStyle } from "react-native"
+import { ImageStyle } from "react-native-fast-image"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -57,7 +61,13 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
       <Animated.FlatList
         data={pastShows}
         ListHeaderComponent={() => header}
-        renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
+        renderItem={({ item }) => (
+          <ArtistShowFragmentContainer
+            show={item}
+            styles={showStyles}
+            imageDimensions={imageDimensions}
+          />
+        )}
         keyExtractor={({ id }) => id}
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={2} />}
@@ -77,19 +87,22 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
   )
 }
 
+const imageDimensions = {
+  width: 82,
+  height: 82,
+} as ImageDimensions
+
 const showStyles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
   },
-  image: {
-    width: 82,
-    height: 82,
+  imageStyle: {
     marginRight: 15,
   },
 }) as {
   container: ViewStyle
-  image: ViewStyle
+  imageStyle: ImageStyle
 }
 
 export const ArtistShows2PaginationContainer = createPaginationContainer(

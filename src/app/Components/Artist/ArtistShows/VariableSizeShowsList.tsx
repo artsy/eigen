@@ -4,6 +4,7 @@ import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { Component } from "react"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
+import { ImageDimensions } from "react-native-render-html"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
@@ -54,11 +55,14 @@ class ShowsList extends Component<Props, State> {
         width: this.state.width,
       },
       image: {
-        width: this.state.width,
-        height: this.state.height,
         marginBottom: 10,
       },
     })
+
+    const imageDimensions: ImageDimensions = {
+      width: this.state.width,
+      height: this.state.height,
+    }
 
     return (
       <View onLayout={this.onLayout}>
@@ -66,7 +70,12 @@ class ShowsList extends Component<Props, State> {
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
               {shows.map((show) => (
-                <ArtistShowFragmentContainer show={show} styles={showStyles} key={show.id} />
+                <ArtistShowFragmentContainer
+                  show={show}
+                  styles={showStyles}
+                  imageDimensions={imageDimensions}
+                  key={show.id}
+                />
               ))}
             </Stack>
           ))}

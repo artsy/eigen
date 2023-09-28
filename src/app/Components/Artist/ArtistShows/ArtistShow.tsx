@@ -1,22 +1,27 @@
+import { Image, Touchable } from "@artsy/palette-mobile"
 import { ArtistShow_show$data } from "__generated__/ArtistShow_show.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
-import { Touchable } from "@artsy/palette-mobile"
 import { View, ViewStyle } from "react-native"
+import { ImageStyle } from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 import Metadata from "./Metadata"
 
 interface Props {
   show: ArtistShow_show$data
+  imageDimensions: ImageDimensions
   styles?: {
     container?: ViewStyle
-    image?: ViewStyle
+    imageStyle?: ImageStyle
     metadata?: ViewStyle
   }
 }
+export interface ImageDimensions {
+  width: number
+  height: number
+}
 
-const Show: React.FC<Props> = ({ styles, show }) => {
+const Show: React.FC<Props> = ({ styles, show, imageDimensions }) => {
   const handleTap = () => {
     navigate(hrefForPartialShow(show))
   }
@@ -24,16 +29,22 @@ const Show: React.FC<Props> = ({ styles, show }) => {
   const image = show.cover_image
   const imageURL = image && image.url
 
+  if (!imageURL) {
+    return null
+  }
+
   return (
     <Touchable onPress={handleTap} haptic>
       <View style={[styles?.container]}>
-        <OpaqueImageView
-          imageURL={imageURL}
-          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+        <Image
+          src={imageURL}
+          width={imageDimensions.width}
+          height={imageDimensions.height}
+          style={[styles?.imageStyle ?? {}, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
         />
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
-          <Metadata show={show} style={styles && styles.metadata} />
+          <Metadata show={show} style={!!styles && styles.metadata} />
         </View>
       </View>
     </Touchable>
