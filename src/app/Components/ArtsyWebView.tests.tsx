@@ -24,6 +24,18 @@ jest.mock("app/utils/useWebViewEvent", () => ({
   }),
 }))
 
+jest.mock("react-native-webview", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    default: React.forwardRef((props: any, ref: any) => {
+      return <View ref={ref} {...props} />
+    }),
+  }
+})
+
 const mockOnNavigationStateChange: WebViewNavigation = {
   navigationType: "click",
   url: "https://gooooogle.com",
@@ -90,6 +102,7 @@ describe("ArtsyWebViewPage", () => {
       ...mockOnNavigationStateChange,
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
     })
+
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
     expect(Share.open).toHaveBeenLastCalledWith({
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
@@ -134,7 +147,7 @@ describe("ArtsyWebViewPage", () => {
 
   it("sets the user agent correctly", () => {
     const tree = render()
-    expect(webViewProps(tree).userAgent).toBe(
+    expect(webViewProps(tree).applicationNameForUserAgent).toBe(
       `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
         appJson().version
       }`

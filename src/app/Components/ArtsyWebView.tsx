@@ -260,7 +260,7 @@ export const ArtsyWebView = forwardRef<
           decelerationRate="normal"
           source={{ uri }}
           style={{ flex: 1 }}
-          userAgent={userAgent}
+          applicationNameForUserAgent={userAgent}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {
