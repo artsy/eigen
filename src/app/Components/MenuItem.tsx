@@ -20,6 +20,7 @@ export const MenuItem: React.FC<{
   ellipsizeMode?: TextProps["ellipsizeMode"]
   icon?: React.ReactNode
   isBeta?: boolean
+  px?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   py?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   onPress?: () => void
   rightView?: React.ReactNode
@@ -41,6 +42,7 @@ export const MenuItem: React.FC<{
   icon,
   isBeta,
   onPress,
+  px,
   py,
   rightView,
   style,
@@ -56,7 +58,7 @@ export const MenuItem: React.FC<{
         flexDirection="row"
         alignItems="center"
         py={py ?? "7.5px"}
-        px={2}
+        px={px ?? 2}
         style={style}
         opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
       >
