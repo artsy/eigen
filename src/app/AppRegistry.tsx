@@ -48,7 +48,7 @@ import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
+import { ArtistShowsQueryRenderer } from "./Scenes/ArtistShows/ArtistShows"
 import { ArtworkPageableScreen, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "./Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
@@ -366,7 +366,7 @@ export const modules = defineModules({
   Artist: reactModule(ArtistQueryRenderer, { fullBleed: true, hidesBackButton: true }, [
     ArtistScreenQuery,
   ]),
-  ArtistShows: reactModule(ArtistShows2QueryRenderer),
+  ArtistShows: reactModule(ArtistShowsQueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer, {
     fullBleed: true,
