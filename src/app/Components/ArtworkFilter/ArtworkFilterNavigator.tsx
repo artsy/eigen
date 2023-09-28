@@ -32,6 +32,7 @@ import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/Way
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
@@ -121,6 +122,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     (state) => state.previouslyAppliedFilters
   )
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
 
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.applyFiltersAction
@@ -394,14 +397,16 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             shouldShowCreateAlertButton={shouldShowCreateAlertButton}
           />
 
-          <CreateSavedSearchModal
-            visible={isCreateAlertModalVisible}
-            entity={savedSearchEntity}
-            closeModal={() => setIsCreateAlertModalVisible(false)}
-            onComplete={exitModal}
-            attributes={attributes}
-            aggregations={filterState.aggregations}
-          />
+          {!!enableAlertsFilters && (
+            <CreateSavedSearchModal
+              visible={isCreateAlertModalVisible}
+              entity={savedSearchEntity}
+              closeModal={() => setIsCreateAlertModalVisible(false)}
+              onComplete={exitModal}
+              attributes={attributes}
+              aggregations={filterState.aggregations}
+            />
+          )}
         </Flex>
       </FancyModal>
     </NavigationContainer>
