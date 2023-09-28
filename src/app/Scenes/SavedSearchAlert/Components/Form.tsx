@@ -6,7 +6,6 @@ import {
   Flex,
   Join,
   Pill,
-  Separator,
   Spacer,
   Text,
   Touchable,
@@ -136,7 +135,7 @@ export const Form: React.FC<FormProps> = ({
         />
       )}
 
-      <Join separator={enableAlertsFilters ? <Separator my={1} /> : <></>}>
+      <Join separator={<Spacer y={2} />}>
         <Box>
           {isFallbackToGeneratedAlertNamesEnabled ? (
             <SavedSearchNameInputQueryRenderer attributes={attributes} />
@@ -153,9 +152,7 @@ export const Form: React.FC<FormProps> = ({
             />
           )}
 
-          <Spacer y={2} />
-
-          <Box>
+          <Box mt={2}>
             <InputTitle>Filters</InputTitle>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
               {pills.map((pill, index) => (
@@ -175,7 +172,7 @@ export const Form: React.FC<FormProps> = ({
         </Box>
 
         {!!enableAlertsFilters ? (
-          <>
+          <Flex mt={2}>
             <MenuItem
               title="Add Filters:"
               description="Including price, rarity, medium, size, color"
@@ -184,12 +181,12 @@ export const Form: React.FC<FormProps> = ({
               }}
               px={0}
             />
-          </>
+          </Flex>
         ) : null}
 
         {/* Price range is part of the new filters screen, no need to show it here anymore */}
         {!enableAlertsFilters && (
-          <Flex mt={2} mb={4}>
+          <Flex my={2}>
             <Touchable
               accessibilityLabel="Set price range"
               accessibilityRole="button"
