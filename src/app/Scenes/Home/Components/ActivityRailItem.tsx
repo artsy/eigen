@@ -7,7 +7,9 @@ import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getNotificationTypeLabel } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -20,6 +22,7 @@ export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
 const MAX_WIDTH = 220
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
@@ -30,7 +33,11 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
     markAsRead(item)
 
-    navigateToActivityItem(item.targetHref)
+    if (enableNavigateToASingleNotification) {
+      navigate(`/activity/${item.internalID}`)
+    } else {
+      navigateToActivityItem(item.targetHref)
+    }
   }
 
   const imageURL = artworks[0]?.image?.preview?.src
