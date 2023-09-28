@@ -126,12 +126,14 @@ export const ArtsyWebViewPage = ({
     return true
   })
 
+  const leftButton = useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress
+
   return (
     <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}
-          onLeftButtonPress={useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress}
+          onLeftButtonPress={leftButton}
           useShareButton={showShareButton}
           rightCloseButton={useRightCloseButton}
           onRightButtonPress={
