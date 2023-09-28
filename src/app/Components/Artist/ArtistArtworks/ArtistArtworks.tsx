@@ -1,16 +1,16 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  useSpace,
-  useScreenDimensions,
-  Flex,
-  Tabs,
-  Text,
+  BellIcon,
   Box,
   Button,
-  Spacer,
-  BellIcon,
-  Spinner,
+  Flex,
   Message,
+  Spacer,
+  Spinner,
+  Tabs,
+  Text,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
@@ -35,8 +35,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo } from "react"
-import { Dimensions } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
@@ -186,12 +185,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       return (
         <Message
           title="Get notified when works you're looking for are added."
-          containerStyle={{ width: Dimensions.get("window").width, left: -space(2), mt: 2 }}
+          containerStyle={{ my: 2 }}
           IconComponent={() => {
             return <CreateAlertButton />
           }}
           iconPosition="right"
-          showCloseButton
         />
       )
     }
