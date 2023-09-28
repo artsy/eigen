@@ -6,7 +6,7 @@ import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
@@ -67,7 +67,6 @@ export const ArtsyWebViewPage = ({
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
-  useAndroidGoBack()
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -108,28 +107,31 @@ export const ArtsyWebViewPage = ({
     }
   }
 
+  const handleBackButtonPress = () => {
+    if (isPresentedModally && !canGoBack) {
+      dismissModal()
+    } else if (!canGoBack) {
+      handleGoBack()
+    } else {
+      if (systemBackAction) {
+        systemBackAction()
+      } else {
+        ref.current?.goBack()
+      }
+    }
+  }
+
+  useBackHandler(() => {
+    handleBackButtonPress()
+    return true
+  })
+
   return (
     <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}
-          onLeftButtonPress={
-            useRightCloseButton && !canGoBack
-              ? undefined
-              : () => {
-                  if (isPresentedModally && !canGoBack) {
-                    dismissModal()
-                  } else if (!canGoBack) {
-                    handleGoBack()
-                  } else {
-                    if (systemBackAction) {
-                      systemBackAction()
-                    } else {
-                      ref.current?.goBack()
-                    }
-                  }
-                }
-          }
+          onLeftButtonPress={useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress}
           useShareButton={showShareButton}
           rightCloseButton={useRightCloseButton}
           onRightButtonPress={
@@ -284,7 +286,7 @@ export const ArtsyWebView = forwardRef<
           onNavigationStateChange={onNavigationStateChange}
         />
         <ProgressBar loadProgress={loadProgress} />
-        {showIndicator ? (
+        {!!showIndicator && (
           <Flex
             position="absolute"
             top={50}
@@ -293,7 +295,7 @@ export const ArtsyWebView = forwardRef<
           >
             <Text color="red">webview</Text>
           </Flex>
-        ) : null}
+        )}
       </SafeAreaView>
     )
   }
