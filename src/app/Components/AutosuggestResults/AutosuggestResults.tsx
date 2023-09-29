@@ -1,4 +1,12 @@
-import { Flex, ReloadIcon, Spacer, Text, quoteLeft, quoteRight } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  ReloadIcon,
+  Spacer,
+  Text,
+  quoteLeft,
+  quoteRight,
+} from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
@@ -16,7 +24,6 @@ import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, Keyboard } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
@@ -374,18 +381,20 @@ export const AutosuggestResults: React.FC<{
                   </Text>
 
                   <Spacer y={2} />
+
                   {!hasClickedRetry && (
                     <Flex alignItems="center">
-                      <TouchableOpacity
+                      <Button
                         onPress={() => {
                           retry()
                           setTimeout(() => {
                             setHasClickedRetry(true)
                           }, 300)
                         }}
+                        variant="text"
                       >
                         <ReloadIcon height={25} width={25} />
-                      </TouchableOpacity>
+                      </Button>
                     </Flex>
                   )}
                 </Flex>
