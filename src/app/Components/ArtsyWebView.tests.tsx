@@ -90,6 +90,7 @@ describe("ArtsyWebViewPage", () => {
       ...mockOnNavigationStateChange,
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
     })
+
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
     expect(Share.open).toHaveBeenLastCalledWith({
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
@@ -134,7 +135,7 @@ describe("ArtsyWebViewPage", () => {
 
   it("sets the user agent correctly", () => {
     const tree = render()
-    expect(webViewProps(tree).userAgent).toBe(
+    expect(webViewProps(tree).applicationNameForUserAgent).toBe(
       `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
         appJson().version
       }`
