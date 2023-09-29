@@ -51,6 +51,9 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
               onClear?.()
               inputRef?.current?.focus()
             }}
+            // We only support up to 100 chars search in our backend,
+            // anything above that would lead to an error
+            maxLength={100}
             onChangeText={onChangeText}
             {...props}
             onFocus={(e) => {
