@@ -202,11 +202,17 @@ jobs:
       - run:
           name: Install jq
           command: brew install jq
+      - restore_cache:
+          key: native-hash-main
       - run:
           name: Determine Deployment Type
           command: |
             DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - save_cache:
+          key: native-hash-main
+          paths:
+            - ./native-hash.txt
       - run:
           name: Handle Deployment for beta
           command: |
