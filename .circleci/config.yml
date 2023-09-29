@@ -519,7 +519,7 @@ workflows:
           filters:
             branches:
               only:
-                - brian/codepush-remove-native-check
+                - main
 
       - test-js:
           filters:
