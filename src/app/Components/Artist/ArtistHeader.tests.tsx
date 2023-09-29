@@ -1,7 +1,8 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -22,14 +23,35 @@ describe("ArtistHeader", () => {
   })
 
   it("displays the artwork count for an artist when present", () => {
-    renderWithRelay({
-      Artist() {
-        return mockArtist
-      },
-    })
+    renderWithRelay({ Artist: () => mockArtist })
 
     expect(screen.queryByLabelText("Marcel cover image")).toBeOnTheScreen()
   })
+
+  it("displays represented by list given verifiedRepresentatives", () => {
+    renderWithRelay({
+      Artist: () => ({
+        ...mockArtist,
+        verifiedRepresentatives: [
+          {
+            partner: {
+              internalID: "representative-id",
+              name: "Test representative",
+              href: "representative-href",
+              profile: { icon: { url: "image-url" } },
+            },
+          },
+        ],
+      }),
+    })
+
+    const representative = screen.getByText("Test representative")
+    expect(representative).toBeOnTheScreen()
+
+    fireEvent.press(representative)
+    expect(navigate).toHaveBeenCalledWith("representative-href")
+  })
+
   describe("alerts set", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({

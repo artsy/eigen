@@ -2,6 +2,7 @@ import {
   Box,
   Flex,
   Image,
+  Pill,
   Spacer,
   Text,
   Touchable,
@@ -14,7 +15,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
-import { LayoutChangeEvent, ViewProps } from "react-native"
+import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
@@ -70,11 +71,18 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
 
   const showAlertsSet =
     !!showArtistsAlertsSetFeatureFlag && Number(me?.savedSearchesConnection?.totalCount) > 0
+  const hasVerifiedRepresentatives = artist.verifiedRepresentatives?.length > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
       updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
       onLayoutChange?.({ nativeEvent, ...rest })
+    }
+  }
+
+  const handleRepresentativePress = (href: string | null) => {
+    if (href) {
+      navigate(href)
     }
   }
 
@@ -105,6 +113,32 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           </Flex>
         </Flex>
       </Box>
+
+      {!!hasVerifiedRepresentatives && (
+        <Flex pointerEvents="box-none" px={2}>
+          <Flex pointerEvents="none">
+            <Text pt={2} pb={1} variant="sm" color="black60">
+              Featured representation
+            </Text>
+          </Flex>
+          <FlatList
+            horizontal
+            data={artist.verifiedRepresentatives}
+            keyExtractor={({ partner }) => `representative-${partner.internalID}`}
+            renderItem={({ item }) => (
+              <Pill
+                variant="profile"
+                src={item.partner.profile?.icon?.url!}
+                onPress={() => handleRepresentativePress(item.partner.href)}
+              >
+                {item.partner.name}
+              </Pill>
+            )}
+            ItemSeparatorComponent={() => <Spacer x={1} />}
+          />
+          <Spacer y={2} />
+        </Flex>
+      )}
 
       {!!showAlertsSet && (
         <Box mx={2} maxWidth={120}>
@@ -137,6 +171,18 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       internalID
       name
       nationality
+      verifiedRepresentatives {
+        partner {
+          internalID
+          name
+          href
+          profile {
+            icon {
+              url(version: "square140")
+            }
+          }
+        }
+      }
     }
   `,
   me: graphql`
