@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { LotsByArtistsYouFollow_me$key } from "__generated__/LotsByArtistsYouFollow_me.graphql"
@@ -8,6 +9,8 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -28,18 +31,22 @@ export const LotsByArtistsYouFollow: React.FC = () => {
   const artworks = extractNodes(data?.lotsByFollowedArtistsConnection)
 
   return (
-    <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <MasonryInfiniteScrollArtworkGrid
-        artworks={artworks}
-        ListEmptyComponent={
-          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-        }
-        hasMore={hasNext}
-        loadMore={() => loadNext(PAGE_SIZE)}
-        isLoading={isLoadingNext}
-        refreshControl={RefreshControl}
-      />
-    </PageWithSimpleHeader>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.lotsByArtistsYouFollow })}
+    >
+      <PageWithSimpleHeader title={SCREEN_TITLE}>
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          ListEmptyComponent={
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+          }
+          hasMore={hasNext}
+          loadMore={() => loadNext(PAGE_SIZE)}
+          isLoading={isLoadingNext}
+          refreshControl={RefreshControl}
+        />
+      </PageWithSimpleHeader>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
