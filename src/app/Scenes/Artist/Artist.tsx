@@ -329,8 +329,7 @@ const ArtistSkeleton: React.FC = () => {
             <Spacer y={2} />
             <Join separator={<Spacer y={0.5} />}>
               <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
-              <SkeletonText variant="xs">American, b. 1945</SkeletonText>
-              <SkeletonText variant="xs">40 Works, 45 Followers</SkeletonText>
+              <SkeletonText variant="lg">American, b. 1945</SkeletonText>
             </Join>
           </Flex>
 
