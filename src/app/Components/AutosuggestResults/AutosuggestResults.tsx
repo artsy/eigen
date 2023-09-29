@@ -365,10 +365,14 @@ export const AutosuggestResults: React.FC<{
 
             if (showOnRetryErrorMessage && retry) {
               return (
-                <Flex>
-                  <Text variant="sm" color="black60">
-                    Something went wrong. Please adjust your query or try again shortly.
+                <Flex py={4}>
+                  <Text variant="sm-display" textAlign="center">
+                    Something went wrong.
                   </Text>
+                  <Text variant="sm-display" color="black60" textAlign="center">
+                    Please adjust your query or try again shortly.
+                  </Text>
+
                   <Spacer y={2} />
                   {!hasClickedRetry && (
                     <Flex alignItems="center">
@@ -389,9 +393,12 @@ export const AutosuggestResults: React.FC<{
             }
 
             return (
-              <Flex>
+              <Flex py={4}>
                 <Text variant="sm" color="black60">
-                  {" "}
+                  There seems to be a problem with the connection.
+                </Text>
+                <Text variant="sm-display" color="black60" textAlign="center">
+                  Please try again shortly.
                 </Text>
               </Flex>
             )
