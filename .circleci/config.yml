@@ -21,11 +21,6 @@ commands:
       - node/install:
           install-yarn: true
           node-version: "16.18.0"
-  check-native-code:
-    steps:
-      - run:
-          name: Check Native Code
-          command: ./scripts/codepush/check-native-code.sh
   generate-checksums:
     steps:
       - run:
@@ -268,14 +263,6 @@ jobs:
       - run:
           command: yarn type-check
 
-  check-native-code:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    steps:
-      - checkout
-      - check-native-code
-
   update-metaphysics:
     executor:
       name: node/default
@@ -508,16 +495,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
-
-      - check-native-code:
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
                 - app_store_submission
                 - play_store_submission
 
