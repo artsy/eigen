@@ -1,23 +1,30 @@
-import { quoteLeft, quoteRight, Spacer, Flex, Text } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  ReloadIcon,
+  Spacer,
+  Text,
+  quoteLeft,
+  quoteRight,
+} from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
-import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import {
+  AutosuggestSearchResult,
   OnResultPress,
   TrackResultPress,
-  AutosuggestSearchResult,
 } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, Keyboard } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
 export type AutosuggestResult = NonNullable<
@@ -351,6 +358,8 @@ export const AutosuggestResults: React.FC<{
     showResultType,
     trackResultPress,
   }) => {
+    const [hasClickedRetry, setHasClickedRetry] = useState(false)
+
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error, retry }) => {
@@ -362,16 +371,44 @@ export const AutosuggestResults: React.FC<{
             }
 
             if (showOnRetryErrorMessage && retry) {
-              return <LoadFailureView onRetry={retry} />
+              return (
+                <Flex py={4}>
+                  <Text variant="sm-display" textAlign="center">
+                    Something went wrong.
+                  </Text>
+                  <Text variant="sm-display" color="black60" textAlign="center">
+                    Please adjust your query or try again shortly.
+                  </Text>
+
+                  <Spacer y={2} />
+
+                  {!hasClickedRetry && (
+                    <Flex alignItems="center">
+                      <Button
+                        onPress={() => {
+                          retry()
+                          setTimeout(() => {
+                            setHasClickedRetry(true)
+                          }, 300)
+                        }}
+                        variant="text"
+                      >
+                        <ReloadIcon height={25} width={25} />
+                      </Button>
+                    </Flex>
+                  )}
+                </Flex>
+              )
             }
 
             return (
-              <Flex alignItems="center" justifyContent="center">
-                <Flex maxWidth={280}>
-                  <Text variant="sm" textAlign="center">
-                    There seems to be a problem with the connection. Please try again shortly.
-                  </Text>
-                </Flex>
+              <Flex py={4}>
+                <Text variant="sm" color="black60">
+                  There seems to be a problem with the connection.
+                </Text>
+                <Text variant="sm-display" color="black60" textAlign="center">
+                  Please try again shortly.
+                </Text>
               </Flex>
             )
           }
