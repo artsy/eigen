@@ -37,7 +37,6 @@ import {
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { Dimensions } from "react-native"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -215,12 +214,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       return (
         <Message
           title="Get notified when works you're looking for are added."
-          containerStyle={{ width: Dimensions.get("window").width, left: -space(2), mt: 2 }}
+          containerStyle={{ my: 2 }}
           IconComponent={() => {
             return <CreateAlertButton />
           }}
           iconPosition="right"
-          showCloseButton
         />
       )
     }

@@ -24,10 +24,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.0.13":
-  version "13.0.13"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.0.13.tgz#0155280c3e5ec67ded8a8579a3acd3f4f871ff11"
-  integrity sha512-NUDU9b2MeDxoJpBG3YE/Q4SiSH/+uuJRvaP5VgmgtNRg/9iSaQau2DNmix1md7yK3tg2NmZVCPbR4t5i1KkZlw==
+"@artsy/palette-mobile@13.0.16":
+  version "13.0.16"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.0.16.tgz#7bc4adeba350ac81e0baee2f27809e55f4ad8778"
+  integrity sha512-fZeXaRFK6BrKq+iXRF+enD8+BATmUJV5ME2DwgT/x9bKNnocfuGPGGwVVLXO2vYetWDRXkntVDuNbx89HM4//A==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
