@@ -22,7 +22,7 @@ export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistID }
         }
       `}
       variables={{
-        artistIDs: [artistID],
+        artistIDs: artistID ? [artistID] : [],
       }}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
