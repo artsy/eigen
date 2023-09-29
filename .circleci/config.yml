@@ -199,9 +199,6 @@ jobs:
       - checkout
       - install-node
       - install-gems
-      - run:
-          name: Install jq
-          command: brew install jq
       - restore_cache:
           key: native-hash-main
       - run:
