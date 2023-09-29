@@ -51,6 +51,7 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
               onClear?.()
               inputRef?.current?.focus()
             }}
+            maxLength={100}
             onChangeText={onChangeText}
             {...props}
             onFocus={(e) => {
