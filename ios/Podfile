@@ -174,7 +174,6 @@ target 'Artsy' do
             config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
             config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
             config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-            config.build_settings["DEVELOPMENT_TEAM"] = "23KMWZ572J"
         end
     end
   end
