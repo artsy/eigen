@@ -21,11 +21,6 @@ commands:
       - node/install:
           install-yarn: true
           node-version: "16.18.0"
-  check-native-code:
-    steps:
-      - run:
-          name: Check Native Code
-          command: ./scripts/codepush/check-native-code.sh
   generate-checksums:
     steps:
       - run:
@@ -204,14 +199,17 @@ jobs:
       - checkout
       - install-node
       - install-gems
-      - run:
-          name: Install jq
-          command: brew install jq
+      - restore_cache:
+          key: native-hash-main
       - run:
           name: Determine Deployment Type
           command: |
             DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - save_cache:
+          key: native-hash-main
+          paths:
+            - ./native-hash.txt
       - run:
           name: Handle Deployment for beta
           command: |
@@ -267,14 +265,6 @@ jobs:
       - run-relay-compiler
       - run:
           command: yarn type-check
-
-  check-native-code:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    steps:
-      - checkout
-      - check-native-code
 
   update-metaphysics:
     executor:
@@ -508,16 +498,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
-
-      - check-native-code:
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
                 - app_store_submission
                 - play_store_submission
 
