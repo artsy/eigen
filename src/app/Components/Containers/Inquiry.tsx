@@ -6,7 +6,7 @@ import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Ar
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
@@ -279,7 +279,7 @@ export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
 export const InquiryQueryRenderer: React.FC<{ artworkID: string }> = ({ artworkID }) => {
   return (
     <QueryRenderer<InquiryQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InquiryQuery($artworkID: String!) {
           artwork(id: $artworkID) {

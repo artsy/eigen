@@ -2,7 +2,7 @@ import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchaseButtonOrderMutation.graphql"
 import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import React, { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql } from "react-relay"
@@ -58,7 +58,7 @@ export const InquiryPurchaseButton: React.FC<InquiryPurchaseButtonProps> = ({
     }
 
     setIsCommittingMutation(true)
-    commitMutation<InquiryPurchaseButtonOrderMutation>(defaultEnvironment, {
+    commitMutation<InquiryPurchaseButtonOrderMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation InquiryPurchaseButtonOrderMutation(
           $input: CommerceCreateInquiryOrderWithArtworkInput!

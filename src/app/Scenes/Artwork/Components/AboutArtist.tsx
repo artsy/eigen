@@ -19,6 +19,10 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
     hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
   const textLimit = truncatedTextLimit()
 
+  if (!artists.length) {
+    return null
+  }
+
   return (
     <>
       <Flex alignItems="flex-start">
@@ -38,7 +42,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
           )}
         </Join>
       </Flex>
-      {hasSingleArtist && text && (
+      {!!hasSingleArtist && !!text && (
         <Box mt={2}>
           <ReadMore
             content={text}

@@ -1,8 +1,7 @@
-import { EnvelopeIcon, Spacer, Flex, Text, Join, Button } from "@artsy/palette-mobile"
+import { EnvelopeIcon, Spacer, Flex, Text, Join, Button, LegacyScreen } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { Screen } from "app/Components/Screen"
 import {
   AuthPromiseRejectType,
   AuthPromiseResolveType,
@@ -156,9 +155,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     })
 
   return (
-    <Screen>
-      <Screen.Header onBack={() => navigation.goBack()} />
-      <Screen.Body>
+    <LegacyScreen>
+      <LegacyScreen.Header onBack={() => navigation.goBack()} />
+      <LegacyScreen.Body>
         <Flex justifyContent="center" flex={1}>
           <LoadingModal isVisible={isLoading} dark />
           <Join separator={<Spacer y={6} />}>
@@ -191,7 +190,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   iconPosition="left-start"
                   icon={
                     <Image
-                      source={require("images/apple.png")}
+                      source={require("images/apple.webp")}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -211,7 +210,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 iconPosition="left-start"
                 icon={
                   <Image
-                    source={require("images/google.png")}
+                    source={require("images/google.webp")}
                     resizeMode="contain"
                     style={{ marginRight: 10 }}
                   />
@@ -230,7 +229,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 iconPosition="left-start"
                 icon={
                   <Image
-                    source={require("images/facebook.png")}
+                    source={require("images/facebook.webp")}
                     resizeMode="contain"
                     style={{ marginRight: 10 }}
                   />
@@ -286,8 +285,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Flex>
           </Join>
         </Flex>
-        <Screen.SafeBottomPadding />
-      </Screen.Body>
-    </Screen>
+        <LegacyScreen.SafeBottomPadding />
+      </LegacyScreen.Body>
+    </LegacyScreen>
   )
 }

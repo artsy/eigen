@@ -6,7 +6,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type PriceRangeOptionsScreenProps = StackScreenProps<

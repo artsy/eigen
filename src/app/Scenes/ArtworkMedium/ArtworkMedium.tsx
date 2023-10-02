@@ -1,9 +1,20 @@
-import { Spacer, Box, Text, Separator, Join, Button } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Box,
+  Text,
+  Separator,
+  Join,
+  Button,
+  Screen,
+  Touchable,
+  useSpace,
+  CloseIcon,
+} from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -13,35 +24,50 @@ interface Props {
 }
 
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
-  const { safeAreaInsets } = useScreenDimensions()
+  useAndroidGoBack()
+  const space = useSpace()
 
   return (
-    <ScrollView>
-      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
-        <Box my={4}>
-          <Join separator={<Spacer y={2} />} flatten>
-            {!!artwork.mediumType && (
-              <>
-                <Text variant="lg-display">{artwork.mediumType.name}</Text>
+    <Screen>
+      <Screen.Header
+        leftElements={
+          <Touchable
+            accessibilityRole="button"
+            accessibilityLabel="Close"
+            onPress={() => goBack()}
+            hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
+          >
+            <CloseIcon fill="black100" />
+          </Touchable>
+        }
+      />
+      <Screen.Body>
+        <ScrollView>
+          <Box py={2}>
+            <Join separator={<Spacer y={2} />} flatten>
+              {!!artwork.mediumType && (
+                <>
+                  <Text variant="lg-display">{artwork.mediumType.name}</Text>
 
-                <Text>{artwork.mediumType.longDescription}</Text>
+                  <Text>{artwork.mediumType.longDescription}</Text>
 
-                <Separator />
-              </>
-            )}
+                  <Separator />
+                </>
+              )}
 
-            <Text>
-              Artsy has nineteen medium types. Medium types are categories that define the material
-              or format used to create the artwork.
-            </Text>
+              <Text>
+                Artsy has nineteen medium types. Medium types are categories that define the
+                material or format used to create the artwork.
+              </Text>
 
-            <Button onPress={() => goBack()} block>
-              OK
-            </Button>
-          </Join>
-        </Box>
-      </Box>
-    </ScrollView>
+              <Button onPress={() => goBack()} block>
+                OK
+              </Button>
+            </Join>
+          </Box>
+        </ScrollView>
+      </Screen.Body>
+    </Screen>
   )
 }
 
@@ -69,7 +95,7 @@ export const ArtworkMediumQueryRenderer: React.FC<{
 }> = (props) => {
   return (
     <QueryRenderer<ArtworkMediumQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={ARTWORK_MEDIUM_QUERY}
       variables={{ id: props.artworkID }}
       render={renderWithLoadProgress(ArtworkMediumFragmentContainer, props)}

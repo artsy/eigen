@@ -1,5 +1,4 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -10,18 +9,9 @@ describe("MyCollectionArtworkAbout", () => {
     Component: (props) => {
       if (props?.artwork && props?.marketPriceInsights) {
         return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: (
-                  <MyCollectionArtworkAbout
-                    marketPriceInsights={props.marketPriceInsights}
-                    artwork={props?.artwork}
-                  />
-                ),
-              },
-            ]}
+          <MyCollectionArtworkAbout
+            marketPriceInsights={props.marketPriceInsights}
+            artwork={props?.artwork}
           />
         )
       }

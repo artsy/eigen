@@ -1,4 +1,4 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 import {
   interpolate,
@@ -26,11 +26,17 @@ export function useSkeletonAnimation({
     }
   }, [])
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: enableSkeletonAnimation
-      ? interpolate(shared.value, [0, 1], [targetOpacityValue, 1])
-      : 1,
-  }))
+  const animatedStyle = useAnimatedStyle(() => {
+    "worklet"
+    if (enableSkeletonAnimation) {
+      return {
+        opacity: interpolate(shared.value, [0, 1], [targetOpacityValue, 1]),
+      }
+    }
+    return {
+      opacity: 1,
+    }
+  })
 
   return animatedStyle
 }

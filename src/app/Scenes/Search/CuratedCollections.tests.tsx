@@ -23,7 +23,7 @@ describe("CuratedCollections", () => {
           ...CuratedCollections_collections
         }
       `,
-      {}
+      { term: "", skipSearchQuery: false }
     )
 
     return <CuratedCollections collections={queryData} />

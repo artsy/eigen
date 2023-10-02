@@ -1,4 +1,5 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
+import { ArtworkSizes } from "__generated__/SavedSearchNameInputQuery.graphql"
 
 export enum SearchCriteria {
   artistID = "artistID",
@@ -35,7 +36,7 @@ export interface SearchCriteriaAttributes {
   [SearchCriteria.inquireableOnly]?: boolean | null
   [SearchCriteria.offerable]?: boolean | null
   [SearchCriteria.dimensionRange]?: string | null
-  [SearchCriteria.sizes]?: string[] | null
+  [SearchCriteria.sizes]?: ArtworkSizes[] | null
   [SearchCriteria.height]?: string | null
   [SearchCriteria.width]?: string | null
   [SearchCriteria.materialsTerms]?: string[] | null
@@ -54,7 +55,6 @@ export interface SavedSearchEntityOwner {
 }
 
 export interface SavedSearchEntity {
-  placeholder: string
   artists: SavedSearchEntityArtist[]
   owner: SavedSearchEntityOwner
 }

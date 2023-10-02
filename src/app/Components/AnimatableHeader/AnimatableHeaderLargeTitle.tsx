@@ -7,12 +7,12 @@ export const AnimatableHeaderLargeTitle = () => {
   const { scrollOffsetY, largeTitleVerticalOffset, setLargeTitleHeight, largeTitleEndEdge, title } =
     useAnimatableHeaderContext()
 
-  const disappearAnim = useAnimatedStyle(
-    () => ({
+  const disappearAnim = useAnimatedStyle(() => {
+    "worklet"
+    return {
       opacity: interpolate(scrollOffsetY.value, [0, largeTitleEndEdge], [1, 0], Extrapolate.CLAMP),
-    }),
-    [largeTitleEndEdge]
-  )
+    }
+  }, [largeTitleEndEdge])
 
   return (
     <Animated.View

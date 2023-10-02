@@ -49,7 +49,7 @@ beforeEach(^{
 
 
 it(@"gives the right messages for the right setup",^{
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
 
     expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:NO]).to.equal(@"To view works in your room, weʼll need access to your camera.");
     expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:YES]).to.equal(@"To view works in your room, weʼll need access to your camera.");
@@ -72,7 +72,7 @@ it(@"gives the right messages for the right setup",^{
  */
 
 pending(@"defaults to asking for camera access",^{
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil ];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
     vc.defaults = (id)untouchedDefaults;
 
     expect(vc).to.haveValidSnapshot();
@@ -84,7 +84,7 @@ pending(@"next sets ARAugmentedRealityHasTriedToSetup",^{
       ARAugmentedRealityCameraAccessGiven: @(YES)
     }];
 
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
     vc.defaults = (id)defaults;
     [vc next];
 
@@ -93,14 +93,14 @@ pending(@"next sets ARAugmentedRealityHasTriedToSetup",^{
 
 
 pending(@"has different settings when denied access",^{
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
     vc.defaults = (id)deniedDefaults;
     expect(vc).to.haveValidSnapshot();
 });
 
 
 pending(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
-    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
     vc.defaults = (id)setupButNotRanDefaults;
     expect(vc).to.haveValidSnapshot();
 });
@@ -143,7 +143,7 @@ describe(@"back", ^{
         id navMock = [OCMockObject mockForClass:[UINavigationController class]];
         [[navMock stub] popViewControllerAnimated:NO];
 
-        ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+        ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil enableInstantVIR:NO];
         [vc back];
         [navMock verify];
     });

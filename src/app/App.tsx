@@ -1,12 +1,14 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { codePushOptions } from "app/system/codepush"
 import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
+import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { setupFlipper } from "app/system/devTools/flipper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
-import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
@@ -19,6 +21,7 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
+import codePush from "react-native-code-push"
 import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
@@ -32,7 +35,6 @@ import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndic
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useDebugging } from "./utils/useDebugging"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -55,7 +57,6 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const Main = () => {
   useRageShakeDevMenu()
-  useDebugging()
   useEffect(() => {
     if (Config.OSS === "true") {
       return
@@ -144,7 +145,7 @@ const Main = () => {
   )
 }
 
-export const App = () => (
+const InnerApp = () => (
   <Providers>
     <AsyncStorageDevtools />
 
@@ -155,3 +156,5 @@ export const App = () => (
     <DynamicIslandStagingIndicator />
   </Providers>
 )
+
+export const App = codePush(codePushOptions)(InnerApp)

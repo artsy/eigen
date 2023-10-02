@@ -1,12 +1,12 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box, Separator } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
-import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
@@ -14,7 +14,6 @@ import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 import { ShowContextCardFragmentContainer as ShowContextCard } from "./Components/ShowContextCard"
@@ -38,8 +37,6 @@ interface ShowProps {
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [visible, setVisible] = useState(false)
-  const shouldShowImageSearchButton = show.isReverseImageSearchEnabled && !!show.isActive
-
   const filterComponentAnimationValue = new Animated.Value(0)
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
@@ -129,11 +126,6 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyboardShouldPersistTaps="handled"
         />
       </ArtworkFiltersStoreProvider>
-
-      <SearchImageHeaderButton
-        isImageSearchButtonVisible={shouldShowImageSearchButton}
-        owner={{ type: OwnerType.show, id: show.internalID, slug: show.slug }}
-      />
     </ProvideScreenTracking>
   )
 }
@@ -143,7 +135,6 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
     fragment Show_show on Show {
       internalID
       slug
-      isReverseImageSearchEnabled
       isActive
       ...ShowHeader_show
       ...ShowInstallShots_show
@@ -166,7 +157,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
 export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowQuery($showID: String!) {
           show(id: $showID) @principalField {

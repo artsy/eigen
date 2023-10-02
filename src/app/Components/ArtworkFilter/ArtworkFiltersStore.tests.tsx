@@ -28,6 +28,7 @@ describe("Reset Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -47,6 +48,7 @@ describe("Reset Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -67,6 +69,7 @@ describe("Reset Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -86,6 +89,7 @@ describe("Reset Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -104,6 +108,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -131,6 +136,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -153,6 +159,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -180,6 +187,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -207,6 +215,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -239,6 +248,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -267,6 +277,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -306,6 +317,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -328,6 +340,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -349,6 +362,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -371,6 +385,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -403,6 +418,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -421,6 +437,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -440,6 +457,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -456,6 +474,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -478,6 +497,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -498,6 +518,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -522,6 +543,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -538,6 +560,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -559,6 +582,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -581,6 +605,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -602,6 +627,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -632,6 +658,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -649,6 +676,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -676,6 +704,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -715,6 +744,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -733,6 +763,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -754,6 +785,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -772,6 +804,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -791,6 +824,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -814,6 +848,7 @@ describe("Apply Filters", () => {
       aggregations: [],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -828,6 +863,7 @@ describe("Apply Filters", () => {
       aggregations: [],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -848,6 +884,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -869,6 +906,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -891,6 +929,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -920,6 +959,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -942,6 +982,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -971,6 +1012,7 @@ describe("Apply Filters", () => {
       ],
       selectedFilters: [],
       aggregations: [],
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -999,6 +1041,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -1028,6 +1071,7 @@ describe("Apply Filters", () => {
       ],
       selectedFilters: [],
       aggregations: [],
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -1053,6 +1097,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -1070,6 +1115,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -1088,6 +1134,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -1105,6 +1152,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -1123,6 +1171,7 @@ describe("SetInitialFilterState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -1146,6 +1195,7 @@ describe("SetInitialFilterState", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -2387,6 +2437,7 @@ describe("SetFilterCounts", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -2404,6 +2455,7 @@ describe("SetFilterCounts", () => {
         total: 1000,
         followedArtists: 100,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -2422,6 +2474,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -2452,6 +2505,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -2474,6 +2528,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -2504,6 +2559,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })
@@ -2526,6 +2582,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
 
@@ -2544,6 +2601,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      showFilterArtworksModal: false,
       sizeMetric: "cm",
     })
   })

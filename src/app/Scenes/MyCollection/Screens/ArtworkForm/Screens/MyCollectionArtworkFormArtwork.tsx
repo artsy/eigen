@@ -10,7 +10,8 @@ import { ArtworkAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { GlobalStore } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { omit, pickBy } from "lodash"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
@@ -19,7 +20,7 @@ import { fetchQuery, graphql } from "relay-runtime"
 
 export const MyCollectionArtworkFormArtwork: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
@@ -30,7 +31,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
   useEffect(() => {
     // Navigate back to the artist search screen if no artist is selected.
     if (!formik.values.artistSearchResult) {
-      navigation.navigate("ArtworkFormArtist", { ...route.params })
+      navigation.navigate("ArtworkFormArtist")
     }
   }, [formik.values.artistSearchResult])
 
@@ -63,6 +64,8 @@ export const MyCollectionArtworkFormArtwork: React.FC<
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
         ...filteredFormValues,
+        attributionClass:
+          getAttributionClassValueByName(artworkData.attributionClass?.name) || undefined,
         photos,
       })
     } catch (error) {
@@ -96,12 +99,16 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     })
   }
 
-  const navigateToNext = () => navigation.navigate("ArtworkFormMain", { ...route.params })
+  const navigateToNext = () => navigation.navigate("ArtworkFormMain")
+
+  const handleBackButtonPress = () => {
+    navigation.goBack()
+  }
 
   return (
     <>
       <FancyModalHeader
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
+        onLeftButtonPress={handleBackButtonPress}
         rightButtonText="Skip"
         onRightButtonPress={onSkip}
         hideBottomDivider
@@ -126,7 +133,7 @@ const fetchArtwork = async (
   artworkID: string
 ): Promise<MyCollectionArtworkFormArtworkQuery["response"]["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query MyCollectionArtworkFormArtworkQuery($artworkID: String!) {
         artwork(id: $artworkID) {
@@ -141,6 +148,9 @@ const fetchArtwork = async (
             isDefault
             imageURL
             width
+          }
+          attributionClass {
+            name
           }
           isEdition
           category

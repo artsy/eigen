@@ -15,11 +15,20 @@ interface UnseenCounts {
   notifications: number
 }
 
+type ProfileTabType = Record<
+  Extract<"profile", BottomTabType>,
+  {
+    savedArtwork?: boolean
+  }
+>
+
+type TabProps = Partial<Record<Exclude<BottomTabType, "profile">, any> & ProfileTabType>
+
 export interface BottomTabsModel {
   sessionState: {
     unreadCounts: UnreadCounts
     unseenCounts: UnseenCounts
-    tabProps: Partial<{ [k in BottomTabType]: object }>
+    tabProps: TabProps
     selectedTab: BottomTabType
   }
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
@@ -28,6 +37,7 @@ export interface BottomTabsModel {
   setUnseenNotificationsCount: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
+  setSelectedTab: Action<BottomTabsModel, BottomTabType>
   hasUnseenNotifications: Computed<this, boolean>
 }
 
@@ -129,6 +139,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
+  }),
+  setSelectedTab: action((state, payload) => {
+    state.sessionState.selectedTab = payload
   }),
   hasUnseenNotifications: computed((state) => state.sessionState.unseenCounts.notifications > 0),
 })

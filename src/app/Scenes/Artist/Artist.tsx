@@ -1,4 +1,15 @@
-import { Flex } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Join,
+  Screen,
+  Separator,
+  ShareIcon,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -6,8 +17,11 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
-import { ArtistHeaderFloatingButtonsFragmentContainer } from "app/Components/Artist/ArtistHeaderFloatingButtons"
+import {
+  ArtistHeaderFragmentContainer,
+  useArtistHeaderImageDimensions,
+} from "app/Components/Artist/ArtistHeader"
+import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
@@ -15,17 +29,19 @@ import {
   getFilterArrayFromQueryParams,
   prepareFilterArtworksParamsForInput,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -35,31 +51,30 @@ const INITIAL_TAB = "Artworks"
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
-  initialTab?: string
-  searchCriteria: SearchCriteriaAttributes | null
-  fetchCriteriaError: Error | null
-  predefinedFilters?: FilterArray
   auctionResultsInitialFilters?: FilterArray
+  environment?: RelayModernEnvironment
+  fetchCriteriaError: Error | null
+  initialTab?: string
+  me: ArtistAboveTheFoldQuery["response"]["me"]
+  predefinedFilters?: FilterArray
+  searchCriteria: SearchCriteriaAttributes | null
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
   const {
     artistAboveTheFold,
     artistBelowTheFold,
-    initialTab = INITIAL_TAB,
-    searchCriteria,
-    fetchCriteriaError,
-    predefinedFilters,
     auctionResultsInitialFilters,
+    fetchCriteriaError,
+    initialTab = INITIAL_TAB,
+    me,
+    predefinedFilters,
+    searchCriteria,
   } = props
 
+  const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
-
-  const tabs: TabProps[] = []
-  const displayAboutSection =
-    artistAboveTheFold.has_metadata ||
-    !!artistAboveTheFold.statuses?.articles ||
-    (artistAboveTheFold.counts?.related_artists ?? 0) > 0
+  const { showShareSheet } = useShareSheet()
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -72,49 +87,32 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     }
   }, [fetchCriteriaError])
 
-  if (displayAboutSection) {
-    tabs.push({
-      title: "Overview",
-      content: artistBelowTheFold ? (
-        <ArtistAboutContainer artist={artistBelowTheFold} />
-      ) : (
-        <LoadingPage />
-      ),
+  const handleSharePress = () => {
+    showShareSheet({
+      type: "artist",
+      internalID: artistAboveTheFold.internalID,
+      slug: artistAboveTheFold.slug,
+      artists: [{ name: artistAboveTheFold.name }],
+      title: artistAboveTheFold.name!,
+      href: artistAboveTheFold.href!,
+      currentImageUrl: artistAboveTheFold.image?.url ?? undefined,
     })
   }
 
-  tabs.push({
-    title: "Artworks",
-    content: (
-      <ArtistArtworks
-        artist={artistAboveTheFold}
-        searchCriteria={searchCriteria}
-        predefinedFilters={predefinedFilters}
+  const renderBelowTheHeaderComponent = useCallback(
+    () => (
+      <ArtistHeaderFragmentContainer
+        artist={artistAboveTheFold!}
+        me={me!}
+        onLayoutChange={({ nativeEvent }) => {
+          if (headerHeight !== nativeEvent.layout.height) {
+            setHeaderHeight(nativeEvent.layout.height)
+          }
+        }}
       />
     ),
-  })
-
-  if (!!artistAboveTheFold?.statuses?.auctionLots) {
-    tabs.push({
-      title: "Insights",
-      content: artistBelowTheFold ? (
-        (tabIndex: number) => (
-          <ArtistInsightsFragmentContainer
-            tabIndex={tabIndex}
-            artist={artistBelowTheFold}
-            initialFilters={auctionResultsInitialFilters}
-          />
-        )
-      ) : (
-        <LoadingPage />
-      ),
-    })
-  }
-
-  // Set initial tab
-  tabs.forEach((tab) => {
-    tab.initial = tab.title === initialTab
-  })
+    [artistAboveTheFold, headerHeight]
+  )
 
   return (
     <ProvideScreenTracking
@@ -125,16 +123,53 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         context_screen_owner_id: artistAboveTheFold.internalID,
       }}
     >
-      <Flex style={{ flex: 1 }}>
-        <StickyTabPage
-          staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
-          tabs={tabs}
-          bottomContent={
-            <ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />
-          }
-          disableBackButtonUpdate
-        />
-      </Flex>
+      <ArtworkFiltersStoreProvider>
+        <Tabs.TabsWithHeader
+          initialTabName={initialTab}
+          title={artistAboveTheFold.name!}
+          showLargeHeaderText={false}
+          headerProps={{
+            rightElements: (
+              <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
+            ),
+            onBack: goBack,
+          }}
+          BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
+        >
+          <Tabs.Tab name="Artworks" label="Artworks">
+            <Tabs.Lazy>
+              <ArtistArtworks
+                artist={artistAboveTheFold}
+                searchCriteria={searchCriteria}
+                predefinedFilters={predefinedFilters}
+              />
+            </Tabs.Lazy>
+          </Tabs.Tab>
+
+          <Tabs.Tab name="Insights" label="Auction Results">
+            <Tabs.Lazy>
+              {artistBelowTheFold ? (
+                <ArtistInsightsFragmentContainer
+                  artist={artistBelowTheFold}
+                  initialFilters={auctionResultsInitialFilters}
+                />
+              ) : (
+                <LoadingPage />
+              )}
+            </Tabs.Lazy>
+          </Tabs.Tab>
+
+          <Tabs.Tab name="Overview" label="About">
+            <Tabs.Lazy>
+              {artistBelowTheFold ? (
+                <ArtistAboutContainer artist={artistBelowTheFold} />
+              ) : (
+                <LoadingPage />
+              )}
+            </Tabs.Lazy>
+          </Tabs.Tab>
+        </Tabs.TabsWithHeader>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
 }
@@ -153,20 +188,20 @@ interface ArtistQueryRendererProps {
 export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
     artist(id: $artistID) {
-      internalID
-      slug
-      has_metadata: hasMetadata
-      counts {
-        partner_shows: partnerShows
-        related_artists: relatedArtists
-      }
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
-      ...ArtistHeaderFloatingButtons_artist
-      statuses {
-        auctionLots
-        articles
+      ...ArtistHeaderNavRight_artist
+      id
+      internalID
+      slug
+      href
+      name
+      image {
+        url(version: "large")
       }
+    }
+    me {
+      ...ArtistHeader_me @arguments(artistID: $artistID)
     }
   }
 `
@@ -194,7 +229,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
       searchCriteriaId={searchCriteriaID ?? search_criteria_id}
       environment={environment}
       render={{
-        renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+        renderPlaceholder: () => <ArtistSkeleton />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const predefinedFilterParams = filterArtworksParams(predefinedFilters ?? [], "artwork")
@@ -236,8 +271,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 variables: { artistID },
               }}
               render={{
-                renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
+                renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
+                  // return <ArtistSkeleton />
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }
@@ -245,6 +281,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     <Artist
                       artistAboveTheFold={above.artist}
                       artistBelowTheFold={below?.artist}
+                      me={above.me}
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
@@ -276,5 +313,40 @@ const LoadingPage: React.FC<{}> = ({}) => {
     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
       <ActivityIndicator />
     </View>
+  )
+}
+
+const ArtistSkeleton: React.FC = () => {
+  const { height, width } = useArtistHeaderImageDimensions()
+
+  return (
+    <Screen>
+      <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <SkeletonBox width={width} height={height} />
+            <Spacer y={2} />
+            <Join separator={<Spacer y={0.5} />}>
+              <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+              <SkeletonText variant="lg">American, b. 1945</SkeletonText>
+            </Join>
+          </Flex>
+
+          <Spacer y={4} />
+
+          {/* Tabs */}
+          <Flex justifyContent="space-around" flexDirection="row" px={2}>
+            <SkeletonText variant="xs">Artworks</SkeletonText>
+            <SkeletonText variant="xs">Auction Results</SkeletonText>
+            <SkeletonText variant="xs">About</SkeletonText>
+          </Flex>
+        </Skeleton>
+
+        <Separator mt={1} mb={4} />
+
+        <PlaceholderGrid />
+      </Screen.Body>
+    </Screen>
   )
 }

@@ -58,7 +58,7 @@ export class SavedEventSection extends Component<any> {
 
     return (
       <>
-        <Box m={2}>
+        <Box my={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
         </Box>
       </>

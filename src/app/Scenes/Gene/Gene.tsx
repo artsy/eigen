@@ -1,23 +1,30 @@
+import {
+  Box,
+  Flex,
+  Screen,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Tabs,
+} from "@artsy/palette-mobile"
 import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
-import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { goBack } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
+import { Dimensions } from "react-native"
+
 import { graphql, QueryRenderer } from "react-relay"
 
 const isPad = Dimensions.get("window").width > 700
-const commonPadding = isPad ? 40 : 20
-
-const TABS = {
-  WORKS: "Works",
-  ABOUT: "About",
-}
+const commonPadding = isPad ? 4 : 2
 
 interface GeneProps {
   geneID: string
@@ -32,23 +39,7 @@ interface GeneQueryRendererProps {
 
 export const Gene: React.FC<GeneProps> = (props) => {
   const { gene, geneID } = props
-
-  const headerContent = (
-    <View style={styles.header}>
-      <Header gene={gene} shortForm={false} />
-    </View>
-  )
-  const tabs = [
-    {
-      title: TABS.WORKS,
-      content: <GeneArtworksPaginationContainer gene={gene} />,
-      initial: true,
-    },
-    {
-      title: TABS.ABOUT,
-      content: <About gene={gene} />,
-    },
-  ]
+  const title = gene.displayName || gene.name || ""
 
   return (
     <ProvideScreenTracking
@@ -59,9 +50,34 @@ export const Gene: React.FC<GeneProps> = (props) => {
         context_screen_owner_slug: gene.slug,
       }}
     >
-      <View style={styles.container}>
-        <StickyTabPage tabs={tabs} staticHeaderContent={headerContent} />
-      </View>
+      <Tabs.TabsWithHeader
+        title={title}
+        BelowTitleHeaderComponent={() => (
+          <Flex
+            px={commonPadding}
+            {...(isPad
+              ? {
+                  width: 330,
+                  alignSelf: "center",
+                }
+              : {})}
+          >
+            <Header gene={gene} shortForm={false} />
+          </Flex>
+        )}
+        headerProps={{ onBack: goBack }}
+      >
+        <Tabs.Tab name="Works" label="Works">
+          <Tabs.Lazy>
+            <GeneArtworksPaginationContainer gene={gene} />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name="About" label="About">
+          <Tabs.Lazy>
+            <About gene={gene} />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
 }
@@ -78,10 +94,12 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<GeneQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
           gene(id: $geneID) {
+            displayName
+            name
             slug
             ...Header_gene
             ...About_gene
@@ -95,32 +113,53 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       }}
       render={renderWithPlaceholder({
         Container: Gene,
-        renderPlaceholder: () => <GenePlaceholder />,
+        renderPlaceholder: () => <GeneSkeleton />,
         initialProps: { geneID },
       })}
     />
   )
 }
 
-interface Styles {
-  container: ViewStyle
-  header: ViewStyle
-}
+export const GeneSkeleton: React.FC = () => {
+  return (
+    <Screen>
+      <Screen.Header />
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex px={2}>
+            <SkeletonText variant="xl">Some Gene</SkeletonText>
 
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flex: 1,
-  },
-  header: {
-    backgroundColor: "white",
-    paddingLeft: commonPadding,
-    paddingRight: commonPadding,
-    marginBottom: 10,
-    ...(isPad
-      ? {
-          width: 330,
-          alignSelf: "center",
-        }
-      : {}),
-  },
-})
+            <Box mt={2}>
+              <SkeletonBox width="100%" height={30} />
+            </Box>
+          </Flex>
+          <Flex>
+            <Spacer y={2} />
+
+            {/* Tabs */}
+            <Flex justifyContent="space-around" flexDirection="row" px={2}>
+              <SkeletonText variant="xs">Works</SkeletonText>
+              <SkeletonText variant="xs">About</SkeletonText>
+            </Flex>
+
+            <Separator mt={1} mb={2} />
+
+            <Flex justifyContent="space-between" flexDirection="row" px={2}>
+              <SkeletonText variant="xs">Sort and Filter</SkeletonText>
+            </Flex>
+
+            <Separator my={2} />
+
+            <SkeletonText mx={2} variant="xs">
+              Showing 57326 works
+            </SkeletonText>
+
+            <Spacer y={2} />
+
+            <PlaceholderGrid />
+          </Flex>
+        </Skeleton>
+      </Screen.Body>
+    </Screen>
+  )
+}

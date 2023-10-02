@@ -1,7 +1,8 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { produce } from "immer-peasy"
+import { produce, setAutoFreeze } from "immer"
 import { Platform } from "react-native"
 
 /**
@@ -46,9 +47,13 @@ export const Versions = {
   MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
   AddCategoryToSubmissionArtworkDetails: 35,
   AddOnboardingArtQuizStateToAuthModel: 36,
+  AddPushPromptStateToAuthModel: 37,
+  AddUserPreferredArtistsView: 38,
+  AddPushPromptLogicModel: 39,
+  AddProgressiveOnboardingModel: 40,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddOnboardingArtQuizStateToAuthModel
+export const CURRENT_APP_VERSION = Versions.AddProgressiveOnboardingModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -271,6 +276,32 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddOnboardingArtQuizStateToAuthModel]: (state) => {
     state.auth.onboardingArtQuizState = "none"
   },
+  [Versions.AddPushPromptStateToAuthModel]: (state) => {
+    state.auth.requestedPushPermissionsThisSession = false
+  },
+  [Versions.AddUserPreferredArtistsView]: (state) => {
+    state.userPrefs.artistViewOption = DEFAULT_VIEW_OPTION
+  },
+  [Versions.AddPushPromptLogicModel]: (state) => {
+    delete state.auth.requestedPushPermissionsThisSession
+    state.artsyPrefs.pushPromptLogic = {
+      pushNotificationSystemDialogRejected: false,
+      pushNotificationDialogLastSeenTimestamp: null,
+      pushNotificationSettingsPromptSeen: false,
+      pushNotificationSystemDialogSeen: false,
+      pushPermissionsRequestedThisSession: false,
+    }
+  },
+  [Versions.AddProgressiveOnboardingModel]: (state) => {
+    state.progressiveOnboarding = {
+      dismissed: [
+        ...state.visualClue.seenVisualClues.map((clue: string) => ({
+          key: clue,
+          timestamp: Date.now(),
+        })),
+      ],
+    }
+  },
 }
 
 export function migrate<State extends { version: number }>({
@@ -284,6 +315,8 @@ export function migrate<State extends { version: number }>({
 }): {
   version: number
 } {
+  setAutoFreeze(false)
+
   if (typeof state.version !== "number") {
     throw new Error("Bad state.version " + JSON.stringify(state))
   }
@@ -296,5 +329,7 @@ export function migrate<State extends { version: number }>({
     state = produce(state, migrator)
     state.version = nextVersion
   }
+
+  setAutoFreeze(true)
   return state
 }

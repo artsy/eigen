@@ -131,7 +131,7 @@ export class Event extends React.Component<Props, State> {
       <ClassTheme>
         {({ color }) => (
           <TouchableWithoutFeedback onPress={() => this.handleTap()}>
-            <Box mb={2} px={2}>
+            <Box mb={2}>
               {!!url && (
                 <Box mb={2}>
                   <OpaqueImageView imageURL={url} height={145} />

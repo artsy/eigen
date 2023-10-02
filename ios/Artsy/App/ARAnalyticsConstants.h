@@ -7,14 +7,8 @@ extern NSString *const ARAnalyticsAppUsageCountProperty;
 
 // Notifications
 
-extern NSString *const ARAnalyticsEnabledNotificationsProperty;
 extern NSString *const ARAnalyticsNotificationReceived;
 extern NSString *const ARAnalyticsNotificationTapped;
-extern NSString *const ARAnalyticsPushNotificationsRequested;
-
-// Universal Links
-
-extern NSString *const ARAnalyticsDeepLinkOpened;
 
 // Push notifications
 

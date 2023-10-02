@@ -45,12 +45,9 @@ export const About: React.FC = () => {
   return (
     <PageWithSimpleHeader title="About">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem title="Terms of Use" onPress={() => navigate("/terms", { modal: true })} />
-        <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
-        <MenuItem
-          title="Conditions of Sale"
-          onPress={() => navigate("/conditions-of-sale", { modal: true })}
-        />
+        <MenuItem title="Terms of Use" onPress={() => navigate("/terms")} />
+        <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
+        <MenuItem title="Conditions of Sale" onPress={() => navigate("/conditions-of-sale")} />
         <MenuItem
           title="Version"
           text={appVersion}

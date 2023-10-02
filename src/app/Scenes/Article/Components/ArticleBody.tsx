@@ -1,8 +1,10 @@
+import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { ArticleBody_article$key } from "__generated__/ArticleBody_article.graphql"
-import { ArticleByline } from "app/Scenes/Article/Components/ArticleByline"
+import { FONTS, HTML } from "app/Components/HTML"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
-import { ArticleNewsSource } from "app/Scenes/Article/Components/ArticleNewsSource"
-import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
+import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
+import { ArticleSectionText } from "app/Scenes/Article/Components/Sections/ArticleSectionText"
+import { Fragment } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -11,21 +13,52 @@ interface ArticleBodyProps {
 }
 
 export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
-  const articleData = useFragment(ArticleBodyQuery, article)
+  const data = useFragment(ArticleBodyQuery, article)
+  const color = useColor()
 
   return (
     <>
-      <ArticleHero article={articleData} />
-      <ArticleByline article={articleData} />
-      <ArticleNewsSource article={articleData} />
+      <ArticleHero article={data} />
 
-      {articleData.sections.map((section, index) => {
+      <Spacer y={2} />
+
+      {data.sections.map((section, index) => {
         return (
-          <>
-            <ArticleSection key={index} section={section} />
-          </>
+          <Fragment key={`articleBodySection-${index}`}>
+            <ArticleSectionImageCollection section={section} />
+            <ArticleSectionText
+              section={section}
+              internalID={data.internalID}
+              slug={data.slug ?? ""}
+              px={2}
+            />
+          </Fragment>
         )
       })}
+      {!!data.authors &&
+        data.authors.map((author) => {
+          return (
+            <Flex m={2} key={author.name}>
+              <Text color="black60">{author.name}</Text>
+              <Text variant="xs" color="black60">
+                {author.bio}
+              </Text>
+            </Flex>
+          )
+        })}
+      {!!data.postscript && (
+        <Flex m={2}>
+          <HTML
+            html={data.postscript}
+            tagStyles={{
+              p: {
+                color: color("black60"),
+                fontFamily: FONTS.italic,
+              },
+            }}
+          />
+        </Flex>
+      )}
     </>
   )
 }
@@ -33,39 +66,17 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
 const ArticleBodyQuery = graphql`
   fragment ArticleBody_article on Article {
     ...ArticleHero_article
-    ...ArticleByline_article
-    ...ArticleNewsSource_article
-    hero {
-      __typename
-    }
-    seriesArticle {
-      thumbnailTitle
-      href
-    }
-    vertical
-    byline
-    internalID
-    slug
-    layout
-    leadParagraph
-    title
-    href
-    publishedAt
+
     sections {
-      ...ArticleSection_section
+      ...ArticleSectionImageCollection_section
+      ...ArticleSectionText_section
     }
     postscript
-    relatedArticles {
-      internalID
-      title
-      href
-      byline
-      thumbnailImage {
-        cropped(width: 100, height: 100) {
-          src
-          srcSet
-        }
-      }
+    authors {
+      name
+      bio
     }
+    internalID
+    slug
   }
 `

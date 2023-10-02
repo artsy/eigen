@@ -1,97 +1,109 @@
-import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Box, Flex, HeartFillIcon, HeartIcon, Spacer, Text, TextProps } from "@artsy/palette-mobile"
+import { tappedMainArtworkGrid } from "@artsy/cohesion"
+import {
+  Box,
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+  TextProps,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
-  PlaceholderBox,
-  PlaceholderRaggedText,
-  RandomNumberGenerator,
-} from "app/utils/placeholders"
-import { Touchable } from "@artsy/palette-mobile"
-import React, { useRef } from "react"
+  ArtworkActionTrackingProps,
+  tracks as artworkActionTracks,
+} from "app/utils/track/ArtworkActions"
+import React, { useRef, useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
-
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps extends Partial<PageableRouteProps> {
+export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
-  /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string) => void
-  trackingFlow?: string
-  contextModule?: string
-  /** Pass Tap to override generic ing, used for home tracking in rails */
-  trackTap?: (artworkSlug: string, index?: number) => void
-  itemIndex?: number
-  // By default, we don't track clicks from the grid unless you pass in a contextScreenOwnerType.
-  contextScreenOwnerType?: ScreenOwnerType
-  contextScreenOwnerId?: string
-  contextScreenOwnerSlug?: string
-  contextScreenQuery?: string
-  contextScreen?: string
-  /** Hide urgency tags (3 Days left, 1 hour left) */
-  hideUrgencyTags?: boolean
+  /** styles for each field: allows for customization of each field */
+  artistNamesTextStyle?: TextProps
+  disableArtworksListPrompt?: boolean
+  /** Hide sale info */
+  height?: number
   /** Hide partner name */
   hidePartner?: boolean
-  /** Hide sale info */
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  height?: number
+  /** Hide urgency tags (3 Days left, 1 hour left) */
+  hideUrgencyTags?: boolean
+  /** Pass Tap to override generic ing, used for home tracking in rails */
+  itemIndex?: number
+  lotLabelTextStyle?: TextProps
+  /** Overrides onPress and prevents the default behaviour. */
+  onPress?: (artworkID: string) => void
+  partnerNameTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
-  /** styles for each field: allows for customization of each field */
-  urgencyTagTextStyle?: TextProps
-  lotLabelTextStyle?: TextProps
-  artistNamesTextStyle?: TextProps
   titleTextStyle?: TextProps
-  saleInfoTextStyle?: TextProps
-  partnerNameTextStyle?: TextProps
+  trackTap?: (artworkSlug: string, index?: number) => void
+  trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
+  urgencyTagTextStyle?: TextProps
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
+  artistNamesTextStyle,
   artwork,
-  onPress,
-  navigateToPageableRoute,
-  trackTap,
-  itemIndex,
-  height,
+  contextModule,
+  contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   contextScreenQuery,
-  contextScreen,
-  hideUrgencyTags = false,
+  disableArtworksListPrompt = false,
+  height,
   hidePartner = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  showLotLabel = false,
-  urgencyTagTextStyle,
+  hideUrgencyTags = false,
+  itemIndex,
   lotLabelTextStyle,
-  artistNamesTextStyle,
-  titleTextStyle,
-  saleInfoTextStyle,
+  navigateToPageableRoute,
+  onPress,
   partnerNameTextStyle,
+  saleInfoTextStyle,
+  showLotLabel = false,
+  titleTextStyle,
+  trackTap,
   updateRecentSearchesOnTap = false,
+  urgencyTagTextStyle,
 }) => {
   const itemRef = useRef<any>()
+  const color = useColor()
   const tracking = useTracking()
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
+  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   let filterParams: any = undefined
 
@@ -129,12 +141,33 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const { id, internalID, isSaved } = artwork
+  const onArtworkSavedOrUnSaved = (saved: boolean) => {
+    const { availability, isAcquireable, isBiddable, isInquireable, isOfferable } = artwork
+    const params = {
+      acquireable: isAcquireable,
+      availability,
+      biddable: isBiddable,
+      context_module: contextModule,
+      context_screen: contextScreen,
+      context_screen_owner_id: contextScreenOwnerId,
+      context_screen_owner_slug: contextScreenOwnerSlug,
+      context_screen_owner_type: contextScreenOwnerType,
+      inquireable: isInquireable,
+      offerable: isOfferable,
+    }
+    tracking.trackEvent(artworkActionTracks.saveOrUnsaveArtwork(saved, params))
+  }
+
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
+    onCompleted: onArtworkSavedOrUnSaved,
+  })
 
   const handleArtworkSave = useSaveArtwork({
-    id,
-    internalID,
-    isSaved,
+    id: artwork.id,
+    internalID: artwork.internalID,
+    isSaved: artwork.isSaved,
+    onCompleted: onArtworkSavedOrUnSaved,
   })
 
   const handleTap = () => {
@@ -180,149 +213,177 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
-    <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
-      <View ref={itemRef}>
-        {!!artwork.image && (
-          <View>
-            {enableNewOpaqueImageView ? (
-              <NewOpaqueImageView
-                aspectRatio={artwork.image?.aspectRatio ?? 1}
-                imageURL={artwork.image?.url}
-                height={height}
-              />
-            ) : (
-              <OpaqueImageView
-                aspectRatio={artwork.image?.aspectRatio ?? 1}
-                imageURL={artwork.image?.url}
-              />
+    <>
+      <ContextMenuArtwork
+        contextModule={contextModule}
+        contextScreenOwnerType={contextScreenOwnerType}
+        onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+        artwork={artwork}
+      >
+        <Touchable
+          haptic
+          underlayColor={color("white100")}
+          activeOpacity={0.8}
+          onPress={handleTap}
+          testID={`artworkGridItem-${artwork.title}`}
+        >
+          <View ref={itemRef}>
+            {!!artwork.image && (
+              <View>
+                <NewOpaqueImageView
+                  aspectRatio={artwork.image?.aspectRatio ?? 1}
+                  imageURL={artwork.image?.url}
+                  height={height}
+                />
+                {Boolean(
+                  !hideUrgencyTags &&
+                    urgencyTag &&
+                    artwork?.sale?.isAuction &&
+                    !artwork?.sale?.isClosed
+                ) && (
+                  <Flex
+                    position="absolute"
+                    bottom="5px"
+                    left="5px"
+                    backgroundColor="white"
+                    px="5px"
+                    py="3px"
+                    borderRadius={2}
+                    alignSelf="flex-start"
+                  >
+                    <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                      {urgencyTag}
+                    </Text>
+                  </Flex>
+                )}
+              </View>
             )}
-            {Boolean(
-              !hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed
-            ) && (
-              <Flex
-                position="absolute"
-                bottom="5px"
-                left="5px"
-                backgroundColor="white"
-                px="5px"
-                py="3px"
-                borderRadius={2}
-                alignSelf="flex-start"
-              >
-                <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                  {urgencyTag}
-                </Text>
+            {!!canShowAuctionProgressBar && (
+              <Box mt={1}>
+                <DurationProvider startAt={endsAt ?? undefined}>
+                  <LotProgressBar
+                    duration={null}
+                    startAt={artwork.sale?.startAt}
+                    extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                    extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                    biddingEndAt={endsAt}
+                    hasBeenExtended={lotSaleExtended}
+                  />
+                </DurationProvider>
+              </Box>
+            )}
+            <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+              <Flex flex={1}>
+                {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+                  <>
+                    <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                      Lot {artwork.saleArtwork.lotLabel}
+                    </Text>
+                    {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+                      <DurationProvider startAt={endsAt ?? undefined}>
+                        <LotCloseInfo
+                          duration={null}
+                          saleArtwork={artwork.saleArtwork}
+                          sale={artwork.sale}
+                          lotEndAt={endsAt ?? undefined}
+                          hasBeenExtended={lotSaleExtended}
+                        />
+                      </DurationProvider>
+                    )}
+                  </>
+                )}
+                {!!artwork.artistNames && (
+                  <Text
+                    lineHeight="18px"
+                    weight="regular"
+                    variant="xs"
+                    numberOfLines={1}
+                    {...artistNamesTextStyle}
+                  >
+                    {artwork.artistNames}
+                  </Text>
+                )}
+                {!!artwork.title && (
+                  <Text
+                    lineHeight="18px"
+                    variant="xs"
+                    weight="regular"
+                    color="black60"
+                    numberOfLines={1}
+                    {...titleTextStyle}
+                  >
+                    <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                      {artwork.title}
+                    </Text>
+                    {artwork.date ? `, ${artwork.date}` : ""}
+                  </Text>
+                )}
+                {!hidePartner && !!artwork.partner?.name && (
+                  <Text
+                    variant="xs"
+                    lineHeight="18px"
+                    color="black60"
+                    numberOfLines={1}
+                    {...partnerNameTextStyle}
+                  >
+                    {artwork.partner.name}
+                  </Text>
+                )}
+                {!!saleInfo && !hideSaleInfo && (
+                  <Text
+                    lineHeight="18px"
+                    variant="xs"
+                    weight="medium"
+                    numberOfLines={1}
+                    {...saleInfoTextStyle}
+                  >
+                    {saleInfo}
+                  </Text>
+                )}
               </Flex>
-            )}
-          </View>
-        )}
-        {!!canShowAuctionProgressBar && (
-          <Box mt={1}>
-            <DurationProvider startAt={endsAt ?? undefined}>
-              <LotProgressBar
-                duration={null}
-                startAt={artwork.sale?.startAt}
-                extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
-                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                biddingEndAt={endsAt}
-                hasBeenExtended={lotSaleExtended}
-              />
-            </DurationProvider>
-          </Box>
-        )}
-        <Flex flexDirection="row" justifyContent="space-between" mt={1}>
-          <Flex flex={1}>
-            {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-              <>
-                <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                  Lot {artwork.saleArtwork.lotLabel}
-                </Text>
-                {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
-                  <DurationProvider startAt={endsAt ?? undefined}>
-                    <LotCloseInfo
-                      duration={null}
-                      saleArtwork={artwork.saleArtwork}
-                      sale={artwork.sale}
-                      lotEndAt={endsAt ?? undefined}
-                      hasBeenExtended={lotSaleExtended}
-                    />
-                  </DurationProvider>
-                )}
-              </>
-            )}
-            {!!artwork.artistNames && (
-              <Text
-                lineHeight="18px"
-                weight="regular"
-                variant="xs"
-                numberOfLines={1}
-                {...artistNamesTextStyle}
-              >
-                {artwork.artistNames}
-              </Text>
-            )}
-            {!!artwork.title && (
-              <Text
-                lineHeight="18px"
-                variant="xs"
-                weight="regular"
-                color="black60"
-                numberOfLines={1}
-                {...titleTextStyle}
-              >
-                <Text lineHeight="18px" variant="xs" weight="regular" italic>
-                  {artwork.title}
-                </Text>
-                {artwork.date ? `, ${artwork.date}` : ""}
-              </Text>
-            )}
-            {!hidePartner && !!artwork.partner?.name && (
-              <Text
-                variant="xs"
-                lineHeight="18px"
-                color="black60"
-                numberOfLines={1}
-                {...partnerNameTextStyle}
-              >
-                {artwork.partner.name}
-              </Text>
-            )}
-            {!!saleInfo && !hideSaleInfo && (
-              <Text
-                lineHeight="18px"
-                variant="xs"
-                weight="medium"
-                numberOfLines={1}
-                {...saleInfoTextStyle}
-              >
-                {saleInfo}
-              </Text>
-            )}
-          </Flex>
-          {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
-            <Flex>
-              <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
-                {artwork.isSaved ? (
-                  <HeartFillIcon
-                    testID="filled-heart-icon"
-                    height={SAVE_ICON_SIZE}
-                    width={SAVE_ICON_SIZE}
-                    fill="blue100"
-                  />
-                ) : (
-                  <HeartIcon
-                    testID="empty-heart-icon"
-                    height={SAVE_ICON_SIZE}
-                    width={SAVE_ICON_SIZE}
-                  />
-                )}
-              </Touchable>
+              {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
+                <Flex>
+                  <Touchable
+                    haptic
+                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                    testID="save-artwork-icon"
+                  >
+                    <ArtworkHeartIcon isSaved={isSaved} index={itemIndex} />
+                  </Touchable>
+                </Flex>
+              )}
             </Flex>
-          )}
-        </Flex>
-      </View>
-    </Touchable>
+          </View>
+        </Touchable>
+      </ContextMenuArtwork>
+
+      <CreateArtworkAlertModal
+        artwork={artwork}
+        onClose={() => setShowCreateArtworkAlertModal(false)}
+        visible={showCreateArtworkAlertModal}
+      />
+    </>
   )
+}
+
+const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
+  isSaved,
+  index,
+}) => {
+  const iconProps = { height: SAVE_ICON_SIZE, width: SAVE_ICON_SIZE, testID: "empty-heart-icon" }
+
+  if (isSaved) {
+    return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
+  }
+  if (index === 0) {
+    // We only try to show the save onboard Popover in the 1st element
+    return (
+      <ProgressiveOnboardingSaveArtwork>
+        <HeartIcon {...iconProps} />
+      </ProgressiveOnboardingSaveArtwork>
+    )
+  }
+  return <HeartIcon {...iconProps} />
 }
 
 /**
@@ -389,13 +450,28 @@ export const saleMessageOrBidInfo = ({
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment ArtworkGridItem_artwork on Artwork
-    @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
+    @argumentDefinitions(
+      includeAllImages: { type: "Boolean", defaultValue: false }
+      width: { type: "Int" }
+    ) {
+      ...CreateArtworkAlertModal_artwork
+      availability
       title
       date
       saleMessage
       slug
+      artists(shallow: true) {
+        name
+      }
+      widthCm
+      heightCm
+      isHangable
       id
       internalID
+      isAcquireable
+      isBiddable
+      isInquireable
+      isOfferable
       isSaved
       artistNames
       href
@@ -428,8 +504,15 @@ export default createFragmentContainer(Artwork, {
       image(includeAll: $includeAllImages) {
         url(version: "large")
         aspectRatio
+        resized(width: $width) {
+          src
+          srcSet
+          width
+          height
+        }
       }
       realizedPrice
+      ...useSaveArtworkToArtworkLists_artwork
     }
   `,
 })
@@ -438,11 +521,15 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   seed = Math.random(),
 }) => {
   const rng = new RandomNumberGenerator(seed)
+
   return (
-    <Flex>
-      <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
+    <Skeleton>
+      <SkeletonBox height={rng.next({ from: 50, to: 150 })} width="100%" />
       <Spacer y={1} />
-      <PlaceholderRaggedText seed={rng.next()} numLines={2} />
-    </Flex>
+      <SkeletonText variant="xs">Artwork Title</SkeletonText>
+      <SkeletonText variant="xs" mt={0.5}>
+        Artwork Description
+      </SkeletonText>
+    </Skeleton>
   )
 }

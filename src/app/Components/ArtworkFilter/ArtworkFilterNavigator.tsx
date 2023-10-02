@@ -1,16 +1,16 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import {
-  changedFiltersParams,
   FilterArray,
-  filterArtworksParams,
   FilterParamName,
   FilterParams,
-  getUnitedSelectedAndAppliedFilters,
   ParamDefaultValues,
+  changedFiltersParams,
+  filterArtworksParams,
+  getUnitedSelectedAndAppliedFilters,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
@@ -38,8 +38,8 @@ import { useEffect, useState } from "react"
 import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import {
-  ArtworkFilterOptionsScreen,
   FilterModalMode as ArtworkFilterMode,
+  ArtworkFilterOptionsScreen,
 } from "./ArtworkFilterOptionsScreen"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
@@ -107,7 +107,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   const savedSearchEntity: SavedSearchEntity = {
-    placeholder: name!,
     artists: [{ id: id!, name: name! }],
     owner: {
       type: OwnerType.artist,

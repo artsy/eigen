@@ -3,6 +3,7 @@ import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlig
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Suspense, useState } from "react"
@@ -15,7 +16,6 @@ import {
 } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import {
   CareerHighlightBigCardBiennial,
   CareerHighlightBigCardCollected,

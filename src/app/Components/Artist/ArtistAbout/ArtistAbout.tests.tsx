@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
-import Biography from "app/Components/Artist/Biography"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { Biography } from "app/Components/Artist/Biography"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -12,14 +11,7 @@ describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
     Component: ({ artist }) => (
       <ModalStack>
-        <StickyTabPage
-          tabs={[
-            {
-              title: "test",
-              content: <ArtistAboutContainer artist={artist!} />,
-            },
-          ]}
-        />
+        <ArtistAboutContainer artist={artist!} />
       </ModalStack>
     ),
     query: graphql`
@@ -35,9 +27,9 @@ describe("ArtistAbout", () => {
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
       renderWithRelay({
-        Boolean: (context) => {
-          if (context.name === "hasMetadata") {
-            return true
+        ArtistBlurb: () => {
+          return {
+            text: "a biography",
           }
         },
       })
@@ -47,9 +39,9 @@ describe("ArtistAbout", () => {
 
     it("is hidden when the artist has metadata", () => {
       renderWithRelay({
-        Boolean: (context) => {
-          if (context.name === "hasMetadata") {
-            return false
+        ArtistBlurb: () => {
+          return {
+            text: "",
           }
         },
       })
@@ -63,6 +55,24 @@ describe("ArtistAbout", () => {
       renderWithRelay()
 
       expect(screen.UNSAFE_queryByType(ArtistAboutShowsFragmentContainer)).toBeTruthy()
+    })
+  })
+
+  describe("ArtistAboutEditorial", () => {
+    it("renders editorial section", () => {
+      renderWithRelay({
+        Artist: () => ({ name: "Andy Warhol" }),
+      })
+
+      expect(screen.getByText("Artsy Editorial Featuring Andy Warhol")).toBeOnTheScreen()
+    })
+
+    it("does not render when there are no articles", () => {
+      renderWithRelay({
+        ArticleConnection: () => ({ edges: null }),
+      })
+
+      expect(screen.queryByText(/Artsy Editorial Featuring/)).not.toBeOnTheScreen()
     })
   })
 })

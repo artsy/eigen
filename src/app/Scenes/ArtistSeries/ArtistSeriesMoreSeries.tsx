@@ -40,10 +40,6 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   const totalCount =
     Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
 
-  if (!artist || series.length === 0) {
-    return null
-  }
-
   // We are saving the artist series to the state here because we face a weird
   // issue where this list gets updated whenever the user navigates to the ArtistsSeries
   useEffect(() => {
@@ -52,8 +48,12 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
 
   const { trackEvent } = useTracking()
 
+  if (!artist || series.length === 0) {
+    return null
+  }
+
   return (
-    <Flex {...rest}>
+    <Flex {...rest} px={2}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant={headerVariant} testID="header">
           {artistSeriesHeader}
@@ -65,7 +65,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Text variant="sm-display" testID="viewAll">{`View All (${totalCount})`}</Text>
+            <Text variant="xs" underline testID="viewAll">{`View All (${totalCount})`}</Text>
           </TouchableOpacity>
         )}
       </Flex>

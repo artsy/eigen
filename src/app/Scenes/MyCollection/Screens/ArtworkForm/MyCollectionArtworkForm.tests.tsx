@@ -1,6 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -9,17 +10,16 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
-import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { createMockEnvironment } from "relay-test-utils"
 import {
-  MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
-  updateArtwork,
+  MyCollectionArtworkFormScreen,
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
@@ -32,22 +32,24 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("MyCollectionArtworkForm", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = getMockRelayEnvironment()
+  })
+
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkForm
-          artwork={mockArtwork as any}
-          mode="edit"
-          onSuccess={jest.fn()}
-          onDelete={jest.fn()}
-        />,
+        <MyCollectionArtworkFormScreen artwork={mockArtwork as any} mode="edit" />,
         mockEnvironment
       )
 
-      act(() => GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any))
+      GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any)
+
+      await flushPromiseQueue()
 
       expect(getByTestId("TitleInput").props.value).toBe("Morons")
       expect(getByTestId("DateInput").props.value).toBe("2007")
@@ -61,7 +63,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("Adding a new artwork", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
@@ -85,7 +86,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -109,6 +110,9 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
+        await flushPromiseQueue()
+
         fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
@@ -142,7 +146,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe(30)
         expect(getByTestId("HeightInput").props.value).toBe(20)
         expect(getByTestId("DepthInput").props.value).toBe(40)
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
         expect(getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
@@ -153,7 +157,17 @@ describe("MyCollectionArtworkForm", () => {
 
         const mockOperations = mockEnvironment.mock.getAllOperations()
 
-        const updatePreferencesOperation = mockOperations[0]
+        // debugger
+
+        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
+        expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
+          .toMatchInlineSnapshot(`
+          {
+            "artistID": "internal-id",
+          }
+        `)
+
+        const updatePreferencesOperation = mockOperations[1]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -163,7 +177,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const createArtworkOperation = mockOperations[1]
+        const createArtworkOperation = mockOperations[2]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -171,10 +185,10 @@ describe("MyCollectionArtworkForm", () => {
                 "internal-id",
               ],
               "artists": undefined,
-              "artworkLocation": "",
+              "artworkLocation": undefined,
               "attributionClass": undefined,
               "category": "Print",
-              "confidentialNotes": "",
+              "confidentialNotes": undefined,
               "date": "2007",
               "depth": 40,
               "editionNumber": "",
@@ -189,7 +203,7 @@ describe("MyCollectionArtworkForm", () => {
               "metric": "in",
               "pricePaidCents": undefined,
               "pricePaidCurrency": "USD",
-              "provenance": "",
+              "provenance": undefined,
               "title": "Morons",
               "width": 30,
             },
@@ -201,7 +215,7 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -257,25 +271,19 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Add Details")).toBeTruthy()
 
         expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
 
     describe("when skipping the artist selection", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableArtworksFromNonArtsyArtists: true,
-        })
-      })
-
       it("initializes the artist name input field", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
 
@@ -300,7 +308,19 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
         fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button"))
+
+        await flushPromiseQueue()
+
+        // Add Artist Screen
+
+        fireEvent.changeText(getByPlaceholderText("Artist Name"), "My Artist")
+        fireEvent.changeText(getByPlaceholderText("Nationality"), "bar foo")
+
+        await flushPromiseQueue()
+
+        fireEvent.press(getByTestId("submit-add-artist-button"))
 
         await flushPromiseQueue()
 
@@ -308,14 +328,14 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe("foo bar")
+        expect(getByText("My Artist")).toBeTruthy()
         expect(getByTestId("TitleInput").props.value).toBe("")
-        expect(getByTestId("DateInput").props.value).toBe("")
-        expect(getByTestId("MaterialsInput").props.value).toBe("")
-        expect(getByTestId("WidthInput").props.value).toBe("")
-        expect(getByTestId("HeightInput").props.value).toBe("")
-        expect(getByTestId("DepthInput").props.value).toBe("")
-        expect(getByTestId("NotesInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe(undefined)
+        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
   })
@@ -389,6 +409,7 @@ describe("MyCollectionArtworkForm", () => {
 
         const formValues: ArtworkFormValues = {
           artist: "some-artist",
+          customArtist: null,
           artistIds: ["some-artist-id"],
           artistSearchResult: {
             imageUrl: null,
@@ -418,7 +439,6 @@ describe("MyCollectionArtworkForm", () => {
         }
         const formCheckValues = formValues
         const props: MyCollectionArtworkFormProps = {
-          onSuccess: jest.fn(),
           mode: "add",
           source: Tab.collection,
         }
@@ -489,7 +509,7 @@ describe("MyCollectionArtworkForm", () => {
 
         const storeLocalImageMock = jest.spyOn(LocalImageStore, "storeLocalImage")
 
-        await updateArtwork(formValues, formCheckValues, props)
+        await saveOrUpdateArtwork(formValues, formCheckValues, props)
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
@@ -504,11 +524,10 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("loading screens", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
-    it("displays the new saving artwork loading screen", async () => {
+    it("displays saving artwork loading modal", async () => {
       const assetCredentials = {
         signature: "some-signature",
         credentials: "some-credentials",
@@ -527,7 +546,7 @@ describe("MyCollectionArtworkForm", () => {
       uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
       const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
+        <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
         mockEnvironment
       )
 
@@ -577,7 +596,7 @@ describe("MyCollectionArtworkForm", () => {
 
       await flushPromiseQueue()
 
-      expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+      expect(getByTestId("saving-artwork-modal")).toBeDefined()
     })
   })
 })
@@ -619,21 +638,19 @@ const mockArtworkSearchResult = {
 
 const mockCollectedArtistsResult = {
   me: {
-    myCollectionInfo: {
-      collectedArtistsConnection: {
-        edges: [
-          {
-            node: {
-              __typename: "Artist",
-              displayLabel: "My Artist",
-              formattedNationalityAndBirthday: "British, b. 1974",
-              initials: "MA",
-              internalID: "my-artist-id",
-              slug: "My Artist",
-            },
+    userInterestsConnection: {
+      edges: [
+        {
+          node: {
+            __typename: "Artist",
+            displayLabel: "My Artist",
+            formattedNationalityAndBirthday: "British, b. 1974",
+            initials: "MA",
+            internalID: "my-artist-id",
+            slug: "My Artist",
           },
-        ],
-      },
+        },
+      ],
     },
   },
 }

@@ -13,8 +13,9 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
@@ -128,7 +129,7 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(
 export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (
     <QueryRenderer<FairAllFollowedArtistsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairAllFollowedArtistsQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

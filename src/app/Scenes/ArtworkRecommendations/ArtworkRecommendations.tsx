@@ -2,11 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsQuery } from "__generated__/ArtworkRecommendationsQuery.graphql"
 import { ArtworkRecommendations_me$key } from "__generated__/ArtworkRecommendations_me.graphql"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -35,21 +36,18 @@ export const ArtworkRecommendations: React.FC = () => {
       info={screen({ context_screen_owner_type: OwnerType.artworkRecommendations })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        {artworks.length ? (
-          <InfiniteScrollArtworksGridContainer
-            connection={data?.artworkRecommendations}
-            loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
-            hasMore={() => hasNext}
-            isLoading={() => isLoadingNext}
-            pageSize={PAGE_SIZE}
-            contextScreenOwnerType={OwnerType.artworkRecommendations}
-            HeaderComponent={<Spacer y={2} />}
-            shouldAddPadding
-            refreshControl={RefreshControl}
-          />
-        ) : (
-          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-        )}
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          contextScreenOwnerType={OwnerType.artworkRecommendations}
+          contextScreen={OwnerType.artworkRecommendations}
+          ListEmptyComponent={
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+          }
+          refreshControl={RefreshControl}
+          hasMore={hasNext}
+          loadMore={() => loadNext(PAGE_SIZE)}
+          isLoading={isLoadingNext}
+        />
       </PageWithSimpleHeader>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -76,10 +74,14 @@ const artworkConnectionFragment = graphql`
       edges {
         cursor
         node {
-          internalID
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
       }
-      ...InfiniteScrollArtworksGrid_connection
     }
   }
 `

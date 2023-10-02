@@ -1,7 +1,7 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { Severity, addBreadcrumb } from "@sentry/react-native"
-import { AppModule, modules, ViewOptions } from "app/AppRegistry"
+import { addBreadcrumb } from "@sentry/react-native"
+import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
@@ -46,7 +46,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     message: `navigate to ${url}`,
     category: "navigation",
     data: { url, options },
-    level: Severity.Info,
+    level: "info",
   })
 
   // handle artsy:// urls, we can just remove it
@@ -144,11 +144,15 @@ export const navigationEvents = new EventEmitter()
 export function switchTab(tab: BottomTabType, props?: object) {
   // root tabs are only mounted once so cannot be tracked
   // like other screens manually track screen views here
-  postEventToProviders(tracks.tabScreenView(tab))
+  // home handles this on its own since it is default tab
+  if (tab !== "home") {
+    postEventToProviders(tracks.tabScreenView(tab))
+  }
 
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
+  GlobalStore.actions.bottomTabs.setSelectedTab(tab)
   LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
   saveDevNavigationStateSelectedTab(tab)
 }
@@ -217,8 +221,10 @@ export enum SlugType {
   FairID = "fairID",
 }
 
-export function navigateToPartner(slug: string) {
-  navigate(slug, { passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID } })
+export function navigateToPartner(href: string) {
+  navigate(href, {
+    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+  })
 }
 
 /**

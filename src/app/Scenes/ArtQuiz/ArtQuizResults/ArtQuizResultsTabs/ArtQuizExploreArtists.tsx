@@ -1,6 +1,7 @@
+import { Tabs } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtists_artworks$key } from "__generated__/ArtQuizExploreArtists_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+
 import { ArtQuizArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizArtist"
 import { graphql, useFragment } from "react-relay"
 
@@ -14,23 +15,22 @@ export const ArtQuizExploreArtists = ({
     savedArtworks
   )
 
-  const artworkSections = artworks.map((artwork) => ({
-    key: artwork.artist?.internalID!,
-    content: <ArtQuizArtist artistData={artwork.artist} />,
-  }))
-
   return (
-    <StickyTabPageFlatList
-      style={{ paddingHorizontal: 0 }}
-      data={artworkSections}
+    <Tabs.FlatList
+      key="ArtQuizExplorArtists"
+      data={artworks}
       initialNumToRender={2}
-      keyExtractor={(item, index) => String(item?.artist?.internalID || index)}
+      renderItem={({ item }) => {
+        return <ArtQuizArtist artistData={item.artist} />
+      }}
+      keyExtractor={(item) => item.internalID as string}
     />
   )
 }
 
 const artQuizExploreArtistsFragment = graphql`
   fragment ArtQuizExploreArtists_artworks on Artwork @relay(plural: true) {
+    internalID
     artist {
       internalID
       ...ArtQuizArtist_artist

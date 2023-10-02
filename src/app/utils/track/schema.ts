@@ -84,6 +84,7 @@ export interface PageView {
 
 export enum PageNames {
   AllArtistSeriesPage = "AllArtistSeries",
+  ArticlePage = "Article",
   ArtistPage = "Artist",
   ArtistSeriesPage = "ArtistSeries",
   ArtworkPage = "Artwork",

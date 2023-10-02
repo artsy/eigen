@@ -4,21 +4,21 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { HeaderButton } from "app/Components/HeaderButton"
-import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
+import { NavigationalTabs, TabsType } from "app/Components/LegacyTabs"
 import { goBack } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { NavigationalTabs, TabsType } from "app/Components/Tabs"
-import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View } from "react-native"
+import React, { useRef, useState } from "react"
+import { FlatList } from "react-native"
 import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
@@ -49,8 +49,7 @@ const tabs: TabsType = [
 ]
 
 export const Fair: React.FC<FairProps> = ({ fair }) => {
-  const { isActive, isReverseImageSearchEnabled } = fair
-  const shouldShowImageSearchButton = isReverseImageSearchEnabled && !!isActive
+  const { isActive } = fair
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
@@ -79,41 +78,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-
-  /*
-  This function is necessary to achieve the effect whereby the sticky tab
-  has the necessary top-padding to avoid the status bar at the top of the screen,
-  BUT does not appear to have that padding when rendered within the list.
-  We achieve that by applying a negative bottom margin to the component
-  directly above the tabs, and applying the same top margin to the tab component.
-
-  The tricky thing is to make sure the top component is on top of the tabs margin!
-  This was only possible by using the `CellRendererComponent` prop on FlatList.
-
-  See https://github.com/facebook/react-native/issues/28751 for more information!
-  */
-  const cellItemRenderer = useCallback(({ index, item, children, ...props }) => {
-    let zIndex
-
-    // These zIndex values are finicky/important. We found that 11 and 20 worked.
-    if (index < stickyIndex) {
-      zIndex = 11
-    } else if (index === stickyIndex) {
-      zIndex = 20
-    }
-    return (
-      <View
-        {...props}
-        key={`${item}`}
-        style={{
-          zIndex,
-          marginBottom: index === stickyIndex - 1 ? -safeAreaInsets.top : undefined,
-        }}
-      >
-        {children}
-      </View>
-    )
-  }, [])
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -172,7 +136,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
-    runOnJS(setShouldHideButtons)(hideButtons)
+    return runOnJS(setShouldHideButtons)(hideButtons)
   })
 
   return (
@@ -195,8 +159,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           stickyHeaderIndices={[stickyIndex]}
           onScroll={scrollHandler}
           scrollEventThrottle={100}
-          // @ts-ignore
-          CellRendererComponent={cellItemRenderer}
           keyboardShouldPersistTaps="handled"
           renderItem={({ item }): null | any => {
             switch (item) {
@@ -273,14 +235,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       <HeaderButton shouldHide={shouldHideButtons} onPress={() => goBack()} position="left">
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
-      <SearchImageHeaderButton
-        isImageSearchButtonVisible={shouldShowImageSearchButton && !shouldHideButtons}
-        owner={{
-          type: OwnerType.fair,
-          id: fair.internalID,
-          slug: fair.slug,
-        }}
-      />
     </ProvideScreenTracking>
   )
 }
@@ -291,7 +245,6 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       internalID
       slug
       isActive
-      isReverseImageSearchEnabled
       articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
         edges {
           __typename
@@ -326,7 +279,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
 export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

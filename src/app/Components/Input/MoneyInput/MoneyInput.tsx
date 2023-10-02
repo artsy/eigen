@@ -1,5 +1,5 @@
 import { Spacer, TriangleDown, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
-import { ThemeV3 } from "@artsy/palette-tokens"
+import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -16,7 +16,7 @@ import { forwardRef, useEffect, useRef, useState } from "react"
 export const MoneyInput = forwardRef<
   InputRef,
   {
-    currencyTextVariant?: keyof ThemeV3["textVariants"]
+    currencyTextVariant?: TextVariant
     initialValues?: { currency?: SupportedCurrencies; amount?: string }
     format?: boolean
     maxModalHeight?: number

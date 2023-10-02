@@ -3,11 +3,15 @@ import {
   ArtsyLogoBlackIcon,
   Box,
   Flex,
+  Join,
   Spacer,
   SpacingUnitDSValueNumber,
-  Join,
 } from "@artsy/palette-mobile"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { useFocusEffect } from "@react-navigation/native"
+import {
+  HomeAboveTheFoldQuery,
+  HomeAboveTheFoldQuery$data,
+} from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
 import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
@@ -17,23 +21,25 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
-import { Search2Query } from "__generated__/Search2Query.graphql"
+import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
+import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
+import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
+import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
 import { AuctionResultsRail } from "app/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
-import { ContentCards } from "app/Scenes/Home/Components/ContentCards"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
+import { GalleriesForYouBanner } from "app/Scenes/Home/Components/GalleriesForYouBanner"
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
@@ -41,20 +47,21 @@ import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAd
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
-import { ShowsRailFragmentContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
-import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
+import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -63,20 +70,14 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { RefreshEvents, HOME_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import React, {
-  createRef,
-  memo,
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
   ListRenderItem,
@@ -86,18 +87,18 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 
 import { useTracking } from "react-tracking"
-import { useContentCards } from "./Components/ContentCards"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
+import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
 
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
-export interface HomeModule {
-  // Used for tracking rail views
-  contextModule?: ContextModule
+export interface HomeModule extends ArtworkActionTrackingProps {
   data: any
   hidden?: boolean
   isEmpty: boolean
@@ -111,28 +112,29 @@ export interface HomeModule {
 
 export interface HomeProps extends ViewProps {
   articlesConnection: Home_articlesConnection$data | null
-  showsByFollowedArtists: Home_showsByFollowedArtists$data | null
   featured: Home_featured$data | null
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
   newWorksForYou: Home_newWorksForYou$data | null
+  notificationsConnection: Home_notificationsConnection$data | null
   loading: boolean
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null
+  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null
 }
 
 const Home = memo((props: HomeProps) => {
+  useDismissSavedArtwork(
+    props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
+  )
   const viewedRails = useRef<Set<string>>(new Set()).current
 
-  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
+  const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
   const tracking = useTracking()
-
-  const { cards } = useContentCards()
 
   const viewabilityConfig = useRef<ViewabilityConfig>({
     // Percent of of the item that is visible for a partially occluded item to count as "viewable"
@@ -142,39 +144,52 @@ const Home = memo((props: HomeProps) => {
   }).current
 
   useEffect(() => {
-    isESOnlySearchEnabled
-      ? prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
-      : prefetchUrl<SearchQuery>("search")
+    prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")
   }, [])
+
+  useEffect(() => {
+    requestPushNotificationsPermission()
+  }, [])
+
+  // we cannot rely on mount events for screens in tab views for screen tracking
+  // because they can be mounted before the screen is visible
+  // do custom screen view instead
+
+  useFocusEffect(
+    useCallback(() => {
+      tracking.trackEvent(HomeAnalytics.homeScreenViewed())
+    }, [])
+  )
 
   const { loading, relay } = props
 
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
-
+  const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
+  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
   )
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const { modules, allModulesKeys } = useHomeModules(props, cards)
+  const { modules, allModulesKeys } = useHomeModules(props)
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       const newVisibleRails = new Set<string>()
 
-      // Track currently visible rails // needed to enabe tracking artwork views
+      // Track currently visible rails // needed to enable tracking artwork views
       if (enableItemViewsTracking) {
         viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
           newVisibleRails.add(title)
         })
 
-        seVisibleRails(newVisibleRails)
+        setVisibleRails(newVisibleRails)
       }
 
       // Track all viewed rails
@@ -196,16 +211,10 @@ const Home = memo((props: HomeProps) => {
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
-  useEffect(() => {
-    RefreshEvents.addListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-
-    return () => {
-      RefreshEvents.removeListener(HOME_SCREEN_REFRESH_KEY, handleRefresh)
-    }
-  }, [])
-
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: HomeModule; index: number }) => {
+      const trackingProps = extractArtworkActionTrackingProps(item)
+
       if (!item.data) {
         return <></>
       }
@@ -214,7 +223,7 @@ const Home = memo((props: HomeProps) => {
         case "marketingCollection":
           return (
             <MarketingCollectionRail
-              contextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+              {...trackingProps}
               contextModuleKey="curators-picks-emerging"
               home={props.homePageAbove}
               marketingCollection={item.data}
@@ -230,8 +239,8 @@ const Home = memo((props: HomeProps) => {
           )
         case "meetYourNewAdvisor":
           return <MeetYourNewAdvisorRail title={item.title} />
-        case "contentCards":
-          return <ContentCards cards={item.data} />
+        case "heroUnits":
+          return <HeroUnitsRail heroUnits={item.data} />
         case "articles":
           return <ArticlesRailFragmentContainer title={item.title} articlesConnection={item.data} />
         case "artist":
@@ -245,6 +254,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -253,6 +263,7 @@ const Home = memo((props: HomeProps) => {
         case "worksByArtistsYouFollow":
           return (
             <ArtworkModuleRailFragmentContainer
+              {...trackingProps}
               title={item.title}
               rail={item.data || null}
               scrollRef={scrollRefs.current[index]}
@@ -261,6 +272,7 @@ const Home = memo((props: HomeProps) => {
         case "artwork-recommendations":
           return (
             <ArtworkRecommendationsRail
+              {...trackingProps}
               title={item.title}
               me={item.data || null}
               isRailVisible={visibleRails.has(item.title)}
@@ -290,11 +302,22 @@ const Home = memo((props: HomeProps) => {
               scrollRef={scrollRefs.current[index]}
             />
           )
+        case "galleriesForYouBanner":
+          return <GalleriesForYouBanner />
+        case "activity":
+          return <ActivityRail title={item.title} notificationsConnection={item.data} />
         case "lotsByFollowedArtists":
-          return <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} />
+          return (
+            <LotsByFollowedArtistsRailContainer
+              title={item.title}
+              me={item.data}
+              cardSize={enableNewSaleArtworkTileRailCard ? "large" : "small"}
+            />
+          )
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
+              {...trackingProps}
               artworkConnection={item.data}
               isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
@@ -318,12 +341,14 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "shows":
-          return <ShowsRailFragmentContainer title={item.title} showsConnection={item.data} />
+          return (
+            <ShowsRailContainer title={item.title} disableLocation={!enableShowsForYouLocation} />
+          )
         case "auction-results":
           return (
             <AuctionResultsRail
               title={item.title}
-              contextModule={item.contextModule}
+              contextModule={item.contextModule!}
               auctionResults={item.data}
             />
           )
@@ -337,58 +362,50 @@ const Home = memo((props: HomeProps) => {
   )
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <AboveTheFoldFlatList<HomeModule>
-          testID="home-flat-list"
-          data={modules}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          prefetchUrlExtractor={(item) => item?.prefetchUrl}
-          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
-          renderItem={renderItem}
-          ListHeaderComponent={<HomeHeader />}
-          ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
-          ItemSeparatorComponent={ModuleSeparator}
-          keyExtractor={(_item) => _item.title}
-        />
-        {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
-      </View>
-    </ProvideScreenTracking>
+    <View style={{ flex: 1 }}>
+      <AboveTheFoldFlatList<HomeModule>
+        testID="home-flat-list"
+        data={modules}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        prefetchUrlExtractor={(item) => item?.prefetchUrl}
+        prefetchVariablesExtractor={(item) => item?.prefetchVariables}
+        renderItem={renderItem}
+        ListHeaderComponent={<HomeHeader />}
+        ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+        ItemSeparatorComponent={ModuleSeparator}
+        keyExtractor={(_item) => _item.key}
+      />
+      {!!props.meAbove && <EmailConfirmationBannerFragmentContainer me={props.meAbove} />}
+    </View>
   )
 })
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
   const [isRefreshing, setIsRefreshing] = useState(false)
-  return useMemo(() => {
-    const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-    const handleRefresh = async () => {
-      setIsRefreshing(true)
+  const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-      relay.refetch(
-        { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
-        {},
-        (error) => {
-          if (error) {
-            console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
-          }
-          setIsRefreshing(false)
-          scrollRailsToTop()
-        },
-        { force: true }
-      )
-    }
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
 
-    return { scrollRefs, isRefreshing, handleRefresh }
-  }, [modules.join(""), relay])
+    relay.refetch(
+      { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+      {},
+      (error) => {
+        if (error) {
+          console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
+        }
+        setIsRefreshing(false)
+        scrollRailsToTop()
+      },
+      { force: true }
+    )
+  }
+
+  return { scrollRefs, isRefreshing, handleRefresh }
 }
 
 export const HomeFragmentContainer = memo(
@@ -456,6 +473,9 @@ export const HomeFragmentContainer = memo(
       `,
       meAbove: graphql`
         fragment Home_meAbove on Me {
+          counts {
+            savedArtworks
+          }
           ...EmailConfirmationBanner_me
           lotsByFollowedArtistsConnectionCount: lotsByFollowedArtistsConnection(
             first: 1
@@ -489,28 +509,24 @@ export const HomeFragmentContainer = memo(
             first: 12
             state: PAST
           ) {
-            totalCount
             ...AuctionResultsRail_auctionResults
-          }
-
-          auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
-            first: 12
-            state: UPCOMING
-            sort: DATE_ASC
-          ) {
-            totalCount
-            ...AuctionResultsRail_auctionResults
+            edges {
+              node {
+                internalID
+              }
+            }
           }
         }
       `,
+      notificationsConnection: graphql`
+        fragment Home_notificationsConnection on Viewer {
+          ...ActivityRail_notificationsConnection
+        }
+      `,
+
       articlesConnection: graphql`
         fragment Home_articlesConnection on ArticleConnection {
           ...ArticlesRail_articlesConnection
-        }
-      `,
-      showsByFollowedArtists: graphql`
-        fragment Home_showsByFollowedArtists on ShowConnection {
-          ...ShowsRail_showsConnection
         }
       `,
       featured: graphql`
@@ -521,6 +537,11 @@ export const HomeFragmentContainer = memo(
       newWorksForYou: graphql`
         fragment Home_newWorksForYou on Viewer {
           ...NewWorksForYouRail_artworkConnection
+        }
+      `,
+      heroUnits: graphql`
+        fragment Home_heroUnits on HeroUnitConnection {
+          ...HeroUnitsRail_heroUnitsConnection
         }
       `,
       emergingPicks: graphql`
@@ -538,12 +559,12 @@ export const HomeFragmentContainer = memo(
         homePageBelow: homePage @optionalField {
           ...Home_homePageBelow
         }
+        notificationsConnection: viewer @optionalField {
+          ...Home_notificationsConnection
+        }
         me @optionalField {
           ...Home_meAbove
           ...RecommendedArtistsRail_me
-          showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-            ...Home_showsByFollowedArtists
-          }
         }
         meBelow: me @optionalField {
           ...Home_meBelow
@@ -604,6 +625,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 
 const HomePlaceholder: React.FC = () => {
   const randomValue = useMemoizedRandom()
+  const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
 
   return (
     <Flex>
@@ -615,17 +637,41 @@ const HomePlaceholder: React.FC = () => {
       </Box>
       <Spacer y={4} />
 
-      {
-        // Small tiles to mimic the artwork rails
+      {/* Activity Rail */}
+      {!!enableLatestActivityRail && (
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer y={0.5} />
           <Flex flexDirection="row">
-            <LargeArtworkRailPlaceholder />
+            <Join separator={<Spacer x="15px" />}>
+              {times(3 + randomValue * 10).map((index) => (
+                <Flex key={index} flexDirection="row">
+                  <PlaceholderBox
+                    height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                    width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+                  />
+                  <Flex ml={1}>
+                    <PlaceholderText width={100} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={120} />
+                  </Flex>
+                </Flex>
+              ))}
+            </Join>
           </Flex>
-        </Box>
-      }
 
+          <ModuleSeparator />
+        </Box>
+      )}
+
+      {/* Small tiles to mimic the artwork rails  */}
+      <Box ml={2} mr={2}>
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+        <Spacer y={0.5} />
+        <Flex flexDirection="row">
+          <LargeArtworkRailPlaceholder />
+        </Flex>
+      </Box>
       <ModuleSeparator />
 
       {/* Larger tiles to mimic the artist rails */}
@@ -646,7 +692,6 @@ const HomePlaceholder: React.FC = () => {
           <ModuleSeparator />
         </Flex>
       </Box>
-
       <Flex ml={2} mt={4}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
         <Flex flexDirection="row">
@@ -682,7 +727,11 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC = () => {
+interface HomeQRProps {
+  environment?: RelayModernEnvironment | RelayMockEnvironment
+}
+
+export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
@@ -725,7 +774,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
@@ -737,6 +786,13 @@ export const HomeQueryRenderer: React.FC = () => {
             }
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
+            }
+            notificationsConnection: viewer @optionalField {
+              ...Home_notificationsConnection
+            }
+            heroUnitsConnection(first: 10, private: false) @optionalField {
+              ...Home_heroUnits
+              ...HeroUnitsRail_heroUnitsConnection
             }
           }
         `,
@@ -759,9 +815,6 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
-              showsByFollowedArtists(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
-                ...Home_showsByFollowedArtists
-              }
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
               @optionalField {
@@ -783,14 +836,15 @@ export const HomeQueryRenderer: React.FC = () => {
             <HomeFragmentContainer
               articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
-              showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
               newWorksForYou={above.newWorksForYou}
+              notificationsConnection={above.notificationsConnection}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
+              heroUnits={above ? above.heroUnitsConnection : null}
             />
           )
         },

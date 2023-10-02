@@ -94,10 +94,12 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
     showVerificationBanner: showVerificationBannerForEmail,
     handleVerification: handleEmailVerification,
   } = useHandleEmailVerification()
+
+  const initiatorID = me?.internalID ?? ""
   const {
     showVerificationBanner: showVerificationBannerForID,
     handleVerification: handleIDVerification,
-  } = useHandleIDVerification()
+  } = useHandleIDVerification(initiatorID)
 
   const localImage = useLocalImageStorage("profile", undefined, undefined, refreshKey)
 
@@ -219,7 +221,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
         Edit Profile
       </FancyModalHeader>
 
-      {showCompleteYourProfileBanner && (
+      {!!showCompleteYourProfileBanner && (
         <Message
           variant="info"
           title="Complete your profile and make a great impression"
@@ -244,7 +246,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
                 {!!localImage || values.photo ? (
                   <Avatar src={localImage?.path || values.photo} size="md" />
                 ) : (
-                  <Image source={require("images/profile_placeholder_avatar.png")} />
+                  <Image source={require("images/profile_placeholder_avatar.webp")} />
                 )}
               </Box>
             </Touchable>
@@ -364,6 +366,7 @@ const meFragment = graphql`
     profession
     otherRelevantPositions
     bio
+    internalID
     location {
       display
       city

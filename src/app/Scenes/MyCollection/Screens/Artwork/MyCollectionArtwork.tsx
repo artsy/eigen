@@ -1,19 +1,16 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Tabs, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
-import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
-import { useRefetch } from "app/utils/relayHelpers"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { compact } from "lodash"
 import React, { Suspense, useCallback } from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
@@ -32,7 +29,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   category,
 }) => {
   const { trackEvent } = useTracking()
-  const { fetchKey, refetch } = useRefetch()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
@@ -43,7 +39,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       // TODO: Fix this logic once we only need category to fetch insights
       medium: getVortexMedium(medium, category),
     },
-    { fetchPolicy: "store-and-network", fetchKey }
+    { fetchPolicy: "store-and-network" }
   )
 
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
@@ -56,11 +52,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
-        artwork: data.artwork,
-        onSuccess: () => {
-          refetch()
-          goBack()
-        },
         onDelete: popToRoot,
       },
     })
@@ -79,52 +70,52 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     (comparableWorksCount ?? 0) > 0 ||
     (auctionResultsCount ?? 0) > 0
 
-  const tabs = compact([
-    !!shouldShowInsightsTab && {
-      title: Tab.insights,
-      content: (
-        <MyCollectionArtworkInsights
-          artwork={data.artwork}
-          marketPriceInsights={data.marketPriceInsights}
-          me={data.me}
-        />
-      ),
-      initial: true,
-    },
-    {
-      title: Tab.about,
-      content: (
-        <MyCollectionArtworkAbout
-          artwork={data.artwork}
-          marketPriceInsights={data.marketPriceInsights}
-        />
-      ),
-    },
-  ])
-
   return (
     <>
-      <FancyModalHeader
-        onLeftButtonPress={goBack}
-        rightButtonText="Edit"
-        onRightButtonPress={handleEdit}
-        hideBottomDivider
-      />
-      {!!shouldShowInsightsTab ? (
-        <StickyTabPage
-          tabs={tabs}
-          staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
-        />
-      ) : (
-        <ScrollView>
-          <MyCollectionArtworkHeader artwork={data.artwork} />
-          <MyCollectionArtworkAbout
-            renderWithoutScrollView
-            artwork={data.artwork}
-            marketPriceInsights={data.marketPriceInsights}
+      <Screen>
+        <Screen.Body fullwidth>
+          <Screen.Header
+            onBack={goBack}
+            rightElements={
+              <TouchableOpacity onPress={handleEdit}>
+                <Text>Edit</Text>
+              </TouchableOpacity>
+            }
           />
-        </ScrollView>
-      )}
+          {!!shouldShowInsightsTab ? (
+            <Tabs renderHeader={() => <MyCollectionArtworkHeader artwork={data.artwork!} />}>
+              {!!shouldShowInsightsTab && (
+                <Tabs.Tab name={Tab.insights} label={Tab.insights}>
+                  <Tabs.Lazy>
+                    <MyCollectionArtworkInsights
+                      artwork={data.artwork}
+                      marketPriceInsights={data.marketPriceInsights}
+                      me={data.me}
+                    />
+                  </Tabs.Lazy>
+                </Tabs.Tab>
+              )}
+              <Tabs.Tab name={Tab.about} label={Tab.about}>
+                <Tabs.Lazy>
+                  <MyCollectionArtworkAbout
+                    artwork={data.artwork}
+                    marketPriceInsights={data.marketPriceInsights}
+                  />
+                </Tabs.Lazy>
+              </Tabs.Tab>
+            </Tabs>
+          ) : (
+            <ScrollView>
+              <MyCollectionArtworkHeader artwork={data.artwork} />
+              <MyCollectionArtworkAbout
+                renderWithoutScrollView
+                artwork={data.artwork}
+                marketPriceInsights={data.marketPriceInsights}
+              />
+            </ScrollView>
+          )}
+        </Screen.Body>
+      </Screen>
     </>
   )
 }
@@ -147,7 +138,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
           totalCount
         }
       }
-      marketPriceInsights {
+      marketPriceInsights @optionalField {
         ...MyCollectionArtworkArtistMarket_artworkPriceInsights
         ...MyCollectionArtworkDemandIndex_artworkPriceInsights
       }
@@ -169,7 +160,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="8px">
-      <PlaceholderBox width="100%" marginBottom={10} />
+      <LoadingSpinner />
     </Flex>
   </ProvidePlaceholderContext>
 )
@@ -235,7 +226,7 @@ export const ArtworkMetaProps = graphql`
     confidentialNotes
     # needed to show the banner inside the edit artwork view
     # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
-    consignmentSubmission {
+    consignmentSubmission @optionalField {
       displayText
     }
     pricePaid {
@@ -254,6 +245,7 @@ export const ArtworkMetaProps = graphql`
     height
     attributionClass {
       name
+      shortDescription
     }
     id
     images(includeAll: true) {

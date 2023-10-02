@@ -9,6 +9,7 @@ import { stringify } from "query-string"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
+
 import {
   _test_expandGoogleAdLink as expandGoogleAdLink,
   ArtsyWebView,
@@ -89,6 +90,7 @@ describe("ArtsyWebViewPage", () => {
       ...mockOnNavigationStateChange,
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
     })
+
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
     expect(Share.open).toHaveBeenLastCalledWith({
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
@@ -133,7 +135,7 @@ describe("ArtsyWebViewPage", () => {
 
   it("sets the user agent correctly", () => {
     const tree = render()
-    expect(webViewProps(tree).userAgent).toBe(
+    expect(webViewProps(tree).applicationNameForUserAgent).toBe(
       `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/some-build-number/${
         appJson().version
       }`
@@ -154,16 +156,13 @@ describe("ArtsyWebViewPage", () => {
 
   describe("mimicBrowserBackButton", () => {
     it("lets our native back button control the browser", () => {
-      const tree = render()
-      const browserGoBack = jest
-        .spyOn(screen.UNSAFE_getByType(WebView).instance, "goBack")
-        .mockImplementation(() => undefined)
+      const mockSystemBackAction = jest.fn()
+      const tree = render({ systemBackAction: mockSystemBackAction })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
       expect(goBack).toHaveBeenCalled()
-      expect(browserGoBack).not.toHaveBeenCalled()
       ;(goBack as any).mockReset()
-      ;(browserGoBack as any).mockReset()
+      mockSystemBackAction.mockReset()
 
       webViewProps(tree).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
@@ -171,15 +170,13 @@ describe("ArtsyWebViewPage", () => {
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
-      expect(browserGoBack).toHaveBeenCalled()
+      expect(mockSystemBackAction).toHaveBeenCalled()
       expect(goBack).not.toHaveBeenCalled()
     })
 
     it("can be overridden", () => {
-      const tree = render({ mimicBrowserBackButton: false })
-      const browserGoBack = jest
-        .spyOn(screen.UNSAFE_getByType(WebView).instance, "goBack")
-        .mockImplementation(() => undefined)
+      const mockSystemBackAction = jest.fn()
+      const tree = render({ mimicBrowserBackButton: false, systemBackAction: mockSystemBackAction })
 
       webViewProps(tree).onNavigationStateChange?.({
         ...mockOnNavigationStateChange,
@@ -187,7 +184,7 @@ describe("ArtsyWebViewPage", () => {
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
-      expect(browserGoBack).not.toHaveBeenCalled()
+      expect(mockSystemBackAction).not.toHaveBeenCalled()
       expect(goBack).toHaveBeenCalled()
     })
   })

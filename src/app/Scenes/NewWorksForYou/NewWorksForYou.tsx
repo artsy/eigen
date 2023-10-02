@@ -1,13 +1,15 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, SimpleMessage } from "@artsy/palette-mobile"
+import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { extractNodes } from "app/utils/extractNodes"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -25,28 +27,23 @@ interface NewWorksForYouProps {
 }
 
 const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
+  const artworks = extractNodes(viewer.artworks)
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Box>
-          {!!viewer.artworks?.edges?.length ? (
-            <InfiniteScrollArtworksGridContainer
-              connection={viewer.artworks!}
-              loadMore={() => null}
-              hasMore={() => false}
-              pageSize={PAGE_SIZE}
-              contextScreenOwnerType={OwnerType.newWorksForYou}
-              HeaderComponent={<Spacer y={2} />}
-              shouldAddPadding
-              showLoadingSpinner
-              useParentAwareScrollView={false}
-            />
-          ) : (
+        <MasonryInfiniteScrollArtworkGrid
+          artworks={artworks}
+          pageSize={PAGE_SIZE}
+          contextScreenOwnerType={OwnerType.newWorksForYou}
+          contextScreen={OwnerType.newWorksForYou}
+          ListEmptyComponent={
             <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          )}
-        </Box>
+          }
+          hasMore={false}
+        />
       </PageWithSimpleHeader>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -74,9 +71,13 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
@@ -148,7 +149,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   version: versionProp,
 }) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
@@ -177,7 +177,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 
   return (
     <QueryRenderer<NewWorksForYouQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={NewWorksForYouScreenQuery}
       variables={{
         version,

@@ -27,16 +27,12 @@ describe("SavedSearches", () => {
         edges: [
           {
             node: {
-              userAlertSettings: {
-                name: "one",
-              },
+              displayName: "one",
             },
           },
           {
             node: {
-              userAlertSettings: {
-                name: "two",
-              },
+              displayName: "two",
             },
           },
         ],
@@ -54,7 +50,7 @@ describe("SavedSearches", () => {
       }),
     })
 
-    expect(getByText("Create an alert to get notified about new works.")).toBeTruthy()
+    expect(getByText("Get notifications when there’s a match.")).toBeTruthy()
   })
 
   it("renders the default name placeholder if there is no name for saved search alert", () => {
@@ -63,16 +59,12 @@ describe("SavedSearches", () => {
         edges: [
           {
             node: {
-              userAlertSettings: {
-                name: "one",
-              },
+              displayName: "one",
             },
           },
           {
             node: {
-              userAlertSettings: {
-                name: null,
-              },
+              displayName: null,
             },
           },
         ],

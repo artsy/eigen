@@ -1,7 +1,7 @@
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { MyCollectionCustomArtistSchema } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { Action, action, thunk, Thunk } from "easy-peasy"
@@ -19,53 +19,55 @@ export interface Image {
 
 export interface ArtworkFormValues {
   artist: string
-  artistIds: string[]
   artistDisplayName?: string
-  isP1Artist?: boolean
+  artistIds: string[]
   artistSearchResult: AutosuggestResult | null
-  category: string // this refers to "materials" in UI
-  date: string
-  depth: string
-  editionSize: string
-  editionNumber: string
-  height: string
-  isEdition: boolean
-  medium: string
-  metric: Metric | ""
-  confidentialNotes: string
-  photos: Image[]
-  provenance: string
-  pricePaidDollars: string
-  pricePaidCurrency: string
-  title: string
-  width: string
-  artworkLocation: string
+  artworkLocation: string | undefined
   attributionClass: ArtworkAttributionClassType | undefined
+  category: string // this refers to "materials" in UI
+  confidentialNotes: string | undefined
+  customArtist: MyCollectionCustomArtistSchema | null
+  date: string | undefined
+  depth: string | undefined
+  editionNumber: string | undefined
+  editionSize: string | undefined
+  height: string | undefined
+  isEdition: boolean | null
+  isP1Artist?: boolean
+  medium: string | undefined
+  metric: string | null
+  photos: Image[]
+  pricePaidCurrency: string
+  pricePaidDollars: string
+  provenance: string | undefined
+  title: string
+  width: string | undefined
 }
 
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
-  artistIds: [],
   artistDisplayName: undefined,
+  artistIds: [],
   artistSearchResult: null,
-  category: "",
-  date: "",
-  depth: "",
-  editionSize: "",
-  editionNumber: "",
-  height: "",
-  isEdition: false,
-  medium: "",
-  metric: "",
-  confidentialNotes: "",
-  photos: [],
-  pricePaidDollars: "",
-  pricePaidCurrency: "",
-  provenance: "",
-  title: "",
-  width: "",
-  artworkLocation: "",
+  artworkLocation: undefined,
   attributionClass: undefined,
+  category: "",
+  confidentialNotes: undefined,
+  customArtist: null,
+  date: undefined,
+  depth: undefined,
+  editionNumber: undefined,
+  editionSize: undefined,
+  height: undefined,
+  isEdition: null,
+  medium: undefined,
+  metric: null,
+  photos: [],
+  pricePaidCurrency: "",
+  pricePaidDollars: "",
+  provenance: undefined,
+  title: "",
+  width: undefined,
 }
 
 export interface MyCollectionArtworkModel {
@@ -132,6 +134,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       "artist",
       "artistIds",
       "artistSearchResult",
+      "customArtist",
     ])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }

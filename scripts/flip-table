@@ -7,7 +7,7 @@ set -euxo pipefail
 echo 'Clear gradle cache'
 if [ -d node_modules ]; then
 	cd android
-	./gradlew clean cleanBuildCache
+	./gradlew clean
 	cd -
 fi
 
@@ -30,14 +30,17 @@ if ! rm -rf ~/Library/Developer/Xcode/DerivedData; then
 	rm -rf ~/Library/Developer/Xcode/DerivedData
 fi
 
-echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
+echo 'Clear relay, relay query map, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
+rm -rf data/complete.queryMap.json
 rm -rf .cache
 rm -rf "$TMPDIR"/metro*
 rm -rf src/__generated__/*.graphql.ts
 
+
+
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
-rm -rf dist
+find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all

@@ -5,32 +5,28 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
+import { extractNodes, isConnectionEmpty } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface AuctionResultsRailProps {
   auctionResults: AuctionResultsRail_auctionResults$key
-  contextModule: ContextModule
+  contextModule: ContextModule | string
   title: string
 }
 
 export const getDetailsByContextModule = (
-  contextModule: ContextModule
-): { viewAllUrl: string; browseAllButtonText: string } => {
+  contextModule: ContextModule | string
+): { viewAllUrl: string; browseAllButtonText: string; destinationScreen: OwnerType } => {
   switch (contextModule) {
-    case ContextModule.upcomingAuctionsRail:
-      return {
-        viewAllUrl: "/upcoming-auction-results",
-        browseAllButtonText: "Browse All Auctions",
-      }
     case ContextModule.auctionResultsRail:
       return {
         viewAllUrl: "/auction-results-for-artists-you-follow",
         browseAllButtonText: "Browse All Results",
+        destinationScreen: OwnerType.auctionResultsForArtistsYouFollow,
       }
     default:
       throw "Unknown ContextModule"
@@ -39,7 +35,8 @@ export const getDetailsByContextModule = (
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
-    const { viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
+    const { viewAllUrl, browseAllButtonText, destinationScreen } =
+      getDetailsByContextModule(contextModule)
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -49,12 +46,12 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
       (auctionResult) => auctionResult
     )
 
-    if (!auctionResults || auctionResults?.totalCount === 0) {
+    if (isConnectionEmpty(auctionResults)) {
       return null
     }
 
     const handleMorePress = () => {
-      trackEvent(tracks.tappedViewAll(contextModule))
+      trackEvent(tracks.tappedViewAll(contextModule, destinationScreen))
       navigate(viewAllUrl)
     }
 
@@ -64,7 +61,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
           <SectionTitle
             title={title}
             onPress={() => {
-              trackEvent(tracks.tappedHeader(contextModule))
+              trackEvent(tracks.tappedHeader(contextModule, destinationScreen))
               navigate(viewAllUrl)
             }}
           />
@@ -94,7 +91,6 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
 
 const meFragment = graphql`
   fragment AuctionResultsRail_auctionResults on AuctionResultConnection {
-    totalCount
     edges {
       node {
         ...AuctionResultListItem_auctionResult
@@ -105,18 +101,18 @@ const meFragment = graphql`
 `
 
 const tracks = {
-  tappedHeader: (contextModule: ContextModule) => ({
+  tappedHeader: (contextModule: ContextModule | string, destinationScreen: OwnerType) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    destination_screen_owner_type: destinationScreen,
     type: "header",
   }),
-  tappedViewAll: (contextModule: ContextModule) => ({
+  tappedViewAll: (contextModule: ContextModule | string, destinationScreen: OwnerType) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    destination_screen_owner_type: destinationScreen,
     type: "viewAll",
   }),
 }

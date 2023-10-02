@@ -25,10 +25,11 @@ export type FilterScreen =
 
 // Please add other filter screen item that uses a checkbox as right accessory item here
 export type FilterScreenCheckboxItem = "showOnlySubmittedArtworks" | "state"
+type FilterScreenViewOptions = "viewAs"
 
 export interface FilterDisplayConfig {
   configType?: FilterConfigTypes // optional to specify whether the FilterDisplayConfig is FilterScreen or FilterScreenCheckboxItem or others to come
-  filterType: FilterScreen | FilterScreenCheckboxItem
+  filterType: FilterScreen | FilterScreenCheckboxItem | FilterScreenViewOptions
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack | "none"
   // for `local` filtering
@@ -39,4 +40,5 @@ export interface FilterDisplayConfig {
 export enum FilterConfigTypes {
   FilterScreen = "FilterScreen",
   FilterScreenCheckboxItem = "FilterScreenCheckboxItem",
+  FilterScreenViewOptions = "FilterScreenViewOptions",
 }

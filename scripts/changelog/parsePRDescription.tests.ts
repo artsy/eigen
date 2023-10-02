@@ -1,8 +1,7 @@
-import { ParseResult as PRDescriptionParseResult } from "./changelog-types"
-import { parsePRDescription } from "./parsePRDescription"
+import { ParseResult, parsePRDescription } from "./parsePRDescription"
 
-const ERROR: PRDescriptionParseResult = { type: "error" }
-const NO_CHANGES: PRDescriptionParseResult = { type: "no_changes" }
+const ERROR: ParseResult = { type: "error" }
+const NO_CHANGES: ParseResult = { type: "no_changes" }
 
 describe("parsePRDescription", () => {
   it("returns error for empty PR description", () => {
@@ -43,15 +42,24 @@ This pull request adds some stuff to the thing so that it can blah.
 <!-- ⓘ 'User-facing' changes will be published as release notes. -->
 <!-- ⌫ Feel free to remove sections that don't apply. -->
 <!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
+<!-- 📖 eg. \`Enable lotsByFollowedArtists - john\` or \`Fix phone input misalignment - mary\`. -->
 <!-- 🤷‍♂️ Replace this entire block with the hashtag \`#nochangelog\` to avoid updating the changelog. -->
+<!-- ⚠️ Prefix with \`[NEEDS EXTERNAL QA]\` if a change requires external QA -->
 
 #### Cross-platform user-facing changes
+
 -
+
 #### iOS user-facing changes
+
 -
+
 #### Android user-facing changes
+
 -
+
 #### Dev changes
+
 -
 
 ### Other stuff
@@ -63,10 +71,8 @@ This pull request adds some stuff to the thing so that it can blah.
     expect(
       parsePRDescription(`
 # Description
-
 This pull request adds some stuff to the thing so that it can blah.
 ### Changelog updates
-
 #### Cross-platform user-facing changes
 - Added a new button
   for the checkout flow
@@ -78,9 +84,7 @@ Updated splash screen color
 #### Dev changes
 - Improved changelog tooling
 - Upgraded lodash
-
 ### Other stuff
-
 blah
       `)
     ).toMatchInlineSnapshot(`
@@ -110,14 +114,10 @@ blah
       parsePRDescription(`
 ### Description
 blah blah
-
 ### Changelog updates
-
 #### iOS user-facing changes
 - Fixed input focus styles
-
 ### Other stuff
-
 blah
       `)
     ).toMatchInlineSnapshot(`
@@ -137,7 +137,6 @@ blah
     expect(
       parsePRDescription(`
 ### Changelog updates
-
 #### iOS user-facing changes
 - Fixed input focus styles
 - Added things
@@ -164,11 +163,9 @@ blah
     expect(
       parsePRDescription(`
 ### Changelog updates
-
 #### iOS user-facing changes
 made the modals close a bit faster
 by updating the transition gradient
-
 uses a trampoline to avoid the problem
 where the click didn't work
     `)
@@ -179,8 +176,8 @@ where the click didn't work
         "devChanges": [],
         "iOSUserFacingChanges": [
           "made the modals close a bit faster
-      by updating the transition gradient",
-          "uses a trampoline to avoid the problem
+      by updating the transition gradient
+      uses a trampoline to avoid the problem
       where the click didn't work",
         ],
         "type": "changes",

@@ -1,13 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OpenInquiryModalButtonTestQuery } from "__generated__/OpenInquiryModalButtonTestQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import relay, { QueryRenderer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -28,7 +26,7 @@ const tappedPurchaseEvent = {
 }
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = getMockRelayEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<OpenInquiryModalButtonTestQuery>
       environment={mockEnvironment}
@@ -58,7 +56,6 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   }
 
   it("renders Purchase and Make Offer CTAs", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
     const { getByText } = getWrapper({
       Artwork: () => ({
         internalID: "fancy-art",
@@ -134,7 +131,6 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
 
   describe("purchase", () => {
     it("clicking the button on unique artworks creates an order", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
       relay.commitMutation = jest.fn()
 
       const { getByText } = getWrapper({
@@ -147,7 +143,6 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     })
 
     it("clicking the button on artworks with one edition set creates an order", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
       relay.commitMutation = jest.fn()
 
       const { getByText } = getWrapper({
@@ -169,7 +164,6 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     })
 
     it("clicking the button on non-unique artworks opens the confirmation modal", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
       const { getByText } = getWrapper({
         Artwork: () => ({
           internalID: "fancy-art",

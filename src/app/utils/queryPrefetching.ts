@@ -1,7 +1,7 @@
 import { modules } from "app/AppRegistry"
 import { matchRoute } from "app/routes"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import {
@@ -45,7 +45,7 @@ async function isRateLimited() {
 }
 
 const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
-  const environment = defaultEnvironment
+  const environment = getRelayEnvironment()
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
   try {
@@ -108,9 +108,7 @@ const prefetchUrl = async <TQuery extends OperationType>(
 }
 
 export const usePrefetch = () => {
-  const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
-
-  if (!enablePrefetching || __TEST__) {
+  if (__TEST__) {
     return () => null
   }
 

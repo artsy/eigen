@@ -29,7 +29,7 @@ export const FAQSWA: React.FC = () => {
         </Button>
       </Flex>
       <Image
-        source={require("images/swa-faq-image.png")}
+        source={require("images/swa-faq-image.webp")}
         style={{ width: "100%", height: isTablet ? 480 : 200 }}
         resizeMode="cover"
       />

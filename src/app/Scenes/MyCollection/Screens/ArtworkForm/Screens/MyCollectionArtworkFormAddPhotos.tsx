@@ -1,4 +1,4 @@
-import { BorderBox, XCircleIcon, AddIcon, Flex, Box, useColor } from "@artsy/palette-mobile"
+import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -6,11 +6,11 @@ import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/M
 import { Image as ImageProps } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 
 const MARGIN = 2
 export const DELAY_TIME_MS = 500

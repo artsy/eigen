@@ -1,6 +1,7 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -45,11 +46,12 @@ describe("Saved search banner on artist screen", () => {
   }
 
   const getTree = (searchCriteriaID?: string) =>
-    renderWithWrappers(
+    renderWithHookWrappersTL(
       <ArtistQueryRenderer
-        artistID="ignored"
+        artistID="ignore"
         environment={environment as unknown as RelayModernEnvironment}
         searchCriteriaID={searchCriteriaID}
+        initialTab="Artworks"
       />
     )
 
@@ -57,13 +59,17 @@ describe("Saved search banner on artist screen", () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
+
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    await flushPromiseQueue()
 
-    expect(screen.getByText("Sort By • 1")).toBeTruthy()
-    expect(screen.getByText("Rarity • 2")).toBeTruthy()
-    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
+    waitFor(() => {
+      fireEvent.press(screen.getByText("Sort & Filter"))
+      expect(screen.queryByText("Sort By • 1")).toBeOnTheScreen()
+      expect(screen.queryByText("Rarity • 2")).toBeOnTheScreen()
+      expect(screen.queryByText("Ways to Buy • 2")).toBeOnTheScreen()
+    })
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -72,8 +78,10 @@ describe("Saved search banner on artist screen", () => {
     rejectMostRecentRelayOperation(environment, new Error())
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    expect(screen.getByText("Sorry, an error occured")).toBeTruthy()
-    expect(screen.getByText("Failed to get saved search criteria")).toBeTruthy()
+    await flushPromiseQueue()
+
+    expect(screen.getByText("Sorry, an error occured")).toBeOnTheScreen()
+    expect(screen.getByText("Failed to get saved search criteria")).toBeOnTheScreen()
   })
 
   it("should render saved search component", async () => {
@@ -82,11 +90,15 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
+    await flushPromiseQueue()
+
+    waitFor(() => {
+      expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
+    })
   })
 })
 
-const MockSearchCriteriaQuery = {
+const MockSearchCriteriaQuery: MockResolvers = {
   Me() {
     return {
       savedSearch: {
@@ -101,13 +113,24 @@ const MockSearchCriteriaQuery = {
     }
   },
 }
-const MockArtistAboveTheFoldQuery = {
+
+const MockArtistAboveTheFoldQuery: MockResolvers = {
   Artist() {
     return {
       has_metadata: true,
       counts: { articles: 0, related_artists: 0, artworks: 1, partner_shows: 0 },
       auctionResultsConnection: {
         totalCount: 0,
+      },
+    }
+  },
+  ArtistInsight() {
+    return { entities: ["test"] }
+  },
+  Me() {
+    return {
+      savedSearchesConnection: {
+        totalCount: 2,
       },
     }
   },

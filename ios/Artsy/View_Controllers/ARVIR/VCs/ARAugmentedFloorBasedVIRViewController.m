@@ -22,6 +22,9 @@
 #import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARInformationView.h"
+#import <ARKit/ARKit.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface _ARWhiteFlatButton : ARWhiteFlatButton
 @end
@@ -198,6 +201,8 @@
     backButton.layer.shadowColor = [UIColor blackColor].CGColor;
     backButton.layer.shadowOffset = CGSizeMake(0, 0);
     backButton.layer.shadowOpacity = 0.4;
+
+
 
     ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
     [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];

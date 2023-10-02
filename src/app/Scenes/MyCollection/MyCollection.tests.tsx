@@ -2,10 +2,11 @@ import { fireEvent, RenderResult, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -13,21 +14,23 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionContainer } from "./MyCollection"
 
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return { ...actualNav, useIsFocused: () => true }
+})
+
 describe("MyCollection", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionTestsQuery>({
     Component: (props) => {
       if (props?.me) {
         return (
-          <ArtworkFiltersStoreProvider>
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <MyCollectionContainer me={props.me} />,
-                },
-              ]}
-            />
-          </ArtworkFiltersStoreProvider>
+          <MyCollectionArtworksKeywordStore.Provider>
+            <MyCollectionTabsStoreProvider>
+              <ArtworkFiltersStoreProvider>
+                <MyCollectionContainer me={props.me} />
+              </ArtworkFiltersStoreProvider>
+            </MyCollectionTabsStoreProvider>
+          </MyCollectionArtworksKeywordStore.Provider>
         )
       }
       return null
@@ -54,6 +57,13 @@ describe("MyCollection", () => {
           myCollectionConnection: {
             edges: [],
           },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 0,
+          },
         }),
       })
     })
@@ -65,14 +75,15 @@ describe("MyCollection", () => {
       ).toBeTruthy()
     })
 
-    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed when collected artists ff is disabled", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: false })
       const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
         expect.objectContaining({
-          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+          passProps: { source: Tab.collection },
         })
       )
     })
@@ -95,10 +106,77 @@ describe("MyCollection", () => {
     })
   })
 
+  describe("collection contains some artists and no artworks", () => {
+    let tree: RenderResult
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionCollectedArtists: true })
+
+      tree = renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: { edges: [] },
+          myCollectionInfo: {
+            includesPurchasedArtworks: true,
+            artworksCount: 0,
+          },
+          userInterestsConnection: {
+            totalCount: 1,
+          },
+        }),
+      })
+    })
+
+    it("shows collected artists rail", () => {
+      expect(tree.getByTestId("my-collection-collected-artists-rail")).toBeTruthy()
+    })
+
+    it("shows zero artworks state", () => {
+      expect(tree.getByText("Add your artworks")).toBeTruthy()
+      expect(
+        tree.getByText(
+          "Access price and market insights and build an online record of your collection."
+        )
+      ).toBeTruthy()
+    })
+
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.UNSAFE_getByProps({
+        testID: "add-artwork-button-zero-artworks-state",
+      })
+      addArtworkButton.props.onPress()
+
+      expect(navigate).toHaveBeenCalledWith(
+        "my-collection/artworks/new",
+        expect.objectContaining({
+          passProps: { source: Tab.collection },
+        })
+      )
+    })
+
+    it("tracks analytics event when Add Artwork is pressed", () => {
+      const addArtworkButton = tree.UNSAFE_getByProps({
+        testID: "add-artwork-button-zero-artworks-state",
+      })
+
+      addArtworkButton.props.onPress()
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "addCollectedArtwork",
+            "context_module": "myCollectionHome",
+            "context_owner_type": "myCollection",
+            "platform": "mobile",
+          },
+        ]
+      `)
+    })
+  })
+
   describe("collection is not empty", () => {
     it("renders without throwing an error", () => {
       const tree = renderWithRelay()
-      expect(tree.UNSAFE_getByType(StickyTabPageScrollView)).toBeDefined()
       expect(tree.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })

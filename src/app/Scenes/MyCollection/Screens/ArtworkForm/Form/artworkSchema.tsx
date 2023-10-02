@@ -4,7 +4,7 @@ import { trim } from "lodash"
 import * as Yup from "yup"
 
 export const artworkSchema = Yup.object().shape({
-  artistDisplayName: Yup.string().when("artistSearchResult", {
+  artistDisplayName: Yup.string().when(["artistSearchResult", "customArtist"], {
     is: null,
     then: Yup.string()
       .required("Artist name is required")

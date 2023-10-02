@@ -1,5 +1,7 @@
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -9,7 +11,11 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
+type ArtistQueries =
+  | "SearchCriteriaQuery"
+  | "ArtistAboveTheFoldQuery"
+  | "ArtistBelowTheFoldQuery"
+  | "MarketStatsQuery"
 
 describe("Artist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -49,21 +55,16 @@ describe("Artist", () => {
   )
 
   it("returns an empty state if artist has no artworks", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-    const emptyTitle = "No works available by the artist at this time"
-    const emptyMessage = "Create an Alert to receive notifications when new works are added"
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+    const emptyTitle = "Get notified when new works are available"
+    const emptyMessage =
+      "There are currently no works for sale for this artist. Create an alert, and we’ll let you know when new works are added."
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
         return {
-          has_metadata: false,
-          counts: {
-            related_artists: 0,
-          },
           statuses: {
-            articles: false,
             artworks: false,
-            auctionLots: false,
           },
         }
       },
@@ -73,113 +74,32 @@ describe("Artist", () => {
     expect(getByText(emptyMessage)).toBeTruthy()
   })
 
-  it("should render Artworks tab by default", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: false,
-          counts: { related_artists: 0, partner_shows: 0 },
-          statuses: {
-            artworks: false,
-            auctionLots: false,
-            articles: false,
-          },
-        }
-      },
-    })
-
-    expect(queryByText("Artworks")).toBeTruthy()
-    expect(queryByText("Overview")).toBeFalsy()
-    expect(queryByText("Insights")).toBeFalsy()
-  })
-
-  it("returns Overview tab if artist has metadata", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: true,
-          counts: { related_artists: 0, partner_shows: 0 },
-          statuses: {
-            artworks: false,
-            auctionLots: false,
-            articles: false,
-          },
-        }
-      },
-    })
-
-    expect(queryByText("Overview")).toBeTruthy()
-  })
-
-  it("returns Overview tab if artist has only articles", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: false,
-          counts: { related_artists: 0, partner_shows: 0 },
-          statuses: {
-            artworks: false,
-            auctionLots: false,
-            articles: true,
-          },
-        }
-      },
-    })
-
-    expect(getByText("Overview")).toBeTruthy()
-  })
-
-  it("returns three tabs if artist has metadata, works, and auction results", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: true,
-          counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
-          statuses: {
-            auctionLots: true,
-            artworks: true,
-          },
-        }
-      },
-    })
-
-    expect(getByText("Overview")).toBeTruthy()
-    expect(getByText("Artworks")).toBeTruthy()
-    expect(getByText("Insights")).toBeTruthy()
-  })
-
-  it("hides Artist insights tab when there are no auction results", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          has_metadata: true,
-          statuses: {
-            artworks: true,
-            auctionLots: false,
-          },
-        }
-      },
-    })
-
-    expect(queryByText("Overview")).toBeTruthy()
-    expect(queryByText("Artworks")).toBeTruthy()
-    expect(queryByText("Insights")).toBeFalsy()
-  })
-
-  it("tracks a page view", () => {
-    renderWithWrappers(<TestWrapper />)
+  it("should render all tabs", async () => {
+    const { queryByText } = renderWithHookWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
+    mockMostRecentOperation("ArtistBelowTheFoldQuery", {
+      ArtistInsight() {
+        return { entities: ["test"] }
+      },
+    })
+    mockMostRecentOperation("MarketStatsQuery")
+
+    await flushPromiseQueue()
+
+    waitFor(() => {
+      expect(queryByText("Artworks")).toBeTruthy()
+      expect(queryByText("Auction Results")).toBeTruthy()
+      expect(queryByText("About")).toBeTruthy()
+    })
+  })
+
+  it("tracks a page view", async () => {
+    renderWithHookWrappersTL(<TestWrapper />)
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery")
+
+    await flushPromiseQueue()
 
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, {
@@ -187,6 +107,53 @@ describe("Artist", () => {
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
       context_screen_owner_type: "Artist",
+    })
+  })
+
+  it("displays follow button for artist with formatted follow count", () => {
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          isFollowed: true,
+          counts: {
+            follows: 22000,
+          },
+        }
+      },
+    })
+
+    expect(getByText(/Following/)).toBeTruthy()
+    expect(getByText("22.0K")).toBeTruthy()
+  })
+
+  it("tracks follow change on follow button click", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestWrapper />)
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          isFollowed: false,
+        }
+      },
+    })
+
+    expect(getByText("Follow")).toBeTruthy()
+    fireEvent.press(getByText("Follow"))
+
+    await flushPromiseQueue()
+
+    // Wait until the follow mutation has been triggered - this comes after a debounce
+    waitFor(() => {
+      expect(postEventToProviders).toHaveBeenCalledTimes(2)
+      expect(postEventToProviders).toHaveBeenCalledWith({
+        action_name: "artistFollow",
+        action_type: "tap",
+        owner_id: '<mock-value-for-field-"internalID">',
+        owner_slug: '<mock-value-for-field-"slug">',
+        owner_type: "Artist",
+      })
     })
   })
 })

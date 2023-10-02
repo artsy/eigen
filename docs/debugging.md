@@ -26,6 +26,7 @@ Flipper is a platform for debugging iOS, Android and React Native apps. Visualiz
 - [Advanced Async Storage](https://github.com/lbaldy/flipper-plugin-async-storage-advanced) - Inspect and modify AsyncStorage values.
 - [Relay Dev Tools](https://github.com/th3rdwave/flipper-plugin-relay-devtools) - Visualize Relay data store.
 - [Redux Debugger](https://github.com/jk-gan/redux-flipper) - Inspect Redux state.
+- [Performance Monitoring](https://github.com/bamlab/react-native-flipper-performance-monitor) - Performance Monitoring (read this [great article](https://www.bam.tech/article/measuring-and-improving-performance-on-a-react-native-app) on how to use)
 
 You can find more about how to install them on the next section.
 
@@ -44,6 +45,21 @@ You may also need to enable the plugin, open the disabled tab, find the plugin y
 After restarting Flipper, you should be able to see the plugin in the Plugins menu.
 
 Some plugins may require additional configuration or setup steps. Please consult the documentation or contact `#practice-mobile` with any questions.
+
+### Debugging on device for iOS
+
+In order to debug using flipper on device for iOS you will need a tool called idb.
+Instructions for installing are here: https://github.com/facebook/idb#idb-client
+You will want both the `idb-companion` and the `idb-client`.
+
+Once that is installed find the path to idb:
+`$ which idb`
+
+In flipper settings make sure the debug on device toggles are set for iOS and paste the path into the
+`IDB Binary location` field:
+![idb-settings](https://github.com/artsy/eigen/assets/49686530/3bd26f39-bc1d-4d16-8825-477b2807126e)
+
+Apply the settings and build and run the app on device and you should be able to debug using Flipper!
 
 ## Breakpoints
 

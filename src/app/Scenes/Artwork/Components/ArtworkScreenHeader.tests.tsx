@@ -5,7 +5,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtworkScreenHeaderFragmentContainer } from "./ArtworkScreenHeader"
+import { ArtworkScreenHeader } from "./ArtworkScreenHeader"
 
 describe("ArtworkScreenHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkScreenHeaderTestQuery>({
@@ -13,7 +13,7 @@ describe("ArtworkScreenHeader", () => {
       if (props?.artwork) {
         return (
           <ArtworkStoreProvider>
-            <ArtworkScreenHeaderFragmentContainer artwork={props.artwork} />
+            <ArtworkScreenHeader artwork={props.artwork} />
           </ArtworkStoreProvider>
         )
       }
@@ -31,7 +31,7 @@ describe("ArtworkScreenHeader", () => {
   it("renders the header", () => {
     renderWithRelay({
       Artwork: () => ({
-        artists: [{ name: "test" }],
+        isEligibleToCreateAlert: true,
       }),
     })
 
@@ -51,10 +51,10 @@ describe("ArtworkScreenHeader", () => {
   })
 
   describe("Create alert button", () => {
-    it("renders the header but not the create alert button if the artwork doesn't have an associated artist", () => {
+    it("renders the header but not the create alert button if the artwork isn't eligible", () => {
       renderWithRelay({
         Artwork: () => ({
-          artists: [],
+          isEligibleToCreateAlert: false,
         }),
       })
 
@@ -67,7 +67,7 @@ describe("ArtworkScreenHeader", () => {
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
-          artists: [{ name: "some-artist-name" }],
+          isEligibleToCreateAlert: true,
         }),
       })
 

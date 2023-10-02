@@ -9,6 +9,7 @@ import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToP
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
+import lodash from "lodash"
 import { memo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -18,9 +19,15 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
+  cardSize?: "large" | "small"
 }
 
-export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay }) => {
+export const LotsByFollowedArtistsRail: React.FC<Props> = ({
+  title,
+  me,
+  relay,
+  cardSize = "small",
+}) => {
   const [isLoading, setIsLoading] = useState(false)
   const isTablet = isPad()
 
@@ -28,9 +35,9 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
-  const hasArtworks = artworks?.length
+  const hasSaleArtworks = artworks?.some((artwork) => artwork?.saleArtwork)
 
-  if (!hasArtworks) {
+  if (!hasSaleArtworks) {
     return null
   }
 
@@ -51,26 +58,49 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
     })
   }
 
+  const refreshDebounce = lodash.debounce(
+    () => {
+      relay.refetchConnection(PAGE_SIZE)
+    },
+    // 10 secs, hopefully the timely_at on the lots in the backend has been updated
+    10000
+  )
+
+  const doRefresh = () => {
+    refreshDebounce()
+  }
+
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
+        <SectionTitle
+          title={title}
+          onPress={() => navigate("/auctions/lots-for-you-ending-soon")}
+        />
       </Flex>
       <CardRailFlatList
         data={artworks}
         initialNumToRender={isTablet ? 10 : 5}
         windowSize={3}
-        renderItem={({ item: artwork }) => (
-          <SaleArtworkTileRailCardContainer
-            onPress={() => {
-              navigateToPageableRoute(artwork.href!)
-            }}
-            saleArtwork={artwork.saleArtwork!}
-            useSquareAspectRatio
-            useCustomSaleMessage
-            contextScreenOwnerType={OwnerType.sale}
-          />
-        )}
+        renderItem={({ item: artwork }) => {
+          if (!artwork?.saleArtwork) {
+            return null
+          }
+
+          return (
+            <SaleArtworkTileRailCardContainer
+              onPress={() => {
+                navigateToPageableRoute(artwork.href!)
+              }}
+              saleArtwork={artwork.saleArtwork!}
+              useSquareAspectRatio
+              useCustomSaleMessage
+              contextScreenOwnerType={OwnerType.sale}
+              cardSize={cardSize}
+              refreshRail={doRefresh}
+            />
+          )
+        }}
         keyExtractor={(item) => item.id}
         onScroll={isCloseToEdge(fetchNextPage)}
       />
@@ -89,6 +119,8 @@ export const LotsByFollowedArtistsRailContainer = memo(
             first: $count
             after: $cursor
             includeArtworksByFollowedArtists: true
+            excludeClosedLots: true
+            sort: "timely_at"
             isAuction: true
             liveSale: true
           ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {

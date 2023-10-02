@@ -4,9 +4,11 @@ import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/Artwor
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -41,11 +43,11 @@ const initialData: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  showFilterArtworksModal: false,
   sizeMetric: "cm",
 }
 
 const savedSearchEntity: SavedSearchEntity = {
-  placeholder: "Placeholder",
   artists: [],
   owner: {
     type: OwnerType.artist,
@@ -66,17 +68,26 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  __globalStoreTestUtils__?.injectFeatureFlags({
+    AREnableFallbackToGeneratedAlertNames: true,
+  })
+
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
+    mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockClear()
   })
 
   const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {
     return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          ...initialData,
+        }}
+      >
         <CreateSavedSearchAlert visible params={{ ...defaultParams, ...params }} />
       </ArtworkFiltersStoreProvider>
     )
@@ -103,17 +114,25 @@ describe("CreateSavedSearchAlert", () => {
   it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+    })
 
     expect(getByText("Bid")).toBeTruthy()
     expect(getByText("Open Edition")).toBeTruthy()
   })
 
-  it("should call onClosePress handler when the close button is pressed", () => {
+  it("should call onClosePress handler when the close button is pressed", async () => {
     const onClosePressMock = jest.fn()
     const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+    })
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
     expect(onClosePressMock).toBeCalled()
@@ -127,7 +146,12 @@ describe("CreateSavedSearchAlert", () => {
       <TestRenderer onComplete={onCompleteMock} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        PreviewSavedSearch: () => ({ displayName: "Banana" }),
+      })
+      resolveMostRecentRelayOperation(mockEnvironment)
+    })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByText("Save Alert"))
@@ -158,12 +182,17 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [
-            { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
-          ],
-        }),
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => ({
+            notificationPreferences: [
+              { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
+            ],
+          }),
+        })
       })
 
       await flushPromiseQueue()
@@ -177,12 +206,14 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [
-            { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
-          ],
-        }),
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => ({
+            notificationPreferences: [
+              { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
+            ],
+          }),
+        })
       })
 
       await flushPromiseQueue()
@@ -192,9 +223,15 @@ describe("CreateSavedSearchAlert", () => {
       })
     })
 
-    it("push toggle is enabled by default when push permissions are enabled", () => {
+    it("push toggle is enabled by default when push permissions are enabled", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       renderWithWrappers(<TestRenderer />)
+
+      await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({ displayName: "Banana" }),
+        })
+      })
 
       expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
         selected: true,

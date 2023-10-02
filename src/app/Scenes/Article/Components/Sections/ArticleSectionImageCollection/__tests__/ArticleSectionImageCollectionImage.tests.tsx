@@ -1,0 +1,47 @@
+import { Image } from "@artsy/palette-mobile"
+import { screen, waitFor } from "@testing-library/react-native"
+import { ArticleSectionImageCollectionImageTestQuery } from "__generated__/ArticleSectionImageCollectionImageTestQuery.graphql"
+import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Suspense } from "react"
+import { useLazyLoadQuery } from "react-relay"
+import { graphql } from "relay-runtime"
+
+describe("ArticleSectionImageCollectionImage", () => {
+  const Article = () => {
+    const data = useLazyLoadQuery<ArticleSectionImageCollectionImageTestQuery>(
+      graphql`
+        query ArticleSectionImageCollectionImageTestQuery {
+          article(id: "foo") {
+            sections {
+              ... on ArticleSectionImageCollection {
+                figures {
+                  ...ArticleSectionImageCollectionImage_figure
+                }
+              }
+            }
+          }
+        }
+      `,
+      {}
+    )
+
+    return <ArticleSectionImageCollectionImage figure={data.article!.sections[0].figures?.[0]!} />
+  }
+
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
+      <Suspense fallback={null}>
+        <Article />
+      </Suspense>
+    ),
+  })
+
+  it("renders", async () => {
+    renderWithRelay()
+
+    await waitFor(() => {
+      expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
+    })
+  })
+})

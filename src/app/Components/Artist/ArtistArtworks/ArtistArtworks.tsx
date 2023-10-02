@@ -1,32 +1,42 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Spacer, Box, Message } from "@artsy/palette-mobile"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import {
+  BellIcon,
+  Box,
+  Button,
+  Flex,
+  Message,
+  Spacer,
+  Spinner,
+  Tabs,
+  Text,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
+import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import {
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "app/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import {
-  useArtworkFilters,
-  useSelectedFiltersCount,
-} from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
-  InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
-  Props as InfiniteScrollGridProps,
-} from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useContext, useEffect, useState } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React, { useCallback, useEffect, useMemo } from "react"
+import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist$data
@@ -35,96 +45,33 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   predefinedFilters?: FilterArray
 }
 
-type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
-
-const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
-  const tracking = useTracking()
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-
-  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
-  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
-
-  const openFilterArtworksModal = (openedFrom: FilterModalOpenedFrom) => {
-    if (openedFrom === "sortAndFilter") {
-      tracking.trackEvent({
-        action_name: "filter",
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen: Schema.PageNames.ArtistPage,
-        context_screen_owner_id: artist.id,
-        context_screen_owner_slug: artist.slug,
-        action_type: Schema.ActionTypes.Tap,
-      })
-    }
-
-    handleOpenFilterArtworksModal()
-  }
-
-  const closeFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "closeFilterWindow",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen: Schema.PageNames.ArtistPage,
-      context_screen_owner_id: artist.id,
-      context_screen_owner_slug: artist.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
-
-    handleCloseFilterArtworksModal()
-  }
-
-  return (
-    <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
-        <ArtistArtworksContainer
-          {...props}
-          artist={artist}
-          relay={relay}
-          openFilterModal={openFilterArtworksModal}
-        />
-        <ArtworkFilterNavigator
-          {...props}
-          id={artist.internalID}
-          slug={artist.slug}
-          visible={isFilterArtworksModalVisible}
-          name={artist.name ?? ""}
-          exitModal={handleCloseFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-          mode={FilterModalMode.ArtistArtworks}
-          shouldShowCreateAlertButton
-        />
-      </StickyTabPageScrollView>
-    </ArtworkFiltersStoreProvider>
-  )
-}
-
-interface ArtistArtworksContainerProps {
-  openFilterModal: (openedFrom: FilterModalOpenedFrom) => void
-}
-
-const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
+const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   artist,
   relay,
-  searchCriteria,
   predefinedFilters,
-  openFilterModal,
+  searchCriteria,
   ...props
 }) => {
+  const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
+    useShowArtworksFilterModal({ artist })
   const tracking = useTracking()
+  const space = useSpace()
+  const { width } = useScreenDimensions()
+  const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
+  const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
-    (state) => state.setInitialFilterStateAction
-  )
-
-  const appliedFiltersCount = useSelectedFiltersCount()
-  const artworks = artist.artworks
-  const artworksCount = artworks?.edges?.length
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   useArtworkFilters({
     relay,
     aggregations: artist.aggregations?.aggregations,
     componentPath: "ArtistArtworks/ArtistArtworks",
   })
+
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setInitialFilterStateAction
+  )
 
   useEffect(() => {
     let filters: FilterArray = []
@@ -148,7 +95,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setInitialFilterStateAction(filters)
   }, [])
 
-  // TODO: Convert to use cohesion
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",
@@ -160,70 +106,163 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     })
   }
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
 
-  useEffect(() => {
-    setJSX(
-      <Box backgroundColor="white">
-        <ArtworksFilterHeader
-          onFilterPress={() => openFilterModal("sortAndFilter")}
-          selectedFiltersCount={appliedFiltersCount}
-          childrenPosition="left"
-        >
-          <SavedSearchButtonV2
-            artistId={artist.internalID}
-            artistSlug={artist.slug}
-            onPress={() => openFilterModal("createAlert")}
-          />
-        </ArtworksFilterHeader>
-      </Box>
-    )
-  }, [appliedFiltersCount])
-
-  const filteredArtworks = () => {
-    if (artworksCount === 0) {
-      return (
-        <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState
-            id={artist.id}
-            slug={artist.slug}
-            trackClear={trackClear}
-            hideClearButton={!appliedFilters.length}
-          />
-        </Box>
-      )
-    } else {
-      return (
-        <>
-          <Spacer y={1} />
-          <InfiniteScrollArtworksGrid
-            connection={artist.artworks!}
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            {...props}
-            contextScreenOwnerType={OwnerType.artist}
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-          />
-        </>
-      )
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(10)
     }
+  }, [relay.hasMore(), relay.isLoading()])
+
+  const CreateAlertButton = () => {
+    return (
+      <Button
+        variant="outline"
+        mx="auto"
+        icon={<BellIcon />}
+        size="small"
+        onPress={() => {
+          openFilterArtworksModal("createAlert")
+
+          tracking.trackEvent({
+            action: ActionType.tappedCreateAlert,
+            context_screen_owner_type: OwnerType.artist,
+            context_screen_owner_id: artist.internalID,
+            context_screen_owner_slug: artist.slug,
+            context_module: ContextModule.artistArtworksGridEnd,
+          })
+        }}
+      >
+        Create Alert
+      </Button>
+    )
   }
 
   if (!artist.statuses?.artworks) {
     return (
-      <Message
-        variant="default"
-        title="No works available by the artist at this time"
-        text="Create an Alert to receive notifications when new works are added"
-        bodyTextStyle={{
-          color: "black60",
-        }}
-      />
+      <Tabs.ScrollView>
+        <Spacer y={6} />
+
+        <Text variant="md" textAlign="center">
+          Get notified when new works are available
+        </Text>
+
+        <Text variant="md" textAlign="center" color="black60">
+          There are currently no works for sale for this artist. Create an alert, and we’ll let you
+          know when new works are added.
+        </Text>
+
+        <Spacer y={2} />
+
+        <CreateAlertButton />
+
+        <Spacer y={6} />
+        <ArtworkFilterNavigator
+          {...props}
+          id={artist.internalID}
+          slug={artist.slug}
+          visible={showFilterArtworksModal}
+          name={artist.name ?? ""}
+          exitModal={closeFilterArtworksModal}
+          closeModal={closeFilterArtworksModal}
+          mode={FilterModalMode.ArtistArtworks}
+          shouldShowCreateAlertButton
+        />
+      </Tabs.ScrollView>
     )
   }
 
-  return artist.artworks ? filteredArtworks() : null
+  const ListFooterComponenet = () => {
+    if (shouldDisplaySpinner) {
+      return (
+        <Flex my={4} flexDirection="row" justifyContent="center">
+          <Spinner />
+        </Flex>
+      )
+    }
+
+    if (showCreateAlertAtEndOfList && !relay.hasMore()) {
+      return (
+        <Message
+          title="Get notified when works you're looking for are added."
+          containerStyle={{ my: 2 }}
+          IconComponent={() => {
+            return <CreateAlertButton />
+          }}
+          iconPosition="right"
+        />
+      )
+    }
+    return null
+  }
+
+  return (
+    <>
+      <Tabs.Masonry
+        data={artworks}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState
+              id={artist.id}
+              slug={artist.slug}
+              trackClear={trackClear}
+              hideClearButton={!appliedFilters.length}
+            />
+          </Box>
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
+
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                {...props}
+                itemIndex={index}
+                contextScreenOwnerType={OwnerType.artist}
+                contextScreenOwnerId={artist.internalID}
+                contextScreenOwnerSlug={artist.slug}
+                artwork={item}
+                height={imgHeight}
+                navigateToPageableRoute={navigateToPageableRoute}
+              />
+            </Flex>
+          )
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <Tabs.SubTabBar>
+            <ArtistArtworksFilterHeader artist={artist} />
+          </Tabs.SubTabBar>
+        }
+        ListFooterComponent={<ListFooterComponenet />}
+      />
+      <ArtworkFilterNavigator
+        {...props}
+        id={artist.internalID}
+        slug={artist.slug}
+        visible={!!showFilterArtworksModal}
+        name={artist.name ?? ""}
+        exitModal={closeFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
+        mode={FilterModalMode.ArtistArtworks}
+        shouldShowCreateAlertButton
+      />
+    </>
+  )
 }
 
 export default createPaginationContainer(
@@ -236,6 +275,7 @@ export default createPaginationContainer(
         cursor: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
+        ...ArtistArtworksFilterHeader_artist
         id
         slug
         name
@@ -268,12 +308,13 @@ export default createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          counts {
-            total
-          }
-          ...InfiniteScrollArtworksGrid_connection
         }
         statuses {
           artworks

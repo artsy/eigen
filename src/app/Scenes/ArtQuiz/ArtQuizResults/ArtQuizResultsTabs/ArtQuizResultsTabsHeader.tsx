@@ -5,11 +5,10 @@ import { unsafe_getUserEmail } from "app/store/GlobalStore"
 import { graphql, useMutation } from "react-relay"
 
 interface ArtQuizResultsTabsHeaderProps {
-  title: string
   subtitle: string
 }
 
-export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabsHeaderProps) => {
+export const ArtQuizResultsTabsHeader = ({ subtitle }: ArtQuizResultsTabsHeaderProps) => {
   const currentUserEmail = unsafe_getUserEmail()
   const [submitMutation, isLoading] = useMutation<ArtQuizResultsTabsHeaderTriggerCampaignMutation>(
     TriggerCampaignButtonMutation
@@ -33,7 +32,6 @@ export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabs
 
   return (
     <Flex px={2}>
-      <Text variant="lg">{title}</Text>
       <Text variant="sm" color="black60">
         {subtitle}
       </Text>

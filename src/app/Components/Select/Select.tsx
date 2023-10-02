@@ -1,17 +1,18 @@
 import {
   Autocomplete,
   CloseIcon,
-  TriangleDown,
   Flex,
-  useColor,
-  Text,
-  useTextStyleForPalette,
   Separator,
+  Text,
   Touchable,
+  TriangleDown,
+  useColor,
+  useTextStyleForPalette,
 } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
+import { isEqual } from "lodash"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 
@@ -78,14 +79,26 @@ export const Select = <ValueType,>({
 
   const open = async () => {
     await blurAllOtherInputs()
-    setShowingModal(true)
+
+    // this is a hack to make sure that the modal doesn't open until the keyboard has been dismissed
+    requestAnimationFrame(() => {
+      setShowingModal(true)
+    })
   }
 
   const close = () => {
     setShowingModal(false)
   }
 
-  const selectedItem = options.find((o) => o.value === value)
+  const selectedItem = options.find((o) => {
+    if (typeof o.value === "string" && typeof value === "string") {
+      return (
+        (o.value as unknown as string).toLowerCase() === (value as unknown as string).toLowerCase()
+      )
+    }
+
+    return isEqual(o.value, value)
+  })
 
   return (
     <>

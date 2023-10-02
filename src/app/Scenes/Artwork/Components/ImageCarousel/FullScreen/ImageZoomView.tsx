@@ -6,6 +6,7 @@ import {
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { fitInside, Position, Rect } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, {
   useCallback,
   useContext,
@@ -26,7 +27,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { useDoublePressCallback } from "./useDoublePressCallback"
@@ -375,7 +375,7 @@ export const ImageZoomView =
         </Animated.ScrollView>
         {(fullScreenState.current === "entered" || fullScreenState.current === "exiting") &&
           (imageIndex.current === index || lastImageIndex.current === index) &&
-          image.deepZoom && (
+          !!image.deepZoom && (
             <DeepZoomOverlay
               image={image}
               width={imageFittedWithinScreen.width}

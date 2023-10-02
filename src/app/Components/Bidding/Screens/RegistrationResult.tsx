@@ -24,10 +24,10 @@ export enum RegistrationStatus {
 }
 
 const Icons = {
-  RegistrationStatusComplete: require("images/circle-check-green.png"),
-  RegistrationStatusPending: require("images/circle-exclamation.png"),
-  RegistrationStatusNetworkError: require("images/circle-x-red.png"),
-  RegistrationStatusError: require("images/circle-x-red.png"),
+  RegistrationStatusComplete: require("images/circle-check-green.webp"),
+  RegistrationStatusPending: require("images/circle-exclamation.webp"),
+  RegistrationStatusNetworkError: require("images/circle-x-red.webp"),
+  RegistrationStatusError: require("images/circle-x-red.webp"),
 }
 
 const registrationCompleteMessage = {

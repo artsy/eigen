@@ -1,25 +1,25 @@
 import { HomeQueryRenderer } from "app/Scenes/Home/Home"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { requestPushNotificationsPermission } from "app/utils/PushNotification"
+import { useEffect } from "react"
 
 export const HomeContainer = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
-  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-
-  const shouldShowArtQuiz = useFeatureFlag("ARShowArtQuizApp")
+  const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
 
   const navigateToArtQuiz = async () => {
     await navigate("/art-quiz")
   }
 
-  if (shouldShowArtQuiz && artQuizState === "incomplete") {
-    navigateToArtQuiz()
-    return null
-  }
+  useEffect(() => {
+    if (artQuizState === "incomplete" && isNavigationReady) {
+      navigateToArtQuiz()
+      return
+    }
+  }, [artQuizState, navigateToArtQuiz, isNavigationReady])
 
-  if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
-    requestPushNotificationsPermission()
+  if (artQuizState === "incomplete") {
+    return null
   }
 
   return <HomeQueryRenderer />

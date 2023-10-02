@@ -33,17 +33,21 @@ net.artsy.artsy.dev.pem
 # See note in Podfile
 ios/Artsy/App/Echo.json
 ios/Artsy/App/EchoNew.json
+ios/.xcode.env.local
 
 # Fastlane
 Preview.html
-fastlane/report.xml
-fastlane/Preview.html
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # bundler
 .vendor
 
-# Cocoa Pods
+# Ruby / Cocoa Pods
 Pods
+/vendor/bundle/
 
 # build artefacts
 derived_data
@@ -61,6 +65,7 @@ yalc.lock
 # Custom
 .apphub
 .awcache
+.cxx/
 .vscode/.browse.VC.db
 .vscode/.react/
 .vscode/launchReactNative.js
@@ -82,7 +87,8 @@ tsc_raw.log
 data/complete.queryMap.json
 
 # native code hash
-native-code-checksum.hash
+file_hashes.txt
+native-hash.txt
 
 .manifests
 
@@ -115,6 +121,9 @@ ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts/*
 eigen-firebase-app-distribution.json
 google-services.json
 GoogleService-Info.plist
+
+# App center files
+AppCenter-Config.plist
 
 metaflags.json
 

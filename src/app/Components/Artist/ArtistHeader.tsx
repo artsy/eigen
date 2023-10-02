@@ -1,25 +1,52 @@
-import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
-import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import {
+  Box,
+  Flex,
+  Image,
+  Pill,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
+import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
-import { FollowButton } from "app/Components/Button/FollowButton"
-import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
-import { refreshOnArtistFollow } from "app/utils/refreshHelpers"
-import { Schema } from "app/utils/track"
-import { useState } from "react"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { useTracking } from "react-tracking"
+import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
+import { navigate } from "app/system/navigation/navigate"
+import { isPad } from "app/utils/hardware"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { pluralize } from "app/utils/pluralize"
+import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
+import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 
 export const ARTIST_HEADER_HEIGHT = 156
+export const ARTIST_IMAGE_TABLET_HEIGHT = 375
+const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$data
+  me: ArtistHeader_me$data
   relay: RelayProp
+  onLayoutChange?: ViewProps["onLayout"]
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
-  const { trackEvent } = useTracking()
+export const useArtistHeaderImageDimensions = () => {
+  const { width } = useScreenDimensions()
+  const isTablet = isPad()
 
-  const [isFollowedChanging, setIsFollowedChanging] = useState(false)
+  const height = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
+  const aspectRatio = width / height
+
+  return {
+    aspectRatio,
+    height,
+    width,
+  }
+}
+
+export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
+  const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
+  const { updateScrollYOffset } = useScreenScrollContext()
+  const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -38,131 +65,130 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     return leadingSubstring + " " + birthday
   }
 
-  const handleFollowChange = () => {
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistUnfollow
-        : Schema.ActionNames.ArtistFollow,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-
-    if (isFollowedChanging) {
-      return
-    }
-
-    setIsFollowedChanging(true)
-
-    commitMutation<ArtistHeaderFollowArtistMutation>(relay.environment, {
-      mutation: graphql`
-        mutation ArtistHeaderFollowArtistMutation($input: FollowArtistInput!) {
-          followArtist(input: $input) {
-            artist {
-              id
-              isFollowed
-            }
-          }
-        }
-      `,
-      variables: {
-        input: {
-          artistID: artist.slug,
-          unfollow: artist.isFollowed,
-        },
-      },
-      // @ts-ignore RELAY 12 MIGRATION
-      optimisticResponse: {
-        followArtist: {
-          artist: {
-            id: artist.id,
-            isFollowed: !artist.isFollowed,
-          },
-        },
-      },
-      onCompleted: () => successfulFollowChange(),
-      onError: () => failedFollowChange(),
-    })
-  }
-
-  const successfulFollowChange = () => {
-    refreshOnArtistFollow()
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistUnfollow
-        : Schema.ActionNames.ArtistFollow,
-      action_type: Schema.ActionTypes.Success,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-
-    setIsFollowedChanging(false)
-  }
-
-  const failedFollowChange = () => {
-    trackEvent({
-      action_name: artist.isFollowed
-        ? Schema.ActionNames.ArtistFollow
-        : Schema.ActionNames.ArtistUnfollow,
-      action_type: Schema.ActionTypes.Fail,
-      owner_id: artist.internalID,
-      owner_slug: artist.slug,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-    // callback for analytics purposes
-    setIsFollowedChanging(false)
-  }
-
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
 
   const bylineRequired = artist.nationality || artist.birthday
 
+  const showAlertsSet =
+    !!showArtistsAlertsSetFeatureFlag && Number(me?.savedSearchesConnection?.totalCount) > 0
+  const hasVerifiedRepresentatives = artist.verifiedRepresentatives?.length > 0
+
+  const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
+    if (nativeEvent.layout.height > 0) {
+      updateScrollYOffset(nativeEvent.layout.height - ARTIST_HEADER_SCROLL_MARGIN)
+      onLayoutChange?.({ nativeEvent, ...rest })
+    }
+  }
+
+  const handleRepresentativePress = (href: string | null) => {
+    if (href) {
+      navigate(href)
+    }
+  }
+
   return (
-    <Box px={2} pt={6} pb={1}>
-      <Text variant="lg-display">{artist.name}</Text>
-      <Spacer y={1} />
-
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Flex flex={1}>
-          {!!bylineRequired && (
-            <Text variant="sm" mr={1}>
-              {descriptiveString}
-            </Text>
-          )}
-          <Text variant="sm">
-            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-            {!!artist?.counts?.follows && artist.counts.follows > 1 && (
-              <>
-                {` ${bullet} `}
-                {formatLargeNumberOfItems(artist.counts.follows, "follower")}
-              </>
+    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
+      {!!artist.coverArtwork?.image?.url && (
+        <Flex pointerEvents="none">
+          <Image
+            accessibilityLabel={`${artist.name} cover image`}
+            src={artist.coverArtwork.image.url}
+            aspectRatio={aspectRatio}
+            width={width}
+            height={height}
+            style={{ alignSelf: "center" }}
+          />
+          <Spacer y={2} />
+        </Flex>
+      )}
+      <Box px={2} pointerEvents="none">
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flex={1}>
+            <Text variant="lg">{artist.name}</Text>
+            {!!bylineRequired && (
+              <Text variant="lg" color="black60">
+                {descriptiveString}
+              </Text>
             )}
-          </Text>
+          </Flex>
         </Flex>
+      </Box>
 
-        <Flex>
-          <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
+      {!!hasVerifiedRepresentatives && (
+        <Flex pointerEvents="box-none" px={2}>
+          <Flex pointerEvents="none">
+            <Text pt={2} pb={1} variant="sm" color="black60">
+              Featured representation
+            </Text>
+          </Flex>
+          <FlatList
+            horizontal
+            data={artist.verifiedRepresentatives}
+            keyExtractor={({ partner }) => `representative-${partner.internalID}`}
+            renderItem={({ item }) => (
+              <Pill
+                variant="profile"
+                src={item.partner.profile?.icon?.url!}
+                onPress={() => handleRepresentativePress(item.partner.href)}
+              >
+                {item.partner.name}
+              </Pill>
+            )}
+            ItemSeparatorComponent={() => <Spacer x={1} />}
+          />
+          <Spacer y={2} />
         </Flex>
-      </Flex>
-    </Box>
+      )}
+
+      {!!showAlertsSet && (
+        <Box mx={2} maxWidth={120}>
+          <Touchable
+            haptic
+            onPress={() => {
+              navigate(`/my-profile/saved-search-alerts?artistID=${artist.internalID}`)
+            }}
+          >
+            <Text variant="xs" color="blue100">
+              {me.savedSearchesConnection!.totalCount}{" "}
+              {pluralize("Alert", me.savedSearchesConnection!.totalCount!)} Set
+            </Text>
+          </Touchable>
+        </Box>
+      )}
+    </Flex>
   )
 }
 
 export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeader, {
   artist: graphql`
     fragment ArtistHeader_artist on Artist {
-      id
+      birthday
+      coverArtwork {
+        image {
+          url(version: "large")
+        }
+      }
       internalID
-      slug
-      isFollowed
       name
       nationality
-      birthday
-      counts {
-        artworks
-        follows
+      verifiedRepresentatives {
+        partner {
+          internalID
+          name
+          href
+          profile {
+            icon {
+              url(version: "square140")
+            }
+          }
+        }
+      }
+    }
+  `,
+  me: graphql`
+    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
+      savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
+        totalCount
       }
     }
   `,

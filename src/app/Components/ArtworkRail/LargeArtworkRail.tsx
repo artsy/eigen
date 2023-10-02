@@ -6,6 +6,7 @@ import {
   RandomWidthPlaceholderText,
   useMemoizedRandom,
 } from "app/utils/placeholders"
+import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { times } from "lodash"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -14,7 +15,7 @@ import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "./ArtworkRailCard"
 
 type LargeArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
   artworks: LargeArtworkRail_artworks$key
-}
+} & ArtworkActionTrackingProps
 
 export const LARGE_RAIL_IMAGE_WIDTH = 295
 

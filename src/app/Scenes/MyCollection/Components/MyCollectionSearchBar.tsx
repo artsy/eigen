@@ -1,12 +1,12 @@
-import { Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { Flex, INPUT_HEIGHT, Text, useSpace, useTheme } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Input } from "app/Components/Input"
-import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
-import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { debounce } from "lodash"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
@@ -17,8 +17,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native"
-import Animated from "react-native-reanimated"
-
 export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
@@ -40,8 +38,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const [value, setValue] = useState(searchString)
 
-  const { staticHeaderHeight } = useStickyTabPageContext()
-
   const viewOptionPreference = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const [viewOption, setViewOption] = useState(viewOptionPreference)
@@ -49,6 +45,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   const inputRef = useRef<TextInput>(null)
 
   const debouncedSetKeywordFilter = useMemo(() => debounce((text) => onChangeText?.(text), 200), [])
+
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const onViewOptionChange = (selectedViewOption: ViewOption) => {
     LayoutAnimation.configureNext({
@@ -61,26 +59,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
 
-  Animated.useCode(
-    () =>
-      Animated.call(
-        [staticHeaderHeight, hasRunFocusedAnimation],
-        ([, hasFinishedAnimationLoop]) => {
-          if (hasFinishedAnimationLoop) {
-            return
-          }
-          hasRunFocusedAnimation.setValue(new Animated.Value(1))
-        }
-      ),
-    [isFocused]
-  )
-
   useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
 
   return (
-    <Flex>
+    <Flex height={INPUT_HEIGHT} justifyContent="center">
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
           <Input
@@ -89,7 +73,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             onChangeText={setValue}
             onFocus={onFocus}
             onBlur={() => {
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              hasRunFocusedAnimation.setValue(0)
               onIsFocused?.(false)
               setIsFocused(false)
             }}
@@ -105,7 +89,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             testID="MyCollectionSearchBarInputCancelButton"
             onPress={() => {
               setValue("")
-              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              hasRunFocusedAnimation.setValue(0)
 
               LayoutAnimation.configureNext({
                 ...LayoutAnimation.Presets.easeInEaseOut,
@@ -123,13 +107,13 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           </TouchableOpacity>
         </Flex>
       ) : (
-        <Flex my={1}>
+        <Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flex={1} mr={1} justifyContent="center">
               <TouchableWithoutFeedback
                 testID="MyCollectionSearchBarNoInputTouchable"
                 onPress={() => {
-                  hasRunFocusedAnimation.setValue(new Animated.Value(0))
+                  hasRunFocusedAnimation.setValue(0)
                   setIsFocused(true)
                   onIsFocused?.(true)
 
@@ -155,49 +139,65 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex flexDirection="row">
-              <Flex mr={1}>
-                <TouchableWithoutFeedback
-                  testID="MyCollectionSearchListIconTouchable"
-                  onPress={() => onViewOptionChange("list")}
-                  hitSlop={{
-                    top: space(1),
-                    bottom: space(1),
-                    left: space(1),
-                    right: space(1),
-                  }}
-                >
-                  <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                    <ListViewIcon
-                      color={viewOption === "list" ? "black100" : "black30"}
-                      width={18}
-                      height={18}
-                    />
-                  </Flex>
-                </TouchableWithoutFeedback>
-              </Flex>
-              <TouchableWithoutFeedback
-                testID="MyCollectionSearchGridIconTouchable"
-                onPress={() => onViewOptionChange("grid")}
-                hitSlop={{
-                  top: space(1),
-                  bottom: space(1),
-                  left: space(1),
-                  right: space(1),
-                }}
-              >
-                <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                  <GridViewIcon
-                    color={viewOption === "grid" ? "black100" : "black30"}
-                    width={18}
-                    height={18}
-                  />
-                </Flex>
-              </TouchableWithoutFeedback>
-            </Flex>
+
+            {!enableCollectedArtists && (
+              <ViewAsIcons onViewOptionChange={onViewOptionChange} viewOption={viewOption} />
+            )}
           </Flex>
         </Flex>
       )}
     </Flex>
+  )
+}
+
+export const ViewAsIcons: React.FC<{
+  onViewOptionChange: (viewOption: ViewOption) => void
+  viewOption: ViewOption
+}> = ({ onViewOptionChange, viewOption }) => {
+  const space = useSpace()
+
+  return (
+    <>
+      <Flex flexDirection="row">
+        <Flex mr={1}>
+          <TouchableWithoutFeedback
+            testID="MyCollectionSearchListIconTouchable"
+            onPress={() => onViewOptionChange("list")}
+            hitSlop={{
+              top: space(1),
+              bottom: space(1),
+              left: space(1),
+              right: space(1),
+            }}
+          >
+            <Flex width={30} height={30} alignItems="center" justifyContent="center">
+              <ListViewIcon
+                color={viewOption === "list" ? "black100" : "black30"}
+                width={18}
+                height={18}
+              />
+            </Flex>
+          </TouchableWithoutFeedback>
+        </Flex>
+        <TouchableWithoutFeedback
+          testID="MyCollectionSearchGridIconTouchable"
+          onPress={() => onViewOptionChange("grid")}
+          hitSlop={{
+            top: space(1),
+            bottom: space(1),
+            left: space(1),
+            right: space(1),
+          }}
+        >
+          <Flex width={30} height={30} alignItems="center" justifyContent="center">
+            <GridViewIcon
+              color={viewOption === "grid" ? "black100" : "black30"}
+              width={18}
+              height={18}
+            />
+          </Flex>
+        </TouchableWithoutFeedback>
+      </Flex>
+    </>
   )
 }

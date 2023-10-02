@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
-import { FadeInLeft } from "app/utils/animations"
+import { FadeInLeft } from "app/utils/animations/FadeInLeft"
 import { useEffect } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"

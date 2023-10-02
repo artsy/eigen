@@ -1,11 +1,11 @@
 #import "ARAppActivityContinuationDelegate.h"
 
-#import "ARAppDelegate+Analytics.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
+#import <React/RCTLinkingManager.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
@@ -23,37 +23,9 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler;
 {
-    NSURL *URL = nil;
-    if ([userActivity.activityType isEqualToString:CSSearchableItemActionType]) {
-        URL = [NSURL URLWithString:userActivity.userInfo[CSSearchableItemActivityIdentifier]];
-    } else {
-        URL = userActivity.webpageURL;
-    }
-
-    DecodeURL(URL, ^(NSURL *decodedURL) {
-        // Always let analytics know there's a URL being received
-        [[ARAppDelegate sharedInstance] trackDeeplinkWithTarget:decodedURL referrer:userActivity.referrerURL.absoluteString];
-
-        // Show the screen they clicked on
-        if ([[ARUserManager sharedManager] hasExistingAccount]) {
-           [[AREmission sharedInstance] navigate:[decodedURL absoluteString]];
-        }
-    });
-    return YES;
-}
-
-static void
-DecodeURL(NSURL *URL, void (^callback)(NSURL *URL)) {
-    if ([URL.host isEqualToString:@"click.artsy.net"]) {
-        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (response.URL) {
-                callback(response.URL);
-            }
-        }];
-        [task resume];
-    } else {
-        callback(URL);
-    }
+    return [RCTLinkingManager application:application
+                     continueUserActivity:userActivity
+                       restorationHandler:restorationHandler];
 }
 
 @end

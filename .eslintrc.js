@@ -53,9 +53,11 @@ module.exports = {
     ],
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
+    "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
     "unused-imports/no-unused-imports": OFF, // look below
     "no-autofix/unused-imports/no-unused-imports": ERR,
+
     /**
      * Warnings
      */

@@ -1,5 +1,4 @@
 import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -37,16 +36,7 @@ describe("PartnerOverview", () => {
         if (!props?.partner) {
           return null
         }
-        return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: <PartnerOverview partner={props.partner} />,
-              },
-            ]}
-          />
-        )
+        return <PartnerOverview partner={props.partner} />
       }}
     />
   )

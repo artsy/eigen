@@ -1,5 +1,11 @@
-import { bullet, FilterIcon, Flex, Text, Separator } from "@artsy/palette-mobile"
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
+import {
+  bullet,
+  FilterIcon,
+  Flex,
+  Text,
+  Separator,
+  TouchableHighlightColor,
+} from "@artsy/palette-mobile"
 
 interface FilterHeaderProps {
   children?: React.ReactNode
@@ -21,7 +27,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   showSeparator = true,
 }) => {
   return (
-    <Flex>
+    <Flex backgroundColor="white100">
       <Flex
         flexDirection="row"
         height={HEADER_HEIGHT}

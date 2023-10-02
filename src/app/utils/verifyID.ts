@@ -1,9 +1,13 @@
-import { verifyIDMutation } from "__generated__/verifyIDMutation.graphql"
-import { commitMutation, Environment, graphql } from "react-relay"
+import {
+  SendIdentityVerificationEmailMutationInput,
+  verifyIDMutation,
+} from "__generated__/verifyIDMutation.graphql"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { commitMutation, graphql } from "react-relay"
 
-export const verifyID = async (relayEnvironment: Environment) => {
+export const verifyID = async (input: SendIdentityVerificationEmailMutationInput) => {
   return new Promise<verifyIDMutation["response"]>((done, reject) => {
-    commitMutation<verifyIDMutation>(relayEnvironment, {
+    commitMutation<verifyIDMutation>(getRelayEnvironment(), {
       onCompleted: (data, errors) => (errors && errors.length ? reject(errors) : done(data)),
       onError: (error) => reject(error),
       mutation: graphql`
@@ -11,7 +15,7 @@ export const verifyID = async (relayEnvironment: Environment) => {
           sendIdentityVerificationEmail(input: $input) {
             confirmationOrError {
               ... on IdentityVerificationEmailMutationSuccessType {
-                identityVerificationEmail {
+                identityVerification {
                   internalID
                   state
                   userID
@@ -27,7 +31,7 @@ export const verifyID = async (relayEnvironment: Environment) => {
           }
         }
       `,
-      variables: { input: {} },
+      variables: { input: { ...input } },
     })
   })
 }

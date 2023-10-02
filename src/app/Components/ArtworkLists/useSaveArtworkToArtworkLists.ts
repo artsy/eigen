@@ -1,30 +1,42 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
+import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
-interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError" | "contextScreen"> {
+interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
   artworkFragmentRef: useSaveArtworkToArtworkLists_artwork$key
+  saveToDefaultCollectionOnly?: boolean
 }
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const isArtworkListsEnabled = useFeatureFlag("AREnableArtworkLists")
-  const { artworkListId, isSavedToArtworkList, dispatch } = useArtworkListsContext()
-  const toast = useArtworkListToast()
+  const { onSave, dispatch } = useArtworkListsContext()
+  const { artworkListID, removedArtworkIDs } = useArtworkListContext()
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
+  const artworkEntity: ArtworkEntity = {
+    id: artwork.id,
+    internalID: artwork.internalID,
+    title: artwork.title!,
+    year: artwork.date,
+    artistNames: artwork.artistNames,
+    imageURL: artwork.preview?.url ?? null,
+  }
   let isSaved = artwork.isSaved
 
-  if (isArtworkListsEnabled) {
-    if (typeof artworkListId !== "undefined") {
-      isSaved = isSavedToArtworkList
+  if (!options.saveToDefaultCollectionOnly) {
+    if (artworkListID !== null) {
+      const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
+        (artworkID) => artworkID === artwork.internalID
+      )
+
+      isSaved = !isArtworkRemovedFromArtworkList
     } else {
-      isSaved = artwork.isSaved ?? isSavedToCustomArtworkLists
+      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
     }
   }
 
@@ -33,41 +45,49 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     id: artwork.id,
     internalID: artwork.internalID,
     isSaved: artwork.isSaved,
-    onCompleted: (isArtworkSaved) => {
-      onCompleted?.(isArtworkSaved)
-
-      if (isArtworkListsEnabled) {
-        if (isArtworkSaved) {
-          toast.savedToDefaultArtworkList(openSelectArtworkListsForArtworkView)
-          return
-        }
-
-        toast.removedFromDefaultArtworkList()
+    onCompleted,
+    optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
+      if (isCalledBefore) {
+        return
       }
+
+      if (options.saveToDefaultCollectionOnly) {
+        return
+      }
+
+      if (isArtworkSaved) {
+        onSave({
+          action: ResultAction.SavedToDefaultArtworkList,
+          artwork: artworkEntity,
+        })
+
+        return
+      }
+
+      onSave({
+        action: ResultAction.RemovedFromDefaultArtworkList,
+        artwork: artworkEntity,
+      })
     },
   })
 
   const openSelectArtworkListsForArtworkView = () => {
     dispatch({
-      type: "SET_ARTWORK",
+      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
       payload: {
-        id: artwork.id,
-        internalID: artwork.internalID,
-        title: artwork.title!,
-        year: artwork.date,
-        artistNames: artwork.artistNames,
-        imageURL: artwork.preview?.url ?? null,
+        artwork: artworkEntity,
+        artworkListID,
       },
     })
   }
 
   const saveArtworkToLists = () => {
-    if (!isArtworkListsEnabled) {
+    if (options.saveToDefaultCollectionOnly) {
       saveArtworkToDefaultArtworkList()
       return
     }
 
-    if (artworkListId || isSavedToCustomArtworkLists) {
+    if (artworkListID || isSavedToCustomArtworkLists) {
       openSelectArtworkListsForArtworkView()
       return
     }

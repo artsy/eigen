@@ -1,16 +1,13 @@
-import { Flex, Box, useSpace, Text, Spinner, Separator } from "@artsy/palette-mobile"
+import { Flex, Box, useSpace, Text, Spinner, Separator, Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ReadMore } from "app/Components/ReadMore"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
 import React, { useMemo, useState } from "react"
 import { FlatList, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -34,7 +31,6 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   const tracking = useTracking()
   const artworks = extractNodes(viewingRoom.artworksConnection)
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   const sections: ArtworkSection[] = useMemo(() => {
     return artworks.map((artwork, index) => {
@@ -57,18 +53,11 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               }}
             >
               <Box>
-                {enableNewOpaqueImageView ? (
-                  <OpaqueImageView
-                    imageURL={artwork.image?.url}
-                    width={width}
-                    aspectRatio={artwork.image!.aspectRatio}
-                  />
-                ) : (
-                  <ImageView
-                    imageURL={artwork.image?.url}
-                    aspectRatio={artwork.image!.aspectRatio}
-                  />
-                )}
+                <OpaqueImageView
+                  imageURL={artwork.image?.url}
+                  width={width}
+                  aspectRatio={artwork.image!.aspectRatio}
+                />
                 <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
                   <Text variant="sm" color="black60" key={index}>
@@ -218,7 +207,7 @@ export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: strin
 }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
           viewingRoom(id: $viewingRoomID) {

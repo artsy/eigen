@@ -8,13 +8,17 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
+import {
+  ArtworkActionTrackingProps,
+  extractArtworkActionTrackingProps,
+} from "app/utils/track/ArtworkActions"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
-interface ArtworkRecommendationsRailProps {
+interface ArtworkRecommendationsRailProps extends ArtworkActionTrackingProps {
   isRailVisible: boolean
   mb?: SpacingUnit
   me: ArtworkRecommendationsRail_me$key
@@ -23,8 +27,9 @@ interface ArtworkRecommendationsRailProps {
 
 export const ArtworkRecommendationsRail: React.FC<
   ArtworkRecommendationsRailProps & RailScrollProps
-> = memo(({ isRailVisible, mb, me, scrollRef, title }) => {
+> = memo(({ isRailVisible, mb, me, scrollRef, title, ...otherProps }) => {
   const { trackEvent } = useTracking()
+  const trackingProps = extractArtworkActionTrackingProps(otherProps)
 
   const { artworkRecommendations } = useFragment(artworksFragment, me)
 
@@ -60,6 +65,7 @@ export const ArtworkRecommendationsRail: React.FC<
           <SectionTitle title={title} onPress={() => handleMorePress("header")} />
         </Flex>
         <LargeArtworkRail
+          {...trackingProps}
           artworks={artworks}
           onPress={(artwork, position) => {
             trackEvent(tracks.tappedArtwork(artwork.slug, artwork.internalID, position))

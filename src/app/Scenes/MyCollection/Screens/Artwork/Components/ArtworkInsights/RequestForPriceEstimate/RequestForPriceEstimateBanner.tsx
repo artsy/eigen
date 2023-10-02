@@ -4,7 +4,7 @@ import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/Request
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,17 +26,12 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const me = useFragment(meFragment, otherProps.me)
 
-  const enableRemotePriceEstimateRequestedLogic = useFeatureFlag(
-    "AREnableNewRequestPriceEstimateLogic"
-  )
-
   const localRequestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
   )
 
   const priceEstimateRequested =
-    (enableRemotePriceEstimateRequestedLogic && artwork.hasPriceEstimateRequest) ||
-    !!localRequestedPriceEstimates[artwork.internalID]
+    artwork.hasPriceEstimateRequest || !!localRequestedPriceEstimates[artwork.internalID]
 
   if (priceEstimateRequested) {
     return (

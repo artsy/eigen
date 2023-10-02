@@ -3,6 +3,7 @@ import {
   entries,
   filter,
   isArray,
+  isEmpty,
   isEqual,
   isUndefined,
   pick,
@@ -563,10 +564,9 @@ export const getFilterArrayFromQueryParams = (queryParams: {
 }) => {
   return compact(
     entries(queryParams).map(([key, value]) => {
-      if (value) {
+      if (!isEmpty(value)) {
         const filterData: FilterData = {
-          // @ts-expect-error TODO: fix type error
-          displayText: FilterDisplayName[key],
+          displayText: FilterDisplayName[key as keyof typeof FilterDisplayName],
           paramName: key as FilterParamName,
           paramValue: value,
         }

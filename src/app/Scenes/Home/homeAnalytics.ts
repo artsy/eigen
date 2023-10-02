@@ -1,11 +1,13 @@
 import {
   ActionType,
   ContextModule,
+  ItemViewed,
   OwnerType,
+  RailViewed,
+  Screen,
+  TappedEntityDestinationType,
   TappedEntityGroup,
   tappedEntityGroup,
-  RailViewed,
-  ItemViewed,
 } from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 
@@ -20,6 +22,13 @@ type ValidHomeDestination =
   | OwnerType.gene
 
 export default class HomeAnalytics {
+  static homeScreenViewed(): Screen {
+    return {
+      context_screen_owner_type: OwnerType.home,
+      action: ActionType.screen,
+    }
+  }
+
   // Auction events
 
   static auctionHeaderTapEvent(): TappedEntityGroup {
@@ -76,6 +85,38 @@ export default class HomeAnalytics {
       moduleHeight: "double",
       type: "thumbnail",
     })
+  }
+
+  // Activity events
+
+  static activityHeaderTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.activityRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.activities,
+      type: "header",
+    })
+  }
+
+  static activityViewAllTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.activityRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.activities,
+      type: "viewAll",
+    })
+  }
+
+  static activityThumbnailTapEvent(index: number, destinationModule: string): TappedEntityGroup {
+    return {
+      action: ActionType.tappedActivityGroup,
+      context_module: ContextModule.activityRail,
+      context_screen_owner_type: OwnerType.home,
+      destination_screen_owner_type: destinationModule.toLowerCase() as TappedEntityDestinationType,
+      horizontal_slide_position: index,
+      module_height: "single",
+      type: "thumbnail",
+    }
   }
 
   // Article events

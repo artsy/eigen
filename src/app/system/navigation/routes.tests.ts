@@ -55,6 +55,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Artwork Lists", () => {
+    expect(matchRoute("/artwork-lists")).toMatchInlineSnapshot(`
+      {
+        "module": "MyProfile",
+        "params": {
+          "initialTab": "Saves",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Artist", () => {
     expect(matchRoute("/artist/banksy")).toMatchInlineSnapshot(`
       {
@@ -668,8 +680,12 @@ describe("artsy.net routes", () => {
   it("routes to Terms and Conditions", () => {
     expect(matchRoute("/terms")).toMatchInlineSnapshot(`
       {
-        "module": "ReactWebView",
+        "module": "ModalWebView",
         "params": {
+          "alwaysPresentModally": true,
+          "safeAreaEdges": [
+            "bottom",
+          ],
           "url": "/terms",
         },
         "type": "match",
@@ -680,8 +696,12 @@ describe("artsy.net routes", () => {
   it("routes to Privacy Policy", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       {
-        "module": "ReactWebView",
+        "module": "ModalWebView",
         "params": {
+          "alwaysPresentModally": true,
+          "safeAreaEdges": [
+            "bottom",
+          ],
           "url": "/privacy",
         },
         "type": "match",
@@ -875,8 +895,12 @@ describe("artsy.net routes", () => {
   it("routes /conditions-of-sale to web view", () => {
     expect(matchRoute("/conditions-of-sale")).toMatchInlineSnapshot(`
       {
-        "module": "ReactWebView",
+        "module": "ModalWebView",
         "params": {
+          "alwaysPresentModally": true,
+          "safeAreaEdges": [
+            "bottom",
+          ],
           "url": "/conditions-of-sale",
         },
         "type": "match",
@@ -1134,8 +1158,12 @@ describe("artsy.net routes", () => {
   it("routes /privacy to a web view", () => {
     expect(matchRoute("/privacy")).toMatchInlineSnapshot(`
       {
-        "module": "ReactWebView",
+        "module": "ModalWebView",
         "params": {
+          "alwaysPresentModally": true,
+          "safeAreaEdges": [
+            "bottom",
+          ],
           "url": "/privacy",
         },
         "type": "match",

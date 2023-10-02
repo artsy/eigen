@@ -178,6 +178,7 @@ export interface AuthPromiseRejectType {
 type SessionState = {
   isLoading: boolean
   isUserIdentified: boolean
+  isFirstSession: boolean
 }
 
 export interface AuthModel {
@@ -196,7 +197,7 @@ export interface AuthModel {
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
   // Actions
-  setState: Action<this, Partial<StateMapper<this, "1">>>
+  setState: Action<this, Partial<StateMapper<this>>>
   setSessionState: Action<this, Partial<SessionState>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
@@ -264,6 +265,7 @@ export const getAuthModel = (): AuthModel => ({
   sessionState: {
     isLoading: false,
     isUserIdentified: false,
+    isFirstSession: false,
   },
   userID: null,
   userAccessToken: null,
@@ -408,6 +410,8 @@ export const getAuthModel = (): AuthModel => ({
         onboardingState: onboardingState ?? "complete",
       })
 
+      // TODO: do we need to set requested push permissions false here
+
       if (oauthProvider === "email") {
         Keychain.setInternetCredentials(
           store.getStoreState().devicePrefs.environment.strings.webURL.slice("https://".length),
@@ -476,6 +480,10 @@ export const getAuthModel = (): AuthModel => ({
     // The user account has been successfully created
     if (result.status === 201) {
       postEventToProviders(tracks.createdAccount({ signUpMethod: oauthProvider }))
+
+      actions.setSessionState({
+        isFirstSession: true,
+      })
 
       switch (oauthProvider) {
         case "facebook":
@@ -941,6 +949,7 @@ export const getAuthModel = (): AuthModel => ({
       }
     }
 
+    GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(null, { is_temporary_user: 1 })
     updateExperimentsContext({ userId: undefined })

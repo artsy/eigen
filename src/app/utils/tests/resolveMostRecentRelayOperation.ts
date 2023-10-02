@@ -48,6 +48,11 @@ export const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
+/**
+ * @deprecated
+ * Please use `setupTestWrapper` and destrucure
+ * const { mockResolveLastOperation } = renderWithRelay() instead
+ */
 export function resolveMostRecentRelayOperation(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers

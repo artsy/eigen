@@ -9,9 +9,15 @@
  */
 
 const { spawnSync } = require("child_process")
-const chalk = require("chalk")
-const checkDependencies = require("check-dependencies")
 const fs = require("fs")
+const chalk = require("chalk")
+
+const desiredVersions = {
+  xcode: "15.0",
+  androidStudio: "2022.3",
+  ruby: "2.7.4",
+  bundler: "2.4.3",
+}
 
 const exec = (command, cwd) => {
   const task = spawnSync(command, { shell: true, cwd })
@@ -21,11 +27,17 @@ const exec = (command, cwd) => {
   return task.stdout.toString()
 }
 
+const execReturnErrors = (command, cwd) => {
+  const task = spawnSync(command, { shell: true, cwd, encoding: "utf8" })
+  return { stdout: task.stdout, stderr: task.stderr, status: task.status }
+}
+
 const NO = (message, suggestion) => {
   console.log(`🔴 ${message}`)
   if (suggestion) console.log(`└──> ${suggestion}`)
 }
 const YES = (message) => console.log(`🟢 ${message}`)
+const WARN = (message) => console.log(`🟡 ${message}`)
 const g = (text) => chalk.bold.green(text)
 const r = (text) => chalk.bold.red(text)
 
@@ -70,19 +82,40 @@ const checkYarnExists = () => {
 
 const checkRubyExists = () => {
   try {
-    exec("ruby --version")
-    YES(`Your ${g`ruby`} is ready to go.`)
+    const output = exec("ruby --version")
+    const versionMatch = output.match(/ruby (\d+\.\d+\.\d+)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Ruby version")
+    }
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersions.ruby) {
+      YES(`Ruby is installed and version is correct: ${installedVersion}`)
+    } else {
+      WARN(`Ruby version is ${installedVersion}, but ${desiredVersions.ruby} is expected`)
+    }
   } catch (e) {
-    NO(`You don't have ${r`ruby`}.`, `Install ${g`ruby`} first.`)
+    NO(`Error checking Ruby: ${e.message}`, `Install ${g`ruby`} ${desiredVersions.ruby} first.`)
   }
 }
 
 const checkBundlerExists = () => {
   try {
-    exec("bundle --version")
-    YES(`Your ${g`bundler`} is ready to go.`)
+    const output = exec("bundle --version")
+    const versionMatch = output.match(/Bundler version (\d+\.\d+\.\d+)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Bundler version")
+    }
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersions.bundler) {
+      YES(`Bundler is installed and version is correct: ${installedVersion}`)
+    } else {
+      WARN(`Bundler version is ${installedVersion}, but ${desiredVersions.bundler} is expected`)
+    }
   } catch (e) {
-    NO(`You don't have ${r`bundler`}.`, `Install ${g`bundler`} first.`)
+    NO(
+      `Error checking Bundler: ${e.message}`,
+      `Install ${g`bundler`} ${desiredVersions.bundler} first.`
+    )
   }
 }
 
@@ -99,27 +132,61 @@ const checkBundlerDependenciesAreUpToDate = () => {
 }
 
 const checkNodeDependenciesAreUpToDate = async () => {
-  const res = await checkDependencies()
+  try {
+    const output = exec("yarn check --integrity")
 
-  if (res.error.length > 0) {
+    // If the output contains the "success" message, everything is in sync
+    if (output.includes("success Folder in sync.")) {
+      YES(`Your ${g`node dependencies`} match the ones specified in package.json.`)
+    } else {
+      NO(
+        `Your ${r`node dependencies`} are out of sync.`,
+        `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    // If there's an error thrown (for example, if `yarn check --integrity` returns a non-zero exit code)
     NO(
       `Your ${r`node dependencies`} are out of sync.`,
       `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
     )
-  } else {
-    YES(`Your ${g`node dependencies`} match the ones specifed in package.json.`)
   }
 }
 
-const checkPodDependenciesAreUpToDate = () => {
+const checkPodDependenciesAreUpToDate = async () => {
   try {
-    exec("bundle exec pod check")
-    YES(`Your ${g`pod dependencies`} are ready to go.`)
-  } catch (e) {
-    NO(
-      `Your ${r`pod dependencies`} are out of sync.`,
-      `Run ${g`yarn install:all`} or ${g`bundle exec pod install`} first.`
-    )
+    const { stdout, stderr, status } = execReturnErrors("bundle exec pod check", "./ios")
+
+    // https://github.com/square/cocoapods-check/issues/18
+    // This is a bug for some react native deps in cocoapods-check
+    // might be a nice OSS contribution opportunity!
+    const knownException = `~RNImageCropPicker, ~RNPermissions, ~React-Codegen\n[!] \`pod install\` will install 3 Pods.`
+
+    // pod check will return status 1 even for only warnings
+    if (status !== 0) {
+      if (stderr.includes("warning:")) {
+        // If there are only warnings, we might still want to proceed with checking stdout
+        WARN("Warnings encountered during pod check: " + stderr)
+      } else {
+        NO(
+          `Your ${r`pod dependencies`} are out of sync.`,
+          `Run ${g`bundle exec pod install`} in the iOS directory.`
+        )
+      }
+    }
+
+    if (stdout.includes(knownException) || !stdout.includes("[!]")) {
+      YES(`Your ${g`pod dependencies`} are correctly installed.`)
+    } else {
+      NO(
+        `Your ${r`pod dependencies`} are out of sync.`,
+        `Run ${g`bundle exec pod install`} in the iOS directory.`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Your ${r`pod dependencies`} encountered an error during verification.`)
   }
 }
 
@@ -128,10 +195,54 @@ const checkDetectSecretsExists = () => {
     exec("detect-secrets-hook --version")
     YES(`Your ${g`detect-secrets`} is ready to go.`)
   } catch (e) {
+    console.error(e)
     NO(
       `Your ${r`detect-secrets`} is missing or not linked.`,
       `Run ${g`yarn install:all`} to install, and then make sure it's in your $PATH.`
     )
+  }
+}
+
+const checkXcodeVersion = () => {
+  try {
+    const output = exec("xcodebuild -version")
+
+    const versionMatch = output.match(/Xcode (\d+\.\d+(\.\d+)?)/)
+    if (!versionMatch) {
+      throw new Error("Unable to determine Xcode version.")
+    }
+
+    const installedVersion = versionMatch[1]
+    if (installedVersion === desiredVersions.xcode) {
+      YES(`Xcode is installed and the version is correct (${installedVersion}).`)
+    } else {
+      WARN(
+        `Xcode is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Xcode is not installed or there was an error determining the version.`)
+  }
+}
+
+const checkAndroidStudioVersion = () => {
+  try {
+    const plistPath = "/Applications/Android\\ Studio.app/Contents/Info.plist"
+    const plistBuddyCmd = `/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" ${plistPath}`
+
+    const installedVersion = exec(plistBuddyCmd).trim()
+
+    if (installedVersion === desiredVersions.androidStudio) {
+      YES(`Android Studio is installed and the version is correct (${installedVersion}).`)
+    } else {
+      WARN(
+        `Android Studio is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+      )
+    }
+  } catch (error) {
+    console.error(error)
+    NO(`Android Studio is not installed or there was an error determining the version.`)
   }
 }
 
@@ -145,9 +256,11 @@ const main = async () => {
 
   checkBundlerDependenciesAreUpToDate()
   await checkNodeDependenciesAreUpToDate()
-  // checkPodDependenciesAreUpToDate() // this is broken right now.. pod check is always reporting an error.
+  checkPodDependenciesAreUpToDate()
 
   checkDetectSecretsExists()
+  checkXcodeVersion()
+  checkAndroidStudioVersion()
 }
 
 main()

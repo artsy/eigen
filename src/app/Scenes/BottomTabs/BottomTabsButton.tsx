@@ -1,9 +1,12 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { useColor, Text, PopIn, VisualClueDot } from "@artsy/palette-mobile"
+import { ProgressiveOnboardingFindSavedArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingFindSavedArtwork"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "app/store/GlobalStore"
+import { unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
+import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
+import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -79,21 +82,23 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       style={{ flex: 1 }}
     >
       <View style={{ flex: 1 }}>
-        <IconWrapper>
-          <BottomTabsIcon tab={tab} state="inactive" />
-        </IconWrapper>
-        <IconWrapper>
-          <Animated.View
-            style={{
-              opacity: activeProgress,
-              backgroundColor: "white",
-              width: ICON_WIDTH,
-              height: ICON_HEIGHT,
-            }}
-          >
-            <BottomTabsIcon tab={tab} state="active" />
-          </Animated.View>
-        </IconWrapper>
+        <ProgressiveOnboardingFindSavedArtwork tab={tab}>
+          <IconWrapper>
+            <BottomTabsIcon tab={tab} state="inactive" />
+          </IconWrapper>
+          <IconWrapper>
+            <Animated.View
+              style={{
+                opacity: activeProgress,
+                backgroundColor: "white",
+                width: ICON_WIDTH,
+                height: ICON_HEIGHT,
+              }}
+            >
+              <BottomTabsIcon tab={tab} state="active" />
+            </Animated.View>
+          </IconWrapper>
+        </ProgressiveOnboardingFindSavedArtwork>
 
         {!!badgeCount && (
           <IconWrapper accessibilityLabel="badge count">

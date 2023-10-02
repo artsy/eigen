@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -45,7 +46,6 @@ describe("RequestForPriceEstimateBanner", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewRequestPriceEstimateLogic: true })
   })
 
   afterEach(() => {
@@ -59,7 +59,7 @@ describe("RequestForPriceEstimateBanner", () => {
     )
   }
 
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
@@ -71,6 +71,9 @@ describe("RequestForPriceEstimateBanner", () => {
         demandRank: 7.5,
       }),
     })
+
+    await flushPromiseQueue()
+
     expect(getByTestId("request-price-estimate-button")).toBeDefined()
     expect(getByTestId("request-price-estimate-banner-title")).toBeDefined()
     expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
@@ -91,7 +94,7 @@ describe("RequestForPriceEstimateBanner", () => {
     expect(queryByTestId("request-price-estimate-banner-description")).toBeNull()
   })
 
-  it("renders 'requested' state if in global store without throwing an error", () => {
+  it("renders 'requested' state if in global store without throwing an error", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
@@ -113,6 +116,9 @@ describe("RequestForPriceEstimateBanner", () => {
         },
       },
     })
+
+    await flushPromiseQueue()
+
     expect(getByText("Price Estimate Request Sent")).toBeDefined()
   })
 

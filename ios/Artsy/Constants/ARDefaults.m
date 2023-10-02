@@ -12,12 +12,6 @@ NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 NSString *const ARXAppTokenKeychainKey = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
 
-NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogue";
-NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
-NSString *const ARPushNotificationsSettingsPromptSeen = @"eigen-push-seen-settings-dialogue";
-NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
-NSString *const ARPushNotificationsDialogueLastSeenDate = @"eigen-push-seen-dialogue-date";
-
 NSString *const ARAugmentedRealityHasSeenSetup = @"ARAugmentedRealityHasSeenSetup";
 NSString *const ARAugmentedRealityHasTriedToSetup = @"ARAugmentedRealityHasTriedToSetup";
 NSString *const ARAugmentedRealityCameraAccessGiven = @"ARAugmentedRealityCameraAccessGiven";
@@ -31,18 +25,8 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
     // Need to save launch count for analytics
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
     
-    // Preserve notification related settings
-    BOOL hasSeenNotificationPrompt = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsSettingsPromptSeen];
-    BOOL hasSeenNotificationDialogue = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsAppleDialogueSeen];
-    BOOL userPushNotificationDecision = [[NSUserDefaults standardUserDefaults] boolForKey:ARPushNotificationsAppleDialogueRejected];
-    
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
-    
     [[NSUserDefaults standardUserDefaults] setInteger:launchCount forKey:ARAnalyticsAppUsageCountProperty];
-    [[NSUserDefaults standardUserDefaults] setBool:hasSeenNotificationPrompt forKey:ARPushNotificationsSettingsPromptSeen];
-    [[NSUserDefaults standardUserDefaults] setBool:hasSeenNotificationDialogue forKey:ARPushNotificationsAppleDialogueSeen];
-    [[NSUserDefaults standardUserDefaults] setBool:userPushNotificationDecision forKey:ARPushNotificationsAppleDialogueRejected];
-    
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 @end

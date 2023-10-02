@@ -1,17 +1,18 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Touchable } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
 const MIDDLE_TOAST_SIZE = 120
 const EDGE_TOAST_HEIGHT = 60
+const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 const TABBAR_HEIGHT = 50
@@ -30,6 +31,9 @@ export const ToastComponent = ({
   Icon,
   backgroundColor = "black100",
   duration = "short",
+  cta,
+  imageURL,
+  bottomPadding,
 }: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
@@ -55,6 +59,8 @@ export const ToastComponent = ({
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
+
+  const toastBottomPadding = bottomPadding ?? TABBAR_HEIGHT
 
   if (placement === "middle") {
     const innerMiddle = (
@@ -95,11 +101,26 @@ export const ToastComponent = ({
   }
 
   const innerTopBottom = (
-    <Flex flex={1} flexDirection="row" alignItems="center" mx={2}>
+    <Flex flex={1} flexDirection="row" alignItems="center" mx={1}>
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
-      <Text variant="xs" color="white100">
-        {message}
-      </Text>
+
+      {!!imageURL && (
+        <Box borderWidth={1} borderColor="white100" mr={1}>
+          <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
+        </Box>
+      )}
+
+      <Flex flex={1}>
+        <Text variant="sm-display" color="white100">
+          {message}
+        </Text>
+      </Flex>
+
+      {!!cta && (
+        <Text variant="sm-display" color="white100" ml={1} underline>
+          {cta}
+        </Text>
+      )}
     </Flex>
   )
 
@@ -112,7 +133,7 @@ export const ToastComponent = ({
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
-            TABBAR_HEIGHT +
+            toastBottomPadding +
             EDGE_TOAST_PADDING +
             positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
@@ -128,7 +149,6 @@ export const ToastComponent = ({
       backgroundColor={color(backgroundColor)}
       opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
       overflow="hidden"
-      paddingRight={2}
       zIndex={999}
     >
       {onPress !== undefined ? (

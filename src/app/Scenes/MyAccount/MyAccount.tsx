@@ -5,7 +5,7 @@ import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -114,7 +114,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/facebook.png`)}
+                      source={require(`images/facebook.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -141,7 +141,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/google.png`)}
+                      source={require(`images/google.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -168,7 +168,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`images/apple.png`)}
+                        source={require(`images/apple.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
@@ -233,7 +233,7 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
 export const MyAccountQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountQuery {
           me {

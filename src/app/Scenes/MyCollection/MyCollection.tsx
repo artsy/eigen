@@ -1,54 +1,55 @@
-import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Separator, Button } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import { Button, Flex, Separator, Spacer, Tabs } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { MyCollectionFetchAuctionResultsQuery } from "__generated__/MyCollectionFetchAuctionResultsQuery.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { useToast } from "app/Components/Toast/toastHook"
 import { PAGE_SIZE } from "app/Components/constants"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import {
-  GlobalStore,
-  setVisualClueAsSeen,
-  useDevToggle,
-  useVisualClue,
-} from "app/store/GlobalStore"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
+import { MyCollectionCollectedArtists } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import { MyCollectionCollectedArtistsOnboardingModal } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsOnboardingModal"
+import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
+import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
+import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
+import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { GlobalStore } from "app/store/GlobalStore"
+import { VisualCluesConstMap } from "app/store/config/visualClues"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  PlaceholderBox,
-  PlaceholderGrid,
-  PlaceholderText,
-  RandomWidthPlaceholderText,
-} from "app/utils/placeholders"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
+import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
   refreshMyCollectionInsights,
 } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import React, { useContext, useEffect, useRef, useState } from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
+import React, { useEffect, useRef, useState } from "react"
+import { RefreshControl } from "react-native"
+import {
+  QueryRenderer,
+  RelayPaginationProp,
+  createPaginationContainer,
+  fetchQuery,
+  graphql,
+} from "react-relay"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
-import {
-  PurchasedArtworkAddedMessage,
-  SubmittedArtworkAddedMessage,
-} from "./Screens/Insights/MyCollectionMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -58,24 +59,46 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
-  const toast = useToast()
-  const { trackEvent } = useTracking()
-  const { showVisualClue } = useVisualClue()
-
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
+  const [hasMarketSignals, setHasMarketSignals] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
-
-  const [showSearchBar, setShowSearchBar] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [showNewWorksMessage, setShowNewWorksMessage] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
-  const hasMarketSignals = !!me?.auctionResults?.totalCount
-
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
+
+  const toast = useToast()
+
+  const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
+
+  const showCollectedArtistsOnboarding = useFeatureFlag("ARShowCollectedArtistOnboarding")
+
+  const hasCollectedArtistsRef = useRef(hasCollectedArtists).current
+
+  // We are using a ref of the hasCollectedArtists to prevent the modal from showing up as soon as you upload your first artist
+  const showCollectedArtistsOnboardingModal =
+    showCollectedArtistsOnboarding && hasCollectedArtistsRef
+
+  const { showVisualClue } = useVisualClue()
+  const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
+    "MyCollectionArtistsCollectedOnboarding"
+  )
+
+  useEffect(() => {
+    // Don't show onboarding tooltips if user's have already been onboarded
+    // because the tooltip onboarding was introduced two weeks after the feature was released
+    if (!showMyCollectionCollectedArtistsOnboarding) {
+      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip1)
+      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip2)
+    }
+  }, [])
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
@@ -92,6 +115,25 @@ const MyCollection: React.FC<{
         console.error(err)
       }
     })
+
+    // No need to fetch the data again if we already know the user has at least one signal
+    if (!hasMarketSignals) {
+      fetchQuery<MyCollectionFetchAuctionResultsQuery>(
+        getRelayEnvironment(),
+        FetchAuctionResultsQuery,
+        {}
+      )
+        .toPromise()
+        .then((res) => {
+          if (res?.me?.auctionResults?.totalCount) {
+            setHasMarketSignals(true)
+          }
+        })
+        .catch((err) => {
+          // Failing siltently here to keep this as a breadcrumb for now
+          console.log(err)
+        })
+    }
   }
 
   const notifyMyCollectionInsightsTab = () => {
@@ -112,80 +154,88 @@ const MyCollection: React.FC<{
     relay.loadMore(100)
   }, [me?.myCollectionConnection])
 
-  // hack for tests. we should fix that.
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
-
-  const showMessages = async () => {
-    const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
-    const showNewWorksMessage =
+  const checkForNewMessages = async () => {
+    const newWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-    setJSX(
-      <Flex>
-        <ArtworksFilterHeader
-          selectedFiltersCount={filtersCount}
-          onFilterPress={() => setIsFilterModalVisible(true)}
-          showSeparator={!showSearchBar}
-        >
-          <Button
-            data-test-id="add-artwork-button-non-zero-state"
-            size="small"
-            variant="fillDark"
-            onPress={async () => {
-              navigate("my-collection/artworks/new", {
-                passProps: {
-                  mode: "add",
-                  source: Tab.collection,
-                  onSuccess: popToRoot,
-                },
-              })
-              trackEvent(tracks.addCollectedArtwork())
-            }}
-            haptic
-          >
-            Upload Artwork
-          </Button>
-        </ArtworksFilterHeader>
-        {!!showNewWorksMessage && (
-          <PurchasedArtworkAddedMessage
-            onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
-          />
-        )}
-        {!!showSubmissionMessage && (
-          <SubmittedArtworkAddedMessage
-            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
-          />
-        )}
-        <MyCollectionArtworkUploadMessages
-          sourceTab={Tab.collection}
-          hasMarketSignals={hasMarketSignals}
-        />
-      </Flex>
-    )
+    setShowNewWorksMessage(!!newWorksMessage)
   }
 
   useEffect(() => {
-    if (artworks.length) {
-      showMessages()
-    } else {
-      // remove already set JSX
-      setJSX(null)
+    const renderMessages = enableCollectedArtists ? hasCollectedArtists : artworks.length
+
+    if (renderMessages) {
+      checkForNewMessages()
     }
-  }, [artworks.length, filtersCount, showSearchBar])
+  }, [artworks.length, filtersCount])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  const innerFlatListRef = useRef(null)
+  // User has no artworks and no collected artists
+  if (artworks.length === 0) {
+    // Only check for collected artists count if collected artists feature flag is enabled
+    if (!enableCollectedArtists || !hasCollectedArtists) {
+      return <MyCollectionZeroState />
+    }
+  }
+
+  // User has no artworks but has manually added collected artists
+  if (artworks.length === 0 && hasCollectedArtists && enableCollectedArtists) {
+    return (
+      <TabsFlatList
+        contentContainerStyle={{
+          justifyContent: "flex-start",
+          paddingHorizontal: 0,
+        }}
+        refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
+      >
+        {!!showCollectedArtistsOnboardingModal && <MyCollectionCollectedArtistsOnboardingModal />}
+
+        <Tabs.SubTabBar>
+          <MyCollectionStickyHeader
+            filtersCount={filtersCount}
+            hasMarketSignals={hasMarketSignals}
+            showModal={() => setIsFilterModalVisible(true)}
+            showNewWorksMessage={!!showNewWorksMessage}
+            hasArtworks={artworks.length > 0}
+          />
+        </Tabs.SubTabBar>
+
+        <MyCollectionCollectedArtists me={me} />
+        {selectedTab === null && (
+          <Flex px={2}>
+            <Separator mb={4} mt={2} />
+            <MyCollectionZeroStateArtworks />
+          </Flex>
+        )}
+      </TabsFlatList>
+    )
+  }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.myCollection,
-      })}
+    <TabsFlatList
+      contentContainerStyle={{ justifyContent: "flex-start", paddingHorizontal: 0 }}
+      refreshControl={<RefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
     >
+      <Tabs.SubTabBar>
+        <MyCollectionStickyHeader
+          filtersCount={filtersCount}
+          hasMarketSignals={hasMarketSignals}
+          showModal={() => setIsFilterModalVisible(true)}
+          showNewWorksMessage={!!showNewWorksMessage}
+          hasArtworks={artworks.length > 0}
+        />
+      </Tabs.SubTabBar>
+      {/* No need to onboard users to managing artists privacy if they have no artists in their collection */}
+      {!!enableCollectedArtists && !!showCollectedArtistsOnboardingModal && (
+        <MyCollectionCollectedArtistsOnboardingModal />
+      )}
+
       <ArtworkFilterNavigator
         visible={isFilterModalVisible}
         mode={FilterModalMode.Custom}
@@ -193,40 +243,26 @@ const MyCollection: React.FC<{
         exitModal={() => setIsFilterModalVisible(false)}
       />
 
-      <StickyTabPageScrollView
-        contentContainerStyle={{
-          // Extend the container flex when there are no artworks for accurate vertical centering
-          flexGrow: artworks.length ? undefined : 1,
-          justifyContent: artworks.length ? "flex-start" : "center",
-          height: artworks.length ? "auto" : "100%",
-        }}
-        refreshControl={
-          <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
-        }
-        innerRef={innerFlatListRef}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-      >
-        <MyCollectionArtworks
-          me={me}
-          relay={relay}
-          showSearchBar={showSearchBar}
-          setShowSearchBar={setShowSearchBar}
-        />
-        {!!showDevAddButton && (
-          <Button
-            onPress={async () => {
-              toast.show("Adding artwork", "middle")
-              await addRandomMyCollectionArtwork()
-              toast.hideOldest()
-            }}
-            block
-          >
-            Add Random Work
-          </Button>
-        )}
-      </StickyTabPageScrollView>
-    </ProvideScreenTrackingWithCohesionSchema>
+      {(selectedTab === null || selectedTab === "Artists") && enableCollectedArtists ? (
+        <MyCollectionCollectedArtists me={me} />
+      ) : null}
+
+      {selectedTab === null || selectedTab === "Artworks" || !enableCollectedArtists ? (
+        <MyCollectionArtworks me={me} relay={relay} />
+      ) : null}
+      {!!showDevAddButton && (
+        <Button
+          onPress={async () => {
+            toast.show("Adding artwork", "middle")
+            await addRandomMyCollectionArtwork()
+            toast.hideOldest()
+          }}
+          block
+        >
+          Add Random Work
+        </Button>
+      )}
+    </TabsFlatList>
   )
 }
 
@@ -239,8 +275,10 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
+          artworksCount
         }
-        auctionResults: myCollectionAuctionResults(first: 3) {
+        ...MyCollectionCollectedArtists_me
+        userInterestsConnection(first: 10, category: COLLECTED_BEFORE, interestType: ARTIST) {
           totalCount
         }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
@@ -299,6 +337,16 @@ export const MyCollectionContainer = createPaginationContainer(
   }
 )
 
+export const FetchAuctionResultsQuery = graphql`
+  query MyCollectionFetchAuctionResultsQuery {
+    me {
+      auctionResults: myCollectionAuctionResults(first: 3) {
+        totalCount
+      }
+    }
+  }
+`
+
 export const MyCollectionScreenQuery = graphql`
   query MyCollectionQuery {
     me {
@@ -309,71 +357,94 @@ export const MyCollectionScreenQuery = graphql`
 
 export const MyCollectionQueryRenderer: React.FC = () => {
   return (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<MyCollectionQuery>
-        environment={defaultEnvironment}
-        query={MyCollectionScreenQuery}
-        variables={{}}
-        cacheConfig={{ force: true }}
-        render={renderWithPlaceholder({
-          Container: MyCollectionContainer,
-          renderPlaceholder: () => <MyCollectionPlaceholder />,
-          renderFallback: ({ retry }) => (
-            // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
-          ),
-        })}
-      />
-    </ArtworkFiltersStoreProvider>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.myCollection,
+      })}
+    >
+      <MyCollectionArtworksKeywordStore.Provider>
+        <ArtworkFiltersStoreProvider>
+          <QueryRenderer<MyCollectionQuery>
+            environment={getRelayEnvironment()}
+            query={MyCollectionScreenQuery}
+            variables={{}}
+            cacheConfig={{ force: true }}
+            render={renderWithPlaceholder({
+              Container: MyCollectionContainer,
+              renderPlaceholder: () => <MyCollectionPlaceholder />,
+              renderFallback: ({ retry }) => (
+                // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+                <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
+              ),
+            })}
+          />
+        </ArtworkFiltersStoreProvider>
+      </MyCollectionArtworksKeywordStore.Provider>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   return (
-    <Flex>
-      {/* collector's info */}
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
-        <Flex flex={1}>
-          <Spacer y={2} />
-          {/* icon, name, time joined */}
-          <Flex flexDirection="row">
-            <PlaceholderBox width={50} height={50} borderRadius={50} />
-            <Flex flex={1} justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={25} />
-              <PlaceholderText width={100} height={15} />
-            </Flex>
-            {/* settings icon */}
-            <PlaceholderBox width={20} height={20} />
-          </Flex>
-          <Spacer y={1} />
-        </Flex>
-      </Flex>
-      <Spacer y={4} />
-      {/* tabs */}
-      <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="25%" height={22} />
-        <PlaceholderText width="25%" height={22} />
-        <PlaceholderText width="25%" height={22} />
-      </Flex>
+    <TabsFlatList
+      contentContainerStyle={{
+        justifyContent: "flex-start",
+        paddingHorizontal: 0,
+      }}
+    >
       <Spacer y={1} />
-      <Separator />
-      <Spacer y={1} />
+
       {/* Sort & Filter  */}
-      <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
-        <PlaceholderText width={120} height={22} />
-        <PlaceholderText width={90} height={22} borderRadius={11} />
-      </Flex>
-      <Separator />
+      {!!enableCollectedArtists ? (
+        <Flex flexDirection="row" px={2} mt={1}>
+          <Spacer y={2} />
+          <PlaceholderBox width={60} height={30} borderRadius={50} marginRight={10} />
+          <PlaceholderBox width={75} height={30} borderRadius={50} />
+        </Flex>
+      ) : (
+        <>
+          <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
+            <PlaceholderText width={120} height={22} />
+            <PlaceholderText width={90} height={22} borderRadius={11} />
+          </Flex>
+          <Separator />
+        </>
+      )}
       <Spacer y={2} />
+
+      {/* collected artists rail */}
+      {!!enableCollectedArtists ? (
+        <Flex width="100%" px={2}>
+          <Flex my={0.5} flexDirection="row">
+            {times(4).map((i) => (
+              <Flex key={i} mr={1}>
+                <Flex>
+                  <PlaceholderBox
+                    borderRadius={ARTIST_CIRCLE_DIAMETER / 2}
+                    key={i}
+                    width={ARTIST_CIRCLE_DIAMETER}
+                    height={ARTIST_CIRCLE_DIAMETER}
+                  />
+                </Flex>
+                <Flex mt={1} alignItems="center">
+                  <RandomWidthPlaceholderText minWidth={40} maxWidth={ARTIST_CIRCLE_DIAMETER} />
+                </Flex>
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+      ) : null}
+
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />
       ) : (
-        <Flex mx={2} width="100%">
+        <Flex width="100%" px={2}>
           {times(4).map((i) => (
-            <Flex key={i} my={0.5} flexDirection="row">
+            <Flex key={i} my={!!enableCollectedArtists ? 1 : 0.5} flexDirection="row">
               <Flex>
                 <PlaceholderBox
                   key={i}
@@ -390,19 +461,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
           ))}
         </Flex>
       )}
-    </Flex>
+    </TabsFlatList>
   )
 }
 
-const tracks = {
-  addCollectedArtwork: (): AddCollectedArtwork => ({
-    action: ActionType.addCollectedArtwork,
-    context_module: ContextModule.myCollectionHome,
-    context_owner_type: OwnerType.myCollection,
-    platform: "mobile",
-  }),
-}
-
-export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
->["node"]
+export type MyCollectionArtworkEdge =
+  ExtractNodeType<InfiniteScrollArtworksGrid_myCollectionConnection$data>

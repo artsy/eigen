@@ -1,7 +1,9 @@
-import { TextProps } from "@artsy/palette-mobile"
+import { ContextModule } from "@artsy/cohesion"
+import { Flex, TextProps, useScreenDimensions } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import {
   PageableRouteProps,
   useNavigateToPageableRoute,
@@ -23,7 +25,7 @@ interface Props extends Partial<PageableRouteProps> {
   itemMargin?: number
   isLoading?: boolean
   trackingFlow?: string
-  contextModule?: string
+  contextModule?: ContextModule
   trackTap?: (artworkSlug: string, itemIndex?: number) => void
   // Give explicit width to avoid resizing after mount
   width?: number
@@ -189,13 +191,20 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
+
     return (
-      <View onLayout={this.onLayout}>
-        <View style={styles.container} accessibilityLabel="Artworks Content View">
-          {artworks}
+      <AnalyticsContextProvider
+        contextScreenOwnerId={this.props.contextScreenOwnerId}
+        contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+        contextScreenOwnerType={this.props.contextScreenOwnerType}
+      >
+        <View onLayout={this.onLayout}>
+          <View style={styles.container} accessibilityLabel="Artworks Content View">
+            {artworks}
+          </View>
+          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
         </View>
-        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
-      </View>
+      </AnalyticsContextProvider>
     )
   }
 }
@@ -218,7 +227,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props) => {
+const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props & PropsForArtwork) => {
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
   return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
 }
@@ -254,5 +263,14 @@ export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) =
         </Stack>
       ))}
     </Stack>
+  )
+}
+
+export const PlaceholderGrid = () => {
+  const { width } = useScreenDimensions()
+  return (
+    <Flex mx={2} flexDirection="row" testID="PlaceholderGrid">
+      <GenericGridPlaceholder width={width - 40} />
+    </Flex>
   )
 }

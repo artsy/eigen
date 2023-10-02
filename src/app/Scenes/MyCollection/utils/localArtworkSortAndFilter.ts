@@ -7,10 +7,10 @@ import {
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { MyCollectionArtworkEdge } from "app/Scenes/MyCollection/MyCollection"
+import { normalizeText } from "app/utils/normalizeText"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
-import { normalizeText } from "app/utils/normalizeText"
 
 export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)

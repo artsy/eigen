@@ -1,20 +1,24 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
+import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
+import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
-> = ({ route, navigation }) => {
+> = ({ navigation }) => {
+  const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
+
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -30,28 +34,49 @@ export const MyCollectionArtworkFormArtist: React.FC<
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
     if (result.isPersonalArtist || result.counts?.artworks === 0) {
-      navigation.navigate("ArtworkFormMain", { ...route.params })
+      navigation.navigate("ArtworkFormMain")
     } else {
-      navigation.navigate("ArtworkFormArtwork", { ...route.params })
+      navigation.navigate("ArtworkFormArtwork")
     }
   }
 
   const handleSkipPress = async (artistDisplayName: string) => {
     GlobalStore.actions.myCollection.artwork.resetForm()
 
-    requestAnimationFrame(() => {
-      GlobalStore.actions.myCollection.artwork.updateFormValues({
-        artistDisplayName,
-        metric: preferredMetric,
-        pricePaidCurrency: preferredCurrency,
+    if (enableCollectedArtists) {
+      navigation.navigate("AddMyCollectionArtist", {
+        props: {
+          artistDisplayName: artistDisplayName,
+          onSubmit: (values) => {
+            GlobalStore.actions.myCollection.artwork.updateFormValues({
+              customArtist: values,
+              metric: preferredMetric,
+            })
+            navigation.navigate("ArtworkFormMain")
+          },
+        },
       })
-      navigation.navigate("ArtworkFormMain", { ...route.params })
-    })
+    } else {
+      requestAnimationFrame(() => {
+        GlobalStore.actions.myCollection.artwork.updateFormValues({
+          artistDisplayName,
+          metric: preferredMetric,
+          pricePaidCurrency: preferredCurrency,
+        })
+        navigation.navigate("ArtworkFormMain")
+      })
+    }
+  }
+
+  const handleBack = () => {
+    // TOOD: The state doesn't need to be stored in the global store
+    GlobalStore.actions.myCollection.artwork.resetForm()
+    goBack()
   }
 
   return (
     <>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={handleBack}>
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>

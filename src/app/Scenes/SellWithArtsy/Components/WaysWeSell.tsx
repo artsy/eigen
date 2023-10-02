@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Image, ImageSourcePropType } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -15,29 +15,28 @@ const data: Array<{
   {
     title: "Auctions",
     text: "Our curated auctions provide you with multiple opportunities to reach the widest audience and successfully achieve your artwork’s full potential.",
-    imageSource: require("images/ways-we-sell-auction.png"),
+    imageSource: require("images/ways-we-sell-auction.webp"),
     width: IMAGE_WIDTH,
     height: 415,
   },
   {
     title: "Private Sales",
     text: "We offer tailored and discreet sales arrangements for our collectors’ highest value and most sensitive artworks.",
-    imageSource: require("images/ways-we-sell-private-sales.png"),
+    imageSource: require("images/ways-we-sell-private-sales.webp"),
     width: IMAGE_WIDTH,
     height: 597,
   },
   {
     title: "Online storefront",
     text: "When your work is listed directly on Artsy.net—the world’s largest online art marketplace—it reaches over 3 million art lovers.",
-    imageSource: require("images/ways-we-sell-online-storefront.png"),
+    imageSource: require("images/ways-we-sell-online-storefront.webp"),
     width: IMAGE_WIDTH,
     height: 344,
   },
 ]
 
 export const WaysWeSell: React.FC = () => {
-  const space = useSpace()
-  const color = useColor()
+  const { color, space } = useTheme()
 
   const maxImageWidth = useExtraLargeWidth()
 
@@ -46,16 +45,18 @@ export const WaysWeSell: React.FC = () => {
 
   return (
     <Flex bg="black100" py={4}>
-      <Flex mx={2}>
+      <Flex px={2}>
         <Text variant="lg-display" color={color("white100")} mb={1}>
           A sales strategy tailored to your artwork
         </Text>
+
         <Text variant="xs" color={color("white100")} mb={2}>
           A dedicated specialist works with you to select the best sales option for your artwork.
         </Text>
       </Flex>
+
       <FlatList
-        contentContainerStyle={{ marginLeft: space(2) }}
+        contentContainerStyle={{ paddingLeft: space(2), paddingRight: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={data}
@@ -64,7 +65,7 @@ export const WaysWeSell: React.FC = () => {
 
           const imageHeight = maxImageWidth * imageAspectRatio
           return (
-            <Flex maxWidth={maxImageWidth} mr={2} alignSelf="flex-start">
+            <Flex maxWidth={maxImageWidth} alignSelf="flex-start">
               <Flex height={maxImageContainerHeight} justifyContent="flex-end">
                 <Image
                   source={item.imageSource}
@@ -84,8 +85,8 @@ export const WaysWeSell: React.FC = () => {
             </Flex>
           )
         }}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(item) => item.title}
-        ListFooterComponent={() => <Spacer x={4} />}
       />
     </Flex>
   )

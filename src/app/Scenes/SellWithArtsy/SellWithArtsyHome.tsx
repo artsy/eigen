@@ -1,9 +1,8 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Spacer, Flex, Join } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join, LegacyScreen } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { Screen } from "app/Components/Screen"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
@@ -11,9 +10,11 @@ import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheS
 import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
 import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { useEffect } from "react"
@@ -21,7 +22,6 @@ import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { useScreenDimensions } from "app/utils/hooks"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
@@ -88,7 +88,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }, [])
 
   return (
-    <Screen.Background>
+    <LegacyScreen.Background>
       <Flex
         flex={1}
         justifyContent="center"
@@ -99,43 +99,37 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
-
             <Spacer y={4} />
-
             <Join separator={<Spacer y={4} />}>
               <Highlights />
               <WaysWeSell />
             </Join>
-
             <Spacer y={6} />
-
             <HowItWorks onConsignPress={handleConsignPress} />
             <Spacer y={2} />
             <Spacer y={4} />
-
             <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-            {enableMeetTheSpecialist && <Spacer y={6} />}
-            {enableMeetTheSpecialist && <MeetTheSpecialists onInquiryPress={handleInquiryPress} />}
+            {!!enableMeetTheSpecialist && <Spacer y={6} />}
+            {!!enableMeetTheSpecialist && (
+              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
+            )}
             <Spacer y={6} />
             <CollectorsNetwork />
             <Spacer y={6} />
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
-
             <Join separator={<Spacer y={6} />}>
               <></>
-              {enableTestimonials && <Testimonials />}
+              {!!enableTestimonials && <Testimonials />}
               <FAQSWA />
             </Join>
-
             <Spacer y={4} />
             <Spacer y={2} />
-
             <Footer onConsignPress={handleConsignPress} />
             <Spacer y={4} />
           </Flex>
         </ScrollView>
       </Flex>
-    </Screen.Background>
+    </LegacyScreen.Background>
   )
 }
 

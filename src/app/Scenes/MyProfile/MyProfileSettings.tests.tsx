@@ -68,13 +68,6 @@ describe(MyProfileSettings, () => {
     expect(extractText(tree.root)).toContain("About")
   })
 
-  it("renders Saved Addresses when the AREnableSavedAddresses flag is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedAddresses: true })
-
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Saved Addresses")
-  })
-
   it("renders Dark Mode when the ARDarkModeSupport flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
 
@@ -82,17 +75,8 @@ describe(MyProfileSettings, () => {
     expect(extractText(tree.root)).toContain("Dark Mode")
   })
 
-  it("renders Orders when the AREnableOrderHistoryOption flag is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableOrderHistoryOption: true })
-
+  it("renders Order history", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("Order History")
-  })
-
-  it("renders Addresses when the AREnableSavedAddresses flag is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedAddresses: true })
-
-    const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Saved Addresses")
   })
 })

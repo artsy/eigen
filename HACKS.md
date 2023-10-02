@@ -28,6 +28,46 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
+## @segment+analytics-react-native-appboy patch
+
+### When can we remove this:
+
+When we upgrade to a version of `@segment/analytics-react-native` that includes an updated kotlin version compatible with the version of kotlin we need for React Native.
+
+### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to kotlin version missmatch.
+
+## react-native patch
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+## deprecated-react-native-prop-types dependency
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
+## react-native-credit-card-input
+
+#### When can we remove this:
+
+When we upgrade our deps to a version of react-native that includes removal of deprecated PropTypes.
+
+#### Explanation/Context:
+
+When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
+
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:
@@ -39,26 +79,6 @@ Remove when we stop swizzling UIWindow via ARWindow or react-native-image-crop-p
 https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
-
-## react-native patch-package (stacktrace-parser part only).
-
-#### When can we remove this:
-
-When this is merged: https://github.com/facebook/react-native/pull/30345.
-
-#### Explanation/Context:
-
-For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
-
-## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
-
-#### When can we remove this:
-
-When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/33756
-
-#### Explanation/Context:
-
-Jest 28 changed the way it handles transformed file input.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
@@ -230,7 +250,7 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
-# `ORStackView` pod postinstall modification (add UIKit import)
+# `ORStackView` patch (add UIKit import)
 
 #### When can we remove this:
 
@@ -262,28 +282,6 @@ When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-1
 
 The app restarts when the user takes a picture to pass to `react-native-image-crop-picker` (https://github.com/ivpusic/react-native-image-crop-picker/issues/1704). We do not know exactly why this is happening. And it seems to happen on random devices, but mostly on android-10 and android-11s. This hack silently clears the cache on android before taking the photo.
 
-## @react-native-async-storage/async-storage patch
-
-#### When can we remove this:
-
-When https://github.com/react-native-async-storage/async-storage/issues/746 is solved.
-
-#### Explanation/Context:
-
-The types in this package are not correct, and there is a type error that comes up when we try to use it.
-It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
-
-## rn-async-storage-flipper patch
-
-#### When can we remove this:
-
-Unsure.
-
-#### Explanation/Context:
-
-The types in this package are not correct, and there is a type error that comes up when we try to use it.
-It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
-
 ## ParentAwareScrollView
 
 #### When can we remove this:
@@ -295,56 +293,6 @@ We either need to find a library that gives us masonry layout using a Virtualize
 
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
-
-## react-native patch-package (find-node/asdf part)
-
-#### When we can remove this:
-
-When we upgrade to RN 0.69+.
-
-At that point, we need to add the following to our new `ios/.xcode.env` file:
-
-```
-
-# Support Homebrew on M1
-HOMEBREW_M1_BIN=/opt/homebrew/bin
-if [[ -d $HOMEBREW_M1_BIN && ! $PATH =~ $HOMEBREW_M1_BIN ]]; then
-  export PATH="$HOMEBREW_M1_BIN:$PATH"
-fi
-
-# Set up asdf
-if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
-  # shellcheck source=/dev/null
-  . "$HOME/.asdf/asdf.sh"
-elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
-  # shellcheck source=/dev/null
-  . "$(brew --prefix asdf)/libexec/asdf.sh"
-fi
-```
-
-#### Explanation/Context
-
-RN 0.68- was using `find-node.sh` to find node on our systems, so it would look for asdf, nvm, nodenv, and others. After 0.69, this file is removed and now we have the `.xcode.env` file to do this ourselves. Since we use asdf, we need to add the asdf bit above. If we want to support other version managers, we can add those too. Grab whatever we need from here https://github.com/facebook/react-native/blob/0.68-stable/scripts/find-node.sh.
-
-## react-native-scrollable-tab-view pointing to a commit hash
-
-#### When we can remove this:
-
-When the fix is in a release in the library or when we stop using this library.
-
-#### Explanation/Context
-
-With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
-
-## @storybook/react-native patch
-
-#### When we can remove this:
-
-When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or when storybook supports rendering outside the safe area.
-
-#### Explanation/Context
-
-Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
 
 ## Podfile postinstall code_signing_required = NO
 
@@ -376,3 +324,48 @@ Once we have removed the `palette` directory from eigen.
 #### Explanation/Context:
 
 Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
+
+## Patch-package for sift-react-native
+
+#### When can we remove this:
+
+Just adds a type, so likely doesn't need to be removed. But if they officially add it
+([see this issue](https://github.com/SiftScience/sift-react-native/issues/6)), we could drop this
+patch.
+
+#### Explanation/Context:
+
+This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
+I patched it to add the type.
+
+## Patch-package for react-native-reanimated
+
+#### When can we remove this:
+
+When we upgrade to Reanimated 3.4.0
+
+#### Explanation/Context:
+
+Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
+
+# Patch-package for react-native-codepush
+
+#### When can we remove this:
+
+When this issue is fixed: https://github.com/microsoft/react-native-code-push/issues/1578
+
+#### Explanation/Context:
+
+Release builds fail on Android without this patch, more explanation in the issue: https://github.com/microsoft/react-native-code-push/issues/1578
+
+# Pod patch for NimbleSnapshots type failure
+
+#### When can we remove this:
+
+When this PR is release in a new pod version: https://github.com/ashfurrow/Nimble-Snapshots/pull/268
+And we update to the new version.
+
+#### Explanation/Context:
+
+Test compilations started failing in Xcode 15 due to a type conflict:
+https://github.com/ashfurrow/Nimble-Snapshots/pull/268

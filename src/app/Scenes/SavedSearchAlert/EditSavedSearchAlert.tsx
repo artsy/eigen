@@ -1,4 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
+import { NavigationContainer } from "@react-navigation/native"
+import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
 import { EditSavedSearchAlert_artworksConnection$data } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
@@ -8,19 +10,25 @@ import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
+  SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { EditSavedSearchAlertContent } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlertContent"
+import {
+  EditSavedSearchAlertNavigationStack,
+  EditSavedSearchAlertParams,
+} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
+import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
+import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
-import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchStoreProvider } from "./SavedSearchStore"
+import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 interface EditSavedSearchAlertBaseProps {
   savedSearchAlertId: string
@@ -34,6 +42,8 @@ interface EditSavedSearchAlertProps {
   artworksConnection: EditSavedSearchAlert_artworksConnection$data
   relay: RelayRefetchProp
 }
+
+const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
@@ -53,7 +63,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     name: artist.name!,
   }))
   const entity: SavedSearchEntity = {
-    placeholder: formattedArtists[0].name ?? "",
     artists: formattedArtists,
     owner: {
       type: OwnerType.savedSearch,
@@ -85,6 +94,14 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     }
   }, [])
 
+  const params: EditSavedSearchAlertParams = {
+    userAlertSettings,
+    savedSearchAlertId,
+    userAllowsEmails,
+    onComplete,
+    onDeleteComplete: onComplete,
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -94,21 +111,41 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
       }}
     >
       <ArtsyKeyboardAvoidingView>
-        <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity }}>
-            <SavedSearchAlertForm
-              initialValues={{
-                name: userAlertSettings?.name ?? "",
-                email: userAlertSettings?.email ?? false,
-                push: userAlertSettings?.push ?? false,
+        <SavedSearchStoreProvider
+          runtimeModel={{
+            ...savedSearchModel,
+            attributes: attributes as SearchCriteriaAttributes,
+            aggregations,
+            entity,
+          }}
+        >
+          <NavigationContainer independent>
+            <Stack.Navigator
+              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+              detachInactiveScreens={false}
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+                cardStyle: { backgroundColor: "white" },
               }}
-              savedSearchAlertId={savedSearchAlertId}
-              userAllowsEmails={userAllowsEmails}
-              onComplete={onComplete}
-              onDeleteComplete={onComplete}
-            />
-          </SavedSearchStoreProvider>
-        </PageWithSimpleHeader>
+            >
+              <Stack.Screen
+                name="EditSavedSearchAlertContent"
+                component={EditSavedSearchAlertContent}
+                initialParams={params}
+              />
+              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+              <Stack.Screen
+                name="AlertPriceRange"
+                component={AlertPriceRangeScreenQueryRenderer}
+                options={{
+                  // Avoid PanResponser conflicts between the slider and the slide back gesture
+                  gestureEnabled: false,
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SavedSearchStoreProvider>
       </ArtsyKeyboardAvoidingView>
     </ProvideScreenTracking>
   )
@@ -165,7 +202,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
       render={renderWithPlaceholder({
         render: (relayProps: SavedSearchAlertQuery["response"]) => (
           <QueryRenderer<EditSavedSearchAlertQuery>
-            environment={defaultEnvironment}
+            environment={getRelayEnvironment()}
             query={graphql`
               query EditSavedSearchAlertQuery($artistIDs: [String]) {
                 viewer {

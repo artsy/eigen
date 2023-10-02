@@ -1,9 +1,8 @@
-import { Flex, Button } from "@artsy/palette-mobile"
+import { Flex, Button, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { Screen } from "app/Components/Screen"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense } from "react"
@@ -40,27 +39,29 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
   }
 
   return (
-    <Screen>
-      <Screen.Background>
+    <LegacyScreen>
+      <LegacyScreen.Background>
         <MarketingCollectionHeader
           collectionSlug={slug}
           description={description}
           marketingCollection={marketingCollection!}
         />
+        <Spacer y={2} />
         <InfiniteScrollArtworksGrid
           // we are deliberately limiting the number of artworks shown in these grids
           loadMore={() => null}
           hasMore={() => false}
           connection={marketingCollection?.artworks}
           shouldAddPadding
+          disableArtworksListPrompt
         />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>
         </Flex>
-      </Screen.Background>
-    </Screen>
+      </LegacyScreen.Background>
+    </LegacyScreen>
   )
 }
 

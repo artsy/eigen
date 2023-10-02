@@ -48,7 +48,7 @@ export const environment = defineEnvironmentOptions({
   webURL: {
     description: "Force URL",
     presets: {
-      local: "http://localhost:5000",
+      local: "http://localhost:4000",
       staging: "https://staging.artsy.net",
       production: "https://www.artsy.net",
     },

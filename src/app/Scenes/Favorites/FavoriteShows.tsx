@@ -1,18 +1,16 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer, Tabs } from "@artsy/palette-mobile"
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Component } from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
@@ -60,16 +58,13 @@ export class Shows extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const shows = extractNodes(this.props.me.followsAndSaves?.shows).map((show) => ({
-      key: show.id,
-      content: <ShowItemRow show={show} isListItem />,
-    }))
+    const shows = extractNodes(this.props.me.followsAndSaves?.shows)
 
     if (!shows.length) {
       return (
-        <StickyTabPageScrollView
+        <Tabs.ScrollView
           refreshControl={
-            <StickTabPageRefreshControl
+            <RefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -79,12 +74,12 @@ export class Shows extends Component<Props, State> {
             title="You haven’t saved any shows yet"
             subtitle="When you save shows, they will show up here for future use."
           />
-        </StickyTabPageScrollView>
+        </Tabs.ScrollView>
       )
     }
 
     return (
-      <StickyTabPageFlatList
+      <Tabs.FlatList
         data={shows}
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
@@ -92,16 +87,23 @@ export class Shows extends Component<Props, State> {
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={0.5} />}
         refreshControl={
-          <StickTabPageRefreshControl
+          <RefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />
         }
         ListFooterComponent={
           this.state.fetchingMoreData ? (
-            <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
-          ) : null
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : (
+            <Spacer y={2} />
+          )
         }
+        renderItem={({ item }) => {
+          return <ShowItemRow show={item} isListItem />
+        }}
       />
     )
   }
@@ -157,7 +159,7 @@ const FavoriteShowsContainer = createPaginationContainer(
 export const FavoriteShowsQueryRenderer = () => {
   return (
     <QueryRenderer<FavoriteShowsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FavoriteShowsQuery {
           me {

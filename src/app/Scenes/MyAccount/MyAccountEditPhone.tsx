@@ -1,7 +1,7 @@
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { MyAccountEditPhone_me$data } from "__generated__/MyAccountEditPhone_me.graphql"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
@@ -73,7 +73,7 @@ const MyAccountEditPhoneContainer = createFragmentContainer(MyAccountEditPhone, 
 export const MyAccountEditPhoneQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountEditPhoneQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountEditPhoneQuery {
           me {

@@ -580,8 +580,9 @@ static NSString *hostFromString(NSString *string)
     if (saleID) {
         params = @{ @"sale_id" : saleID };
     }
-
-    return [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:params];
+    NSMutableURLRequest *req = [self requestWithMethod:@"GET" path:ARMyBiddersURL parameters:params];
+    req.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+    return req;
 }
 
 + (NSURLRequest *)requestForSaleID:(NSString *)saleID

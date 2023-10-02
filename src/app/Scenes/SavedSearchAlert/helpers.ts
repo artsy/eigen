@@ -2,32 +2,32 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
-  getNotificationPermissionsStatus,
   PushAuthorizationStatus,
+  getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
+import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
+import { omit } from "lodash"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
 export const requestNotificationPermissions = () => {
-  // permissions not determined: Android should never need this
-  if (Platform.OS === "ios") {
-    Alert.alert(
-      "Artsy would like to send you notifications",
-      "We need your permission to send notifications on alerts you have created.",
-      [
-        {
-          text: "Proceed",
-          onPress: () =>
-            LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
+  Alert.alert(
+    "Artsy would like to send you notifications",
+    "We need your permission to send notifications on alerts you have created.",
+    [
+      {
+        text: "Proceed",
+        onPress: () => {
+          requestSystemPermissions()
         },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-      ]
-    )
-  }
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]
+  )
 }
 
 export const showHowToEnableNotificationInstructionAlert = () => {
@@ -68,11 +68,21 @@ export const showHowToEnableNotificationInstructionAlert = () => {
 export const checkOrRequestPushPermissions = async () => {
   const notificationStatus = await getNotificationPermissionsStatus()
 
+  const pushPromptSettings = unsafe_getPushPromptSettings()
+  if (!pushPromptSettings) {
+    return
+  }
+
+  const { pushNotificationSystemDialogSeen } = pushPromptSettings
+
   if (notificationStatus === PushAuthorizationStatus.Denied) {
     showHowToEnableNotificationInstructionAlert()
   }
 
-  if (notificationStatus === PushAuthorizationStatus.NotDetermined) {
+  if (
+    notificationStatus === PushAuthorizationStatus.NotDetermined ||
+    (notificationStatus === PushAuthorizationStatus.Denied && !pushNotificationSystemDialogSeen)
+  ) {
     requestNotificationPermissions()
   }
 
@@ -92,7 +102,7 @@ export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => 
     }
   })
 
-  return clearedAttributes
+  return omit(clearedAttributes, "displayName")
 }
 
 export const showWarningMessageForDuplicateAlert = ({

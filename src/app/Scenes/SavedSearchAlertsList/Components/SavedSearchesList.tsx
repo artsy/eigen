@@ -1,22 +1,23 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, useTheme, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spinner, useTheme } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { GoBackProps, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
 import { SavedSearchListItem } from "./SavedSearchListItem"
 import { SortButton } from "./SortButton"
-import { SortByModal, SortOption } from "./SortByModal"
 
 type RefreshType = "default" | "delete"
 
@@ -42,6 +43,17 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { space } = useTheme()
   const items = extractNodes(me.savedSearchesConnection)
 
+  const refresh = () => {
+    onRefresh("default")
+  }
+
+  useEffect(() => {
+    RefreshEvents.addListener(SAVED_ALERT_REFRESH_KEY, refresh)
+    return () => {
+      RefreshEvents.removeListener(SAVED_ALERT_REFRESH_KEY, refresh)
+    }
+  }, [])
+
   if (refreshMode === "delete") {
     return (
       <ProvidePlaceholderContext>
@@ -66,7 +78,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
-            title={item.userAlertSettings.name!}
+            title={item.displayName}
             onPress={() => {
               navigate(`my-profile/saved-search-alerts/${item.internalID}`)
             }}
@@ -208,11 +220,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     me: graphql`
       fragment SavedSearchesList_me on Me
       @argumentDefinitions(
+        artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
         sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
       ) {
-        savedSearchesConnection(first: $count, after: $cursor, sort: $sort)
+        savedSearchesConnection(first: $count, after: $cursor, artistIDs: $artistIDs, sort: $sort)
           @connection(key: "SavedSearches_savedSearchesConnection") {
           pageInfo {
             hasNextPage
@@ -222,9 +235,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
           edges {
             node {
               internalID
-              userAlertSettings {
-                name
-              }
+              displayName
             }
           }
         }
@@ -243,9 +254,15 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
       return props.me.savedSearchesConnection
     },
     query: graphql`
-      query SavedSearchesListQuery($count: Int!, $cursor: String, $sort: SavedSearchesSortEnum) {
+      query SavedSearchesListQuery(
+        $artistIDs: [String!]
+        $count: Int!
+        $cursor: String
+        $sort: SavedSearchesSortEnum
+      ) {
         me {
-          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
+          ...SavedSearchesList_me
+            @arguments(artistIDs: $artistIDs, count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,

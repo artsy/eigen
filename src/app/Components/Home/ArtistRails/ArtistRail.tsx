@@ -6,7 +6,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
-import { Disappearable } from "app/Components/Disappearable"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -20,10 +19,10 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import { useTracking } from "react-tracking"
 import { ArtistCard } from "./ArtistCard"
 
-interface SuggestedArtist
-  extends Pick<ArtistCard_artist$data, Exclude<keyof ArtistCard_artist$data, " $refType">> {
-  _disappearable: Disappearable | null
-}
+type SuggestedArtist = Pick<
+  ArtistCard_artist$data,
+  Exclude<keyof ArtistCard_artist$data, " $refType">
+>
 
 interface Props extends ViewProps {
   title: string
@@ -101,7 +100,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     }
   }
 
-  return artists.length ? (
+  if (!artists.length) {
+    return null
+  }
+
+  return (
     <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
@@ -122,32 +125,28 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         })}
         renderItem={({ item: artist, index }) => {
           return (
-            <Disappearable ref={(ref) => (artist._disappearable = ref)}>
-              <View style={{ flexDirection: "row" }}>
-                <ArtistCard
-                  artist={artist as any}
-                  onPress={() => {
-                    trackEvent(
-                      HomeAnalytics.artistThumbnailTapEvent(
-                        props.rail.key,
-                        artist.internalID,
-                        artist.slug,
-                        index
-                      )
+            <View style={{ flexDirection: "row" }}>
+              <ArtistCard
+                artist={artist as any}
+                onPress={() => {
+                  trackEvent(
+                    HomeAnalytics.artistThumbnailTapEvent(
+                      props.rail.key,
+                      artist.internalID,
+                      artist.slug,
+                      index
                     )
-                  }}
-                  onFollow={() => handleFollowChange(artist)}
-                />
-                {index === artists.length - 1 ? null : (
-                  <View style={{ width: INTER_CARD_PADDING }} />
-                )}
-              </View>
-            </Disappearable>
+                  )
+                }}
+                onFollow={() => handleFollowChange(artist)}
+              />
+              {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
+            </View>
           )
         }}
       />
     </Flex>
-  ) : null
+  )
 }
 
 export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {

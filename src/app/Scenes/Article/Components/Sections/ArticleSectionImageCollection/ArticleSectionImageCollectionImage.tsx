@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollectionImage_figure$key } from "__generated__/ArticleSectionImageCollectionImage_figure.graphql"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -10,13 +10,19 @@ interface ArticleSectionImageCollectionImageProps {
 export const ArticleSectionImageCollectionImage: React.FC<
   ArticleSectionImageCollectionImageProps
 > = ({ figure }) => {
+  const { width } = useScreenDimensions()
+
   const data = useFragment(ArticleSectionImageCollectionImageQuery, figure)
 
-  return (
-    <>
-      <Text>{data.image?.url}</Text>
-    </>
-  )
+  if (!data.image?.url) {
+    return null
+  }
+
+  const widthShrinkPercentage = width / (data.image?.width ?? width)
+  const height = (data.image?.height ?? width) * widthShrinkPercentage
+  const aspectRatio = width / height
+
+  return <Image src={data.image.url} width={width} height={height} aspectRatio={aspectRatio} />
 }
 
 const ArticleSectionImageCollectionImageQuery = graphql`
@@ -24,7 +30,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleImageSection {
       id
       image {
-        url(version: ["normalized", "larger", "large"])
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -32,7 +38,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on Artwork {
       id
       image {
-        url(version: ["normalized", "larger", "large"])
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
@@ -40,7 +46,7 @@ const ArticleSectionImageCollectionImageQuery = graphql`
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        url(version: ["normalized", "larger", "large"])
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }

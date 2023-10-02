@@ -1,6 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -14,8 +14,6 @@ import {
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
-
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {
@@ -48,6 +46,12 @@ describe(SwitchMenu, () => {
 })
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    env = getMockRelayEnvironment()
+  })
+
   it("Loads until the operation resolves", () => {
     const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)

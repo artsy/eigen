@@ -32,8 +32,8 @@ export const SpeakToTheTeam: React.FC<{
         <Image
           source={
             isAPad
-              ? require("images/get-in-touch-banner-image-ipad.png")
-              : require("images/get-in-touch-banner-image.png")
+              ? require("images/get-in-touch-banner-image-ipad.webp")
+              : require("images/get-in-touch-banner-image.webp")
           }
           style={{
             width: "100%",

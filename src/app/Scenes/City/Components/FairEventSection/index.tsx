@@ -40,7 +40,7 @@ export class FairEventSection extends Component<Props> {
       <ClassTheme>
         {({ space }) => (
           <FairSectionBackground>
-            <Box mx={2} mt={4}>
+            <Box mt={4}>
               <Text variant="lg-display" color="white">
                 Fairs
               </Text>
@@ -49,11 +49,11 @@ export class FairEventSection extends Component<Props> {
               data={data.filter((fair) => Boolean(fair.image))}
               renderItem={this.renderItem}
               keyExtractor={(item) => item.id}
-              contentContainerStyle={{ padding: space(2) }}
+              contentContainerStyle={{ paddingVertical: space(2) }}
               horizontal
             />
             {data.length > 2 && (
-              <Box mx={2} mb={4}>
+              <Box mb={4}>
                 <CaretButton
                   onPress={() => this.viewAllPressed()}
                   text={`View all ${data.length} fairs`}

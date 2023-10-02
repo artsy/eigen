@@ -89,7 +89,6 @@ export const BuyNowButton = ({
           onMutationError(orderOrError.error)
         } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
           navigate(`/orders/${orderOrError.order.internalID}`, {
-            modal: true,
             passProps: { title: "Purchase" },
           })
         }

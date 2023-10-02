@@ -10,7 +10,7 @@ import {
   useTheme,
   Separator,
 } from "@artsy/palette-mobile"
-import { Severity, addBreadcrumb } from "@sentry/react-native"
+import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$key } from "__generated__/AuctionResult_artist.graphql"
 import {
@@ -22,6 +22,7 @@ import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -33,7 +34,6 @@ import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-na
 import FastImage from "react-native-fast-image"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { AuctionResultHelperData, auctionResultText } from "./helpers"
 
@@ -311,7 +311,7 @@ const AuctionResultImage = ({
           onError={() => {
             addBreadcrumb({
               message: `Failed to load auction result image`,
-              level: Severity.Info,
+              level: "info",
             })
             setCouldNotLoadImage(true)
           }}

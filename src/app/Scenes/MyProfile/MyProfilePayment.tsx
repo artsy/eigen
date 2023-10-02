@@ -6,7 +6,7 @@ import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -230,7 +230,7 @@ const MyProfilePaymentContainer = createPaginationContainer(
 export const MyProfilePaymentQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<MyProfilePaymentQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyProfilePaymentQuery($count: Int!) {
           me {

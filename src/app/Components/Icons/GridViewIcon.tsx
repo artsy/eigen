@@ -9,15 +9,9 @@ export const GridViewIcon = (props: GridViewIconProps) => {
   const color = useColor()
 
   return (
-    <Svg width={14} height={14} viewBox="0 0 15 16" {...props}>
-      <Path d="M0.599976 0.5H5.61398V5.95H0.599976V0.5Z" fill={color(props.color || "black100")} />
+    <Svg width={14} height={14} viewBox="0 0 24 24" {...props}>
       <Path
-        d="M0.599976 9.64761H5.61398V15.0976H0.599976V9.64761Z"
-        fill={color(props.color || "black100")}
-      />
-      <Path d="M9.01619 0.5H14.0302V5.95H9.01619V0.5Z" fill={color(props.color || "black100")} />
-      <Path
-        d="M9.01619 9.64761H14.0302V15.0976H9.01619V9.64761Z"
+        d="M3.682 11.048V3.682h7.37v7.366h-7.37zm0 9.27v-7.371h7.37v7.371h-7.37zm9.27-9.27V3.682h7.366v7.366h-7.366zm0 9.27v-7.371h7.366v7.371h-7.366zM5.08 9.648h4.573V5.082H5.08V9.65zm9.27 0h4.568V5.082H14.35V9.65zm0 9.271h4.568v-4.573H14.35v4.573zm-9.27 0h4.573v-4.573H5.08v4.573z"
         fill={color(props.color || "black100")}
       />
     </Svg>

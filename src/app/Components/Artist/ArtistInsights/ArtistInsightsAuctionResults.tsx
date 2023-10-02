@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { Spacer, bullet, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
+import { ArtistInsightsEmpty } from "app/Components/Artist/ArtistInsights/ArtistsInsightsEmpty"
 import {
   FilterArray,
   filterArtworksParams,
@@ -25,7 +26,13 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { SectionList, View } from "react-native"
+import {
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  SectionList,
+  View,
+} from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -34,6 +41,8 @@ interface Props {
   relay: RelayPaginationProp
   scrollToTop: () => void
   initialFilters?: FilterArray
+  onLayout?: (event: LayoutChangeEvent) => void
+  onScrollEndDragChange: ((event: NativeSyntheticEvent<NativeScrollEvent>) => void) | undefined
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({
@@ -41,6 +50,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   relay,
   scrollToTop,
   initialFilters,
+  onLayout,
+  onScrollEndDragChange,
 }) => {
   const tracking = useTracking()
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
@@ -115,15 +126,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
   })
 
   useEffect(() => {
-    let filters: FilterArray = []
+    setFilterTypeAction("auctionResult")
 
     if (Array.isArray(initialFilters)) {
-      filters = initialFilters
+      setInitialFilterStateAction(initialFilters)
+      applyFiltersAction()
     }
-
-    setInitialFilterStateAction(filters)
-    setFilterTypeAction("auctionResult")
-    applyFiltersAction()
   }, [])
 
   const getSortDescription = useCallback(() => {
@@ -211,10 +219,19 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
     return res.filter((section) => section.count > 0 && (__TEST__ || section.data.length > 0))
   }, [auctionResults, appliedFilters])
 
+  if (!artist.statuses?.auctionLots) {
+    return (
+      <View onLayout={onLayout}>
+        <ArtistInsightsEmpty my={6} />
+      </View>
+    )
+  }
+
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
       style={{ minHeight: screenHeight }}
+      onLayout={onLayout}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
@@ -267,6 +284,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               </Text>
             </Flex>
           )}
+          onScrollEndDrag={onScrollEndDragChange}
           ItemSeparatorComponent={AuctionResultListSeparator}
           style={{ width: screenWidth, left: -20 }}
           onEndReached={loadMoreAuctionResults}
@@ -314,6 +332,9 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         slug
         id
         internalID
+        statuses {
+          auctionLots
+        }
         pastAuctionResults: auctionResultsConnection(
           state: PAST
           allowEmptyCreatedDates: $allowEmptyCreatedDates

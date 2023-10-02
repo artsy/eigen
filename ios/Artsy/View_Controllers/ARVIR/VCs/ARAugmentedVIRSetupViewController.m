@@ -17,6 +17,7 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
+#import "Artsy-Swift.h"
 
 @interface ARAugmentedVIRSetupViewController () <ARMenuAwareViewController>
 @property (nonatomic, copy) NSURL *movieURL;
@@ -29,6 +30,8 @@
 @property (nonatomic, weak) AVPlayer *avPlayer;
 
 @property (nonatomic, assign) BOOL hasSentToSettings;
+@property (nonatomic, assign) BOOL enableInstantVIR;
+
 @end
 
 NSString *const arTitle = @"Art in your home";
@@ -42,12 +45,13 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 @implementation ARAugmentedVIRSetupViewController
 
-- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config
+- (instancetype)initWithMovieURL:(NSURL *)movieURL config:(ARAugmentedRealityConfig *)config enableInstantVIR:(BOOL)enableInstantVIR
 {
     self = [super init];
     _movieURL = movieURL;
     _config = config;
     _defaults = [NSUserDefaults standardUserDefaults];
+    _enableInstantVIR = enableInstantVIR;
     return self;
 }
 
@@ -235,15 +239,29 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
-
-            UIViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
-            vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            vc.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:vc animated:YES completion:nil];
+            [self showVIRVC];
         } else {
             [self requestDenied];
         }
     }];
+}
+
+- (void)showVIRVC
+{
+    BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
+    if (hasLidarEnabledDevice && _enableInstantVIR) { // Lidar device we can do instant vertical detection
+        ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
+        [viewInRoomWallVC initWithConfig:self.config];
+        viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        viewInRoomWallVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:viewInRoomWallVC animated:YES completion:nil];
+    } else {
+        ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
+
+        viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        viewInRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:viewInRoomVC animated:YES completion:nil];
+    }
 }
 
 - (void)requestDenied
@@ -257,6 +275,14 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 + (BOOL)canOpenARView
 {
     return [ARWorldTrackingConfiguration isSupported];
+}
+
++ (BOOL)hasLidarEnabledDevice
+{
+    if (@available(iOS 14.0, *)) {
+        return [ARWorldTrackingConfiguration supportsSceneReconstruction:ARSceneReconstructionMesh];
+    }
+    return NO;
 }
 
 + (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure

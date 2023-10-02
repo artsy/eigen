@@ -11,9 +11,6 @@ export interface UseArtworkBiddingProps {
 export const useArtworkBidding = (props: UseArtworkBiddingProps) => {
   const { lotID, lotEndAt, biddingEndAt, onDataReceived } = props
 
-  if (!lotID) {
-    return { currentBiddingEndAt: null, lotSaleExtended: false }
-  }
   const biddingEndTime = biddingEndAt ?? lotEndAt
 
   const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndTime)
@@ -26,7 +23,7 @@ export const useArtworkBidding = (props: UseArtworkBiddingProps) => {
   const [lotSaleExtended, setLotSaleExtended] = useState(isExtended)
 
   useAuctionWebsocket({
-    lotID,
+    lotID: lotID ?? "",
     onChange: ({ extended_bidding_end_at }) => {
       if (extended_bidding_end_at) {
         setCurrentBiddingEndAt(extended_bidding_end_at)
@@ -35,6 +32,10 @@ export const useArtworkBidding = (props: UseArtworkBiddingProps) => {
       onDataReceived?.()
     },
   })
+
+  if (!lotID) {
+    return { currentBiddingEndAt: null, lotSaleExtended: false }
+  }
 
   return { currentBiddingEndAt, lotSaleExtended }
 }

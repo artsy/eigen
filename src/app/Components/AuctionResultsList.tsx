@@ -3,13 +3,13 @@ import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
 } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
 

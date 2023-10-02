@@ -1,13 +1,4 @@
-import {
-  Touchable,
-  Flex,
-  Screen,
-  Text,
-  BackButton,
-  useScreenDimensions,
-  useSpace,
-  ScreenDimensionsProvider,
-} from "@artsy/palette-mobile"
+import { Touchable, Flex, Text, useScreenDimensions, useSpace, Screen } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
@@ -19,6 +10,7 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isEmpty } from "lodash"
 import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
 
@@ -30,6 +22,7 @@ const ArtQuizArtworksScreen = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+
   const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
     (edge) => edge?.interactedAt === null
   )
@@ -52,15 +45,23 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
-    setActiveCardIndex(activeIndex + 1)
-    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
+  const handleSwipe = (swipeDirection: "left" | "right") => {
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeCardIndex)
+
+    // No need to swipe through the last card, just navigate to the results screen
+    if (activeCardIndex + 1 < artworks.length) {
+      setActiveCardIndex(activeCardIndex + 1)
+    }
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
     const currentArtwork = artworks[activeIndex]
+
+    if (isEmpty(currentArtwork)) {
+      return
+    }
 
     if (action === "Like") {
       submitSave({
@@ -168,18 +169,10 @@ const ArtQuizArtworksScreen = () => {
 
   return (
     <Screen>
-      <Screen.RawHeader>
-        <Flex
-          height={44}
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          px={2}
-        >
-          <Flex>
-            <BackButton onPress={handleOnBack} />
-          </Flex>
-          <Text>{`${activeCardIndex + 1}/${artworks.length}`}</Text>
+      <Screen.Header
+        onBack={handleOnBack}
+        title={`${activeCardIndex + 1}/${artworks.length}`}
+        rightElements={
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
@@ -187,14 +180,14 @@ const ArtQuizArtworksScreen = () => {
               </Text>
             </Flex>
           </Touchable>
-        </Flex>
-      </Screen.RawHeader>
+        }
+      />
+
       <Screen.Body>
         <FancySwiper
           cards={artworkCards}
-          activeIndex={activeCardIndex}
-          onSwipeRight={(index) => handleSwipe("right", index)}
-          onSwipeLeft={(index) => handleSwipe("left", index)}
+          onSwipeRight={() => handleSwipe("right")}
+          onSwipeLeft={() => handleSwipe("left")}
         />
       </Screen.Body>
     </Screen>
@@ -204,9 +197,7 @@ const ArtQuizArtworksScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ScreenDimensionsProvider>
-        <ArtQuizArtworksScreen />
-      </ScreenDimensionsProvider>
+      <ArtQuizArtworksScreen />
     </Suspense>
   )
 }

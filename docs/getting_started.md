@@ -2,9 +2,20 @@
 
 ### Prerequisites
 
-You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
+You'll need [homebrew](https://brew.sh) [asdf](https://asdf-vm.com/guide/getting-started.html), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
-> The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/main/package.json).
+#### Setting up asdf
+
+There are instructions here: https://asdf-vm.com/guide/getting-started.html
+You will want the java, nodejs, and ruby plugins to get all of our tooling.
+
+```
+brew install asdf
+# configure your shell setup scripts for your shell, see asdfs instructions on the site
+asdf plugin add ruby
+asdf plugin add nodejs
+asdf plugin add java
+```
 
 ### Set up iOS
 
@@ -14,7 +25,7 @@ Ask your mentor to add you on the [firebase.console](https://console.firebase.go
 
 <details><summary>NOTE: After installing Xcode</summary>
 
-Check that Command Line Tools version is added in the Locations tab. Xcode>Preferences>Locations:
+Check that Command Line Tools version is added in the Locations tab. Xcode>Settings>Locations:
 <img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
 
 </details>
@@ -41,6 +52,7 @@ cd eigen
 1. Run
 
 ```
+asdf install
 yarn setup:artsy
 yarn install:all
 yarn relay
@@ -109,14 +121,6 @@ yarn start
 
 First, ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id.
 
-#### Using terminal
-
-> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
-
-```sh
-yarn ios
-```
-
 #### Using Xcode
 
 Open the app in Xcode:
@@ -126,6 +130,14 @@ open ios/Artsy.xcworkspace
 ```
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.
+
+#### Using terminal
+
+> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
+
+```sh
+yarn ios
+```
 
 #### Flipper
 
@@ -152,6 +164,19 @@ yarn android
 ```
 
 This will start the Artsy app in an Android emulator, pointed at Artsy's staging environment.
+
+#### Wifi setup on Android emulators
+
+In order to have internet access on android emulator you need to add Google's DNS servers to your device's network settings. You can do that by following these steps:
+
+1. Click Apple menu > System Preferences > Search for DNS.
+1. Click DNS Domains.
+1. Select the DNS tab.
+1. Add 8.8.8.8 and 8.8.4.4
+1. Click OK > Apply.
+1. Restart the emulator with **cold boot** now. (Android Studio > Device Manager > Three Dots (settings) > Cold Boot Now)
+
+> :warning: You might need to run the last step above after you get setup with [Artsy's VPN](https://www.notion.so/artsy/VPN-Configuration-60798c292185407687356997bf251d8c) or if you edit your DNS settings!
 
 ## Run native tests
 

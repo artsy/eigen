@@ -1,3 +1,8 @@
+# Deprecation info
+
+Visual clue deviated a little from the simplistic idea of progressive onboarding as we have in Force.
+We adopted a simpler form with the Progressive Onboarding store, please check the [doc](./add_progressive_onboarding.md) for more information how to use it.
+
 # Adding a New Visual Clue
 
 To add a visual clue to the app, you will need to do the following:
@@ -21,24 +26,14 @@ To add a visual clue to the app, you will need to do the following:
 
 ```
 
-3. Add the visuel clue text to the correct `StickyTabPage` tab.
+3. Add the visuel clue text to the correct `Tabs` tab.
 
 ```diff
-<StickyTabPage
-  tabs={[
-    {
-      title: "Tab Title",
-      content: <TabContent />,
-+     visualClues: [
-+       {
-+         jsx: <VisualClueText />,
-+         visualClueName: "NewVisualClue",
-+       },
-+     ],
-    },
+const { showVisualClue } = useVisualClue()
 
-  ]}
-/>
+<Tabs indicators=[{ tabName: "home", Component: () => showVisualClue("NewVisualClue") ? <VisualClueText /> : null  }]>
+  <Tabs.Tab name="home" label="Home">...</Tabs.Tab>
+</Tabs>
 ```
 
 Alternatively, you can add the visual clue to a text element and programmatically mark the hint as seen.
