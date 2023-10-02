@@ -62,6 +62,7 @@
 #import "ARFonts.h"
 #import "UIView+ARDrawing.h"
 #import "UIColor+ArtsyColors.h"
+#import "UIImage+ImageFromColor.h"
 #import "ARSpinner.h"
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <FXBlurView/FXBlurView.h>
