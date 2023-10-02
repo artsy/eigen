@@ -8,6 +8,7 @@
 #import "ARAuctionWebViewController.h"
 #import "ARRouter.h"
 #import <SDWebImage/SDWebImageManager.h>
+#import "Artsy-Swift.h"
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import "ARDispatchManager.h"
