@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
-source ./scripts/source-for-bash-env
-
 # Check if there is a build in progress
 echo "Checking if there is a build in progress..."
 build_status=$(curl https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-ios -s | jq -r '.[0].status')

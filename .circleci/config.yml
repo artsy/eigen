@@ -165,16 +165,13 @@ jobs:
       - run: ./scripts/secrets-check-all
 
   deploy-nightly-beta:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: 14.3.1
-      resource_class: macos.m1.medium.gen1
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    resource_class: small
 
     steps:
       - checkout
-      - install-node
       - run:
           name: Deploy betas
           command: ./scripts/deploy-beta-both
