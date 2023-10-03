@@ -45,16 +45,8 @@ commands:
           command: scripts/setup-awscli
   install-node-modules:
     steps:
-      - restore_cache:
-          keys:
-            - v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
-      - run:
-          name: Install node modules
-          command: ls node_modules || yarn install
-      - save_cache:
-          key: v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
-          paths:
-            - node_modules
+      - node/install-packages:
+          pkg-manager: yarn
   run-relay-compiler:
     steps:
       - run:
