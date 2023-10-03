@@ -444,15 +444,12 @@ jobs:
 workflows:
   version: 2
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 6 * * *"
+    jobs:
+      - deploy-nightly-beta:
           filters:
             branches:
               only:
-                - main
-    jobs:
-      - deploy-nightly-beta
+                - brian/use-node-orb
 
   flag-check:
     triggers:
