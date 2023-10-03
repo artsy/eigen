@@ -7217,6 +7217,8 @@ type createAdvisoryOpportunityFailure {
 input createAdvisoryOpportunityMutationInput {
   clientMutationId: String
   message: String
+  phoneCountryCode: String
+  phoneNumber: String
   searchCriteriaID: String!
 }
 
