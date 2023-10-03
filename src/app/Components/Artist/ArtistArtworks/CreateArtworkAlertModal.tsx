@@ -68,6 +68,7 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
       aggregations={artworkAlert.aggregations!}
       closeModal={onClose}
       contextModule={contextModule}
+      currentArtworkID={data.internalID}
     />
   )
 }
