@@ -12,6 +12,8 @@ interface SavedSearchModel {
   aggregations: Aggregations
   entity: SavedSearchEntity
   dirty: boolean
+  /** Artwork ID, if the current saved search alert is being set from an artwork */
+  currentArtworkID?: string
 
   setValueToAttributesByKeyAction: Action<
     this,
@@ -41,6 +43,7 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
+  currentArtworkID: undefined,
 
   setValueToAttributesByKeyAction: action((state, payload) => {
     if (payload.key === "priceRange") {
