@@ -92,7 +92,7 @@ commands:
             - v18-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
-          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;xr
+          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
           key: v18-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
