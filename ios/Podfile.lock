@@ -216,7 +216,7 @@ PODS:
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
   - INTUAnimationEngine/SpringSolver (1.4.2)
-  - ISO8601DateFormatter (0.7.1)
+  - ISO8601DateFormatter (0.8)
   - JSDecoupledAppDelegate (1.2.0)
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
@@ -803,7 +803,6 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - INTUAnimationEngine
-  - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JSDecoupledAppDelegate
   - JWTDecode (= 2.0.0)
   - libevent (~> 2.1.12)
@@ -949,6 +948,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - INTUAnimationEngine
+    - ISO8601DateFormatter
     - JSDecoupledAppDelegate
     - JWT
     - JWTDecode
@@ -1019,8 +1019,6 @@ EXTERNAL SOURCES:
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :git: https://github.com/artsy/iso-8601-date-formatter
   Pulley:
     :branch: master
     :git: https://github.com/artsy/Pulley.git
@@ -1180,9 +1178,6 @@ CHECKOUT OPTIONS:
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/artsy/Interstellar.git
-  ISO8601DateFormatter:
-    :commit: 1a48b819c85903ded669e74e476aceffebf311fc
-    :git: https://github.com/artsy/iso-8601-date-formatter
   Pulley:
     :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
     :git: https://github.com/artsy/Pulley.git
@@ -1244,7 +1239,7 @@ SPEC CHECKSUMS:
   hermes-engine: 724382db3322a3745b0741d753bbe70e26927aac
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
-  ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
@@ -1357,6 +1352,6 @@ SPEC CHECKSUMS:
   Yoga: 445485143df46a9d5d4ef61cbbc629fec40fb9a0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7cdf980197550e52c92f54771a8ce7abe257b0de
+PODFILE CHECKSUM: bbce440a616bb7a18dbfd360f07f48c1dbd91d84
 
 COCOAPODS: 1.12.1
