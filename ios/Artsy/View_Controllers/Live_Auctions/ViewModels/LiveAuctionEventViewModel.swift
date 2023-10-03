@@ -75,7 +75,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
     }
 
     var dateEventCreated: Date {
-        return ARStandardDateFormatter.shared().date(from: event.createdAtString)
+        return ARStandardDateFormatter.shared().date(from: event.createdAtString)!
     }
 
     func hasBidderID(_ bidderID: String) -> Bool {

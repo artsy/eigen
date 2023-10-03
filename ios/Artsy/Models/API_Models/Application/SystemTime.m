@@ -2,8 +2,6 @@
 
 #import "ARMacros.h"
 
-#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-
 @interface SystemTime ()
 @property (nonatomic, readonly, strong) NSString *time;
 @property (nonatomic, readonly, assign) NSInteger day;
@@ -32,9 +30,9 @@
     };
 }
 
-- (NSDate *)date
+- (nullable NSDate *)date
 {
-    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSISO8601DateFormatter *dateFormatter = [[NSISO8601DateFormatter alloc] init];
     return [dateFormatter dateFromString:self.iso8601];
 }
 

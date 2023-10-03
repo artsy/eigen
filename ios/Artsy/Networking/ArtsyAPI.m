@@ -12,7 +12,6 @@
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
 
-#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -219,7 +218,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
         NSString *token = JSON[ARXAppToken];
         NSString *date = JSON[AROExpiryDateKey];
 
-        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+        NSISO8601DateFormatter *dateFormatter = [[NSISO8601DateFormatter alloc] init];
         NSDate *expiryDate = [dateFormatter dateFromString:date];
 
         NSString *oldxToken = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];

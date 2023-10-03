@@ -1,4 +1,3 @@
-#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
 #import "ARDefaults.h"
@@ -136,7 +135,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }];
 
     // Create an Expiration Date
-    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSISO8601DateFormatter *dateFormatter = [[NSISO8601DateFormatter alloc] init];
     NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
     [self saveUserOAuthToken:token expiryDate:expiryDate];
 }
@@ -218,7 +217,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [ARRouter setAuthToken:token];
 
-    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSISO8601DateFormatter *dateFormatter = [[NSISO8601DateFormatter alloc] init];
     NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
 
 
