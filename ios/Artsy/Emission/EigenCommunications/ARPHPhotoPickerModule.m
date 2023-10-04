@@ -1,7 +1,6 @@
 #import "ARPHPhotoPickerModule.h"
 #import <RNImageCropPicker/Compression.h>
 #import <RNImageCropPicker/ImageCropPicker.h>
-#import <RNImageCropPicker/UIImage+Extension.h>
 
 typedef NS_ENUM(NSUInteger, ARPHPhotoPickerError) {
     ARPHPhotoPickerErrorOSVersionUnsupported = 0,

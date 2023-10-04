@@ -2,9 +2,6 @@
 
 #import "AROpaqueImageView.h"
 
-#import <React/RCTConvert.h>
-
-
 @interface AROpaqueImageViewComponent : AROpaqueImageView
 @property (nonatomic, strong, readwrite) RCTDirectEventBlock onLoad;
 @end

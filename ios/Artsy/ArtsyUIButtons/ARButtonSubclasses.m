@@ -2,13 +2,7 @@
 
 #import "UIColor+ArtsyColors.h"
 
-#if __has_include(<UIView+BooleanAnimations/UIView+BooleanAnimations.h>)
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#endif
-
-#if __has_include(<UIView_BooleanAnimations/UIView+BooleanAnimations.h>)
-#import <UIView_BooleanAnimations/UIView+BooleanAnimations.h>
-#endif
 
 #import "UIFont+ArtsyFonts.h"
 

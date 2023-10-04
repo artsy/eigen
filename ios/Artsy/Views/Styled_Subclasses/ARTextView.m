@@ -3,6 +3,9 @@
 
 #import "ARDispatchManager.h"
 #import "Artsy-Swift.h"
+#import "ARRouter.h"
+#import "ARFonts.h"
+#import "ARInternalMobileWebViewController.h"
 
 #import <MMMarkdown/MMMarkdown.h>
 

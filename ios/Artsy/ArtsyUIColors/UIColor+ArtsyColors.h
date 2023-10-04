@@ -43,4 +43,7 @@
 /// <br/> (#0eda83)
 + (UIColor *)artsyGreenRegular;
 
+// Allow creating colors with a hex code
++ (UIColor *)ar_colorWithHex:(UInt32)hex;
+
 @end

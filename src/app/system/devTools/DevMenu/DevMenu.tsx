@@ -295,15 +295,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
               toast.show("Copied to clipboard", "middle")
             }}
           />
-          {Platform.OS === "ios" && (
-            <DevMenuButtonItem
-              title="Go to old Dev Menu"
-              onPress={() => {
-                navigate("/dev-menu-old", { modal: true })
-              }}
-            />
-          )}
-
           <DevMenuButtonItem
             title="Log out"
             titleColor="red100"

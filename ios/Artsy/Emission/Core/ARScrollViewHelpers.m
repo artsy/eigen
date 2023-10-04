@@ -1,10 +1,7 @@
 #import "ARScrollViewHelpers.h"
 #import <UIKit/UIKit.h>
 #import "AREmission.h"
-#import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
-#import <React/RCTScrollView.h>
-#import <math.h>
 #import "INTUAnimationEngine.h"
 
 #import "RCTScrollView+Artsy.h"

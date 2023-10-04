@@ -657,16 +657,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to old Dev Menu", () => {
-    expect(matchRoute("/dev-menu-old")).toMatchInlineSnapshot(`
-      {
-        "module": "DevMenuOld",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to About", () => {
     expect(matchRoute("/about")).toMatchInlineSnapshot(`
       {

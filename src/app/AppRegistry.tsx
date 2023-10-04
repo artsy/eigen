@@ -38,7 +38,6 @@ import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { CityGuideView } from "./NativeModules/CityGuideView"
-import { DevMenuOld } from "./NativeModules/DevMenuOld"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
@@ -446,7 +445,6 @@ export const modules = defineModules({
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
-  DevMenuOld: reactModule(DevMenuOld, { alwaysPresentModally: true }),
   DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),

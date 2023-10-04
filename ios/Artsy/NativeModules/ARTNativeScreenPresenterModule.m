@@ -6,6 +6,8 @@
 #import "AROptions.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAuctionWebViewController.h"
+#import "ARRouter.h"
+#import <SDWebImage/SDWebImageManager.h>
 #import "Artsy-Swift.h"
 
 #import <MessageUI/MFMailComposeViewController.h>

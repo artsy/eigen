@@ -175,7 +175,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/conversation/:conversationID", "Conversation"),
     addRoute("/conversation/:conversationID/details", "ConversationDetails"),
-    addRoute("/dev-menu-old", "DevMenuOld"),
     addRoute("/dev-menu", "DevMenu"),
     addRoute("/fair/:fairID", "Fair"),
     addRoute("/fair/:fairID/articles", "FairArticles"),

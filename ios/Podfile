@@ -79,14 +79,12 @@ target 'Artsy' do
   )
 
   # Networking
-  pod 'AFNetworking', '2.7.0', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
-  pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
+  pod 'AFNetworking', '2.7.0', subspecs: %w[NSURLSession NSURLConnection]
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.11.1'
   pod 'INTUAnimationEngine'
 
   # Core
-  pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '3.7.2'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
@@ -96,7 +94,6 @@ target 'Artsy' do
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
-  pod 'EDColor', '1.0.1'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'

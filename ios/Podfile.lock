@@ -15,10 +15,6 @@ PODS:
   - AFNetworking/Reachability (2.7.0)
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
-  - AFOAuth1Client (0.4.0):
-    - AFNetworking/NSURLConnection (~> 2.5)
-    - AFNetworking/NSURLSession (~> 2.5)
-    - AFNetworking/Serialization (~> 2.5)
   - Analytics (4.1.8)
   - AppAuth (1.6.2):
     - AppAuth/Core (= 1.6.2)
@@ -49,7 +45,6 @@ PODS:
   - AppCenter/Core (4.4.3)
   - AppCenterReactNativeShared (4.4.5):
     - AppCenter/Core (= 4.4.3)
-  - ARGenericTableViewController (1.0.2)
   - Base64 (1.1.2)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
@@ -64,7 +59,6 @@ PODS:
     - React-Core
     - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
-  - EDColor (1.0.1)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
     - Expecta (~> 1.0)
@@ -754,18 +748,12 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
-  - AFNetworking/Reachability (= 2.7.0)
-  - AFNetworking/Security (= 2.7.0)
-  - AFNetworking/Serialization (= 2.7.0)
-  - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - appcenter-core (from `../node_modules/appcenter`)
-  - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EDColor (= 1.0.1)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.1.1)"
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -917,7 +905,6 @@ SPEC REPOS:
     - Base64
     - CocoaAsyncSocket
     - CocoaLumberjack
-    - EDColor
     - Expecta
     - "Expecta+Snapshots"
     - FBAEMKit
@@ -990,13 +977,8 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  AFOAuth1Client:
-    :git: https://github.com/artsy/AFOAuth1Client.git
-    :tag: 0.4.0-subspec-fix
   appcenter-core:
     :path: "../node_modules/appcenter"
-  ARGenericTableViewController:
-    :git: https://github.com/artsy/ARGenericTableViewController.git
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -1168,12 +1150,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  AFOAuth1Client:
-    :git: https://github.com/artsy/AFOAuth1Client.git
-    :tag: 0.4.0-subspec-fix
-  ARGenericTableViewController:
-    :commit: f4c9028754558e196ab9c5111dcd3a4229c5bedf
-    :git: https://github.com/artsy/ARGenericTableViewController.git
   FLKAutoLayout:
     :commit: 44a277d21d4fa104589703a34a4d82647414f435
     :git: https://github.com/artsy/FLKAutoLayout.git
@@ -1191,14 +1167,12 @@ SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
-  AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
   AppCenter: 3fd04aa1b166e16fdb03ec81dabe488aece83fbd
   appcenter-core: c593b2e4ac28d6a21b6a217c4a5e6b3de7b0b00f
   AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
-  ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
@@ -1206,7 +1180,6 @@ SPEC CHECKSUMS:
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: dce1b253fde81078249ea9cd4b948e4ac7b761a9
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
-  EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
@@ -1357,6 +1330,6 @@ SPEC CHECKSUMS:
   Yoga: 445485143df46a9d5d4ef61cbbc629fec40fb9a0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7cdf980197550e52c92f54771a8ce7abe257b0de
+PODFILE CHECKSUM: 92807f7c766dd3851359560aebe33077cbe8ac28
 
 COCOAPODS: 1.12.1
