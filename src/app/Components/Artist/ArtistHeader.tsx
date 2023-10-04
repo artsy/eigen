@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedVerifiedRepresentative } from "@artsy/cohesion"
 import {
   Box,
   Flex,
@@ -87,15 +87,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
     partner: ArtistHeader_artist$data["verifiedRepresentatives"][number]["partner"]
   ) => {
     if (partner?.href && partner?.internalID) {
-      tracking.trackEvent({
-        action: ActionType.tappedVerifiedRepresentative,
-        context_module: ContextModule.artistHeader,
-        context_screen_owner_type: OwnerType.artist,
-        context_screen_owner_id: artist.internalID,
-        context_screen_owner_slug: artist.slug,
-        destination_page_owner_id: partner.internalID,
-        destination_page_owner_type: OwnerType.partner,
-      })
+      tracking.trackEvent(tracks.tappedVerifiedRepresentative(artist, partner))
       navigate(partner.href)
     }
   }
@@ -208,3 +200,17 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
     }
   `,
 })
+
+const tracks = {
+  tappedVerifiedRepresentative: (
+    artist: ArtistHeader_artist$data,
+    partner: ArtistHeader_artist$data["verifiedRepresentatives"][number]["partner"]
+  ): TappedVerifiedRepresentative => ({
+    action: ActionType.tappedVerifiedRepresentative,
+    context_module: ContextModule.artistHeader,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artist.internalID,
+    destination_screen_owner_id: partner.internalID,
+    destination_screen_owner_type: OwnerType.partner,
+  }),
+}

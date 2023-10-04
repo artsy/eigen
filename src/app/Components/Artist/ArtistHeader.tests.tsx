@@ -58,8 +58,8 @@ describe("ArtistHeader", () => {
       context_screen_owner_type: "artist",
       context_screen_owner_id: mockArtist.internalID,
       context_screen_owner_slug: mockArtist.slug,
-      destination_page_owner_id: "representative-id",
-      destination_page_owner_type: "partner",
+      destination_screen_owner_id: "representative-id",
+      destination_screen_owner_type: "partner",
     })
   })
 
