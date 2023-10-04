@@ -5,8 +5,10 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 describe("ArtistHeader", () => {
+  const tracking = useTracking().trackEvent
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({
     Component: ({ artist, me }) => <ArtistHeaderFragmentContainer artist={artist!} me={me!} />,
     query: graphql`
@@ -50,6 +52,15 @@ describe("ArtistHeader", () => {
 
     fireEvent.press(representative)
     expect(navigate).toHaveBeenCalledWith("representative-href")
+    expect(tracking).toHaveBeenCalledWith({
+      action: "tappedVerifiedRepresentative",
+      context_module: "artistHeader",
+      context_screen_owner_type: "artist",
+      context_screen_owner_id: mockArtist.internalID,
+      context_screen_owner_slug: mockArtist.slug,
+      destination_page_owner_id: "representative-id",
+      destination_page_owner_type: "partner",
+    })
   })
 
   describe("alerts set", () => {
@@ -98,6 +109,7 @@ describe("ArtistHeader", () => {
 const mockArtist = {
   internalID: "some-id",
   id: "marcel-duchamp",
+  slug: "marcel-duchamp",
   name: "Marcel",
   nationality: "French",
   birthday: "11/17/1992",
