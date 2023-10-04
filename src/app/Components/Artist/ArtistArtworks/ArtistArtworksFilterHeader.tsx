@@ -4,13 +4,20 @@ import { SavedSearchButtonV2 } from "app/Components/Artist/ArtistArtworks/SavedS
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtistArtworksFilterProps {
   artist: ArtistArtworksFilterHeader_artist$key
+  showCreateAlertModal: () => void
 }
 
-export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = ({ artist }) => {
+export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = ({
+  artist,
+  showCreateAlertModal,
+}) => {
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+
   const data = useFragment(
     graphql`
       fragment ArtistArtworksFilterHeader_artist on Artist {
@@ -27,14 +34,22 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
   return (
     <Box backgroundColor="white">
       <ArtworksFilterHeader
-        onFilterPress={() => openFilterArtworksModal("sortAndFilter")}
+        onFilterPress={() => {
+          openFilterArtworksModal("sortAndFilter")
+        }}
         selectedFiltersCount={appliedFiltersCount}
         childrenPosition="left"
       >
         <SavedSearchButtonV2
           artistId={data.internalID}
           artistSlug={data.slug}
-          onPress={() => openFilterArtworksModal("createAlert")}
+          onPress={() => {
+            if (enableAlertsFilters) {
+              showCreateAlertModal()
+            } else {
+              openFilterArtworksModal("createAlert")
+            }
+          }}
         />
       </ArtworksFilterHeader>
     </Box>

@@ -14,6 +14,8 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
+import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -34,7 +36,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -52,12 +54,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   searchCriteria,
   ...props
 }) => {
+  const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
+
   const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
     useShowArtworksFilterModal({ artist })
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -95,6 +100,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     setInitialFilterStateAction(filters)
   }, [])
 
+  const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
+    entityId: artist.internalID!,
+    entityName: artist.name ?? "",
+    entitySlug: artist.slug!,
+    entityOwnerType: OwnerType.artist,
+  })
+
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
       action_name: "clearFilters",
@@ -104,6 +116,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
     })
+  }
+
+  const handleCompleteSavedSearch = () => {
+    // TODO: Get the new count of the artist saved alerts
   }
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
@@ -122,15 +138,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         icon={<BellIcon />}
         size="small"
         onPress={() => {
-          openFilterArtworksModal("createAlert")
+          // Could be useful to differenciate between the two at a later point
+          tracking.trackEvent(
+            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
+          )
 
-          tracking.trackEvent({
-            action: ActionType.tappedCreateAlert,
-            context_screen_owner_type: OwnerType.artist,
-            context_screen_owner_id: artist.internalID,
-            context_screen_owner_slug: artist.slug,
-            context_module: ContextModule.artistArtworksGridEnd,
-          })
+          if (enableAlertsFilters) {
+            setIsCreateAlertModalVisible(true)
+          } else {
+            openFilterArtworksModal("createAlert")
+          }
         }}
       >
         Create Alert
@@ -157,6 +174,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         <CreateAlertButton />
 
         <Spacer y={6} />
+
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -168,6 +186,17 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           mode={FilterModalMode.ArtistArtworks}
           shouldShowCreateAlertButton
         />
+
+        {!!enableAlertsFilters && (
+          <CreateSavedSearchModal
+            aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+            attributes={attributes}
+            closeModal={() => setIsCreateAlertModalVisible(false)}
+            entity={savedSearchEntity}
+            onComplete={handleCompleteSavedSearch}
+            visible={isCreateAlertModalVisible}
+          />
+        )}
       </Tabs.ScrollView>
     )
   }
@@ -245,7 +274,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
           <Tabs.SubTabBar>
-            <ArtistArtworksFilterHeader artist={artist} />
+            <ArtistArtworksFilterHeader
+              artist={artist}
+              showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
+            />
           </Tabs.SubTabBar>
         }
         ListFooterComponent={<ListFooterComponenet />}
@@ -261,6 +293,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+      {!!enableAlertsFilters && (
+        <CreateSavedSearchModal
+          aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+          attributes={attributes}
+          closeModal={() => setIsCreateAlertModalVisible(false)}
+          entity={savedSearchEntity}
+          onComplete={handleCompleteSavedSearch}
+          visible={isCreateAlertModalVisible}
+        />
+      )}
     </>
   )
 }
@@ -350,3 +392,13 @@ export default createPaginationContainer(
     `,
   }
 )
+
+const tracks = {
+  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    context_module: ContextModule.artistArtworksGridEnd,
+  }),
+}
