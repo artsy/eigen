@@ -10,17 +10,18 @@ export const ArtistAboutEmpty: FC<BoxProps> = (props) => {
       </Text>
 
       <Text variant="md" textAlign="center" color="black60">
-        Do you represent this artist?{" "}
-        <Touchable
-          onPress={() => {
-            navigate("https://partners.artsy.net")
-          }}
-        >
-          <Text variant="md" color="black100" style={{ textDecorationLine: "underline" }}>
-            Become a partner.
-          </Text>
-        </Touchable>
+        Do you represent this artist?
       </Text>
+      <Touchable
+        onPress={() => {
+          navigate("https://partners.artsy.net")
+        }}
+        style={{ alignSelf: "center" }}
+      >
+        <Text variant="md" color="black100" style={{ textDecorationLine: "underline" }}>
+          Become a partner.
+        </Text>
+      </Touchable>
     </Box>
   )
 }
