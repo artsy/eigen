@@ -187,7 +187,7 @@ interface ArtistQueryRendererProps {
 
 export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
-    artist(id: $artistID) {
+    artist(id: $artistID) @principalField {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
       ...ArtistHeaderNavRight_artist

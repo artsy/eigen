@@ -11,6 +11,8 @@ const newErrorMiddlewareOptedInQueries = [
   "ArtworkAboveTheFoldQuery",
   "ArtworkBelowTheFoldQuery",
   "SearchQuery",
+  "ArtistAboveTheFoldQuery",
+  "ArtistBelowTheFoldQuery",
 ]
 
 export const legacyErrorMiddleware = async (
