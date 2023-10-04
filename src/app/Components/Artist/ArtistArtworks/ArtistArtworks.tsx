@@ -213,7 +213,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     if (showCreateAlertAtEndOfList && !relay.hasMore()) {
       return (
         <Message
-          title="Get notified when works you're looking for are added."
+          title="Get notified when new works are added."
           containerStyle={{ my: 2 }}
           IconComponent={() => {
             return <CreateAlertButton />
