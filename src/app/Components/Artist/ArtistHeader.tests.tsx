@@ -1,14 +1,13 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { ArtistHeaderFragmentContainer, tracks } from "app/Components/Artist/ArtistHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 
 describe("ArtistHeader", () => {
-  const tracking = useTracking().trackEvent
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({
     Component: ({ artist, me }) => <ArtistHeaderFragmentContainer artist={artist!} me={me!} />,
     query: graphql`
@@ -31,19 +30,16 @@ describe("ArtistHeader", () => {
   })
 
   it("displays represented by list given verifiedRepresentatives", () => {
+    const partner = {
+      internalID: "representative-id",
+      name: "Test representative",
+      href: "representative-href",
+      profile: { icon: { url: "image-url" } },
+    }
     renderWithRelay({
       Artist: () => ({
         ...mockArtist,
-        verifiedRepresentatives: [
-          {
-            partner: {
-              internalID: "representative-id",
-              name: "Test representative",
-              href: "representative-href",
-              profile: { icon: { url: "image-url" } },
-            },
-          },
-        ],
+        verifiedRepresentatives: [{ partner }],
       }),
     })
 
@@ -52,15 +48,9 @@ describe("ArtistHeader", () => {
 
     fireEvent.press(representative)
     expect(navigate).toHaveBeenCalledWith("representative-href")
-    expect(tracking).toHaveBeenCalledWith({
-      action: "tappedVerifiedRepresentative",
-      context_module: "artistHeader",
-      context_screen_owner_type: "artist",
-      context_screen_owner_id: mockArtist.internalID,
-      context_screen_owner_slug: mockArtist.slug,
-      destination_screen_owner_id: "representative-id",
-      destination_screen_owner_type: "partner",
-    })
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      tracks.tappedVerifiedRepresentative(mockArtist as any, partner)
+    )
   })
 
   describe("alerts set", () => {

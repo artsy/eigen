@@ -201,7 +201,7 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
   `,
 })
 
-const tracks = {
+export const tracks = {
   tappedVerifiedRepresentative: (
     artist: ArtistHeader_artist$data,
     partner: ArtistHeader_artist$data["verifiedRepresentatives"][number]["partner"]
