@@ -1,8 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
-import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { ArtistHeaderFragmentContainer, tracks } from "app/Components/Artist/ArtistHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -29,19 +30,16 @@ describe("ArtistHeader", () => {
   })
 
   it("displays represented by list given verifiedRepresentatives", () => {
+    const partner = {
+      internalID: "representative-id",
+      name: "Test representative",
+      href: "representative-href",
+      profile: { icon: { url: "image-url" } },
+    }
     renderWithRelay({
       Artist: () => ({
         ...mockArtist,
-        verifiedRepresentatives: [
-          {
-            partner: {
-              internalID: "representative-id",
-              name: "Test representative",
-              href: "representative-href",
-              profile: { icon: { url: "image-url" } },
-            },
-          },
-        ],
+        verifiedRepresentatives: [{ partner }],
       }),
     })
 
@@ -50,6 +48,9 @@ describe("ArtistHeader", () => {
 
     fireEvent.press(representative)
     expect(navigate).toHaveBeenCalledWith("representative-href")
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      tracks.tappedVerifiedRepresentative(mockArtist as any, partner)
+    )
   })
 
   describe("alerts set", () => {
@@ -98,6 +99,7 @@ describe("ArtistHeader", () => {
 const mockArtist = {
   internalID: "some-id",
   id: "marcel-duchamp",
+  slug: "marcel-duchamp",
   name: "Marcel",
   nationality: "French",
   birthday: "11/17/1992",
