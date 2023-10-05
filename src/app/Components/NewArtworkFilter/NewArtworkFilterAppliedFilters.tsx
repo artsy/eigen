@@ -2,18 +2,26 @@ import { Flex, Pill, Text } from "@artsy/palette-mobile"
 import { NewFilterData, NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 
-export const NewArtworkFilterAppliedFilters: React.FC<{}> = () => {
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
+export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames: boolean }> = ({
+  includeArtistNames,
+}) => {
+  const entity = SavedSearchStore?.useStoreState((state) => state.entity)
 
-  const artistsPills = entity.artists.map((artist) => {
-    return {
-      paramName: NewFilterParamName.artistIDs,
-      paramValue: {
-        value: artist.id,
-        displayLabel: artist.name,
-      },
-    }
-  })
+  const activePills: NewFilterData[] = []
+
+  if (entity && includeArtistNames) {
+    entity.artists.forEach((artist) => {
+      activePills.push({
+        paramName: NewFilterParamName.artistIDs,
+        paramValue: {
+          value: artist.id,
+          displayLabel: artist.name,
+        },
+      })
+    })
+  }
+
+  activePills.push(...pillsData)
 
   return (
     <Flex px={2}>
@@ -23,7 +31,7 @@ export const NewArtworkFilterAppliedFilters: React.FC<{}> = () => {
 
       <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
         {/* TODO: Adapt useSavedSearchPills to work here with little coupling from saved searches */}
-        {[...artistsPills, ...pillsData].map((pill, index) => (
+        {activePills.map((pill, index) => (
           <Pill
             testID="alert-pill"
             m={0.5}
