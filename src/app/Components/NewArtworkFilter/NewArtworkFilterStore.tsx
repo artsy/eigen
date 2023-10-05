@@ -1,7 +1,8 @@
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { NewFilterData } from "app/Components/NewArtworkFilter/helpers"
 import { assignDeep } from "app/store/persistence"
-import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
+import { Action, action, createContextStore } from "easy-peasy"
+import { isEqual } from "lodash"
 
 export interface NewArtworkFilterStoreModel {
   /********************************************************/
@@ -9,11 +10,9 @@ export interface NewArtworkFilterStoreModel {
   /********************************************************/
 
   // A list of filters that are already applied to the current filter state
-  appliedFilters: NewFilterData[]
-  // A list of filters that have been selected but not yet applied
-  notAppliedFilters: NewFilterData[]
-  // A combination of applied and not applied filters
-  allFilters: Computed<this, NewFilterData[]>
+  previouslyAppliedFilters: NewFilterData[]
+  // A list of filters that should be selected
+  selectedFilters: NewFilterData[]
 
   // An aray representing the available aggregations with the initial set of applied filters
   aggregations: Aggregations
@@ -31,6 +30,8 @@ export interface NewArtworkFilterStoreModel {
   selectFilterAction: Action<this, NewFilterData>
   // Set filter aggregations
   setAggregationsAction: Action<this, any>
+  // Remoove a filter from the list of not applied filters
+  removeFilterAction: Action<this, NewFilterData>
 }
 
 export const getNewArtworkFilterStoreModel = (): NewArtworkFilterStoreModel => ({
@@ -38,9 +39,8 @@ export const getNewArtworkFilterStoreModel = (): NewArtworkFilterStoreModel => (
   /** State **/
   /********************************************************/
 
-  appliedFilters: [],
-  notAppliedFilters: [],
-  allFilters: computed((state) => [...state.appliedFilters, ...state.notAppliedFilters]),
+  previouslyAppliedFilters: [],
+  selectedFilters: [],
   aggregations: [],
 
   /********************************************************/
@@ -48,18 +48,40 @@ export const getNewArtworkFilterStoreModel = (): NewArtworkFilterStoreModel => (
   /********************************************************/
 
   applyFiltersAction: action((state) => {
-    state.appliedFilters = [...state.appliedFilters, ...state.notAppliedFilters]
-    state.notAppliedFilters = []
+    state.previouslyAppliedFilters = [...state.selectedFilters]
+    state.selectedFilters = []
   }),
   clearAllFiltersAction: action((state) => {
-    state.appliedFilters = []
-    state.notAppliedFilters = []
+    state.selectedFilters = []
   }),
   selectFilterAction: action((state, filter) => {
-    state.notAppliedFilters = [...state.notAppliedFilters, filter]
+    const alreadySelected = state.selectedFilters.find((appliedFilter) => {
+      if (isEqual(appliedFilter, filter)) {
+        return true
+      }
+      return false
+    })
+
+    // No need to add a filter that is already selected or applied
+    if (!alreadySelected) {
+      state.selectedFilters = [...state.selectedFilters, filter]
+    }
   }),
   setAggregationsAction: action((state, aggregations) => {
     state.aggregations = aggregations
+  }),
+  removeFilterAction: action((state, filter) => {
+    const valueToBeRemovedIndex = state.selectedFilters.findIndex((appliedFilter) => {
+      if (isEqual(appliedFilter, filter)) {
+        return true
+      }
+      return false
+    })
+
+    if (valueToBeRemovedIndex > -1) {
+      // only splice array when item is found
+      state.selectedFilters.splice(valueToBeRemovedIndex, 1) // 2nd parameter means remove one item only
+    }
   }),
 })
 
