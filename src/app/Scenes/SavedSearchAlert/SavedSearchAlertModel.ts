@@ -20,6 +20,7 @@ export interface CreateSavedSearchAlertParams {
   aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   entity: SavedSearchEntity
+  currentArtworkID?: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }

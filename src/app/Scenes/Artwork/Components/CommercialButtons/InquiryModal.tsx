@@ -276,7 +276,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
           <Text variant="sm">What information are you looking for?</Text>
           {
             // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
-            questions!.map((inquiryQuestion) => {
+            questions?.map((inquiryQuestion) => {
               if (!inquiryQuestion) {
                 return false
               }

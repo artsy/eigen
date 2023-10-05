@@ -117,12 +117,14 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
   ({ closeModal }) => {
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+    const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
     const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
       first: NUMBER_OF_ARTWORKS_TO_SHOW,
       input: {
         ...attributes,
         forSale: true,
         sort: "-published_at",
+        excludeArtworkIDs: currentArtworkID ? [currentArtworkID] : undefined,
       } as FilterArtworksInput,
     })
 

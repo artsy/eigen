@@ -198,7 +198,7 @@ jobs:
           name: Handle Deployment for beta
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-              echo "Native code changed, notifying new beta needed!"
+              echo "Native code changed, new beta needed!"
               ./scripts/codepush/maybe_notify_beta_needed.sh
               circleci-agent step halt
             fi

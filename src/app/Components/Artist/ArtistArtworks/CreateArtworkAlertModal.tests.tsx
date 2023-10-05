@@ -37,6 +37,15 @@ describe("CreateArtworkAlertModal", () => {
     const { UNSAFE_getByType } = renderWithRelay()
     expect(UNSAFE_getByType(CreateSavedSearchModal)).toBeTruthy()
   })
+
+  it("passes current artwork id to modal", () => {
+    const { UNSAFE_getByProps } = renderWithRelay({
+      Artwork: () => ({
+        internalID: "set-alert-from-me",
+      }),
+    })
+    expect(UNSAFE_getByProps({ currentArtworkID: "set-alert-from-me" })).toBeTruthy()
+  })
 })
 
 describe("computeArtworkAlertProps", () => {
