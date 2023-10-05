@@ -6,7 +6,7 @@ S3_BUCKET_PATH="s3://artsy-citadel/eigen/native-hash.txt"
 # Calculate the current native hash
 current_native_hash=$(./scripts/codepush/calculate-native-hash.sh)
 
-aws s3 cp $S3_BUCKET_PATH ./native-hash.txt || echo "No previous native hash found."
+aws s3 cp $S3_BUCKET_PATH ./native-hash.txt > /dev/null || echo "No previous native hash found." >&2
 
 if [ -f ./native-hash.txt ]; then
   previous_native_hash=$(cat ./native-hash.txt)
