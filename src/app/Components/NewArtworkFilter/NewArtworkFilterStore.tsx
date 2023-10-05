@@ -78,4 +78,4 @@ export function createArtworkFiltersStore() {
 
 export const NewArtworksFiltersStore = createArtworkFiltersStore()
 
-export const ArtworkFiltersStoreProvider = NewArtworksFiltersStore.Provider
+export const NewArtworkFiltersStoreProvider = NewArtworksFiltersStore.Provider

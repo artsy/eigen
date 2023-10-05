@@ -2,6 +2,11 @@ import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { NewArtworkFilterAppliedFilters as AppliedFilters } from "app/Components/NewArtworkFilter/NewArtworkFilterAppliedFilters"
+import {
+  NewArtworkFiltersStoreProvider,
+  getNewArtworkFilterStoreModel,
+} from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { Alert, TouchableOpacity } from "react-native"
 
 export const AddFiltersScreen: React.FC<{}> = () => {
@@ -21,9 +26,24 @@ export const AddFiltersScreen: React.FC<{}> = () => {
         Filters
       </FancyModalHeader>
       <Join separator={<Spacer y={4} />}>
-        <AppliedFilters />
+        <AppliedFilters includeArtistNames />
       </Join>
     </Flex>
+  )
+}
+
+export const AddFiltersScreenWrapper: React.FC<{}> = () => {
+  const aggregations = SavedSearchStore.useStoreState((state) => state.aggregations)
+
+  return (
+    <NewArtworkFiltersStoreProvider
+      runtimeModel={{
+        ...getNewArtworkFilterStoreModel(),
+        aggregations,
+      }}
+    >
+      <AddFiltersScreen />
+    </NewArtworkFiltersStoreProvider>
   )
 }
 
