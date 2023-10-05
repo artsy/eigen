@@ -6,6 +6,13 @@ export enum NewFilterParamName {
 
 export type NewFilterData =
   | {
+      paramName: NewFilterParamName.artistIDs
+      paramValue: {
+        value: string
+        displayLabel: string
+      }
+    }
+  | {
       paramName: NewFilterParamName.attributionClass
       paramValue: {
         value: string
