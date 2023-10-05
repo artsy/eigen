@@ -7027,9 +7027,6 @@ type Conversation implements Node {
     timezone: String
   ): String
 
-  # Delivery id if the user is a recipient of the last message, null otherwise.
-  lastMessageDeliveryID: String
-
   # Impulse id of the last message.
   lastMessageID: String
     @deprecated(
