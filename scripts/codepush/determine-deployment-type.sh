@@ -16,11 +16,11 @@ fi
 
 # Compare the current native hash with the previous one
 if [ "$current_native_hash" != "$previous_native_hash" ]; then
-  # If the native hash has changed, then we need to deploy a new native build
-  echo "beta"
-
   # Save the current native hash to S3
   echo $current_native_hash | aws s3 cp - $S3_BUCKET_PATH
+
+  # If the native hash has changed, then we need to deploy a new native build
+  echo "beta"
 else
   # If the native hash has not changed, then we can deploy using codepush
   echo "codepush"
