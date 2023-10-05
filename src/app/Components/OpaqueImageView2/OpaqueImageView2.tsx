@@ -87,23 +87,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const [fIHeight, setFIHeight] = useState(0)
   const [fIWidth, setFIWidth] = useState(0)
   const style = StyleSheet.flatten(props.style) ?? {}
-  if (__DEV__) {
-    if (
-      !(
-        (style.width && style.height) ||
-        (props.width && props.height) ||
-        (aspectRatio && (style.height || props.height)) ||
-        (aspectRatio && (style.width || props.width))
-      )
-    ) {
-      console.error(
-        "[OpaqueImageView2] Either an aspect ratio or specific dimensions or flex should be specified."
-      )
-      return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
-    }
-  }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const getActualDimensions = useCallback(() => {
     if (props.height && props.width) {
       return [props.width, props.height]
@@ -128,12 +112,27 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     return [layoutWidth, layoutHeight]
   }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const [fWidth, fHeight] = getActualDimensions()
     setFIHeight(fHeight)
     setFIWidth(fWidth)
   }, [getActualDimensions])
+
+  if (__DEV__) {
+    if (
+      !(
+        (style.width && style.height) ||
+        (props.width && props.height) ||
+        (aspectRatio && (style.height || props.height)) ||
+        (aspectRatio && (style.width || props.width))
+      )
+    ) {
+      console.error(
+        "[OpaqueImageView2] Either an aspect ratio or specific dimensions or flex should be specified."
+      )
+      return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
+    }
+  }
 
   if (React.Children.count(props.children) > 0) {
     console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
@@ -143,10 +142,15 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const getImageURL = () => {
     const { imageURL, useRawURL } = props
 
+    if (!layoutHeight || !layoutWidth) {
+      return
+    }
+
     if (imageURL) {
       if (useRawURL) {
         return imageURL
       }
+
       return createGeminiUrl({
         imageURL,
         width: layoutWidth,
