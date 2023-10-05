@@ -1,6 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NewArtworkFilter } from "app/Components/NewArtworkFilter/NewArtworkFilter"
 import { Alert, TouchableOpacity } from "react-native"
 
 export const AddFiltersScreen: React.FC<{}> = () => {
@@ -18,6 +19,7 @@ export const AddFiltersScreen: React.FC<{}> = () => {
       >
         Filters
       </FancyModalHeader>
+      <NewArtworkFilter />
     </Flex>
   )
 }

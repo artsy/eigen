@@ -1,8 +1,26 @@
 export enum NewFilterParamName {
-  attributionClass = "Rarity",
+  artistIDs = "artistIDs",
+  attributionClass = "rarity",
+  categories = "categories",
 }
 
-export type NewFilterData = {
-  paramName: "attributionClass"
-  paramValue: string[]
+export type NewFilterData =
+  | {
+      paramName: NewFilterParamName.attributionClass
+      paramValue: {
+        value: string
+        displayLabel: string
+      }
+    }
+  | {
+      paramName: NewFilterParamName.categories
+      paramValue: {
+        value: string
+        displayLabel: string
+      }
+    }
+
+export const paramNameToDisplayLabelMap = {
+  attributionClass: "Rarity",
+  categories: "Categories",
 }

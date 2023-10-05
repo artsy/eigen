@@ -1,9 +1,9 @@
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   NewArtworkFilterStoreModel,
-  NewFilterData,
   getNewArtworkFilterStoreModel,
 } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
+import { NewFilterData, NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { createStore } from "easy-peasy"
 
 const createFilterArtworksStore = (state?: Partial<NewArtworkFilterStoreModel>) =>
@@ -33,9 +33,11 @@ describe("NewArtworkFilterStore", () => {
 
 const appliedFilters: NewFilterData[] = [
   {
-    displayText: "Medium",
-    paramName: "medium",
-    paramValue: "painting",
+    paramName: NewFilterParamName.categories,
+    paramValue: {
+      value: "painting",
+      displayLabel: "Painting",
+    },
   },
 ]
 
