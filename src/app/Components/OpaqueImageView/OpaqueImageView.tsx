@@ -110,14 +110,19 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   imageURL() {
     const { imageURL, useRawURL } = this.props
 
+    if (!this.state.height || !this.state.width) {
+      return null
+    }
+
     if (imageURL) {
       if (useRawURL) {
         return imageURL
       }
+
       return createGeminiUrl({
         imageURL,
-        width: this.state.width!,
-        height: this.state.height!,
+        width: this.state.width,
+        height: this.state.height,
         // Either scale or crop, based on if an aspect ratio is available.
         resizeMode: this.state.aspectRatio ? "fit" : "fill",
       })

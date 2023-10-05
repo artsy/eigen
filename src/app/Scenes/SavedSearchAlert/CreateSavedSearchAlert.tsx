@@ -20,7 +20,7 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
-  const { attributes, aggregations, entity } = params
+  const { attributes, aggregations, entity, currentArtworkID } = params
 
   return (
     <SavedSearchStoreProvider
@@ -29,6 +29,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         attributes: attributes as SearchCriteriaAttributes,
         aggregations,
         entity,
+        currentArtworkID,
       }}
     >
       <NavigationContainer independent>

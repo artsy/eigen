@@ -629,7 +629,7 @@ export const ArtworkContainer = createRefetchContainer(
 
 export const ArtworkScreenQuery = graphql`
   query ArtworkAboveTheFoldQuery($artworkID: String!) {
-    artwork(id: $artworkID) {
+    artwork(id: $artworkID) @principalField {
       ...Artwork_artworkAboveTheFold
     }
     me {

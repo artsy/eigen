@@ -26,10 +26,20 @@ export interface CreateSavedSearchModalProps {
   closeModal: () => void
   onComplete?: () => void
   contextModule?: ContextModule
+  currentArtworkID?: string
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, entity, attributes, aggregations, closeModal, onComplete, contextModule } = props
+  const {
+    visible,
+    entity,
+    attributes,
+    aggregations,
+    closeModal,
+    onComplete,
+    contextModule,
+    currentArtworkID,
+  } = props
   const tracking = useTracking()
 
   useEffect(() => {
@@ -54,6 +64,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     aggregations,
     attributes,
     entity,
+    currentArtworkID,
     onClosePress: () => {
       onComplete?.() // close the filter modal stack (if coming from artist artwork grid)
       closeModal() // close the alert modal stack
