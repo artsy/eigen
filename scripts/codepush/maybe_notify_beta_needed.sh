@@ -17,8 +17,7 @@ time_difference=$((current_time - last_notified))
 
 # Check if 24 hours (86400 seconds) have passed since the last notification
 if [ $time_difference -ge 86400 ]; then
-  # bundle exec fastlane notify_beta_needed
-
+  bundle exec fastlane notify_beta_needed
   # Update the timestamp
   echo $current_time | aws s3 cp - $S3_TIMESTAMP_PATH
 fi

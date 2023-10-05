@@ -500,7 +500,7 @@ workflows:
           filters:
             branches:
               only:
-                - brian/stop-spam
+                - main
 
       - test-js:
           filters:
