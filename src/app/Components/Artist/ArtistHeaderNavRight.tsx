@@ -45,7 +45,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
         <FollowButton
           haptic
           isFollowed={isFollowed}
-          followCount={data!.counts.follows}
+          followCount={data?.counts.follows}
           onPress={() => setIsFollowed(!isFollowed)}
           ml={1}
         />

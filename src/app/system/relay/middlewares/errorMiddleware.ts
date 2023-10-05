@@ -11,6 +11,8 @@ const newErrorMiddlewareOptedInQueries = [
   "ArtworkAboveTheFoldQuery",
   "ArtworkBelowTheFoldQuery",
   "SearchQuery",
+  "ArtistAboveTheFoldQuery",
+  "ArtistBelowTheFoldQuery",
   "InboxQuery",
 ]
 
