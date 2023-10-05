@@ -17,7 +17,7 @@ fi
 # Compare the current native hash with the previous one
 if [ "$current_native_hash" != "$previous_native_hash" ]; then
   # Save the current native hash to S3
-  echo $current_native_hash | aws s3 cp - $S3_BUCKET_PATH
+  echo $current_native_hash | aws s3 cp - $S3_BUCKET_PATH > /dev/null
 
   # If the native hash has changed, then we need to deploy a new native build
   echo "beta"
