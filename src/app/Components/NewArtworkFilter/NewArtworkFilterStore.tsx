@@ -1,15 +1,7 @@
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { NewFilterData } from "app/Components/NewArtworkFilter/helpers"
 import { assignDeep } from "app/store/persistence"
 import { Action, Computed, action, computed, createContextStore } from "easy-peasy"
-
-export interface NewFilterData {
-  displayText: string
-  // TODO: change to an enum
-  paramName: string
-  // TODO: change accordingly when we have more than one type
-  // NOTE: make sure this type is compatible with the type of the filter
-  paramValue: string
-}
 
 export interface NewArtworkFilterStoreModel {
   /********************************************************/
