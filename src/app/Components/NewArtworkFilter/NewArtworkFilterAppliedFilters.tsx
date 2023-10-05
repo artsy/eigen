@@ -2,7 +2,7 @@ import { Flex, Pill, Text } from "@artsy/palette-mobile"
 import { NewFilterData, NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 
-export const AppliedFilters: React.FC<{}> = () => {
+export const NewArtworkFilterAppliedFilters: React.FC<{}> = () => {
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
 
   const artistsPills = entity.artists.map((artist) => {
