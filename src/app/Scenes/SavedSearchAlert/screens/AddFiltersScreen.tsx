@@ -1,11 +1,12 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { NewArtworkFilter } from "app/Components/NewArtworkFilter/NewArtworkFilter"
+import { NewArtworkFilterAppliedFilters as AppliedFilters } from "app/Components/NewArtworkFilter/NewArtworkFilterAppliedFilters"
 import { Alert, TouchableOpacity } from "react-native"
 
 export const AddFiltersScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
+
   return (
     <Flex>
       <FancyModalHeader
@@ -19,7 +20,9 @@ export const AddFiltersScreen: React.FC<{}> = () => {
       >
         Filters
       </FancyModalHeader>
-      <NewArtworkFilter />
+      <Join separator={<Spacer y={4} />}>
+        <AppliedFilters />
+      </Join>
     </Flex>
   )
 }
