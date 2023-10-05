@@ -204,7 +204,6 @@ jobs:
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
               echo "Native code changed, notifying new beta needed!"
-              bundle exec fastlane notify_beta_needed
               circleci-agent step halt
             fi
       - install-node-modules
