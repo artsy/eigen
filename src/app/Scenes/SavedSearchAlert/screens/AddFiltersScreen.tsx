@@ -1,7 +1,8 @@
-import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { NewArtworkFilterAppliedFilters as AppliedFilters } from "app/Components/NewArtworkFilter/NewArtworkFilterAppliedFilters"
+import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilter/NewArtworkFilterRarity"
 import {
   NewArtworkFiltersStoreProvider,
   getNewArtworkFilterStoreModel,
@@ -25,8 +26,9 @@ export const AddFiltersScreen: React.FC<{}> = () => {
       >
         Filters
       </FancyModalHeader>
-      <Join separator={<Spacer y={4} />}>
+      <Join separator={<Separator my={2} borderColor="black10" />}>
         <AppliedFilters includeArtistNames />
+        <Rarity />
       </Join>
     </Flex>
   )

@@ -13,25 +13,23 @@ describe("NewArtworkFilterStore", () => {
   describe("initialState", () => {
     it("is correct when no injections are made", () => {
       const store = createFilterArtworksStore()
-      expect(store.getState().appliedFilters).toEqual([])
-      expect(store.getState().allFilters).toEqual([])
+      expect(store.getState().previouslyAppliedFilters).toEqual([])
       expect(store.getState().aggregations).toEqual([])
-      expect(store.getState().notAppliedFilters).toEqual([])
+      expect(store.getState().selectedFilters).toEqual([])
     })
     it("is correct when injections are made", () => {
       const store = createFilterArtworksStore({
-        appliedFilters,
+        previouslyAppliedFilters,
         aggregations,
       })
-      expect(store.getState().appliedFilters).toEqual(appliedFilters)
-      expect(store.getState().allFilters).toEqual(appliedFilters)
+      expect(store.getState().previouslyAppliedFilters).toEqual(previouslyAppliedFilters)
       expect(store.getState().aggregations).toEqual(aggregations)
-      expect(store.getState().notAppliedFilters).toEqual([])
+      expect(store.getState().selectedFilters).toEqual([])
     })
   })
 })
 
-const appliedFilters: NewFilterData[] = [
+const previouslyAppliedFilters: NewFilterData[] = [
   {
     paramName: NewFilterParamName.categories,
     paramValue: {
