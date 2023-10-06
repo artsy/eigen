@@ -1,4 +1,5 @@
-import { Flex, Pill, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { FillPill } from "app/Components/NewArtworkFilter/NewArtworkFilterPill"
 import { NewArtworksFiltersStore } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import {
   NewFilterData,
@@ -6,7 +7,6 @@ import {
   isFilterSelected,
   useSelectedFiltersByParamName,
 } from "app/Components/NewArtworkFilter/helpers"
-import { debounce } from "lodash"
 
 export const NewArtworkFilterRarity = () => {
   const selectedFilters = useSelectedFiltersByParamName(NewFilterParamName.attributionClass)
@@ -40,18 +40,16 @@ export const NewArtworkFilterRarity = () => {
       <Flex flexDirection="row" flexWrap="wrap">
         {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
           return (
-            <Pill
-              key={option.paramValue.value}
-              accessibilityLabel={option.paramValue.displayLabel}
-              mt={1}
-              mr={1}
-              selected={isFilterSelected(selectedFilters, option.paramValue)}
-              onPress={debounce(() => {
-                handlePress(option.paramValue)
-              }, 200)}
+            <FillPill
+              key={option.value}
+              accessibilityLabel={option.displayLabel}
+              selected={isFilterSelected(selectedFilters, option)}
+              onPress={() => {
+                handlePress(option)
+              }}
             >
-              {option.paramValue.displayLabel}
-            </Pill>
+              {option.displayLabel}
+            </FillPill>
           )
         })}
       </Flex>
@@ -59,29 +57,21 @@ export const NewArtworkFilterRarity = () => {
   )
 }
 
-export const ATTRIBUTION_CLASS_OPTIONS: Omit<NewFilterData, "paramName">[] = [
+export const ATTRIBUTION_CLASS_OPTIONS: NewFilterData["paramValue"][] = [
   {
-    paramValue: {
-      value: "unique",
-      displayLabel: "Unique",
-    },
+    value: "unique",
+    displayLabel: "Unique",
   },
   {
-    paramValue: {
-      value: "limited edition",
-      displayLabel: "Limited Edition",
-    },
+    value: "limited edition",
+    displayLabel: "Limited Edition",
   },
   {
-    paramValue: {
-      value: "open edition",
-      displayLabel: "Open Edition",
-    },
+    value: "open edition",
+    displayLabel: "Open Edition",
   },
   {
-    paramValue: {
-      value: "unknown edition",
-      displayLabel: "Unknown Edition",
-    },
+    value: "unknown edition",
+    displayLabel: "Unknown Edition",
   },
 ]
