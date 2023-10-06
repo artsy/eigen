@@ -22,7 +22,9 @@ You can read more on how to query on the official docs [here](https://callstack.
 
 ## Examples
 
-#### Testing a component that has useLazyLoadQuery
+### Testing a component that has useLazyLoadQuery
+
+- [ArticleScreen.tests.tsx](/src/app/Scenes/Article/__tests__/ArticleScreen.tests.tsx)
 
 ```tsx
 const Foo = () => {
@@ -60,9 +62,10 @@ it("renders correctly", async () => {
 })
 ```
 
-TODO: add more examples from the codebase
+### Testing a component with useFragment
 
-#### Testing a component with useFragment
+- [ArticleBody.tests.tsx](/src/app/Scenes/Article/Components/__tests__/ArticleBody.tests.tsx)
+- [ArticleHero.tests.tsx](/src/app/Scenes/Article/Components/__tests__/ArticleHero.tests.tsx)
 
 ```tsx
 const Bar = () => {
