@@ -7,10 +7,12 @@ export const FillPill: React.FC<PillProps> = (props) => {
 
   useDebounce(
     () => {
-      props.onPress?.()
+      if (selected !== props.selected) {
+        props.onPress?.()
+      }
     },
     200,
-    [props.selected]
+    [selected]
   )
 
   return (
