@@ -1,4 +1,3 @@
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   NewArtworkFilterStoreModel,
   getNewArtworkFilterStoreModel,
@@ -14,16 +13,13 @@ describe("NewArtworkFilterStore", () => {
     it("is correct when no injections are made", () => {
       const store = createFilterArtworksStore()
       expect(store.getState().previouslyAppliedFilters).toEqual([])
-      expect(store.getState().aggregations).toEqual([])
       expect(store.getState().selectedFilters).toEqual([])
     })
     it("is correct when injections are made", () => {
       const store = createFilterArtworksStore({
         previouslyAppliedFilters,
-        aggregations,
       })
       expect(store.getState().previouslyAppliedFilters).toEqual(previouslyAppliedFilters)
-      expect(store.getState().aggregations).toEqual(aggregations)
       expect(store.getState().selectedFilters).toEqual([])
     })
   })
@@ -36,18 +32,5 @@ const previouslyAppliedFilters: NewFilterData[] = [
       value: "painting",
       displayLabel: "Painting",
     },
-  },
-]
-
-const aggregations: Aggregations = [
-  {
-    slice: "COLOR",
-    counts: [
-      {
-        count: 10,
-        value: "blue",
-        name: "Blue",
-      },
-    ],
   },
 ]
