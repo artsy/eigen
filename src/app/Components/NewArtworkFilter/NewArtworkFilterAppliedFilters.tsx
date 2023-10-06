@@ -2,6 +2,7 @@ import { Flex, Pill, Text } from "@artsy/palette-mobile"
 import { NewArtworksFiltersStore } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import { NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { MotiView } from "moti"
 import { useMemo } from "react"
 
 export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames?: boolean }> = ({
@@ -40,20 +41,26 @@ export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames?: boo
       <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
         {/* TODO: Adapt useSavedSearchPills to work here with little coupling from saved searches */}
         {allPills.map((pill, index) => (
-          <Pill
-            testID={pill.paramValue.displayLabel}
-            m={0.5}
-            variant="filter"
-            accessibilityLabel={pill.paramValue.displayLabel}
-            disabled={pill.paramName === NewFilterParamName.artistIDs}
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ type: "timing", duration: 200 }}
             key={`filter-label-${index}`}
-            onPress={() => {
-              // Add remove
-              removeFilterAction(pill)
-            }}
           >
-            {pill.paramValue.displayLabel}
-          </Pill>
+            <Pill
+              testID={pill.paramValue.displayLabel}
+              m={0.5}
+              variant="filter"
+              accessibilityLabel={pill.paramValue.displayLabel}
+              disabled={pill.paramName === NewFilterParamName.artistIDs}
+              onPress={() => {
+                // Add remove
+                removeFilterAction(pill)
+              }}
+            >
+              {pill.paramValue.displayLabel}
+            </Pill>
+          </MotiView>
         ))}
       </Flex>
     </Flex>
