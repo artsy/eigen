@@ -4,5 +4,6 @@ set -euxo pipefail
 
 aws s3 cp s3://artsy-citadel/eigen/.env.eigen .env.shared
 aws s3 cp s3://artsy-citadel/eigen/.env.eigen .env
+aws s3 cp s3://artsy-citadel/eigen/.env.releases .env.releases
 
 cp metaflags.example.json metaflags.json
