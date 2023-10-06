@@ -21,7 +21,6 @@ export const AddFiltersScreen: React.FC<{}> = () => {
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
         renderRightButton={ClearAllButton}
-        // rightButtonText="Clear All"
         // TODO: Improve fancy modal header logic not to rely on this prop
         // in case renderRightButton is present
         onRightButtonPress={() => {}}
