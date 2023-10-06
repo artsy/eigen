@@ -1,14 +1,15 @@
-import { Flex, Join, Separator, Text } from "@artsy/palette-mobile"
+import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { NewArtworkFilterAppliedFilters as AppliedFilters } from "app/Components/NewArtworkFilter/NewArtworkFilterAppliedFilters"
 import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilter/NewArtworkFilterRarity"
 import {
   NewArtworkFiltersStoreProvider,
+  NewArtworksFiltersStore,
   getNewArtworkFilterStoreModel,
 } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { Alert, TouchableOpacity } from "react-native"
+import { Alert } from "react-native"
 
 export const AddFiltersScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
@@ -50,24 +51,29 @@ export const AddFiltersScreenWrapper: React.FC<{}> = () => {
 }
 
 export const ClearAllButton = () => {
-  const disabled = false
+  const clearAllFiltersAction = NewArtworksFiltersStore.useStoreActions(
+    (state) => state.clearAllFiltersAction
+  )
+  const disabled =
+    NewArtworksFiltersStore.useStoreState((state) => state.selectedFilters).length === 0
 
   return (
-    <TouchableOpacity
+    <Touchable
+      haptic={disabled ? undefined : "impactMedium"}
       disabled={disabled}
+      accessibilityState={{ disabled }}
       onPress={() => {
-        Alert.alert("Are you sure you want to clear all filters?", "Not yet supported", [
+        Alert.alert("Are you sure you want to clear all filters?", undefined, [
           {
             text: "Cancel",
-            onPress() {
-              // Do nothing
-            },
+            style: "cancel",
           },
 
           {
             text: "Clear All",
             onPress() {
               // Trigger action to clear all filters
+              clearAllFiltersAction()
             },
             style: "destructive",
           },
@@ -77,6 +83,6 @@ export const ClearAllButton = () => {
       <Text underline color={disabled ? "black30" : "black100"}>
         Clear All
       </Text>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
