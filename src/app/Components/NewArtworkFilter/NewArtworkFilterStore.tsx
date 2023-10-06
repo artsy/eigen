@@ -1,4 +1,3 @@
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { NewFilterData } from "app/Components/NewArtworkFilter/helpers"
 import { assignDeep } from "app/store/persistence"
 import { Action, action, createContextStore } from "easy-peasy"
@@ -14,22 +13,15 @@ export interface NewArtworkFilterStoreModel {
   // A list of filters that should be selected
   selectedFilters: NewFilterData[]
 
-  // An aray representing the available aggregations with the initial set of applied filters
-  aggregations: Aggregations
-
   /********************************************************/
   /** Actions **/
   /********************************************************/
 
-  // Add non applied filters to the list of applied filters
-
-  applyFiltersAction: Action<this>
   // Remove all applied and non applied filters
   clearAllFiltersAction: Action<this>
   // Add a new filter to the list of not applied filters
   selectFilterAction: Action<this, NewFilterData>
-  // Set filter aggregations
-  setAggregationsAction: Action<this, any>
+
   // Remoove a filter from the list of not applied filters
   removeFilterAction: Action<this, NewFilterData>
 }
@@ -41,16 +33,11 @@ export const getNewArtworkFilterStoreModel = (): NewArtworkFilterStoreModel => (
 
   previouslyAppliedFilters: [],
   selectedFilters: [],
-  aggregations: [],
 
   /********************************************************/
   /** Actions **/
   /********************************************************/
 
-  applyFiltersAction: action((state) => {
-    state.previouslyAppliedFilters = [...state.selectedFilters]
-    state.selectedFilters = []
-  }),
   clearAllFiltersAction: action((state) => {
     state.selectedFilters = []
   }),
@@ -66,9 +53,6 @@ export const getNewArtworkFilterStoreModel = (): NewArtworkFilterStoreModel => (
     if (!alreadySelected) {
       state.selectedFilters = [...state.selectedFilters, filter]
     }
-  }),
-  setAggregationsAction: action((state, aggregations) => {
-    state.aggregations = aggregations
   }),
   removeFilterAction: action((state, filter) => {
     const valueToBeRemovedIndex = state.selectedFilters.findIndex((appliedFilter) => {

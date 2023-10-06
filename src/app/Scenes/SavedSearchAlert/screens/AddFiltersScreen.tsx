@@ -6,9 +6,7 @@ import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilte
 import {
   NewArtworkFiltersStoreProvider,
   NewArtworksFiltersStore,
-  getNewArtworkFilterStoreModel,
 } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
-import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
 import { Alert } from "react-native"
 
@@ -36,15 +34,8 @@ export const AddFiltersScreen: React.FC<{}> = () => {
 }
 
 export const AddFiltersScreenWrapper: React.FC<{}> = () => {
-  const aggregations = SavedSearchStore.useStoreState((state) => state.aggregations)
-
   return (
-    <NewArtworkFiltersStoreProvider
-      runtimeModel={{
-        ...getNewArtworkFilterStoreModel(),
-        aggregations,
-      }}
-    >
+    <NewArtworkFiltersStoreProvider>
       <AddFiltersScreen />
     </NewArtworkFiltersStoreProvider>
   )
