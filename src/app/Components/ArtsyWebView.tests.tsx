@@ -24,6 +24,31 @@ jest.mock("app/utils/useWebViewEvent", () => ({
   }),
 }))
 
+// mock implementation of an inner WebView's goBack method that can be observed
+const mockGoBack = jest.fn()
+
+// mocked ref to the inner WebView of an ArtsyWebView whose properties can be observed
+const mockRef = {
+  current: {
+    goBack: mockGoBack,
+    stopLoading: jest.fn(),
+  },
+}
+
+// mock implementation of the react-native-webview that allows us to observe its properties
+jest.mock("react-native-webview", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    default: React.forwardRef((props: any, ref: any) => {
+      React.useImperativeHandle(ref, () => mockRef.current)
+      return <View ref={ref} {...props} />
+    }),
+  }
+})
+
 const mockOnNavigationStateChange: WebViewNavigation = {
   navigationType: "click",
   url: "https://gooooogle.com",
@@ -219,6 +244,63 @@ describe("ArtsyWebViewPage", () => {
         url: "https://google.com",
       })
       expect(navigate).toHaveBeenCalledWith("https://google.com")
+    })
+
+    describe("the inner WebView's goBack method", () => {
+      it("is called when the URL matches a ReactWebView, ModalWebView, or VanityURLEntity route", () => {
+        const tree = render()
+
+        webViewProps(tree).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/artwork/foo",
+        })
+
+        expect(mockGoBack).toHaveBeenCalled()
+      })
+
+      it("is not called when the URL does not match any route", () => {
+        const tree = render()
+
+        webViewProps(tree).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://support.artsy.net/",
+        })
+
+        expect(mockGoBack).not.toHaveBeenCalled()
+      })
+
+      it("is not called when the URL matches a ModalWebView route", () => {
+        const tree = render()
+
+        webViewProps(tree).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/orders/foo",
+        })
+
+        expect(mockGoBack).not.toHaveBeenCalled()
+      })
+
+      it("is not called when the URL matches a ReactWebView route", () => {
+        const tree = render()
+
+        webViewProps(tree).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/meet-the-specialists",
+        })
+
+        expect(mockGoBack).not.toHaveBeenCalled()
+      })
+
+      it("is not called when the URL matches a VanityURLEntity route", () => {
+        const tree = render()
+
+        webViewProps(tree).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/foo",
+        })
+
+        expect(mockGoBack).not.toHaveBeenCalled()
+      })
     })
   })
 })
