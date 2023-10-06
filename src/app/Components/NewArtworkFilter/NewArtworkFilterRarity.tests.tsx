@@ -10,6 +10,8 @@ import {
 import { NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
+const black100Hex = "#000000"
+
 describe("NewArtworkFilterRarity", () => {
   it("shows all available rarity options unselected", () => {
     const { getByText } = renderWithWrappers(
@@ -20,7 +22,9 @@ describe("NewArtworkFilterRarity", () => {
 
     ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
       expect(getByText(option.displayLabel)).toBeDefined()
-      expect(getByText(option.displayLabel).props.color).toEqual("black100")
+      expect(getByText(option.displayLabel)).toHaveStyle({
+        color: black100Hex,
+      })
     })
   })
 
@@ -44,10 +48,10 @@ describe("NewArtworkFilterRarity", () => {
       </NewArtworkFiltersStoreProvider>
     )
 
-    expect(getByText("Unique").props.color).not.toEqual("black100")
-    expect(getByText("Limited Edition").props.color).toEqual("black100")
-    expect(getByText("Open Edition").props.color).toEqual("black100")
-    expect(getByText("Unknown Edition").props.color).toEqual("black100")
+    expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
+    expect(getByText("Limited Edition")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Open Edition")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Unknown Edition")).toHaveStyle({ color: black100Hex })
   })
 
   it("Updates selected filters on press", () => {
@@ -57,12 +61,12 @@ describe("NewArtworkFilterRarity", () => {
       </NewArtworkFiltersStoreProvider>
     )
 
-    expect(getByText("Unique").props.color).toEqual("black100")
+    expect(getByText("Unique")).toHaveStyle({ color: black100Hex })
 
     fireEvent(getByText("Unique"), "onPress")
 
     waitFor(() => {
-      expect(getByText("Unique").props.color).not.toEqual("black100")
+      expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
     })
   })
 })
