@@ -11,7 +11,6 @@ import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
-import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Edge, SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
@@ -189,15 +188,6 @@ export const ArtsyWebView = forwardRef<
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
 
-    // Debounce calls just in case multiple stopLoading calls are made in a row
-    const stopLoading = debounce((goBack = true) => {
-      innerRef.current?.stopLoading()
-
-      if (goBack) {
-        innerRef.current?.goBack()
-      }
-    }, 500)
-
     const onNavigationStateChange = (evt: WebViewNavigation) => {
       onNavigationStateChangeProp?.(evt)
 
@@ -219,13 +209,10 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        (["ReactWebView", "ModalWebView"].includes(result.module) ||
-          result.module === "VanityURLEntity")
+        ["ReactWebView", "ModalWebView", "VanityURLEntity"].includes(result.module)
       ) {
         innerRef.current!.shareTitleUrl = targetURL
         return
-      } else {
-        stopLoading(result.type === "external_url" ? false : true)
       }
 
       // In case of a webview presented modally, if the targetURL is a tab View,
@@ -239,9 +226,13 @@ export const ArtsyWebView = forwardRef<
         BottomTabRoutes.includes("/" + modulePathName[0])
 
       // if it's an external url, or a route with a native view, use `navigate`
-      if (!__TEST__) {
-        innerRef.current?.stopLoading()
+
+      innerRef.current?.stopLoading()
+
+      if (result.type === "match") {
+        innerRef.current?.goBack()
       }
+
       setLoadProgress(null)
 
       if (shouldDismissModal) {
