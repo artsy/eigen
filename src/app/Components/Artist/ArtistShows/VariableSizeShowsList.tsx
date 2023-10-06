@@ -5,7 +5,7 @@ import { chunk } from "lodash"
 import { Component } from "react"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtistShowFragmentContainer } from "./ArtistShow"
+import { ArtistShow } from "./ArtistShow"
 
 interface Props {
   shows: VariableSizeShowsList_shows$data
@@ -65,8 +65,8 @@ class ShowsList extends Component<Props, State> {
         <Stack>
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
-              {shows.map((show) => (
-                <ArtistShowFragmentContainer show={show} styles={showStyles} key={show.id} />
+              {shows.map((show, index) => (
+                <ArtistShow show={show} styles={showStyles} key={show.id} index={index} />
               ))}
             </Stack>
           ))}

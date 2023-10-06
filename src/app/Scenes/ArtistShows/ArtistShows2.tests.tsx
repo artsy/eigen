@@ -1,6 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
-import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
+import { ArtistShow } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { FlatList } from "react-native"
@@ -40,6 +40,6 @@ describe("ArtistShows2", () => {
     })
 
     expect(tree.UNSAFE_getAllByType(FlatList).length).toEqual(1)
-    expect(tree.UNSAFE_getAllByType(ArtistShowFragmentContainer).length).toEqual(3)
+    expect(tree.UNSAFE_getAllByType(ArtistShow).length).toEqual(3)
   })
 })

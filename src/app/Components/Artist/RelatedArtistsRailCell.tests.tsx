@@ -1,19 +1,23 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { RelatedArtistsRailCellTestQuery } from "__generated__/RelatedArtistsRailCellTestQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { RelatedArtistsRailCell } from "./RelatedArtistsRailCell"
+import { RelatedArtistsRailCell, tracks } from "./RelatedArtistsRailCell"
 
 describe("RelatedArtistsRail", () => {
   const { renderWithRelay } = setupTestWrapper<RelatedArtistsRailCellTestQuery>({
-    Component: ({ artist }) => {
-      return <RelatedArtistsRailCell artist={artist} />
+    Component: ({ relatedArtist, artist }) => {
+      return <RelatedArtistsRailCell relatedArtist={relatedArtist} artist={artist} index={0} />
     },
     query: graphql`
       query RelatedArtistsRailCellTestQuery @relay_test_operation {
-        artist(id: "artist-id") @required(action: NONE) {
+        artist(id: "parent-artist-id") @required(action: NONE) {
           ...RelatedArtistsRailCell_artist
+        }
+        relatedArtist: artist(id: "artist-id") @required(action: NONE) {
+          ...RelatedArtistsRailCell_relatedArtist
         }
       }
     `,
@@ -64,16 +68,26 @@ describe("RelatedArtistsRail", () => {
 
     expect(screen.getByText("Follow")).toBeOnTheScreen()
   })
+
+  it("navigates to the artist", () => {
+    renderWithRelay({ Artist: () => artist })
+
+    fireEvent.press(screen.getByTestId("related-artist-cover"))
+
+    expect(navigate).toHaveBeenCalledWith("artist-href")
+    expect(mockTrackEvent).toHaveBeenCalledWith(tracks.tappedArtistGroup(artist, artist, 0))
+  })
 })
 
 const artist = {
   id: "id",
   internalID: "artist-id",
   formattedNationalityAndBirthday: "American, 01-01-01",
+  slug: "andy-warhol",
   name: "Andy Warhol",
   href: "artist-href",
   isFollowed: false,
   image: {
     url: "image-url",
   },
-}
+} as any

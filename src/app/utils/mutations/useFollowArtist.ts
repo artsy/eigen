@@ -5,7 +5,7 @@ export const useFollowArtist = () => {
     mutation useFollowArtistMutation($input: FollowArtistInput!) {
       followArtist(input: $input) {
         artist {
-          ...RelatedArtistsRailCell_artist
+          ...RelatedArtistsRailCell_relatedArtist
         }
       }
     }
