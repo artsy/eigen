@@ -9,6 +9,7 @@ import {
   getNewArtworkFilterStoreModel,
 } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { MotiView } from "moti"
 import { Alert } from "react-native"
 
 export const AddFiltersScreen: React.FC<{}> = () => {
@@ -80,9 +81,15 @@ export const ClearAllButton = () => {
         ])
       }}
     >
-      <Text underline color={disabled ? "black30" : "black100"}>
-        Clear All
-      </Text>
+      <MotiView
+        accessibilityLabel="Image Pagination Indicator"
+        animate={{ opacity: disabled ? 1 : 0.3 }}
+        transition={{ type: "timing", duration: 200 }}
+      >
+        <Text underline color="black100">
+          Clear All
+        </Text>
+      </MotiView>
     </Touchable>
   )
 }
