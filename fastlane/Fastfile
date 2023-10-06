@@ -6,7 +6,6 @@ require 'fileutils'
 require 'json'
 require 'dotenv'
 
-Dotenv.load('../.env.shared')
 Dotenv.load('../.env.releases')
 
 skip_docs
