@@ -56,7 +56,7 @@ export const ClearAllButton = () => {
     <TouchableOpacity
       disabled={disabled}
       onPress={() => {
-        Alert.alert("Are you sure you want to clear all filters?", undefined, [
+        Alert.alert("Are you sure you want to clear all filters?", "Not yet supported", [
           {
             text: "Cancel",
             onPress() {
