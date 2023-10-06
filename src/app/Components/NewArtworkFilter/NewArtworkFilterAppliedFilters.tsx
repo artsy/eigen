@@ -8,6 +8,9 @@ export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames: bool
   includeArtistNames,
 }) => {
   const selectedFilters = NewArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const removeFilterAction = NewArtworksFiltersStore.useStoreActions(
+    (state) => state.removeFilterAction
+  )
 
   const entity = SavedSearchStore?.useStoreState((state) => state.entity)
 
@@ -46,6 +49,7 @@ export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames: bool
             key={`filter-label-${index}`}
             onPress={() => {
               // Add remove
+              removeFilterAction(pill)
             }}
           >
             {pill.paramValue.displayLabel}
