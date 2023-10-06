@@ -68,6 +68,7 @@
     "setup:artsy:update!": "scripts/update-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
     "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-env-for-releases && ./scripts/setup-distribute-macos",
+    "setup:releases:update!": "scripts/update-env-for-releases",
     "start": "concurrently 'yarn relay:watch' 'react-native start'",
     "start-storybook": "STORYBOOK=1 yarn start",
     "start:reset-cache": "yarn start --reset-cache",
