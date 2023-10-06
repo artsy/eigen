@@ -4,15 +4,15 @@ import { NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useMemo } from "react"
 
-export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames: boolean }> = ({
-  includeArtistNames,
+export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames?: boolean }> = ({
+  includeArtistNames = false,
 }) => {
   const selectedFilters = NewArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const removeFilterAction = NewArtworksFiltersStore.useStoreActions(
     (state) => state.removeFilterAction
   )
 
-  const entity = SavedSearchStore?.useStoreState((state) => state.entity)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
 
   const artistPills = useMemo(() => {
     return entity?.artists.map((artist) => ({
@@ -41,7 +41,7 @@ export const NewArtworkFilterAppliedFilters: React.FC<{ includeArtistNames: bool
         {/* TODO: Adapt useSavedSearchPills to work here with little coupling from saved searches */}
         {allPills.map((pill, index) => (
           <Pill
-            testID="alert-pill"
+            testID={pill.paramValue.displayLabel}
             m={0.5}
             variant="filter"
             accessibilityLabel={pill.paramValue.displayLabel}
