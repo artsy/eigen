@@ -183,7 +183,7 @@ export const ArtsyWebView = forwardRef<
     const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
-    const showIndicator = useDevToggle("DTShowWebviewIndicator")
+    const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
@@ -272,8 +272,7 @@ export const ArtsyWebView = forwardRef<
           }}
           onNavigationStateChange={onNavigationStateChange}
         />
-
-        {!!showIndicator && (
+        {!!showDevToggleIndicator && (
           <Flex
             position="absolute"
             top={50}
