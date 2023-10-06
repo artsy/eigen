@@ -190,9 +190,12 @@ export const ArtsyWebView = forwardRef<
     const uri = url.startsWith("/") ? webURL + url : url
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
-    const stopLoading = debounce(() => {
+    const stopLoading = debounce((goBack = true) => {
       innerRef.current?.stopLoading()
-      innerRef.current?.goBack()
+
+      if (goBack) {
+        innerRef.current?.goBack()
+      }
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
@@ -222,7 +225,7 @@ export const ArtsyWebView = forwardRef<
         innerRef.current!.shareTitleUrl = targetURL
         return
       } else {
-        stopLoading()
+        stopLoading(result.type === "external_url" ? false : true)
       }
 
       // In case of a webview presented modally, if the targetURL is a tab View,
