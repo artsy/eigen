@@ -1,4 +1,4 @@
-import { changelogTemplateSections } from "./generateChangelogSectionTemplate"
+import { changelogTemplateSections } from "./changelogTemplateSections"
 
 export const parsePRDescription = (description: string): ParseResult => {
   description = stripComments(description)
