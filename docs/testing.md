@@ -11,7 +11,7 @@
   - [renderWithRelay function](#renderwithrelay-function)
   - [renderWithRelay params](#renderwithrelay-params)
   - [renderWithRelay return values](#renderwithrelay-return-values)
-- [renderWithWrappers for components](#renderwithwrappers)
+- [renderWithWrappers for non relay components](#renderwithwrappers)
 
 ## How should I query
 
