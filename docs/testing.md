@@ -6,11 +6,12 @@
 - [Testing examples for:](#examples)
   - [useLazyLoadQuery](#testing-a-component-that-has-uselazyloadquery)
   - [useFragment](#testing-a-component-with-usefragment)
-- [setupTestWrapper](#setuptestwrapper)
+- [setupTestWrapper for relay components](#setuptestwrapper)
   - [setupTestWrapper params](#setuptestwrapper-params)
   - [renderWithRelay function](#renderwithrelay-function)
   - [renderWithRelay params](#renderwithrelay-params)
   - [renderWithRelay return values](#renderwithrelay-return-values)
+- [renderWithWrappers for components](#renderwithwrappers)
 
 ## How should I query
 
@@ -139,3 +140,9 @@ const { env, mockResolveLastOperation, mockRejectLastOperation } = renderWithRel
 | `env`                      | The Relay environment that is used to render your component.                                  |
 | `mockResolveLastOperation` | A relay resolver that resolves the last operation that was executed by the Relay environment. |
 | `mockRejectLastOperation`  | A relay resolver that rejects the last operation that was executed by the Relay environment.  |
+
+## `renderWithWrappers`
+
+The `renderWithWrappers` function is a testing helper designed to simplify the testing of components in our React Native testing environment. It provides a way to render components wrapped with our wrappers, allowing you to test various scenarios efficiently and easily.
+
+We use this function when we want to test something that is not related to Relay but needs the rest of the wrappers of our app, for example, a component that uses `useNavigation` hook.
