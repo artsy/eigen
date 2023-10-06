@@ -183,7 +183,6 @@ export const ArtsyWebView = forwardRef<
     const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
-    const [loadProgress, setLoadProgress] = useState<number | null>(null)
     const showIndicator = useDevToggle("DTShowWebviewIndicator")
 
     const webURL = useEnvironment().webURL
@@ -239,7 +238,6 @@ export const ArtsyWebView = forwardRef<
       if (!__TEST__) {
         innerRef.current?.stopLoading()
       }
-      setLoadProgress(null)
 
       if (shouldDismissModal) {
         dismissModal(() => {
@@ -272,22 +270,9 @@ export const ArtsyWebView = forwardRef<
               console.log("error parsing webview message data", e, data)
             }
           }}
-          onLoadStart={() => {
-            setLoadProgress((p) => Math.max(0.02, p ?? 0))
-          }}
-          onLoadEnd={() => setLoadProgress(null)}
-          onLoadProgress={(e) => {
-            // we don't want to set load progress after navigating away from this
-            // web view (in onShouldStartLoadWithRequest). So we set
-            // loadProgress to null after navigating to another screen, and we
-            // check for that case here.
-            if (loadProgress !== null) {
-              setLoadProgress(e.nativeEvent.progress)
-            }
-          }}
           onNavigationStateChange={onNavigationStateChange}
         />
-        <ProgressBar loadProgress={loadProgress} />
+
         {!!showIndicator && (
           <Flex
             position="absolute"
@@ -302,25 +287,6 @@ export const ArtsyWebView = forwardRef<
     )
   }
 )
-
-const ProgressBar = ({ loadProgress }: { loadProgress: number | null }) => {
-  if (loadProgress === null) {
-    return null
-  }
-
-  const progressPercent = Math.max(loadProgress * 100, 2)
-  return (
-    <Flex
-      testID="progress-bar"
-      position="absolute"
-      top={0}
-      left={0}
-      width={progressPercent + "%"}
-      height={2}
-      backgroundColor="blue100"
-    />
-  )
-}
 
 export function useWebViewCookies() {
   const accessToken = GlobalStore.useAppState((store) => store.auth.userAccessToken)
