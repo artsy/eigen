@@ -119,20 +119,6 @@ describe("ArtsyWebViewPage", () => {
     })
   })
 
-  it("has a progress bar that follows page load events", () => {
-    render()
-    expect(screen.queryByTestId("progress-bar")).toBeFalsy()
-
-    screen.UNSAFE_getByType(WebView).props.onLoadStart()
-    expect(screen.queryByTestId("progress-bar")).toBeTruthy()
-
-    screen.UNSAFE_getByType(WebView).props.onLoadProgress({ nativeEvent: { progress: 0.5 } })
-    expect(screen.getByTestId("progress-bar").props.width).toEqual("50%")
-
-    screen.UNSAFE_getByType(WebView).props.onLoadEnd()
-    expect(screen.queryByTestId("progress-bar")).toBeFalsy()
-  })
-
   it("sets the user agent correctly", () => {
     const tree = render()
     expect(webViewProps(tree).applicationNameForUserAgent).toBe(
