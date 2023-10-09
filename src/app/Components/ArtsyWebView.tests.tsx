@@ -5,6 +5,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
+import { debounce } from "lodash"
 import { stringify } from "query-string"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
@@ -49,6 +50,11 @@ jest.mock("react-native-webview", () => {
   }
 })
 
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  debounce: jest.fn(),
+}))
+
 const mockOnNavigationStateChange: WebViewNavigation = {
   navigationType: "click",
   url: "https://gooooogle.com",
@@ -67,7 +73,10 @@ describe("ArtsyWebView", () => {
 })
 
 describe("ArtsyWebViewPage", () => {
-  beforeEach(() => jest.clearAllMocks())
+  beforeEach(() => {
+    jest.clearAllMocks()
+    ;(debounce as jest.Mock).mockImplementation((func) => func)
+  })
 
   const render = (props: Partial<React.ComponentProps<typeof ArtsyWebViewPage>> = {}) =>
     renderWithWrappers(<ArtsyWebViewPage url="https://staging.artsy.net/hello" {...props} />)
