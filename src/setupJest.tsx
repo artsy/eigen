@@ -663,6 +663,11 @@ jest.mock("prettier", () => ({
   format: jest.fn((content) => content), // just return content as-is for tests
 }))
 
+jest.mock("react-native-code-push", () => ({
+  checkForUpdate: jest.fn(),
+  sync: jest.fn(),
+}))
+
 jest.mock("@react-native-community/geolocation", () => ({
   addListener: jest.fn(),
   getCurrentPosition: jest.fn(),
