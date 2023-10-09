@@ -1,4 +1,4 @@
-# Testing best practices
+# Testing components best practices
 
 ## Table of Contents
 
