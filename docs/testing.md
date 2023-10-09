@@ -49,7 +49,7 @@ export const FooScreen = () => {
 }
 
 const { renderWithRelay } = setupTestWrapper<FooQuery>({
-  Component: Foo,
+  Component: FooScreen,
 })
 
 it("Displays the user's profile name", async () => {
@@ -120,10 +120,17 @@ The renderWithRelay function is returned by setupTestWrapper. It can be used to 
 
 ```tsx
 const { renderWithRelay } = setupTestWrapper({
-  /* configuration */
+  Component: Foo,
+  query: graphql`
+    query FooQuery {
+      me {
+        name
+      }
+    }
+  `,
 })
 
-const { env, mockResolveLastOperation, mockRejectLastOperation } = renderWithRelay(<Component />)
+const { env, mockResolveLastOperation, mockRejectLastOperation } = renderWithRelay()
 ```
 
 #### `renderWithRelay params`
