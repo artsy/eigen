@@ -52,14 +52,14 @@ const { renderWithRelay } = setupTestWrapper<FooQuery>({
   Component: Foo,
 })
 
-it("renders correctly", async () => {
+it("Displays the user's profile name", async () => {
   renderWithRelay({
     Me: () => ({ name: "name" }),
   })
 
   await waitForElementToBeRemoved(() => screen.getByTestId("loading"))
 
-  expect(screen.getByText("name")).toBeTruthy()
+  expect(screen.queryByText("name")).toBeTruthy()
 })
 ```
 
@@ -90,12 +90,12 @@ const { renderWithRelay } = setupTestWrapper<BarTestQuery>({
   `,
 })
 
-it("works", () => {
+it("Displays the user's profile name", () => {
   renderWithRelay({
     Me: () => ({ name: "Mock Name" }),
   })
 
-  expect(screen.getByText("name")).toEqual("Mock Name")
+  expect(screen.queryByText("name")).toEqual("Mock Name")
 })
 ```
 
