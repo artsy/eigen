@@ -188,22 +188,18 @@ jobs:
       - checkout
       - install-node
       - install-gems
-      - restore_cache:
-          key: native-hash-main
+      - setup-awscli
       - run:
           name: Determine Deployment Type
           command: |
             DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
-      - save_cache:
-          key: native-hash-main
-          paths:
-            - ./native-hash.txt
       - run:
           name: Handle Deployment for beta
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-              echo "Native code changed, notifying new beta needed!"
+              echo "Native code changed, new beta needed!"
+              ./scripts/codepush/maybe_notify_beta_needed.sh
               circleci-agent step halt
             fi
       - install-node-modules
