@@ -457,15 +457,8 @@ workflows:
             branches:
               ignore:
                 - main
-                - release
-                - staging
 
-      - type-check:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
+      - type-check
 
       - check-code:
           context: danger-github-oss
@@ -475,8 +468,6 @@ workflows:
                 - main
                 - beta-ios
                 - beta-android
-                - app_store_submission
-                - play_store_submission
 
       - check-and-deploy:
           filters:
@@ -484,19 +475,9 @@ workflows:
               only:
                 - main
 
-      - test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
+      - test-js
 
-      - build-test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
+      - build-test-js
 
       - horizon/block:
           context: horizon
@@ -511,8 +492,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-android
           requires:
             - test-js
