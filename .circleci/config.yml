@@ -112,16 +112,6 @@ commands:
     steps:
       - attach_workspace:
           at: ../workspace
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf /Users/distiller/project
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
       - restore_cache:
           keys:
             - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
@@ -132,6 +122,14 @@ commands:
             then
               circleci step halt
             fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
+      - checkout
+      - install-node
+      - setup-awscli
+      - setup-env-file
       - install-node-modules
       - run-relay-compiler
       - update-echo
