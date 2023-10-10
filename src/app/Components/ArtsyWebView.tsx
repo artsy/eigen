@@ -224,7 +224,7 @@ export const ArtsyWebView = forwardRef<
         innerRef.current!.shareTitleUrl = targetURL
         return
       } else {
-        const needToGoBack = result.type === "external_url" ? false : true
+        const needToGoBack = result.type !== "external_url"
         stopLoading(needToGoBack)
       }
 
