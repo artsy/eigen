@@ -256,7 +256,7 @@ describe("ArtsyWebViewPage", () => {
     })
 
     describe("the inner WebView's goBack method", () => {
-      it("is called when the URL matches a ReactWebView, ModalWebView, or VanityURLEntity route", () => {
+      it("is called when the URL matches a route that is not loaded in a web view", () => {
         const tree = render()
 
         webViewProps(tree).onNavigationStateChange?.({
