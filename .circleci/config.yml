@@ -66,7 +66,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v8-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
