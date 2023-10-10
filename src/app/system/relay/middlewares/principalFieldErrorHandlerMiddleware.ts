@@ -19,12 +19,12 @@ export const principalFieldErrorHandlerMiddleware = async (
 
   // query did not have a principal field, but experienced an error, we report it to sentry and volley
   if (!requestHasPrincipalField && !!res?.errors?.length) {
-    trackError(req.operation.operationKind, req.operation.operationKind, "default")
-    captureMessage(`${req.operation.operationKind} failed: ${req.operation.operationKind}`, "log")
+    trackError(req.operation.name, req.operation.operationKind, "default")
+    captureMessage(`${req.operation.operationKind} failed: ${req.operation.name}`, "log")
   }
 
   if (principalFieldWasInvolvedInError) {
-    trackError(req.operation.operationKind, req.operation.operationKind, "principalField")
+    trackError(req.operation.name, req.operation.operationKind, "principalField")
     return throwError(req, res)
   } else {
     return res
