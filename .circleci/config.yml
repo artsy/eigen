@@ -426,19 +426,6 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
-  release-ios-app:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 14.3.1
-      resource_class: macos.m1.medium.gen1
-    steps:
-      - checkout
-      - install-gems
-      - run:
-          name: Release app version
-          command: ./scripts/release-ios-app-branch
-
 workflows:
   version: 2
   nightly:
@@ -462,14 +449,6 @@ workflows:
                 - main
     jobs:
       - check-flags
-
-  release-ios-app-workflow:
-    jobs:
-      - release-ios-app:
-          filters:
-            branches:
-              only:
-                - release-ios-app
 
   test-build-deploy:
     jobs:
