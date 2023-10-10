@@ -221,9 +221,7 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - node/install-packages:
-          cache-version: "v2"
-          pkg-manager: yarn
+      - install-node-modules
       - run-relay-compiler
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
@@ -243,9 +241,7 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - node/install-packages:
-          cache-version: "v2"
-          pkg-manager: yarn
+      - install-node-modules
       - run-relay-compiler
       - run:
           command: yarn type-check
@@ -272,8 +268,7 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install-node-modules
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -503,8 +498,6 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-ios
           requires:
             - test-js
