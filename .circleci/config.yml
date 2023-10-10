@@ -234,18 +234,6 @@ jobs:
       - store_test_results:
           path: ./reports/junit/
 
-  type-check:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    resource_class: small
-    steps:
-      - checkout
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          command: yarn type-check
-
   update-metaphysics:
     executor:
       name: node/default
@@ -269,6 +257,16 @@ jobs:
     steps:
       - checkout
       - install-node-modules
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
+      - run:
+          name: Check Branch and Exit Early if Ignored
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "main" || "$CIRCLE_BRANCH" == "beta-ios" || "$CIRCLE_BRANCH" == "beta-android" ]]; then
+              echo "On ignored branch ($CIRCLE_BRANCH). Exiting early."
+              circleci-agent step halt
+            fi
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -453,16 +451,8 @@ workflows:
               ignore:
                 - main
 
-      - type-check
-
       - check-code:
           context: danger-github-oss
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
 
       - check-and-deploy:
           filters:
@@ -490,7 +480,7 @@ workflows:
                 - beta-android
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block
 
@@ -501,7 +491,7 @@ workflows:
                 - beta-ios
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block
 
