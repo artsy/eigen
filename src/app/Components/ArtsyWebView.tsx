@@ -189,9 +189,12 @@ export const ArtsyWebView = forwardRef<
     const uri = url.startsWith("/") ? webURL + url : url
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
-    const stopLoading = debounce(() => {
+    const stopLoading = debounce((needToGoBack = true) => {
       innerRef.current?.stopLoading()
-      innerRef.current?.goBack()
+
+      if (needToGoBack) {
+        innerRef.current?.goBack()
+      }
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
@@ -215,13 +218,13 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        (["ReactWebView", "ModalWebView"].includes(result.module) ||
-          result.module === "VanityURLEntity")
+        ["ReactWebView", "ModalWebView", "VanityURLEntity"].includes(result.module)
       ) {
         innerRef.current!.shareTitleUrl = targetURL
         return
       } else {
-        stopLoading()
+        const needToGoBack = result.type !== "external_url"
+        stopLoading(needToGoBack)
       }
 
       // In case of a webview presented modally, if the targetURL is a tab View,
