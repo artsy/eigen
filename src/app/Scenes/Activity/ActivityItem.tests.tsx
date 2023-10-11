@@ -116,6 +116,8 @@ describe("ActivityItem", () => {
             paramValue: "-published_at",
           },
         ],
+        scrollToArtworksGrid: true,
+        searchCriteriaID: undefined,
       },
     })
   })
@@ -137,6 +139,7 @@ describe("ActivityItem", () => {
 
     expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
       passProps: {
+        scrollToArtworksGrid: true,
         searchCriteriaID: "searchCriteriaId",
         predefinedFilters: [
           {

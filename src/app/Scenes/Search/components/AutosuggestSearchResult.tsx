@@ -200,7 +200,7 @@ function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {
-    navigate(result.href!, { passProps: props })
+    navigate(`${result.href!}/artworks`, { passProps: props })
   } else {
     navigate(result.href!)
   }
