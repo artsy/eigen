@@ -125,6 +125,44 @@ def platform_settings(platform)
   settings[platform.to_sym]
 end
 
+lane :sentry_slack_ios do |options|
+  build_number = options[:build_number]
+  version = options[:version]
+
+  sentry_url = "https://artsynet.sentry.io/releases/ios-#{version}-#{build_number}/?project=5867225"
+  message = <<~MSG
+                :apple: :iphone: :tada:
+                iOS #{version} (#{build_number}) was submitted to the app store!
+                Monitor [here](#{sentry_url})
+              MSG
+
+  puts message
+  slack(
+    message: message,
+    success: true,
+    default_payloads: []
+  )
+end
+
+lane :sentry_slack_android do |options|
+  build_number = options[:build_number]
+  version = options[:version]
+
+  sentry_url = "https://artsynet.sentry.io/releases/android-#{version}-#{build_number}/?project=5867225"
+  message = <<~MSG
+                :android-2: :tada:
+                Android #{version} (#{build_number}) was submitted to the app store!
+                Monitor [here](#{sentry_url})
+              MSG
+
+  puts message
+  slack(
+    message: message,
+    success: true,
+    default_payloads: []
+  )
+end
+
 def handle_error(e, message)
   if is_ci
     slack(
