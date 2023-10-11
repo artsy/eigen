@@ -31,7 +31,6 @@ type ArtistTabs = "Insights" | "Artworks"
 
 type PassedProps = {
   initialTab: ArtistTabs
-  scrollToArtworksGrid?: boolean
 }
 
 type HandleResultPress = (passProps?: PassedProps) => void
@@ -167,7 +166,7 @@ export const AutosuggestSearchResult: React.FC<{
               highlightEnabled
               Icon={ArtworkIcon}
               rounded
-              onPress={() => onPress({ initialTab: "Artworks", scrollToArtworksGrid: true })}
+              onPress={() => onPress({ initialTab: "Artworks" })}
               block
             >
               Artworks
@@ -200,7 +199,13 @@ function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {
-    navigate(`${result.href!}/artworks`, { passProps: props })
+    if (props?.initialTab === "Insights") {
+      navigate(`${result.href!}/auction-results`, { passProps: props })
+    }
+    if (props?.initialTab === "Artworks") {
+      navigate(`${result.href!}/artworks`, { passProps: props })
+    }
+    navigate(result.href!)
   } else {
     navigate(result.href!)
   }

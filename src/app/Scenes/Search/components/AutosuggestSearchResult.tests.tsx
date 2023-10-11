@@ -92,7 +92,7 @@ describe(AutosuggestSearchResult, () => {
     tree.root.findByType(Touchable).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(navigate).toHaveBeenCalledWith(result.href, { passProps: undefined })
+    expect(navigate).toHaveBeenCalledWith(`${result.href}`)
   })
 
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
@@ -253,15 +253,15 @@ describe(AutosuggestSearchResult, () => {
       tree.root.findAllByType(Pressable)[0].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
-      passProps: { initialTab: "Artworks", scrollToArtworksGrid: true },
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/artworks", {
+      passProps: { initialTab: "Artworks" },
     })
 
     act(() => {
       tree.root.findAllByType(Pressable)[1].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/auction-results", {
       passProps: { initialTab: "Insights" },
     })
   })
