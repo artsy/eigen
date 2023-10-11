@@ -38,7 +38,6 @@ import {
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -107,12 +106,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     setInitialFilterStateAction(filters)
   }, [])
 
-  const insets = useSafeAreaInsets()
-
   useEffect(() => {
     if (scrollToArtworksGrid) {
       setTimeout(() => {
-        gridRef.current?.scrollToOffset({ offset: -insets.top, animated: true })
+        gridRef.current?.scrollToOffset({ offset: 0, animated: true })
       }, 1000)
     }
   })
