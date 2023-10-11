@@ -8,7 +8,6 @@ import {
   RelatedArtistsRailCell_relatedArtist$data,
   RelatedArtistsRailCell_relatedArtist$key,
 } from "__generated__/RelatedArtistsRailCell_relatedArtist.graphql"
-
 import { navigate } from "app/system/navigation/navigate"
 import { useFollowArtist } from "app/utils/mutations/useFollowArtist"
 import { useFragment, graphql } from "react-relay"
@@ -65,7 +64,7 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
     <Touchable onPress={handleOnPress}>
       <Image
         testID="related-artist-cover"
-        src={relatedArtistData.image?.url ?? ""}
+        src={relatedArtistData.coverArtwork?.image?.url ?? ""}
         aspectRatio={1.3}
         width={DEFAULT_CELL_WIDTH}
       />
@@ -92,8 +91,10 @@ const relatedArtistQuery = graphql`
     href @required(action: NONE)
     formattedNationalityAndBirthday
     isFollowed
-    image {
-      url(version: "large")
+    coverArtwork {
+      image {
+        url(version: "large")
+      }
     }
   }
 `
