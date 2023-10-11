@@ -57,6 +57,7 @@ interface ArtistProps {
   initialTab?: string
   me: ArtistAboveTheFoldQuery["response"]["me"]
   predefinedFilters?: FilterArray
+  scrollToArtworksGrid: boolean
   searchCriteria: SearchCriteriaAttributes | null
 }
 
@@ -69,6 +70,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     initialTab = INITIAL_TAB,
     me,
     predefinedFilters,
+    scrollToArtworksGrid,
     searchCriteria,
   } = props
 
@@ -142,6 +144,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
                 artist={artistAboveTheFold}
                 searchCriteria={searchCriteria}
                 predefinedFilters={predefinedFilters}
+                scrollToArtworksGrid={scrollToArtworksGrid}
               />
             </Tabs.Lazy>
           </Tabs.Tab>
@@ -175,13 +178,14 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 }
 
 interface ArtistQueryRendererProps {
+  artistID: string
+  categories?: string[]
   environment?: RelayModernEnvironment
   initialTab?: string
-  searchCriteriaID?: string
-  search_criteria_id?: string
-  artistID: string
   predefinedFilters?: FilterArray
-  categories?: string[]
+  scrollToArtworksGrid?: boolean
+  search_criteria_id?: string
+  searchCriteriaID?: string
   sizes?: string[]
 }
 
@@ -215,12 +219,13 @@ export const defaultArtistVariables = () => ({
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const {
     artistID,
+    categories,
     environment,
     initialTab,
-    searchCriteriaID,
-    search_criteria_id,
     predefinedFilters,
-    categories,
+    search_criteria_id,
+    scrollToArtworksGrid = false,
+    searchCriteriaID,
     sizes,
   } = props
 
@@ -290,6 +295,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                         categories: categories ?? [],
                         sizes: sizes ?? [],
                       })}
+                      scrollToArtworksGrid={scrollToArtworksGrid}
                     />
                   )
                 },
