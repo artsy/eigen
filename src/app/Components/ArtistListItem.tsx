@@ -63,8 +63,8 @@ const ArtistListItem: React.FC<Props> = ({
   uploadsCount,
   withFeedback = false,
 }) => {
-  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
-  const imageURl = image && image.url
+  const { is_followed, initials, coverArtwork, href, name, nationality, birthday, deathday } =
+    artist
 
   const tracking = useTracking()
 
@@ -143,7 +143,7 @@ const ArtistListItem: React.FC<Props> = ({
                 mr={1}
                 name={name}
                 meta={meta}
-                imageUrl={imageURl ?? undefined}
+                imageUrl={coverArtwork?.image?.url ?? undefined}
                 initials={initials ?? undefined}
                 avatarSize={avatarSize}
                 RightButton={RightButton}
@@ -220,8 +220,10 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      image {
-        url
+      coverArtwork {
+        image {
+          url
+        }
       }
     }
   `,

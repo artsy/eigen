@@ -23,7 +23,11 @@ export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, 
       onPress={onPress}
     >
       <Flex>
-        <OpaqueImageView imageURL={data.image?.url} width={CARD_WIDTH} height={CARD_HEIGHT} />
+        <OpaqueImageView
+          imageURL={data.coverArtwork?.image?.url}
+          width={CARD_WIDTH}
+          height={CARD_HEIGHT}
+        />
 
         <Flex mt={1}>
           <Text variant="xs" numberOfLines={1}>
@@ -46,8 +50,10 @@ const TrendingArtistCardFragment = graphql`
     href
     name
     formattedNationalityAndBirthday
-    image {
-      url(version: "small")
+    coverArtwork {
+      image {
+        url(version: "small")
+      }
     }
   }
 `

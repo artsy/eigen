@@ -1,10 +1,10 @@
 import { CloseIcon, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
+import { FollowButton } from "app/Components/Button/FollowButton"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { FollowButton } from "app/Components/Button/FollowButton"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -174,9 +174,6 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       href
       name
       formattedNationalityAndBirthday
-      image {
-        url(version: "small")
-      }
       basedOn {
         name
       }
