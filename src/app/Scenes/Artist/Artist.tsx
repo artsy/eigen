@@ -217,6 +217,7 @@ export const defaultArtistVariables = () => ({
 })
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
+  console.log({ props })
   const {
     artistID,
     categories,
