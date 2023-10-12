@@ -7,7 +7,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Action, action, createContextStore } from "easy-peasy"
 
-interface SavedSearchModel {
+export interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
   entity: SavedSearchEntity
