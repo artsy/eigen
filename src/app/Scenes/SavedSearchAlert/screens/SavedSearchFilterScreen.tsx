@@ -2,13 +2,13 @@ import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { AddFiltersScreenAppliedFilters } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenAppliedFilters"
-import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenRarity"
 import { MotiView } from "moti"
 import { Alert } from "react-native"
 
-export const AddFiltersScreen: React.FC<{}> = () => {
+export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
 
   return (
@@ -22,8 +22,8 @@ export const AddFiltersScreen: React.FC<{}> = () => {
         Filters
       </FancyModalHeader>
       <Join separator={<Separator my={2} borderColor="black10" />}>
-        <AddFiltersScreenAppliedFilters />
-        <AddFiltersScreenRarity />
+        <SavedSearchAppliedFilters />
+        <SavedSearchRarity />
       </Join>
     </Flex>
   )

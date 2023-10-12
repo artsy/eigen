@@ -177,7 +177,7 @@ export const Form: React.FC<FormProps> = ({
               title="Add Filters:"
               description="Including price, rarity, medium, size, color"
               onPress={() => {
-                navigation.navigate("AddFilters")
+                navigation.navigate("SavedSearchFilterScreen")
               }}
               px={0}
             />

@@ -5,7 +5,7 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { ClearAllButton } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreen"
+import { ClearAllButton } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 

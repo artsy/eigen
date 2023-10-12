@@ -1,19 +1,20 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
+import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { AddFiltersScreenAppliedFilters } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenAppliedFilters"
+
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("AddFiltersScreenAppliedFilters", () => {
+describe("SavedSearchAppliedFilters", () => {
   it("shows all selected filters", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <AddFiltersScreenAppliedFilters />
+        <SavedSearchAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
@@ -24,7 +25,7 @@ describe("AddFiltersScreenAppliedFilters", () => {
   it("removes filter when tapped", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <AddFiltersScreenAppliedFilters />
+        <SavedSearchAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
@@ -38,7 +39,7 @@ describe("AddFiltersScreenAppliedFilters", () => {
   it("can't remove artist pill", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <AddFiltersScreenAppliedFilters />
+        <SavedSearchAppliedFilters />
       </SavedSearchStoreProvider>
     )
 

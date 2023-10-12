@@ -8,9 +8,9 @@ import {
   SavedSearchStoreProvider,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
-import { AddFiltersScreen } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreen"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
+import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -70,8 +70,8 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 }}
               />
               <Stack.Screen
-                name="AddFilters"
-                component={AddFiltersScreen}
+                name="SavedSearchFilterScreen"
+                component={SavedSearchFilterScreen}
                 options={{
                   gestureEnabled: false,
                 }}

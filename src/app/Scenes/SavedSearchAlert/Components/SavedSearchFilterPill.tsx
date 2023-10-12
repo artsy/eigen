@@ -2,7 +2,7 @@ import { Pill, PillProps } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import useDebounce from "react-use/lib/useDebounce"
 
-export const FillPill: React.FC<PillProps> = (props) => {
+export const SavedSearchFilterPill: React.FC<PillProps> = (props) => {
   const [selected, setSelected] = useState(props.selected)
 
   useDebounce(

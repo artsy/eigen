@@ -1,11 +1,11 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
-import { FillPill } from "app/Scenes/SavedSearchAlert/screens/AddFilterPill"
 
-export const AddFiltersScreenRarity = () => {
+export const SavedSearchRarity = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
     SearchCriteria.attributionClass
   ) as string[]
@@ -18,19 +18,18 @@ export const AddFiltersScreenRarity = () => {
   )
 
   const handlePress = (value: string) => {
-    if (
-      isValueSelected({
-        selectedAttributes,
-        value: value,
-      })
-    ) {
+    const isSelected = isValueSelected({
+      selectedAttributes,
+      value: value,
+    })
+
+    if (isSelected) {
       removeValueFromAttributesByKeyAction({
         key: SearchCriteria.attributionClass,
         value: value,
       })
     } else {
       const newValues = (selectedAttributes || []).concat(value)
-
       setValueToAttributesByKeyAction({
         key: SearchCriteria.attributionClass,
         value: newValues,
@@ -47,7 +46,7 @@ export const AddFiltersScreenRarity = () => {
       <Flex flexDirection="row" flexWrap="wrap">
         {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
           return (
-            <FillPill
+            <SavedSearchFilterPill
               key={option.paramValue as string}
               accessibilityLabel={option.displayText}
               selected={isValueSelected({
@@ -59,7 +58,7 @@ export const AddFiltersScreenRarity = () => {
               }}
             >
               {option.displayText}
-            </FillPill>
+            </SavedSearchFilterPill>
           )
         })}
       </Flex>
