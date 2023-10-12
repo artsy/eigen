@@ -29,6 +29,7 @@ interface SavedSearchModel {
       value: string | number | boolean
     }
   >
+  clearAllAttributesAction: Action<this>
 }
 
 export const savedSearchModel: SavedSearchModel = {
@@ -71,6 +72,13 @@ export const savedSearchModel: SavedSearchModel = {
     }
 
     state.dirty = true
+  }),
+
+  clearAllAttributesAction: action((state) => {
+    if (Object.values(state.attributes).length !== 0) {
+      state.attributes = {}
+      state.dirty = true
+    }
   }),
 }
 
