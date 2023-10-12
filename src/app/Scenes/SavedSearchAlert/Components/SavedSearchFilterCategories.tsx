@@ -1,13 +1,13 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 
-export const SavedSearchFilterRarity = () => {
+export const SavedSearchFilterCategories = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
-    SearchCriteria.attributionClass
+    SearchCriteria.additionalGeneIDs
   ) as string[]
 
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
@@ -25,13 +25,13 @@ export const SavedSearchFilterRarity = () => {
 
     if (isSelected) {
       removeValueFromAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
+        key: SearchCriteria.additionalGeneIDs,
         value: value,
       })
     } else {
       const newValues = (selectedAttributes || []).concat(value)
       setValueToAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
+        key: SearchCriteria.additionalGeneIDs,
         value: newValues,
       })
     }
@@ -40,13 +40,11 @@ export const SavedSearchFilterRarity = () => {
   return (
     <Flex px={2}>
       <Text variant="sm" fontWeight={500}>
-        Rarity
+        Medium
       </Text>
-
       <Spacer y={1} />
-
       <Flex flexDirection="row" flexWrap="wrap">
-        {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
+        {CATEGORIES_OPTIONS.map((option) => {
           return (
             <SavedSearchFilterPill
               key={option.paramValue as string}

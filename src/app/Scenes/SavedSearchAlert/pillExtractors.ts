@@ -5,6 +5,7 @@ import {
   getDisplayNameForTimePeriod,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
@@ -133,6 +134,18 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
   })
 }
 
+export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
+    const colorOption = CATEGORIES_OPTIONS.find((option) => option.paramValue === value)
+
+    return {
+      label: colorOption?.displayText ?? "",
+      value,
+      paramName: SearchCriteria.additionalGeneIDs,
+    }
+  })
+}
+
 export const extractPriceRangePill = (value: string): SavedSearchPill => {
   const { min, max } = parseRange(value)
 
@@ -200,6 +213,10 @@ export const extractPillsFromCriteria = (
 
     if (paramName === SearchCriteria.priceRange) {
       return extractPriceRangePill(paramValue)
+    }
+
+    if (paramName === SearchCriteria.additionalGeneIDs) {
+      return extractAdditionalGeneIDsPills(paramValue)
     }
 
     // Extract label from aggregations

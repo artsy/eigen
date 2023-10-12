@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 
 import {
   SavedSearchModel,
@@ -10,11 +10,11 @@ import {
 
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("SavedSearchAppliedFilters", () => {
+describe("SavedSearchFilterAppliedFilters", () => {
   it("shows all selected filters", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchAppliedFilters />
+        <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
@@ -25,7 +25,7 @@ describe("SavedSearchAppliedFilters", () => {
   it("removes filter when tapped", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchAppliedFilters />
+        <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 
@@ -39,7 +39,7 @@ describe("SavedSearchAppliedFilters", () => {
   it("can't remove artist pill", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchAppliedFilters />
+        <SavedSearchFilterAppliedFilters />
       </SavedSearchStoreProvider>
     )
 

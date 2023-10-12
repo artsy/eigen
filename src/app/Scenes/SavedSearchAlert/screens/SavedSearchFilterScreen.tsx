@@ -12,10 +12,10 @@ import {
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
-import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
+import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
@@ -37,9 +37,9 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           Filters
         </FancyModalHeader>
         <Join separator={<Separator my={2} borderColor="black10" />}>
-          <SavedSearchAppliedFilters />
+          <SavedSearchFilterAppliedFilters />
           <SavedSearchFilterPriceRangeQR />
-          <SavedSearchRarity />
+          <SavedSearchFilterRarity />
           <SavedSearchFilterWaysToBuy />
           <SavedSearchFilterColour />
         </Join>

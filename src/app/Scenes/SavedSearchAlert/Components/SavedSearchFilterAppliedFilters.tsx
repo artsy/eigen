@@ -4,7 +4,7 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { MotiView } from "moti"
 
-export const SavedSearchAppliedFilters: React.FC<{}> = ({}) => {
+export const SavedSearchFilterAppliedFilters: React.FC<{}> = ({}) => {
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (state) => state.removeValueFromAttributesByKeyAction
   )
