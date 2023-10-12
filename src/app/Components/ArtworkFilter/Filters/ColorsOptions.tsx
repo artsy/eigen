@@ -38,7 +38,16 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
   {}
 )
 
-const SWATCHES_PER_ROW = 4
+export const COLOR_OPTIONS: FilterData[] = COLORS.map((color) => {
+  return {
+    // names returned by Metaphysics are actually the slugs
+    displayText: color.name,
+    paramValue: color.value,
+    paramName: FilterParamName.colors,
+  }
+})
+
+export const SWATCHES_PER_ROW = 4
 
 type ColorsOptionsScreenProps = StackScreenProps<
   ArtworkFilterNavigationStack,

@@ -1,14 +1,19 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import {
+  COLORS_INDEXED_BY_VALUE,
+  COLOR_OPTIONS,
+  SWATCHES_PER_ROW,
+} from "app/Components/ArtworkFilter/Filters/ColorsOptions"
+import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 
-export const SavedSearchRarity = () => {
-  const selectedAttributes = useSearchCriteriaAttributes(
-    SearchCriteria.attributionClass
-  ) as string[]
+export const SavedSearchFilterColour = () => {
+  const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.colors) as string[]
+
+  const { width } = useScreenDimensions()
+  const space = useSpace()
 
   const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.setValueToAttributesByKeyAction
@@ -25,42 +30,45 @@ export const SavedSearchRarity = () => {
 
     if (isSelected) {
       removeValueFromAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
+        key: SearchCriteria.colors,
         value: value,
       })
     } else {
       const newValues = (selectedAttributes || []).concat(value)
       setValueToAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
+        key: SearchCriteria.colors,
         value: newValues,
       })
     }
   }
 
   return (
-    <Flex px={2}>
-      <Text variant="sm" fontWeight={500}>
-        Rarity
+    <Flex>
+      <Text px={2} variant="sm" fontWeight={500}>
+        Colour
       </Text>
 
       <Spacer y={1} />
 
-      <Flex flexDirection="row" flexWrap="wrap">
-        {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
+      <Flex flexDirection="row" flexWrap="wrap" px={1}>
+        {COLOR_OPTIONS.map((option, i) => {
+          const color = COLORS_INDEXED_BY_VALUE[String(option.paramValue)]
+
           return (
-            <SavedSearchFilterPill
-              key={option.paramValue as string}
-              accessibilityLabel={option.displayText}
+            <ColorsSwatch
+              key={i}
+              width={(width - space(1) * 2) / SWATCHES_PER_ROW}
               selected={isValueSelected({
                 selectedAttributes,
                 value: option.paramValue,
               })}
+              name={color.name}
+              backgroundColor={color.backgroundColor}
+              foregroundColor={color.foregroundColor}
               onPress={() => {
                 handlePress(option.paramValue as string)
               }}
-            >
-              {option.displayText}
-            </SavedSearchFilterPill>
+            />
           )
         })}
       </Flex>

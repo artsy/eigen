@@ -37,6 +37,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
               height="18px"
               marginTop="-9px"
               marginLeft="-9px"
+              testID={`check-icon-${name}`}
               fill={foregroundColor as any} // Annoying
             />
           )}
