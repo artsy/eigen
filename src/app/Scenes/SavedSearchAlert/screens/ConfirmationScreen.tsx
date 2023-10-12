@@ -31,6 +31,7 @@ export const ConfirmationScreen: React.FC = () => {
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
+
   const { space } = useTheme()
 
   useEffect(() => {
