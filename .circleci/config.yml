@@ -66,7 +66,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v7-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -112,6 +112,16 @@ commands:
     steps:
       - attach_workspace:
           at: ../workspace
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /Users/distiller/project
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
       - restore_cache:
           keys:
             - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
@@ -122,14 +132,6 @@ commands:
             then
               circleci step halt
             fi
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf /Users/distiller/project
-      - checkout
-      - install-node
-      - setup-awscli
-      - setup-env-file
       - install-node-modules
       - run-relay-compiler
       - update-echo
@@ -219,7 +221,9 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - install-node-modules
+      - node/install-packages:
+          cache-version: "v2"
+          pkg-manager: yarn
       - run-relay-compiler
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
@@ -231,6 +235,20 @@ jobs:
           path: ./reports/junit/
       - store_test_results:
           path: ./reports/junit/
+
+  type-check:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    resource_class: small
+    steps:
+      - checkout
+      - node/install-packages:
+          cache-version: "v2"
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
 
   update-metaphysics:
     executor:
@@ -254,17 +272,8 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          command: yarn type-check
-      - run:
-          name: Check Branch and Exit Early if Ignored
-          command: |
-            if [[ "$CIRCLE_BRANCH" == "main" || "$CIRCLE_BRANCH" == "beta-ios" || "$CIRCLE_BRANCH" == "beta-android" ]]; then
-              echo "On ignored branch ($CIRCLE_BRANCH). Exiting early."
-              circleci-agent step halt
-            fi
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -417,6 +426,19 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
+  release-ios-app:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+    macos:
+      xcode: 14.3.1
+      resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - install-gems
+      - run:
+          name: Release app version
+          command: ./scripts/release-ios-app-branch
+
 workflows:
   version: 2
   nightly:
@@ -441,6 +463,14 @@ workflows:
     jobs:
       - check-flags
 
+  release-ios-app-workflow:
+    jobs:
+      - release-ios-app:
+          filters:
+            branches:
+              only:
+                - release-ios-app
+
   test-build-deploy:
     jobs:
       - detect-secrets:
@@ -448,9 +478,26 @@ workflows:
             branches:
               ignore:
                 - main
+                - release
+                - staging
+
+      - type-check:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
 
       - check-code:
           context: danger-github-oss
+          filters:
+            branches:
+              ignore:
+                - main
+                - beta-ios
+                - beta-android
+                - app_store_submission
+                - play_store_submission
 
       - check-and-deploy:
           filters:
@@ -458,9 +505,19 @@ workflows:
               only:
                 - main
 
-      - test-js
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
 
-      - build-test-js
+      - build-test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
 
       - horizon/block:
           context: horizon
@@ -475,10 +532,12 @@ workflows:
           filters:
             branches:
               ignore:
+                - app_store_submission
+                - play_store_submission
                 - beta-android
           requires:
             - test-js
-            - check-code
+            - type-check
             - build-test-js
             - horizon/block
 
@@ -486,10 +545,12 @@ workflows:
           filters:
             branches:
               ignore:
+                - app_store_submission
+                - play_store_submission
                 - beta-ios
           requires:
             - test-js
-            - check-code
+            - type-check
             - build-test-js
             - horizon/block
 
