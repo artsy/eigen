@@ -7,7 +7,7 @@ module.exports = {
   preset: "react-native",
   rootDir: "./",
   setupFilesAfterEnv: [
-    "jest-extended",
+    "jest-extended/all",
     "@testing-library/jest-native/extend-expect",
     "./src/setupJest.tsx",
   ],

@@ -9,7 +9,8 @@ import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
-import "jest-extended"
+import * as matchers from "jest-extended"
+
 import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
@@ -23,6 +24,8 @@ require("setimmediate")
 // @ts-expect-error
 global.__TEST__ = true
 declare const process: any
+
+expect.extend(matchers)
 
 function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
   const explanation =
