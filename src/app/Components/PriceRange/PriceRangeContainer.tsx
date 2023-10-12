@@ -102,7 +102,7 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
   }
 
   return (
-    <>
+    <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
       {!!header && <Flex m={2}>{header}</Flex>}
 
       <Flex flexDirection="row" mx={2}>
@@ -151,6 +151,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
       <Spacer y={2} />
 
       <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
-    </>
+    </ScrollView>
   )
 }
