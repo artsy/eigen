@@ -29,7 +29,9 @@ describe("AddFiltersScreenRarity", () => {
 
   it("shows the right selected state with the right colors", () => {
     const { getByText } = renderWithWrappers(
-      <SavedSearchStoreProvider runtimeModel={initialData}>
+      <SavedSearchStoreProvider
+        runtimeModel={{ ...initialData, attributes: { attributionClass: ["unique"] } }}
+      >
         <AddFiltersScreenRarity />
       </SavedSearchStoreProvider>
     )
@@ -60,7 +62,6 @@ describe("AddFiltersScreenRarity", () => {
 const initialData: SavedSearchModel = {
   ...savedSearchModel,
   attributes: {
-    attributionClass: ["open edition"],
     atAuction: true,
   },
   entity: {
