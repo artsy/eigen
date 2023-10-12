@@ -1,9 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import {
-  NewArtworkFiltersStoreProvider,
-  getNewArtworkFilterStoreModel,
-} from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
-import { NewFilterParamName } from "app/Components/NewArtworkFilter/helpers"
+  SavedSearchModel,
+  SavedSearchStoreProvider,
+  savedSearchModel,
+} from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { ClearAllButton } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreen"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
@@ -13,9 +14,9 @@ jest.spyOn(Alert, "alert")
 describe("ClearAllButton", () => {
   it("Is enabled when there are active filters", () => {
     const { getByText } = renderWithWrappers(
-      <NewArtworkFiltersStoreProvider runtimeModel={initialData}>
+      <SavedSearchStoreProvider runtimeModel={initialData}>
         <ClearAllButton />
-      </NewArtworkFiltersStoreProvider>
+      </SavedSearchStoreProvider>
     )
 
     fireEvent(getByText("Clear All"), "onPress")
@@ -25,11 +26,37 @@ describe("ClearAllButton", () => {
     })
   })
 
-  it("Is disabled when there are no filters", async () => {
+  it("Is disabled on load", async () => {
     const { getByText } = renderWithWrappers(
-      <NewArtworkFiltersStoreProvider>
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...initialData,
+          attributes: {},
+        }}
+      >
         <ClearAllButton />
-      </NewArtworkFiltersStoreProvider>
+      </SavedSearchStoreProvider>
+    )
+
+    fireEvent(getByText("Clear All"), "onPress")
+
+    waitFor(() => {
+      expect(Alert.alert).not.toHaveBeenCalled()
+    })
+  })
+
+  it("Is disabled when array attrbutes are empty", async () => {
+    const { getByText } = renderWithWrappers(
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...initialData,
+          attributes: {
+            attributionClass: [],
+          },
+        }}
+      >
+        <ClearAllButton />
+      </SavedSearchStoreProvider>
     )
 
     fireEvent(getByText("Clear All"), "onPress")
@@ -40,22 +67,15 @@ describe("ClearAllButton", () => {
   })
 })
 
-const initialData = {
-  ...getNewArtworkFilterStoreModel(),
-  selectedFilters: [
-    {
-      paramName: NewFilterParamName.attributionClass,
-      paramValue: {
-        value: "unique",
-        displayLabel: "Unique",
-      },
+const initialData: SavedSearchModel = {
+  ...savedSearchModel,
+  attributes: {},
+  entity: {
+    artists: [{ id: "artistID", name: "Banksy" }],
+    owner: {
+      type: OwnerType.artist,
+      id: "ownerId",
+      slug: "ownerSlug",
     },
-    {
-      paramName: NewFilterParamName.attributionClass,
-      paramValue: {
-        value: "limited edition",
-        displayLabel: "Limited Edition",
-      },
-    },
-  ],
+  },
 }

@@ -1,9 +1,9 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { FillPill } from "app/Components/NewArtworkFilter/NewArtworkFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { FillPill } from "app/Scenes/SavedSearchAlert/screens/AddFilterPill"
 
 export const AddFiltersScreenRarity = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
