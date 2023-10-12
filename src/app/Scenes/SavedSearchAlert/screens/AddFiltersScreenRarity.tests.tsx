@@ -6,7 +6,7 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/NewArtworkFilterRarity"
+import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenRarity"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
