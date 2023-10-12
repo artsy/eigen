@@ -1,0 +1,24 @@
+# We use a github action in order for us to bypass our CircleCI
+# configruation of only triggerening builds on main and PRs
+name: ZZ-Cross-CI Trigger release iOS app to users 🚨
+
+on:
+  push:
+    branches: [release-ios-app]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚨 Trigger release ios app to users
+        run: |
+          curl \
+            -X POST \
+            --header "Content-Type: application/json" \
+            -d '{"branch": "release-ios-app"}' \
+            https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
