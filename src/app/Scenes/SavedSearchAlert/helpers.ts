@@ -2,13 +2,14 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
-import { omit } from "lodash"
+import { isEqual, omit } from "lodash"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
 export const requestNotificationPermissions = () => {
@@ -131,4 +132,30 @@ export const showWarningMessageForDuplicateAlert = ({
     ]
   )
   return
+}
+
+export const isValueSelected = ({
+  selectedAttributes,
+  value,
+}: {
+  selectedAttributes: ReturnType<typeof useSearchCriteriaAttributes>
+  value: any
+}) => {
+  if (!selectedAttributes) {
+    return false
+  }
+  if (typeof selectedAttributes === "string") {
+    return selectedAttributes === value
+  }
+  if (Array.isArray(selectedAttributes)) {
+    return (selectedAttributes as any[]).find((attributeValue) => isEqual(attributeValue, value))
+  }
+  return isEqual(selectedAttributes, value)
+}
+
+// A hook that returns the attributes for a given criterion
+export const useSearchCriteriaAttributes = (criterion: SearchCriteria) => {
+  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+
+  return attributes[criterion]
 }

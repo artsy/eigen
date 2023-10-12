@@ -10,6 +10,7 @@ import {
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
+import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -66,6 +67,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 }}
                 initialParams={{
                   closeModal: params.onClosePress,
+                }}
+              />
+              <Stack.Screen
+                name="SavedSearchFilterScreen"
+                component={SavedSearchFilterScreen}
+                options={{
+                  gestureEnabled: false,
                 }}
               />
             </Stack.Navigator>
