@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
 import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
@@ -24,6 +25,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       <Join separator={<Separator my={2} borderColor="black10" />}>
         <SavedSearchAppliedFilters />
         <SavedSearchRarity />
+        <SavedSearchFilterColour />
       </Join>
     </Flex>
   )
