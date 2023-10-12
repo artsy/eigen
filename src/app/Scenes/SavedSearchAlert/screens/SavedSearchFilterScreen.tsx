@@ -12,6 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
@@ -40,6 +41,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           <SavedSearchFilterAppliedFilters />
           <SavedSearchFilterPriceRangeQR />
           <SavedSearchFilterRarity />
+          <SavedSearchFilterAdditionalGeneIDs />
           <SavedSearchFilterWaysToBuy />
           <SavedSearchFilterColour />
         </Join>

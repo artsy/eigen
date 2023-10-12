@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
-import { SavedSearchFilterCategories } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterCategories"
+import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
+import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -11,15 +11,15 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
 
-describe("SavedSearchFilterCategories", () => {
+describe("SavedSearchFilterAdditionalGeneIDs", () => {
   it("shows all available rarity options unselected", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchFilterCategories />
+        <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
     )
 
-    ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
+    CATEGORIES_OPTIONS.forEach((option) => {
       expect(getByText(option.displayText)).toBeDefined()
       expect(getByText(option.displayText)).toHaveStyle({
         color: black100Hex,
@@ -30,31 +30,37 @@ describe("SavedSearchFilterCategories", () => {
   it("shows the right selected state with the right colors", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider
-        runtimeModel={{ ...initialData, attributes: { attributionClass: ["unique"] } }}
+        runtimeModel={{ ...initialData, attributes: { additionalGeneIDs: ["Painting"] } }}
       >
-        <SavedSearchFilterCategories />
+        <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
-    expect(getByText("Limited Edition")).toHaveStyle({ color: black100Hex })
-    expect(getByText("Open Edition")).toHaveStyle({ color: black100Hex })
-    expect(getByText("Unknown Edition")).toHaveStyle({ color: black100Hex })
+    CATEGORIES_OPTIONS.forEach((option) => {
+      if (option.paramValue === "Painting") {
+        expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
+      } else {
+        expect(getByText(option.displayText)).toBeDefined()
+        expect(getByText(option.displayText)).toHaveStyle({
+          color: black100Hex,
+        })
+      }
+    })
   })
 
   it("Updates selected filters on press", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchFilterCategories />
+        <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Unique")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Painting")).toHaveStyle({ color: black100Hex })
 
-    fireEvent(getByText("Unique"), "onPress")
+    fireEvent(getByText("Painting"), "onPress")
 
     waitFor(() => {
-      expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
+      expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
     })
   })
 })

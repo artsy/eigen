@@ -5,7 +5,7 @@ import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/Sa
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 
-export const SavedSearchFilterCategories = () => {
+export const SavedSearchFilterAdditionalGeneIDs = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
     SearchCriteria.additionalGeneIDs
   ) as string[]
