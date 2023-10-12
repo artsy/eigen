@@ -107,7 +107,7 @@ describe("SavedSearchAlertForm", () => {
     })
 
     describe("Create flow", () => {
-      it("calls create mutation when `Save Alert` buttin is pressed", async () => {
+      it("calls create mutation when `Save Alert` button is pressed", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -833,7 +833,7 @@ const attributes: SearchCriteriaAttributes = {
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
-  additionalGeneIDs: ["photography", "prints"],
+  additionalGeneIDs: ["Photography", "Prints"],
 }
 const aggregations: Aggregations = [
   {
@@ -842,12 +842,12 @@ const aggregations: Aggregations = [
       {
         count: 18037,
         name: "Photography",
-        value: "photography",
+        value: "Photography",
       },
       {
         count: 2420,
         name: "Prints",
-        value: "prints",
+        value: "Prints",
       },
       {
         count: 513,
@@ -893,7 +893,7 @@ const createMutationAttributes = {
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
-  additionalGeneIDs: ["photography", "prints"],
+  additionalGeneIDs: ["Photography", "Prints"],
 }
 
 const baseProps: SavedSearchAlertFormProps = {

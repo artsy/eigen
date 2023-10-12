@@ -136,14 +136,12 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
 
 export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill[] => {
   return values.map((value) => {
-    const colorOption = CATEGORIES_OPTIONS.find(
-      (option) => (option.paramValue as string).toLowerCase() === value.toLowerCase()
-    )
+    const additionalGeneOption = CATEGORIES_OPTIONS.find((option) => option.paramValue === value)
 
     return {
-      label: colorOption?.displayText ?? "",
+      label: additionalGeneOption?.displayText ?? "",
       // Using the paramValue because filter values are case sensitive
-      value: colorOption?.paramValue as string,
+      value,
       paramName: SearchCriteria.additionalGeneIDs,
     }
   })

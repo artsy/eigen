@@ -30,9 +30,9 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
     paramValue: "Sculpture",
   },
   {
-    displayText: "Print",
+    displayText: "Prints",
     paramName: FilterParamName.categories,
-    paramValue: "Print",
+    paramValue: "Prints",
   },
   {
     displayText: "Photography",
