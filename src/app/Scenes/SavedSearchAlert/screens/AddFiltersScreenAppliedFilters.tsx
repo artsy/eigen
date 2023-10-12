@@ -1,4 +1,5 @@
 import { Flex, Pill, Text } from "@artsy/palette-mobile"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { MotiView } from "moti"
@@ -28,7 +29,10 @@ export const AddFiltersScreenAppliedFilters: React.FC<{}> = ({}) => {
               m={0.5}
               variant="filter"
               accessibilityLabel={pill.label}
-              disabled={pill.paramName === "artistID"}
+              disabled={
+                pill.paramName === SearchCriteria.artistID ||
+                pill.paramName === SearchCriteria.artistIDs
+              }
               onPress={() => {
                 // Add remove
                 removeValueFromAttributesByKeyAction({
