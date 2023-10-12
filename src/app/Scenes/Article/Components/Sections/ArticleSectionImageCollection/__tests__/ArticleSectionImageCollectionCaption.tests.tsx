@@ -48,4 +48,19 @@ describe("ArticleSectionImageCollectionCaption", () => {
       expect(screen.getByText("Example Caption")).toBeOnTheScreen()
     })
   })
+
+  it("renders Artwork type", async () => {
+    renderWithRelay({
+      ArticleSectionImageCollection: () => ({
+        figures: [{ __typename: "Artwork" }],
+      }),
+      Artwork: () => ({
+        title: "Test Artwork",
+      }),
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText("Test Artwork")).toBeOnTheScreen()
+    })
+  })
 })
