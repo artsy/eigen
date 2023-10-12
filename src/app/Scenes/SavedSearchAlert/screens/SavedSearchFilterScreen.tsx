@@ -42,6 +42,10 @@ export const ClearAllButton = () => {
     Object.entries(attributes).filter((keyValue) => {
       const key = keyValue[0]
       const value = keyValue[1]
+      if (key === SearchCriteria.priceRange) {
+        return value && value !== "*-*"
+      }
+
       if (key !== SearchCriteria.artistID && key !== SearchCriteria.artistIDs) {
         // Values might be empty arrays
         if (Array.isArray(value)) {

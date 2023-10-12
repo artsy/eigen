@@ -1,4 +1,4 @@
-import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { SavedSearchFilterPriceRangeQuery } from "__generated__/SavedSearchFilterPriceRangeQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
@@ -71,9 +71,29 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 }
 
 const Placeholder: React.FC<{}> = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center">
-    <Spinner testID="alert-price-range-spinner" />
-  </Flex>
+  <Skeleton>
+    <SkeletonText variant="sm" fontWeight={500} mx={2}>
+      Price Range
+    </SkeletonText>
+
+    <Spacer y={2} />
+
+    <Flex mx={2} flexDirection="row">
+      <SkeletonBox width="100%" height={50} />
+    </Flex>
+
+    <Spacer y={2} />
+
+    <Flex mx={2} flexDirection="row">
+      <SkeletonBox width="100%" height={170} />
+    </Flex>
+
+    <Spacer y={4} />
+
+    <Flex mx={2} flexDirection="row">
+      <SkeletonBox width="100%" height={90} />
+    </Flex>
+  </Skeleton>
 )
 
 const savedSearchFilterPriceRangeQuery = graphql`
