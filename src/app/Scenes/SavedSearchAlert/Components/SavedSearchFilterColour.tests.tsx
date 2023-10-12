@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import {
   COLORS_INDEXED_BY_VALUE,
-  COLORS_OPTIONS,
+  COLOR_OPTIONS,
 } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
 import {
@@ -20,7 +20,7 @@ describe("SavedSearchFilterColour", () => {
       </SavedSearchStoreProvider>
     )
 
-    COLORS_OPTIONS.forEach((option) => {
+    COLOR_OPTIONS.forEach((option) => {
       expect(() =>
         getByTestId(`check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`)
       ).toThrow()
@@ -34,7 +34,7 @@ describe("SavedSearchFilterColour", () => {
       </SavedSearchStoreProvider>
     )
 
-    COLORS_OPTIONS.forEach((option) => {
+    COLOR_OPTIONS.forEach((option) => {
       if (option.paramValue !== "red") {
         expect(() =>
           getByTestId(`check-icon-${COLORS_INDEXED_BY_VALUE[option.paramValue as string].name}`)

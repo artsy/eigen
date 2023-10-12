@@ -38,7 +38,7 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
   {}
 )
 
-export const COLORS_OPTIONS: FilterData[] = COLORS.map((color) => {
+export const COLOR_OPTIONS: FilterData[] = COLORS.map((color) => {
   return {
     // names returned by Metaphysics are actually the slugs
     displayText: color.name,

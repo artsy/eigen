@@ -1,7 +1,7 @@
 import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import {
   COLORS_INDEXED_BY_VALUE,
-  COLORS_OPTIONS,
+  COLOR_OPTIONS,
   SWATCHES_PER_ROW,
 } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
@@ -47,9 +47,11 @@ export const SavedSearchFilterColour = () => {
       <Text px={2} variant="sm" fontWeight={500}>
         Colour
       </Text>
+
       <Spacer y={1} />
+
       <Flex flexDirection="row" flexWrap="wrap" px={1}>
-        {COLORS_OPTIONS.map((option, i) => {
+        {COLOR_OPTIONS.map((option, i) => {
           const color = COLORS_INDEXED_BY_VALUE[String(option.paramValue)]
 
           return (

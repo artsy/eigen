@@ -42,7 +42,9 @@ export const SavedSearchRarity = () => {
       <Text variant="sm" fontWeight={500}>
         Rarity
       </Text>
+
       <Spacer y={1} />
+
       <Flex flexDirection="row" flexWrap="wrap">
         {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
           return (
