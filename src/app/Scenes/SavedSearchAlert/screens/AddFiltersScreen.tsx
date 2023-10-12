@@ -3,10 +3,8 @@ import { useNavigation } from "@react-navigation/native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { NewArtworkFilterAppliedFilters as AppliedFilters } from "app/Components/NewArtworkFilter/NewArtworkFilterAppliedFilters"
 import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilter/NewArtworkFilterRarity"
-import {
-  NewArtworkFiltersStoreProvider,
-  NewArtworksFiltersStore,
-} from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
+import { NewArtworkFiltersStoreProvider } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
 import { Alert } from "react-native"
 
@@ -42,11 +40,11 @@ export const AddFiltersScreenWrapper: React.FC<{}> = () => {
 }
 
 export const ClearAllButton = () => {
-  const clearAllFiltersAction = NewArtworksFiltersStore.useStoreActions(
-    (state) => state.clearAllFiltersAction
+  const clearAllFiltersAction = SavedSearchStore.useStoreActions(
+    (state) => state.clearAllAttributesAction
   )
-  const disabled =
-    NewArtworksFiltersStore.useStoreState((state) => state.selectedFilters).length === 0
+  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const disabled = Object.keys(attributes).length === 0
 
   return (
     <Touchable
