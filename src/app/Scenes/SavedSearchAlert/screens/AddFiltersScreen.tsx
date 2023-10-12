@@ -1,5 +1,6 @@
 import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilter/NewArtworkFilterRarity"
 import { NewArtworkFiltersStoreProvider } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
@@ -44,7 +45,10 @@ export const ClearAllButton = () => {
     (state) => state.clearAllAttributesAction
   )
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const disabled = Object.keys(attributes).length === 0
+  const disabled =
+    Object.keys(attributes).filter(
+      (key) => key !== SearchCriteria.artistID && key !== SearchCriteria.artistIDs
+    ).length === 0
 
   return (
     <Touchable
