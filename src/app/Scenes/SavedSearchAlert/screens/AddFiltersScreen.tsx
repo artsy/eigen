@@ -2,10 +2,10 @@ import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { NewArtworkFilterRarity as Rarity } from "app/Components/NewArtworkFilter/NewArtworkFilterRarity"
 import { NewArtworkFiltersStoreProvider } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { AddFiltersScreenAppliedFilters } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenAppliedFilters"
+import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/NewArtworkFilterRarity"
 import { MotiView } from "moti"
 import { Alert } from "react-native"
 
@@ -18,15 +18,13 @@ export const AddFiltersScreen: React.FC<{}> = () => {
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
         renderRightButton={ClearAllButton}
-        // TODO: Improve fancy modal header logic not to rely on this prop
-        // in case renderRightButton is present
         onRightButtonPress={() => {}}
       >
         Filters
       </FancyModalHeader>
       <Join separator={<Separator my={2} borderColor="black10" />}>
         <AddFiltersScreenAppliedFilters />
-        <Rarity />
+        <AddFiltersScreenRarity />
       </Join>
     </Flex>
   )
@@ -46,9 +44,17 @@ export const ClearAllButton = () => {
   )
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const disabled =
-    Object.keys(attributes).filter(
-      (key) => key !== SearchCriteria.artistID && key !== SearchCriteria.artistIDs
-    ).length === 0
+    Object.entries(attributes).filter((keyValue) => {
+      const key = keyValue[0]
+      const value = keyValue[1]
+      if (key !== SearchCriteria.artistID && key !== SearchCriteria.artistIDs) {
+        // Values might be empty arrays
+        if (Array.isArray(value)) {
+          return value.length > 0
+        }
+        return true
+      }
+    }).length === 0
 
   return (
     <Touchable

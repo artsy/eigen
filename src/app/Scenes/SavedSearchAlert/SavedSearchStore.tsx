@@ -19,14 +19,14 @@ export interface SavedSearchModel {
     this,
     {
       key: SearchCriteria
-      value: string | null
+      value: string | string[] | null
     }
   >
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
       key: SearchCriteria
-      value: string | number | boolean
+      value: string | string[] | number | boolean
     }
   >
   clearAllAttributesAction: Action<this>
@@ -47,7 +47,7 @@ export const savedSearchModel: SavedSearchModel = {
   currentArtworkID: undefined,
 
   setValueToAttributesByKeyAction: action((state, payload) => {
-    if (payload.key === "priceRange") {
+    if (payload.key === "priceRange" && typeof payload.value === "string") {
       // set form dirty on price update
       if (state.attributes[payload.key] !== payload.value) {
         state.dirty = true
