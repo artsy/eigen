@@ -332,7 +332,6 @@
     "relay-test-utils": "14.1.0",
     "rimraf": "3.0.2",
     "rn-flipper-async-storage-advanced": "1.0.5",
-    "snapshot-diff": "0.2.2",
     "sponge": "0.1.0",
     "tmp": "0.2.1",
     "ts-node": "8.4.1",

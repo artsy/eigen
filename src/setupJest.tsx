@@ -9,13 +9,11 @@ import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
-import expect from "expect"
 import "jest-extended"
 import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
-import diff from "snapshot-diff"
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
 require("setimmediate")
 /**
@@ -75,9 +73,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     done() // it is important to call this here or every test will timeout
   })
 }
-
-// Waiting on https://github.com/thymikee/snapshot-diff/pull/17
-expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 /**
  * External deps mocks
