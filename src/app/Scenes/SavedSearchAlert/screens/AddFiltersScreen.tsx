@@ -2,10 +2,9 @@ import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { NewArtworkFiltersStoreProvider } from "app/Components/NewArtworkFilter/NewArtworkFilterStore"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { AddFiltersScreenAppliedFilters } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenAppliedFilters"
-import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/NewArtworkFilterRarity"
+import { AddFiltersScreenRarity } from "app/Scenes/SavedSearchAlert/screens/AddFiltersScreenRarity"
 import { MotiView } from "moti"
 import { Alert } from "react-native"
 
@@ -27,14 +26,6 @@ export const AddFiltersScreen: React.FC<{}> = () => {
         <AddFiltersScreenRarity />
       </Join>
     </Flex>
-  )
-}
-
-export const AddFiltersScreenWrapper: React.FC<{}> = () => {
-  return (
-    <NewArtworkFiltersStoreProvider>
-      <AddFiltersScreen />
-    </NewArtworkFiltersStoreProvider>
   )
 }
 
