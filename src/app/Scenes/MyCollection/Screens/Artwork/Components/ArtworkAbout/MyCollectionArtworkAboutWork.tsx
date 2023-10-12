@@ -3,7 +3,6 @@ import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollec
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { Field, MetaDataField } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { capitalize } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
@@ -22,8 +21,6 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 ) => {
   const artwork = useFragment(artworkFragment, props.artwork)
   const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
-
-  const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
 
   const {
     category,
@@ -51,7 +48,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   return (
     <Flex mb={4}>
-      {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
+      <Field label="Estimate Range" value={estimatePrice} />
       <MetaDataField label="Medium" value={capitalize(category!)} />
       <MetaDataField label="Materials" value={capitalize(medium!)} />
       <MetaDataField label="Rarity" value={rarityText} />

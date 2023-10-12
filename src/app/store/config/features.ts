@@ -51,11 +51,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     description: "Support dark mode",
   },
-  AREnablePriceEstimateRange: {
-    readyForRelease: false,
-    description: "Enable My Collection Price Estimate Range",
-    showInDevMenu: false,
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
