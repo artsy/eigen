@@ -520,7 +520,14 @@ export const HomeFragmentContainer = memo(
       `,
       notificationsConnection: graphql`
         fragment Home_notificationsConnection on Viewer {
-          ...ActivityRail_notificationsConnection
+          ...ActivityRail_notificationsConnection @arguments(count: 6)
+          notificationsConnection(first: 6) {
+            edges {
+              node {
+                internalID
+              }
+            }
+          }
         }
       `,
 
