@@ -140,7 +140,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     })),
     addRoute("/artist/:artistID/artworks", "Artist", (params) => ({
       ...params,
-      initialTab: "Insights",
+      initialTab: "Artworks",
+      scrollToArtworksGrid: true,
     })),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
 
