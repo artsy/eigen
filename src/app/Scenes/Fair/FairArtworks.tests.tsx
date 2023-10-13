@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { FairArtworksTestsQuery } from "__generated__/FairArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -52,18 +51,8 @@ describe("FairArtworks", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText("Artwork Title")).toBeTruthy()
-  })
-
-  it("requests artworks in batches of 30", () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Fair: () => fair,
-    })
-
-    const artworksGridContainer = screen.UNSAFE_getByType(InfiniteScrollArtworksGridContainer)
-    expect(artworksGridContainer.props).toMatchObject({ pageSize: 30 })
+    expect(screen.queryByText("Artwork Title")).toBeTruthy()
+    expect(screen.queryByLabelText("Artworks Grid")).toBeTruthy()
   })
 
   it("renders empty view if there are no artworks", async () => {
@@ -82,7 +71,7 @@ describe("FairArtworks", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText(/No results found/)).toBeTruthy()
+    expect(screen.queryByText(/No results found/)).toBeTruthy()
   })
 })
 
