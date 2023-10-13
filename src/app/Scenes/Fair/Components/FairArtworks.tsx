@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { FairArtworks_fair$data } from "__generated__/FairArtworks_fair.graphql"
 import {
   aggregationsType,
@@ -9,11 +9,11 @@ import {
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
-import { useScreenDimensions } from "app/utils/hooks"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { FAIR2_ARTWORKS_PAGE_SIZE, PAGE_SIZE } from "app/Components/constants"
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -34,10 +34,9 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 }) => {
   const tracking = useTracking()
 
-  const screenWidth = useScreenDimensions().width
 
-  const artworks = fair.fairArtworks
-  const artworksTotal = artworks?.counts?.total ?? 0
+  const artworks = extractNodes(fair.fairArtworks)
+  const artworksTotal = artworks?.length ?? 0
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
@@ -48,8 +47,9 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   const dispatchFollowedArtistCount =
-    (followedArtistCount || artworks?.counts?.followedArtists) ?? 0
-  const artworkAggregations = ((aggregations || artworks?.aggregations) ?? []) as aggregationsType
+    (followedArtistCount || fair?.fairArtworks?.counts?.followedArtists) ?? 0
+  const artworkAggregations = ((aggregations || fair?.fairArtworks?.aggregations) ??
+    []) as aggregationsType
   const dispatchAggregations = aggregationsWithFollowedArtists(
     dispatchFollowedArtistCount,
     artworkAggregations
@@ -83,32 +83,26 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     })
   }
 
-  if (artworksTotal === 0) {
-    return (
-      <Box mb="80px">
-        <FilteredArtworkGridZeroState
-          id={fair.internalID}
-          slug={fair.slug}
-          trackClear={trackClear}
-        />
-      </Box>
-    )
-  }
-
   return (
-    <Box>
-      <InfiniteScrollArtworksGridContainer
-        connection={artworks}
-        loadMore={relay.loadMore}
-        hasMore={relay.hasMore}
-        autoFetch={false}
-        pageSize={FAIR2_ARTWORKS_PAGE_SIZE}
+    <Flex flex={1} minHeight={2}>
+      <MasonryInfiniteScrollArtworkGrid
+        artworks={artworks}
+        pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={fair.internalID}
         contextScreenOwnerSlug={fair.slug}
-        width={screenWidth - 40}
+        ListEmptyComponent={
+          <FilteredArtworkGridZeroState
+            id={fair.internalID}
+            slug={fair.slug}
+            trackClear={trackClear}
+          />
+        }
+        hasMore={relay.hasMore()}
+        loadMore={() => relay.loadMore(PAGE_SIZE)}
+        isLoading={relay.isLoading()}
       />
-    </Box>
+    </Flex>
   )
 }
 
@@ -153,13 +147,17 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
           counts {
             total
             followedArtists
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
