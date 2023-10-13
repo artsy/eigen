@@ -13,7 +13,6 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
-import { shouldDisplayNotificationTypeLabel } from "./utils/shouldDisplayNotificationTypeLabel"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -51,9 +50,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       <Flex py={2} flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Flex flexDirection="row">
-            {shouldDisplayNotificationTypeLabel(item.notificationType) && (
-              <ActivityItemTypeLabel notificationType={item.notificationType} />
-            )}
+            <ActivityItemTypeLabel notificationType={item.notificationType} />
 
             <Text variant="xs" color="black60">
               {item.publishedAt}

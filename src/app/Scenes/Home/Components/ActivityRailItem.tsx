@@ -4,8 +4,8 @@ import {
   ActivityRailItem_item$key,
 } from "__generated__/ActivityRailItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
-import { getNotificationTypeLabel } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -42,8 +42,6 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
   const imageURL = artworks[0]?.image?.preview?.src
 
-  const notificationTypeLabel = getNotificationTypeLabel(item.notificationType)
-
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row">
@@ -59,12 +57,11 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
         <Flex maxWidth={MAX_WIDTH} overflow="hidden">
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
-            {!!notificationTypeLabel && (
-              <Text variant="xs" fontWeight="bold">
-                {notificationTypeLabel}{" "}
-              </Text>
-            )}
-            <Text variant="xs">{item.publishedAt}</Text>
+            <ActivityItemTypeLabel notificationType={item.notificationType} />
+
+            <Text variant="xs" color="black60">
+              {item.publishedAt}
+            </Text>
           </Flex>
 
           <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
