@@ -23,6 +23,6 @@ export const SavedSearchFilterPill: React.FC<PillProps> = (props) => {
   }, [props.selected])
 
   return (
-    <Pill {...props} mt={1} mr={1} selected={selected} onPress={() => setSelected(!selected)} />
+    <Pill {...props} mt={1} mr={0.5} selected={selected} onPress={() => setSelected(!selected)} />
   )
 }

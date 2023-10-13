@@ -1,12 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
+import {
+  SavedSearchFilterAdditionalGeneIDs,
+  gravityArtworkMediumCategories,
+} from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
@@ -19,7 +21,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    artworkMediumCategories.forEach((option) => {
+    gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
       expect(getByText(option.label)).toBeDefined()
       expect(getByText(option.label)).toHaveStyle({
         color: black100Hex,
@@ -36,7 +38,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    artworkMediumCategories.forEach((option) => {
+    gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
       if (option.value === "Painting") {
         expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
       } else {
@@ -55,12 +57,12 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Painting")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Work on Paper")).toHaveStyle({ color: black100Hex })
 
-    fireEvent(getByText("Painting"), "onPress")
+    fireEvent(getByText("Work on Paper"), "onPress")
 
     waitFor(() => {
-      expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
+      expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
     })
   })
 })

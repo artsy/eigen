@@ -23,8 +23,8 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { gravityArtworkMediumCategories } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -136,7 +136,9 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
 
 export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill[] => {
   return values.map((value) => {
-    const additionalGeneOption = artworkMediumCategories.find((option) => option.value === value)
+    const additionalGeneOption = gravityArtworkMediumCategories.find(
+      (option) => option.value === value
+    )
 
     return {
       label: additionalGeneOption?.label ?? "",
