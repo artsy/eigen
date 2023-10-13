@@ -100,7 +100,6 @@ lane :ship_beta_ios do
     changelog: beta_readme,
     itc_provider: 'ArtsyInc',
     distribute_external: true,
-    skip_waiting_for_build_processing: true,
     groups: ['Artsy People', 'Applause People']
   )
 end
