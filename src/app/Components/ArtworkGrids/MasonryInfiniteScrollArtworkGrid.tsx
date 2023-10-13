@@ -77,6 +77,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
 
   return (
     <MasonryFlashList
+      accessibilityLabel="Artworks Grid"
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: space(6) }}
       data={artworks}
