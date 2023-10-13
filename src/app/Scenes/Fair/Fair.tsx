@@ -216,7 +216,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   return null
                 }
 
-                if (tabToShow.label === "Exhibitors" && hasExhibitors) {
+                if (tabToShow.label === "Exhibitors") {
                   return <FairExhibitorsFragmentContainer fair={fair} />
                 }
 
