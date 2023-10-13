@@ -71,29 +71,31 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 }
 
 const Placeholder: React.FC<{}> = () => (
-  <Skeleton>
-    <SkeletonText variant="sm" fontWeight={500} mx={2}>
-      Price Range
-    </SkeletonText>
+  <Flex testID="loading-skeleton">
+    <Skeleton>
+      <SkeletonText variant="sm" fontWeight={500} mx={2}>
+        Price Range
+      </SkeletonText>
 
-    <Spacer y={2} />
+      <Spacer y={2} />
 
-    <Flex mx={2} flexDirection="row">
-      <SkeletonBox width="100%" height={50} />
-    </Flex>
+      <Flex mx={2} flexDirection="row">
+        <SkeletonBox width="100%" height={50} />
+      </Flex>
 
-    <Spacer y={2} />
+      <Spacer y={2} />
 
-    <Flex mx={2} flexDirection="row">
-      <SkeletonBox width="100%" height={170} />
-    </Flex>
+      <Flex mx={2} flexDirection="row">
+        <SkeletonBox width="100%" height={170} />
+      </Flex>
 
-    <Spacer y={4} />
+      <Spacer y={4} />
 
-    <Flex mx={2} flexDirection="row">
-      <SkeletonBox width="100%" height={90} />
-    </Flex>
-  </Skeleton>
+      <Flex mx={2} flexDirection="row">
+        <SkeletonBox width="100%" height={90} />
+      </Flex>
+    </Skeleton>
+  </Flex>
 )
 
 const savedSearchFilterPriceRangeQuery = graphql`

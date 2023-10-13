@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import {
   SavedSearchModel,
@@ -9,7 +9,7 @@ import {
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("SavedSearchFilterPriceRange", () => {
-  it("shows the right price range when available", () => {
+  it("shows the right price range when available", async () => {
     const { renderWithRelay } = setupTestWrapper({
       Component: () => (
         <SavedSearchStoreProvider runtimeModel={initialData}>
@@ -18,17 +18,17 @@ describe("SavedSearchFilterPriceRange", () => {
       ),
     })
 
-    const { getByText } = renderWithRelay({
+    const { getByTestId } = renderWithRelay({
       Artist: () => ({
         internalID: "artistID",
         name: "Banksy",
       }),
     })
 
-    waitFor(() => {
-      expect(getByText("200")).toBeDefined()
-      expect(getByText("3000")).toBeDefined()
-    })
+    await waitForElementToBeRemoved(() => getByTestId("loading-skeleton"))
+
+    expect(screen.getByText("200")).toBeOnTheScreen()
+    expect(screen.getByText("3000")).toBeOnTheScreen()
   })
 
   it("Updates the price range appropriately", async () => {
@@ -40,23 +40,23 @@ describe("SavedSearchFilterPriceRange", () => {
       ),
     })
 
-    const { getByTestId, getByText } = renderWithRelay({
+    const { getByTestId } = renderWithRelay({
       Artist: () => ({
         internalID: "artistID",
         name: "Banksy",
       }),
     })
 
-    waitFor(() => {
-      expect(getByText("200")).toBeDefined()
-      expect(getByText("3000")).toBeDefined()
+    await waitForElementToBeRemoved(() => getByTestId("loading-skeleton"))
 
-      fireEvent.changeText(getByTestId("price-min-input"), "300")
-      fireEvent.changeText(getByTestId("price-max-input"), "5000")
+    expect(screen.getByText("200")).toBeOnTheScreen()
+    expect(screen.getByText("3000")).toBeOnTheScreen()
 
-      expect(getByText("300")).toBeDefined()
-      expect(getByText("5000")).toBeDefined()
-    })
+    fireEvent.changeText(getByTestId("price-min-input"), "300")
+    fireEvent.changeText(getByTestId("price-max-input"), "5000")
+
+    expect(screen.getByText("300")).toBeOnTheScreen()
+    expect(screen.getByText("5000")).toBeOnTheScreen()
   })
 })
 
