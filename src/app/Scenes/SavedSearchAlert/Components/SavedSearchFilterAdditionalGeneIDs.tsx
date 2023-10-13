@@ -1,9 +1,9 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 
 export const SavedSearchFilterAdditionalGeneIDs = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
@@ -44,20 +44,20 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
       </Text>
       <Spacer y={1} />
       <Flex flexDirection="row" flexWrap="wrap">
-        {CATEGORIES_OPTIONS.map((option) => {
+        {artworkMediumCategories.map((option) => {
           return (
             <SavedSearchFilterPill
-              key={option.paramValue as string}
-              accessibilityLabel={option.displayText}
+              key={option.value as string}
+              accessibilityLabel={option.label}
               selected={isValueSelected({
                 selectedAttributes,
-                value: option.paramValue,
+                value: option.value,
               })}
               onPress={() => {
-                handlePress(option.paramValue as string)
+                handlePress(option.value as string)
               }}
             >
-              {option.displayText}
+              {option.label}
             </SavedSearchFilterPill>
           )
         })}

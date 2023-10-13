@@ -1,12 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
@@ -19,9 +19,9 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    CATEGORIES_OPTIONS.forEach((option) => {
-      expect(getByText(option.displayText)).toBeDefined()
-      expect(getByText(option.displayText)).toHaveStyle({
+    artworkMediumCategories.forEach((option) => {
+      expect(getByText(option.label)).toBeDefined()
+      expect(getByText(option.label)).toHaveStyle({
         color: black100Hex,
       })
     })
@@ -36,12 +36,12 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    CATEGORIES_OPTIONS.forEach((option) => {
-      if (option.paramValue === "Painting") {
+    artworkMediumCategories.forEach((option) => {
+      if (option.value === "Painting") {
         expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
       } else {
-        expect(getByText(option.displayText)).toBeDefined()
-        expect(getByText(option.displayText)).toHaveStyle({
+        expect(getByText(option.label)).toBeDefined()
+        expect(getByText(option.label)).toHaveStyle({
           color: black100Hex,
         })
       }

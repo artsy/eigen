@@ -5,7 +5,6 @@ import {
   getDisplayNameForTimePeriod,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
-import { CATEGORIES_OPTIONS } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
@@ -25,6 +24,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -136,10 +136,10 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
 
 export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill[] => {
   return values.map((value) => {
-    const additionalGeneOption = CATEGORIES_OPTIONS.find((option) => option.paramValue === value)
+    const additionalGeneOption = artworkMediumCategories.find((option) => option.value === value)
 
     return {
-      label: additionalGeneOption?.displayText ?? "",
+      label: additionalGeneOption?.label ?? "",
       // Using the paramValue because filter values are case sensitive
       value,
       paramName: SearchCriteria.additionalGeneIDs,
