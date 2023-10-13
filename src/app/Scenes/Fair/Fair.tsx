@@ -184,6 +184,15 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
               }
               case "fairTabsAndFilter": {
                 const tabToShow = tabs ? tabs[activeTab] : null
+                // remove artwork tab if there are no artworks to show and exhibitors tab if there are no exhibitors to show
+                const filteredTabs = tabs?.filter((tab) => {
+                  if (tab.label === "Artworks") {
+                    return hasArtworks
+                  } else {
+                    return hasExhibitors
+                  }
+                })
+
                 return (
                   <Box pt={`${safeAreaInsets.top}px`} backgroundColor="white">
                     <NavigationalTabs
@@ -192,7 +201,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                         setActiveTab(index)
                       }}
                       activeTab={activeTab}
-                      tabs={tabs}
+                      tabs={filteredTabs}
                     />
                     {tabToShow?.label === "Artworks" && (
                       <HeaderArtworksFilter onPress={openFilterArtworksModal} />
@@ -207,13 +216,13 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   return null
                 }
 
-                if (tabToShow.label === "Exhibitors") {
+                if (tabToShow.label === "Exhibitors" && hasExhibitors) {
                   return <FairExhibitorsFragmentContainer fair={fair} />
                 }
 
                 if (tabToShow.label === "Artworks") {
                   return (
-                    <Box px={2}>
+                    <>
                       <FairArtworksFragmentContainer fair={fair} />
                       <ArtworkFilterNavigator
                         visible={isFilterArtworksModalVisible}
@@ -223,7 +232,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                         exitModal={handleFilterArtworksModal}
                         closeModal={closeFilterArtworksModal}
                       />
-                    </Box>
+                    </>
                   )
                 }
               }
