@@ -31,6 +31,7 @@ type ArtistTabs = "Insights" | "Artworks"
 
 type PassedProps = {
   initialTab: ArtistTabs
+  scrollToArtworksGrid?: boolean
 }
 
 type HandleResultPress = (passProps?: PassedProps) => void
@@ -199,13 +200,20 @@ function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
   } else if (result.displayType === "Fair") {
     navigateToEntity(result.href!, EntityType.Fair, SlugType.ProfileID)
   } else if (result.__typename === "Artist") {
-    if (props?.initialTab === "Insights") {
-      navigate(`${result.href!}/auction-results`, { passProps: props })
+    switch (props?.initialTab) {
+      case "Insights":
+        navigate(`${result.href!}/auction-results`, { passProps: props })
+        break
+      case "Artworks":
+        navigate(`${result.href!}/artworks`, {
+          passProps: props,
+        })
+        break
+
+      default:
+        navigate(result.href!)
+        break
     }
-    if (props?.initialTab === "Artworks") {
-      navigate(`${result.href!}/artworks`, { passProps: props })
-    }
-    navigate(result.href!)
   } else {
     navigate(result.href!)
   }
