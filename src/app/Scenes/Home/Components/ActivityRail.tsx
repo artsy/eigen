@@ -51,7 +51,7 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
   return (
     <Flex pt={2}>
       <Flex px={2}>
-        <SectionTitle fontWeight="bold" title={title} onPress={handleHeaderPress} />
+        <SectionTitle title={title} onPress={handleHeaderPress} />
       </Flex>
 
       <FlatList
