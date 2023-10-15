@@ -1,19 +1,20 @@
-import { Flex, Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
+import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
-import { Alert } from "react-native"
+import { Alert, ScrollView } from "react-native"
 
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
 
   return (
-    <Flex>
+    <ScrollView>
       <FancyModalHeader
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
@@ -24,10 +25,11 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       </FancyModalHeader>
       <Join separator={<Separator my={2} borderColor="black10" />}>
         <SavedSearchAppliedFilters />
+        <SavedSearchFilterPriceRangeQR />
         <SavedSearchRarity />
         <SavedSearchFilterColour />
       </Join>
-    </Flex>
+    </ScrollView>
   )
 }
 
@@ -40,6 +42,10 @@ export const ClearAllButton = () => {
     Object.entries(attributes).filter((keyValue) => {
       const key = keyValue[0]
       const value = keyValue[1]
+      if (key === SearchCriteria.priceRange) {
+        return value && value !== "*-*"
+      }
+
       if (key !== SearchCriteria.artistID && key !== SearchCriteria.artistIDs) {
         // Values might be empty arrays
         if (Array.isArray(value)) {
