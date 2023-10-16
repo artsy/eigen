@@ -110,6 +110,7 @@ commands:
             - node_modules/react-native-config
   prep-android-env:
     steps:
+      - generate-checksums
       - attach_workspace:
           at: ../workspace
       - restore_cache:
@@ -128,7 +129,6 @@ commands:
             rm -rf /Users/distiller/project
       - checkout
       - install-node
-      - generate-checksums
       - setup-awscli
       - setup-env-file
       - install-node-modules
