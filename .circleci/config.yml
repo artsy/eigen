@@ -122,6 +122,10 @@ commands:
       #       then
       #         circleci step halt
       #       fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /home/circleci/project/*
       - checkout
       - install-node
       - setup-awscli
