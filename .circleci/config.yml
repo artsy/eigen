@@ -128,6 +128,7 @@ commands:
             rm -rf /Users/distiller/project
       - checkout
       - install-node
+      - generate-checksums
       - setup-awscli
       - setup-env-file
       - install-node-modules
