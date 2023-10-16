@@ -1452,6 +1452,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -1898,6 +1899,7 @@ type ArtistSeries {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -2384,6 +2386,7 @@ type Artwork implements Node & Searchable & Sellable {
 enum ArtworkAggregation {
   ARTIST
   ARTIST_NATIONALITY
+  ARTIST_SERIES
   ATTRIBUTION_CLASS
   COLOR
   DIMENSION_RANGE
@@ -8764,6 +8767,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -9008,6 +9012,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -9518,6 +9523,7 @@ input FilterArtworksInput {
   artistIDs: [String]
   artistNationalities: [String]
   artistSeriesID: String
+  artistSeriesIDs: [String]
   atAuction: Boolean
   attributionClass: [String]
   before: String
@@ -9956,6 +9962,7 @@ type Gene implements Node & Searchable {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -11170,6 +11177,7 @@ type MarketingCollection {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -13397,6 +13405,7 @@ type Partner implements Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -14700,6 +14709,7 @@ type Query {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -17071,6 +17081,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -17551,6 +17562,7 @@ type Tag implements Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -19428,6 +19440,7 @@ type Viewer {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
