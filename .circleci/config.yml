@@ -112,8 +112,6 @@ commands:
     steps:
       - attach_workspace:
           at: ../workspace
-      - checkout
-      - generate-checksums
       - restore_cache:
           keys:
             - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
@@ -124,6 +122,7 @@ commands:
             then
               circleci step halt
             fi
+      - checkout
       - install-node
       - setup-awscli
       - setup-env-file
@@ -480,6 +479,8 @@ workflows:
             branches:
               ignore:
                 - beta-ios
+          requires:
+            - build-test-js
 
       - update-metaphysics:
           filters:
