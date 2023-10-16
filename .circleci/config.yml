@@ -484,7 +484,10 @@ workflows:
               ignore:
                 - beta-ios
           requires:
+            - test-js
+            - check-code
             - build-test-js
+            - horizon/block
 
       - update-metaphysics:
           filters:
