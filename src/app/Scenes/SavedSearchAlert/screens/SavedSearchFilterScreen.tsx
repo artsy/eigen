@@ -1,4 +1,14 @@
-import { Join, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  ArtsyKeyboardAvoidingView,
+  Button,
+  Flex,
+  Join,
+  Separator,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -8,28 +18,44 @@ import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Compo
 import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
-import { Alert, ScrollView } from "react-native"
+import { Alert, Platform, ScrollView } from "react-native"
 
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
+  const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
-    <ScrollView>
-      <FancyModalHeader
-        hideBottomDivider
-        onLeftButtonPress={navigation.goBack}
-        renderRightButton={ClearAllButton}
-        onRightButtonPress={() => {}}
+    <ArtsyKeyboardAvoidingView>
+      <ScrollView>
+        <FancyModalHeader
+          hideBottomDivider
+          onLeftButtonPress={navigation.goBack}
+          renderRightButton={ClearAllButton}
+          onRightButtonPress={() => {}}
+        >
+          Filters
+        </FancyModalHeader>
+        <Join separator={<Separator my={2} borderColor="black10" />}>
+          <SavedSearchAppliedFilters />
+          <SavedSearchFilterPriceRangeQR />
+          <SavedSearchRarity />
+          <SavedSearchFilterColour />
+        </Join>
+
+        <Spacer y={2} />
+      </ScrollView>
+
+      <Flex
+        p={2}
+        pb={Platform.OS === "android" ? 2 : 0}
+        borderTopWidth={1}
+        borderTopColor="black10"
       >
-        Filters
-      </FancyModalHeader>
-      <Join separator={<Separator my={2} borderColor="black10" />}>
-        <SavedSearchAppliedFilters />
-        <SavedSearchFilterPriceRangeQR />
-        <SavedSearchRarity />
-        <SavedSearchFilterColour />
-      </Join>
-    </ScrollView>
+        <Button block onPress={navigation.goBack} haptic mb={`${bottom}px`}>
+          Set Filters
+        </Button>
+      </Flex>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 
