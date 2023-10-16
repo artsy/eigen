@@ -9,25 +9,15 @@ Eigen's beta pre-submission checklist has [moved into Notion 🔐](https://www.n
 ## Preparing to Ship a Final Version
 
 1. Start a branch from main.
-1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
+2. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
    - Commit, push the changes, make a PR from your branch to main.
-1. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review
+3. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review
 
-### What about IDFA?
+Our App Store releases are set to release automatically once Apple approves the app. You can check the status of the build in app store connect, a message will also be sent to mobile [at] artsymail [dot] com once the app is approved.
 
-We _do_ use the IDFA to attribute app installations to previously service advertisements. This should be handled for you.
-
-## Release to App Store
-
-Our App Store releases are done manually, instead of automatically once Apple approves the app. Don't release unless you are available over the next few hours to monitor Sentry for errors.
-
-> _When the app is approved for release, a slack message is sent to notify the #practice-mobile channel and an email from Apple Store Connect is sent to mobile [at] artsymail [dot] com_
-
-1. Run `./scripts/release-ios-app`
-2. Monitor [Sentry 🔐](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
-3. Make sure to let the team know over at [#dev 🔐](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
+4.  Make sure to let the team know over at [#dev 🔐](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
 
 ## Prepare for the Next Release
 
