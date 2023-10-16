@@ -110,6 +110,8 @@ commands:
             - node_modules/react-native-config
   prep-android-env:
     steps:
+      - attach_workspace:
+          at: ../workspace
       - checkout
       - generate-checksums
       - restore_cache:
@@ -323,6 +325,8 @@ jobs:
       resource_class: macos.m1.medium.gen1
 
     steps:
+      - attach_workspace:
+          at: ../workspace
       - restore_cache:
           keys:
             - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
@@ -343,6 +347,8 @@ jobs:
               circleci step halt
             fi
       - checkout
+      - attach_workspace:
+          at: .
       - install-node
       - setup-awscli
       - setup-env-file
