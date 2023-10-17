@@ -76,7 +76,11 @@ export const savedSearchModel: SavedSearchModel = {
 
   clearAllAttributesAction: action((state) => {
     if (Object.values(state.attributes).length !== 0) {
-      state.attributes = {}
+      state.attributes = {
+        // Keep only selected artist IDs
+        artistIDs: state.attributes.artistIDs,
+        artistID: state.attributes.artistID,
+      }
       state.dirty = true
     }
   }),
