@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { DEFINED_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import {
   SavedSearchModel,
@@ -19,7 +19,7 @@ describe("SavedSearchFilterRarity", () => {
       </SavedSearchStoreProvider>
     )
 
-    DEFINED_ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
+    KNOWN_ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
       expect(getByText(option.displayText)).toBeDefined()
       expect(getByText(option.displayText)).toHaveStyle({
         color: black100Hex,
