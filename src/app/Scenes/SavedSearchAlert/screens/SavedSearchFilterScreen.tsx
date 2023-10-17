@@ -14,7 +14,7 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
-import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
+import { SavedSearchFilterColor } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColor"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
@@ -43,7 +43,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           <SavedSearchFilterRarity />
           <SavedSearchFilterAdditionalGeneIDs />
           <SavedSearchFilterWaysToBuy />
-          <SavedSearchFilterColour />
+          <SavedSearchFilterColor />
         </Join>
 
         <Spacer y={2} />

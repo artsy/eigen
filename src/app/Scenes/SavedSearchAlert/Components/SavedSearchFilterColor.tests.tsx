@@ -4,7 +4,7 @@ import {
   COLORS_INDEXED_BY_VALUE,
   COLOR_OPTIONS,
 } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
-import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
+import { SavedSearchFilterColor } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColor"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -12,11 +12,11 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-describe("SavedSearchFilterColour", () => {
+describe("SavedSearchFilterColor", () => {
   it("shows all available color options unselected", () => {
     const { getByTestId } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchFilterColour />
+        <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
     )
 
@@ -30,7 +30,7 @@ describe("SavedSearchFilterColour", () => {
   it("shows the right selected state", () => {
     const { getByTestId } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={{ ...initialData, attributes: { colors: ["red"] } }}>
-        <SavedSearchFilterColour />
+        <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
     )
 
@@ -50,7 +50,7 @@ describe("SavedSearchFilterColour", () => {
   it("Updates selected filters on press", () => {
     const { getByTestId, getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchFilterColour />
+        <SavedSearchFilterColor />
       </SavedSearchStoreProvider>
     )
 
