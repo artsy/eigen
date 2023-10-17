@@ -19,7 +19,7 @@ export interface SavedSearchModel {
     this,
     {
       key: SearchCriteria
-      value: string | string[] | null
+      value: string | string[] | boolean | null
     }
   >
   removeValueFromAttributesByKeyAction: Action<
