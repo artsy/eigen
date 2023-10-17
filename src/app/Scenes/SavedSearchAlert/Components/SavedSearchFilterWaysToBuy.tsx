@@ -7,8 +7,8 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 export const SavedSearchFilterWaysToBuy = () => {
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
-  const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.setValueToAttributesByKeyAction
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
   )
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
@@ -41,7 +41,7 @@ export const SavedSearchFilterWaysToBuy = () => {
                     value: false,
                   })
                 } else {
-                  setValueToAttributesByKeyAction({
+                  addValueToAttributesByKeyAction({
                     key: criterion,
                     value: true,
                   })

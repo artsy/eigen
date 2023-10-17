@@ -7,39 +7,31 @@ import {
 import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { useState } from "react"
+import useDebounce from "react-use/lib/useDebounce"
 
 export const SavedSearchFilterColor = () => {
-  const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.colors) as string[]
-
   const { width } = useScreenDimensions()
   const space = useSpace()
 
-  const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.setValueToAttributesByKeyAction
-  )
-  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.removeValueFromAttributesByKeyAction
+  const selectedStoreColors = useSearchCriteriaAttributes(SearchCriteria.colors) as string[]
+  const setAttribute = SavedSearchStore.useStoreActions((actions) => actions.setAttributeAction)
+
+  const [selectedColors, setSelectedColors] = useState(selectedStoreColors || [])
+
+  useDebounce(
+    () => {
+      setAttribute({ key: SearchCriteria.colors, value: selectedColors })
+    },
+    100,
+    [selectedColors]
   )
 
-  const handlePress = (value: string) => {
-    const isSelected = isValueSelected({
-      selectedAttributes,
-      value: value,
-    })
-
-    if (isSelected) {
-      removeValueFromAttributesByKeyAction({
-        key: SearchCriteria.colors,
-        value: value,
-      })
-    } else {
-      const newValues = (selectedAttributes || []).concat(value)
-      setValueToAttributesByKeyAction({
-        key: SearchCriteria.colors,
-        value: newValues,
-      })
-    }
+  const handlePress = (value: string) => () => {
+    setSelectedColors((prev) =>
+      selectedColors.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+    )
   }
 
   return (
@@ -58,15 +50,10 @@ export const SavedSearchFilterColor = () => {
             <ColorsSwatch
               key={i}
               width={(width - space(1) * 2) / SWATCHES_PER_ROW}
-              selected={isValueSelected({
-                selectedAttributes,
-                value: option.paramValue,
-              })}
+              selected={selectedColors.includes(option.paramValue as string)}
               name={color.name}
               backgroundColor={color.backgroundColor}
-              onPress={() => {
-                handlePress(option.paramValue as string)
-              }}
+              onPress={handlePress(option.paramValue as string)}
             />
           )
         })}

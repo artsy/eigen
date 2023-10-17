@@ -16,7 +16,8 @@ export interface SavedSearchModel {
   /** Artwork ID, if the current saved search alert is being set from an artwork */
   currentArtworkID?: string
 
-  setValueToAttributesByKeyAction: Action<
+  setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
+  addValueToAttributesByKeyAction: Action<
     this,
     {
       key: SearchCriteria
@@ -47,7 +48,11 @@ export const savedSearchModel: SavedSearchModel = {
   },
   currentArtworkID: undefined,
 
-  setValueToAttributesByKeyAction: action((state, payload) => {
+  setAttributeAction: action((state, payload) => {
+    state.attributes[payload.key] = payload.value
+  }),
+
+  addValueToAttributesByKeyAction: action((state, payload) => {
     if (payload.key === "priceRange" && typeof payload.value === "string") {
       // set form dirty on price update
       if (state.attributes[payload.key] !== payload.value) {

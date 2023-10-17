@@ -28,13 +28,13 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
     storePriceRangeValue || DEFAULT_PRICE_RANGE
   )
 
-  const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.setValueToAttributesByKeyAction
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
   )
 
   useDebounce(
     () => {
-      setValueToAttributesByKeyAction({
+      addValueToAttributesByKeyAction({
         key: SearchCriteria.priceRange,
         value: filterPriceRange,
       })
