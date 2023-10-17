@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
-import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
+import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -11,11 +11,11 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
 
-describe("SavedSearchRarity", () => {
+describe("SavedSearchFilterRarity", () => {
   it("shows all available rarity options unselected", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchRarity />
+        <SavedSearchFilterRarity />
       </SavedSearchStoreProvider>
     )
 
@@ -32,7 +32,7 @@ describe("SavedSearchRarity", () => {
       <SavedSearchStoreProvider
         runtimeModel={{ ...initialData, attributes: { attributionClass: ["unique"] } }}
       >
-        <SavedSearchRarity />
+        <SavedSearchFilterRarity />
       </SavedSearchStoreProvider>
     )
 
@@ -45,7 +45,7 @@ describe("SavedSearchRarity", () => {
   it("Updates selected filters on press", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchRarity />
+        <SavedSearchFilterRarity />
       </SavedSearchStoreProvider>
     )
 

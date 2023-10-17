@@ -2,45 +2,45 @@ import { ScreenOwnerType } from "@artsy/cohesion"
 import { ArtworkSizes } from "__generated__/SavedSearchNameInputQuery.graphql"
 
 export enum SearchCriteria {
+  acquireable = "acquireable",
+  additionalGeneIDs = "additionalGeneIDs",
   artistID = "artistID",
   artistIDs = "artistIDs",
-  locationCities = "locationCities",
-  colors = "colors",
-  partnerIDs = "partnerIDs",
-  additionalGeneIDs = "additionalGeneIDs",
-  attributionClass = "attributionClass",
-  majorPeriods = "majorPeriods",
-  acquireable = "acquireable",
   atAuction = "atAuction",
-  inquireableOnly = "inquireableOnly",
-  offerable = "offerable",
+  attributionClass = "attributionClass",
+  colors = "colors",
   dimensionRange = "dimensionRange",
-  sizes = "sizes",
   height = "height",
-  width = "width",
+  inquireableOnly = "inquireableOnly",
+  locationCities = "locationCities",
+  majorPeriods = "majorPeriods",
   materialsTerms = "materialsTerms",
+  offerable = "offerable",
+  partnerIDs = "partnerIDs",
   priceRange = "priceRange",
+  sizes = "sizes",
+  width = "width",
 }
 
 export interface SearchCriteriaAttributes {
+  [SearchCriteria.acquireable]?: boolean | null
+  [SearchCriteria.additionalGeneIDs]?: string[] | null
   [SearchCriteria.artistID]?: string | null
   [SearchCriteria.artistIDs]?: string[] | null
-  [SearchCriteria.locationCities]?: string[] | null
-  [SearchCriteria.colors]?: string[] | null
-  [SearchCriteria.partnerIDs]?: string[] | null
-  [SearchCriteria.additionalGeneIDs]?: string[] | null
-  [SearchCriteria.attributionClass]?: string[] | null
-  [SearchCriteria.majorPeriods]?: string[] | null
-  [SearchCriteria.acquireable]?: boolean | null
   [SearchCriteria.atAuction]?: boolean | null
-  [SearchCriteria.inquireableOnly]?: boolean | null
-  [SearchCriteria.offerable]?: boolean | null
+  [SearchCriteria.attributionClass]?: string[] | null
+  [SearchCriteria.colors]?: string[] | null
   [SearchCriteria.dimensionRange]?: string | null
-  [SearchCriteria.sizes]?: ArtworkSizes[] | null
   [SearchCriteria.height]?: string | null
-  [SearchCriteria.width]?: string | null
+  [SearchCriteria.inquireableOnly]?: boolean | null
+  [SearchCriteria.locationCities]?: string[] | null
+  [SearchCriteria.majorPeriods]?: string[] | null
   [SearchCriteria.materialsTerms]?: string[] | null
+  [SearchCriteria.offerable]?: boolean | null
+  [SearchCriteria.partnerIDs]?: string[] | null
   [SearchCriteria.priceRange]?: string | null
+  [SearchCriteria.sizes]?: ArtworkSizes[] | null
+  [SearchCriteria.width]?: string | null
 }
 
 export interface SavedSearchEntityArtist {

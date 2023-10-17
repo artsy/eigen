@@ -107,7 +107,7 @@ describe("SavedSearchAlertForm", () => {
     })
 
     describe("Create flow", () => {
-      it("calls create mutation when `Save Alert` buttin is pressed", async () => {
+      it("calls create mutation when `Save Alert` button is pressed", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")

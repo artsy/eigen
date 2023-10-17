@@ -257,6 +257,26 @@ describe("extractPillsFromCriteria", () => {
     ])
   })
 
+  it("should correctly extract additionalGeneIDs pills", () => {
+    const attributes: SearchCriteriaAttributes = {
+      additionalGeneIDs: ["painting", "work-on-paper"],
+    }
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+
+    expect(result).toEqual([
+      {
+        label: "Painting",
+        paramName: SearchCriteria.additionalGeneIDs,
+        value: "painting",
+      },
+      {
+        label: "Work on Paper",
+        paramName: SearchCriteria.additionalGeneIDs,
+        value: "work-on-paper",
+      },
+    ])
+  })
+
   it("should correctly extract custom price range pill", () => {
     const attributes: SearchCriteriaAttributes = {
       priceRange: "1000-1500",

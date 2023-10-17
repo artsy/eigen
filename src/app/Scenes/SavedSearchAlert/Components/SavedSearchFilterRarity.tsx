@@ -5,7 +5,7 @@ import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/Sa
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 
-export const SavedSearchRarity = () => {
+export const SavedSearchFilterRarity = () => {
   const selectedAttributes = useSearchCriteriaAttributes(
     SearchCriteria.attributionClass
   ) as string[]
