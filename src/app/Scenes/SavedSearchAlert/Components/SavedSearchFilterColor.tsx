@@ -64,7 +64,6 @@ export const SavedSearchFilterColor = () => {
               })}
               name={color.name}
               backgroundColor={color.backgroundColor}
-              foregroundColor={color.foregroundColor}
               onPress={() => {
                 handlePress(option.paramValue as string)
               }}
