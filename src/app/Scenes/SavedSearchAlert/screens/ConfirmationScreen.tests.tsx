@@ -181,7 +181,7 @@ const artworksConnection = {
 const attributes: SearchCriteriaAttributes = {
   artistIDs: ["david-hockney"],
   attributionClass: ["unique"],
-  additionalGeneIDs: ["Painting"],
+  additionalGeneIDs: ["painting"],
 }
 
 const aggregations: Aggregations = [

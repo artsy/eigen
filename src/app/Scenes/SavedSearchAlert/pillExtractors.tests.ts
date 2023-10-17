@@ -259,7 +259,7 @@ describe("extractPillsFromCriteria", () => {
 
   it("should correctly extract additionalGeneIDs pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      additionalGeneIDs: ["Painting", "Work on Paper"],
+      additionalGeneIDs: ["painting", "work-on-paper"],
     }
     const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
@@ -267,12 +267,12 @@ describe("extractPillsFromCriteria", () => {
       {
         label: "Painting",
         paramName: SearchCriteria.additionalGeneIDs,
-        value: "Painting",
+        value: "painting",
       },
       {
         label: "Work on Paper",
         paramName: SearchCriteria.additionalGeneIDs,
-        value: "Work on Paper",
+        value: "work-on-paper",
       },
     ])
   })

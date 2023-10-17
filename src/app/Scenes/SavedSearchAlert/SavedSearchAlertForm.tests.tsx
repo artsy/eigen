@@ -514,7 +514,7 @@ describe("SavedSearchAlertForm", () => {
       expect(getByText("Tate Ward Auctions")).toBeTruthy()
       expect(getByText("New York, NY, USA")).toBeTruthy()
       expect(getByText("Photography")).toBeTruthy()
-      expect(getByText("Print")).toBeTruthy()
+      expect(getByText("Prints")).toBeTruthy()
     })
 
     it("should have removable filter pills", () => {
@@ -523,10 +523,10 @@ describe("SavedSearchAlertForm", () => {
       expect(getByText("artistName")).toBeTruthy()
       expect(getByText("artistName")).not.toHaveProp("onPress")
 
-      fireEvent.press(getByText("Print"))
+      fireEvent.press(getByText("Prints"))
       fireEvent.press(getByText("Photography"))
 
-      waitForElementToBeRemoved(() => getByText("Print"))
+      waitForElementToBeRemoved(() => getByText("Prints"))
       waitForElementToBeRemoved(() => getByText("Photography"))
     })
   })
@@ -749,7 +749,7 @@ describe("SavedSearchAlertForm", () => {
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
-        fireEvent.press(getByText("Print"))
+        fireEvent.press(getByText("Prints"))
         fireEvent.press(getAllByText("Save Alert")[0])
 
         await waitFor(() => {
@@ -778,7 +778,7 @@ describe("SavedSearchAlertForm", () => {
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
-        fireEvent.press(getByText("Print"))
+        fireEvent.press(getByText("Prints"))
         fireEvent.press(getAllByText("Save Alert")[0])
 
         await waitFor(() => {
@@ -801,7 +801,7 @@ describe("SavedSearchAlertForm", () => {
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
-        fireEvent.press(getByText("Print"))
+        fireEvent.press(getByText("Prints"))
         fireEvent.press(getAllByText("Save Alert")[0])
 
         await waitFor(() => {
@@ -833,7 +833,7 @@ const attributes: SearchCriteriaAttributes = {
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
-  additionalGeneIDs: ["Photography", "Print"],
+  additionalGeneIDs: ["photography", "prints"],
 }
 const aggregations: Aggregations = [
   {
@@ -893,7 +893,7 @@ const createMutationAttributes = {
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
-  additionalGeneIDs: ["Photography", "Print"],
+  additionalGeneIDs: ["photography", "prints"],
 }
 
 const baseProps: SavedSearchAlertFormProps = {
