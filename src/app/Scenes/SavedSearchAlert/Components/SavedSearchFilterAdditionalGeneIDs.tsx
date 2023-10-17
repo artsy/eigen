@@ -3,6 +3,7 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useState } from "react"
 import { LayoutAnimation, TouchableOpacity } from "react-native"
 
@@ -103,87 +104,3 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
     </Flex>
   )
 }
-
-// List from gravity
-export const gravityArtworkMediumCategories: { label: string; value: string }[] = [
-  {
-    label: "Architecture",
-    value: "architecture-1",
-  },
-  {
-    label: "Books and Portfolios",
-    value: "books-and-portfolios",
-  },
-  {
-    label: "Design",
-    value: "design",
-  },
-  {
-    label: "Work on Paper",
-    value: "work-on-paper",
-  },
-  {
-    label: "Ephemera or Merchandise",
-    value: "ephemera-or-merchandise",
-  },
-  {
-    label: "Fashion Design and Wearable Art",
-    value: "fashion-design-and-wearable-art",
-  },
-  {
-    label: "Installation",
-    value: "installation",
-  },
-  {
-    label: "Jewelry",
-    value: "jewelry",
-  },
-  {
-    label: "Mixed-Media",
-    value: "mixed-media",
-  },
-  {
-    label: "NFT",
-    value: "nft",
-  },
-  {
-    label: "Other",
-    value: "other",
-  },
-  {
-    label: "Painting",
-    value: "painting",
-  },
-  {
-    label: "Performance Art",
-    value: "performance-art",
-  },
-  {
-    label: "Photography",
-    value: "photography",
-  },
-  {
-    label: "Poster",
-    value: "poster",
-  },
-  {
-    label: "Prints",
-    value: "prints",
-  },
-  {
-    label: "Reproduction",
-    value: "reproduction",
-  },
-  {
-    label: "Sculpture",
-    value: "sculpture",
-  },
-  {
-    label: "Textile Arts",
-    value: "textile-arts",
-  },
-  {
-    label: "Film/Video",
-    value: "film-slash-video",
-  },
-]

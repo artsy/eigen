@@ -23,8 +23,8 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { gravityArtworkMediumCategories } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
