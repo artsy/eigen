@@ -4,7 +4,7 @@ import {
   FilterParamName,
   getDisplayNameForTimePeriod,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
@@ -124,7 +124,9 @@ export const extractColorPills = (values: string[]): SavedSearchPill[] => {
 
 export const extractAttributionPills = (values: string[]): SavedSearchPill[] => {
   return values.map((value) => {
-    const colorOption = ATTRIBUTION_CLASS_OPTIONS.find((option) => option.paramValue === value)
+    const colorOption = KNOWN_ATTRIBUTION_CLASS_OPTIONS.find(
+      (option) => option.paramValue === value
+    )
 
     return {
       label: colorOption?.displayText ?? "",

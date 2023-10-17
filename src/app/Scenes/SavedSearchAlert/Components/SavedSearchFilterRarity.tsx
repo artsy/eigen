@@ -1,5 +1,5 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
@@ -46,7 +46,7 @@ export const SavedSearchFilterRarity = () => {
       <Spacer y={1} />
 
       <Flex flexDirection="row" flexWrap="wrap">
-        {ATTRIBUTION_CLASS_OPTIONS.map((option) => {
+        {KNOWN_ATTRIBUTION_CLASS_OPTIONS.map((option) => {
           return (
             <SavedSearchFilterPill
               key={option.paramValue as string}
