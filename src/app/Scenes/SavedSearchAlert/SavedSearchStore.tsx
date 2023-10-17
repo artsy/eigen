@@ -6,6 +6,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Action, action, createContextStore } from "easy-peasy"
+import { pick } from "lodash"
 
 export interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
@@ -75,14 +76,8 @@ export const savedSearchModel: SavedSearchModel = {
   }),
 
   clearAllAttributesAction: action((state) => {
-    if (Object.values(state.attributes).length !== 0) {
-      state.attributes = {
-        // Keep only selected artist IDs
-        artistIDs: state.attributes.artistIDs,
-        artistID: state.attributes.artistID,
-      }
-      state.dirty = true
-    }
+    state.attributes = pick(state.attributes, ["artistIDs", "artistID"])
+    state.dirty = true
   }),
 }
 
