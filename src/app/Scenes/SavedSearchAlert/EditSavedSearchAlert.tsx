@@ -19,6 +19,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
+import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
@@ -140,6 +141,13 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 component={AlertPriceRangeScreenQueryRenderer}
                 options={{
                   // Avoid PanResponser conflicts between the slider and the slide back gesture
+                  gestureEnabled: false,
+                }}
+              />
+              <Stack.Screen
+                name="SavedSearchFilterScreen"
+                component={SavedSearchFilterScreen}
+                options={{
                   gestureEnabled: false,
                 }}
               />

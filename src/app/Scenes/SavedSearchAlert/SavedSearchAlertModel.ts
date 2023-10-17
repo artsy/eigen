@@ -57,6 +57,7 @@ export type EditSavedSearchAlertNavigationStack = {
   AlertPriceRange: undefined
   EmailPreferences: undefined
   ConfirmationScreen: ConfirmationScreenParams
+  SavedSearchFilterScreen: undefined
 }
 
 export interface SavedSearchPill {

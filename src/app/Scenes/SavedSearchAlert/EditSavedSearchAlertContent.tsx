@@ -1,7 +1,9 @@
+import { Flex } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
 import { EditSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { goBack } from "app/system/navigation/navigate"
 
 export const EditSavedSearchAlertContent = () => {
   const route =
@@ -10,7 +12,10 @@ export const EditSavedSearchAlertContent = () => {
     route.params
 
   return (
-    <PageWithSimpleHeader title="Edit your Alert">
+    <Flex>
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={goBack}>
+        Edit your Alert
+      </FancyModalHeader>
       <SavedSearchAlertForm
         initialValues={{
           name: userAlertSettings?.name ?? "",
@@ -22,6 +27,6 @@ export const EditSavedSearchAlertContent = () => {
         onComplete={onComplete}
         onDeleteComplete={onDeleteComplete}
       />
-    </PageWithSimpleHeader>
+    </Flex>
   )
 }
