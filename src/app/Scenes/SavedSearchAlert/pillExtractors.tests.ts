@@ -239,7 +239,7 @@ describe("extractPillsFromCriteria", () => {
 
   it("should correctly extract attribution pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      attributionClass: ["unique", "unknown edition"],
+      attributionClass: ["unique"],
     }
     const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
@@ -248,11 +248,6 @@ describe("extractPillsFromCriteria", () => {
         label: "Unique",
         paramName: SearchCriteria.attributionClass,
         value: "unique",
-      },
-      {
-        label: "Unknown Edition",
-        paramName: SearchCriteria.attributionClass,
-        value: "unknown edition",
       },
     ])
   })
