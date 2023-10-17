@@ -16,6 +16,7 @@ import { SavedSearchAppliedFilters } from "app/Scenes/SavedSearchAlert/Component
 import { SavedSearchFilterColour } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColour"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
+import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { MotiView } from "moti"
 import { Alert, Platform, ScrollView } from "react-native"
@@ -39,6 +40,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           <SavedSearchAppliedFilters />
           <SavedSearchFilterPriceRangeQR />
           <SavedSearchRarity />
+          <SavedSearchFilterWaysToBuy />
           <SavedSearchFilterColour />
         </Join>
 

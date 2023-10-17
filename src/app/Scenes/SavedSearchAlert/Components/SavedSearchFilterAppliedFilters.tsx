@@ -23,7 +23,7 @@ export const SavedSearchAppliedFilters: React.FC<{}> = ({}) => {
             from={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ type: "timing", duration: 200 }}
-            key={`filter-label-${pill.value}`}
+            key={`${pill.paramName}-filter-label-${pill.value}`}
           >
             <Pill
               m={0.5}
