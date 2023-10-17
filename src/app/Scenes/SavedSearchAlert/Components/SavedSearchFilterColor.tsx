@@ -9,7 +9,7 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 
-export const SavedSearchFilterColour = () => {
+export const SavedSearchFilterColor = () => {
   const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.colors) as string[]
 
   const { width } = useScreenDimensions()
@@ -45,7 +45,7 @@ export const SavedSearchFilterColour = () => {
   return (
     <Flex>
       <Text px={2} variant="sm" fontWeight={500}>
-        Colour
+        Color
       </Text>
 
       <Spacer y={1} />
