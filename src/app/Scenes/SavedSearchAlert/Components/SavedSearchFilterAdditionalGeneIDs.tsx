@@ -3,9 +3,10 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useState } from "react"
-import { LayoutAnimation, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 
 export const SavedSearchFilterAdditionalGeneIDs = () => {
   const [showAll, setShowAll] = useState(false)
@@ -47,60 +48,61 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
         Medium
       </Text>
       <Spacer y={1} />
-      <Flex flexDirection="row" flexWrap="wrap">
-        {gravityArtworkMediumCategories.slice(0, 7).map((option) => {
-          return (
-            <SavedSearchFilterPill
-              key={option.value as string}
-              accessibilityLabel={option.label}
-              selected={isValueSelected({
-                selectedAttributes,
-                value: option.value,
-              })}
-              onPress={() => {
-                handlePress(option.value as string)
-              }}
-            >
-              {option.label}
-            </SavedSearchFilterPill>
-          )
-        })}
+      <AnimateHeight>
+        <Flex flexDirection="row" flexWrap="wrap">
+          {gravityArtworkMediumCategories.slice(0, 7).map((option) => {
+            return (
+              <SavedSearchFilterPill
+                key={option.value as string}
+                accessibilityLabel={option.label}
+                selected={isValueSelected({
+                  selectedAttributes,
+                  value: option.value,
+                })}
+                onPress={() => {
+                  handlePress(option.value as string)
+                }}
+              >
+                {option.label}
+              </SavedSearchFilterPill>
+            )
+          })}
 
-        {showAll
-          ? gravityArtworkMediumCategories
-              .slice(7, gravityArtworkMediumCategories.length)
-              .map((option) => {
-                return (
-                  <SavedSearchFilterPill
-                    key={option.value as string}
-                    accessibilityLabel={option.label}
-                    selected={isValueSelected({
-                      selectedAttributes,
-                      value: option.value,
-                    })}
-                    onPress={() => {
-                      handlePress(option.value as string)
-                    }}
-                  >
-                    {option.label}
-                  </SavedSearchFilterPill>
-                )
-              })
-          : null}
+          {showAll
+            ? gravityArtworkMediumCategories
+                .slice(7, gravityArtworkMediumCategories.length)
+                .map((option) => {
+                  return (
+                    <SavedSearchFilterPill
+                      key={option.value as string}
+                      accessibilityLabel={option.label}
+                      selected={isValueSelected({
+                        selectedAttributes,
+                        value: option.value,
+                      })}
+                      onPress={() => {
+                        handlePress(option.value as string)
+                      }}
+                    >
+                      {option.label}
+                    </SavedSearchFilterPill>
+                  )
+                })
+            : null}
 
-        <TouchableOpacity
-          onPress={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-            setShowAll(!showAll)
-          }}
-        >
-          <Flex height={50} justifyContent="center">
-            <Text variant="xs" color="blue100">
-              Show {showAll ? "less" : "more"}
-            </Text>
-          </Flex>
-        </TouchableOpacity>
-      </Flex>
+          <TouchableOpacity
+            onPress={() => {
+              setShowAll(!showAll)
+            }}
+          >
+            <Flex height={50} justifyContent="center" px={1}>
+              <Text variant="xs" color="blue100">
+                Show {showAll ? "less" : "more"}
+              </Text>
+            </Flex>
+          </TouchableOpacity>
+        </Flex>
+      </AnimateHeight>
     </Flex>
   )
 }
