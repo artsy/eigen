@@ -28,15 +28,15 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
 
   return (
     <ArtsyKeyboardAvoidingView>
+      <FancyModalHeader
+        hideBottomDivider
+        onLeftButtonPress={navigation.goBack}
+        renderRightButton={ClearAllButton}
+        onRightButtonPress={() => {}}
+      >
+        Filters
+      </FancyModalHeader>
       <ScrollView>
-        <FancyModalHeader
-          hideBottomDivider
-          onLeftButtonPress={navigation.goBack}
-          renderRightButton={ClearAllButton}
-          onRightButtonPress={() => {}}
-        >
-          Filters
-        </FancyModalHeader>
         <Join separator={<Separator my={2} borderColor="black10" />}>
           <SavedSearchFilterAppliedFilters />
           <SavedSearchFilterPriceRangeQR />
