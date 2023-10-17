@@ -842,12 +842,12 @@ const aggregations: Aggregations = [
       {
         count: 18037,
         name: "Photography",
-        value: "Photography",
+        value: "photography",
       },
       {
         count: 2420,
-        name: "Print",
-        value: "Print",
+        name: "Prints",
+        value: "prints",
       },
       {
         count: 513,

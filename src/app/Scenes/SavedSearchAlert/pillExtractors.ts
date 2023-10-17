@@ -142,7 +142,6 @@ export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill
 
     return {
       label: additionalGeneOption?.label ?? "",
-      // Using the paramValue because filter values are case sensitive
       value,
       paramName: SearchCriteria.additionalGeneIDs,
     }

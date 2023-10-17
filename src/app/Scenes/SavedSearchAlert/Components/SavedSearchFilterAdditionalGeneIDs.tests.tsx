@@ -12,7 +12,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 const black100Hex = "#000000"
 
 describe("SavedSearchFilterAdditionalGeneIDs", () => {
-  it("shows all available rarity options unselected", () => {
+  it("shows all available categories unselected", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
@@ -27,10 +27,10 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     })
   })
 
-  it("shows the right selected state with the right colors", () => {
+  it("shows the right selected categories", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider
-        runtimeModel={{ ...initialData, attributes: { additionalGeneIDs: ["Painting"] } }}
+        runtimeModel={{ ...initialData, attributes: { additionalGeneIDs: ["painting"] } }}
       >
         <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
@@ -48,7 +48,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     })
   })
 
-  it("Updates selected filters on press", () => {
+  it("Updates selected categories filters on press", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
