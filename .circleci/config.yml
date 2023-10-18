@@ -284,7 +284,7 @@ jobs:
       - install-gems
       - run:
           name: Check flags
-          command: ./scripts/biweekly-flag-check.sh
+          command: ./scripts/check-flags/biweekly-flag-check.sh
 
   build-test-js:
     executor:
