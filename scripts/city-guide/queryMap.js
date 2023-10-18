@@ -1,10 +1,10 @@
 const { BREAK, parse, visit } = require("graphql")
 
-const queries = require("../data/complete.queryMap.json")
+const queries = require("../../data/complete.queryMap.json")
 
 module.exports = function queryMap() {
   const result = {}
-  Object.keys(queries).forEach(ID => {
+  Object.keys(queries).forEach((ID) => {
     const query = queries[ID]
     const ast = parse(query)
     let queryName = null

@@ -7,8 +7,8 @@ const moment = require("moment")
 
 // @ts-ignore
 const preheatGraphQLCache = require("./preheatGraphQLCache")
+const queryMap = require("./queryMap")
 const cities = require("../../data/cityDataSortedByDisplayPreference.json")
-const queryMap = require("../queryMap")
 
 const QUERY_NAME = "MapRendererQuery"
 const MAX_GRAPHQL_INT = 2147483647
