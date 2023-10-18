@@ -2,7 +2,7 @@
 set -exo pipefail
 
 
-source ./scripts/source-for-bash-env
+source ./scripts/setup/source-for-bash-env
 
 if [ "${LOCAL_BRANCH}" != "beta-android" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
 	./scripts/test-android

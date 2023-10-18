@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 
-source ./scripts/source-for-bash-env
+source ./scripts/setup/source-for-bash-env
 
 ./scripts/setup/setup-fastlane-env
 bundle exec fastlane update_plugins

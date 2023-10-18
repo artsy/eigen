@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-source ./scripts/source-for-bash-env
+source ./scripts/setup/source-for-bash-env
 
 ./scripts/setup/setup-distribute
 

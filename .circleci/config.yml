@@ -172,7 +172,7 @@ jobs:
       - checkout
       - run:
           name: Deploy betas
-          command: ./scripts/deploy-beta-both
+          command: ./scripts/deploys/deploy-beta-both
 
   check-and-deploy:
     environment:
@@ -386,7 +386,7 @@ jobs:
       - run:
           name: Deploy if beta
           no_output_timeout: 20m
-          command: ./scripts/deploy-if-beta-branch-ios
+          command: ./scripts/deploys/deploy-if-beta-branch-ios
 
   build-test-app-android:
     docker:
@@ -411,7 +411,7 @@ jobs:
             - build-success.log
       - run:
           name: Deploy if beta - play store and firebase
-          command: ./scripts/deploy-if-beta-branch-android BOTH
+          command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
 workflows:
   version: 2
