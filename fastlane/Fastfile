@@ -273,7 +273,7 @@ lane :promote_beta_android do
   )
 
   version, build_number = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{version}-#{code}-submission")
+  tag_and_push(tag: "android-#{version}-#{selected_version_code}-submission")
 
   sentry_slack_android(build_number: build_number, version: version)
 
