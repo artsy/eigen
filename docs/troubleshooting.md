@@ -61,7 +61,7 @@ We mostly use asdf and if this is not working correctly it probably means someth
 
 As a workaround you can run this script:
 
-`./scripts/setup-xcode-local-node.sh`
+`./scripts/utils/setup-xcode-local-node.sh`
 
 This will write your local node path to a file in ios/ .xcode.env.local. It should look something like this
 
