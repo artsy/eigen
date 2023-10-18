@@ -25,6 +25,7 @@ export default function useAppState({ onForeground, onBackground }: AppStateProp
         onForeground
       ) {
         onForeground()
+        // test
       }
 
       // App has come to the background
