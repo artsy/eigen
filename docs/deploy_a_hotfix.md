@@ -30,7 +30,7 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 
 Since the hotfix branch is a past release the app version will need to be updated to submit to Apple and Google Play. The next release version can be found in app store connect and is generally the previous release's version number incremented by 1. In this example it is 7.2.1
 
-`./scripts/next`
+`./scripts/deploys/next`
 
 `What is the new human-readable release version? 7.2.1`
 
