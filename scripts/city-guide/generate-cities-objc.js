@@ -1,8 +1,8 @@
 /**
  * Run this with: $ yarn generate-cities-objc
  */
-const fs = require("fs")
 const spawnSync = require("child_process").spawnSync
+const fs = require("fs")
 
 function sh(command, cwd) {
   console.log("$ " + command)

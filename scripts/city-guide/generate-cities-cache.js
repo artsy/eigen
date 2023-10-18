@@ -3,12 +3,12 @@
 /**
  * Run this with: $ yarn generate-cities-cache
  */
-const queryMap = require("./queryMap")
-const preheatGraphQLCache = require("./preheatGraphQLCache")
 const moment = require("moment")
 
 // @ts-ignore
-const cities = require("../data/cityDataSortedByDisplayPreference.json")
+const preheatGraphQLCache = require("./preheatGraphQLCache")
+const cities = require("../../data/cityDataSortedByDisplayPreference.json")
+const queryMap = require("../queryMap")
 
 const QUERY_NAME = "MapRendererQuery"
 const MAX_GRAPHQL_INT = 2147483647

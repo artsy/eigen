@@ -1,6 +1,6 @@
 const prompt = require("prompt-sync")()
 const ora = require("ora")
-const { exec } = require("./helpers/exec")
+const { exec } = require("../helpers/exec")
 
 // Read the android and iOS candidate tags
 var androidTag = prompt("What's the android release tag? (e.g. android-8.0.4-516): ").trim()
