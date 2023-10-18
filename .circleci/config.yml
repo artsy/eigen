@@ -102,7 +102,7 @@ commands:
           command: ./scripts/setup/download-assets
       - run:
           name: Build App
-          command: ./scripts/ci-ios
+          command: ./scripts/ci/ci-ios
       - save_cache:
           key: v15-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
@@ -145,7 +145,7 @@ commands:
           command: ./scripts/setup/download-assets
       - run:
           name: Build App
-          command: ./scripts/ci-android
+          command: ./scripts/ci/ci-android
       - save_cache:
           key: v4-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
@@ -367,7 +367,7 @@ jobs:
           version: "16.4"
       - run:
           name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci-test-ios
+          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
           key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
