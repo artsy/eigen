@@ -37,12 +37,12 @@ export const AlertPriceRangeScreen: React.FC<AlertPriceRanceScreenProps> = ({
   const [filterPriceRange, setFilterPriceRange] = useState(
     attributes.priceRange || DEFAULT_PRICE_RANGE
   )
-  const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.setValueToAttributesByKeyAction
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
   )
 
   const handleOnButtonPress = () => {
-    setValueToAttributesByKeyAction({
+    addValueToAttributesByKeyAction({
       key: SearchCriteria.priceRange,
       value: filterPriceRange,
     })

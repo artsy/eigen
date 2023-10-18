@@ -10,8 +10,8 @@ export const SavedSearchFilterRarity = () => {
     SearchCriteria.attributionClass
   ) as string[]
 
-  const setValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.setValueToAttributesByKeyAction
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
   )
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
@@ -30,7 +30,7 @@ export const SavedSearchFilterRarity = () => {
       })
     } else {
       const newValues = (selectedAttributes || []).concat(value)
-      setValueToAttributesByKeyAction({
+      addValueToAttributesByKeyAction({
         key: SearchCriteria.attributionClass,
         value: newValues,
       })
