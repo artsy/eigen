@@ -30,10 +30,8 @@ export function useDeepLinks() {
   }, [isHydrated, isLoggedIn])
 
   const handleDeepLink = (url: string) => {
-    // These will be redirected, avoided double tracking
-    if (!url.includes("click.artsy.net")) {
-      trackEvent(tracks.deepLink(url))
-    }
+    // track deep link tap
+    trackEvent(tracks.deepLink(url))
 
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
