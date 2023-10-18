@@ -160,7 +160,7 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: ./scripts/secrets-check-all
+      - run: ./scripts/detect-secrets/secrets-check-all
 
   deploy-nightly-beta:
     executor:
