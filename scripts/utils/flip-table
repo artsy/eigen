@@ -45,6 +45,6 @@ find dist/ ! -name '.gitkeep' -type f -exec rm -f {} +
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all
 
-./scripts/update-echo
+./scripts/setup/update-echo
 
 yarn pod-install-repo-update

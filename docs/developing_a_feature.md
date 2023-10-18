@@ -8,16 +8,20 @@ For bigger features that will take longer than a sprint, we put development behi
 
 ## Contents
 
-- [Echo](#echo)
-- [How to Develop a Feature in Eigen](#how-to-develop-a-feature-in-eigen)
-- [Add a feature flag](#add-a-feature-flag)
-  - **Step 1**: [Configure the feature flag on features.ts and echo](#step-1-configure-the-feature-flag-on-featurests)
-  - **Step 2**: [Place the feature flag in the part of code where it will be used](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
-  - **Step 3**: [Enable the feature flag](#step-3-enable-the-feature-flag)
-- [Test a feature flag](#test-a-feature-flag)
-- [QA](#qa)
-- [Release a feature](#release-a-feature)
-- [Remove a Feature Flag](#remove-a-feature-flag)
+- [Feature flags](#feature-flags)
+  - [Contents](#contents)
+  - [Echo](#echo)
+  - [How to Develop a Feature in Eigen](#how-to-develop-a-feature-in-eigen)
+  - [Add a feature flag](#add-a-feature-flag)
+    - [Step 1: Configure the feature flag on features.ts](#step-1-configure-the-feature-flag-on-featurests)
+    - [Step 2: Place the feature flag in the part of code where it will be used](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
+      - [If you use a feature flag outside of a functional react component](#if-you-use-a-feature-flag-outside-of-a-functional-react-component)
+    - [Step 3: Enable the feature flag](#step-3-enable-the-feature-flag)
+  - [Test a feature flag](#test-a-feature-flag)
+  - [QA](#qa)
+  - [Release a feature](#release-a-feature)
+  - [Remove a Feature Flag](#remove-a-feature-flag)
+  - [Need some Help?](#need-some-help)
 
 ## Echo
 
@@ -76,7 +80,7 @@ We also need to add a flag in Echo, our remote feature flags configuration servi
 - Change eigen `readyForRelease: true`
 - When the app version is released, swap echo flag to `true` whenever we want users to get it
 
-After adding the echo key, and the PR is merged, update you local copy of echo by running `./scripts/update-echo`.
+After adding the echo key, and the PR is merged, update you local copy of echo by running `./scripts/setup/update-echo`.
 
 With this setup, the echo flag will be the source of truth for whether or not to enable the feature.
 

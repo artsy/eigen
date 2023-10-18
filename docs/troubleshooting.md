@@ -83,7 +83,7 @@ This happens when you try to commit some code that looks like a secret, a key, a
 Make sure what you are committing has no sensitive data in it.
 If you are sure is it _not_ sensitive data, then you can add an inline comment containing `pragma: allowlist secret`, to signify it is ok to commit. Then try to commit again, and it will work this time.
 
-- Failed `./scripts/setup-env-for-artsy` with
+- Failed `./scripts/setup/setup-env-for-artsy` with
 
 ```
   You will need to run:
@@ -119,7 +119,7 @@ bundle exec pod update tipsi-stripe
 
 You need to go to Xcode -> Preferences -> Locations and select Command Line Tools from the dropdown
 
-- Failed `./scripts/setup-env-for-artsy` with
+- Failed `./scripts/setup/setup-env-for-artsy` with
 
 ```
 [!] CocoaPods could not find compatible versions for pod "glog":

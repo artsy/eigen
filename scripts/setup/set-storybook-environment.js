@@ -8,7 +8,7 @@ const fs = require("fs")
 
 const startStorybook = process.env.STORYBOOK === "1"
 
-const metaflags = require("../metaflags.json")
+const metaflags = require("../../metaflags.json")
 
 if (startStorybook) console.log("Starting storybook...")
 

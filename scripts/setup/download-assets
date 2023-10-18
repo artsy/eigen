@@ -4,7 +4,7 @@ set -euxo pipefail
 
 if test ${CI:-false} = true
 then
-  ./scripts/setup-distribute
+  ./scripts/setup/setup-distribute
 fi
 
 aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json
@@ -12,4 +12,4 @@ aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist ios/Artsy/GoogleServ
 aws s3 cp s3://artsy-citadel/eigen/AppCenter-Config.plist ios/Artsy/AppCenter-Config.plist
 
 
-./scripts/download-fonts
+./scripts/setup/download-fonts

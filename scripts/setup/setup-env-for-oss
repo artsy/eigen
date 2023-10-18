@@ -22,4 +22,4 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 </dict>
 </plist>' > ios/Artsy/GoogleService-Info.plist
 
-./scripts/setup-oss-fonts
+./scripts/setup/setup-oss-fonts

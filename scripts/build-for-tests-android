@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-./scripts/setup-distribute
+./scripts/setup/setup-distribute
 
 yarn jetifier
 

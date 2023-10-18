@@ -37,12 +37,12 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
           name: "Set up aws cli not installed"
-          command: scripts/setup-awscli
+          command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
       - node/install-packages:
@@ -56,7 +56,7 @@ commands:
     steps:
       - run:
           name: Update echo
-          command: ./scripts/update-echo
+          command: ./scripts/setup/update-echo
   generate-query-map:
     steps:
       - run:
@@ -99,7 +99,7 @@ commands:
             - v15-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-assets
+          command: ./scripts/setup/download-assets
       - run:
           name: Build App
           command: ./scripts/ci-ios
@@ -142,7 +142,7 @@ commands:
       - generate-query-map
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-assets
+          command: ./scripts/setup/download-assets
       - run:
           name: Build App
           command: ./scripts/ci-android
