@@ -15,6 +15,7 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
+import { captureMessage } from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -91,11 +92,17 @@ export const ShareSheet = () => {
   const handleMorePress = async () => {
     const details = shareContent(data)
 
-    const resp = await RNFetchBlob.config({
-      fileCache: true,
-    }).fetch("GET", currentImageUrl)
+    let resp
 
-    const base64RawData = await resp.base64()
+    try {
+      resp = await RNFetchBlob.config({
+        fileCache: true,
+      }).fetch("GET", currentImageUrl)
+    } catch (error) {
+      captureMessage(`Error fetching RNFetchBlob imgUrl: ${error}`, "error")
+    }
+
+    const base64RawData = await resp?.base64()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
     const shareOptions = {

@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
@@ -79,8 +80,16 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
           "User-Agent": userAgent,
         }
         const request = new Request(url, { method: "POST", body, headers })
-        const res = await fetch(request)
-        const response = await res.json()
+
+        let res
+
+        try {
+          res = await fetch(request)
+        } catch (error) {
+          captureMessage(`Push Notification Error while fetching token: ${error}`, "error")
+        }
+
+        const response = await res?.json()
         if (response.status < 200 || response.status > 299 || response.error) {
           if (__DEV__) {
             console.warn(`New Push Token ${token} was NOT saved`, response?.error)

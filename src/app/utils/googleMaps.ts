@@ -1,4 +1,5 @@
 import { stringify } from "querystring"
+import { captureMessage } from "@sentry/react-native"
 import Config from "react-native-config"
 
 const API_KEY = Config.GOOGLE_MAPS_API_KEY
@@ -53,10 +54,14 @@ export const getLocationDetails = async ({
     language: "en",
   })
 
-  const response = await fetch(
-    "https://maps.googleapis.com/maps/api/place/details/json?" + queryString
-  )
-  const data = await response.json()
+  let response
+
+  try {
+    response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
+  } catch (error) {
+    captureMessage(`Error fetching getLocationDetails: ${error}`, "error")
+  }
+  const data = await response?.json()
 
   // TODO: Add dedicated error handling to the maps response
   const { address_components, geometry } = data.result as PlaceResult
