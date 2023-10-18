@@ -37,7 +37,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     )
 
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
-      if (option.value === "Painting") {
+      if (option.value === "painting") {
         expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
       } else {
         expect(getByText(option.label)).toBeDefined()

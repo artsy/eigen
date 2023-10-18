@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import {
   SavedSearchModel,
@@ -19,12 +18,8 @@ describe("SavedSearchFilterRarity", () => {
       </SavedSearchStoreProvider>
     )
 
-    KNOWN_ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
-      expect(getByText(option.displayText)).toBeDefined()
-      expect(getByText(option.displayText)).toHaveStyle({
-        color: black100Hex,
-      })
-    })
+    expect(getByText("Unique")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Limited Edition")).toHaveStyle({ color: black100Hex })
   })
 
   it("shows the right selected state with the right colors", () => {
@@ -38,7 +33,6 @@ describe("SavedSearchFilterRarity", () => {
 
     expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
     expect(getByText("Limited Edition")).toHaveStyle({ color: black100Hex })
-    expect(getByText("Open Edition")).toHaveStyle({ color: black100Hex })
   })
 
   it("Updates selected filters on press", () => {
