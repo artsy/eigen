@@ -352,7 +352,7 @@ jobs:
       - run:
           name: Clear project dir
           command: |
-            rm -rf /home/circleci/project/*
+            rm -rf  /Users/distiller/project/*
       - checkout
       - attach_workspace:
           at: .
