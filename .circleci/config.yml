@@ -180,7 +180,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.0.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -275,7 +275,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.0.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -325,7 +325,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.0.0
+      xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
 
     steps:
