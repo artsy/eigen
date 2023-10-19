@@ -34,16 +34,18 @@ export function useDeepLinks() {
     let targetURL
 
     // If the url is a marketing url, we need to fetch the redirect
-    try {
-      targetURL = await fetch(url)
-    } catch (error) {
-      if (__DEV__) {
-        console.warn(error)
-      } else {
-        captureMessage(
-          `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
-          "error"
-        )
+    if (url.includes("click.artsy.net")) {
+      try {
+        targetURL = await fetch(url)
+      } catch (error) {
+        if (__DEV__) {
+          console.warn(error)
+        } else {
+          captureMessage(
+            `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
+            "error"
+          )
+        }
       }
     }
 
