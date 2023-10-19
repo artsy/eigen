@@ -51,11 +51,13 @@ export function useDeepLinks() {
 
     const deepLinkUrl = targetURL?.url ?? url
 
+    // We track the deep link opened event
+    trackEvent(tracks.deepLink(deepLinkUrl))
+
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn) {
       // and we track the deep link
-      trackEvent(tracks.deepLink(deepLinkUrl))
 
       navigate(deepLinkUrl)
     }
@@ -67,11 +69,6 @@ export function useDeepLinks() {
 
   useEffect(() => {
     if (isLoggedIn && launchURL.current) {
-      // These will be redirected, avoided double tracking
-      if (!launchURL.current.includes("click.artsy.net")) {
-        trackEvent(tracks.deepLink(launchURL.current))
-      }
-
       // Navigate to the saved launch url
       navigate(launchURL.current)
       // Reset the launchURL
