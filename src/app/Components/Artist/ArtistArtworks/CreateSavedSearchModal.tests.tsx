@@ -130,9 +130,9 @@ describe("CreateSavedSearchModal", () => {
       })
     })
 
-    expect(screen.getByText("Save Alert")).toBeOnTheScreen()
+    expect(screen.getByTestId("save-alert-button")).toBeOnTheScreen()
 
-    fireEvent.press(screen.getByText("Save Alert"))
+    fireEvent.press(screen.getByTestId("save-alert-button"))
     await flushPromiseQueue()
 
     expect(mockNavigate).toHaveBeenCalledWith("ConfirmationScreen", {

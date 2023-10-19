@@ -213,12 +213,15 @@ describe("EditSavedSearchAlert", () => {
         })
       })
 
-      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+      expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
         selected: false,
       })
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: false,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: false,
+        }
+      )
     })
 
     it("email toggle is enabled, push toggle is disabled", async () => {
@@ -243,12 +246,15 @@ describe("EditSavedSearchAlert", () => {
         })
       })
 
-      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+      expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
         selected: true,
       })
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: false,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: false,
+        }
+      )
     })
 
     it("push toggle is enabled, email toggle is disabled", async () => {
@@ -281,12 +287,15 @@ describe("EditSavedSearchAlert", () => {
         })
       })
 
-      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+      expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
         selected: false,
       })
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: true,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: true,
+        }
+      )
     })
   })
 })
