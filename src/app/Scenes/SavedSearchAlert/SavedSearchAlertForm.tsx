@@ -246,7 +246,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+        contentContainerStyle={[
+          { paddingHorizontal: space(2), paddingTop: space(2), paddingBottom: 80 },
+          contentContainerStyle,
+        ]}
       >
         <Form
           pills={pills}
@@ -260,27 +263,27 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           shouldShowEmailWarning={shouldShowEmailWarning}
           {...other}
         />
+        {!!savedSearchAlertId && (
+          <Dialog
+            isVisible={visibleDeleteDialog}
+            title="Delete Alert"
+            detail="You will no longer receive notifications for artworks matching the criteria in this alert."
+            primaryCta={{
+              text: "Delete",
+              onPress: () => {
+                onDelete()
+                setVisibleDeleteDialog(false)
+              },
+            }}
+            secondaryCta={{
+              text: "Keep Alert",
+              onPress: () => {
+                setVisibleDeleteDialog(false)
+              },
+            }}
+          />
+        )}
       </ScrollView>
-      {!!savedSearchAlertId && (
-        <Dialog
-          isVisible={visibleDeleteDialog}
-          title="Delete Alert"
-          detail="You will no longer receive notifications for artworks matching the criteria in this alert."
-          primaryCta={{
-            text: "Delete",
-            onPress: () => {
-              onDelete()
-              setVisibleDeleteDialog(false)
-            },
-          }}
-          secondaryCta={{
-            text: "Keep Alert",
-            onPress: () => {
-              setVisibleDeleteDialog(false)
-            },
-          }}
-        />
-      )}
     </FormikProvider>
   )
 }
