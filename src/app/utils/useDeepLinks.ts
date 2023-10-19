@@ -33,6 +33,7 @@ export function useDeepLinks() {
   const handleDeepLink = async (url: string) => {
     let targetURL
 
+    // If the url is a marketing url, we need to fetch the redirect
     try {
       targetURL = await fetch(url)
     } catch (error) {
@@ -48,12 +49,12 @@ export function useDeepLinks() {
 
     const deepLinkUrl = targetURL?.url ?? url
 
-    // track deep link tap
-    trackEvent(tracks.deepLink(deepLinkUrl))
-
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn) {
+      // and we track the deep link
+      trackEvent(tracks.deepLink(deepLinkUrl))
+
       navigate(deepLinkUrl)
     }
 
