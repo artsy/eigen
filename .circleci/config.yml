@@ -5,7 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.4.0
-  python: circleci/python@3.7.17
+  python: circleci/python@2.1.1
 
 commands:
   await-previous-builds:
@@ -327,6 +327,9 @@ jobs:
     macos:
       xcode: 14.3.1
       resource_class: macos.m1.medium.gen1
+
+    docker:
+      - image: cimg/python:3.7.0
 
     steps:
       - attach_workspace:
