@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
@@ -29,19 +30,36 @@ export function useDeepLinks() {
     }
   }, [isHydrated, isLoggedIn])
 
-  const handleDeepLink = (url: string) => {
+  const handleDeepLink = async (url: string) => {
+    let targetURL
+
+    try {
+      targetURL = await fetch(url)
+    } catch (error) {
+      if (__DEV__) {
+        console.warn(error)
+      } else {
+        captureMessage(
+          `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
+          "error"
+        )
+      }
+    }
+
+    const deepLinkUrl = targetURL?.url ?? url
+
     // track deep link tap
-    trackEvent(tracks.deepLink(url))
+    trackEvent(tracks.deepLink(deepLinkUrl))
 
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn) {
-      navigate(url)
+      navigate(deepLinkUrl)
     }
 
     // Otherwise, we save the deep link url
     // to redirect them to the login screen once they log in
-    launchURL.current = url
+    launchURL.current = deepLinkUrl
   }
 
   useEffect(() => {

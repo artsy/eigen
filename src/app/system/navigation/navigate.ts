@@ -1,6 +1,6 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { addBreadcrumb } from "@sentry/react-native"
+import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
@@ -68,8 +68,21 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   // marketing url requires redirect
   if (targetURL.startsWith("https://click.artsy.net")) {
-    const response = await fetch(targetURL)
-    if (response.url) {
+    let response
+    try {
+      response = await fetch(targetURL)
+    } catch (error) {
+      if (__DEV__) {
+        console.warn(error)
+      } else {
+        captureMessage(
+          `[navigate] Error fetching marketing url redirect on: ${targetURL} failed with error: ${error}`,
+          "error"
+        )
+      }
+    }
+
+    if (response?.url) {
       targetURL = response.url
     }
   }
