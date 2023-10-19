@@ -63,6 +63,25 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
     })
   })
+
+  it("Shows all categories if the user has already selected mediums", () => {
+    const { getByText } = renderWithWrappers(
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...initialData,
+          attributes: {
+            additionalGeneIDs: ["textile-arts"],
+          },
+        }}
+      >
+        <SavedSearchFilterAdditionalGeneIDs />
+      </SavedSearchStoreProvider>
+    )
+
+    gravityArtworkMediumCategories.forEach((option) => {
+      expect(getByText(option.label)).toBeDefined()
+    })
+  })
 })
 
 const initialData: SavedSearchModel = {
