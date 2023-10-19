@@ -19,7 +19,12 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
-import { getBase64Data, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
+import {
+  getBase64Data,
+  getImageBase64,
+  getShareImages,
+  shareContent,
+} from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -30,7 +35,6 @@ import Config from "react-native-config"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
-import RNFetchBlob from "rn-fetch-blob"
 
 export const ShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useShareSheet()
@@ -91,22 +95,25 @@ export const ShareSheet = () => {
   const handleMorePress = async () => {
     const details = shareContent(data)
 
-    const resp = await RNFetchBlob.config({
-      fileCache: true,
-    }).fetch("GET", currentImageUrl)
-
-    const base64RawData = await resp.base64()
-    const base64Data = `data:image/png;base64,${base64RawData}`
-
     const shareOptions = {
       title: details.title ?? "",
       message: details.message + "\n" + details.url,
-      ...(data.type !== "sale" && { url: base64Data }),
+    }
+
+    let base64Data = ""
+    if (data.type !== "sale") {
+      base64Data = await getImageBase64(currentImageUrl)
     }
 
     try {
-      const res = await Share.open(shareOptions)
-      isArtwork && trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+      const res = await Share.open({
+        ...shareOptions,
+        ...(!!base64Data && { url: base64Data }),
+      })
+
+      if (isArtwork) {
+        trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+      }
     } catch (err) {
       // User dismissed without sharing
       console.log(err)
