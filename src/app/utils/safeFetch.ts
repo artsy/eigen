@@ -19,7 +19,12 @@ interface SafeFetchProps<T> {
  * @returns {Promise<any>} A promise that resolves to the fetched data or rejects with an error.
  */
 
-export const safeFetch = async ({ url, sentryMessage, onComplete, onError }: SafeFetchProps) => {
+export const safeFetch = async <T>({
+  url,
+  sentryMessage,
+  onComplete,
+  onError,
+}: SafeFetchProps<T>) => {
   try {
     const response = await fetch(url)
     const data = await response.json()
