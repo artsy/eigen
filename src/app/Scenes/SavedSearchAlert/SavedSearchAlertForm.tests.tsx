@@ -107,7 +107,7 @@ describe("SavedSearchAlertForm", () => {
     })
 
     describe("Create flow", () => {
-      it("calls create mutation when `Save Alert` button is pressed", async () => {
+      it("calls create mutation when `Create Alert` button is pressed", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -160,7 +160,7 @@ describe("SavedSearchAlertForm", () => {
 
         expect(getByText("Change your email preferences")).toBeTruthy()
         expect(
-          getByText("To receive Email Alerts, please update your email preferences.")
+          getByText("To receive alerts via email, please update your email preferences.")
         ).toBeTruthy()
       })
 
@@ -304,8 +304,8 @@ describe("SavedSearchAlertForm", () => {
     it("toggles should be displayed", async () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      expect(queryByText("Email Alerts")).toBeTruthy()
-      expect(queryByText("Mobile Alerts")).toBeTruthy()
+      expect(queryByText("Email")).toBeTruthy()
+      expect(queryByText("Push Notifications")).toBeTruthy()
     })
 
     it("state of toggles should be passed in mutation", async () => {
@@ -332,7 +332,7 @@ describe("SavedSearchAlertForm", () => {
     it("state of email toggle should be passed to mutation", async () => {
       const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
       fireEvent.press(getByTestId("save-alert-button"))
 
       await withoutDuplicateAlert()
@@ -354,7 +354,7 @@ describe("SavedSearchAlertForm", () => {
     it("state of push toggle should be passed to mutation", async () => {
       const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", false)
       fireEvent.press(getByTestId("save-alert-button"))
 
       await withoutDuplicateAlert()
@@ -381,7 +381,7 @@ describe("SavedSearchAlertForm", () => {
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
       )
 
-      await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", true)
 
       expect(spyAlert).toBeCalled()
       expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
@@ -397,7 +397,7 @@ describe("SavedSearchAlertForm", () => {
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
       )
 
-      await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", true)
 
       expect(spyAlert).toBeCalled()
       expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
@@ -408,7 +408,7 @@ describe("SavedSearchAlertForm", () => {
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
       )
 
-      await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", true)
 
       expect(spyAlert).not.toBeCalled()
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
@@ -428,7 +428,7 @@ describe("SavedSearchAlertForm", () => {
         />
       )
 
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
 
       expect(spyAlert).toBeCalled()
     })
@@ -444,9 +444,9 @@ describe("SavedSearchAlertForm", () => {
         />
       )
 
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
 
       expect(spyAlert).toBeCalledTimes(1)
     })
@@ -454,9 +454,9 @@ describe("SavedSearchAlertForm", () => {
     it("should not display modal if email toggle off and then back on", async () => {
       const { getByLabelText } = renderWithWrappers(<TestRenderer userAllowsEmails={false} />)
 
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
 
       expect(spyAlert).toBeCalledTimes(0)
     })
@@ -472,7 +472,7 @@ describe("SavedSearchAlertForm", () => {
         />
       )
 
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
       await fireEvent.press(getByTestId("save-alert-button"))
 
       await waitFor(() => {
@@ -531,7 +531,7 @@ describe("SavedSearchAlertForm", () => {
     })
   })
 
-  describe("Save alert button", () => {
+  describe("Create alert button", () => {
     describe("Create flow", () => {
       it("should be enabled by default", () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer />)
@@ -546,7 +546,7 @@ describe("SavedSearchAlertForm", () => {
           />
         )
 
-        fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+        fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
 
         expect(getByTestId("save-alert-button")).not.toBeDisabled()
       })
@@ -554,8 +554,8 @@ describe("SavedSearchAlertForm", () => {
       it("should be disabled if none of toggles have been selected", () => {
         const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
-        fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+        fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", false)
+        fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
 
         expect(getByTestId("save-alert-button")).toBeDisabled()
       })
@@ -586,8 +586,8 @@ describe("SavedSearchAlertForm", () => {
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
-        fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
-        fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+        fireEvent(getByLabelText("Push Notifications Toggler"), "valueChange", false)
+        fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
 
         expect(getByTestId("save-alert-button")).toBeDisabled()
       })
@@ -617,13 +617,13 @@ describe("SavedSearchAlertForm", () => {
       })
 
       it("should be enabled if filters are changed", () => {
-        const { getByText, getAllByText } = renderWithWrappers(
+        const { getByText, getByTestId } = renderWithWrappers(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
-        expect(getAllByText("Save Alert")[0]).toBeDisabled()
+        expect(getByTestId("save-alert-button")).toBeDisabled()
         fireEvent.press(getByText("Limited Edition"))
-        expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
+        expect(getByTestId("save-alert-button")).not.toBeDisabled()
       })
 
       it("should be enabled if selected at least one of toggles", () => {
@@ -634,7 +634,7 @@ describe("SavedSearchAlertForm", () => {
           />
         )
 
-        fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+        fireEvent(getByLabelText("Email Toggler"), "valueChange", true)
 
         expect(getByTestId("save-alert-button")).not.toBeDisabled()
       })
@@ -646,7 +646,7 @@ describe("SavedSearchAlertForm", () => {
       const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       expect(queryByText("Update email preferences")).toBeTruthy()
-      await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+      await fireEvent(getByLabelText("Email Toggler"), "valueChange", false)
       expect(queryByText("Update email preferences")).toBeFalsy()
     })
 
@@ -684,9 +684,9 @@ describe("SavedSearchAlertForm", () => {
 
     describe("Create flow", () => {
       it("should call create mutation without a warning message", async () => {
-        const { getAllByText } = renderWithWrappers(<TestRenderer />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -707,9 +707,9 @@ describe("SavedSearchAlertForm", () => {
       })
 
       it("should display a warning message if there is a duplicate", async () => {
-        const { getAllByText } = renderWithWrappers(<TestRenderer />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -725,9 +725,9 @@ describe("SavedSearchAlertForm", () => {
         // @ts-ignore
         spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Replace" button
 
-        const { getAllByText } = renderWithWrappers(<TestRenderer />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -745,12 +745,12 @@ describe("SavedSearchAlertForm", () => {
 
     describe("Update flow", () => {
       it("should call update mutation without a warning message", async () => {
-        const { getAllByText, getByText } = renderWithWrappers(
+        const { getByTestId, getByText } = renderWithWrappers(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
         fireEvent.press(getByText("Prints"))
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -774,12 +774,12 @@ describe("SavedSearchAlertForm", () => {
         // @ts-ignore
         spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "View Duplicate" button
 
-        const { getAllByText, getByText } = renderWithWrappers(
+        const { getByTestId, getByText } = renderWithWrappers(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
         fireEvent.press(getByText("Prints"))
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -797,12 +797,12 @@ describe("SavedSearchAlertForm", () => {
         // @ts-ignore
         spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Replace" button
 
-        const { getAllByText, getByText } = renderWithWrappers(
+        const { getByTestId, getByText } = renderWithWrappers(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
 
         fireEvent.press(getByText("Prints"))
-        fireEvent.press(getAllByText("Save Alert")[0])
+        fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
           const mutation = mockEnvironment.mock.getMostRecentOperation()

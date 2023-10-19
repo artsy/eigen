@@ -141,7 +141,7 @@ export const Form: React.FC<FormProps> = ({
             <SavedSearchNameInputQueryRenderer attributes={attributes} />
           ) : (
             <Input
-              title="Name"
+              title="Alert Name"
               placeholder={entity.artists[0]?.name}
               value={values.name}
               onChangeText={handleChange("name")}
@@ -174,8 +174,8 @@ export const Form: React.FC<FormProps> = ({
         {!!enableAlertsFilters ? (
           <Flex mt={2}>
             <MenuItem
-              title="Add Filters:"
-              description="Including price, rarity, medium, size, color"
+              title="Add Filters"
+              description="Including Price Range, Rarity, Medium, Size, Color"
               onPress={() => {
                 navigation.navigate("SavedSearchFilterScreen")
               }}
@@ -206,7 +206,7 @@ export const Form: React.FC<FormProps> = ({
 
         <Box>
           <SavedSearchAlertSwitch
-            label="Mobile Alerts"
+            label="Push Notifications"
             onChange={onTogglePushNotification}
             active={values.push}
           />
@@ -214,7 +214,7 @@ export const Form: React.FC<FormProps> = ({
           <Spacer y={1} />
 
           <SavedSearchAlertSwitch
-            label="Email Alerts"
+            label="Email"
             onChange={onToggleEmailNotification}
             active={values.email}
           />
@@ -225,7 +225,7 @@ export const Form: React.FC<FormProps> = ({
                 Change your email preferences
               </Text>
               <Text variant="xs" mt={0.5}>
-                To receive Email Alerts, please update your email preferences.
+                To receive alerts via email, please update your email preferences.
               </Text>
             </Box>
           )}
@@ -255,7 +255,7 @@ export const Form: React.FC<FormProps> = ({
           block
           onPress={onSubmitPress}
         >
-          Save Alert
+          {isEditMode ? "Save Alert" : "Create Alert"}
         </Button>
         {!!isEditMode && (
           <>
