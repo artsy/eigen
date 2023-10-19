@@ -3,7 +3,7 @@ const fs = require("fs")
 const https = require("https")
 const path = require("path")
 
-const ASSETS_DIR = path.resolve(__dirname, "../Pod/Assets/PreHeatedGraphQLCache")
+const ASSETS_DIR = path.resolve(__dirname, "../../data/PreHeatedGraphQLCache")
 const CREATED_AT_FILENAME = "PreheatedCacheCreatedAt.txt"
 
 /**
@@ -30,7 +30,7 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
   const options = {
     hostname: "metaphysics-production.artsy.net",
     port: 443,
-    path: "/",
+    path: "/v2/",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,13 +38,14 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
     },
   }
 
-  const req = https.request(options, res => {
+  const req = https.request(options, (res) => {
     if (res.statusCode !== 200) {
+      console.log(requestPostData)
       throw new Error(`Failed with status code: ${res.statusCode}`)
     }
 
     const responseData = []
-    res.on("data", chunk => responseData.push(chunk))
+    res.on("data", (chunk) => responseData.push(chunk))
 
     res.on("end", () => {
       const graphqlResponse = JSON.parse(Buffer.concat(responseData).toString("utf8"))
@@ -60,17 +61,22 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
           freshness: freshness.getTime() / 1000, // Time since UNIX epoc in seconds.
         }),
         "utf8",
-        error => {
+        (error) => {
           if (error) throw error
         }
       )
-      fs.writeFile(path.join(ASSETS_DIR, CREATED_AT_FILENAME), new Date().toISOString(), "utf8", error => {
-        if (error) throw error
-      })
+      fs.writeFile(
+        path.join(ASSETS_DIR, CREATED_AT_FILENAME),
+        new Date().toISOString(),
+        "utf8",
+        (error) => {
+          if (error) throw error
+        }
+      )
     })
   })
 
-  req.on("error", error => {
+  req.on("error", (error) => {
     throw error
   })
 

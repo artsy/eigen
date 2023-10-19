@@ -15,12 +15,12 @@ function sh(command, cwd) {
 
 // Download latest JSON from Metaphysics main.
 sh(
-  "curl -o data/cityDataSortedByDisplayPreference.json https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json"
+  "curl -o data/cityDataSortedByDisplayPreference.json https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/v2/city/cityDataSortedByDisplayPreference.json"
 )
 
-const cities = require("../data/cityDataSortedByDisplayPreference.json")
+const cities = require("../../data/cityDataSortedByDisplayPreference.json")
 
-const filename = "./Pod/Classes/Data/ARCity.m"
+const filename = "./ios/Artsy/Emission/Data/ARCity.m"
 
 const citiesArray = cities.map((city) => {
   const {
