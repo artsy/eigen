@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { WAYS_TO_BUY_OPTIONS } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import {
@@ -10,6 +11,9 @@ import {
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const black100Hex = "#000000"
+const options = WAYS_TO_BUY_OPTIONS.filter(
+  (option) => option.paramName !== FilterParamName.waysToBuyContactGallery
+)
 
 describe("SavedSearchFilterWaysToBuy", () => {
   it("shows all available ways to buy options unselected", () => {
@@ -19,7 +23,7 @@ describe("SavedSearchFilterWaysToBuy", () => {
       </SavedSearchStoreProvider>
     )
 
-    WAYS_TO_BUY_OPTIONS.forEach((option) => {
+    options.forEach((option) => {
       expect(getByText(option.displayText)).toBeDefined()
       expect(getByText(option.displayText)).toHaveStyle({
         color: black100Hex,
@@ -34,7 +38,7 @@ describe("SavedSearchFilterWaysToBuy", () => {
       </SavedSearchStoreProvider>
     )
 
-    WAYS_TO_BUY_OPTIONS.forEach((option) => {
+    options.forEach((option) => {
       if (option.paramName === "atAuction") {
         expect(getByText(option.displayText)).not.toHaveStyle({
           color: black100Hex,

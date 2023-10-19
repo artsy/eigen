@@ -1,4 +1,5 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { WAYS_TO_BUY_OPTIONS } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
@@ -14,6 +15,10 @@ export const SavedSearchFilterWaysToBuy = () => {
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
 
+  const options = WAYS_TO_BUY_OPTIONS.filter(
+    (option) => option.paramName !== FilterParamName.waysToBuyContactGallery
+  )
+
   return (
     <Flex px={2}>
       <Text variant="sm" fontWeight={500}>
@@ -23,7 +28,7 @@ export const SavedSearchFilterWaysToBuy = () => {
       <Spacer y={1} />
 
       <Flex flexDirection="row" flexWrap="wrap">
-        {WAYS_TO_BUY_OPTIONS.map((option, index) => {
+        {options.map((option, index) => {
           const criterion = option.paramName as unknown as SearchCriteria
 
           const isSelected = attributes[criterion]
