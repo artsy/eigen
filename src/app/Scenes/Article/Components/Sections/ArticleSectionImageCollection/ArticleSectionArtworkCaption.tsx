@@ -1,14 +1,16 @@
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArticleSectionArtworkCaption_artwork$key } from "__generated__/ArticleSectionArtworkCaption_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionArtworkCaptionProps {
   artwork: ArticleSectionArtworkCaption_artwork$key
+  showViewArtworkCTA?: boolean
 }
 
 export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaptionProps> = ({
   artwork,
+  showViewArtworkCTA,
 }) => {
   const data = useFragment(fragment, artwork)
 
@@ -23,7 +25,7 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
   }
 
   return (
-    <Flex px={2} py={1}>
+    <Flex pr={2}>
       {data.artists?.map((artist, i) => {
         if (!artist || !artist.href || !artist.name) return null
 
@@ -56,6 +58,12 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
         <Text variant="xs" weight="medium">
           {data.saleMessage}
         </Text>
+      )}
+
+      {!!showViewArtworkCTA && (
+        <Button mt={1} size="small" variant="outline" onPress={() => handleOnNavigate(data.href)}>
+          View Artwork
+        </Button>
       )}
     </Flex>
   )

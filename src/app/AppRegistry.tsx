@@ -12,6 +12,7 @@ import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityIte
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
+import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
@@ -353,6 +354,11 @@ export const modules = defineModules({
   Article: reactModule(ArticleScreen, {
     fullBleed: true,
     hidesBackButton: true,
+  }),
+  ArticleSlideShow: reactModule(ArticlesSlideShowScreen, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   Articles: reactModule(
     ArticlesScreen,
