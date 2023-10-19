@@ -13,7 +13,7 @@ import {
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
 import useAppState from "app/utils/useAppState"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
 interface CreateSavedSearchAlertContentProps {
