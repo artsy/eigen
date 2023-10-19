@@ -21,7 +21,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "16.18.0"
+          node-version: "18.18.2"
   generate-checksums:
     steps:
       - run:
@@ -166,7 +166,7 @@ jobs:
   deploy-nightly-beta:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: small
 
     steps:
@@ -180,7 +180,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 14.3.1
+      xcode: 15.0.0
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -216,7 +216,7 @@ jobs:
     parallelism: 8
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: large
     steps:
       - checkout
@@ -236,7 +236,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: medium
     steps:
       - checkout
@@ -251,7 +251,7 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: small
     steps:
       - checkout
@@ -275,7 +275,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.3.1
+      xcode: 15.0.0
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -290,7 +290,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: medium
     steps:
       - checkout
@@ -325,7 +325,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.3.1
+      xcode: 15.0.0
       resource_class: macos.m1.medium.gen1
 
     steps:
