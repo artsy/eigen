@@ -9,11 +9,12 @@ import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 export const SavedSearchFilterAdditionalGeneIDs = () => {
-  const [showAll, setShowAll] = useState(false)
-
   const selectedAttributes = useSearchCriteriaAttributes(
     SearchCriteria.additionalGeneIDs
   ) as string[]
+
+  // If the user has selected any values, show all the options on initial render
+  const [showAll, setShowAll] = useState(!!selectedAttributes?.length)
 
   const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.addValueToAttributesByKeyAction
