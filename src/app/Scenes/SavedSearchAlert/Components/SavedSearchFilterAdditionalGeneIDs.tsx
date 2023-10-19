@@ -14,7 +14,7 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
   ) as string[]
 
   // If the user has selected any values, show all the options on initial render
-  const [showAll, setShowAll] = useState(selectedAttributes?.length)
+  const [showAll, setShowAll] = useState(!!selectedAttributes?.length)
 
   const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.addValueToAttributesByKeyAction
