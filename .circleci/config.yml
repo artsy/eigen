@@ -5,6 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.4.0
+  python: circleci/python@3.7.16
 
 commands:
   await-previous-builds:
