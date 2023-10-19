@@ -8,6 +8,7 @@ import {
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { navigate } from "app/system/navigation/navigate"
+import { safeFetch } from "app/utils/safeFetch"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
@@ -79,9 +80,13 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
           "User-Agent": userAgent,
         }
         const request = new Request(url, { method: "POST", body, headers })
-        const res = await fetch(request)
-        const response = await res.json()
-        if (response.status < 200 || response.status > 299 || response.error) {
+
+        const response = await safeFetch({
+          url: request,
+          sentryMessage: "Error saving push notification token",
+        })
+
+        if (response?.status < 200 || response?.status > 299 || response?.error) {
           if (__DEV__) {
             console.warn(`New Push Token ${token} was NOT saved`, response?.error)
           }
