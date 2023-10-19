@@ -4,6 +4,7 @@ import {
   getSizeOptions,
 } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -27,18 +28,42 @@ const getPreferredMetric = () => {
 export const SavedSearchFilterSize = () => {
   const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.sizes) as string[]
 
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
+  )
+  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.removeValueFromAttributesByKeyAction
+  )
+
   const storeMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
   const [selectedMetric, setSelectedMetric] = useState(storeMetric || getPreferredMetric())
 
   const setMetric = GlobalStore.actions.userPrefs.setMetric
 
-  const sizeOptions = getSizeOptions(selectedMetric)
+  const options = getSizeOptions(selectedMetric)
 
   useEffect(() => {
     if (storeMetric !== selectedMetric) {
-      setSelectedMetric(selectedMetric)
+      setMetric(selectedMetric)
     }
   }, [selectedMetric])
+
+  const handlePress = (value: string) => {
+    const isSelected = !!selectedAttributes?.includes(value)
+
+    if (isSelected) {
+      removeValueFromAttributesByKeyAction({
+        key: SearchCriteria.sizes,
+        value: value,
+      })
+    } else {
+      const newValues = (selectedAttributes || []).concat(value)
+      addValueToAttributesByKeyAction({
+        key: SearchCriteria.sizes,
+        value: newValues,
+      })
+    }
+  }
 
   return (
     <Flex px={2}>
@@ -68,6 +93,23 @@ export const SavedSearchFilterSize = () => {
                 <Text marginRight="4">{currentMetric}</Text>
               </Flex>
             </Touchable>
+          )
+        })}
+      </Flex>
+
+      <Flex flexDirection="row" flexWrap="wrap">
+        {options.map((option) => {
+          return (
+            <SavedSearchFilterPill
+              key={option.paramValue as string}
+              accessibilityLabel={option.displayText}
+              selected={!!selectedAttributes?.includes(option.paramValue as string)}
+              onPress={() => {
+                handlePress(option.paramValue as string)
+              }}
+            >
+              {option.displayText}
+            </SavedSearchFilterPill>
           )
         })}
       </Flex>

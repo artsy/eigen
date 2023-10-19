@@ -46,12 +46,13 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       <ScrollView>
         <Join separator={<Separator my={2} borderColor="black10" />}>
           <SavedSearchFilterAppliedFilters />
-          {/* <SavedSearchFilterPriceRangeQR /> */}
-          {/* <SavedSearchFilterRarity /> */}
-          {/* <SavedSearchFilterAdditionalGeneIDs /> */}
+          <SavedSearchFilterAppliedFilters />
+          <SavedSearchFilterAdditionalGeneIDs />
+          <SavedSearchFilterRarity />
+          <SavedSearchFilterPriceRangeQR />
           <SavedSearchFilterSize />
-          {/* <SavedSearchFilterWaysToBuy /> */}
-          {/* <SavedSearchFilterColor /> */}
+          <SavedSearchFilterWaysToBuy />
+          <SavedSearchFilterColor />
         </Join>
 
         <Spacer y={2} />
