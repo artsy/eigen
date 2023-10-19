@@ -17,6 +17,7 @@ import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Com
 import { SavedSearchFilterColor } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColor"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
+import { SavedSearchFilterSize } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterSize"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -45,11 +46,12 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       <ScrollView>
         <Join separator={<Separator my={2} borderColor="black10" />}>
           <SavedSearchFilterAppliedFilters />
-          <SavedSearchFilterAdditionalGeneIDs />
-          <SavedSearchFilterRarity />
-          <SavedSearchFilterPriceRangeQR />
-          <SavedSearchFilterWaysToBuy />
-          <SavedSearchFilterColor />
+          {/* <SavedSearchFilterPriceRangeQR /> */}
+          {/* <SavedSearchFilterRarity /> */}
+          {/* <SavedSearchFilterAdditionalGeneIDs /> */}
+          <SavedSearchFilterSize />
+          {/* <SavedSearchFilterWaysToBuy /> */}
+          {/* <SavedSearchFilterColor /> */}
         </Join>
 
         <Spacer y={2} />
