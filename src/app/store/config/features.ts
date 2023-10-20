@@ -113,12 +113,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
-  AREnableInstantViewInRoom: {
-    description: "Enable Instant View In Room",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableInstantViewInRoom",
-  },
   AREnableSkeletonAnimation: {
     description: "Enable Skeleton Animation",
     readyForRelease: true,
@@ -176,7 +170,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
   },
-  // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,

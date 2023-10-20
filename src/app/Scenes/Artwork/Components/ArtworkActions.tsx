@@ -15,7 +15,6 @@ import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButt
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -53,7 +52,6 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const { trackEvent } = useTracking()
   const space = useSpace()
 
-  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
@@ -71,8 +69,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
       widthIn,
       heightIn,
       slug,
-      id,
-      enableInstantVIR
+      id
     )
   }
 

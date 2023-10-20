@@ -31,7 +31,7 @@ RCT_EXPORT_MODULE()
     return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId enableInstantVIR:(BOOL)enableInstantVIR)
+RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
     BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             config.debugMode = [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (allowedAccess) {
-                if (hasLidarEnabledDevice && enableInstantVIR) { // Lidar device we can do instant vertical detection
+                if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
                     ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
                     [viewInRoomWallVC initWithConfig:config];
                     viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -73,7 +73,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 Message *setupURL = echo.messages[@"ARVIRVideo"];
 
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
-                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config enableInstantVIR:enableInstantVIR];
+                ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
                 setupVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 setupVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [[self.class currentlyPresentedVC] presentViewController:setupVC animated:YES completion:nil];
