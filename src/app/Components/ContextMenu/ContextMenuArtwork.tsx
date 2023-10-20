@@ -89,9 +89,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       widthIn,
       heightIn,
       slug,
-      id,
-      // enableInstantVIR
-      true
+      id
     )
   }
 

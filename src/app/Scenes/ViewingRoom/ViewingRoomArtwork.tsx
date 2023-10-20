@@ -58,9 +58,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       widthIn,
       heightIn,
       selectedArtwork.slug,
-      selectedArtwork.id,
-      // enableInstantVIR
-      true
+      selectedArtwork.id
     )
   }
 

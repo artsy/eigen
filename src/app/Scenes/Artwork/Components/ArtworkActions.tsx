@@ -69,9 +69,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
       widthIn,
       heightIn,
       slug,
-      id,
-      // enableInstantVIR
-      true
+      id
     )
   }
 
