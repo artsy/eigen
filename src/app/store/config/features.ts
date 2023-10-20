@@ -92,7 +92,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
-  // Not yet released
+  // Not yet released - don't cleanup waiting design feedback
   AREnablePageableArtworkScreens: {
     description: "Enable pageable artwork screens",
     readyForRelease: false,
