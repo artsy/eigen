@@ -1,8 +1,8 @@
 // @ts-check
 
-const { updateRepo } = require("@artsy/update-repo")
-const path = require("path")
 const fs = require("fs")
+const path = require("path")
+const { updateRepo } = require("@artsy/update-repo")
 
 async function main() {
   try {

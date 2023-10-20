@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -exo pipefail
-
-
-./scripts/distribute-ios
-./scripts/distribute-android

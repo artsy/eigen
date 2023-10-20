@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -exo pipefail
+
+
+./scripts/setup/setup-fastlane-env
+# brew not working in docker/linux in circleci
+# brew update
+# brew tap getsentry/tools
+# brew install sentry-cli
+if ! which sentry-cli;
+then
+  echo "installing sentry-cli"
+  curl -sL https://sentry.io/get-cli/ | bash
+else
+  echo "sentry-cli already installed"
+fi
+
+bundle exec fastlane update_plugins
+
+./scripts/setup/setup-awscli
+
+aws s3 cp s3://artsy-citadel/eigen/release.keystore android/app/release.keystore
+aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
+aws s3 cp s3://artsy-citadel/eigen/eigen-firebase-app-distribution.json eigen-firebase-app-distribution.json
+aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json

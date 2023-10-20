@@ -13,7 +13,7 @@ Eigen's beta pre-submission checklist has [moved into Notion 🔐](https://www.n
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
    - Commit, push the changes, make a PR from your branch to main.
-1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review.
+1. Run `./scripts/deploys/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review.
 1. Warning: the Android app will be released automatically once reviewed by Google. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
 ## Check on Play Store Release
@@ -31,6 +31,6 @@ Our Play Store releases are released **automatically** once reviewed. Don't rele
 
 ## Prepare for the Next Release
 
-1. Run `./scripts/next`. This prompts for the next version number.
+1. Run `./scripts/deploys/next`. This prompts for the next version number.
 1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
 1. PR your changes back into the `main` branch.

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -exo pipefail
+
+if [ "$(uname)" == "Darwin" ]; then # MacOS
+    ./scripts/setup/setup-distribute-macos
+else # Assume Linux
+    ./scripts/setup/setup-distribute-linux
+fi

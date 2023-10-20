@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/setup/source-for-bash-env
+
+./scripts/setup/setup-fastlane-env
+bundle exec fastlane update_plugins
+
+bundle exec fastlane promote_beta_android

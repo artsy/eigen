@@ -13,7 +13,7 @@ Eigen's beta pre-submission checklist has [moved into Notion 🔐](https://www.n
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
    - Commit, push the changes, make a PR from your branch to main.
-3. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review
+3. Run `./scripts/deploys/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review
 
 Our App Store releases are set to release automatically once Apple approves the app. You can check the status of the build in app store connect, a message will also be sent to mobile [at] artsymail [dot] com once the app is approved.
 
@@ -27,7 +27,7 @@ Our App Store releases are set to release automatically once Apple approves the 
 
 ![Add a new app version to ASC](./screenshots/adding-a-new-app-version-app-store.gif)
 
-2. Run `./scripts/next`. This prompts for the next version number. **Use the same version as the previous step**.
+2. Run `./scripts/deploys/next`. This prompts for the next version number. **Use the same version as the previous step**.
 3. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
-4. Run `./scripts/deploy-beta-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
+4. Run `./scripts/deploys/deploy-beta-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
 5. PR your changes back into the `main` branch.

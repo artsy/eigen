@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/setup/source-for-bash-env
+
+if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
+	./scripts/deploys/distribute-ios
+fi
