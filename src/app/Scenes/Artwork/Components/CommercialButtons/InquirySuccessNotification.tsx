@@ -80,7 +80,7 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
 const SuccessfulInquirySentContainer = styled(Flex)`
   position: relative;
   z-index: 5;
-  height: 65px;
+  height: 75px;
   margin: 10px;
   flex-direction: column;
   background-color: ${themeGet("colors.white100")};
