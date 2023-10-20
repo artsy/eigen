@@ -42,23 +42,15 @@ export type FeatureDescriptor = (
 export type FeatureName = keyof typeof features
 
 export const features: { [key: string]: FeatureDescriptor } = {
-  AROptionsPriceTransparency: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsPriceTransparency",
-    description: "Price Transparency",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
   },
+  // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
-  AREnablePanOnStaticHeader: {
-    description: "Enable Scroll/Pan on StaticHeader",
-    readyForRelease: false,
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
@@ -74,11 +66,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable save icon for large artwork rails",
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
-  },
-  AREnableConsignmentInquiry: {
-    description: "Enable Sell With Artsy Inquiry",
-    readyForRelease: true,
-    echoFlagKey: "AREnableConsignmentInquiry",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
@@ -105,6 +92,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
+  // Not yet released
   AREnablePageableArtworkScreens: {
     description: "Enable pageable artwork screens",
     readyForRelease: false,
@@ -169,6 +157,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionCollectedArtists",
   },
+  // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
     readyForRelease: true,
@@ -187,6 +176,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
   },
+  // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
