@@ -39,12 +39,12 @@ PODS:
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
     - Appboy-iOS-SDK/NewsFeed
-  - appcenter-core (4.4.5):
-    - AppCenterReactNativeShared (~> 4.0)
+  - appcenter-core (5.0.0):
+    - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - AppCenter/Core (4.4.3)
-  - AppCenterReactNativeShared (4.4.5):
-    - AppCenter/Core (= 4.4.3)
+  - AppCenter/Core (5.0.3)
+  - AppCenterReactNativeShared (5.0.0):
+    - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
@@ -1170,9 +1170,9 @@ SPEC CHECKSUMS:
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
-  AppCenter: 3fd04aa1b166e16fdb03ec81dabe488aece83fbd
-  appcenter-core: c593b2e4ac28d6a21b6a217c4a5e6b3de7b0b00f
-  AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
+  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
+  appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
+  AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
