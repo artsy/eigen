@@ -5816,10 +5816,10 @@ appcenter-file-upload-client@0.1.0:
     superagent "5.1.0"
     url-parse "^1.4.7"
 
-appcenter-link-scripts@4.4.5:
-  version "4.4.5"
-  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-4.4.5.tgz#0d2550b15b5828df904ee0ce76d5fca1e4edd206"
-  integrity sha512-bs++S1eFm2+noAYC7+5lZESg2IvRJ1rl2o41Re3L+dg6UtKrIf/34LgIsnOM7Ufn+pophkmqkO5GRapVDGTO4Q==
+appcenter-link-scripts@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-5.0.0.tgz#ada44d466516ac65364d7b1617e2cf12eac2fb0c"
+  integrity sha512-QCqK9zu8NtdcIGbhYDITJHSpoQc+byP3IKEpAxbU1jMZ36Ww3AKn3y94yo5PYlrGq5e+u5PXrLkbC3VYFOH6fg==
   dependencies:
     debug "4.1.1"
     glob "5.0.15"
@@ -5828,12 +5828,12 @@ appcenter-link-scripts@4.4.5:
     which "1.2.11"
     xcode "2.0.0"
 
-appcenter@4.4.5:
-  version "4.4.5"
-  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-4.4.5.tgz#800008cc5566f5092dba4797f6d7940d5ae65203"
-  integrity sha512-3OPM8yOgwYyd1pBLVxra9+rAscCTEEySyxYhJYwzPw8ZjnGIJNTgDQ+YwuajoYG8vPJRbl8ZmG16wcdcMYk14g==
+appcenter@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-5.0.0.tgz#31b202888b352ffa89b182b82ac14dd386e99849"
+  integrity sha512-19vruHWSfecflA2EcP39kiE00077A2httE/nUrbEsU2Od6ZW4sYvNUZkX2y9emR96HY4SpsUrdG2JeBIBXeoTg==
   dependencies:
-    appcenter-link-scripts "4.4.5"
+    appcenter-link-scripts "5.0.0"
 
 appdirsjs@^1.2.4:
   version "1.2.6"
