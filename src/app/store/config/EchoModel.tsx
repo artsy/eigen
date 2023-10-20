@@ -1,7 +1,7 @@
+import { captureMessage } from "@sentry/react-native"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
-import { safeFetch } from "app/utils/safeFetch"
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
@@ -41,13 +41,22 @@ export const getEchoModel = (): EchoModel => ({
       return
     }
 
-    await safeFetch({
-      url: "https://echo.artsy.net/Echo.json",
-      onComplete: (json: Echo) => {
+    let result
+
+    try {
+      result = await fetch("https://echo.artsy.net/Echo.json")
+
+      if (result?.ok) {
+        const json = await result.json()
         actions.setEchoState(json)
-      },
-      sentryMessage: "Failed to fetch Echo data",
-    })
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.warn(error)
+      } else {
+        captureMessage(`Failed to fetch Echo data: ${error}`, "error")
+      }
+    }
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,

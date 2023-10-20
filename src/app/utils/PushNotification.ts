@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
@@ -8,7 +9,6 @@ import {
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { navigate } from "app/system/navigation/navigate"
-import { safeFetch } from "app/utils/safeFetch"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
@@ -80,11 +80,17 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
           "User-Agent": userAgent,
         }
         const request = new Request(url, { method: "POST", body, headers })
-
-        const response = await safeFetch({
-          url: request,
-          sentryMessage: "Error saving push notification token",
-        })
+        let response
+        try {
+          const res = await fetch(request)
+          response = await res.json()
+        } catch (error) {
+          if (__DEV__) {
+            console.warn(`error`, error)
+          } else {
+            captureMessage(`Error saving push notification token: ${error}`, "error")
+          }
+        }
 
         if (response?.status < 200 || response?.status > 299 || response?.error) {
           if (__DEV__) {

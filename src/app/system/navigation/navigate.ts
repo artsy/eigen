@@ -69,7 +69,6 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   // marketing url requires redirect
   if (targetURL.startsWith("https://click.artsy.net")) {
     let response
-
     try {
       response = await fetch(targetURL)
     } catch (error) {

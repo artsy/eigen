@@ -1,5 +1,5 @@
 import { stringify } from "querystring"
-import { safeFetch } from "app/utils/safeFetch"
+import { captureMessage } from "@sentry/react-native"
 import Config from "react-native-config"
 
 const API_KEY = Config.GOOGLE_MAPS_API_KEY
@@ -33,10 +33,19 @@ export const getLocationPredictions = async (query: string): Promise<SimpleLocat
     input: query,
   })
 
-  const results = await safeFetch({
-    url: "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString,
-    sentryMessage: "Error getting location predictions",
-  })
+  const url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString
+
+  let results
+  try {
+    const response = await fetch(url)
+    results = await response.json()
+  } catch (error) {
+    if (__DEV__) {
+      console.warn(error)
+    } else {
+      captureMessage(`Error fetching location predictions on: ${url} -> Error: ${error}`, "error")
+    }
+  }
 
   return results?.predictions?.map(predictionToResult)
 }
