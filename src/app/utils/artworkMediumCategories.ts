@@ -30,86 +30,63 @@ export const artworkMediumCategories: Medium[] = [
   { label: "NFT", value: "NFT" },
 ]
 
-// List for medium/categories available in Gravity
+// A sorted list for medium types surfaced for alert creation. Intended to match
+// the filter options currently exposed on the /collect web surfaced
 export const gravityArtworkMediumCategories: { label: string; value: string }[] = [
-  {
-    label: "Architecture",
-    value: "architecture-1",
-  },
-  {
-    label: "Books and Portfolios",
-    value: "books-and-portfolios",
-  },
-  {
-    label: "Design",
-    value: "design",
-  },
-  {
-    label: "Work on Paper",
-    value: "work-on-paper",
-  },
-  {
-    label: "Ephemera or Merchandise",
-    value: "ephemera-or-merchandise",
-  },
-  {
-    label: "Fashion Design and Wearable Art",
-    value: "fashion-design-and-wearable-art",
-  },
-  {
-    label: "Installation",
-    value: "installation",
-  },
-  {
-    label: "Jewelry",
-    value: "jewelry",
-  },
-  {
-    label: "Mixed-Media",
-    value: "mixed-media",
-  },
-  {
-    label: "NFT",
-    value: "nft",
-  },
-  {
-    label: "Other",
-    value: "other",
-  },
   {
     label: "Painting",
     value: "painting",
-  },
-  {
-    label: "Performance Art",
-    value: "performance-art",
   },
   {
     label: "Photography",
     value: "photography",
   },
   {
-    label: "Poster",
-    value: "poster",
+    label: "Sculpture",
+    value: "sculpture",
   },
   {
     label: "Prints",
     value: "prints",
   },
   {
-    label: "Reproduction",
-    value: "reproduction",
+    label: "Work on Paper",
+    value: "work-on-paper",
   },
   {
-    label: "Sculpture",
-    value: "sculpture",
+    label: "NFT",
+    value: "nft",
   },
   {
-    label: "Textile Arts",
-    value: "textile-arts",
+    label: "Design",
+    value: "design",
+  },
+  {
+    label: "Drawing",
+    value: "drawing",
+  },
+  {
+    label: "Installation",
+    value: "installation",
   },
   {
     label: "Film/Video",
     value: "film-slash-video",
+  },
+  {
+    label: "Jewelry",
+    value: "jewelry",
+  },
+  {
+    label: "Performance Art",
+    value: "performance-art",
+  },
+  {
+    label: "Reproduction",
+    value: "reproduction",
+  },
+  {
+    label: "Ephemera or Merchandise",
+    value: "ephemera-or-merchandise",
   },
 ]

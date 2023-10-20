@@ -76,11 +76,9 @@ export const checkOrRequestPushPermissions = async () => {
 
   const { pushNotificationSystemDialogSeen } = pushPromptSettings
 
-  if (notificationStatus === PushAuthorizationStatus.Denied) {
+  if (notificationStatus === PushAuthorizationStatus.Denied && pushNotificationSystemDialogSeen) {
     showHowToEnableNotificationInstructionAlert()
-  }
-
-  if (
+  } else if (
     notificationStatus === PushAuthorizationStatus.NotDetermined ||
     (notificationStatus === PushAuthorizationStatus.Denied && !pushNotificationSystemDialogSeen)
   ) {
@@ -99,6 +97,7 @@ export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => 
     const isNull = values === null
 
     if (!isEmptyArray && !isNull) {
+      // @ts-ignore
       clearedAttributes[key] = values
     }
   })

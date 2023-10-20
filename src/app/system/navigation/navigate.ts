@@ -73,10 +73,14 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     try {
       response = await fetch(targetURL)
     } catch (error) {
-      captureMessage(
-        `Error fetching marketing url redirect on: ${targetURL} failed with error: ${error}`,
-        "error"
-      )
+      if (__DEV__) {
+        console.warn(error)
+      } else {
+        captureMessage(
+          `[navigate] Error fetching marketing url redirect on: ${targetURL} failed with error: ${error}`,
+          "error"
+        )
+      }
     }
 
     if (response?.url) {

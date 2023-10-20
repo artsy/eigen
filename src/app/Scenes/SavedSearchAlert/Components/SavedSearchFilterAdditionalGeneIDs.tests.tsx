@@ -37,7 +37,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     )
 
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
-      if (option.value === "Painting") {
+      if (option.value === "painting") {
         expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
       } else {
         expect(getByText(option.label)).toBeDefined()
@@ -61,6 +61,25 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
 
     waitFor(() => {
       expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
+    })
+  })
+
+  it("Shows all categories if the user has already selected mediums", () => {
+    const { getByText } = renderWithWrappers(
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...initialData,
+          attributes: {
+            additionalGeneIDs: ["textile-arts"],
+          },
+        }}
+      >
+        <SavedSearchFilterAdditionalGeneIDs />
+      </SavedSearchStoreProvider>
+    )
+
+    gravityArtworkMediumCategories.forEach((option) => {
+      expect(getByText(option.label)).toBeDefined()
     })
   })
 })

@@ -11038,6 +11038,11 @@ type LinkAuthenticationMutationPayload {
 
 union ListPrice = Money | PriceRange
 
+enum LiveAuctionRole {
+  OPERATOR
+  PARTICIPANT
+}
+
 type Location {
   address: String
   address2: String
@@ -15953,11 +15958,6 @@ type ReverseImageSearchResults {
   results: [ReverseImageSearchResult]!
 }
 
-enum Role {
-  OPERATOR
-  PARTICIPANT
-}
-
 # The conditions for uploading assets to media.artsy.net
 type S3PolicyConditionsType {
   # The assigned access control
@@ -16570,6 +16570,7 @@ enum SavedSearchesSortEnum {
 
 # Saved Search User Alert Settings
 type SavedSearchUserAlertSettings {
+  details: String
   email: Boolean!
   frequency: UserSearchCriteriaFrequency!
   name: String
@@ -17517,7 +17518,7 @@ type System {
 
   # Creates, and authorizes, a JWT custom for Causality
   causalityJWT(
-    role: Role
+    role: LiveAuctionRole
 
     # The id of the auction to participate in
     saleID: String!
@@ -17529,6 +17530,9 @@ type System {
 
   # Gravity system time, necessary for synchronizing device clocks.
   time: SystemTime
+
+  # List of all available product privileges
+  userRoles: [UserRole]
 }
 
 type SystemTime {
@@ -18954,6 +18958,7 @@ type UserAdminNotes {
 
 # Settings for user saved search
 input UserAlertSettingsInput {
+  details: String
   email: Boolean
   frequency: UserSearchCriteriaFrequency
   name: String
@@ -19149,6 +19154,12 @@ type UserPurchasesEdge {
   ): String
   salePrice: Float
   source: String
+}
+
+# Fields corresponding to a given product privilege
+type UserRole {
+  # unique label for this role
+  name: String
 }
 
 type UserSaleProfile {
