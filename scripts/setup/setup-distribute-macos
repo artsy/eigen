@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-brew tap getsentry/tools
-brew install sentry-cli
+./scripts/setup/setup-sentry-cli
 
 ./scripts/setup/download-assets-ios

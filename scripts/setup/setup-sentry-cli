@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+if ! which sentry-cli;
+then
+  if [ "$(uname)" == "Darwin" ]; then # MacOS
+    brew tap getsentry/tools
+    brew install sentry-cli
+  else # Assume Linux
+    echo "installing sentry-cli"
+    curl -sL https://sentry.io/get-cli/ | bash
+  fi
+else
+  echo "sentry-cli already installed"
+fi
