@@ -16,8 +16,6 @@ interface ActivityRailProps {
   notificationsConnection: ActivityRail_notificationsConnection$key | null
 }
 
-const NUMBER_OF_ITEMS = 6
-
 export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notificationsConnection }) => {
   const { trackEvent } = useTracking()
 
@@ -25,18 +23,14 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes
-    .filter((notification) => {
-      if (isArtworksBasedNotification(notification.notificationType)) {
-        const artworksCount = notification.artworks?.totalCount ?? 0
-        return artworksCount > 0
-      }
+  const notifications = notificationsNodes.filter((notification) => {
+    if (isArtworksBasedNotification(notification.notificationType)) {
+      const artworksCount = notification.artworks?.totalCount ?? 0
+      return artworksCount > 0
+    }
 
-      return true
-    })
-    // Because `notificationsConnect` returns different items based on the `first` param,
-    // we need to fetch the exact same number of notifications as on the notifications screen and slice here until the bug is fixed.
-    .slice(0, NUMBER_OF_ITEMS)
+    return true
+  })
 
   if (notifications.length === 0) {
     return null
@@ -87,7 +81,7 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
 
 const notificationsConnectionFragment = graphql`
   fragment ActivityRail_notificationsConnection on Viewer
-  @argumentDefinitions(count: { type: "Int", defaultValue: 6 }) {
+  @argumentDefinitions(count: { type: "Int" }) {
     # Filtering out notifications without associated artworks to avoid displaying notifications without image
     notificationsConnection(first: $count, notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED]) {
       edges {
