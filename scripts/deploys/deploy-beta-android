@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-source ./scripts/setup/source-for-bash-env
+source ./scripts/ci/ci-setup-export-vars
 
 # Check if there is a build in progress
 echo "Checking if there is a build in progress..."
