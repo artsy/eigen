@@ -1,9 +1,9 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 
 interface InquirySuccessNotificationProps {
@@ -60,7 +60,7 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
           }}
         >
           <TouchableOpacity onPress={navigateToConversation}>
-            <Flex p={1}>
+            <Flex p={1} style={{ backgroundColor: "white" }}>
               <Flex flexDirection="row" justifyContent="space-between">
                 <Text color="green100" variant="sm">
                   Message Sent
@@ -80,7 +80,7 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
 const SuccessfulInquirySentContainer = styled(Flex)`
   position: relative;
   z-index: 5;
-  height: 65px;
+  height: 75px;
   margin: 10px;
   flex-direction: column;
   background-color: ${themeGet("colors.white100")};
