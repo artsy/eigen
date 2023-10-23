@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -euxo pipefail
-
-./scripts/setup/download-assets-ios

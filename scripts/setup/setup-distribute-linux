@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -exo pipefail
-
-./scripts/setup/download-assets-android
