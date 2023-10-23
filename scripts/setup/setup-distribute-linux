@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-./scripts/setup/setup-sentry-cli
-
 ./scripts/setup/download-assets-android
