@@ -13,6 +13,4 @@ else
   echo "sentry-cli already installed"
 fi
 
-./scripts/setup/setup-awscli
-
 ./scripts/setup/download-assets-android

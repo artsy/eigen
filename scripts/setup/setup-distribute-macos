@@ -4,6 +4,4 @@ set -euxo pipefail
 brew tap getsentry/tools
 brew install sentry-cli
 
-./scripts/setup/setup-awscli
-
 ./scripts/setup/download-assets-ios
