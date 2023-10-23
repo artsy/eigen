@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-bundle install
 brew tap getsentry/tools
 brew install sentry-cli
-bundle exec fastlane update_plugins
 
 ./scripts/setup/setup-awscli
 
