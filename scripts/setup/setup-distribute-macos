@@ -8,4 +8,4 @@ bundle exec fastlane update_plugins
 
 ./scripts/setup/setup-awscli
 
-./scripts/setup/download-ios-assets
+./scripts/setup/download-assets-ios
