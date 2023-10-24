@@ -188,12 +188,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
-  AREnableFallbackToGeneratedAlertNames: {
-    description: "Enable fallback to generated alert names",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableFallbackToGeneratedAlertNames",
-  },
   ARUseNewErrorMiddleware: {
     description: "Use updated error middleware",
     readyForRelease: true,
