@@ -5,6 +5,4 @@ set -euxo pipefail
 source ./scripts/ci/ci-setup-export-vars
 
 bundle install
-bundle exec fastlane update_plugins
-
 bundle exec fastlane promote_beta_android
