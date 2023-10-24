@@ -81,7 +81,7 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
 
 const notificationsConnectionFragment = graphql`
   fragment ActivityRail_notificationsConnection on Viewer
-  @argumentDefinitions(count: { type: "Int", defaultValue: 6 }) {
+  @argumentDefinitions(count: { type: "Int" }) {
     # Filtering out notifications without associated artworks to avoid displaying notifications without image
     notificationsConnection(first: $count, notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED]) {
       edges {
