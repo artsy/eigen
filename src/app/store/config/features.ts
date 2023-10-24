@@ -231,8 +231,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableAlertDetailsInput: {
     description: "Enable 'details' text input for alerts",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableAlertDetailsInput",
   },
 }
 
