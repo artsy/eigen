@@ -20,7 +20,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "16.18.0"
+          node-version: "18.18.2"
   generate-checksums:
     steps:
       - run:
