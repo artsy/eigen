@@ -9,6 +9,7 @@ export interface SavedSearchAlertFormValues {
   name: string
   push: boolean
   email: boolean
+  details?: string
 }
 
 export interface SavedSearchAlertMutationResult {
@@ -45,6 +46,7 @@ export interface EditSavedSearchAlertParams {
     email: boolean
     name?: string | null
     push: boolean
+    details?: string | null
   }
   savedSearchAlertId?: string
   userAllowsEmails: boolean

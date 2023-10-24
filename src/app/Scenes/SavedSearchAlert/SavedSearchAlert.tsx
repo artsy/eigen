@@ -42,6 +42,7 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
                 email
                 name
                 push
+                details
               }
               width
             }

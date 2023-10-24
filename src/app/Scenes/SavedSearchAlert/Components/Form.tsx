@@ -59,6 +59,7 @@ export const Form: React.FC<FormProps> = ({
     "AREnableFallbackToGeneratedAlertNames"
   )
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+  const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
 
   const tracking = useTracking()
 
@@ -186,7 +187,7 @@ export const Form: React.FC<FormProps> = ({
 
         {/* Price range is part of the new filters screen, no need to show it here anymore */}
         {!enableAlertsFilters && (
-          <Flex my={2}>
+          <Flex my={1}>
             <Touchable
               accessibilityLabel="Set price range"
               accessibilityRole="button"
@@ -201,6 +202,23 @@ export const Form: React.FC<FormProps> = ({
                 </Flex>
               </Flex>
             </Touchable>
+          </Flex>
+        )}
+
+        {!!enableDetailsInput && (
+          <Flex>
+            <Text>Tell us more about what you’re looking for</Text>
+            <Spacer y={1} />
+            <Input
+              placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
+              value={values.details}
+              onChangeText={handleChange("details")}
+              onBlur={handleBlur("details")}
+              error={errors.details}
+              multiline
+              maxLength={700}
+              testID="alert-input-details"
+            />
           </Flex>
         )}
 

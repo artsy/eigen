@@ -126,6 +126,7 @@ describe("EditSavedSearchAlert", () => {
           push: true,
           email: true,
           name: "",
+          details: "",
         },
       })
     })
@@ -323,6 +324,7 @@ const searchCriteria = {
     name: null,
     push: true,
     email: true,
+    details: null,
   },
 }
 

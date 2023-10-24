@@ -229,6 +229,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableAlertDetailsInput: {
+    description: "Enable 'details' text input for alerts",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertDetailsInput",
+  },
 }
 
 export interface DevToggleDescriptor {
