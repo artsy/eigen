@@ -21,6 +21,7 @@ export const EditSavedSearchAlertContent = () => {
           name: userAlertSettings?.name ?? "",
           email: userAlertSettings?.email ?? false,
           push: userAlertSettings?.push ?? false,
+          details: userAlertSettings?.details ?? "",
         }}
         savedSearchAlertId={savedSearchAlertId}
         userAllowsEmails={userAllowsEmails}

@@ -29,6 +29,10 @@ describe("SavedSearchAlertForm", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableAlertDetailsInput: true,
+    })
+
     mockEnvironment = getMockRelayEnvironment()
   })
 
@@ -111,6 +115,10 @@ describe("SavedSearchAlertForm", () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(
+          getByTestId("alert-input-details"),
+          "I'm looking for signed works by Damon Zucconi"
+        )
         fireEvent.press(getByTestId("save-alert-button"))
 
         await withoutDuplicateAlert()
@@ -125,6 +133,7 @@ describe("SavedSearchAlertForm", () => {
                 name: "something new",
                 email: true,
                 push: true,
+                details: "I'm looking for signed works by Damon Zucconi",
               },
             },
           })
@@ -192,6 +201,10 @@ describe("SavedSearchAlertForm", () => {
         )
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(
+          getByTestId("alert-input-details"),
+          "I'm looking for signed works by Damon Zucconi"
+        )
         fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
@@ -206,6 +219,7 @@ describe("SavedSearchAlertForm", () => {
                 name: "something new",
                 email: true,
                 push: true,
+                details: "I'm looking for signed works by Damon Zucconi",
               },
             },
           })
@@ -245,6 +259,10 @@ describe("SavedSearchAlertForm", () => {
         })
 
         fireEvent.changeText(getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(
+          getByTestId("alert-input-details"),
+          "I'm looking for signed works by Damon Zucconi"
+        )
         fireEvent.press(getByTestId("save-alert-button"))
 
         await waitFor(() => {
@@ -255,7 +273,12 @@ describe("SavedSearchAlertForm", () => {
           tracks.editedSavedSearch(
             "savedSearchAlertId",
             { name: "name", email: true, push: true },
-            { name: "something new", email: true, push: true }
+            {
+              name: "something new",
+              email: true,
+              push: true,
+              details: "I'm looking for signed works by Damon Zucconi",
+            }
           )
         )
       })

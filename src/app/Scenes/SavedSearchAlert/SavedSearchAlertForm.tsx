@@ -87,6 +87,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         name: values.name,
         email: values.email,
         push: values.push,
+        details: values.details,
       }
 
       try {
