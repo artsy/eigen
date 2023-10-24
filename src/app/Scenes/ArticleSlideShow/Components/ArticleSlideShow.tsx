@@ -83,7 +83,7 @@ export const ArticleSlideShow: React.FC<ArticleSlideShowProps> = ({ article, cov
           accessibilityLabel="Image and description rail"
           data={figures}
           horizontal
-          keyExtractor={(_, index) => `ArticleSlideShowItem-${index}`}
+          keyExtractor={({ id }) => `ArticleSlideShowItem-${id}`}
           snapToInterval={width}
           estimatedItemSize={width}
           pagingEnabled

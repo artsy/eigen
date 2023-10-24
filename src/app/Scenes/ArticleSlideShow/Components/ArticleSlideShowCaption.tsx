@@ -50,7 +50,7 @@ export const ArticleSlideShowCaption: React.FC<ArticleSlideShowCaptionProps> = (
 
           {!!data.partner?.name && (
             <Text variant="xs" color="black60">
-              {data.partner.name ?? ""}
+              {data.partner.name}
             </Text>
           )}
         </Flex>

@@ -80,6 +80,8 @@ interface LayoutProps {
   hideImage?: boolean
 }
 
+const MINI_IMAGE_ASPECT_RATIO = 0.787
+
 const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
   if (section.cover?.__typename === "%other" || !section.cover?.image?.url || !article) {
     return null
@@ -98,7 +100,7 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
           {!hideImage && (
             <Image
               src={cover.image?.url!}
-              aspectRatio={0.787}
+              aspectRatio={MINI_IMAGE_ASPECT_RATIO}
               width={60}
               testID="small-image-slideshow"
             />
@@ -120,6 +122,8 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
   )
 }
 
+const FULL_IMAGE_ASPECT_RATIO = 1.56
+
 const LayoutFull: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
   const { width } = useScreenDimensions()
   const space = useSpace()
@@ -134,7 +138,7 @@ const LayoutFull: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
     <Flex p={2}>
       <Image
         src={cover.image?.url!}
-        aspectRatio={1.56}
+        aspectRatio={FULL_IMAGE_ASPECT_RATIO}
         width={width - space(4)}
         testID="image-slideshow"
       />
