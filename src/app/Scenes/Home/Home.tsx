@@ -58,6 +58,7 @@ import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/View
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
@@ -80,6 +81,7 @@ import { times } from "lodash"
 import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
+  FlatList,
   ListRenderItem,
   RefreshControl,
   View,
@@ -88,7 +90,6 @@ import {
   ViewabilityConfig,
 } from "react-native"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
-
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
@@ -126,6 +127,9 @@ export interface HomeProps extends ViewProps {
 }
 
 const Home = memo((props: HomeProps) => {
+  const flatlistRef = useRef<FlatList>(null)
+  useBottomTabsScrollToTop("home", flatlistRef)
+
   useDismissSavedArtwork(
     props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
   )
@@ -364,6 +368,7 @@ const Home = memo((props: HomeProps) => {
   return (
     <View style={{ flex: 1 }}>
       <AboveTheFoldFlatList<HomeModule>
+        listRef={flatlistRef}
         testID="home-flat-list"
         data={modules}
         onViewableItemsChanged={onViewableItemsChanged}

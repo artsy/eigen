@@ -13,11 +13,12 @@ import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -41,6 +42,9 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
+
+  const scrollViewRef = useRef(null)
+  useBottomTabsScrollToTop("sell", scrollViewRef)
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
@@ -96,7 +100,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         minHeight={screenHeight}
         style={{ paddingTop: safeAreaInsets.top }}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
             <Spacer y={4} />
