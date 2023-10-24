@@ -16798,8 +16798,8 @@ enum SearchCriteriaSortEnum {
   # Sort by most popular search criteria in descending order
   COUNT_DESC
 
-  # Sort by high quality priority listed first
-  HIGH_QUALITY_DESC
+  # Sort by search criteria with price presence on top
+  PRICE_PRESENCE
 }
 
 enum SearchEntity {
