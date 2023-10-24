@@ -1,6 +1,6 @@
 import EventEmitter from "events"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { FlatList, ScrollView } from "react-native"
 
 export const BottomTabsEvents = new EventEmitter()
@@ -12,10 +12,9 @@ export const scrollTabToTop = (tab: BottomTabType) => {
   BottomTabsEvents.emit(SCROLL_TO_TOP_EVENT, { tab })
 }
 
-export const useBottomTabsScrollToTop = (
-  tab: BottomTabType,
-  ref: React.RefObject<FlatList | ScrollView>
-) => {
+export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
+  const ref = useRef<any>(null)
+
   const handleScrollToTopEvent = (...args: any[]) => {
     if (args[0]?.tab !== tab) {
       return
@@ -24,6 +23,8 @@ export const useBottomTabsScrollToTop = (
     // To support both FlatList and ScrollView
     ;(ref as React.RefObject<FlatList>)?.current?.scrollToIndex?.({ index: 0 })
     ;(ref as React.RefObject<ScrollView>)?.current?.scrollTo?.({})
+
+    onScrollToTop?.()
   }
 
   useEffect(() => {
@@ -33,4 +34,6 @@ export const useBottomTabsScrollToTop = (
       BottomTabsEvents.removeListener(SCROLL_TO_TOP_EVENT, handleScrollToTopEvent)
     }
   }, [])
+
+  return ref
 }

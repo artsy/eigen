@@ -35,8 +35,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
-  const scrollableRef = useRef(null)
-  useBottomTabsScrollToTop("search", scrollableRef)
+  const scrollableRef = useBottomTabsScrollToTop("search")
 
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")

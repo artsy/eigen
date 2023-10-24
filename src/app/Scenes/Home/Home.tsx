@@ -81,7 +81,6 @@ import { times } from "lodash"
 import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
-  FlatList,
   ListRenderItem,
   RefreshControl,
   View,
@@ -127,8 +126,7 @@ export interface HomeProps extends ViewProps {
 }
 
 const Home = memo((props: HomeProps) => {
-  const flatlistRef = useRef<FlatList>(null)
-  useBottomTabsScrollToTop("home", flatlistRef)
+  const flatlistRef = useBottomTabsScrollToTop("home")
 
   useDismissSavedArtwork(
     props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0

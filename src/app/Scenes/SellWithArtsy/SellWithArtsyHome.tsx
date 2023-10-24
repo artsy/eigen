@@ -18,7 +18,7 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -43,8 +43,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
 
-  const scrollViewRef = useRef(null)
-  useBottomTabsScrollToTop("sell", scrollViewRef)
+  const scrollViewRef = useBottomTabsScrollToTop("sell")
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
