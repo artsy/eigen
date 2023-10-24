@@ -19,6 +19,10 @@ import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./Saved
 import { SavedSearchStoreProvider, savedSearchModel } from "./SavedSearchStore"
 
 describe("SavedSearchAlertForm", () => {
+  __globalStoreTestUtils__?.injectFeatureFlags({
+    AREnableFallbackToGeneratedAlertNames: true,
+  })
+
   const spyAlert = jest.spyOn(Alert, "alert")
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
