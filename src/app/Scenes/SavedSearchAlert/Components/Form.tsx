@@ -55,16 +55,12 @@ export const Form: React.FC<FormProps> = ({
   onToggleEmailNotification,
   onRemovePill,
 }) => {
-  const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
-    "AREnableFallbackToGeneratedAlertNames"
-  )
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
 
   const tracking = useTracking()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
@@ -138,21 +134,7 @@ export const Form: React.FC<FormProps> = ({
 
       <Join separator={<Spacer y={2} />}>
         <Box>
-          {isFallbackToGeneratedAlertNamesEnabled ? (
-            <SavedSearchNameInputQueryRenderer attributes={attributes} />
-          ) : (
-            <Input
-              title="Alert Name"
-              placeholder={entity.artists[0]?.name}
-              value={values.name}
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              error={errors.name}
-              testID="alert-input-name"
-              maxLength={75}
-            />
-          )}
-
+          <SavedSearchNameInputQueryRenderer attributes={attributes} />
           <Box mt={2}>
             <InputTitle>Filters</InputTitle>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
