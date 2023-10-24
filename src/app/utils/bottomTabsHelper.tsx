@@ -23,7 +23,7 @@ export const useBottomTabsScrollToTop = (
 
     // To support both FlatList and ScrollView
     ;(ref as React.RefObject<FlatList>)?.current?.scrollToIndex?.({ index: 0 })
-    ;(ref as React.RefObject<ScrollView>)?.current?.scrollTo({})
+    ;(ref as React.RefObject<ScrollView>)?.current?.scrollTo?.({})
   }
 
   useEffect(() => {
