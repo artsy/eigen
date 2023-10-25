@@ -66,7 +66,7 @@
     "setup:artsy": "./scripts/setup/setup-env-for-artsy",
     "setup:artsy:update!": "scripts/setup/update-env-for-artsy",
     "setup:oss": "./scripts/setup/setup-env-for-oss",
-    "setup:releases": "./scripts/setup/setup-env-for-artsy && ./scripts/setup/setup-env-for-releases && ./scripts/setup/setup-distribute-macos",
+    "setup:releases": "./scripts/setup/setup-env-for-artsy && ./scripts/setup/setup-env-for-releases",
     "setup:releases:update!": "scripts/setup/update-env-for-releases",
     "start": "concurrently 'yarn relay:watch' 'react-native start'",
     "start-storybook": "STORYBOOK=1 yarn start",

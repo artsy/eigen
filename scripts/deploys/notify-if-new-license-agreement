@@ -2,6 +2,5 @@
 set -euxo pipefail
 
 
-./scripts/setup/setup-fastlane-env
-bundle exec fastlane update_plugins
+bundle install
 bundle exec fastlane notify_if_new_license_agreement

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-./scripts/setup/setup-distribute
+./scripts/setup/download-assets-android
 
 DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
 if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then

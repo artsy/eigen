@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-source ./scripts/setup/source-for-bash-env
+source ./scripts/ci/ci-setup-export-vars
 
 if [ "${LOCAL_BRANCH}" != "beta-android" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
 	./scripts/ci/build-for-tests-android

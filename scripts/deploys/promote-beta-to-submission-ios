@@ -2,9 +2,7 @@
 set -euxo pipefail
 
 
-source ./scripts/setup/source-for-bash-env
+source ./scripts/ci/ci-setup-export-vars
 
-./scripts/setup/setup-fastlane-env
-bundle exec fastlane update_plugins
-
+bundle install
 bundle exec fastlane promote_beta_ios

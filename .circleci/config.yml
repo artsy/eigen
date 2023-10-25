@@ -99,7 +99,10 @@ commands:
             - v15-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
-          command: ./scripts/setup/download-assets
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
           command: ./scripts/ci/ci-ios
@@ -138,16 +141,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
-          command: ./scripts/setup/download-assets
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
           command: ./scripts/ci/ci-android
       - save_cache:
-          key: v4-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
