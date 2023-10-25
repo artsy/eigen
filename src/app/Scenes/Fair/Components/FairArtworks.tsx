@@ -14,12 +14,12 @@ import { FAIR2_ARTWORKS_PAGE_SIZE, PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { useEffect } from "react"
-import { graphql, usePaginationFragment } from "react-relay"
+import { RelayPaginationProp, graphql, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairArtworksProps {
   fair: FairArtworks_fair$key | null
-  // relay: RelayPaginationProp
+  relay?: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
   aggregations?: aggregationsType
   followedArtistCount?: number | null | undefined
@@ -27,13 +27,12 @@ interface FairArtworksProps {
 
 export const FairArtworks: React.FC<FairArtworksProps> = ({
   fair,
-  // TODO: relay pt 1 figure out a way to make this work without relay prop
-  // relay,
+  relay,
   initiallyAppliedFilter,
   aggregations,
   followedArtistCount,
 }) => {
-  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
+  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     FairArtworksFragment,
     fair
   )
@@ -64,7 +63,8 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     // TODO: relay pt 2 figure out a way to make this work without relay prop
     // Do we need a new hook or can we customize the existing one to support
     // usage along with relay hooks?
-    // relay,
+    relay,
+    hookRefetch: refetch,
     aggregations: dispatchAggregations,
     componentPath: "Fair/FairArtworks",
     pageSize: FAIR2_ARTWORKS_PAGE_SIZE,

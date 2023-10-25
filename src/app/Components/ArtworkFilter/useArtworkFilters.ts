@@ -1,6 +1,7 @@
 import { PAGE_SIZE } from "app/Components/constants"
 import { MutableRefObject, useEffect, useMemo } from "react"
-import { RelayPaginationProp, Variables } from "react-relay"
+import { RefetchFnDynamic, RelayPaginationProp, Variables } from "react-relay"
+import { OperationType } from "relay-runtime"
 import {
   aggregationForFilter,
   filterArtworksParams,
@@ -20,10 +21,13 @@ interface UseArtworkFiltersOptions {
   onApply?: () => void
   onRefetch?: (error?: Error | null) => void
   refetchRef?: MutableRefObject<() => void>
+  // this property is used to pass a refetch function from a parent component that uses relay hooks
+  hookRefetch?: RefetchFnDynamic<OperationType, any>
 }
 
 export const useArtworkFilters = ({
   relay,
+  hookRefetch,
   aggregations,
   pageSize = PAGE_SIZE,
   componentPath,
@@ -65,6 +69,17 @@ export const useArtworkFilters = ({
           }
         },
         refetchVariables ?? { input: prepareFilterArtworksParamsForInput(filterParams) }
+      )
+    }
+
+    if (hookRefetch) {
+      hookRefetch(
+        refetchVariables ?? {
+          input: prepareFilterArtworksParamsForInput(
+            filterArtworksParams(appliedFilters, filterType)
+          ),
+          pageSize,
+        }
       )
     }
   }
