@@ -20,7 +20,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "16.18.0"
+          node-version: "18.18.2"
   generate-checksums:
     steps:
       - run:
@@ -165,7 +165,7 @@ jobs:
   deploy-nightly-beta:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: small
 
     steps:
@@ -215,7 +215,7 @@ jobs:
     parallelism: 8
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: large
     steps:
       - checkout
@@ -235,7 +235,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: medium
     steps:
       - checkout
@@ -250,7 +250,7 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: small
     steps:
       - checkout
@@ -289,7 +289,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "18.18.2"
     resource_class: medium
     steps:
       - checkout
