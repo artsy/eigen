@@ -10,7 +10,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { FAIR2_ARTWORKS_PAGE_SIZE, PAGE_SIZE } from "app/Components/constants"
+import { FAIR_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { useEffect } from "react"
@@ -60,14 +60,11 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   )
 
   useArtworkFilters({
-    // TODO: relay pt 2 figure out a way to make this work without relay prop
-    // Do we need a new hook or can we customize the existing one to support
-    // usage along with relay hooks?
     relay,
-    hookRefetch: refetch,
+    relayPaginationHookRefetch: refetch,
     aggregations: dispatchAggregations,
     componentPath: "Fair/FairArtworks",
-    pageSize: FAIR2_ARTWORKS_PAGE_SIZE,
+    pageSize: FAIR_ARTWORKS_PAGE_SIZE,
   })
 
   useEffect(() => {
@@ -100,14 +97,14 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
       return
     }
 
-    loadNext(20)
+    loadNext(FAIR_ARTWORKS_PAGE_SIZE)
   }
 
   return (
     <Flex flex={1} minHeight={2}>
       <MasonryInfiniteScrollArtworkGrid
         artworks={artworks}
-        pageSize={PAGE_SIZE}
+        pageSize={FAIR_ARTWORKS_PAGE_SIZE}
         contextScreenOwnerType={OwnerType.fair}
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}

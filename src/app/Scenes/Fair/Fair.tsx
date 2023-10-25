@@ -273,8 +273,6 @@ export const FairFragment = graphql`
     ...FairEmptyState_fair
     ...FairEditorial_fair
     ...FairCollections_fair
-    # TODO: do we need this 👇?
-    ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
     ...FairExhibitors_fair
     ...FairFollowedArtistsRail_fair
   }
