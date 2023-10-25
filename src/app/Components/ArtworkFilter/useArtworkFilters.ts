@@ -22,12 +22,12 @@ interface UseArtworkFiltersOptions {
   onRefetch?: (error?: Error | null) => void
   refetchRef?: MutableRefObject<() => void>
   // this property is used to pass a refetch function from a parent component that uses relay hooks
-  hookRefetch?: RefetchFnDynamic<OperationType, any>
+  relayPaginationHookRefetch?: RefetchFnDynamic<OperationType, any>
 }
 
 export const useArtworkFilters = ({
   relay,
-  hookRefetch,
+  relayPaginationHookRefetch,
   aggregations,
   pageSize = PAGE_SIZE,
   componentPath,
@@ -72,8 +72,8 @@ export const useArtworkFilters = ({
       )
     }
 
-    if (hookRefetch) {
-      hookRefetch(
+    if (relayPaginationHookRefetch) {
+      relayPaginationHookRefetch(
         refetchVariables ?? {
           input: prepareFilterArtworksParamsForInput(
             filterArtworksParams(appliedFilters, filterType)

@@ -1,7 +1,7 @@
 import { Flex, Box } from "@artsy/palette-mobile"
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
 import Spinner from "app/Components/Spinner"
-import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
+import { FAIR_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -24,7 +24,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
     }
 
     setIsLoading(true)
-    relay.loadMore(FAIR2_EXHIBITORS_PAGE_SIZE, (err) => {
+    relay.loadMore(FAIR_EXHIBITORS_PAGE_SIZE, (err) => {
       setIsLoading(false)
 
       if (err) {
