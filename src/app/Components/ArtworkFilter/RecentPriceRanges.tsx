@@ -135,6 +135,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
 
 const usePriceRanges = (): RecentPriceRangeEntity[] => {
   let recentPriceRanges = useRecentPriceRanges()
+
   const userPreferredPriceRange = GlobalStore.useAppState((state) => state.userPrefs.priceRange)
 
   if (userPreferredPriceRange !== USER_PREFERRED_DEFAULT_PRICE_RANGE) {
@@ -147,6 +148,10 @@ const usePriceRanges = (): RecentPriceRangeEntity[] => {
 
     recentPriceRanges = [...filtered, userPreferredPriceRange]
   }
+
+  recentPriceRanges = recentPriceRanges.filter(
+    (value) => value !== USER_PREFERRED_DEFAULT_PRICE_RANGE
+  )
 
   return recentPriceRanges.map((value) => ({
     value,
