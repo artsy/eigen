@@ -18,7 +18,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
-import { CollapseMenu } from "app/Components/CollapseMenu"
+import { Expandable } from "app/Components/Expandable"
 import { MenuItem } from "app/Components/MenuItem"
 import { SearchInput } from "app/Components/SearchInput"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -83,8 +83,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
   const { unleashEnv } = useUnleashEnvironment()
 
-  const chevronStyle = { marginRight: space(1) }
-
   const { top: topInset } = useSafeAreaInsets()
 
   const androidTopInset = Platform.OS === "android" ? topInset : 0
@@ -122,187 +120,199 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             navigate("/storybook")
           }}
         />
-        <CollapseMenu title="Navigate to" chevronStyle={chevronStyle} closed>
-          <Flex mx={2} flexDirection="row">
-            <Input
-              placeholder="Url to navigate to"
-              onChangeText={(text) => setUrl(text)}
-              autoCapitalize="none"
-              returnKeyType="go"
-            />
-            <Spacer x={1} />
-            <Button
-              onPress={() => {
-                if (!url) {
-                  return
+        <Flex mx={2} mt={2}>
+          <Expandable label="Navigate to" expanded={false}>
+            <Spacer y={1} />
+            <Flex flexDirection="row">
+              <Input
+                placeholder="Url to navigate to"
+                onChangeText={(text) => setUrl(text)}
+                autoCapitalize="none"
+                returnKeyType="go"
+              />
+              <Spacer x={1} />
+              <Button
+                onPress={() => {
+                  if (!url) {
+                    return
+                  }
+
+                  dismissModal(() => navigate(url))
+                }}
+              >
+                Go
+              </Button>
+            </Flex>
+          </Expandable>
+        </Flex>
+        <Flex mx={2}>
+          <Separator my="1" borderColor="black" />
+        </Flex>
+
+        <Flex mb={1}>
+          <EnvironmentOptions onClose={onClose} />
+        </Flex>
+
+        <Flex mx={2} mb={1}>
+          <CodePushOptions />
+        </Flex>
+
+        <Flex mx={2}>
+          <Expandable label="Feature Flags" expanded={false}>
+            <Spacer y={1} />
+            <Flex mb={1}>
+              <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
+            </Flex>
+            <Flex mx={-2}>
+              {configurableFeatureFlagKeys
+                .filter((flagKey) =>
+                  features[flagKey].description
+                    ?.toLowerCase()
+                    .includes(featureFlagQuery.toLowerCase())
+                )
+                .map((flagKey) => {
+                  return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+                })}
+              <DevMenuButtonItem
+                title="Revert all feature flags to default"
+                titleColor="red100"
+                onPress={() => {
+                  GlobalStore.actions.artsyPrefs.features.clearLocalOverrides()
+                }}
+              />
+            </Flex>
+          </Expandable>
+          <Spacer y={1} />
+        </Flex>
+
+        <Flex mx={2}>
+          <Expandable label="Dev tools" expanded={false}>
+            <Flex my={1}>
+              <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
+            </Flex>
+
+            <Flex mx={-2}>
+              {configurableDevToggleKeys
+                .filter((flagKey) =>
+                  devToggles[flagKey].description
+                    ?.toLowerCase()
+                    .includes(devToolQuery.toLowerCase())
+                )
+                .map((devToggleKey) => {
+                  return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
+                })}
+
+              <MenuItem
+                title="Migration version"
+                rightView={
+                  <Flex flexDirection="row" alignItems="center">
+                    <RNButton
+                      title="-"
+                      onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
+                    />
+                    <Text>{migrationVersion}</Text>
+                    <RNButton
+                      title="+"
+                      onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
+                    />
+                  </Flex>
                 }
+              />
+              <DevMenuButtonItem
+                title="Open Art Quiz"
+                onPress={() => {
+                  dismissModal(() => navigate("/art-quiz"))
+                }}
+              />
+              <DevMenuButtonItem
+                title={`Migration name: "${
+                  (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
+                }"`}
+                disabled
+              />
+              <DevMenuButtonItem
+                title="Clear Keychain"
+                onPress={() => {
+                  Keychain.resetInternetCredentials(server)
+                }}
+              />
 
-                dismissModal(() => navigate(url))
-              }}
-            >
-              Go
-            </Button>
-          </Flex>
-        </CollapseMenu>
-        <Flex mx={2}>
-          <Separator my="1" />
+              <DevMenuButtonItem
+                title="Clear AsyncStorage"
+                onPress={() => {
+                  AsyncStorage.clear().then(() => {
+                    toast.show("AsyncStorage cleared ✅", "middle")
+                  })
+                }}
+              />
+              <DevMenuButtonItem
+                title="Clear Relay Cache"
+                onPress={() => {
+                  RelayCache.clearAll().then(() => {
+                    toast.show("Relay cache cleared ✅", "middle")
+                  })
+                }}
+              />
+              <DevMenuButtonItem
+                title="Clear FastImage Cache"
+                onPress={() => {
+                  Promise.all([FastImage.clearMemoryCache(), FastImage.clearDiskCache()]).then(
+                    () => {
+                      toast.show("FastImage cache cleared ✅", "middle")
+                    }
+                  )
+                }}
+              />
+              <DevMenuButtonItem
+                title="Clear Progressive Onboarding progress"
+                onPress={__clearDissmissed}
+              />
+              <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
+
+              <DevMenuButtonItem
+                title="Throw Sentry Error"
+                onPress={() => {
+                  if (!Config.SENTRY_DSN) {
+                    Alert.alert(
+                      "No Sentry DSN available",
+                      __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                    )
+                    return
+                  }
+                  throw Error("Sentry test error")
+                }}
+              />
+              <DevMenuButtonItem
+                title="Trigger Sentry Native Crash"
+                onPress={() => {
+                  if (!Config.SENTRY_DSN) {
+                    Alert.alert(
+                      "No Sentry DSN available",
+                      __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                    )
+                    return
+                  }
+                  Sentry.nativeCrash()
+                }}
+              />
+              <DevMenuButtonItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
+              <DevMenuButtonItem
+                title={`Device ID: ${DeviceInfo.getUniqueIdSync()}`}
+                onPress={() => {
+                  Clipboard.setString(DeviceInfo.getUniqueIdSync())
+                  toast.show("Copied to clipboard", "middle")
+                }}
+              />
+              <DevMenuButtonItem
+                title="Log out"
+                titleColor="red100"
+                onPress={() => {
+                  GlobalStore.actions.auth.signOut()
+                }}
+              />
+            </Flex>
+          </Expandable>
         </Flex>
-
-        <EnvironmentOptions onClose={onClose} />
-
-        <Flex mx={2}>
-          <Separator my="1" />
-        </Flex>
-
-        <CodePushOptions />
-
-        <Flex mx={2}>
-          <Separator my="1" />
-        </Flex>
-
-        <CollapseMenu title="Feature Flags" chevronStyle={chevronStyle} closed>
-          <Flex px={2} mb={1}>
-            <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
-          </Flex>
-          {configurableFeatureFlagKeys
-            .filter((flagKey) =>
-              features[flagKey].description?.toLowerCase().includes(featureFlagQuery.toLowerCase())
-            )
-            .map((flagKey) => {
-              return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
-            })}
-          <DevMenuButtonItem
-            title="Revert all feature flags to default"
-            titleColor="red100"
-            onPress={() => {
-              GlobalStore.actions.artsyPrefs.features.clearLocalOverrides()
-            }}
-          />
-        </CollapseMenu>
-
-        <Flex mx={2}>
-          <Separator my="1" />
-        </Flex>
-        <CollapseMenu title="Dev tools" chevronStyle={chevronStyle} closed>
-          <Flex px={2} mb={1}>
-            <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
-          </Flex>
-
-          {configurableDevToggleKeys
-            .filter((flagKey) =>
-              devToggles[flagKey].description?.toLowerCase().includes(devToolQuery.toLowerCase())
-            )
-            .map((devToggleKey) => {
-              return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
-            })}
-
-          <MenuItem
-            title="Migration version"
-            rightView={
-              <Flex flexDirection="row" alignItems="center">
-                <RNButton
-                  title="-"
-                  onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
-                />
-                <Text>{migrationVersion}</Text>
-                <RNButton
-                  title="+"
-                  onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
-                />
-              </Flex>
-            }
-          />
-          <DevMenuButtonItem
-            title="Open Art Quiz"
-            onPress={() => {
-              dismissModal(() => navigate("/art-quiz"))
-            }}
-          />
-          <DevMenuButtonItem
-            title={`Migration name: "${
-              (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
-            }"`}
-            disabled
-          />
-          <DevMenuButtonItem
-            title="Clear Keychain"
-            onPress={() => {
-              Keychain.resetInternetCredentials(server)
-            }}
-          />
-
-          <DevMenuButtonItem
-            title="Clear AsyncStorage"
-            onPress={() => {
-              AsyncStorage.clear().then(() => {
-                toast.show("AsyncStorage cleared ✅", "middle")
-              })
-            }}
-          />
-          <DevMenuButtonItem
-            title="Clear Relay Cache"
-            onPress={() => {
-              RelayCache.clearAll().then(() => {
-                toast.show("Relay cache cleared ✅", "middle")
-              })
-            }}
-          />
-          <DevMenuButtonItem
-            title="Clear FastImage Cache"
-            onPress={() => {
-              Promise.all([FastImage.clearMemoryCache(), FastImage.clearDiskCache()]).then(() => {
-                toast.show("FastImage cache cleared ✅", "middle")
-              })
-            }}
-          />
-          <DevMenuButtonItem
-            title="Clear Progressive Onboarding progress"
-            onPress={__clearDissmissed}
-          />
-          <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
-
-          <DevMenuButtonItem
-            title="Throw Sentry Error"
-            onPress={() => {
-              if (!Config.SENTRY_DSN) {
-                Alert.alert(
-                  "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
-                )
-                return
-              }
-              throw Error("Sentry test error")
-            }}
-          />
-          <DevMenuButtonItem
-            title="Trigger Sentry Native Crash"
-            onPress={() => {
-              if (!Config.SENTRY_DSN) {
-                Alert.alert(
-                  "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
-                )
-                return
-              }
-              Sentry.nativeCrash()
-            }}
-          />
-          <DevMenuButtonItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
-          <DevMenuButtonItem
-            title={`Device ID: ${DeviceInfo.getUniqueIdSync()}`}
-            onPress={() => {
-              Clipboard.setString(DeviceInfo.getUniqueIdSync())
-              toast.show("Copied to clipboard", "middle")
-            }}
-          />
-          <DevMenuButtonItem
-            title="Log out"
-            titleColor="red100"
-            onPress={() => {
-              GlobalStore.actions.auth.signOut()
-            }}
-          />
-        </CollapseMenu>
       </ScrollView>
     </Screen>
   )

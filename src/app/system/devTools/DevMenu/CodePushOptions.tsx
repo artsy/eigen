@@ -7,7 +7,7 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
-import { CollapseMenu } from "app/Components/CollapseMenu"
+import { Expandable } from "app/Components/Expandable"
 import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
 import { Fragment, useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
@@ -65,8 +65,8 @@ export const CodePushOptions = () => {
   `
 
   return (
-    <CollapseMenu title="Code Push" chevronStyle={{ marginRight: 10 }} closed>
-      <Flex mx={2} my={2}>
+    <Expandable label="Code Push" expanded={false}>
+      <Flex my={2}>
         {!!currentRelease && (
           <>
             <Message title="Active Release" text={activeReleaseText} variant="info" />
@@ -172,6 +172,6 @@ export const CodePushOptions = () => {
           Fetch and Run Deployment
         </Button>
       </Flex>
-    </CollapseMenu>
+    </Expandable>
   )
 }
