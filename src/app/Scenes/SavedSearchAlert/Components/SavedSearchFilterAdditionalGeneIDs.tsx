@@ -45,7 +45,7 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
 
   return (
     <Flex px={2}>
-      <Text variant="sm" fontWeight={500}>
+      <Text variant="sm" fontWeight="bold">
         Medium
       </Text>
       <Spacer y={1} />

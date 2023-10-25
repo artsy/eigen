@@ -43,7 +43,7 @@ export const SavedSearchFilterRarity = () => {
 
   return (
     <Flex px={2}>
-      <Text variant="sm" fontWeight={500}>
+      <Text variant="sm" fontWeight="bold">
         Rarity
       </Text>
 
