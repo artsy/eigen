@@ -18,7 +18,7 @@ import { RelayPaginationProp, graphql, usePaginationFragment } from "react-relay
 import { useTracking } from "react-tracking"
 
 interface FairArtworksProps {
-  fair: FairArtworks_fair$key | null
+  fair: FairArtworks_fair$key
   relay?: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
   aggregations?: aggregationsType
@@ -39,7 +39,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   const tracking = useTracking()
 
-  const artworks = extractNodes(data?.fairArtworks)
+  const artworks = extractNodes(data?.fairArtworks) ?? []
   const artworksTotal = artworks?.length ?? 0
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
