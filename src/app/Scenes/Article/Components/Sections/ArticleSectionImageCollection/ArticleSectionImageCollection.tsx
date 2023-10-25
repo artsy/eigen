@@ -44,7 +44,9 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
           return (
             <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
               <ArticleSectionImageCollectionImage figure={item} />
-              <ArticleSectionImageCollectionCaption figure={item} />
+              <Flex px={2} py={1}>
+                <ArticleSectionImageCollectionCaption figure={item} />
+              </Flex>
             </Flex>
           )
         }}
@@ -63,7 +65,6 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
 
 const ArticleSectionImageCollectionQuery = graphql`
   fragment ArticleSectionImageCollection_section on ArticleSectionImageCollection {
-    layout
     figures {
       ...ArticleSectionImageCollectionImage_figure
       ...ArticleSectionImageCollectionCaption_figure

@@ -46,6 +46,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     description: "Support dark mode",
   },
+  AREnableArticleSlideShow: {
+    readyForRelease: false,
+    description: "Enable slideshow elements and route on Article screen",
+    echoFlagKey: "AREnableArticleSlideShow",
+  },
   // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,

@@ -2,8 +2,7 @@ import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { ArticleBody_article$key } from "__generated__/ArticleBody_article.graphql"
 import { FONTS, HTML } from "app/Components/HTML"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
-import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
-import { ArticleSectionText } from "app/Scenes/Article/Components/Sections/ArticleSectionText"
+import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
 import { Fragment } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -25,13 +24,7 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
       {data.sections.map((section, index) => {
         return (
           <Fragment key={`articleBodySection-${index}`}>
-            <ArticleSectionImageCollection section={section} />
-            <ArticleSectionText
-              section={section}
-              internalID={data.internalID}
-              slug={data.slug ?? ""}
-              px={2}
-            />
+            <ArticleSection article={data} section={section} />
           </Fragment>
         )
       })}
@@ -66,17 +59,15 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
 const ArticleBodyQuery = graphql`
   fragment ArticleBody_article on Article {
     ...ArticleHero_article
-
+    ...ArticleSectionText_article
+    ...ArticleSectionImageSet_article
     sections {
-      ...ArticleSectionImageCollection_section
-      ...ArticleSectionText_section
+      ...ArticleSection_section
     }
     postscript
     authors {
       name
       bio
     }
-    internalID
-    slug
   }
 `
