@@ -43,6 +43,13 @@ const tabs: TabsType = [
 ]
 
 export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
+  const { safeAreaInsets } = useScreenDimensions()
+  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
+
+  const tracking = useTracking()
+  const [activeTab, setActiveTab] = useState(0)
+  const flatListRef = useRef<FlatList>(null)
+
   const queryData = useLazyLoadQuery<FairQuery>(FairScreenQuery, { fairID })
   const fair = useFragment<Fair_fair$key>(FairFragment, queryData.fair)
 
@@ -52,12 +59,17 @@ export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
   const hasExhibitors = !!(fair?.counts?.partnerShows ?? 0 > 0)
   const hasFollowedArtistArtworks = !!(fair?.followedArtistArtworks?.edges?.length ?? 0 > 0)
 
-  const tracking = useTracking()
-  const [activeTab, setActiveTab] = useState(0)
-
-  const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [shouldHideButtons, setShouldHideButtons] = useState(false)
+
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
+    return runOnJS(setShouldHideButtons)(hideButtons)
+  })
+
+  if (!fair) {
+    return null
+  }
 
   const sections = fair?.isActive
     ? [
@@ -70,10 +82,6 @@ export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
     : ["fairHeader", ...(hasArticles ? ["fairEditorial"] : []), "notActive"]
 
   const stickyIndex = sections.indexOf("fairTabsAndFilter")
-
-  const { safeAreaInsets } = useScreenDimensions()
-
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
 
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -130,11 +138,6 @@ export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
     handleFilterArtworksModal()
   }
 
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
-    return runOnJS(setShouldHideButtons)(hideButtons)
-  })
-
   return (
     <ProvideScreenTracking
       info={{
@@ -161,22 +164,22 @@ export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
               case "fairHeader": {
                 return (
                   <>
-                    <FairHeaderFragmentContainer fair={fair!} />
+                    <FairHeaderFragmentContainer fair={fair} />
                     <Separator mt={4} />
                   </>
                 )
               }
               case "notActive": {
-                return <FairEmptyStateFragmentContainer fair={fair!} />
+                return <FairEmptyStateFragmentContainer fair={fair} />
               }
               case "fairFollowedArtistsRail": {
-                return <FairFollowedArtistsRailFragmentContainer fair={fair!} />
+                return <FairFollowedArtistsRailFragmentContainer fair={fair} />
               }
               case "fairEditorial": {
-                return <FairEditorialFragmentContainer fair={fair!} />
+                return <FairEditorialFragmentContainer fair={fair} />
               }
               case "fairCollections": {
-                return <FairCollectionsFragmentContainer fair={fair!} />
+                return <FairCollectionsFragmentContainer fair={fair} />
               }
               case "fairTabsAndFilter": {
                 const tabToShow = tabs ? tabs[activeTab] : null
@@ -213,10 +216,10 @@ export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
                 }
 
                 if (tabToShow.label === "Exhibitors") {
-                  return <FairExhibitorsFragmentContainer fair={fair!} />
+                  return <FairExhibitorsFragmentContainer fair={fair} />
                 }
 
-                if (tabToShow.label === "Artworks") {
+                if (tabToShow.label === "Artworks" && queryData?.fair !== null) {
                   return (
                     <>
                       <FairArtworks fair={queryData.fair} />
