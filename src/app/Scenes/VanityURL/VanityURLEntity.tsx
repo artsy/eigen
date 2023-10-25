@@ -1,7 +1,7 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
-import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
+import { FairPlaceholder, FairScreen } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -20,7 +20,7 @@ const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug })
   const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
 
   if (isFair) {
-    return <FairFragmentContainer fair={fairOrPartner} />
+    return <FairScreen fairID={fairOrPartner.slug} />
   } else if (isPartner) {
     return <PartnerContainer partner={fairOrPartner} />
   } else {
@@ -52,7 +52,7 @@ interface RendererProps {
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
   if (slugType === "fairID") {
-    return <FairQueryRenderer fairID={slug} />
+    return <FairScreen fairID={slug} />
   } else if (!entity && !slugType) {
     return <VanityURLPossibleRedirect slug={slug} />
   } else {

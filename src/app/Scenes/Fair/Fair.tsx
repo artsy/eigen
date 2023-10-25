@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, ChevronIcon, Flex, Box, Separator } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
-import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
+import { Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
@@ -9,17 +9,15 @@ import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "a
 import { HeaderButton } from "app/Components/HeaderButton"
 import { NavigationalTabs, TabsType } from "app/Components/LegacyTabs"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
+import { FairArtworks } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
 import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
@@ -31,12 +29,8 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const BACK_ICON_SIZE = 21
 const HEADER_SCROLL_THRESHOLD = 50
 
-interface FairQueryRendererProps {
+interface FairScreenProps {
   fairID: string
-}
-
-interface FairProps {
-  fair: Fair_fair$data
 }
 
 const tabs: TabsType = [
@@ -48,13 +42,15 @@ const tabs: TabsType = [
   },
 ]
 
-export const Fair: React.FC<FairProps> = ({ fair }) => {
-  const { isActive } = fair
-  const hasArticles = !!fair.articles?.edges?.length
-  const hasCollections = !!fair.marketingCollections.length
-  const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
-  const hasExhibitors = !!(fair.counts?.partnerShows ?? 0 > 0)
-  const hasFollowedArtistArtworks = !!(fair.followedArtistArtworks?.edges?.length ?? 0 > 0)
+export const Fair: React.FC<FairScreenProps> = ({ fairID }) => {
+  const queryData = useLazyLoadQuery<FairQuery>(FairScreenQuery, { fairID })
+  const fair = useFragment<Fair_fair$key>(FairFragment, queryData.fair)
+
+  const hasArticles = !!fair?.articles?.edges?.length
+  const hasCollections = !!fair?.marketingCollections.length
+  const hasArtworks = !!(fair?.counts?.artworks ?? 0 > 0)
+  const hasExhibitors = !!(fair?.counts?.partnerShows ?? 0 > 0)
+  const hasFollowedArtistArtworks = !!(fair?.followedArtistArtworks?.edges?.length ?? 0 > 0)
 
   const tracking = useTracking()
   const [activeTab, setActiveTab] = useState(0)
@@ -63,7 +59,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const [shouldHideButtons, setShouldHideButtons] = useState(false)
 
-  const sections = isActive
+  const sections = fair?.isActive
     ? [
         "fairHeader",
         ...(hasArticles ? ["fairEditorial"] : []),
@@ -87,16 +83,16 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     const trackTappedArtworkTabProps = {
       action: ActionType.tappedNavigationTab,
       context_screen_owner_type: OwnerType.fair,
-      context_screen_owner_id: fair.internalID,
-      context_screen_owner_slug: fair.slug,
+      context_screen_owner_id: fair?.internalID,
+      context_screen_owner_slug: fair?.slug,
       context_module: ContextModule.exhibitorsTab,
       subject: "Artworks",
     }
     const trackTappedExhibitorsTabProps = {
       action: ActionType.tappedNavigationTab,
       context_screen_owner_type: OwnerType.fair,
-      context_screen_owner_id: fair.internalID,
-      context_screen_owner_slug: fair.slug,
+      context_screen_owner_id: fair?.internalID,
+      context_screen_owner_slug: fair?.slug,
       context_module: ContextModule.artworksTab,
       subject: "Exhibitors",
     }
@@ -115,8 +111,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       action_name: "filter",
       context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
       context_screen: Schema.PageNames.FairPage,
-      context_screen_owner_id: fair.internalID,
-      context_screen_owner_slug: fair.slug,
+      context_screen_owner_id: fair?.internalID,
+      context_screen_owner_slug: fair?.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     handleFilterArtworksModal()
@@ -127,8 +123,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       action_name: "closeFilterWindow",
       context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
       context_screen: Schema.PageNames.FairPage,
-      context_screen_owner_id: fair.internalID,
-      context_screen_owner_slug: fair.slug,
+      context_screen_owner_id: fair?.internalID,
+      context_screen_owner_slug: fair?.slug,
       action_type: Schema.ActionTypes.Tap,
     })
     handleFilterArtworksModal()
@@ -144,8 +140,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       info={{
         context_screen: Schema.PageNames.FairPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-        context_screen_owner_id: fair.internalID,
-        context_screen_owner_slug: fair.slug,
+        context_screen_owner_id: fair?.internalID,
+        context_screen_owner_slug: fair?.slug,
       }}
     >
       <ArtworkFiltersStoreProvider>
@@ -165,22 +161,22 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
               case "fairHeader": {
                 return (
                   <>
-                    <FairHeaderFragmentContainer fair={fair} />
+                    <FairHeaderFragmentContainer fair={fair!} />
                     <Separator mt={4} />
                   </>
                 )
               }
               case "notActive": {
-                return <FairEmptyStateFragmentContainer fair={fair} />
+                return <FairEmptyStateFragmentContainer fair={fair!} />
               }
               case "fairFollowedArtistsRail": {
-                return <FairFollowedArtistsRailFragmentContainer fair={fair} />
+                return <FairFollowedArtistsRailFragmentContainer fair={fair!} />
               }
               case "fairEditorial": {
-                return <FairEditorialFragmentContainer fair={fair} />
+                return <FairEditorialFragmentContainer fair={fair!} />
               }
               case "fairCollections": {
-                return <FairCollectionsFragmentContainer fair={fair} />
+                return <FairCollectionsFragmentContainer fair={fair!} />
               }
               case "fairTabsAndFilter": {
                 const tabToShow = tabs ? tabs[activeTab] : null
@@ -217,17 +213,17 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                 }
 
                 if (tabToShow.label === "Exhibitors") {
-                  return <FairExhibitorsFragmentContainer fair={fair} />
+                  return <FairExhibitorsFragmentContainer fair={fair!} />
                 }
 
                 if (tabToShow.label === "Artworks") {
                   return (
                     <>
-                      <FairArtworksFragmentContainer fair={fair} />
+                      <FairArtworks fair={queryData.fair} />
                       <ArtworkFilterNavigator
                         visible={isFilterArtworksModalVisible}
-                        id={fair.internalID}
-                        slug={fair.slug}
+                        id={fair?.internalID}
+                        slug={fair?.slug}
                         mode={FilterModalMode.Fair}
                         exitModal={handleFilterArtworksModal}
                         closeModal={closeFilterArtworksModal}
@@ -248,65 +244,61 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   )
 }
 
-export const FairFragmentContainer = createFragmentContainer(Fair, {
-  fair: graphql`
-    fragment Fair_fair on Fair {
-      internalID
-      slug
-      isActive
-      articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
-        edges {
-          __typename
-        }
-      }
-      marketingCollections(size: 5) {
+export const FairFragment = graphql`
+  fragment Fair_fair on Fair {
+    internalID
+    slug
+    isActive
+    articles: articlesConnection(first: 5, sort: PUBLISHED_AT_DESC) {
+      edges {
         __typename
       }
-      counts {
-        artworks
-        partnerShows
-      }
-      followedArtistArtworks: filterArtworksConnection(
-        first: 20
-        input: { includeArtworksByFollowedArtists: true }
-      ) {
-        edges {
-          __typename
-        }
-      }
-      ...FairHeader_fair
-      ...FairEmptyState_fair
-      ...FairEditorial_fair
-      ...FairCollections_fair
-      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
-      ...FairExhibitors_fair
-      ...FairFollowedArtistsRail_fair
     }
-  `,
-})
+    marketingCollections(size: 5) {
+      __typename
+    }
+    counts {
+      artworks
+      partnerShows
+    }
+    followedArtistArtworks: filterArtworksConnection(
+      first: 20
+      input: { includeArtworksByFollowedArtists: true }
+    ) {
+      edges {
+        __typename
+      }
+    }
+    ...FairHeader_fair
+    ...FairEmptyState_fair
+    ...FairEditorial_fair
+    ...FairCollections_fair
+    # TODO: do we need this 👇?
+    ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
+    ...FairExhibitors_fair
+    ...FairFollowedArtistsRail_fair
+  }
+`
 
-export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
+const FairScreenQuery = graphql`
+  query FairQuery($fairID: String!) {
+    fair(id: $fairID) @principalField {
+      ...Fair_fair
+      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
+    }
+  }
+`
+
+export const FairScreen: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (
-    <QueryRenderer<FairQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query FairQuery($fairID: String!) {
-          fair(id: $fairID) @principalField {
-            ...Fair_fair
-          }
-        }
-      `}
-      variables={{ fairID }}
-      render={renderWithPlaceholder({
-        Container: FairFragmentContainer,
-        renderPlaceholder: () => <FairPlaceholder />,
-      })}
-    />
+    <Suspense fallback={<FairPlaceholder />}>
+      <Fair fairID={fairID} />
+    </Suspense>
   )
 }
 
 export const FairPlaceholder: React.FC = () => (
-  <Flex>
+  <Flex testID="FairPlaceholder">
     <PlaceholderBox height={400} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
       <Flex>
