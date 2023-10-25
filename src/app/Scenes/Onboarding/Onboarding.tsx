@@ -115,14 +115,8 @@ export const OnboardingWelcomeScreens = () => {
           <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
         </StackNavigator.Group>
 
-        <StackNavigator.Group screenOptions={{ presentation: "modal" }}>
-          {!!userIsDev && (
-            <StackNavigator.Screen
-              name="DevMenu"
-              component={DevMenu}
-              options={{ presentation: "modal", cardStyle: { backgroundColor: "white" } }}
-            />
-          )}
+        <StackNavigator.Group>
+          {!!userIsDev && <StackNavigator.Screen name="DevMenu" component={DevMenu} />}
         </StackNavigator.Group>
       </StackNavigator.Navigator>
     </NavigationContainer>
