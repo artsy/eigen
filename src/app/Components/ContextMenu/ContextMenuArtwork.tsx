@@ -11,10 +11,9 @@ import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import React from "react"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
-import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
+import { trigger, HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { useTracking } from "react-tracking"
 
 interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
@@ -54,7 +53,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -91,8 +89,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       widthIn,
       heightIn,
       slug,
-      id,
-      enableInstantVIR
+      id
     )
   }
 
@@ -160,7 +157,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
     if (haptic) {
-      Haptic.trigger(haptic === true ? "impactLight" : haptic)
+      trigger(haptic === true ? "impactLight" : haptic)
     }
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress

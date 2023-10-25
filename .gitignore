@@ -83,8 +83,9 @@ eslint-errors.json
 # typescript
 tsc_raw.log
 
-# query map
+# data folder
 data/complete.queryMap.json
+data/PreHeatedGraphQLCache/*
 
 # native code hash
 file_hashes.txt

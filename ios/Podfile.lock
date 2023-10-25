@@ -39,12 +39,12 @@ PODS:
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
     - Appboy-iOS-SDK/NewsFeed
-  - appcenter-core (4.4.5):
-    - AppCenterReactNativeShared (~> 4.0)
+  - appcenter-core (5.0.0):
+    - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - AppCenter/Core (4.4.3)
-  - AppCenterReactNativeShared (4.4.5):
-    - AppCenter/Core (= 4.4.3)
+  - AppCenter/Core (5.0.3)
+  - AppCenterReactNativeShared (5.0.0):
+    - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
@@ -548,7 +548,7 @@ PODS:
     - React-Core
   - react-native-view-shot (3.4.0):
     - React-Core
-  - react-native-webview (13.6.0):
+  - react-native-webview (13.6.2):
     - React-Core
   - React-perflogger (0.70.13)
   - React-RCTActionSheet (0.70.13):
@@ -695,7 +695,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.23.0):
+  - RNScreens (3.26.0):
     - React-Core
     - React-RCTImage
   - RNSentry (5.9.1):
@@ -1170,9 +1170,9 @@ SPEC CHECKSUMS:
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
-  AppCenter: 3fd04aa1b166e16fdb03ec81dabe488aece83fbd
-  appcenter-core: c593b2e4ac28d6a21b6a217c4a5e6b3de7b0b00f
-  AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
+  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
+  appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
+  AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
@@ -1272,7 +1272,7 @@ SPEC CHECKSUMS:
   react-native-shake: 62aa5681863203090a087842da70183c442b97f8
   react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
   react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
-  react-native-webview: 669ae162965f629a8d6a4bdd3b99a304d36ef1f2
+  react-native-webview: 8fc09f66a1a5b16bbe37c3878fda27d5982bb776
   React-perflogger: c6702b0cb84be970b5fcb230162a229195295ece
   React-RCTActionSheet: cbe5a12f5417120bbc03c105c9ea9a4c6d2b5d84
   React-RCTAnimation: ac313d82cac7b1c90dd817de5eca6d367c66d588
@@ -1304,7 +1304,7 @@ SPEC CHECKSUMS:
   RNPermissions: 23abdfa77d3cd3700b181a2d47f29939c6878ce6
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 38e8c4a0232f4596ba46b547ae8b9a8192322dea
-  RNScreens: 6a8a3c6b808aa48dca1780df7b73ea524f602c63
+  RNScreens: e145ee71415e19fdcbcd98d85247f5baf4feafad
   RNSentry: 0a1daa8ee81e2776f977ae8c66e67c8d85587828
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c

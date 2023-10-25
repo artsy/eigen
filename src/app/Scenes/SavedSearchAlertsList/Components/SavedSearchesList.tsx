@@ -2,10 +2,10 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spinner, useTheme } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
-import { GoBackProps, navigate, navigationEvents } from "app/system/navigation/navigate"
+import { GoBackProps, goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
@@ -190,26 +190,34 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <PageWithSimpleHeader
-        title="Saved Alerts"
-        right={<SortButton onPress={() => setModalVisible(true)} />}
+      <FancyModalHeader
+        hideBottomDivider
+        onLeftButtonPress={goBack}
+        onRightButtonPress={() => {
+          setModalVisible(true)
+        }}
+        renderRightButton={() => {
+          return <SortButton onPress={() => setModalVisible(true)} />
+        }}
       >
-        <SavedSearchesList
-          {...props}
-          fetchingMore={fetchingMore}
-          refreshMode={refreshMode}
-          onRefresh={onRefresh}
-          onLoadMore={handleLoadMore}
-        />
-        <SortByModal
-          visible={modalVisible}
-          options={SORT_OPTIONS}
-          selectedValue={selectedSortValue}
-          onCloseModal={handleCloseModal}
-          onSelectOption={handleSelectOption}
-          onModalFinishedClosing={handleSortByModalClosed}
-        />
-      </PageWithSimpleHeader>
+        Saved Alerts
+      </FancyModalHeader>
+
+      <SavedSearchesList
+        {...props}
+        fetchingMore={fetchingMore}
+        refreshMode={refreshMode}
+        onRefresh={onRefresh}
+        onLoadMore={handleLoadMore}
+      />
+      <SortByModal
+        visible={modalVisible}
+        options={SORT_OPTIONS}
+        selectedValue={selectedSortValue}
+        onCloseModal={handleCloseModal}
+        onSelectOption={handleSelectOption}
+        onModalFinishedClosing={handleSortByModalClosed}
+      />
     </ProvideScreenTracking>
   )
 }

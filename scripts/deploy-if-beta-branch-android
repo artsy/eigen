@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -exo pipefail
-
-source ./scripts/source-for-bash-env
-
-if [ "${LOCAL_BRANCH}" == "beta-android" ]; then
-  DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
-  ./scripts/distribute-android $DISTRIBUTION_TARGET
-fi

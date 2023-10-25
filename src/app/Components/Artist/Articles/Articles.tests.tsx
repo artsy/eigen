@@ -2,6 +2,7 @@ import { screen, fireEvent } from "@testing-library/react-native"
 import { ArticlesTestsQuery } from "__generated__/ArticlesTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { Articles } from "./Articles"
@@ -52,6 +53,17 @@ describe("Articles", () => {
 
     fireEvent.press(screen.getByText(`<mock-value-for-field-"thumbnailTitle">`))
     expect(navigate).toHaveBeenCalledWith(`<mock-value-for-field-\"href\">`)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArticleGroup",
+      context_module: "marketNews",
+      context_screen_owner_id: "<Artist-mock-id-2>",
+      context_screen_owner_slug: "<Artist-mock-id-1>",
+      context_screen_owner_type: "artist",
+      destination_screen_owner_id: "<Article-mock-id-4>",
+      destination_screen_owner_slug: '<mock-value-for-field-"slug">',
+      destination_screen_owner_type: "article",
+      type: "thumbnail",
+    })
   })
 
   it("navigates to all articles", () => {
@@ -59,5 +71,12 @@ describe("Articles", () => {
 
     fireEvent.press(screen.getByText("View All"))
     expect(navigate).toHaveBeenCalledWith("artist/<Artist-mock-id-1>/articles")
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedArticleGroup",
+      context_module: "marketNews",
+      context_screen_owner_type: "artist",
+      destination_screen_owner_type: "articles",
+      type: "viewAll",
+    })
   })
 })

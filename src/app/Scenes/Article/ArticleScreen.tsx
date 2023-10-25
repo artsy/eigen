@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   Flex,
   Join,
@@ -52,7 +53,7 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
     <ProvideScreenTracking
       info={{
         context_screen: Schema.PageNames.ArticlePage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen_owner_type: OwnerType.article,
         context_screen_owner_slug: data.article.slug ?? "",
         context_screen_owner_id: data.article.internalID,
       }}

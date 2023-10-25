@@ -12,6 +12,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
+import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -36,7 +37,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -45,12 +46,14 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
   predefinedFilters?: FilterArray
+  scrollToArtworksGrid: boolean
 }
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   artist,
   relay,
   predefinedFilters,
+  scrollToArtworksGrid,
   searchCriteria,
   ...props
 }) => {
@@ -64,6 +67,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
+
+  const gridRef = useRef<MasonryFlashListRef<typeof artworks[0]>>(null)
+
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
@@ -100,6 +106,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     setInitialFilterStateAction(filters)
   }, [])
 
+  useEffect(() => {
+    if (scrollToArtworksGrid) {
+      setTimeout(() => {
+        gridRef.current?.scrollToOffset({ offset: 0, animated: true })
+      }, 1000)
+    }
+  })
   const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
     entityId: artist.internalID!,
     entityName: artist.name ?? "",
@@ -232,6 +245,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         numColumns={NUM_COLUMNS_MASONRY}
         estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
+        innerRef={gridRef}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState

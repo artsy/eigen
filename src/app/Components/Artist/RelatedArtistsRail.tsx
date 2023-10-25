@@ -1,4 +1,5 @@
 import { Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { RelatedArtistsRail_artists$key } from "__generated__/RelatedArtistsRail_artists.graphql"
 import { RelatedArtistsRailCell } from "app/Components/Artist/RelatedArtistsRailCell"
 import { FlatList } from "react-native"
@@ -6,13 +7,15 @@ import { graphql, useFragment } from "react-relay"
 
 interface RelatedArtistsRailProps {
   artists: RelatedArtistsRail_artists$key
+  artist: ArtistAbout_artist$data
 }
 
-export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists }) => {
-  const data = useFragment(query, artists)
+export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists, artist }) => {
+  const artistsData = useFragment(artistsQuery, artists)
+
   const space = useSpace()
 
-  if (!data) {
+  if (!artistsData) {
     return null
   }
 
@@ -23,8 +26,10 @@ export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists 
       </Text>
 
       <FlatList
-        data={data}
-        renderItem={({ item }) => <RelatedArtistsRailCell artist={item} />}
+        data={artistsData}
+        renderItem={({ item, index }) => (
+          <RelatedArtistsRailCell relatedArtist={item} index={index} artist={artist} />
+        )}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         keyExtractor={(item) => `related-artists-rail-item-${item.id}`}
         horizontal
@@ -35,9 +40,9 @@ export const RelatedArtistsRail: React.FC<RelatedArtistsRailProps> = ({ artists 
   )
 }
 
-const query = graphql`
+const artistsQuery = graphql`
   fragment RelatedArtistsRail_artists on Artist @relay(plural: true) {
     id
-    ...RelatedArtistsRailCell_artist
+    ...RelatedArtistsRailCell_relatedArtist
   }
 `

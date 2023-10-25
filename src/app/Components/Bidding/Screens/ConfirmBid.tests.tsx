@@ -12,7 +12,6 @@ import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
@@ -69,7 +68,6 @@ describe("ConfirmBid", () => {
     nextStep = null // reset nextStep between tests
     // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
     bidderPositionQueryMock.mockReset()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsPriceTransparency: true })
   })
 
   it("renders without throwing an error", () => {
@@ -135,25 +133,6 @@ describe("ConfirmBid", () => {
     expect(TextText).toContain("Your max bid $45,000.00")
     expect(TextText).toContain("Buyer’s premium $9,000.00")
     expect(TextText).toContain("Subtotal $54,000.00")
-  })
-
-  it("does not display price summary when the feature flag is off", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AROptionsPriceTransparency: false,
-    })
-
-    const component = mountConfirmBidComponent(initialProps)
-
-    expect(component.root.findAllByType(Spinner).length).toEqual(0)
-
-    const TextText = component.root
-      .findAllByType(Text)
-      .map((TextComponent) => TextComponent.props.children as string)
-      .join(" ")
-
-    expect(TextText).not.toContain("Your max bid $45,000.00")
-    expect(TextText).not.toContain("Buyer’s premium $9,000.00")
-    expect(TextText).not.toContain("Subtotal $54,000.00")
   })
 
   describe("checkbox and payment info display", () => {

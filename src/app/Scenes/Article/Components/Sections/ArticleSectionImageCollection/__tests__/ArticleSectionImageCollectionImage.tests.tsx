@@ -44,4 +44,16 @@ describe("ArticleSectionImageCollectionImage", () => {
       expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
     })
   })
+
+  it("renders Artwork type", async () => {
+    renderWithRelay({
+      ArticleSectionImageCollection: () => ({
+        figures: [{ __typename: "Artwork" }],
+      }),
+    })
+
+    await waitFor(() => {
+      expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
+    })
+  })
 })

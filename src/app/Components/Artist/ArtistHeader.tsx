@@ -8,6 +8,7 @@ import {
   Text,
   Touchable,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
@@ -46,6 +47,7 @@ export const useArtistHeaderImageDimensions = () => {
 }
 
 export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
+  const space = useSpace()
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
@@ -121,8 +123,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
       </Box>
 
       {!!hasVerifiedRepresentatives && (
-        <Flex pointerEvents="box-none" px={2}>
-          <Flex pointerEvents="none">
+        <Flex pointerEvents="box-none">
+          <Flex pointerEvents="none" px={2}>
             <Text pt={2} pb={1} variant="sm" color="black60">
               Featured representation
             </Text>
@@ -141,6 +143,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
               </Pill>
             )}
             ItemSeparatorComponent={() => <Spacer x={1} />}
+            contentContainerStyle={{
+              paddingHorizontal: space(2),
+            }}
           />
           <Spacer y={2} />
         </Flex>

@@ -191,7 +191,7 @@ Tap `cmd + u` to run all tests, use `ctrl + alt + cmd + g` to run the last set y
 You can run tests via the CLI using:
 
 ```sh
-./scripts/test-ios
+./scripts/ci/test-ios
 ```
 
 ## Certificates

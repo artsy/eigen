@@ -1,8 +1,64 @@
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
-import { ArtistShowFragmentContainer } from "./ArtistShow"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtistShowTestsQuery } from "__generated__/ArtistShowTestsQuery.graphql"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { ArtistShow } from "./ArtistShow"
 
-const showProps = {
+describe("ArtistShow", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtistShowTestsQuery>({
+    Component: ({ show }) => {
+      return <ArtistShow show={show!} index={0} />
+    },
+    query: graphql`
+      query ArtistShowTestsQuery @relay_test_operation {
+        show(id: "test-show") {
+          ...ArtistShow_show
+        }
+      }
+    `,
+  })
+
+  it("renders", () => {
+    renderWithRelay({ Show: () => show })
+
+    expect(screen.getByText("Gallery")).toBeOnTheScreen()
+  })
+
+  it("renders without throwing an error with null show kind", () => {
+    renderWithRelay({
+      Show: () => ({
+        ...show,
+        kind: null,
+      }),
+    })
+
+    expect(screen.getByText("Gallery")).toBeOnTheScreen()
+  })
+
+  it("navigates to the respective show screen", () => {
+    renderWithRelay({ Show: () => show })
+
+    fireEvent.press(screen.getByText("Gallery"))
+
+    expect(navigate).toHaveBeenCalledWith(show.href)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedShowGroup",
+      context_module: "currentShowsRail",
+      context_screen_owner_type: "artist",
+      destination_screen_owner_id: "show-1",
+      destination_screen_owner_slug: "show",
+      destination_screen_owner_type: "show",
+      horizontal_slide_position: 1,
+      type: "thumbnail",
+    })
+  })
+})
+
+const show = {
+  internalID: "show-1",
+  slug: "show",
   href: "artsy.net/show",
   cover_image: {
     url: "artsy.net/image-url",
@@ -19,32 +75,3 @@ const showProps = {
     city: "Berlin",
   },
 }
-
-const showStyles = {
-  container: {
-    margin: 10,
-    marginBottom: 30,
-    width: 100,
-  },
-  image: {
-    width: 50,
-    height: 50,
-  },
-}
-
-it("renders without throwing an error with all props", () => {
-  renderWithWrappersLEGACY(
-    <ArtistShowFragmentContainer show={showProps as any} styles={showStyles} />
-  )
-})
-
-it("renders without throwing an error with null show kind", () => {
-  const showPropsNullKind = {
-    ...showProps,
-    kind: null,
-  }
-
-  renderWithWrappersLEGACY(
-    <ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />
-  )
-})

@@ -1452,6 +1452,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -1898,6 +1899,7 @@ type ArtistSeries {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -2384,6 +2386,7 @@ type Artwork implements Node & Searchable & Sellable {
 enum ArtworkAggregation {
   ARTIST
   ARTIST_NATIONALITY
+  ARTIST_SERIES
   ATTRIBUTION_CLASS
   COLOR
   DIMENSION_RANGE
@@ -8764,6 +8767,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -9008,6 +9012,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -9518,6 +9523,7 @@ input FilterArtworksInput {
   artistIDs: [String]
   artistNationalities: [String]
   artistSeriesID: String
+  artistSeriesIDs: [String]
   atAuction: Boolean
   attributionClass: [String]
   before: String
@@ -9956,6 +9962,7 @@ type Gene implements Node & Searchable {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -11031,6 +11038,11 @@ type LinkAuthenticationMutationPayload {
 
 union ListPrice = Money | PriceRange
 
+enum LiveAuctionRole {
+  OPERATOR
+  PARTICIPANT
+}
+
 type Location {
   address: String
   address2: String
@@ -11170,6 +11182,7 @@ type MarketingCollection {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -13397,6 +13410,7 @@ type Partner implements Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -13503,6 +13517,7 @@ type Partner implements Node {
     last: Int
     partnerID: String
     since: SearchCriteriaSinceEnum
+    sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection
   showPromoted: Boolean
 
@@ -14432,6 +14447,11 @@ type Query {
     # Returns the last _n_ elements from the list.
     last: Int
     partnerID: ID
+
+    # Only works if partnerID is also passed and artistID is not. Return search
+    # criteria by artists this partner does/does not represent. Not passing will
+    # return all criteria.
+    represented: Boolean
     since: SearchCriteriaSinceEnum
 
     # Returns search criteria sorted by input (default: by high quality and count desc)
@@ -14695,6 +14715,7 @@ type Query {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -15557,6 +15578,7 @@ type Query {
     last: Int
     partnerID: String
     since: SearchCriteriaSinceEnum
+    sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
@@ -15936,11 +15958,6 @@ type ReverseImageSearchResultMatchRect {
 
 type ReverseImageSearchResults {
   results: [ReverseImageSearchResult]!
-}
-
-enum Role {
-  OPERATOR
-  PARTICIPANT
 }
 
 # The conditions for uploading assets to media.artsy.net
@@ -16555,6 +16572,7 @@ enum SavedSearchesSortEnum {
 
 # Saved Search User Alert Settings
 type SavedSearchUserAlertSettings {
+  details: String
   email: Boolean!
   frequency: UserSearchCriteriaFrequency!
   name: String
@@ -16782,8 +16800,8 @@ enum SearchCriteriaSortEnum {
   # Sort by most popular search criteria in descending order
   COUNT_DESC
 
-  # Sort by high quality priority listed first
-  HIGH_QUALITY_DESC
+  # Sort by search criteria with price presence on top
+  PRICE_PRESENCE
 }
 
 enum SearchEntity {
@@ -17066,6 +17084,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -17501,7 +17520,7 @@ type System {
 
   # Creates, and authorizes, a JWT custom for Causality
   causalityJWT(
-    role: Role
+    role: LiveAuctionRole
 
     # The id of the auction to participate in
     saleID: String!
@@ -17513,6 +17532,9 @@ type System {
 
   # Gravity system time, necessary for synchronizing device clocks.
   time: SystemTime
+
+  # List of all available product privileges
+  userRoles: [UserRole]
 }
 
 type SystemTime {
@@ -17546,6 +17568,7 @@ type Tag implements Node {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -18937,6 +18960,7 @@ type UserAdminNotes {
 
 # Settings for user saved search
 input UserAlertSettingsInput {
+  details: String
   email: Boolean
   frequency: UserSearchCriteriaFrequency
   name: String
@@ -19132,6 +19156,12 @@ type UserPurchasesEdge {
   ): String
   salePrice: Float
   source: String
+}
+
+# Fields corresponding to a given product privilege
+type UserRole {
+  # unique label for this role
+  name: String
 }
 
 type UserSaleProfile {
@@ -19423,6 +19453,7 @@ type Viewer {
     artistIDs: [String]
     artistNationalities: [String]
     artistSeriesID: String
+    artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     before: String
@@ -20109,6 +20140,7 @@ type Viewer {
     last: Int
     partnerID: String
     since: SearchCriteriaSinceEnum
+    sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 

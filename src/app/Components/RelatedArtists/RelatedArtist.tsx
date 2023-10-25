@@ -20,14 +20,13 @@ class RelatedArtist extends Component<Props> {
 
   render() {
     const artist = this.props.artist
-    const imageURL = artist.image && artist.image.url
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ width: this.props.imageSize.width }}>
           <ImageView
             style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]}
-            imageURL={imageURL}
+            imageURL={artist.coverArtwork?.image?.url}
           />
           <Spacer y={1} />
           <Text variant="sm" weight="medium">
@@ -70,8 +69,10 @@ export default createFragmentContainer(RelatedArtist, {
         forSaleArtworks
         artworks
       }
-      image {
-        url(version: "large")
+      coverArtwork {
+        image {
+          url(version: "large")
+        }
       }
     }
   `,

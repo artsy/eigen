@@ -17,11 +17,10 @@ import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/Image
 import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import React, { Suspense, useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
   graphql,
@@ -47,8 +46,6 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
-  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
-
   const { height: screenHeight } = useScreenDimensions()
 
   const { trackEvent } = useTracking()
@@ -61,8 +58,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       widthIn,
       heightIn,
       selectedArtwork.slug,
-      selectedArtwork.id,
-      enableInstantVIR
+      selectedArtwork.id
     )
   }
 

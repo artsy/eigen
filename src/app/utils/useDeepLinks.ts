@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
@@ -29,30 +30,45 @@ export function useDeepLinks() {
     }
   }, [isHydrated, isLoggedIn])
 
-  const handleDeepLink = (url: string) => {
-    // These will be redirected, avoided double tracking
-    if (!url.includes("click.artsy.net")) {
-      trackEvent(tracks.deepLink(url))
+  const handleDeepLink = async (url: string) => {
+    let targetURL
+
+    // If the url is a marketing url, we need to fetch the redirect
+    if (url.includes("click.artsy.net")) {
+      try {
+        targetURL = await fetch(url)
+      } catch (error) {
+        if (__DEV__) {
+          console.warn(error)
+        } else {
+          captureMessage(
+            `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
+            "error"
+          )
+        }
+      }
     }
+
+    const deepLinkUrl = targetURL?.url ?? url
+
+    // We track the deep link opened event
+    trackEvent(tracks.deepLink(deepLinkUrl))
 
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn) {
-      navigate(url)
+      // and we track the deep link
+
+      navigate(deepLinkUrl)
     }
 
     // Otherwise, we save the deep link url
     // to redirect them to the login screen once they log in
-    launchURL.current = url
+    launchURL.current = deepLinkUrl
   }
 
   useEffect(() => {
     if (isLoggedIn && launchURL.current) {
-      // These will be redirected, avoided double tracking
-      if (!launchURL.current.includes("click.artsy.net")) {
-        trackEvent(tracks.deepLink(launchURL.current))
-      }
-
       // Navigate to the saved launch url
       navigate(launchURL.current)
       // Reset the launchURL

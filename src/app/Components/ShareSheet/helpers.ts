@@ -1,7 +1,9 @@
+import { captureMessage } from "@sentry/react-native"
 import { ShareSheetItem } from "app/Components/ShareSheet/types"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { take } from "lodash"
 import ViewShot from "react-native-view-shot"
+import RNFetchBlob from "rn-fetch-blob"
 
 export const getShareURL = (href: string) => {
   return `${unsafe__getEnvironment().webURL}${href}`
@@ -62,5 +64,25 @@ export const getShareImages = (shareSheetItem: ShareSheetItem) => {
 
   return {
     currentImageUrl,
+  }
+}
+
+export async function getImageBase64(url: string): Promise<string> {
+  try {
+    const resp = await RNFetchBlob.config({
+      fileCache: true,
+    }).fetch("GET", url)
+
+    const base64RawData = await resp.base64()
+    const base64Data = `data:image/png;base64,${base64RawData}`
+
+    return base64Data
+  } catch (error) {
+    if (__DEV__) {
+      console.warn(`Failed to fetch image from ${url}: ${error}`)
+    } else {
+      captureMessage(`getImageBase64 Failed to fetch image from ${url}: ${error}`)
+    }
+    return ""
   }
 }

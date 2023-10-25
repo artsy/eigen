@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+./scripts/setup/download-assets-android
+./scripts/setup/download-assets-ios
+./scripts/setup/download-fonts

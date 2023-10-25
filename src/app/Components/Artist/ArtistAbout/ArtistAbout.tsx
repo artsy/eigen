@@ -58,7 +58,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
             {!!hasArticles && <Articles articles={articles} artist={artist} />}
             {!!hasShows && <ArtistAboutShowsFragmentContainer artist={artist} />}
 
-            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} />}
+            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} artist={artist} />}
             {!!hasRelatedGenes && <ArtistAboutRelatedGenes genes={relatedGenes} />}
           </Join>
           <Spacer y={4} />
@@ -93,6 +93,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...Articles_artist
       ...ArtistAboutShows_artist
       ...ArtistCareerHighlights_artist
+      ...RelatedArtistsRailCell_artist
       related {
         artistsConnection(first: 12) {
           edges {

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+bundle install
+bundle exec fastlane notify_if_new_license_agreement

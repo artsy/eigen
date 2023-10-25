@@ -55,15 +55,12 @@ export const Form: React.FC<FormProps> = ({
   onToggleEmailNotification,
   onRemovePill,
 }) => {
-  const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
-    "AREnableFallbackToGeneratedAlertNames"
-  )
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+  const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
 
   const tracking = useTracking()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
@@ -137,20 +134,7 @@ export const Form: React.FC<FormProps> = ({
 
       <Join separator={<Spacer y={2} />}>
         <Box>
-          {isFallbackToGeneratedAlertNamesEnabled ? (
-            <SavedSearchNameInputQueryRenderer attributes={attributes} />
-          ) : (
-            <Input
-              title="Name"
-              placeholder={entity.artists[0]?.name}
-              value={values.name}
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              error={errors.name}
-              testID="alert-input-name"
-              maxLength={75}
-            />
-          )}
+          <SavedSearchNameInputQueryRenderer attributes={attributes} />
 
           <Box mt={2}>
             <InputTitle>Filters</InputTitle>
@@ -174,10 +158,10 @@ export const Form: React.FC<FormProps> = ({
         {!!enableAlertsFilters ? (
           <Flex mt={2}>
             <MenuItem
-              title="Add Filters:"
-              description="Including price, rarity, medium, size, color"
+              title="Add Filters"
+              description="Including Price Range, Rarity, Medium, Size, Color"
               onPress={() => {
-                // navigate to filters screen
+                navigation.navigate("SavedSearchFilterScreen")
               }}
               px={0}
             />
@@ -186,7 +170,7 @@ export const Form: React.FC<FormProps> = ({
 
         {/* Price range is part of the new filters screen, no need to show it here anymore */}
         {!enableAlertsFilters && (
-          <Flex my={2}>
+          <Flex my={1}>
             <Touchable
               accessibilityLabel="Set price range"
               accessibilityRole="button"
@@ -204,9 +188,26 @@ export const Form: React.FC<FormProps> = ({
           </Flex>
         )}
 
+        {!!enableDetailsInput && (
+          <Flex>
+            <Text>Tell us more about what you’re looking for</Text>
+            <Spacer y={1} />
+            <Input
+              placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
+              value={values.details}
+              onChangeText={handleChange("details")}
+              onBlur={handleBlur("details")}
+              error={errors.details}
+              multiline
+              maxLength={700}
+              testID="alert-input-details"
+            />
+          </Flex>
+        )}
+
         <Box>
           <SavedSearchAlertSwitch
-            label="Mobile Alerts"
+            label="Push Notifications"
             onChange={onTogglePushNotification}
             active={values.push}
           />
@@ -214,7 +215,7 @@ export const Form: React.FC<FormProps> = ({
           <Spacer y={1} />
 
           <SavedSearchAlertSwitch
-            label="Email Alerts"
+            label="Email"
             onChange={onToggleEmailNotification}
             active={values.email}
           />
@@ -225,7 +226,7 @@ export const Form: React.FC<FormProps> = ({
                 Change your email preferences
               </Text>
               <Text variant="xs" mt={0.5}>
-                To receive Email Alerts, please update your email preferences.
+                To receive alerts via email, please update your email preferences.
               </Text>
             </Box>
           )}
@@ -255,7 +256,7 @@ export const Form: React.FC<FormProps> = ({
           block
           onPress={onSubmitPress}
         >
-          Save Alert
+          {isEditMode ? "Save Alert" : "Create Alert"}
         </Button>
         {!!isEditMode && (
           <>

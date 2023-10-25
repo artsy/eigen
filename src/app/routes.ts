@@ -128,6 +128,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
     addRoute("/article/:articleID", "Article"),
+    addRoute("/article/:articleID/slideshow", "ArticleSlideShow"),
     addRoute("/articles", "Articles"),
     addRoute("/artist-series/:artistSeriesID", "ArtistSeries"),
     addRoute("/artist/:artistID", "Artist"),
@@ -137,6 +138,11 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
+    })),
+    addRoute("/artist/:artistID/artworks", "Artist", (params) => ({
+      ...params,
+      initialTab: "Artworks",
+      scrollToArtworksGrid: true,
     })),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
 

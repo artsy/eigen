@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/ci/ci-setup-export-vars
+
+bundle install
+bundle exec fastlane promote_beta_ios

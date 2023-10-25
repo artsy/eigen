@@ -9,7 +9,6 @@ import {
 } from "app/Scenes/Activity/ActivityItemArtworksGrid"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
-import { shouldDisplayNotificationTypeLabel } from "app/Scenes/Activity/utils/shouldDisplayNotificationTypeLabel"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { ScrollView } from "react-native"
@@ -68,9 +67,7 @@ const ActivityItemScreen: FC<ActivityItemScreenProps> = ({ me }) => {
         }}
       >
         <Flex flexDirection="row">
-          {shouldDisplayNotificationTypeLabel(notification.notificationType) && (
-            <ActivityItemTypeLabel notificationType={notification.notificationType} />
-          )}
+          <ActivityItemTypeLabel notificationType={notification.notificationType} />
 
           <Text variant="xs" color="black60">
             {notification.publishedAt}

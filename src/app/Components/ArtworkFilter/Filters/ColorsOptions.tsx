@@ -14,21 +14,16 @@ import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
 export const COLORS = [
-  { value: "red", name: "Red", backgroundColor: "#BB392D", foregroundColor: "#fff" },
-  { value: "orange", name: "Orange", backgroundColor: "#EA6B1F", foregroundColor: "#000" },
-  { value: "yellow", name: "Yellow", backgroundColor: "#E2B929", foregroundColor: "#000" },
-  { value: "green", name: "Green", backgroundColor: "#00674A", foregroundColor: "#fff" },
-  { value: "blue", name: "Blue", backgroundColor: "#0A1AB4", foregroundColor: "#fff" },
-  { value: "purple", name: "Purple", backgroundColor: "#7B3D91", foregroundColor: "#fff" },
-  {
-    value: "black-and-white",
-    name: "Black and White",
-    backgroundColor: "#000",
-    foregroundColor: "#f00",
-  },
-  { value: "brown", name: "Brown", backgroundColor: "#7B5927", foregroundColor: "#fff" },
-  { value: "gray", name: "Gray", backgroundColor: "#C2C2C2", foregroundColor: "#000" },
-  { value: "pink", name: "Pink", backgroundColor: "#E1ADCD", foregroundColor: "#000" },
+  { value: "red", name: "Red", backgroundColor: "#BB392D" },
+  { value: "orange", name: "Orange", backgroundColor: "#EA6B1F" },
+  { value: "yellow", name: "Yellow", backgroundColor: "#E2B929" },
+  { value: "green", name: "Green", backgroundColor: "#00674A" },
+  { value: "blue", name: "Blue", backgroundColor: "#0A1AB4" },
+  { value: "purple", name: "Purple", backgroundColor: "#7B3D91" },
+  { value: "black-and-white", name: "Black and White", backgroundColor: "#000" },
+  { value: "brown", name: "Brown", backgroundColor: "#7B5927" },
+  { value: "gray", name: "Gray", backgroundColor: "#C2C2C2" },
+  { value: "pink", name: "Pink", backgroundColor: "#E1ADCD" },
 ] as const
 
 type Color = typeof COLORS[number]
@@ -38,7 +33,16 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
   {}
 )
 
-const SWATCHES_PER_ROW = 4
+export const COLOR_OPTIONS: FilterData[] = COLORS.map((color) => {
+  return {
+    // names returned by Metaphysics are actually the slugs
+    displayText: color.name,
+    paramValue: color.value,
+    paramName: FilterParamName.colors,
+  }
+})
+
+export const SWATCHES_PER_ROW = 4
 
 type ColorsOptionsScreenProps = StackScreenProps<
   ArtworkFilterNavigationStack,
@@ -97,7 +101,6 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
               selected={selected}
               name={color.name}
               backgroundColor={color.backgroundColor}
-              foregroundColor={color.foregroundColor}
               onPress={() => {
                 handleSelect(option, !selected)
               }}

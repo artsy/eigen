@@ -239,7 +239,7 @@ describe("extractPillsFromCriteria", () => {
 
   it("should correctly extract attribution pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      attributionClass: ["unique", "unknown edition"],
+      attributionClass: ["unique"],
     }
     const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
@@ -249,10 +249,25 @@ describe("extractPillsFromCriteria", () => {
         paramName: SearchCriteria.attributionClass,
         value: "unique",
       },
+    ])
+  })
+
+  it("should correctly extract additionalGeneIDs pills", () => {
+    const attributes: SearchCriteriaAttributes = {
+      additionalGeneIDs: ["painting", "work-on-paper"],
+    }
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+
+    expect(result).toEqual([
       {
-        label: "Unknown Edition",
-        paramName: SearchCriteria.attributionClass,
-        value: "unknown edition",
+        label: "Painting",
+        paramName: SearchCriteria.additionalGeneIDs,
+        value: "painting",
+      },
+      {
+        label: "Work on Paper",
+        paramName: SearchCriteria.additionalGeneIDs,
+        value: "work-on-paper",
       },
     ])
   })

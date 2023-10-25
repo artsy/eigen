@@ -23,7 +23,7 @@ interface RecentPriceRangeEntity {
 interface PriceRangeContainerProps {
   filterPriceRange: string // *-*
   histogramBars: HistogramBarEntity[]
-  header: React.ReactNode
+  header?: React.ReactNode
   onPriceRangeUpdate: (range: PriceRange) => void
   onRecentPriceRangeSelected?: (isCollectorProfileSources: boolean) => void
 }
@@ -103,7 +103,8 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
 
   return (
     <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
-      <Flex m={2}>{header}</Flex>
+      {!!header && <Flex m={2}>{header}</Flex>}
+
       <Flex flexDirection="row" mx={2}>
         <Input
           containerStyle={{ flex: 1 }}

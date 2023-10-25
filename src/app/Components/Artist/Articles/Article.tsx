@@ -1,19 +1,26 @@
+import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { Articles_article$key } from "__generated__/Articles_article.graphql"
+import { Article_article$data, Article_article$key } from "__generated__/Article_article.graphql"
+import { Article_artist$data, Article_artist$key } from "__generated__/Article_artist.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import FastImage from "react-native-fast-image"
 import { useFragment, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArticleProps {
-  article: Articles_article$key
+  article: Article_article$key
+  artist: Article_artist$key
   headline?: boolean
 }
 
-export const Article: React.FC<ArticleProps> = ({ article, headline = false }) => {
-  const data = useFragment(articleQuery, article)
+export const Article: React.FC<ArticleProps> = ({ article, artist, headline = false }) => {
+  const articleData = useFragment(articleQuery, article)
+  const artistData = useFragment(artistQuery, artist)
+  const tracking = useTracking()
 
   const handleOnPress = () => {
-    navigate(data.href!)
+    tracking.trackEvent(tracks.tappedArticleGroup(articleData, artistData))
+    navigate(articleData.href!)
   }
 
   return (
@@ -24,7 +31,7 @@ export const Article: React.FC<ArticleProps> = ({ article, headline = false }) =
               as soon as the palette element works
            */}
           <FastImage
-            source={{ uri: data.thumbnailImage?.url ?? "" }}
+            source={{ uri: articleData.thumbnailImage?.url ?? "" }}
             style={{
               width: "100%",
               height: "100%",
@@ -34,12 +41,12 @@ export const Article: React.FC<ArticleProps> = ({ article, headline = false }) =
         </Flex>
         <Spacer y={1} />
         <Text variant="xs" color="black100">
-          {data.vertical}
+          {articleData.vertical}
         </Text>
         <Spacer y={1} />
-        <Text variant={headline ? "lg-display" : "sm-display"}>{data.thumbnailTitle}</Text>
+        <Text variant={headline ? "lg-display" : "sm-display"}>{articleData.thumbnailTitle}</Text>
         <Spacer y={1} />
-        <Text variant="xs" color="black60">{`By ${data.byline}`}</Text>
+        <Text variant="xs" color="black60">{`By ${articleData.byline}`}</Text>
         {!headline && <Spacer y={4} />}
       </Flex>
     </Touchable>
@@ -47,8 +54,9 @@ export const Article: React.FC<ArticleProps> = ({ article, headline = false }) =
 }
 
 const articleQuery = graphql`
-  fragment Articles_article on Article {
+  fragment Article_article on Article {
     internalID
+    slug
     href
     thumbnailImage {
       url(version: "large")
@@ -58,3 +66,27 @@ const articleQuery = graphql`
     byline
   }
 `
+
+const artistQuery = graphql`
+  fragment Article_artist on Artist {
+    internalID
+    slug
+  }
+`
+
+const tracks = {
+  tappedArticleGroup: (
+    article: Article_article$data,
+    artist: Article_artist$data
+  ): TappedArticleGroup => ({
+    action: ActionType.tappedArticleGroup,
+    context_module: ContextModule.marketNews,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artist.internalID,
+    context_screen_owner_slug: artist.slug,
+    destination_screen_owner_type: OwnerType.article,
+    destination_screen_owner_id: article.internalID,
+    destination_screen_owner_slug: article.slug!,
+    type: "thumbnail",
+  }),
+}

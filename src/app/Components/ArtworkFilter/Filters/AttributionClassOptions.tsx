@@ -13,7 +13,7 @@ type AttributionClassOptionsScreenProps = StackScreenProps<
   "AttributionClassOptionsScreen"
 >
 
-export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
+export const KNOWN_ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
   { displayText: "Unique", paramValue: "unique", paramName: FilterParamName.attributionClass },
   {
     displayText: "Limited Edition",
@@ -25,6 +25,10 @@ export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
     paramValue: "open edition",
     paramName: FilterParamName.attributionClass,
   },
+]
+
+export const ATTRIBUTION_CLASS_OPTIONS: FilterData[] = [
+  ...KNOWN_ATTRIBUTION_CLASS_OPTIONS,
   {
     displayText: "Unknown Edition",
     paramValue: "unknown edition",

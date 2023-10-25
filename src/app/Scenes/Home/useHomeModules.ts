@@ -24,7 +24,7 @@ export const useHomeModules = (props: HomeProps) => {
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
         data: props.notificationsConnection,
-        isEmpty: isEmpty(props.notificationsConnection),
+        isEmpty: !props.notificationsConnection?.notificationsConnection?.edges?.length,
         key: "latestActivityRail",
         title: "Latest Activity",
         type: "activity",

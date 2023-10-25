@@ -18,7 +18,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -451,9 +450,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     const artworkImage = artwork!.image
 
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
-
     const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
@@ -541,11 +537,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 <Divider mb={2} />
               )}
 
-              {enablePriceTransparency ? (
-                <Box mt={4}>
-                  <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
-                </Box>
-              ) : null}
+              <Box mt={4}>
+                <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
+              </Box>
 
               <Modal
                 visible={this.state.errorModalVisible}

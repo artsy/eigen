@@ -6,7 +6,6 @@ require 'fileutils'
 require 'json'
 require 'dotenv'
 
-Dotenv.load('../.env.shared')
 Dotenv.load('../.env.releases')
 
 skip_docs
@@ -101,7 +100,6 @@ lane :ship_beta_ios do
     changelog: beta_readme,
     itc_provider: 'ArtsyInc',
     distribute_external: true,
-    skip_waiting_for_build_processing: true,
     groups: ['Artsy People', 'Applause People']
   )
 end
@@ -146,6 +144,9 @@ lane :promote_beta_ios do
   formatted_build_number = format_build_number(build_number)
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
+
+  sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
+
   UI.success('All done!')
 end
 
@@ -271,8 +272,12 @@ lane :promote_beta_android do
     skip_upload_screenshots: true,
   )
 
-  vname, vcode = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  version, build_number = set_build_version_android(version_code: selected_version_code)
+  tag_and_push(tag: "android-#{version}-#{selected_version_code}-submission")
+
+  sentry_slack_android(build_number: build_number, version: version)
+
+  UI.success('All done!')
 end
 
 desc "Set the build version in the android app build.gradle"

@@ -7,7 +7,6 @@ import {
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -68,10 +67,6 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
-  __globalStoreTestUtils__?.injectFeatureFlags({
-    AREnableFallbackToGeneratedAlertNames: true,
-  })
-
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
@@ -142,9 +137,7 @@ describe("CreateSavedSearchAlert", () => {
     const onCompleteMock = jest.fn()
 
     setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-    const { getByTestId, getByText } = renderWithWrappers(
-      <TestRenderer onComplete={onCompleteMock} />
-    )
+    const { getByTestId } = renderWithWrappers(<TestRenderer onComplete={onCompleteMock} />)
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -154,7 +147,7 @@ describe("CreateSavedSearchAlert", () => {
     })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getByText("Save Alert"))
+    fireEvent.press(getByTestId("save-alert-button"))
 
     // Check alert duplicate
     await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
@@ -197,7 +190,7 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+      expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
         selected: true,
       })
     })
@@ -218,7 +211,7 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+      expect(screen.queryByLabelText("Email Toggler")).toHaveProp("accessibilityState", {
         selected: false,
       })
     })
@@ -233,9 +226,12 @@ describe("CreateSavedSearchAlert", () => {
         })
       })
 
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: true,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: true,
+        }
+      )
     })
 
     it("push toggle is disabled by default when push permissions are denied", async () => {
@@ -250,9 +246,12 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: false,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: false,
+        }
+      )
     })
 
     it("push toggle is disabled by default when push permissions are not determined", async () => {
@@ -266,9 +265,12 @@ describe("CreateSavedSearchAlert", () => {
       })
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
-        selected: false,
-      })
+      expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
+        "accessibilityState",
+        {
+          selected: false,
+        }
+      )
     })
   })
 })

@@ -1,8 +1,8 @@
 import { useColor } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollectionCaption_figure$key } from "__generated__/ArticleSectionImageCollectionCaption_figure.graphql"
 import { HTML } from "app/Components/HTML"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { ArticleSectionArtworkCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionArtworkCaption"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionImageCollectionCaptionProps {
   figure: ArticleSectionImageCollectionCaption_figure$key
@@ -12,11 +12,16 @@ export const ArticleSectionImageCollectionCaption: React.FC<
   ArticleSectionImageCollectionCaptionProps
 > = ({ figure }) => {
   const data = useFragment(ArticleSectionImageCollectionCaptionQuery, figure)
+  const typename = data.__typename
 
   const color = useColor()
 
-  if (data.__typename !== "ArticleImageSection") {
+  if (typename !== "ArticleImageSection" && typename !== "Artwork") {
     return null
+  }
+
+  if (typename === "Artwork") {
+    return <ArticleSectionArtworkCaption artwork={data} />
   }
 
   return (
@@ -39,6 +44,9 @@ const ArticleSectionImageCollectionCaptionQuery = graphql`
     __typename
     ... on ArticleImageSection {
       caption
+    }
+    ... on Artwork {
+      ...ArticleSectionArtworkCaption_artwork
     }
   }
 `
