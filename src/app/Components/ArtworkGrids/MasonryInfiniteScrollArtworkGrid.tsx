@@ -47,6 +47,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   refreshControl,
   ListEmptyComponent,
   ListHeaderComponent,
+  ListFooterComponent,
   hasMore,
   loadMore,
   isLoading,
@@ -91,7 +92,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        !!ListFooterComponent ? (
+          ListFooterComponent
+        ) : (
+          <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
+        )
       }
     />
   )

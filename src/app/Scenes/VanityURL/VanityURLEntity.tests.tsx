@@ -1,5 +1,5 @@
 import { Spinner } from "@artsy/palette-mobile"
-import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
+import { FairPlaceholder, FairScreen } from "app/Scenes/Fair/Fair"
 import { PartnerContainer, PartnerSkeleton } from "app/Scenes/Partner/Partner"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
@@ -39,7 +39,7 @@ describe("VanityURLEntity", () => {
     expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
-  it("renders a fairQueryRenderer when given a fair id", () => {
+  it("renders Fair screen when given a fair id", () => {
     const tree = renderWithWrappersLEGACY(
       <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
     )
@@ -47,7 +47,7 @@ describe("VanityURLEntity", () => {
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
     })
-    const fairComponent = tree.root.findByType(Fair)
+    const fairComponent = tree.root.findByType(FairScreen)
     expect(fairComponent).toBeDefined()
   })
 
@@ -121,7 +121,7 @@ describe("VanityURLEntity", () => {
           })
         )
       })
-      const fairComponent = tree.root.findByType(FairFragmentContainer)
+      const fairComponent = tree.root.findByType(FairScreen)
       expect(fairComponent).toBeDefined()
     })
 
