@@ -9,7 +9,7 @@ describe("FairArtworks", () => {
   const { renderWithRelay } = setupTestWrapper<FairArtworksTestsQuery>({
     Component: ({ fair }) => (
       <ArtworkFiltersStoreProvider>
-        <FairArtworks fair={fair} />
+        <FairArtworks fair={fair!} />
       </ArtworkFiltersStoreProvider>
     ),
     query: graphql`
