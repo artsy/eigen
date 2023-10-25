@@ -13,11 +13,11 @@ export const scrollTabToTop = (tab: BottomTabType) => {
 }
 
 export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
-  const ref = useRef<any>(null)
+  const ref = useRef(null)
 
   const handleScrollToTopEvent = () => {
-    const flatListRef = ref as React.RefObject<FlatList> | undefined
-    const scrollViewRef = ref as React.RefObject<ScrollView> | undefined
+    const flatListRef = ref as React.RefObject<FlatList> | null
+    const scrollViewRef = ref as React.RefObject<ScrollView> | null
 
     flatListRef?.current?.scrollToOffset?.({ offset: 0 })
     scrollViewRef?.current?.scrollTo?.({})
