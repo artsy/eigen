@@ -7,6 +7,7 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
@@ -34,6 +35,8 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
+  const scrollableRef = useBottomTabsScrollToTop("search")
+
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -146,7 +149,7 @@ export const Search: React.FC = () => {
               />
             </>
           ) : (
-            <Scrollable>
+            <Scrollable ref={scrollableRef}>
               <HorizontalPadding>
                 <RecentSearches />
               </HorizontalPadding>

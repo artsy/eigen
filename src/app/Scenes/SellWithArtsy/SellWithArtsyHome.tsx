@@ -13,6 +13,7 @@ import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -41,6 +42,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
+
+  const scrollViewRef = useBottomTabsScrollToTop("sell")
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
@@ -96,7 +99,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         minHeight={screenHeight}
         style={{ paddingTop: safeAreaInsets.top }}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
             <Spacer y={4} />

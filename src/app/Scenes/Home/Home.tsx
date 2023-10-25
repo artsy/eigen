@@ -58,6 +58,7 @@ import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/View
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
@@ -88,7 +89,6 @@ import {
   ViewabilityConfig,
 } from "react-native"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
-
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
@@ -210,6 +210,8 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
+
+  const flatlistRef = useBottomTabsScrollToTop("home")
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
@@ -364,6 +366,7 @@ const Home = memo((props: HomeProps) => {
   return (
     <View style={{ flex: 1 }}>
       <AboveTheFoldFlatList<HomeModule>
+        listRef={flatlistRef}
         testID="home-flat-list"
         data={modules}
         onViewableItemsChanged={onViewableItemsChanged}
