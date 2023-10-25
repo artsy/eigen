@@ -126,8 +126,6 @@ export interface HomeProps extends ViewProps {
 }
 
 const Home = memo((props: HomeProps) => {
-  const flatlistRef = useBottomTabsScrollToTop("home")
-
   useDismissSavedArtwork(
     props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
   )
@@ -212,6 +210,8 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
+
+  const flatlistRef = useBottomTabsScrollToTop("home")
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {

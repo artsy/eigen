@@ -20,9 +20,11 @@ export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () 
       return
     }
 
-    // To support both FlatList and ScrollView
-    ;(ref as React.RefObject<FlatList>)?.current?.scrollToIndex?.({ index: 0 })
-    ;(ref as React.RefObject<ScrollView>)?.current?.scrollTo?.({})
+    const flatListRef = ref as React.RefObject<FlatList> | undefined
+    const scrollViewRef = ref as React.RefObject<ScrollView> | undefined
+
+    flatListRef?.current?.scrollToOffset?.({ offset: 0 })
+    scrollViewRef?.current?.scrollTo?.({})
 
     onScrollToTop?.()
   }
