@@ -9,17 +9,13 @@ BottomTabsEvents.setMaxListeners(20)
 export const SCROLL_TO_TOP_EVENT = "scrollToTop"
 
 export const scrollTabToTop = (tab: BottomTabType) => {
-  BottomTabsEvents.emit(SCROLL_TO_TOP_EVENT, { tab })
+  BottomTabsEvents.emit(`${SCROLL_TO_TOP_EVENT}-${tab}`)
 }
 
 export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () => void) => {
   const ref = useRef<any>(null)
 
-  const handleScrollToTopEvent = (...args: any[]) => {
-    if (args[0]?.tab !== tab) {
-      return
-    }
-
+  const handleScrollToTopEvent = () => {
     const flatListRef = ref as React.RefObject<FlatList> | undefined
     const scrollViewRef = ref as React.RefObject<ScrollView> | undefined
 
@@ -30,10 +26,10 @@ export const useBottomTabsScrollToTop = (tab: BottomTabType, onScrollToTop?: () 
   }
 
   useEffect(() => {
-    BottomTabsEvents.addListener(SCROLL_TO_TOP_EVENT, handleScrollToTopEvent)
+    BottomTabsEvents.addListener(`${SCROLL_TO_TOP_EVENT}-${tab}`, handleScrollToTopEvent)
 
     return () => {
-      BottomTabsEvents.removeListener(SCROLL_TO_TOP_EVENT, handleScrollToTopEvent)
+      BottomTabsEvents.removeListener(`${SCROLL_TO_TOP_EVENT}-${tab}`, handleScrollToTopEvent)
     }
   }, [])
 
