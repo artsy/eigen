@@ -14,10 +14,10 @@ import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Scre
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { isPad } from "app/utils/hardware"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
+import { isTablet as _isTablet } from "react-native-device-info"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -36,7 +36,7 @@ interface Props {
 
 export const useArtistHeaderImageDimensions = () => {
   const { width } = useScreenDimensions()
-  const isTablet = isPad()
+  const isTablet = _isTablet()
 
   const height = isTablet
     ? ARTIST_IMAGE_TABLET_HEIGHT

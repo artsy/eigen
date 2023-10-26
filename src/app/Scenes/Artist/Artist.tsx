@@ -137,8 +137,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           }}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
-          {/* @ts-ignore */}
-          <Tabs.Tab name="Artworks" label="Artworks" style={{ backgroundColor: "pink" }}>
+          <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
               <ArtistArtworks
                 artist={artistAboveTheFold}
