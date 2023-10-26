@@ -292,6 +292,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
               artist={artist}
               showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
             />
+            <Flex px={2} pt={1}>
+              <Text variant="xs" weight="medium">{`${artist.counts?.artworks} Artwork${
+                artist.counts?.artworks > 0 ? "s" : ""
+              }:`}</Text>
+            </Flex>
           </Tabs.SubTabBar>
         }
         ListFooterComponent={<ListFooterComponenet />}
@@ -336,6 +341,9 @@ export default createPaginationContainer(
         slug
         name
         internalID
+        counts {
+          artworks
+        }
         aggregations: filterArtworksConnection(
           first: 0
           aggregations: [

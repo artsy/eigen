@@ -14,14 +14,16 @@ import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Scre
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { isPad } from "app/utils/hardware"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
+import { isTablet as _isTablet } from "react-native-device-info"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const ARTIST_HEADER_HEIGHT = 156
+export const ARTIST_IMAGE_PHONE_HEIGHT = 320
+export const ARTIST_IMAGE_PHONE_ASPECT_RATIO = 1.17
 export const ARTIST_IMAGE_TABLET_HEIGHT = 375
 const ARTIST_HEADER_SCROLL_MARGIN = 100
 
@@ -34,10 +36,12 @@ interface Props {
 
 export const useArtistHeaderImageDimensions = () => {
   const { width } = useScreenDimensions()
-  const isTablet = isPad()
+  const isTablet = _isTablet()
 
-  const height = isTablet ? ARTIST_IMAGE_TABLET_HEIGHT : width
-  const aspectRatio = width / height
+  const height = isTablet
+    ? ARTIST_IMAGE_TABLET_HEIGHT
+    : ARTIST_IMAGE_PHONE_HEIGHT / ARTIST_IMAGE_PHONE_ASPECT_RATIO
+  const aspectRatio = isTablet ? width / height : ARTIST_IMAGE_PHONE_ASPECT_RATIO
 
   return {
     aspectRatio,
@@ -112,9 +116,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
       <Box px={2} pointerEvents="none">
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
-            <Text variant="lg">{artist.name}</Text>
+            <Text variant="lg-display">{artist.name}</Text>
             {!!bylineRequired && (
-              <Text variant="lg" color="black60">
+              <Text variant="lg-display" color="black60">
                 {descriptiveString}
               </Text>
             )}
@@ -147,9 +151,10 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
               paddingHorizontal: space(2),
             }}
           />
-          <Spacer y={2} />
         </Flex>
       )}
+
+      <Spacer y={2} />
 
       {!!showAlertsSet && (
         <Box mx={2} maxWidth={120}>

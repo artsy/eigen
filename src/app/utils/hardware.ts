@@ -1,5 +1,9 @@
 import { Dimensions, Platform } from "react-native"
 
+/**
+ * @deprecated
+ * use `isTabled` from `react-native-device-info` instead
+ */
 export const isPad = () => {
   if (Platform.OS === "ios") {
     return Platform.isPad
