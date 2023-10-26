@@ -55,7 +55,7 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 
   return (
     <Flex>
-      <Text variant="sm" fontWeight={500} px={2}>
+      <Text variant="sm" fontWeight="bold" px={2}>
         Price Range
       </Text>
       <Spacer y={1} />
@@ -71,7 +71,7 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 const Placeholder: React.FC<{}> = () => (
   <Flex testID="loading-skeleton">
     <Skeleton>
-      <SkeletonText variant="sm" fontWeight={500} mx={2}>
+      <SkeletonText variant="sm" fontWeight="bold" mx={2}>
         Price Range
       </SkeletonText>
 

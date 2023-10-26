@@ -36,7 +36,7 @@ export const SavedSearchFilterColor = () => {
 
   return (
     <Flex>
-      <Text px={2} variant="sm" fontWeight={500}>
+      <Text px={2} variant="sm" fontWeight="bold">
         Color
       </Text>
 

@@ -21,7 +21,7 @@ export const SavedSearchFilterWaysToBuy = () => {
 
   return (
     <Flex px={2}>
-      <Text variant="sm" fontWeight={500}>
+      <Text variant="sm" fontWeight="bold">
         Ways to Buy
       </Text>
 
