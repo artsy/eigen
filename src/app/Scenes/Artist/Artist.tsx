@@ -1,6 +1,5 @@
 import {
   Flex,
-  Join,
   Screen,
   Separator,
   ShareIcon,
@@ -138,7 +137,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
           }}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
         >
-          <Tabs.Tab name="Artworks" label="Artworks">
+          {/* @ts-ignore */}
+          <Tabs.Tab name="Artworks" label="Artworks" style={{ backgroundColor: "pink" }}>
             <Tabs.Lazy>
               <ArtistArtworks
                 artist={artistAboveTheFold}
@@ -330,13 +330,12 @@ const ArtistSkeleton: React.FC = () => {
       <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
+          <SkeletonBox width={width} height={height} />
+          <Spacer y={2} />
           <Flex px={2}>
-            <SkeletonBox width={width} height={height} />
-            <Spacer y={2} />
-            <Join separator={<Spacer y={0.5} />}>
-              <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
-              <SkeletonText variant="lg">American, b. 1945</SkeletonText>
-            </Join>
+            <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+            <Spacer y={0.5} />
+            <SkeletonText variant="lg">American, b. 1945</SkeletonText>
           </Flex>
 
           <Spacer y={4} />
