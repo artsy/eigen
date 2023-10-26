@@ -159,7 +159,7 @@ export const Form: React.FC<FormProps> = ({
           <Flex mt={2}>
             <MenuItem
               title="Add Filters"
-              description="Including Price Range, Rarity, Medium, Size, Color"
+              description="Including Price Range, Rarity, Medium, Color"
               onPress={() => {
                 navigation.navigate("SavedSearchFilterScreen")
               }}
