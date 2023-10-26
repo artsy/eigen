@@ -48,7 +48,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   ListHeaderComponent = SpacerComponent,
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
-  showPartnerName = false,
+  showPartnerName = true,
   dark = false,
   artworks,
   showSaveIcon = false,
