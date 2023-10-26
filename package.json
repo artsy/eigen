@@ -4,7 +4,7 @@
   "native-code-version": 44,
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "18.x",
+    "node": "20.x",
     "yarn": "1.x"
   },
   "reactNativePermissionsIOS": [
