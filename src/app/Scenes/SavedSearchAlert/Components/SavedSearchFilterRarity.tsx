@@ -37,10 +37,6 @@ export const SavedSearchFilterRarity = () => {
     }
   }
 
-  const options = KNOWN_ATTRIBUTION_CLASS_OPTIONS.filter((option) =>
-    ["unique", "limited edition"].includes(option.paramValue as string)
-  )
-
   return (
     <Flex px={2}>
       <Text variant="sm" fontWeight="bold">
@@ -50,7 +46,7 @@ export const SavedSearchFilterRarity = () => {
       <Spacer y={1} />
 
       <Flex flexDirection="row" flexWrap="wrap">
-        {options.map((option) => {
+        {KNOWN_ATTRIBUTION_CLASS_OPTIONS.map((option) => {
           return (
             <SavedSearchFilterPill
               key={option.paramValue as string}
