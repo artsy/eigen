@@ -90,7 +90,7 @@ export const MenuItem: React.FC<{
 
         <Spacer x={2} />
 
-        <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
+        <Flex flexDirection="row" justifyContent="flex-end" flex={1} flexGrow={3} height="100%">
           {!!value && (
             <Flex width={200}>
               <Text
