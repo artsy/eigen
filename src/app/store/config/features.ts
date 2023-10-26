@@ -220,6 +220,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsFilters",
+  },
+  AREnableAlertsFiltersSizeFiltering: {
+    description: "Enable size filtering in alerts filters screen",
     readyForRelease: false,
     showInDevMenu: true,
   },

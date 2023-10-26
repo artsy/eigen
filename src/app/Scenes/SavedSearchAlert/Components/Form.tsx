@@ -56,6 +56,7 @@ export const Form: React.FC<FormProps> = ({
   onRemovePill,
 }) => {
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
   const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
 
   const tracking = useTracking()
@@ -159,7 +160,9 @@ export const Form: React.FC<FormProps> = ({
           <Flex mt={2}>
             <MenuItem
               title="Add Filters"
-              description="Including Price Range, Rarity, Medium, Size, Color"
+              description={`Including Price Range, Rarity, Medium${
+                enableAlertsFiltersSizeFiltering ? ", Size" : ""
+              }, Color`}
               onPress={() => {
                 navigation.navigate("SavedSearchFilterScreen")
               }}
