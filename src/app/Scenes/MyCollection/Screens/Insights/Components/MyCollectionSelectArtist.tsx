@@ -3,8 +3,8 @@ import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { ArtistItem } from "app/Scenes/MyCollection/Screens/Insights/ArtistItem"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
+import { isTablet } from "react-native-device-info"
 
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]
@@ -21,7 +21,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
   return (
     <AboveTheFoldFlatList<ArtistItem_artist$key>
       testID="select-artist-flatlist"
-      initialNumToRender={isPad() ? 24 : 12}
+      initialNumToRender={isTablet() ? 24 : 12}
       style={{ width, marginBottom: safeAreaInsets.bottom }}
       data={artistsList}
       onEndReached={onEndReached}

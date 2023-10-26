@@ -1,10 +1,10 @@
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useCallback, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -105,7 +105,7 @@ const Indicator: React.FC<{ total: number; currentIndex: number }> = ({ total, c
 
 const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, index }) => {
   const color = useColor()
-  const SIZE = isPad() ? 10 : 7
+  const SIZE = isTablet() ? 10 : 7
   const activeColor = color("black60")
   const inactiveColor = color("black15")
 

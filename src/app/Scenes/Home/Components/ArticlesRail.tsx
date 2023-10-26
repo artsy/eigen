@@ -5,9 +5,9 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { memo } from "react"
 import { FlatList } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -19,8 +19,6 @@ interface ArticlesRailProps {
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection }) => {
   const articles = extractNodes(articlesConnection)
   const tracking = useTracking()
-
-  const isTablet = isPad()
 
   if (!articles.length) {
     return null
@@ -44,7 +42,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
-          initialNumToRender={isTablet ? 10 : 5}
+          initialNumToRender={isTablet() ? 10 : 5}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (

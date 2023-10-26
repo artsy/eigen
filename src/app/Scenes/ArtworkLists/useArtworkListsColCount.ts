@@ -1,7 +1,7 @@
-import { isPad } from "app/utils/hardware"
+import { isTablet } from "react-native-device-info"
 
 export const useArtworkListsColCount = () => {
-  if (isPad()) {
+  if (isTablet()) {
     return 3
   }
 

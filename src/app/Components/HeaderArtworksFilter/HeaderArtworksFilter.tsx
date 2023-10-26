@@ -6,10 +6,10 @@ import {
   Separator,
   TouchableHighlightColor,
 } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 export interface FilterProps {
   total: number
@@ -26,8 +26,8 @@ interface SeparatorWithSmoothOpacityProps {
 const pixelRatio = PixelRatio.get()
 // values based on px used in <BackButton>
 const BACK_BUTTON_SIZE = {
-  top: isPad() ? 10 / pixelRatio : 14 / pixelRatio,
-  left: isPad() ? 20 / pixelRatio : 10 / pixelRatio,
+  top: isTablet() ? 10 / pixelRatio : 14 / pixelRatio,
+  left: isTablet() ? 20 / pixelRatio : 10 / pixelRatio,
   right: 0,
   bottom: 0,
   image: {

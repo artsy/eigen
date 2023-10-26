@@ -12,6 +12,7 @@ import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
@@ -59,9 +60,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
   width = 0
 
   layoutState(width: number): State {
-    const isPad = width > 600
-
-    const sectionCount = isPad ? 3 : 2
+    const sectionCount = isTablet() ? 3 : 2
     const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
     const artworkPadding = 20
     const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
@@ -248,16 +247,14 @@ const GenericGrid = createFragmentContainer(injectHooks(GenericArtworksGrid), {
 export default GenericGrid
 
 export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) => {
-  const isPad = width > 600
-
-  const numColumns = isPad ? 3 : 2
+  const numColumns = isTablet() ? 3 : 2
   const rng = new RandomNumberGenerator(3432)
 
   return (
     <Stack horizontal>
       {times(numColumns).map((i) => (
         <Stack key={i} spacing={4} width={(width + 20) / numColumns - 20}>
-          {times(isPad ? 10 : 5).map((j) => (
+          {times(isTablet() ? 10 : 5).map((j) => (
             <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
           ))}
         </Stack>

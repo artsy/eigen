@@ -4,6 +4,7 @@ import { Stack } from "app/Components/Stack"
 import { chunk } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import RelatedArtist from "./RelatedArtist"
@@ -31,10 +32,9 @@ class RelatedArtists extends React.Component<Props, State> {
 
   layoutState(currentLayout: { width: number }): State {
     const width = currentLayout.width
-    const isPad = width > 600
     const isPadHorizontal = width > 900
 
-    const columnCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
+    const columnCount = isTablet() ? (isPadHorizontal ? 4 : 3) : 2
     const marginWidth = 20
     const totalMargins = marginWidth * (columnCount - 1)
 

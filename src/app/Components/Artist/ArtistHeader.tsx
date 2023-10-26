@@ -20,7 +20,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
-import { isTablet as _isTablet } from "react-native-device-info"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -38,12 +38,11 @@ interface Props {
 
 export const useArtistHeaderImageDimensions = () => {
   const { width } = useScreenDimensions()
-  const isTablet = _isTablet()
 
-  const height = isTablet
+  const height = isTablet()
     ? ARTIST_IMAGE_TABLET_HEIGHT
     : ARTIST_IMAGE_PHONE_HEIGHT / ARTIST_IMAGE_PHONE_ASPECT_RATIO
-  const aspectRatio = isTablet ? width / height : ARTIST_IMAGE_PHONE_ASPECT_RATIO
+  const aspectRatio = isTablet() ? width / height : ARTIST_IMAGE_PHONE_ASPECT_RATIO
 
   return {
     aspectRatio,

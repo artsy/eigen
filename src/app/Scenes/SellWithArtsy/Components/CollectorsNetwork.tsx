@@ -1,10 +1,9 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 export const CollectorsNetwork: React.FC = () => {
-  const isAPad = isPad()
-  if (isAPad) {
+  if (isTablet()) {
     return (
       <Flex mx={2}>
         <Text variant="lg-display" mb={2}>

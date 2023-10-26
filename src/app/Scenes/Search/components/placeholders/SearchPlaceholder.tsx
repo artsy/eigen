@@ -2,7 +2,6 @@ import { Spacer, Flex, Box, Join } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
-import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -11,6 +10,7 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
+import { isTablet } from "react-native-device-info"
 
 const RecentSearchesPlaceholder = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
@@ -66,8 +66,6 @@ const TrendingArtistSmallCard = () => {
 }
 
 const TrendingArtistPlaceholder = () => {
-  const isTablet = isPad()
-
   return (
     <>
       <PlaceholderText width="50%" height={25} />
@@ -75,7 +73,7 @@ const TrendingArtistPlaceholder = () => {
         <Join separator={<Spacer x={1} />}>
           {times(3).map((index) => (
             <Flex key={index}>
-              {isTablet ? <TrendingArtistLargeCard /> : <TrendingArtistSmallCard />}
+              {isTablet() ? <TrendingArtistLargeCard /> : <TrendingArtistSmallCard />}
             </Flex>
           ))}
         </Join>

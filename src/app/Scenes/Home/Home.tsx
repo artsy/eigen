@@ -61,7 +61,6 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { isPad } from "app/utils/hardware"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
@@ -88,6 +87,7 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -395,7 +395,7 @@ const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
     setIsRefreshing(true)
 
     relay.refetch(
-      { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+      { heroImageVersion: isTablet() ? "WIDE" : "NARROW" },
       {},
       (error) => {
         if (error) {

@@ -1,7 +1,6 @@
 import * as Sentry from "@sentry/react-native"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useCallback, useContext } from "react"
@@ -13,6 +12,7 @@ import {
   Platform,
   View,
 } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"
@@ -35,7 +35,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
 
   const embeddedCardBoundingBox = {
     width: screenDimensions.width,
-    height: isPad() ? 460 : cardHeight,
+    height: isTablet() ? 460 : cardHeight,
   }
 
   const {

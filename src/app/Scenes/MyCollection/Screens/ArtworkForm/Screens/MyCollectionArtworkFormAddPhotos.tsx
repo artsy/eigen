@@ -5,12 +5,12 @@ import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyMo
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Image as ImageProps } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 const MARGIN = 2
 export const DELAY_TIME_MS = 500
@@ -34,7 +34,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen,
   )
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
-  const numColumns = isPad() ? 5 : 2
+  const numColumns = isTablet() ? 5 : 2
   const imageSize = (screenWidth - MARGIN) / numColumns - MARGIN
 
   if (!canRender) {

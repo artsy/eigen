@@ -1,13 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, Button } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 export const SpeakToTheTeam: React.FC<{
   onInquiryPress: (inquiryArgs?: TappedConsignmentInquiry) => void
 }> = ({ onInquiryPress }) => {
   const color = useColor()
-  const isAPad = isPad()
   return (
     <Flex bg="black100" pt={2}>
       <Flex pt={1}>
@@ -31,16 +30,16 @@ export const SpeakToTheTeam: React.FC<{
         <Spacer y={4} />
         <Image
           source={
-            isAPad
+            isTablet()
               ? require("images/get-in-touch-banner-image-ipad.webp")
               : require("images/get-in-touch-banner-image.webp")
           }
           style={{
             width: "100%",
-            height: isAPad ? 500 : 180,
+            height: isTablet() ? 500 : 180,
             alignSelf: "center",
           }}
-          resizeMode={isAPad ? "contain" : "cover"}
+          resizeMode={isTablet() ? "contain" : "cover"}
         />
       </Flex>
     </Flex>

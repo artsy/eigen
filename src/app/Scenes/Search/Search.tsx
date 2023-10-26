@@ -8,11 +8,11 @@ import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQuer
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -45,7 +45,7 @@ export const Search: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
+  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
   const {
     data: queryData,
     refetch,

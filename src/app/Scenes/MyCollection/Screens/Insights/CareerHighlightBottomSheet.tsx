@@ -3,10 +3,10 @@ import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
 import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { delay } from "app/utils/delay"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
+import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
@@ -78,7 +78,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   const { height } = useScreenDimensions()
 
   // the height here is divided by constants that seems good on device. Feel free to change them.
-  const points = isPad()
+  const points = isTablet()
     ? [height / 3.5, height / 2.5, height / 1.8]
     : [height / 2.8, height / 2, height / 1.35]
 

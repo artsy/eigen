@@ -1,23 +1,23 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Flex, Spacer, Text, Separator, Button } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { isPad } from "app/utils/hardware"
+import { isTablet } from "react-native-device-info"
 
 export const Footer: React.FC<{
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
 }> = ({ onConsignPress }) => {
-  const isTablet = isPad()
   const buttonText = "Start Selling"
+
   return (
-    <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
+    <Flex mx={2} alignItems={isTablet() ? "center" : undefined}>
       <Text variant="lg-display" textAlign="center">
         Meet your new art advisor.{"\n"}It’s Artsy.
       </Text>
       <Spacer y={2} />
       <Button
         testID="footer-consign-CTA"
-        block={!isTablet}
-        minWidth={isTablet ? "50%" : undefined}
+        block={!isTablet()}
+        minWidth={isTablet() ? "50%" : undefined}
         onPress={() => {
           onConsignPress(tracks.consignArgs(buttonText))
         }}

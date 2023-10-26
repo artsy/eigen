@@ -8,8 +8,8 @@ import {
   useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { isPad } from "app/utils/hardware"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { useTracking } from "react-tracking"
 
@@ -23,7 +23,6 @@ export const GalleriesForYouBanner: React.FC<GalleriesForYouBannerProps> = ({ mb
   const { width } = useScreenDimensions()
   const height = width / IMAGE_ASPECT_RATIO
 
-  const isTablet = isPad()
   const tracking = useTracking()
 
   const handlePress = () => {
@@ -40,7 +39,7 @@ export const GalleriesForYouBanner: React.FC<GalleriesForYouBannerProps> = ({ mb
             <Image
               source={require("images/galleries_for_you.webp")}
               style={{ width: width, height: width / IMAGE_ASPECT_RATIO }}
-              resizeMode={isTablet ? "contain" : "cover"}
+              resizeMode={isTablet() ? "contain" : "cover"}
             />
             <LinearGradient
               colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.5)"]}

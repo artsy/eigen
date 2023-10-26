@@ -1,12 +1,12 @@
 import { Flex, Text, Button } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 export const FAQSWA: React.FC = () => {
   const supportUrl = "https://support.artsy.net/s/topic/0TO3b000000UesxGAC/sell"
-  const isTablet = isPad()
+
   const { width: deviceWidth } = useScreenDimensions()
   return (
     <Flex pt={4} backgroundColor="black100" maxWidth={deviceWidth}>
@@ -30,7 +30,7 @@ export const FAQSWA: React.FC = () => {
       </Flex>
       <Image
         source={require("images/swa-faq-image.webp")}
-        style={{ width: "100%", height: isTablet ? 480 : 200 }}
+        style={{ width: "100%", height: isTablet() ? 480 : 200 }}
         resizeMode="cover"
       />
     </Flex>

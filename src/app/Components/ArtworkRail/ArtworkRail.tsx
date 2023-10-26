@@ -5,13 +5,13 @@ import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_a
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { isPad } from "app/utils/hardware"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import React, { ReactElement } from "react"
 import { FlatList, ViewabilityConfig } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
 
@@ -57,7 +57,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   onMorePress,
   ...otherProps
 }) => {
-  const isTablet = isPad()
   const trackingProps = extractArtworkActionTrackingProps(otherProps)
 
   return (
@@ -80,7 +79,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
       data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={isTablet ? 10 : 5}
+      initialNumToRender={isTablet() ? 10 : 5}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
