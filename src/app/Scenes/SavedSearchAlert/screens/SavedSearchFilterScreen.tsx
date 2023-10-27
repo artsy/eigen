@@ -1,5 +1,4 @@
 import {
-  ArtsyKeyboardAvoidingView,
   Button,
   Flex,
   Join,
@@ -27,7 +26,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <>
       <FancyModalHeader
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
@@ -59,7 +58,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           Set Filters
         </Button>
       </Flex>
-    </ArtsyKeyboardAvoidingView>
+    </>
   )
 }
 
