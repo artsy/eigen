@@ -6,7 +6,6 @@ const rootDir = path.join(__dirname, "../../../palette-mobile")
 let exportMap = {}
 
 function traverseDir(dir) {
-  console.log("traversing dir", dir)
   fs.readdirSync(dir).forEach((file) => {
     let fullPath = path.join(dir, file)
 
@@ -35,4 +34,8 @@ function traverseDir(dir) {
 }
 
 traverseDir(rootDir)
-console.log(exportMap)
+
+const outputPath = path.join(__dirname, "exportMap.json")
+fs.writeFileSync(outputPath, JSON.stringify(exportMap, null, 2))
+
+console.log(`Export map saved to ${outputPath}`)
