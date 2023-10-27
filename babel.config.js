@@ -15,7 +15,13 @@ module.exports = (api) => {
         "transform-imports",
         {
           "@artsy/palette-mobile": {
-            transform: "@artsy/palette-mobile/dist/elements/${member}",
+            transform: function (importName, matches) {
+              if (importName === "Flex") {
+                return `@artsy/palette-mobile/dist/elements/${importName}`
+              } else {
+                return `@artsy/palette-mobile/dist/${importName}`
+              }
+            },
             preventFullImport: true,
           },
         },
