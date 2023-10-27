@@ -3,6 +3,7 @@ import { SavedSearchNameInputQuery } from "__generated__/SavedSearchNameInputQue
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchAlertFormValues } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useFormikContext } from "formik"
 import { omit } from "lodash"
 import { useEffect, useState } from "react"
@@ -50,18 +51,24 @@ interface SavedSearchNameInputQueryRendererProps {
 export const SavedSearchNameInputQueryRenderer: React.FC<
   SavedSearchNameInputQueryRendererProps
 > = ({ attributes }) => {
+  const { localizedUnit } = useLocalizedUnit()
+
   return (
     <QueryRenderer<SavedSearchNameInputQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query SavedSearchNameInputQuery($attributes: PreviewSavedSearchAttributes!) {
+        query SavedSearchNameInputQuery(
+          $attributes: PreviewSavedSearchAttributes!
+          $metric: String!
+        ) {
           previewSavedSearch(attributes: $attributes) {
-            displayName
+            displayName(metric: $metric)
           }
         }
       `}
       variables={{
         attributes: omit(attributes, ["displayName", "dimensionRange"]),
+        metric: localizedUnit,
       }}
       render={({ props, error }) => {
         if (error) {

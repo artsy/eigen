@@ -4,6 +4,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { graphql, QueryRenderer } from "react-relay"
 import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlertsListPlaceholder"
 import { SavedSearchesListPaginationContainer } from "./Components/SavedSearchesList"
@@ -13,18 +14,21 @@ interface Props {
   artistID: string
 }
 export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistID }) => {
+  const { localizedUnit } = useLocalizedUnit()
+
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
       environment={getRelayEnvironment()}
       query={graphql`
-        query SavedSearchAlertsListQuery($artistIDs: [String!]) {
+        query SavedSearchAlertsListQuery($artistIDs: [String!], $metric: String!) {
           me {
-            ...SavedSearchesList_me @arguments(artistIDs: $artistIDs)
+            ...SavedSearchesList_me @arguments(artistIDs: $artistIDs, metric: $metric)
           }
         }
       `}
       variables={{
         artistIDs: artistID ? [artistID] : [],
+        metric: localizedUnit,
       }}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({

@@ -231,6 +231,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
         artistIDs: { type: "[String!]", defaultValue: [] }
         count: { type: "Int", defaultValue: 20 }
         cursor: { type: "String" }
+        metric: { type: "String" }
         sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
       ) {
         savedSearchesConnection(first: $count, after: $cursor, artistIDs: $artistIDs, sort: $sort)
@@ -243,7 +244,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
           edges {
             node {
               internalID
-              displayName
+              displayName(metric: $metric)
             }
           }
         }
@@ -267,10 +268,17 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
         $count: Int!
         $cursor: String
         $sort: SavedSearchesSortEnum
+        $metric: String!
       ) {
         me {
           ...SavedSearchesList_me
-            @arguments(artistIDs: $artistIDs, count: $count, cursor: $cursor, sort: $sort)
+            @arguments(
+              artistIDs: $artistIDs
+              count: $count
+              cursor: $cursor
+              metric: $metric
+              sort: $sort
+            )
         }
       }
     `,

@@ -14006,13 +14006,13 @@ type PhoneNumberType {
 
 type PreviewSavedSearch {
   # A suggestion for a name that describes a set of saved search criteria in a conventional format
-  displayName: String!
+  displayName(metric: String = "cm"): String!
 
   # URL for a user to view the artwork grid with applied filters matching saved search criteria attributes
   href: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
-  labels: [SearchCriteriaLabel]!
+  labels(metric: String = "cm"): [SearchCriteriaLabel]!
 }
 
 input PreviewSavedSearchAttributes {
@@ -16660,7 +16660,7 @@ type SearchCriteria {
   attributionClass: [String!]!
   colors: [String!]!
   dimensionRange: String
-  displayName: String!
+  displayName(metric: String = "cm"): String!
 
   # Human readable price range value
   formattedPriceRange: String
@@ -16681,7 +16681,7 @@ type SearchCriteria {
   keyword: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
-  labels: [SearchCriteriaLabel!]!
+  labels(metric: String = "cm"): [SearchCriteriaLabel!]!
   locationCities: [String!]!
   lowPriceAmount(
     decimal: String = "."
