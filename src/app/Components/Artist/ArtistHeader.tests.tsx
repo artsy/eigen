@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
-import { ArtistHeaderFragmentContainer, tracks } from "app/Components/Artist/ArtistHeader"
+import { ArtistHeader, tracks } from "app/Components/Artist/ArtistHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -9,7 +9,7 @@ import { graphql } from "react-relay"
 
 describe("ArtistHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({
-    Component: ({ artist, me }) => <ArtistHeaderFragmentContainer artist={artist!} me={me!} />,
+    Component: ({ artist, me }) => <ArtistHeader artist={artist!} me={me!} />,
     query: graphql`
       query ArtistHeaderTestsQuery($artistID: String!) @relay_test_operation {
         artist(id: $artistID) {

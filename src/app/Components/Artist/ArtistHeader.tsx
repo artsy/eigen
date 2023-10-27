@@ -11,14 +11,17 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
-import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
-import { ArtistHeader_me$data } from "__generated__/ArtistHeader_me.graphql"
+import {
+  ArtistHeader_artist$data,
+  ArtistHeader_artist$key,
+} from "__generated__/ArtistHeader_artist.graphql"
+import { ArtistHeader_me$key } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet as _isTablet } from "react-native-device-info"
-import { RelayProp, createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const ARTIST_HEADER_HEIGHT = 156
@@ -28,9 +31,8 @@ export const ARTIST_IMAGE_TABLET_HEIGHT = 375
 const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
-  artist: ArtistHeader_artist$data
-  me: ArtistHeader_me$data
-  relay: RelayProp
+  artist: ArtistHeader_artist$key
+  me: ArtistHeader_me$key
   onLayoutChange?: ViewProps["onLayout"]
 }
 
@@ -56,14 +58,20 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
   const { updateScrollYOffset } = useScreenScrollContext()
   const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
   const tracking = useTracking()
+  const artistData = useFragment(artistFragment, artist)
+  const meData = useFragment(meFragment, me)
+
+  if (!artistData || !meData) {
+    return null
+  }
 
   const getBirthdayString = () => {
-    const birthday = artist.birthday
+    const birthday = artistData.birthday
     if (!birthday) {
       return ""
     }
 
-    const leadingSubstring = artist.nationality ? ", b." : ""
+    const leadingSubstring = artistData.nationality ? ", b." : ""
 
     if (birthday.includes("born")) {
       return birthday.replace("born", leadingSubstring)
@@ -74,13 +82,13 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
     return leadingSubstring + " " + birthday
   }
 
-  const descriptiveString = (artist.nationality || "") + getBirthdayString()
+  const descriptiveString = (artistData.nationality || "") + getBirthdayString()
 
-  const bylineRequired = artist.nationality || artist.birthday
+  const bylineRequired = artistData.nationality || artistData.birthday
 
   const showAlertsSet =
-    !!showArtistsAlertsSetFeatureFlag && Number(me?.savedSearchesConnection?.totalCount) > 0
-  const hasVerifiedRepresentatives = artist.verifiedRepresentatives?.length > 0
+    !!showArtistsAlertsSetFeatureFlag && Number(meData.savedSearchesConnection?.totalCount) > 0
+  const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
     if (nativeEvent.layout.height > 0) {
@@ -93,18 +101,18 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
     partner: ArtistHeader_artist$data["verifiedRepresentatives"][number]["partner"]
   ) => {
     if (partner?.href && partner?.internalID) {
-      tracking.trackEvent(tracks.tappedVerifiedRepresentative(artist, partner))
+      tracking.trackEvent(tracks.tappedVerifiedRepresentative(artistData, partner))
       navigate(partner.href)
     }
   }
 
   return (
     <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
-      {!!artist.coverArtwork?.image?.url && (
+      {!!artistData?.coverArtwork?.image?.url && (
         <Flex pointerEvents="none">
           <Image
-            accessibilityLabel={`${artist.name} cover image`}
-            src={artist.coverArtwork.image.url}
+            accessibilityLabel={`${artistData.name} cover image`}
+            src={artistData.coverArtwork.image.url}
             aspectRatio={aspectRatio}
             width={width}
             height={height}
@@ -116,7 +124,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
       <Box px={2} pointerEvents="none">
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Flex flex={1}>
-            <Text variant="lg-display">{artist.name}</Text>
+            <Text variant="lg-display">{artistData.name}</Text>
             {!!bylineRequired && (
               <Text variant="lg-display" color="black60">
                 {descriptiveString}
@@ -135,7 +143,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           </Flex>
           <FlatList
             horizontal
-            data={artist.verifiedRepresentatives}
+            data={artistData.verifiedRepresentatives}
             keyExtractor={({ partner }) => `representative-${partner.internalID}`}
             renderItem={({ item }) => (
               <Pill
@@ -161,12 +169,12 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           <Touchable
             haptic
             onPress={() => {
-              navigate(`/my-profile/saved-search-alerts?artistID=${artist.internalID}`)
+              navigate(`/my-profile/saved-search-alerts?artistID=${artistData.internalID}`)
             }}
           >
             <Text variant="xs" color="blue100">
-              {me.savedSearchesConnection!.totalCount}{" "}
-              {pluralize("Alert", me.savedSearchesConnection!.totalCount!)} Set
+              {meData.savedSearchesConnection!.totalCount}{" "}
+              {pluralize("Alert", meData.savedSearchesConnection!.totalCount!)} Set
             </Text>
           </Touchable>
         </Box>
@@ -175,41 +183,41 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
   )
 }
 
-export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeader, {
-  artist: graphql`
-    fragment ArtistHeader_artist on Artist {
-      slug
-      birthday
-      coverArtwork {
-        image {
-          url(version: "large")
-        }
+const artistFragment = graphql`
+  fragment ArtistHeader_artist on Artist {
+    slug
+    birthday
+    coverArtwork {
+      title
+      image {
+        url(version: "larger")
       }
-      internalID
-      name
-      nationality
-      verifiedRepresentatives {
-        partner {
-          internalID
-          name
-          href
-          profile {
-            icon {
-              url(version: "square140")
-            }
+    }
+    internalID
+    name
+    nationality
+    verifiedRepresentatives {
+      partner {
+        internalID
+        name
+        href
+        profile {
+          icon {
+            url(version: "square140")
           }
         }
       }
     }
-  `,
-  me: graphql`
-    fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
-      savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
-        totalCount
-      }
+  }
+`
+
+const meFragment = graphql`
+  fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
+    savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
+      totalCount
     }
-  `,
-})
+  }
+`
 
 export const tracks = {
   tappedVerifiedRepresentative: (
