@@ -16,7 +16,7 @@ module.exports = (api) => {
         "transform-imports",
         {
           "@artsy/palette-mobile": {
-            transform: function (importName) {
+            transform: (importName) => {
               const srcPath = paletteExportMap[importName]
 
               if (!srcPath) {
@@ -29,12 +29,12 @@ module.exports = (api) => {
               return `@artsy/palette-mobile${distPath}`
             },
             preventFullImport: true,
+            skipDefaultConversion: true,
           },
         },
       ],
       "import-graphql", // to enable import syntax for .graphql and .gql files.
       "relay",
-
       ["module-resolver", { alias: moduleResolverAlias }],
       "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
     ],
