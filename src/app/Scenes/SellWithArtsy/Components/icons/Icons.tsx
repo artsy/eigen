@@ -1,4 +1,5 @@
-import { Icon, IconProps, Path, useColor } from "@artsy/palette-mobile"
+import { Icon, IconProps, useColor } from "@artsy/palette-mobile"
+import { Path } from "react-native-svg"
 
 // TODO: - Remove these icons when palette-Mobile is stable as they have already been added there in newer unstable versions
 
