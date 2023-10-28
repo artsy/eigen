@@ -1,13 +1,11 @@
-import { Flex, Theme } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
+
+// import { Flex } from "@artsy/palette-mobile/dist/elements/Flex/Flex"
 
 describe("slow flex", () => {
   it("does thing", () => {
     const flex = Flex
+    expect(flex).toBeDefined()
     expect(flex).toBe(flex)
-  })
-
-  it("does other thing", () => {
-    const theme = Theme
-    expect(theme).toBe(theme)
   })
 })
