@@ -6,12 +6,12 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
 
-jest.mock("@artsy/palette-mobile", () => {
-  const palette = jest.requireActual("@artsy/palette-mobile")
+jest.mock("@artsy/palette-mobile/dist/elements/Tabs/Tabs", () => {
+  const paletteTabs = jest.requireActual("@artsy/palette-mobile/dist/elements/Tabs/Tabs")
   return {
-    ...palette,
+    ...paletteTabs,
     Tabs: {
-      ...palette.Tabs,
+      ...paletteTabs.Tabs,
       TabsWithHeader: (props: any) => {
         // Simulate the tab change event by calling the prop immediately
         if (props.onTabChange) {

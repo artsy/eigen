@@ -5,13 +5,12 @@ import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizRes
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-jest.mock("@artsy/palette-mobile", () => {
-  const palette = jest.requireActual("@artsy/palette-mobile")
-
+jest.mock("@artsy/palette-mobile/dist/elements/Tabs/Tabs", () => {
+  const paletteTabs = jest.requireActual("@artsy/palette-mobile/dist/elements/Tabs/Tabs")
   return {
-    ...palette,
+    ...paletteTabs,
     Tabs: {
-      ...palette.Tabs,
+      ...paletteTabs.Tabs,
       TabsWithHeader: jest.fn(),
     },
   }
