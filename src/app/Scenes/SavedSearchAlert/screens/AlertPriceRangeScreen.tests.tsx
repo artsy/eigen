@@ -11,12 +11,12 @@ import {
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
+// TODO: This is brittle, what else can we do?
 // We don't care about Histogram internals, but we want to know with what props it was rendered
-jest.mock("@artsy/palette-mobile", () => {
+jest.mock("@artsy/palette-mobile/dist/elements/Histogram/Histogram", () => {
   const { Text } = jest.requireActual("react-native")
   return {
-    ...jest.requireActual("@artsy/palette-mobile"),
-    Histogram: (props: any) => {
+    Histogram: function (props: any) {
       return (
         <>
           <Text testID="histogramRange">{JSON.stringify(props.selectedRange)}</Text>
