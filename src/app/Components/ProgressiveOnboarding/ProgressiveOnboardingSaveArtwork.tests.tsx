@@ -10,8 +10,7 @@ jest.mock("app/utils/ElementInView", () => ({
   ElementInView: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
-jest.mock("@artsy/palette-mobile", () => ({
-  ...jest.requireActual("@artsy/palette-mobile"),
+jest.mock("@artsy/palette-mobile/dist/elements/Popover/Popover", () => ({
   Popover: (props: any) => <MockedPopover {...props} />,
 }))
 
