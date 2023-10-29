@@ -31,6 +31,10 @@ module.exports = (api) => {
             preventFullImport: true,
             skipDefaultConversion: true,
           },
+          lodash: {
+            transform: "lodash/${member}",
+            preventFullImport: true,
+          },
         },
       ],
       "import-graphql", // to enable import syntax for .graphql and .gql files.
