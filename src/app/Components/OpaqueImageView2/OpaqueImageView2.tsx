@@ -1,7 +1,7 @@
 import { useColor, Text } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import _ from "lodash"
+import { isNumber, isString } from "lodash"
 import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
@@ -96,17 +96,17 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
       return [Number(style.width), Number(style.height)]
     }
     const width = props.width ?? style.width
-    if (_.isNumber(width)) {
+    if (isNumber(width)) {
       return [width, width / aspectRatio!]
     }
-    if (_.isString(width)) {
+    if (isString(width)) {
       return [layoutWidth, layoutWidth / aspectRatio!]
     }
     const height = props.height ?? style.height
-    if (_.isNumber(height)) {
+    if (isNumber(height)) {
       return [height * aspectRatio!, height]
     }
-    if (_.isString(height)) {
+    if (isString(height)) {
       return [layoutHeight * aspectRatio!, layoutHeight]
     }
     return [layoutWidth, layoutHeight]

@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
-import _ from "lodash"
+import { times } from "lodash"
 import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -64,7 +64,7 @@ const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex ml={2}>
       <Flex flexDirection="row">
-        {_.times(4).map((i) => (
+        {times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>

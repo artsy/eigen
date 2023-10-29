@@ -18,7 +18,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import _ from "lodash"
+import { compact } from "lodash"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -81,7 +81,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
 
-  const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
+  const aggregateFilterOptions: FilterDisplayConfig[] = compact(
     concreteAggregations.map((aggregation) => {
       if (aggregation?.counts?.length === 0) {
         return null

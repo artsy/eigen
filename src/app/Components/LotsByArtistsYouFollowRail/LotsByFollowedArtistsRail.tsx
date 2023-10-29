@@ -9,7 +9,7 @@ import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToP
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import lodash from "lodash"
+import { debounce } from "lodash"
 import { memo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
@@ -58,7 +58,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
     })
   }
 
-  const refreshDebounce = lodash.debounce(
+  const refreshDebounce = debounce(
     () => {
       relay.refetchConnection(PAGE_SIZE)
     },
