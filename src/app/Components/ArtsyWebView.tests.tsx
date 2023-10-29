@@ -50,10 +50,7 @@ jest.mock("react-native-webview", () => {
   }
 })
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  debounce: jest.fn(),
-}))
+jest.mock("lodash/debounce", () => jest.fn())
 
 const mockOnNavigationStateChange: WebViewNavigation = {
   navigationType: "click",
