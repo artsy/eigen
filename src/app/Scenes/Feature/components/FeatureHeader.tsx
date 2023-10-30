@@ -2,10 +2,10 @@ import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
-import { isPad } from "app/utils/hardware"
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "app/utils/hooks"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
+import { isTablet } from "react-native-device-info"
+import { createFragmentContainer, graphql } from "react-relay"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureHeaderProps extends FlexProps {
@@ -14,8 +14,8 @@ export interface FeatureHeaderProps extends FlexProps {
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
   const { height, width } = useScreenDimensions()
-  const imageHeight = isPad() ? height * 0.6 : width
-  const imageWidth = isPad() ? width / 2 : width
+  const imageHeight = isTablet() ? height * 0.6 : width
+  const imageWidth = isTablet() ? width / 2 : width
 
   const image = (
     <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
@@ -35,7 +35,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       textProps={{ textAlign: "center", variant: "md" }}
     />
   )
-  return isPad() ? (
+  return isTablet() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
@@ -70,9 +70,9 @@ export const FeatureHeaderFragmentContainer = createFragmentContainer(FeatureHea
 
 export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
   const { height, width } = useScreenDimensions()
-  const imageHeight = isPad() ? height * 0.6 : width
+  const imageHeight = isTablet() ? height * 0.6 : width
 
-  return isPad() ? (
+  return isTablet() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <PlaceholderBox height={imageHeight} flex={1} />
       <Stack px={2} alignItems="center" justifyContent="center" flex={1}>

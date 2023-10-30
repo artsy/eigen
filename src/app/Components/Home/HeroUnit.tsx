@@ -1,12 +1,11 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import { Trove_trove$data } from "__generated__/Trove_trove.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { isPad } from "app/utils/hardware"
-import { Touchable } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useState } from "react"
 import { View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
-import { useScreenDimensions } from "app/utils/hooks"
 
 type UnitType = NonNullable<NonNullable<Trove_trove$data["heroUnits"]>[0]>
 
@@ -51,7 +50,7 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
             style={{ width, height, position: "absolute" }}
           />
         )}
-        <Flex maxWidth={isPad() ? "65%" : undefined}>
+        <Flex maxWidth={isTablet() ? "65%" : undefined}>
           <Text variant="xl" color="white">
             {unit.title}
           </Text>

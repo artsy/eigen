@@ -8,7 +8,6 @@ import {
 } from "app/Scenes/GalleriesForYou/Components/PartnerListItem"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -18,6 +17,7 @@ import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Suspense, useEffect, useState } from "react"
 import { ActivityIndicator } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface GalleriesForYouProps {
@@ -193,12 +193,11 @@ const GalleriesForYouHeader: React.FC = () => {
 }
 
 const GalleriesForYouPlaceholder: React.FC = () => {
-  const isTablet = isPad()
   const space = useSpace()
 
   const { width: screenWidth } = useScreenDimensions()
 
-  const width = (isTablet ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
+  const width = (isTablet() ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
 
   return (
     <ProvidePlaceholderContext>

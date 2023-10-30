@@ -6,11 +6,11 @@ import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { Stack } from "app/Components/Stack"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
@@ -113,7 +113,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
     if (count > 0) {
       switch (set.itemType) {
         case "FeaturedLink": {
-          const numColumns = isPad() ? (orientation === "landscape" ? 3 : 2) : 1
+          const numColumns = isTablet() ? (orientation === "landscape" ? 3 : 2) : 1
           const columnWidth = (width - 20) / numColumns - 20
 
           const rows = chunk(items, numColumns)

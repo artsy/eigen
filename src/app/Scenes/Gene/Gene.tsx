@@ -19,12 +19,10 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Dimensions } from "react-native"
-
+import { isTablet } from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
 
-const isPad = Dimensions.get("window").width > 700
-const commonPadding = isPad ? 4 : 2
+const commonPadding = isTablet() ? 4 : 2
 
 interface GeneProps {
   geneID: string
@@ -55,7 +53,7 @@ export const Gene: React.FC<GeneProps> = (props) => {
         BelowTitleHeaderComponent={() => (
           <Flex
             px={commonPadding}
-            {...(isPad
+            {...(isTablet()
               ? {
                   width: 330,
                   alignSelf: "center",

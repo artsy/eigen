@@ -8,13 +8,12 @@ import { extractNodes } from "app/utils/extractNodes"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
+import { FlatList, RefreshControl, ViewStyle } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
-
-const isPad = Dimensions.get("window").width > 700
 
 interface Props {
   conversation: Messages_conversation$data
@@ -130,7 +129,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const refreshControl = <RefreshControl refreshing={reloadingData} onRefresh={reload} />
 
-  const messagesStyles: Partial<ViewStyle> = isPad
+  const messagesStyles: Partial<ViewStyle> = isTablet()
     ? {
         width: 708,
         alignSelf: "center",

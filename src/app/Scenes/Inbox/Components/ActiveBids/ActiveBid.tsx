@@ -4,17 +4,16 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { BodyText, MetadataText } from "app/Scenes/Inbox/Components/Typography"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-
-const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   height: 120px;
   margin-left: 20px;
   margin-right: 20px;
-  ${isPad ? "align-self: center; width: 708;" : ""};
+  ${isTablet() ? "align-self: center; width: 708;" : ""};
 `
 
 const Content = styled.View`

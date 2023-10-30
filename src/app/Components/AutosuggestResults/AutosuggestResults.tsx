@@ -20,10 +20,10 @@ import {
   TrackResultPress,
 } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, Keyboard } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
@@ -193,7 +193,7 @@ const AutosuggestResultsFlatList: React.FC<{
       <AboveTheFoldFlatList<AutosuggestResult>
         ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
-        initialNumToRender={isPad() ? 24 : 12}
+        initialNumToRender={isTablet() ? 24 : 12}
         data={allNodes}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={ListFooterComponentWithLoadingIndicator}

@@ -7,10 +7,10 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import lodash from "lodash"
 import { memo, useState } from "react"
+import { isTablet } from "react-native-device-info"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6
@@ -29,8 +29,6 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
   cardSize = "small",
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const isTablet = isPad()
-
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
@@ -80,7 +78,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
       </Flex>
       <CardRailFlatList
         data={artworks}
-        initialNumToRender={isTablet ? 10 : 5}
+        initialNumToRender={isTablet() ? 10 : 5}
         windowSize={3}
         renderItem={({ item: artwork }) => {
           if (!artwork?.saleArtwork) {

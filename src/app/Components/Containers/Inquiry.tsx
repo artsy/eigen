@@ -11,11 +11,10 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
-import { Dimensions, View } from "react-native"
+import { View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
-
-const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   flex: 1;
@@ -53,8 +52,8 @@ const CancelButton = styled.TouchableOpacity`
 const Content = styled.View`
   margin-left: 20px;
   margin-right: 20px;
-  align-self: ${isPad ? "center" : "stretch"};
-  ${isPad ? "width: 472px;" : ""};
+  align-self: ${isTablet() ? "center" : "stretch"};
+  ${isTablet() ? "width: 472px;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
