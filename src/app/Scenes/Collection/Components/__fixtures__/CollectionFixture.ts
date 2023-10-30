@@ -247,11 +247,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           slug: "pablo-picasso",
           internalID: "2342-pablo-picassos-id",
           name: "Pablo Picasso",
-          coverArtwork: {
-            id: "picasso-cover-id",
-            image: {
-              url: "/some/resized/picasso/image/url",
-            },
+          image: {
+            url: "/some/resized/picasso/image/url",
           },
           birthday: "1877",
           nationality: "American",
@@ -265,11 +262,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           slug: "andy-warhol",
           internalID: "34534-andy-warhols-id",
           name: "Andy Warhol",
-          coverArtwork: {
-            id: "andy-warhol-cover-id",
-            image: {
-              url: "/some/resized/warhol/image/url",
-            },
+          image: {
+            url: "/some/resized/warhol/image/url",
           },
           birthday: "1947",
           nationality: "American",
@@ -283,11 +277,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           slug: "joan-miro",
           internalID: "3454",
           name: "Joan Miro",
-          coverArtwork: {
-            id: "joan-miro-cover-id",
-            image: {
-              url: "/some/resized/miro/image/url",
-            },
+          image: {
+            url: "/some/resized/miro/image/url",
           },
           birthday: "1877",
           nationality: "Spanish",
@@ -301,11 +292,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           slug: "jean-michel-basquiat",
           internalID: "9807",
           name: "Jean-Michel Basquiat",
-          coverArtwork: {
-            id: "jean-michel-basquiat-cover-id",
-            image: {
-              url: "/some/resized/basquiat/image/url",
-            },
+          image: {
+            url: "/some/resized/basquiat/image/url",
           },
           birthday: "1960",
           nationality: "American",
@@ -319,11 +307,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           slug: "kenny-scharf",
           internalID: "0120",
           name: "Kenny Scharf",
-          coverArtwork: {
-            id: "kenny-scharf-cover-id",
-            image: {
-              url: "/some/resized/scharf/image/url",
-            },
+          image: {
+            url: "/some/resized/scharf/image/url",
           },
           birthday: "1958",
           nationality: "American",
