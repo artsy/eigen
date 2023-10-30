@@ -287,12 +287,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <ArtistArtworksFilterHeader
-              artist={artist}
-              showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
-            />
-          </Tabs.SubTabBar>
+          <>
+            <Tabs.SubTabBar>
+              <ArtistArtworksFilterHeader
+                artist={artist}
+                showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
+              />
+            </Tabs.SubTabBar>
+            <Flex pt={1}>
+              <Text variant="xs" weight="medium">{`${artist.counts?.artworks} Artwork${
+                artist.counts?.artworks > 1 ? "s" : ""
+              }:`}</Text>
+            </Flex>
+          </>
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
