@@ -16,10 +16,7 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import {
-  ArtistHeaderFragmentContainer,
-  useArtistHeaderImageDimensions,
-} from "app/Components/Artist/ArtistHeader"
+import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
@@ -96,13 +93,13 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       artists: [{ name: artistAboveTheFold.name }],
       title: artistAboveTheFold.name!,
       href: artistAboveTheFold.href!,
-      currentImageUrl: artistAboveTheFold.image?.url ?? undefined,
+      currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
     })
   }
 
   const renderBelowTheHeaderComponent = useCallback(
     () => (
-      <ArtistHeaderFragmentContainer
+      <ArtistHeader
         artist={artistAboveTheFold!}
         me={me!}
         onLayoutChange={({ nativeEvent }) => {
@@ -199,8 +196,10 @@ export const ArtistScreenQuery = graphql`
       slug
       href
       name
-      image {
-        url(version: "large")
+      coverArtwork {
+        image {
+          url(version: "larger")
+        }
       }
     }
     me {

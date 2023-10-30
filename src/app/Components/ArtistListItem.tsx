@@ -63,8 +63,7 @@ const ArtistListItem: React.FC<Props> = ({
   uploadsCount,
   withFeedback = false,
 }) => {
-  const { is_followed, initials, coverArtwork, href, name, nationality, birthday, deathday } =
-    artist
+  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
 
@@ -143,7 +142,7 @@ const ArtistListItem: React.FC<Props> = ({
                 mr={1}
                 name={name}
                 meta={meta}
-                imageUrl={coverArtwork?.image?.url ?? undefined}
+                imageUrl={image?.url ?? undefined}
                 initials={initials ?? undefined}
                 avatarSize={avatarSize}
                 RightButton={RightButton}
@@ -220,10 +219,10 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      coverArtwork {
-        image {
-          url
-        }
+      # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
+      # an Artist#coverImage got replaced by this component data with wrong data
+      image {
+        url
       }
     }
   `,
