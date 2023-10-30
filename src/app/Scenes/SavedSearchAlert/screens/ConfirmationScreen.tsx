@@ -206,6 +206,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
       <GenericGrid
         width={screen.width - space(2)}
         artworks={artworks}
+        hideSaveIcon
         onPress={(slug: string) => {
           closeModal?.()
           // TODO: tracking
