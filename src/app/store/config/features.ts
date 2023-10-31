@@ -241,6 +241,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertDetailsInput",
   },
+  AREnableArtistSeriesFilter: {
+    description: "Enable artist series filter on artist screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 }
 
 export interface DevToggleDescriptor {

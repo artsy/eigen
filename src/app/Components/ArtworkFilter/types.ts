@@ -5,6 +5,7 @@ export type FilterScreen =
   | "artistIDs"
   | "artistNationalities"
   | "artistsIFollow"
+  | "artistSeriesIDs"
   | "attributionClass"
   | "categories"
   | "color"
