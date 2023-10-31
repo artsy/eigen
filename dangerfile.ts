@@ -140,7 +140,7 @@ export const validatePRChangelog = () => {
   // and res contains a list of the changes
   console.log("PR Changelog is valid")
 
-  const { type, ...changedSections } = res
+  const { ...changedSections } = res
 
   const message =
     "### This PR contains the following changes:\n" +
