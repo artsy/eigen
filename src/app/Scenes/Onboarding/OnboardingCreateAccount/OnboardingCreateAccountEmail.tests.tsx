@@ -1,8 +1,8 @@
+import { Input } from "app/Components/Input"
 import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
-import { Input } from "app/Components/Input"
 import { emailSchema, UserSchema } from "./OnboardingCreateAccount"
 import { OnboardingCreateAccountEmail } from "./OnboardingCreateAccountEmail"
 

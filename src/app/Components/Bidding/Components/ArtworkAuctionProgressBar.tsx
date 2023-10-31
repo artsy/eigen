@@ -1,5 +1,5 @@
-import { useTimer } from "app/utils/useTimer"
 import { ProgressBar } from "@artsy/palette-mobile"
+import { useTimer } from "app/utils/useTimer"
 
 export interface ArtworkAuctionProgressBarProps {
   startAt?: string | null
@@ -18,11 +18,12 @@ export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps>
   hasBeenExtended,
   height,
 }) => {
+  const { time } = useTimer(biddingEndAt ?? "", startAt ?? "")
+
   if (!biddingEndAt) {
     return null
   }
 
-  const { time } = useTimer(biddingEndAt, startAt ?? "")
   const { days, hours, minutes, seconds } = time
 
   const parsedDaysUntilEnd = parseInt(days, 10)

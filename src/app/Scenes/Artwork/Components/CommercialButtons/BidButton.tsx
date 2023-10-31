@@ -122,21 +122,21 @@ export class BidButton extends React.Component<BidButtonProps> {
             >
               Register to bid
             </Button>
-            {needsIdentityVerification && (
+            {!!needsIdentityVerification && (
               <IdentityVerificationRequiredMessage
                 onPress={() => this.redirectToIdentityVerificationFAQ()}
               />
             )}
           </>
         )}
-        {registrationStatus && !registrationStatus.qualifiedForBidding && (
+        {!!registrationStatus && !registrationStatus.qualifiedForBidding && (
           <>
             <Button width={100} block size="large" mt={1} variant={this.props.variant} disabled>
               Registration Pending
             </Button>
           </>
         )}
-        {registrationStatus?.qualifiedForBidding && (
+        {!!registrationStatus?.qualifiedForBidding && (
           <Button width={100} block size="large" mt={1} variant={this.props.variant} disabled>
             Registration complete
           </Button>
@@ -151,7 +151,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     const isWatchOnly = watchOnly(sale)
     return (
       <>
-        {isWatchOnly && (
+        {!!isWatchOnly && (
           <ClassTheme>
             {({ color }) => (
               <Text variant="sm-display" color={color("black60")} pb={1} textAlign="center">

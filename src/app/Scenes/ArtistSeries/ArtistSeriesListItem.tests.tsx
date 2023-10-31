@@ -1,10 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Touchable } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "@artsy/palette-mobile"
 import { act } from "react-test-renderer"
 
 describe("ArtistSeriesListItem", () => {

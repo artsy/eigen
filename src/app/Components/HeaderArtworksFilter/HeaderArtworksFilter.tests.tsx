@@ -1,8 +1,7 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableHighlightColor } from "@artsy/palette-mobile"
 import { act } from "react-test-renderer"
 import {
   FilterProps,
