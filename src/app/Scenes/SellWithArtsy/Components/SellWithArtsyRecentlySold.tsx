@@ -4,9 +4,8 @@ import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from 
 import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 interface SellWithArtsyRecentlySoldProps {
   recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key

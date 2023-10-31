@@ -5,8 +5,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useState } from "react"
 import { Platform } from "react-native"
-import { RelayPaginationProp, useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { RelayPaginationProp, useFragment, graphql } from "react-relay"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC<{

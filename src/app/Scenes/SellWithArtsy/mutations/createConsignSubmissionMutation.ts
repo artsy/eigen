@@ -4,7 +4,7 @@ import {
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { getCurrentEmissionState } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const createConsignSubmission = (input: CreateSubmissionMutationInput) => {
   return new Promise<string>((resolve, reject) => {

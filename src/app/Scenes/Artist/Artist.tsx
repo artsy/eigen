@@ -39,8 +39,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
-import { graphql } from "react-relay"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
 
@@ -48,7 +47,7 @@ interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   auctionResultsInitialFilters?: FilterArray
-  environment?: RelayModernEnvironment
+  environment?: Environment
   fetchCriteriaError: Error | null
   initialTab?: string
   me: ArtistAboveTheFoldQuery["response"]["me"]
@@ -176,7 +175,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 interface ArtistQueryRendererProps {
   artistID: string
   categories?: string[]
-  environment?: RelayModernEnvironment
+  environment?: Environment
   initialTab?: string
   predefinedFilters?: FilterArray
   scrollToArtworksGrid?: boolean

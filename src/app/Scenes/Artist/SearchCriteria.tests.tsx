@@ -1,7 +1,6 @@
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
 
@@ -34,7 +33,7 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment as unknown as RelayModernEnvironment}
+        environment={mockEnvironment}
       />
     )
 
@@ -53,7 +52,7 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
-        environment={mockEnvironment as unknown as RelayModernEnvironment}
+        environment={mockEnvironment}
       />
     )
 
@@ -67,7 +66,7 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment as unknown as RelayModernEnvironment}
+        environment={mockEnvironment}
       />
     )
 

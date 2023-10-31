@@ -7,9 +7,14 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
 import { StyleProp, ViewStyle } from "react-native"
-import { RelayProp, commitMutation, createFragmentContainer, graphql } from "react-relay"
+import {
+  Environment,
+  RelayProp,
+  commitMutation,
+  createFragmentContainer,
+  graphql,
+} from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
   artist: ArtistListItem_artist$data
@@ -168,7 +173,7 @@ export const followArtistMutation = ({
   artistID,
   isFollowed,
 }: {
-  environment: RelayModernEnvironment
+  environment: Environment
   onCompleted: () => void
   artistID: string
   artistSlug: string

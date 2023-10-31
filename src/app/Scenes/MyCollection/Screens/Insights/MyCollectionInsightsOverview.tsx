@@ -1,7 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionInsightsOverview_myCollectionInfo$key } from "__generated__/MyCollectionInsightsOverview_myCollectionInfo.graphql"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface MyCollectionInsightsOverviewProps {
   myCollectionInfo: MyCollectionInsightsOverview_myCollectionInfo$key

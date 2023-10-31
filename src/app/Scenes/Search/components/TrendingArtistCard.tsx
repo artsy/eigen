@@ -2,8 +2,7 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { TrendingArtistCard_artist$key } from "__generated__/TrendingArtistCard_artist.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { TouchableHighlight } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface TrendingArtistCardProps {
   artist: TrendingArtistCard_artist$key

@@ -3,8 +3,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
@@ -49,7 +48,7 @@ describe("Saved search banner on artist screen", () => {
     renderWithHookWrappersTL(
       <ArtistQueryRenderer
         artistID="ignore"
-        environment={environment as unknown as RelayModernEnvironment}
+        environment={environment}
         searchCriteriaID={searchCriteriaID}
         initialTab="Artworks"
       />

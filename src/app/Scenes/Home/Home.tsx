@@ -88,10 +88,8 @@ import {
   ViewabilityConfig,
 } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
+import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
@@ -741,7 +739,7 @@ const messages = {
 }
 
 interface HomeQRProps {
-  environment?: RelayModernEnvironment | RelayMockEnvironment
+  environment?: Environment
 }
 
 export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {

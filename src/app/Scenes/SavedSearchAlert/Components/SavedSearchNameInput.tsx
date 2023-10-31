@@ -7,8 +7,7 @@ import { useFormikContext } from "formik"
 import { omit } from "lodash"
 import { useEffect, useState } from "react"
 import { Platform } from "react-native"
-import { QueryRenderer } from "react-relay"
-import { graphql } from "relay-runtime"
+import { QueryRenderer, graphql } from "react-relay"
 interface SavedSearchNameInputProps {
   placeholder?: string
 }

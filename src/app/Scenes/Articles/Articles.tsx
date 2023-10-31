@@ -4,8 +4,7 @@ import { Articles_articlesConnection$key } from "__generated__/Articles_articles
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
-import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 
 export const Articles: React.FC = () => {

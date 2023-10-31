@@ -3,7 +3,7 @@ import {
   useUpdateArtworkListsForArtworkMutation$data,
 } from "__generated__/useUpdateArtworkListsForArtworkMutation.graphql"
 import { UseMutationConfig, graphql, useMutation } from "react-relay"
-import { Disposable, RecordSourceSelectorProxy } from "relay-runtime"
+import { Disposable } from "relay-runtime"
 
 interface Counts {
   custom: number
@@ -28,59 +28,52 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
   const commit = (config: MutationConfig) => {
     return initialCommit({
       ...config,
-      updater: updater(artworkID),
+      updater: (store, data) => {
+        const artwork = store.get(artworkID)
+
+        if (!artwork) {
+          return
+        }
+
+        const response = data.artworksCollectionsBatchUpdate?.responseOrError
+        const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
+        const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
+
+        // Set `isSaved` field to `true` if artwork was saved in "Saved Artworks"
+        if (addedCounts.default > 0) {
+          artwork.setValue(true, "isSaved")
+        }
+
+        // Set `isSaved` field to `false` if artwork was unsaved from "Saved Artworks"
+        if (removedCounts.default > 0) {
+          artwork.setValue(false, "isSaved")
+        }
+
+        const entity = artwork.getLinkedRecord("collectionsConnection", {
+          first: 0,
+          default: false,
+          saves: true,
+        })
+
+        if (!entity) {
+          return
+        }
+
+        /**
+         * Update `totalCount` field, based on which we decide
+         * whether to display the manage lists for artwork modal or
+         * immediately remove artwork from "Saved Artworks"
+         */
+        const prevValue = (entity.getValue("totalCount") ?? 0) as number
+        const newValue = prevValue + addedCounts.custom - removedCounts.custom
+
+        entity.setValue(newValue, "totalCount")
+      },
     })
   }
 
   return [commit, isInProgress]
 }
-
-const updater =
-  (artworkID: string) =>
-  (
-    store: RecordSourceSelectorProxy<useUpdateArtworkListsForArtworkMutation$data>,
-    data: useUpdateArtworkListsForArtworkMutation$data
-  ) => {
-    const artwork = store.get(artworkID)
-
-    if (!artwork) {
-      return
-    }
-
-    const response = data.artworksCollectionsBatchUpdate?.responseOrError
-    const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
-    const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
-
-    // Set `isSaved` field to `true` if artwork was saved in "Saved Artworks"
-    if (addedCounts.default > 0) {
-      artwork.setValue(true, "isSaved")
-    }
-
-    // Set `isSaved` field to `false` if artwork was unsaved from "Saved Artworks"
-    if (removedCounts.default > 0) {
-      artwork.setValue(false, "isSaved")
-    }
-
-    const entity = artwork.getLinkedRecord("collectionsConnection", {
-      first: 0,
-      default: false,
-      saves: true,
-    })
-
-    if (!entity) {
-      return
-    }
-
-    /**
-     * Update `totalCount` field, based on which we decide
-     * whether to display the manage lists for artwork modal or
-     * immediately remove artwork from "Saved Artworks"
-     */
-    const prevValue = (entity.getValue("totalCount") ?? 0) as number
-    const newValue = prevValue + addedCounts.custom - removedCounts.custom
-
-    entity.setValue(newValue, "totalCount")
-  }
 
 export const getArtworkListsCountByType = (artworkLists: ArtworkListEntity) => {
   const artworkListsEntities = artworkLists ?? []

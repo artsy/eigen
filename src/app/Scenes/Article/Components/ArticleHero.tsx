@@ -1,8 +1,7 @@
 import { Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleHero_article$key } from "__generated__/ArticleHero_article.graphql"
 import { DateTime } from "luxon"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleHeroProps {
   article: ArticleHero_article$key

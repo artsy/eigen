@@ -1,10 +1,6 @@
 import { captureMessage } from "@sentry/core"
-import {
-  useMarkNotificationAsReadMutation,
-  useMarkNotificationAsReadMutation$data,
-} from "__generated__/useMarkNotificationAsReadMutation.graphql"
-import { useMutation } from "react-relay"
-import { RecordSourceSelectorProxy, graphql } from "relay-runtime"
+import { useMarkNotificationAsReadMutation } from "__generated__/useMarkNotificationAsReadMutation.graphql"
+import { graphql, useMutation } from "react-relay"
 
 export const useMarkNotificationAsRead = () => {
   const [commitMutation] = useMutation<useMarkNotificationAsReadMutation>(
@@ -38,23 +34,14 @@ export const useMarkNotificationAsRead = () => {
         },
       },
       optimisticUpdater: (store) => {
-        updater(item.id, store)
+        store?.get?.(item.id)?.setValue(false, "isUnread")
       },
       updater: (store) => {
-        updater(item.id, store)
+        store?.get?.(item.id)?.setValue(false, "isUnread")
       },
       onError: (error) => {
         captureMessage(error?.stack!)
       },
     })
   }
-}
-
-const updater = (
-  id: string,
-  store: RecordSourceSelectorProxy<useMarkNotificationAsReadMutation$data>
-) => {
-  const notification = store.get(id)
-
-  notification?.setValue(false, "isUnread")
 }

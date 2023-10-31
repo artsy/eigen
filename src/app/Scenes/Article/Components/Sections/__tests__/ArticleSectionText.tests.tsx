@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react-native"
 import { ArticleSectionTextTestQuery } from "__generated__/ArticleSectionTextTestQuery.graphql"
 import { ArticleSectionText } from "app/Scenes/Article/Components/Sections/ArticleSectionText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 
 describe("ArticleSectionText", () => {
   const { renderWithRelay } = setupTestWrapper<ArticleSectionTextTestQuery>({

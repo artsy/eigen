@@ -19,8 +19,7 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useRefetch } from "app/utils/relayHelpers"
 import { Image, TouchableOpacity } from "react-native"
-import { useFragment, useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, useLazyLoadQuery, graphql } from "react-relay"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14

@@ -2,8 +2,7 @@ import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
 interface ArtworkPriceProps extends FlexProps {

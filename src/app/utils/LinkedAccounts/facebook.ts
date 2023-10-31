@@ -4,10 +4,9 @@ import { Toast } from "app/Components/Toast/Toast"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
-import { commitMutation, graphql } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Environment, commitMutation, graphql } from "react-relay"
 
-export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
+export const useFacebookLink = (relayEnvironment: Environment) => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 
