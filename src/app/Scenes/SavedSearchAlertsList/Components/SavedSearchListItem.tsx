@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Box, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { ChevronIcon, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 
 interface SavedSearchListItemProps {
   title: string
