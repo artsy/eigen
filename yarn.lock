@@ -5215,6 +5215,14 @@
     "@types/react" "*"
     "@types/relay-runtime" "*"
 
+"@types/react-relay@16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-16.0.0.tgz#2c09fd43918a6bb6425895d84e67bb28275b261d"
+  integrity sha512-oaKLjC/cD7oTC4YVR0cOya/a/fqWJewrjNq3Nk6wJFGbUBd+2TMFCc0BEHewobpSH/YqZONiLpdJ1uRk+W3M3g==
+  dependencies:
+    "@types/react" "*"
+    "@types/relay-runtime" "*"
+
 "@types/react-syntax-highlighter@11.0.5":
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/@types/react-syntax-highlighter/-/react-syntax-highlighter-11.0.5.tgz#0d546261b4021e1f9d85b50401c0a42acb106087"
@@ -14699,16 +14707,16 @@ react-relay-network-modern@6.2.1:
     core-js "^3.0.0"
     extract-files "^9.0.0"
 
-react-relay@14.1.0:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-14.1.0.tgz#2a2349d33ca6558543340a12b363ee2de3db06a6"
-  integrity sha512-U4oHb5wn1LEi17x3AcZOy66MXs83tnYbsK7/YE1/3cQKCPrXhyVUQbEOC9L7jMX659jtS1NACae+7b03bryMCQ==
+react-relay@16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-16.0.0.tgz#50201d309559401c19184f9a6e2cf32127175d21"
+  integrity sha512-3Dje0NLJFwt6b3xqgbiCGlTnpxoZe1OTPsXIPtFdftgDWQzSfrwqkBYUKab6bV2HhCKWCzXWafb8wURLDAlNJQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
     nullthrows "^1.1.1"
-    relay-runtime "14.1.0"
+    relay-runtime "16.0.0"
 
 react-shallow-renderer@^16.15.0:
   version "16.15.0"
@@ -15122,6 +15130,15 @@ relay-runtime@14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-14.1.0.tgz#44b317101f560a16caea2eef8a52e254b03908fa"
   integrity sha512-t2DR2hZviHrdEQrOvFqwmvRWvZ0SjI/r4bS5f3qvMyXt4g1kw3RTb2RNVmbKGg6zEQhf7Na/brdqE4roApmclQ==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    fbjs "^3.0.2"
+    invariant "^2.2.4"
+
+relay-runtime@16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-16.0.0.tgz#66efc4ea95a291885dab04f90676ab4c004442ea"
+  integrity sha512-gJ70upfOxmFgtvFEKn7sU72uN2XF9Bg5Bml9oGRqe0rFWJDj1ItsljWzOZ972EyDE+pZG/VKbqiz3gUjhbsejQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.2"

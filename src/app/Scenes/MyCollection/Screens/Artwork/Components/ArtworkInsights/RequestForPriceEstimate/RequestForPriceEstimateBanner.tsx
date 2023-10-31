@@ -10,8 +10,8 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimateBanner_artwork$key
-  marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null
-  me: RequestForPriceEstimateBanner_me$key | null
+  marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null | undefined
+  me: RequestForPriceEstimateBanner_me$key | null | undefined
 }
 export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProps> = ({
   ...otherProps
