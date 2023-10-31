@@ -119,7 +119,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <Spacer y={6} />
             <CollectorsNetwork />
             <Spacer y={6} />
-            <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
+
+            {!!recentlySoldArtworks && (
+              <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
+            )}
             <Join separator={<Spacer y={6} />}>
               <></>
               {!!enableTestimonials && <Testimonials />}

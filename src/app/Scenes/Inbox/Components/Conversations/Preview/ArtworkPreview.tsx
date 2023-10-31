@@ -1,9 +1,8 @@
-import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -54,7 +53,7 @@ export class ArtworkPreview extends React.Component<ArtworkPreviewProps> {
     owner_slug: props.artwork.slug,
   }))
   attachmentSelected() {
-    this.props.onSelected!()
+    this.props.onSelected?.()
   }
 
   render() {
@@ -66,7 +65,11 @@ export class ArtworkPreview extends React.Component<ArtworkPreviewProps> {
         {({ color }) => (
           <Touchable
             underlayColor={color("black10")}
-            onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
+            onPress={() => {
+              if (!!this.props.onSelected) {
+                this.attachmentSelected.bind(this)
+              }
+            }}
           >
             <Container>
               {!!artworkImage && (

@@ -6,6 +6,7 @@ import {
   Flex,
   Text,
   Separator,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
@@ -13,7 +14,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "@artsy/palette-mobile"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -43,7 +43,7 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
 interface SaleCardProps {
   sale: SaleCard_sale$data
   me: SaleCard_me$data
-  smallScreen?: boolean
+  smallScreen: boolean
   hideChildren?: boolean
 }
 
@@ -110,7 +110,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
     >
       <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10">
         <OpaqueImageView height={COVER_IMAGE_HEIGHT} imageURL={sale?.coverImage?.url} />
-        <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
+        <Flex style={{ margin: smallScreen ? 10 : 15 }}>
           {!!sale.partner?.name && (
             <Text variant="xs" color="black60">
               {sale?.partner?.name}
@@ -124,7 +124,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
         {!hideChildren && (
           <>
             <Separator mt={1} />
-            <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>
+            <Flex style={{ marginHorizontal: smallScreen ? 10 : 20, marginVertical: 10 }}>
               {children}
             </Flex>
           </>
