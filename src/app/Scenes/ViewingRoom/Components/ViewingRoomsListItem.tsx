@@ -1,9 +1,9 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import { CardTagProps, SmallCard } from "app/Components/Cards"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -76,12 +76,15 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
   const tag = tagForStatus(status, distanceToOpen, distanceToClose)
 
   const extractedArtworks = extractNodes(item.artworksConnection)
+
   let artworks: string[] = []
+
   if (extractedArtworks.length === 1) {
-    artworks = extractedArtworks.map((a) => a.image!.regular!)
+    artworks = extractedArtworks.map((a) => a?.image?.regular).filter(Boolean) as string[]
   } else if (extractedArtworks.length > 1) {
-    artworks = extractedArtworks.map((a) => a.image!.square!)
+    artworks = extractedArtworks.map((a) => a?.image?.square).filter(Boolean) as string[]
   }
+
   const images = [heroImage?.imageURLs?.normalized ?? "", ...artworks]
 
   return (
@@ -89,7 +92,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
       <Touchable
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
-          navigate(`/viewing-room/${slug!}`)
+          navigate(`/viewing-room/${slug}`)
         }}
       >
         <SmallCard
