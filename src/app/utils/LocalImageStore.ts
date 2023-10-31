@@ -106,7 +106,7 @@ export const useLocalImagesStorage = (
 
           if (isImageAvailable || !image.key) return null
 
-          return getLocalImage(image.key!)
+          return getLocalImage(image.key)
         })
       )
 

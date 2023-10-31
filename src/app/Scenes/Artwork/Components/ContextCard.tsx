@@ -24,7 +24,13 @@ export const ContextCard: React.FC<ContextCardProps> = ({ artwork: { context } }
         </Text>
       </Box>
       <Flex>
-        <TouchableWithoutFeedback onPress={() => navigate(context.href!)}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (context.href) {
+              navigate(context.href)
+            }
+          }}
+        >
           <Flex flexDirection="row" flexWrap="nowrap" accessibilityLabel="Context Card Image">
             {!!imageUrl && (
               <Flex mr={1} justifyContent="center">
@@ -32,7 +38,7 @@ export const ContextCard: React.FC<ContextCardProps> = ({ artwork: { context } }
               </Flex>
             )}
             <Flex justifyContent="space-between" width={0} flexGrow={1}>
-              <Text variant="sm-display">{context.name!}</Text>
+              <Text variant="sm-display">{context.name}</Text>
               <Text variant="sm">{context.formattedStartDateTime}</Text>
             </Flex>
           </Flex>

@@ -19,11 +19,11 @@ export const ListOfresults: React.FC<{}> = () => {
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     AuctionResultsForArtistsYouCollectQuery,
     AuctionResultsForArtistsYouCollect_me$key
-  >(auctionResultsForArtistsYouCollectFragment, queryData.me!)
+  >(auctionResultsForArtistsYouCollectFragment, queryData.me)
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
-  const auctionResults = extractNodes(data.myCollectionAuctionResults)
+  const auctionResults = extractNodes(data?.myCollectionAuctionResults)
 
   const handleRefresh = () => {
     setRefreshing(true)

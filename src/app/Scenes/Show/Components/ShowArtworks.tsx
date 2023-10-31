@@ -43,7 +43,7 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
 
 const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
   const { internalID, slug } = show
-  const artworks = show.showArtworks!
+  const artworks = show.showArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 

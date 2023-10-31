@@ -63,7 +63,7 @@ export const Search: React.FC = () => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery))
   }
 
   const isSelected = (pill: PillType) => {
