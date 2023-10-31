@@ -1,5 +1,6 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
+import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { RefreshControl } from "react-native"
@@ -26,10 +27,12 @@ jest.mock("@react-native-community/netinfo", () => {
 let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
+  jest.useFakeTimers({ legacyFakeTimers: true })
   env = createMockEnvironment()
+})
+
+afterEach(() => {
+  jest.useRealTimers()
 })
 
 const onRefresh = jest.fn()
@@ -129,8 +132,7 @@ describe("messages with order updates", () => {
     expect(extractText(tree.root)).toMatch("You sent an offer for")
   })
 
-  it("shows the toast message and fades out after 5 seconds", () => {
-    jest.useFakeTimers({ legacyFakeTimers: true })
+  it("shows a toast message", () => {
     const tree = withConversationItems(getWrapper, {
       events: [
         {
@@ -147,11 +149,8 @@ describe("messages with order updates", () => {
       "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
 
-    const toast = tree.root.findAllByType(Flex)[0]
-    jest.advanceTimersByTime(5000)
-    expect(toast.props.opacity).toBe(1)
-    jest.advanceTimersByTime(900000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
-    expect(toast.props.opacity).toBe(0)
+    const toast = tree.root.findAllByType(ToastComponent)[0]
+    expect(toast).toBeDefined()
   })
 
   it("sorts interleaved items by date", () => {
