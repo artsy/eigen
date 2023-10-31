@@ -9,7 +9,7 @@ gem 'activesupport', '>= 6.1.7.3', '< 7.1.0'
 
 # So we know if we need to run `pod install`
 gem 'cocoapods-check'
-gem 'cocoapods-patch'
+gem 'cocoapods-patch', :github => 'numandev1/cocoapods-patch', :branch => 'feat/cocoapod_1.13.0'
 gem 'down'
 gem 'dotenv'
 gem 'json'
