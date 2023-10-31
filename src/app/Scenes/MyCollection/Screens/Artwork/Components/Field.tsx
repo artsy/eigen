@@ -35,7 +35,7 @@ export const Field: React.FC<{
         <Text style={{ flex: 1 }} variant="xs" color={color ?? "black100"}>
           {expanded ? value : truncatedValue}
         </Text>
-        {canExpand && (
+        {!!canExpand && (
           <TouchableWithoutFeedback onPress={toggle} testID="ReadMoreButton">
             <Flex>
               <Text

@@ -242,7 +242,7 @@ export const OnboardingCreateAccountButton: React.FC = () => {
         onPress={handleSubmit}
         block
         haptic="impactMedium"
-        disabled={isLastStep && !values.acceptedTerms}
+        disabled={!!isLastStep && !values.acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
         variant="fillDark"

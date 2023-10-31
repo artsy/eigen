@@ -1,3 +1,4 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { ArtistSeriesTestsQuery } from "__generated__/ArtistSeriesTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtistSeries, ArtistSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeries"
@@ -5,15 +6,12 @@ import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtwor
 import { ArtistSeriesHeader } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMeta } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "@artsy/palette-mobile"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
-
-const trackEvent = useTracking().trackEvent
 
 describe("Artist Series Rail", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -78,7 +76,7 @@ describe("Artist Series Rail", () => {
     const artistSeriesButton = wrapper.root.findByType(ArtistSeriesListItem).findByType(Touchable)
     act(() => artistSeriesButton.props.onPress())
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtistSeriesGroup",
       context_module: "moreSeriesByThisArtist",
       context_screen_owner_id: "abc",

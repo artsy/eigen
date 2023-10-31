@@ -3,10 +3,10 @@ import {
   useEvents,
 } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useEventStream"
 import { Rect, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { useScreenDimensions } from "app/utils/hooks"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import { DeepZoomTile, DeepZoomTileID } from "./DeepZoomTile"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
