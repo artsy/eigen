@@ -263,10 +263,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[
-          { paddingHorizontal: space(2), paddingTop: space(2), paddingBottom: 80 },
-          contentContainerStyle,
-        ]}
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
           pills={pills}
