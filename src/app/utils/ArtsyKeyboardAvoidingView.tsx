@@ -1,4 +1,5 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { useIsKeyboardFloating } from "app/utils/hooks/useIsKeyboardFloating"
 import React, { useContext } from "react"
 import {
   Dimensions,
@@ -31,10 +32,14 @@ export const ArtsyKeyboardAvoidingView: React.FC = ({ children }) => {
   const { isPresentedModally, isVisible, bottomOffset } = useContext(
     ArtsyKeyboardAvoidingViewContext
   )
+  const isKeyboardFloating = useIsKeyboardFloating()
+
+  // disable the keyboard avoiding view if the keyboard is floating
+  const enabled = isVisible && !isKeyboardFloating
 
   return (
     <KeyboardAvoidingView
-      enabled={isVisible}
+      enabled={enabled}
       mode={isPresentedModally ? "bottom-based" : "top-based"}
       bottomOffset={bottomOffset}
       style={{ flex: 1 }}
@@ -133,8 +138,10 @@ class KeyboardAvoidingView extends React.Component<
   _onLayout: ViewProps["onLayout"] = (event) => {
     this._frame = event.nativeEvent.layout
     this.viewRef.current?.measureInWindow((x, y) => {
-      this._frame!.x = x
-      this._frame!.y = y
+      if (this._frame) {
+        this._frame.x = x
+        this._frame.y = y
+      }
     })
     if (!this._initialFrameHeight) {
       // save the initial frame height, before the keyboard is visible

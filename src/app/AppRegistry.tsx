@@ -33,7 +33,6 @@ import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewe
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
-import { useIsKeyboardFloating } from "app/utils/hooks/useIsKeyboardFloating"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
@@ -215,10 +214,8 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   // if we're in a modal, just pass isVisible through
-  const isKeyboardFloating = useIsKeyboardFloating()
 
-  // disable the keyboard avoiding view if the keyboard is floating
-  let isVisible = viewProps.isVisible || !isKeyboardFloating
+  let isVisible = viewProps.isVisible
   if (!ignoreTabs) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const currentTab = useSelectedTab()
