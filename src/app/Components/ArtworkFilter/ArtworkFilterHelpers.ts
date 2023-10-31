@@ -328,7 +328,6 @@ export const changedFiltersParams = (
 ) => {
   const changedFilters: { [key: string]: any } = {}
 
-  console.log({ selectedFilterOptions })
   selectedFilterOptions.forEach((selectedFilterOption) => {
     const { paramName, paramValue } = selectedFilterOption
     const currentFilterParamValue = currentFilterParams[paramName]
@@ -366,8 +365,8 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   additionalGeneIDs: "MEDIUM",
   artistIDs: "ARTIST",
   artistNationalities: "ARTIST_NATIONALITY",
-  artistsIFollow: "FOLLOWED_ARTISTS",
   artistSeriesIDs: "ARTIST_SERIES",
+  artistsIFollow: "FOLLOWED_ARTISTS",
   colors: "COLOR",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",

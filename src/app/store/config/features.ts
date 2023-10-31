@@ -242,7 +242,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     echoFlagKey: "AREnableAlertDetailsInput",
   },
   AREnableArtistSeriesFilter: {
-    description: "Enable artist series filter on artist screen",
+    description: "Enable artist series filter on Artist screen",
     readyForRelease: false,
     showInDevMenu: true,
   },
