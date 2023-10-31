@@ -1,14 +1,16 @@
-import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { BackButton, Box, Flex, Spacer } from "@artsy/palette-mobile"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderText } from "app/utils/placeholders"
 
 export const EditSavedSearchFormPlaceholder = () => {
   return (
-    <Flex>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={goBack}>
-        <Text>Edit your Alert</Text>
-      </FancyModalHeader>
+    <PageWithSimpleHeader
+      title="Edit your Alert"
+      titleWeight="regular"
+      noSeparator
+      left={<BackButton onPress={goBack} />}
+    >
       <Box p={2}>
         {/* Input name */}
         <Box mb={2}>
@@ -45,6 +47,6 @@ export const EditSavedSearchFormPlaceholder = () => {
         <Spacer y={2} />
         <PlaceholderText height={50} />
       </Box>
-    </Flex>
+    </PageWithSimpleHeader>
   )
 }

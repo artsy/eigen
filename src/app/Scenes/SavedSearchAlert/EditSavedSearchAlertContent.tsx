@@ -1,6 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { BackButton } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
 import { EditSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { goBack } from "app/system/navigation/navigate"
@@ -12,10 +12,12 @@ export const EditSavedSearchAlertContent = () => {
     route.params
 
   return (
-    <Flex>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={goBack}>
-        Edit your Alert
-      </FancyModalHeader>
+    <PageWithSimpleHeader
+      title="Edit your Alert"
+      titleWeight="regular"
+      noSeparator
+      left={<BackButton onPress={goBack} />}
+    >
       <SavedSearchAlertForm
         initialValues={{
           name: userAlertSettings?.name ?? "",
@@ -28,6 +30,6 @@ export const EditSavedSearchAlertContent = () => {
         onComplete={onComplete}
         onDeleteComplete={onDeleteComplete}
       />
-    </Flex>
+    </PageWithSimpleHeader>
   )
 }
