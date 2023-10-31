@@ -90,7 +90,7 @@ module.exports = {
     "@typescript-eslint/no-for-in-array": OFF,
     "@typescript-eslint/no-misused-promises": OFF,
     "@typescript-eslint/no-non-null-asserted-optional-chain": OFF,
-    "@typescript-eslint/no-non-null-assertion": OFF,
+    "@typescript-eslint/no-non-null-assertion": ERR,
     "@typescript-eslint/no-unnecessary-type-assertion": OFF,
     "@typescript-eslint/no-unsafe-argument": OFF,
     "@typescript-eslint/no-unsafe-assignment": OFF,
@@ -124,4 +124,12 @@ module.exports = {
     "react-native/no-inline-styles": OFF,
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
   },
+  overrides: [
+    {
+      files: ["*.tests.ts", "*.tests.tsx"],
+      rules: {
+        "@typescript-eslint/no-non-null-assertion": OFF,
+      },
+    },
+  ],
 }
