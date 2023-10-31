@@ -147,7 +147,7 @@ export const ReadMore = React.memo(
     return isAlreadyExpanded ? (
       <Flex>
         {root}
-        {showReadLessButton && isExpanded && (
+        {!!showReadLessButton && !!isExpanded && (
           <LinkText
             mt={0.5}
             mb={1}

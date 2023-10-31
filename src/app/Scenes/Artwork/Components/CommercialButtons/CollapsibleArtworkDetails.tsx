@@ -84,7 +84,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           </ScrollView>
         </Box>
       </Collapse>
-      {hasSeparator && <Separator />}
+      {!!hasSeparator && <Separator />}
     </>
   ) : null
 }

@@ -1,8 +1,8 @@
+import { Checkbox } from "@artsy/palette-mobile"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Checkbox } from "@artsy/palette-mobile"
 import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 
 const goBackMock = jest.fn()

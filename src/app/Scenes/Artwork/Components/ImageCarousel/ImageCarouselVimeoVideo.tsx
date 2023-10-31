@@ -1,6 +1,5 @@
 import querystring from "querystring"
-import { Flex } from "@artsy/palette-mobile"
-import { Touchable } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { Config } from "react-native-config"
@@ -42,7 +41,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
       accessibilityLabel="Vimeo Video Player"
       alignContent="center"
     >
-      {coverImage && !isPlaying && (
+      {!!coverImage && !isPlaying && (
         <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
           <Image
             source={{ uri: coverImage }}
@@ -51,7 +50,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
           />
         </Touchable>
       )}
-      {isPlaying && (
+      {!!isPlaying && (
         <Flex accessibilityLabel="Vimeo Video Player Controls" width="100%" height="100%">
           <Vimeo
             videoId={videoId}

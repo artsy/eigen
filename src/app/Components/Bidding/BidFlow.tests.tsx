@@ -1,10 +1,10 @@
+import { Checkbox } from "@artsy/palette-mobile"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { Select } from "app/Components/Select"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { waitUntil } from "app/utils/tests/waitUntil"
-import { Checkbox } from "@artsy/palette-mobile"
-import { Select } from "app/Components/Select"
 import "react-native"
 import relay from "react-relay"
 // @ts-expect-error

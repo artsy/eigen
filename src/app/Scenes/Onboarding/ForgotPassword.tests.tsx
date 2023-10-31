@@ -1,6 +1,6 @@
+import { Input } from "app/Components/Input"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Input } from "app/Components/Input"
 import { act } from "react-test-renderer"
 import { ForgotPasswordForm } from "./ForgotPassword"
 

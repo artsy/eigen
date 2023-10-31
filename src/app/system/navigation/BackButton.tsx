@@ -1,8 +1,8 @@
 import { CloseIcon, ChevronIcon } from "@artsy/palette-mobile"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useRef } from "react"
 import { Animated, TouchableOpacity, ViewStyle } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
-import { useScreenDimensions } from "app/utils/hooks"
 import { goBack } from "./navigate"
 
 export const BackButton: React.FC<{

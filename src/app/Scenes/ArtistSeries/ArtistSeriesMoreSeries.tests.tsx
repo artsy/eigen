@@ -1,18 +1,16 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Touchable } from "@artsy/palette-mobile"
 import { ArtistSeriesMoreSeriesTestsQuery } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "@artsy/palette-mobile"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-
-const trackEvent = useTracking().trackEvent
 
 describe("ArtistSeriesMoreSeries", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -92,7 +90,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
       act(() => artistSeriesButton.props.onPress())
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
         context_module: "artistSeriesRail",
         context_screen_owner_id: "artist-series-id",

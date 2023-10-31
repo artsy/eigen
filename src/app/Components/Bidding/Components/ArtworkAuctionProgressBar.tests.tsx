@@ -1,5 +1,5 @@
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ProgressBar } from "@artsy/palette-mobile"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 import {
   ArtworkAuctionProgressBar,
