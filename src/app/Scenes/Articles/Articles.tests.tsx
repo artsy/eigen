@@ -10,7 +10,7 @@ describe("Articles", () => {
   it("renders articles", async () => {
     renderWithRelay({
       Query: () => ({
-        articlesConnection: mockArticlesConnection!,
+        articlesConnection: mockArticlesConnection,
       }),
     })
 
