@@ -20,7 +20,11 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
-    navigate(show.href!)
+
+    if (!show.href) {
+      return
+    }
+    navigate(show.href)
   }
 
   const showCity = getShowCity({

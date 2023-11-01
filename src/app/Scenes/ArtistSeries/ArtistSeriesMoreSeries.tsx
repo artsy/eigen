@@ -62,7 +62,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
           <TouchableOpacity
             onPress={() => {
               trackEvent(tracks.tapViewAllArtistSeries(artist?.internalID, artist?.slug))
-              navigate(`/artist/${artist?.internalID!}/artist-series`)
+              navigate(`/artist/${artist?.internalID}/artist-series`)
             }}
           >
             <Text variant="xs" underline testID="viewAll">{`View All (${totalCount})`}</Text>
