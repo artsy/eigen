@@ -1,5 +1,6 @@
+import { setInterval, clearInterval } from "timers"
 import { DateTime } from "luxon"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { getOffsetBetweenGravityClock } from "./Bidding/Context/TimeOffsetProvider"
 
 const getCurrentTimeAsIsoString = () => DateTime.local().toString()
