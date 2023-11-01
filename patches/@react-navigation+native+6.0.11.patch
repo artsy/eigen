@@ -1,0 +1,52 @@
+diff --git a/node_modules/@react-navigation/native/lib/commonjs/useLinking.native.js b/node_modules/@react-navigation/native/lib/commonjs/useLinking.native.js
+index 5267fd5..b9033df 100644
+--- a/node_modules/@react-navigation/native/lib/commonjs/useLinking.native.js
++++ b/node_modules/@react-navigation/native/lib/commonjs/useLinking.native.js
+@@ -32,6 +32,7 @@ function useLinking(ref, _ref) {
+     // Workaround for https://github.com/facebook/react-native/issues/25675
+     setTimeout(resolve, 150))]),
+     subscribe = listener => {
++      var _Linking$removeEventL;
+       const callback = _ref2 => {
+         let {
+           url
+@@ -39,14 +40,16 @@ function useLinking(ref, _ref) {
+         return listener(url);
+       };
+ 
+-      const subscription = _reactNative.Linking.addEventListener('url', callback);
++      const subscription = _reactNative.Linking.addEventListener('url', callback); // Storing this in a local variable stops Jest from complaining about import after teardown
+ 
++
++      const removeEventListener = (_Linking$removeEventL = _reactNative.Linking.removeEventListener) === null || _Linking$removeEventL === void 0 ? void 0 : _Linking$removeEventL.bind(_reactNative.Linking);
+       return () => {
+         // https://github.com/facebook/react-native/commit/6d1aca806cee86ad76de771ed3a1cc62982ebcd7
+         if (subscription !== null && subscription !== void 0 && subscription.remove) {
+           subscription.remove();
+         } else {
+-          _reactNative.Linking.removeEventListener('url', callback);
++          removeEventListener === null || removeEventListener === void 0 ? void 0 : removeEventListener('url', callback);
+         }
+       };
+     },
+diff --git a/node_modules/@react-navigation/native/src/useLinking.native.tsx b/node_modules/@react-navigation/native/src/useLinking.native.tsx
+index 1786e22..1e94c5f 100644
+--- a/node_modules/@react-navigation/native/src/useLinking.native.tsx
++++ b/node_modules/@react-navigation/native/src/useLinking.native.tsx
+@@ -42,12 +42,15 @@ export default function useLinking(
+         | { remove(): void }
+         | undefined;
+ 
++      // Storing this in a local variable stops Jest from complaining about import after teardown
++      const removeEventListener = Linking.removeEventListener?.bind(Linking);
++
+       return () => {
+         // https://github.com/facebook/react-native/commit/6d1aca806cee86ad76de771ed3a1cc62982ebcd7
+         if (subscription?.remove) {
+           subscription.remove();
+         } else {
+-          Linking.removeEventListener('url', callback);
++          removeEventListener?.('url', callback);
+         }
+       };
+     },
