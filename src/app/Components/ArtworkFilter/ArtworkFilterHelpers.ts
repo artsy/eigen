@@ -17,6 +17,7 @@ export enum FilterDisplayName {
   artistIDs = "Artists",
   artistNationalities = "Nationality & Ethnicity",
   artistsIFollow = "Artist",
+  artistSeriesIDs = "Artist Series",
   attributionClass = "Rarity",
   categories = "Medium",
   colors = "Color",
@@ -43,6 +44,7 @@ export enum FilterParamName {
   artistIDs = "artistIDs",
   artistNationalities = "artistNationalities",
   artistsIFollow = "includeArtworksByFollowedArtists",
+  artistSeriesIDs = "artistSeriesIDs",
   attributionClass = "attributionClass",
   categories = "categories",
   colors = "colors",
@@ -100,6 +102,7 @@ export const ParamDefaultValues = {
   allowEmptyCreatedDates: true,
   artistIDs: [],
   artistNationalities: [],
+  artistSeriesIDs: [],
   atAuction: false,
   attributionClass: [],
   categories: undefined,
@@ -134,6 +137,7 @@ export const defaultCommonFilterOptions = {
   allowEmptyCreatedDates: ParamDefaultValues.allowEmptyCreatedDates,
   artistIDs: ParamDefaultValues.artistIDs,
   artistNationalities: ParamDefaultValues.artistNationalities,
+  artistSeriesIDs: ParamDefaultValues.artistSeriesIDs,
   atAuction: ParamDefaultValues.atAuction,
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
@@ -171,6 +175,7 @@ export type Aggregations = Array<{
  */
 export type AggregationName =
   | "ARTIST_NATIONALITY"
+  | "ARTIST_SERIES"
   | "ARTIST"
   | "COLOR"
   | "DIMENSION_RANGE"
@@ -228,6 +233,7 @@ export const filterKeyFromAggregation: Record<
 > = {
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
+  ARTIST_SERIES: "artistSeriesIDs",
   COLOR: FilterParamName.colors,
   DIMENSION_RANGE: FilterParamName.sizes,
   earliestCreatedYear: "earliestCreatedYear",
@@ -359,6 +365,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   additionalGeneIDs: "MEDIUM",
   artistIDs: "ARTIST",
   artistNationalities: "ARTIST_NATIONALITY",
+  artistSeriesIDs: "ARTIST_SERIES",
   artistsIFollow: "FOLLOWED_ARTISTS",
   colors: "COLOR",
   earliestCreatedYear: "earliestCreatedYear",
@@ -438,6 +445,7 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "artistIDs",
     "artistNationalities",
     "artistSeriesID",
+    "artistSeriesIDs",
     "atAuction",
     "attributionClass",
     "before",

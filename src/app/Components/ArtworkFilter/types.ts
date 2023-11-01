@@ -4,6 +4,7 @@ export type FilterScreen =
   | "additionalGeneIDs"
   | "artistIDs"
   | "artistNationalities"
+  | "artistSeriesIDs"
   | "artistsIFollow"
   | "attributionClass"
   | "categories"
