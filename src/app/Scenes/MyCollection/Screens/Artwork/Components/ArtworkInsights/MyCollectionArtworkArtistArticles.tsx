@@ -87,7 +87,7 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
           slug
           name
           internalID
-          articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
+          articlesConnection(first: 3, sort: PUBLISHED_AT_DESC) {
             edges {
               node {
                 slug
