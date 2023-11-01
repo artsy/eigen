@@ -6,10 +6,15 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { ArtistSeriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/ArtistSeriesOptions.tsx"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { getEssentialProps } from "./helper"
 
 describe(ArtistSeriesOptionsScreen, () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistSeriesFilter: true })
+  })
+
   const initialState: ArtworkFiltersState = {
     aggregations: [
       {
