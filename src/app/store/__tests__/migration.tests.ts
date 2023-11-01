@@ -930,4 +930,27 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       ],
     })
   })
+
+  describe("App version Versions.AddProgressiveOnboardingIsReady", () => {
+    const migrationToTest = Versions.AddProgressiveOnboardingIsReady
+
+    it("adds isReady to ProgressiveOnboarding and deletes isFirstSession from auth", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+      previousState.auth.isFirstSession = true
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.progressiveOnboarding).toEqual({
+        dismissed: [],
+        isReady: false,
+      })
+      expect(migratedState.auth).not.toHaveProperty("isFirstSession")
+    })
+  })
 })

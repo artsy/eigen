@@ -17,6 +17,12 @@ jest.mock("app/Scenes/Home/Components/FairsRail", () => ({
 jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
+jest.mock("app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding", () => ({
+  useEnableProgressiveOnboarding: () => {},
+}))
+jest.mock("app/Components/ProgressiveOnboarding/useDismissSavedArtwork", () => ({
+  useDismissSavedArtwork: () => {},
+}))
 
 const mockEnvironment = getMockRelayEnvironment()
 

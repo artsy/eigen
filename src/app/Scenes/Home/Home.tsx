@@ -29,6 +29,7 @@ import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/Art
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
 import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
@@ -129,6 +130,7 @@ const Home = memo((props: HomeProps) => {
   useDismissSavedArtwork(
     props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
   )
+  useEnableProgressiveOnboarding()
   const viewedRails = useRef<Set<string>>(new Set()).current
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())

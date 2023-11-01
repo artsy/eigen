@@ -41,6 +41,11 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
   })
 
   it("dismisses the save-artwork popover from store", () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        isReady: true,
+      },
+    })
     renderWithRelay({ MeCounts: () => ({ savedArtworks: 0 }) })
 
     expect(screen.getByText("Test Children")).toBeOnTheScreen()
@@ -54,6 +59,14 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
     expect(__globalStoreTestUtils__?.getLastAction().type).toContain(
       "progressiveOnboarding.dismiss"
     )
+  })
+
+  it("does not show the popover given isReady false", () => {
+    __globalStoreTestUtils__?.injectState({ progressiveOnboarding: { isReady: false } })
+
+    renderWithRelay({ MeCounts: () => ({ savedArtworks: 1 }) })
+    expect(screen.getByText("Test Children")).toBeOnTheScreen()
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })
 
