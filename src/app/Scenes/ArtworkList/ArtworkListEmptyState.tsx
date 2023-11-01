@@ -7,14 +7,14 @@ import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
-  me: ArtworkListEmptyState_me$key
+  me: ArtworkListEmptyState_me$key | null
   refreshControl: JSX.Element
 }
 
 export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptyStateProps) => {
   const data = useFragment(artworkListEmptyStateFragment, me)
 
-  const artworkList = data.artworkList!
+  const artworkList = data?.artworkList
   const isDefaultArtworkList = artworkList?.default ?? false
   const text = getText(isDefaultArtworkList)
 
@@ -23,7 +23,7 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
       <ArtworkListHeader me={data} />
 
       <ScrollView style={{ flex: 1 }} refreshControl={refreshControl}>
-        <ArtworkListTitle title={artworkList.name} />
+        <ArtworkListTitle title={artworkList?.name ?? ""} />
 
         <Separator borderColor="black10" mt={1} />
 

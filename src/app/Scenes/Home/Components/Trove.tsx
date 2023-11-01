@@ -19,13 +19,16 @@ const Trove: React.FC<TroveProps> = ({ trove, mb }) => {
   }
 
   const handleOnPress = () => {
-    const path = troveUnit!.href!
+    const path = troveUnit?.href
+    if (!path) {
+      return
+    }
     navigate(path)
   }
 
   return (
     <Flex mb={mb}>
-      <HeroUnit unit={troveUnit!} onPress={handleOnPress} isTrove />
+      <HeroUnit unit={troveUnit} onPress={handleOnPress} isTrove />
     </Flex>
   )
 }

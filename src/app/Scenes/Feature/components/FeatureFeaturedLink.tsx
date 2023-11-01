@@ -17,13 +17,12 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
     <Flex style={{ width }}>
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={
-          featuredLink.href
-            ? () => {
-                navigate(featuredLink.href!)
-              }
-            : undefined
-        }
+        onPress={() => {
+          if (!featuredLink.href) {
+            return
+          }
+          navigate(featuredLink.href)
+        }}
       >
         <OpaqueImageView
           imageURL={featuredLink.image?.url}
