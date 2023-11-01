@@ -116,24 +116,8 @@ static ARAppDelegate *_sharedInstance = nil;
     // You can add your custom initial props in the dictionary below.
     // They will be passed down to the ViewController used by React Native.
 
-    NSDictionary *initProps =  @{}
+    NSDictionary *initProps = @{};
     self.initialProps = initProps;
-
-
-    NSDictionary *initProps = [self prepareInitialProps];
-    UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"eigen", initProps);
-
-    if (@available(iOS 13.0, *)) {
-        rootView.backgroundColor = [UIColor systemBackgroundColor];
-    } else {
-        rootView.backgroundColor = [UIColor whiteColor];
-    }
-
-    self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIViewController *rootViewController = [UIViewController new];
-    rootViewController.view = rootView;
-    self.window.rootViewController = rootViewController;
-    [self.window makeKeyAndVisible];
 
     // prevent dark mode
     self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
