@@ -44,7 +44,6 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
       />
       <FlatList
         data={auctionResultsData}
-        listKey="artist-auction-results"
         nestedScrollEnabled={false}
         scrollEnabled={false}
         renderItem={({ item, index }) => (

@@ -39,13 +39,14 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
         title={`Auction Results for ${artwork?.artist?.name}`}
         onPress={() => {
           trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork?.slug))
-          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
+          if (artwork?.artist?.slug) {
+            navigate(`/artist/${artwork.artist.slug}/auction-results`)
+          }
         }}
       />
 
       <FlatList
         data={auctionResults}
-        listKey="artist-auction-results"
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <>
@@ -53,7 +54,9 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
               auctionResult={item}
               onPress={() => {
                 trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+                if (artist?.slug) {
+                  navigate(`/artist/${artist.slug}/auction-result/${item.internalID}`)
+                }
               }}
             />
           </>
