@@ -48,7 +48,7 @@ export enum FilterModalMode {
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
-  const eableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
+  const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -104,7 +104,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter((filterOption) => filterOption.filterType)
     // Filter out the Artist Series filter if the feature flag is disabled
     .filter(
-      (filterOption) => eableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs"
+      (filterOption) => enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs"
     )
 
   const clearAllFilters = () => {
