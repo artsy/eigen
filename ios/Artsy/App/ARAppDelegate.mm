@@ -113,9 +113,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [emission setBridge:bridge];
 
     self.moduleName = @"eigen";
+
     // You can add your custom initial props in the dictionary below.
     // They will be passed down to the ViewController used by React Native.
-
     NSDictionary *initProps = @{};
     self.initialProps = initProps;
 
