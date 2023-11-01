@@ -26,12 +26,17 @@ export const ProvidePlaceholderContext: React.FC = ({ children }) => (
 /**
  * @deprecated use `SkeletonBox` from palette-mobile instead instead
  */
-export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
+export const PlaceholderBox: React.FC<ViewStyle & { testID?: string }> = ({
+  children,
+  testID,
+  ...styles
+}) => {
   const color = useColor()
   const animatedStyle = useSkeletonAnimation({})
 
   return (
     <Animated.View
+      testID={testID}
       style={[{ borderRadius: 2, backgroundColor: color("black10") }, animatedStyle, styles]}
     >
       {children}
