@@ -4713,13 +4713,13 @@
     "@babel/runtime" "^7.12.5"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@12.3.0":
-  version "12.3.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.3.0.tgz#ebf04dddb7e1c34c869b97b187ecd061211c9466"
-  integrity sha512-E2Prl8D/ey9sRgzLyfCPPmqvsevJW5tVUy4E/pBbO7nOP6OzI/jn2P3vctn/kFdkPY2aE/udlU5ZeNAben9U2A==
+"@testing-library/react-native@12.3.2":
+  version "12.3.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.3.2.tgz#008ff0408bd51346d482688b18ee34bf72f32e09"
+  integrity sha512-S8ggbK5A8leTMp9ETiAMjUCMVdy7SHFH7566TLsF06sHEDqOB05ohQU28Qv0EQY6jr8P73qmQXUpWlPwnhJOUQ==
   dependencies:
-    jest-matcher-utils "^29.6.2"
-    pretty-format "^29.6.2"
+    jest-matcher-utils "^29.7.0"
+    pretty-format "^29.7.0"
     redent "^3.0.0"
 
 "@tootallnate/once@1":
@@ -11160,7 +11160,7 @@ jest-matcher-utils@^29.3.1:
     jest-get-type "^29.2.0"
     pretty-format "^29.3.1"
 
-jest-matcher-utils@^29.6.2:
+jest-matcher-utils@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-29.7.0.tgz#ae8fec79ff249fd592ce80e3ee474e83a6c44f12"
   integrity sha512-sBkD+Xi9DtcChsI3L3u0+N0opgPYnCRPtGcQYrgXmR+hmt/fYfWAL0xRXYU8eWOdfuLgBe0YCW3AFtnRLagq/g==
@@ -13945,7 +13945,7 @@ pretty-format@^29.3.1:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-pretty-format@^29.6.2, pretty-format@^29.7.0:
+pretty-format@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-29.7.0.tgz#ca42c758310f365bfa71a0bda0a807160b776812"
   integrity sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==
