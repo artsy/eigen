@@ -1,7 +1,6 @@
-import { Input } from "app/Components/Input"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { ForgotPasswordForm } from "./ForgotPassword"
 
 const navigationPropsMock = {
@@ -38,22 +37,32 @@ describe("ForgotPassword", () => {
     )
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it("renders reset button disabled initially", () => {
-    const tree = renderWithWrappersLEGACY(<TestProvider />)
-    const resetButton = tree.root.findByProps({ testID: "resetButton" })
-    expect(resetButton.props.disabled).toEqual(true)
+    renderWithHookWrappersTL(<TestProvider />)
+
+    expect(screen.getByTestId("resetButton").props.accessibilityState.disabled).toEqual(true)
   })
 
   it("validates form on blur", () => {
-    const tree = renderWithWrappersLEGACY(<TestProvider />)
+    renderWithHookWrappersTL(<TestProvider />)
 
-    const emailInput = tree.root.findByType(Input)
+    const emailInput = screen.getByTestId("email-address")
 
-    act(() => {
-      emailInput.props.onChangeText("example@mail.com")
-      emailInput.props.onBlur()
-    })
+    fireEvent.changeText(emailInput, "example@mail.com")
+    fireEvent(emailInput, "blur")
 
     expect(mockValidateForm).toHaveBeenCalled()
+  })
+
+  it("does not submit when onSubmitEditing if the form is not dirty", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent(screen.getByTestId("email-address"), "submitEditing")
+
+    expect(mockValidateForm).not.toHaveBeenCalled()
   })
 })
