@@ -60,7 +60,11 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 onChangeText={(text) => {
                   handleChange("email")(text.trim())
                 }}
-                onSubmitEditing={handleSubmit}
+                onSubmitEditing={() => {
+                  if (dirty) {
+                    handleSubmit()
+                  }
+                }}
                 onBlur={() => {
                   validateForm()
                 }}
@@ -72,6 +76,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 spellCheck={false}
                 autoCorrect={false}
                 textContentType="emailAddress"
+                testID="email-address"
               />
             )}
           </Flex>
