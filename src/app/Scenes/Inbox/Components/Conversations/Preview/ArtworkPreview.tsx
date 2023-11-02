@@ -1,9 +1,12 @@
 import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
+import {
+  ArtworkPreview_artwork$data,
+  ArtworkPreview_artwork$key,
+} from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema } from "app/utils/track"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
@@ -37,23 +40,24 @@ const TitleAndDate = styled.View`
   justify-content: flex-start;
 `
 export interface ArtworkPreviewProps {
-  artwork: ArtworkPreview_artwork$data
+  artwork: ArtworkPreview_artwork$key
   onSelected?: () => void
 }
 
 export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelected }) => {
-  const { image: artworkImage } = artwork
+  const artworkData = useFragment(ArtworkPreviewFragment, artwork)
+
+  const { image: artworkImage } = artworkData
   const color = useColor()
   const { trackEvent } = useTracking()
 
   const attachmentSelected = () => {
     if (!onSelected) {
-      console.log("Hello world NOPE NOPE NOPE")
       return
     }
+
     onSelected()
-    trackEvent(tracks.tapAttachmentSelected(artwork))
-    console.log("Hello world YEP YEP YEP")
+    trackEvent(tracks.tapAttachmentSelected(artworkData))
   }
 
   return (
@@ -66,12 +70,12 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
         )}
         <TextContainer>
           <Text variant="sm" color="white100">
-            {artwork.artistNames}
+            {artworkData.artistNames}
           </Text>
           <TitleAndDate>
             {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
             <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
-              {`${artwork.title} / ${artwork.date}`}
+              {`${artworkData.title} / ${artworkData.date}`}
             </Text>
           </TitleAndDate>
         </TextContainer>
@@ -80,24 +84,22 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
   )
 }
 
-export default createFragmentContainer(ArtworkPreview, {
-  artwork: graphql`
-    fragment ArtworkPreview_artwork on Artwork {
-      slug
-      internalID
-      title
-      artistNames
-      date
-      image {
-        url
-        aspectRatio
-      }
+const ArtworkPreviewFragment = graphql`
+  fragment ArtworkPreview_artwork on Artwork {
+    slug
+    internalID
+    title
+    artistNames
+    date
+    image {
+      url
+      aspectRatio
     }
-  `,
-})
+  }
+`
 
 const tracks = {
-  tapAttachmentSelected: (artwork: ArtworkPreviewProps["artwork"]) => ({
+  tapAttachmentSelected: (artwork: ArtworkPreview_artwork$data) => ({
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,
     action_type: Schema.ActionTypes.Tap,
     owner_id: artwork.internalID,
