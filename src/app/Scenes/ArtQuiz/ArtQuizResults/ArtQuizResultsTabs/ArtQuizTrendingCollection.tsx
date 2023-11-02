@@ -42,10 +42,9 @@ export const ArtQuizTrendingCollection = ({
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
-          if (!artwork?.href) {
-            return
+          if (artwork?.href) {
+            navigate(artwork.href)
           }
-          navigate(artwork.href)
         }}
       />
     </Flex>

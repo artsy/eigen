@@ -74,10 +74,9 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
         <Join separator={<Spacer y={4} />}>
           <Touchable
             onPress={() => {
-              if (!heroArticle?.href) {
-                return
+              if (heroArticle?.href) {
+                navigate(heroArticle.href)
               }
-              navigate(heroArticle.href)
             }}
           >
             <Box position="relative">
@@ -115,8 +114,9 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
               return (
                 <Touchable
                   onPress={() => {
-                    if (!article?.href) return
-                    navigate(article?.href)
+                    if (article?.href) {
+                      navigate(article.href)
+                    }
                   }}
                 >
                   <OpaqueImageView

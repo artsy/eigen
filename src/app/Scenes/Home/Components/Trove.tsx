@@ -20,10 +20,9 @@ const Trove: React.FC<TroveProps> = ({ trove, mb }) => {
 
   const handleOnPress = () => {
     const path = troveUnit?.href
-    if (!path) {
-      return
+    if (path) {
+      navigate(path)
     }
-    navigate(path)
   }
 
   return (

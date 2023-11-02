@@ -55,10 +55,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         ) : (
           <TouchableOpacity
             onPress={() => {
-              if (!artwork?.artist?.href) {
-                return
+              if (artwork?.artist?.href) {
+                navigate(artwork.artist.href)
               }
-              navigate(artwork.artist.href)
             }}
           >
             <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>

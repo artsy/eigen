@@ -55,11 +55,10 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
         onEndReached={loadMore}
         renderItem={({ item, index }) => {
           const onPress = () => {
-            if (!item.href) {
-              return
+            if (item.href) {
+              navigate(item.href)
+              tracking.trackEvent(tracks.tappedArtistGroup(item.internalID, item.slug, index))
             }
-            navigate(item.href)
-            tracking.trackEvent(tracks.tappedArtistGroup(item.internalID, item.slug, index))
           }
 
           if (useLargeSizeCard) {

@@ -18,10 +18,9 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => {
-          if (!featuredLink.href) {
-            return
+          if (featuredLink.href) {
+            navigate(featuredLink.href)
           }
-          navigate(featuredLink.href)
         }}
       >
         <OpaqueImageView
