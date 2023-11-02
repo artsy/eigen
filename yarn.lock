@@ -3940,10 +3940,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.0.6.tgz#e2c83c242f917ce5a494cedb161c37abd5f2a72a"
   integrity sha512-+iidKFgw1HxCJSHVnlywAKu6uerdpDAKTXLRnlsUdhgqtgTiIixb496Z267iPVFmIO1bp4lOU6UiwzmvcyXdbg==
 
-"@react-native-community/netinfo@9.3.7":
-  version "9.3.7"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.7.tgz#92407f679f00bae005c785a9284e61d63e292b34"
-  integrity sha512-+taWmE5WpBp0uS6kf+bouCx/sn89G9EpR4s2M/ReLvctVIFL2Qh8WnWfBxqK9qwgmFha/uqjSr2Gq03OOtiDcw==
+"@react-native-community/netinfo@9.3.11":
+  version "9.3.11"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.11.tgz#3e449612def3d33873a93bcdd4204b73e71573b5"
+  integrity sha512-zy47SjKuZVOlR+43rOVsD1BMLaHpeiICDye89YWUQKprFkI2AbnL0WrY/ezxL+n9nvoDJ2UTMpCUQe3tVu/ojQ==
 
 "@react-native-community/slider@4.2.1":
   version "4.2.1"
