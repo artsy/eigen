@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import * as LocalImageStore from "app/utils/LocalImageStore"
@@ -148,7 +148,7 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   describe("Images", () => {
-    it("displays local image if available", async () => {
+    it("displays local image if available", () => {
       const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
       const localImage: LocalImage = {
         path: "some-local-path",
@@ -157,9 +157,9 @@ describe("MyCollectionArtworkListItem", () => {
       }
 
       localImageStoreMock.mockImplementation(async () => localImage)
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      waitFor(() => {
+      act(async () => {
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
         const image = getByTestId("Image-Local")
         expect(image).toBeDefined()
         expect(image.props.source).toEqual({ uri: "some-local-path" })

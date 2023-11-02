@@ -7,8 +7,6 @@ import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
 interface Props {
-  testID?: string
-
   /** The URL from where to fetch the image. */
   imageURL?: string | null
 
