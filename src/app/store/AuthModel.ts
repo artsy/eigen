@@ -178,7 +178,6 @@ export interface AuthPromiseRejectType {
 type SessionState = {
   isLoading: boolean
   isUserIdentified: boolean
-  isFirstSession: boolean
 }
 
 export interface AuthModel {
@@ -265,7 +264,6 @@ export const getAuthModel = (): AuthModel => ({
   sessionState: {
     isLoading: false,
     isUserIdentified: false,
-    isFirstSession: false,
   },
   userID: null,
   userAccessToken: null,
@@ -480,10 +478,6 @@ export const getAuthModel = (): AuthModel => ({
     // The user account has been successfully created
     if (result.status === 201) {
       postEventToProviders(tracks.createdAccount({ signUpMethod: oauthProvider }))
-
-      actions.setSessionState({
-        isFirstSession: true,
-      })
 
       switch (oauthProvider) {
         case "facebook":

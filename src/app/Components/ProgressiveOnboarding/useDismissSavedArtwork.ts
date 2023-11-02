@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native"
 import { useOnSaveArtwork } from "app/Components/ProgressiveOnboarding/useOnSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
@@ -6,12 +7,16 @@ import { useEffect } from "react"
 export const useDismissSavedArtwork = (saved?: boolean | null) => {
   const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const {
+    isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const isFocused = useIsFocused()
 
   const dismissed = isDismissed("save-artwork").status
 
   useEffect(() => {
-    if (!saved || dismissed) {
+    if (!saved || dismissed || !isReady || !isFocused) {
       return
     }
 
@@ -20,5 +25,5 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
       dismiss("save-artwork")
       setProfileTabSavedArtwork()
     }
-  }, [saved, dismissed, dismiss, setProfileTabSavedArtwork])
+  }, [saved, dismissed, dismiss, setProfileTabSavedArtwork, isReady, isFocused])
 }
