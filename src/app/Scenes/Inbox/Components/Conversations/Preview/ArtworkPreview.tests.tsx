@@ -31,7 +31,7 @@ describe("concerning selection handling", () => {
     )
 
     expect(screen.queryByText("Karl and Anna Face Off (Diptych) / 2016")).toBeTruthy()
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+    fireEvent.press(screen.getByText("Karl and Anna Face Off (Diptych) / 2016"))
 
     expect(onSelected).toHaveBeenCalledTimes(1)
   })

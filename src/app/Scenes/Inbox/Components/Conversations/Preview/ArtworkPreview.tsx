@@ -1,10 +1,10 @@
-import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Schema, Track, track as _track } from "app/utils/track"
-import React from "react"
+import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 const Container = styled.View`
@@ -41,62 +41,43 @@ export interface ArtworkPreviewProps {
   onSelected?: () => void
 }
 
-const track: Track<ArtworkPreviewProps> = _track
+export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelected }) => {
+  const { image: artworkImage } = artwork
+  const color = useColor()
+  const { trackEvent } = useTracking()
 
-@track()
-export class ArtworkPreview extends React.Component<ArtworkPreviewProps> {
-  @track((props) => ({
-    action_type: Schema.ActionTypes.Tap,
-    action_name: Schema.ActionNames.ConversationAttachmentArtwork,
-    owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.slug,
-  }))
-  attachmentSelected() {
-    this.props.onSelected?.()
+  const attachmentSelected = () => {
+    if (!onSelected) {
+      console.log("Hello world NOPE NOPE NOPE")
+      return
+    }
+    onSelected()
+    trackEvent(tracks.tapAttachmentSelected(artwork))
+    console.log("Hello world YEP YEP YEP")
   }
 
-  render() {
-    const artwork = this.props.artwork
-    const artworkImage = artwork.image
-
-    return (
-      <ClassTheme>
-        {({ color }) => (
-          <Touchable
-            underlayColor={color("black10")}
-            onPress={() => {
-              if (!!this.props.onSelected) {
-                this.attachmentSelected.bind(this)
-              }
-            }}
-          >
-            <Container>
-              {!!artworkImage && (
-                <ImageContainer>
-                  <OpaqueImageView
-                    aspectRatio={artworkImage.aspectRatio}
-                    imageURL={artworkImage.url}
-                  />
-                </ImageContainer>
-              )}
-              <TextContainer>
-                <Text variant="sm" color="white100">
-                  {artwork.artistNames}
-                </Text>
-                <TitleAndDate>
-                  {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-                  <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
-                    {`${artwork.title} / ${artwork.date}`}
-                  </Text>
-                </TitleAndDate>
-              </TextContainer>
-            </Container>
-          </Touchable>
+  return (
+    <Touchable underlayColor={color("black10")} onPress={attachmentSelected}>
+      <Container>
+        {!!artworkImage && (
+          <ImageContainer>
+            <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+          </ImageContainer>
         )}
-      </ClassTheme>
-    )
-  }
+        <TextContainer>
+          <Text variant="sm" color="white100">
+            {artwork.artistNames}
+          </Text>
+          <TitleAndDate>
+            {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
+            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+              {`${artwork.title} / ${artwork.date}`}
+            </Text>
+          </TitleAndDate>
+        </TextContainer>
+      </Container>
+    </Touchable>
+  )
 }
 
 export default createFragmentContainer(ArtworkPreview, {
@@ -114,3 +95,13 @@ export default createFragmentContainer(ArtworkPreview, {
     }
   `,
 })
+
+const tracks = {
+  tapAttachmentSelected: (artwork: ArtworkPreviewProps["artwork"]) => ({
+    action_name: Schema.ActionNames.ConversationAttachmentArtwork,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: artwork.internalID,
+    owner_slug: artwork.slug,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+  }),
+}
