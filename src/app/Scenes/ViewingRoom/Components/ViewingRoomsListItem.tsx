@@ -1,17 +1,17 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import { CardTagProps, SmallCard } from "app/Components/Cards"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const tagForStatus = (
   status: string,
-  distanceToOpen: string | null,
-  distanceToClose: string | null
+  distanceToOpen: string | null | undefined,
+  distanceToClose: string | null | undefined
 ): CardTagProps | undefined => {
   switch (status) {
     case "closed":

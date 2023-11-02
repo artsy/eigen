@@ -4,13 +4,20 @@ export type ShareSheetArtworkItem = {
   type: "artwork"
   slug: string
   currentImageIndex?: number
-  artists?: ReadonlyArray<{
-    readonly name: string | null
-  } | null> | null
+  artists?:
+    | ReadonlyArray<
+        | {
+            readonly name: string | null | undefined
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined
   internalID: string
   images: ReadonlyArray<{
     readonly __typename: "Image"
-    readonly imageURL: string | null
+    readonly imageURL: string | null | undefined
   }>
   title: string
   href: string
@@ -21,9 +28,16 @@ export type ShareSheetArtistItem = {
   title: string
   internalID: string
   slug: string
-  artists?: ReadonlyArray<{
-    readonly name: string | null
-  } | null> | null
+  artists?:
+    | ReadonlyArray<
+        | {
+            readonly name: string | null | undefined
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined
   href: string
   currentImageUrl?: string
 }
@@ -34,7 +48,14 @@ export type ShareSheetSaleItem = {
   internalID: string
   href: string
   title: string
-  artists: ReadonlyArray<{
-    readonly name: string | null
-  } | null> | null
+  artists:
+    | ReadonlyArray<
+        | {
+            readonly name: string | null | undefined
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined
 }

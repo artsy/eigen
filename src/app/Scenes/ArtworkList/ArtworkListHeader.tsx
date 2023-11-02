@@ -8,7 +8,7 @@ import { graphql, useFragment } from "react-relay"
 import { HeaderMenuArtworkListEntity } from "./types"
 
 export interface ArtworkListHeaderProps {
-  me: ArtworkListHeader_me$key | null
+  me: ArtworkListHeader_me$key | null | undefined
 }
 
 export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {

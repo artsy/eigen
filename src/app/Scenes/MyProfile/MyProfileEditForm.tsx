@@ -49,7 +49,7 @@ interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
-  location: EditableLocationProps | null
+  location: Partial<EditableLocationProps> | null | undefined
   profession: string
   otherRelevantPositions: string
   bio: string
@@ -143,7 +143,10 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
       initialValues: {
         name: me?.name ?? "",
         displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
-        location: me?.location ?? null,
+        location:
+          {
+            ...me?.location,
+          } ?? undefined,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",

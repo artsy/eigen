@@ -18,9 +18,12 @@ export interface masonryRenderItemProps {
 
 export interface MasonryArtworkItem {
   readonly id: string
-  readonly image: {
-    readonly aspectRatio: number
-  } | null
+  readonly image:
+    | {
+        readonly aspectRatio: number
+      }
+    | null
+    | undefined
   readonly slug: string
   readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">
 }

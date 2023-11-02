@@ -167,9 +167,7 @@ export const FavoriteShowsQueryRenderer = () => {
           }
         }
       `}
-      variables={{
-        count: 10,
-      }}
+      variables={{}}
       render={renderWithLoadProgress(FavoriteShowsContainer)}
     />
   )

@@ -34,9 +34,9 @@ interface Props {
 }
 
 export const formatTombstoneText = (
-  nationality: string | null,
-  birthday: string | null,
-  deathday: string | null
+  nationality: string | null | undefined,
+  birthday: string | null | undefined,
+  deathday: string | null | undefined
 ) => {
   if (nationality && birthday && deathday) {
     return nationality.trim() + ", " + birthday + "-" + deathday
@@ -177,7 +177,7 @@ export const followArtistMutation = ({
   onCompleted: () => void
   artistID: string
   artistSlug: string
-  isFollowed: boolean | null
+  isFollowed: boolean | null | undefined
 }) =>
   commitMutation<ArtistListItemFollowArtistMutation>(environment, {
     onCompleted,

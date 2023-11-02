@@ -13,7 +13,7 @@ import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkArticlesProps {
   articles: MyCollectionArtworkArticles_article$key
-  artistNames: string | null
+  artistNames: string | null | undefined
   artistSlug: string | undefined
   totalCount: number | null | undefined
 }

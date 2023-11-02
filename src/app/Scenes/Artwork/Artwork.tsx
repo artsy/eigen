@@ -62,9 +62,9 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
-  artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
-  artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null
-  me: Artwork_me$data | null
+  artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null | undefined
+  artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
+  me: Artwork_me$data | null | undefined
   isVisible: boolean
   onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp

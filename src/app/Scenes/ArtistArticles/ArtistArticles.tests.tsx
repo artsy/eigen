@@ -22,7 +22,7 @@ describe("Artist Articles", () => {
           }
         }
       `}
-      variables={{ artistID: "banksy" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artist) {
           return <ArtistArticlesContainer artist={props?.artist} />

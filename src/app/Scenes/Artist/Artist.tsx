@@ -89,7 +89,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       type: "artist",
       internalID: artistAboveTheFold.internalID,
       slug: artistAboveTheFold.slug,
-      artists: [{ name: artistAboveTheFold.name }],
+      artists: [{ name: artistAboveTheFold.name ?? null }],
       title: artistAboveTheFold.name!,
       href: artistAboveTheFold.href!,
       currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,

@@ -20,10 +20,13 @@ const MapWrapper = styled(Flex)`
 
 interface Props {
   location: LocationMap_location$data
-  partnerName: string | null
+  partnerName: string | null | undefined
 }
 
-export const cityAndPostalCode = (city: string | null, postalCode: string | null) => {
+export const cityAndPostalCode = (
+  city: string | null | undefined,
+  postalCode: string | null | undefined
+) => {
   if (city && postalCode) {
     return city + ", " + postalCode
   } else if (city) {
@@ -42,11 +45,11 @@ enum MapServiceURLType {
 
 const mapLinkForService = (
   urlType: MapServiceURLType,
-  lat: number | null,
-  lng: number | null,
-  addressOrName: string | null,
-  partnerName: string | null,
-  address: string | null,
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  addressOrName: string | null | undefined,
+  partnerName: string | null | undefined,
+  address: string | null | undefined,
   suffix: string | null
 ) => {
   switch (urlType) {
@@ -66,13 +69,13 @@ const mapLinkForService = (
 }
 
 export const tappedOnMap = (
-  lat: number | null,
-  lng: number | null,
-  address: string | null,
-  summary: string | null,
-  partnerName: string | null,
-  city: string | null,
-  postalCode: string | null
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  address: string | null | undefined,
+  summary: string | null | undefined,
+  partnerName: string | null | undefined,
+  city: string | null | undefined,
+  postalCode: string | null | undefined
 ): Parameters<ReturnType<typeof useActionSheet>["showActionSheetWithOptions"]> => {
   // Fairs only have a "summary", so we need to
   // be quite conservative about what parts of the address we

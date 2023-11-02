@@ -2,8 +2,8 @@ import { Text, TextProps } from "@artsy/palette-mobile"
 import { useEventTiming } from "app/utils/useEventTiming"
 
 interface Props extends TextProps {
-  startAt: string | null
-  endAt: string | null
+  startAt: string | null | undefined
+  endAt: string | null | undefined
   currentTime: string
 }
 

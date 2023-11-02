@@ -9,7 +9,7 @@ import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
-  marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
+  marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null | undefined
   renderWithoutScrollView?: boolean
 }
 

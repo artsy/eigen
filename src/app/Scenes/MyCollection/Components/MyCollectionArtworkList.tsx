@@ -9,7 +9,7 @@ import { RelayPaginationProp, useFragment, graphql } from "react-relay"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC<{
-  myCollectionConnection: MyCollectionArtworkList_myCollectionConnection$key | null
+  myCollectionConnection: MyCollectionArtworkList_myCollectionConnection$key | null | undefined
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]

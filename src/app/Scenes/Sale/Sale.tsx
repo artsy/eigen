@@ -107,7 +107,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   // poll every .5 seconds to check if sale has gone live
   useInterval(() => {
-    if (sale.liveStartAt === null) {
+    if (!sale.liveStartAt) {
       setIsLive(false)
       return
     }
@@ -117,7 +117,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         setIsLive(true)
         return
       }
-      if (now < DateTime.fromISO(sale.endAt)) {
+      if (sale.endAt && now < DateTime.fromISO(sale.endAt)) {
         setIsLive(true)
         return
       }

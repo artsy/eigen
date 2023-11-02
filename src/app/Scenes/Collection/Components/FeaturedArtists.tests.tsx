@@ -112,7 +112,7 @@ describe("FeaturedArtists", () => {
     return (
       <QueryRenderer<FeaturedArtistsTestsQuery>
         environment={env}
-        variables={{ id: "artworkID" }}
+        variables={{}}
         render={({ props, error }) => {
           if (props) {
             return <FeaturedArtists collection={props.marketingCollection!} />

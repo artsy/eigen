@@ -4,7 +4,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 export const IMAGE_SIZE = 40
 
 export const SearchResultImage: React.FC<{
-  imageURL: string | null
+  imageURL: string | null | undefined
   resultType: string
   initials?: string | null
   testID?: string

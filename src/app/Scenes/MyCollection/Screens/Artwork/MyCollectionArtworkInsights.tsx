@@ -12,8 +12,8 @@ import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
-  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null
-  me: MyCollectionArtworkInsights_me$key | null
+  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null | undefined
+  me: MyCollectionArtworkInsights_me$key | null | undefined
 }
 
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({

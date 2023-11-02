@@ -18,10 +18,10 @@ const PartnerMap: React.FC<{
 }> = ({ location }) => {
   const { address, address2, city, postalCode, internalID } = location
   let { lat, lng } = location.coordinates ?? { lat: null, lng: null }
-  if (lat === null) {
+  if (lat === null || lat === undefined) {
     lat = 0
   }
-  if (lng === null) {
+  if (lng === null || lng === undefined) {
     lng = 0
   }
 

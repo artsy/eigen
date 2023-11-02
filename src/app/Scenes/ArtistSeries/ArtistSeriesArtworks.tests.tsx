@@ -26,7 +26,7 @@ describe("Artist Series Artworks", () => {
           }
         }
       `}
-      variables={{ artistSeriesID: "pumpkins" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artistSeries) {
           return (

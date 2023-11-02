@@ -169,7 +169,7 @@ export const FavoriteArtistsQueryRenderer = () => {
           }
         }
       `}
-      variables={{ count: 10 }}
+      variables={{}}
       render={renderWithLoadProgress(FavoriteArtistsContainer)}
     />
   )

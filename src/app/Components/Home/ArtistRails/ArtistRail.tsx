@@ -131,7 +131,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
                 onPress={() => {
                   trackEvent(
                     HomeAnalytics.artistThumbnailTapEvent(
-                      props.rail.key,
+                      props.rail.key!,
                       artist.internalID,
                       artist.slug,
                       index

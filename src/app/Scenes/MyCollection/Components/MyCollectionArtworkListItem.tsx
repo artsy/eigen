@@ -15,7 +15,7 @@ import { useTracking } from "react-tracking"
 export const ARTWORK_LIST_IMAGE_SIZE = 80
 
 const ListItemImageView: React.FC<{
-  image?: MyCollectionArtworkListItem_artwork$data["image"] | null
+  image?: MyCollectionArtworkListItem_artwork$data["image"] | null | undefined
 }> = ({ image }) => {
   const localImage = useLocalImage(image, "small")
   // The order of image is important as local images are used before Gemini processed images are ready

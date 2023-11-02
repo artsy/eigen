@@ -19,38 +19,40 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
   const bidCount = lotStanding?.saleArtwork?.counts?.bidderPositions
   const { saleArtwork } = lotStanding
 
+  if (!saleArtwork) {
+    return null
+  }
+
   return (
-    saleArtwork && (
-      <TouchableOpacity
-        onPress={() =>
-          lotStanding?.saleArtwork?.artwork?.href && navigate(lotStanding.saleArtwork.artwork.href)
-        }
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          <LotFragmentContainer saleArtwork={saleArtwork} />
-          <Flex>
-            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-              <Text variant="xs">{sellingPrice}</Text>
-              <Text variant="xs" color="black60">
-                {" "}
-                ({bidCount} {bidCount === 1 ? "bid" : "bids"})
-              </Text>
-            </Flex>
-            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-              {!isLAI &&
-              lotStanding?.activeBid?.isWinning &&
-              lotStanding?.saleArtwork?.reserveStatus === "ReserveNotMet" ? (
-                <ReserveNotMet />
-              ) : lotStanding?.activeBid?.isWinning ? (
-                <HighestBid />
-              ) : (
-                <Outbid />
-              )}
-            </Flex>
+    <TouchableOpacity
+      onPress={() =>
+        lotStanding?.saleArtwork?.artwork?.href && navigate(lotStanding.saleArtwork.artwork.href)
+      }
+    >
+      <Flex flexDirection="row" justifyContent="space-between">
+        <LotFragmentContainer saleArtwork={saleArtwork} />
+        <Flex>
+          <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+            <Text variant="xs">{sellingPrice}</Text>
+            <Text variant="xs" color="black60">
+              {" "}
+              ({bidCount} {bidCount === 1 ? "bid" : "bids"})
+            </Text>
+          </Flex>
+          <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+            {!isLAI &&
+            lotStanding?.activeBid?.isWinning &&
+            lotStanding?.saleArtwork?.reserveStatus === "ReserveNotMet" ? (
+              <ReserveNotMet />
+            ) : lotStanding?.activeBid?.isWinning ? (
+              <HighestBid />
+            ) : (
+              <Outbid />
+            )}
           </Flex>
         </Flex>
-      </TouchableOpacity>
-    )
+      </Flex>
+    </TouchableOpacity>
   )
 }
 

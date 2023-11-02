@@ -17,7 +17,7 @@ type ArtworkGrid = NonNullable<
 >
 type Grid = OtherWorksGrid | ArtworkGrid
 
-export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
+export const populatedGrids = (grids?: ReadonlyArray<Grid | null | undefined> | null) => {
   if (grids && grids.length > 0) {
     return filter(grids, (grid) => {
       return (grid?.artworks?.edges?.length ?? 0) > 0
