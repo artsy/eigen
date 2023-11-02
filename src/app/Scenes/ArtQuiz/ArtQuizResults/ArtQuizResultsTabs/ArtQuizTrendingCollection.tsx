@@ -27,20 +27,24 @@ export const ArtQuizTrendingCollection = ({
     <Flex pt={2}>
       <Flex>
         <Text variant="md">{collection?.title}</Text>
-        <ReadMore
-          content={collection?.descriptionMarkdown!}
-          maxChars={textLimit}
-          textStyle="new"
-          color="black60"
-          textVariant="sm"
-          linkTextVariant="sm"
-        />
+        {!!collection?.descriptionMarkdown && (
+          <ReadMore
+            content={collection.descriptionMarkdown}
+            maxChars={textLimit}
+            textStyle="new"
+            color="black60"
+            textVariant="sm"
+            linkTextVariant="sm"
+          />
+        )}
       </Flex>
       <Spacer y={1} />
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
-          navigate(artwork?.href!)
+          if (artwork?.href) {
+            navigate(artwork.href)
+          }
         }}
       />
     </Flex>

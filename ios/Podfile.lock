@@ -608,7 +608,7 @@ PODS:
     - Mapbox-iOS-SDK (~> 6.4)
     - React
     - React-Core
-  - react-native-netinfo (9.3.7):
+  - react-native-netinfo (9.3.11):
     - React-Core
   - react-native-pager-view (6.2.0):
     - React-Core
@@ -617,9 +617,8 @@ PODS:
   - react-native-safe-area-context (3.4.0):
     - React-Core
   - react-native-shake (5.5.2):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-  - react-native-slider (4.2.1):
+    - React
+  - react-native-slider (4.2.4):
     - React-Core
   - react-native-view-shot (3.4.0):
     - React-Core
@@ -753,7 +752,7 @@ PODS:
     - React-Core
   - RNCClipboard (1.7.0):
     - React-Core
-  - RNDateTimePicker (6.1.2):
+  - RNDateTimePicker (6.1.4):
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
@@ -1397,12 +1396,12 @@ SPEC CHECKSUMS:
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
   react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
-  react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
+  react-native-netinfo: 3a48f51c18dbd9253440621955e11de71bc51b32
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
-  react-native-shake: 8036ba95a1953c9b10821bdc33f5814c5d0bcef6
-  react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
+  react-native-shake: 0e90da57c823b43975d1cd01249ff6ca2f9ebe00
+  react-native-slider: cecabb58ecffad671d2ad3ccc58c7f4d2d029e95
   react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
   react-native-webview: 8fc09f66a1a5b16bbe37c3878fda27d5982bb776
   React-NativeModulesApple: 02e35e9a51e10c6422f04f5e4076a7c02243fff2
@@ -1429,7 +1428,7 @@ SPEC CHECKSUMS:
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
-  RNDateTimePicker: 6f1f0b4cf7c71b6e2aea7a3aa62969111084bbd1
+  RNDateTimePicker: f56338ebc86246f6b46f9e0953daa3a28acf909c
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: 25b0e092b4470c84db0386d4f5316dc34123bb6d

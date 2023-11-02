@@ -4,6 +4,7 @@ import {
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,
@@ -13,7 +14,6 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomView } from "./ImageZoomView"
 import { IndexIndicator } from "./IndexIndicator"
@@ -93,7 +93,7 @@ export const ImageCarouselFullScreen = () => {
             showsHorizontalScrollIndicator={false}
             scrollEnabled={media.length > 1 && fullScreenState.current === "entered"}
             snapToInterval={screenDimensions.width}
-            keyExtractor={(item) => item.url!}
+            keyExtractor={(item, index) => `${item.url}-${index}`}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
@@ -116,7 +116,7 @@ export const ImageCarouselFullScreen = () => {
                   <ImageCarouselVimeoVideo
                     width={screenDimensions.width}
                     height={screenDimensions.height}
-                    vimeoUrl={item.url!}
+                    vimeoUrl={item.url}
                   />
                 )
               }

@@ -27,7 +27,9 @@ export const updateConsignSubmission = (input: UpdateSubmissionMutationInput) =>
           return
         }
 
-        resolve(res.updateConsignmentSubmission!.consignmentSubmission!.internalID!)
+        if (res.updateConsignmentSubmission?.consignmentSubmission?.internalID) {
+          resolve(res.updateConsignmentSubmission.consignmentSubmission.internalID)
+        }
       },
     })
   })

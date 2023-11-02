@@ -39,8 +39,8 @@ export const ShowContextCard: React.FC<ShowContextCardProps> = ({ show, ...rest 
           action: ActionType.tappedFairCard,
           context_module: ContextModule.presentingFair,
           destination_screen_owner_type: OwnerType.fair,
-          destination_screen_owner_id: fair!.internalID,
-          destination_screen_owner_slug: fair!.slug,
+          destination_screen_owner_id: fair?.internalID,
+          destination_screen_owner_slug: fair?.slug,
         }
 
         tracking.trackEvent(data)
@@ -50,8 +50,8 @@ export const ShowContextCard: React.FC<ShowContextCardProps> = ({ show, ...rest 
           action: ActionType.tappedPartnerCard,
           context_module: ContextModule.presentingPartner,
           destination_screen_owner_type: OwnerType.partner,
-          destination_screen_owner_id: partner!.internalID,
-          destination_screen_owner_slug: partner!.slug,
+          destination_screen_owner_id: partner?.internalID,
+          destination_screen_owner_slug: partner?.slug,
         }
 
         tracking.trackEvent(data)
@@ -207,7 +207,10 @@ const extractPropsFromPartner = (
   partner: ShowContextCard_show$data["partner"]
 ): ContextCardProps => ({
   sectionTitle: `Presented by ${partner?.name}`,
-  imageUrls: partner?.artworksConnection?.edges?.map((edge) => edge?.node?.image?.url!) || [],
+  imageUrls:
+    (partner?.artworksConnection?.edges
+      ?.map((edge) => edge?.node?.image?.url)
+      .filter(Boolean) as string[]) || [],
   title: partner?.name ?? "",
   subtitle: partner?.cities?.join(", ") ?? "",
   onPress: () => navigate(partner?.profile?.slug ?? ""),

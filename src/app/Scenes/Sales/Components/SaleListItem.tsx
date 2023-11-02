@@ -36,16 +36,18 @@ export const SaleListItem: React.FC<Props> = (props) => {
           marginLeft,
         }}
       >
-        <OpaqueImageView
-          style={{
-            width: containerWidth,
-            height: containerWidth,
-            borderRadius: 2,
-            overflow: "hidden",
-            marginBottom: 5,
-          }}
-          imageURL={image && image.url}
-        />
+        {!!image && !!image.url && (
+          <OpaqueImageView
+            style={{
+              width: containerWidth,
+              height: containerWidth,
+              borderRadius: 2,
+              overflow: "hidden",
+              marginBottom: 5,
+            }}
+            imageURL={image.url}
+          />
+        )}
         <Text variant="sm" numberOfLines={2} weight="medium">
           {sale.name}
         </Text>

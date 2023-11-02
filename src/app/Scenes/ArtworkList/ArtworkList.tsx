@@ -77,12 +77,12 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
     setSortModalVisible(true)
   }
 
-  const artworkList = data?.artworkList!
-  const artworksCount = artworkList.artworks?.totalCount ?? 0
+  const artworkList = data?.artworkList
+  const artworksCount = artworkList?.artworks?.totalCount ?? 0
   const artworks = extractNodes(data?.artworkList?.artworks)
 
   if (artworksCount === 0) {
-    return <ArtworkListEmptyState me={queryData.me!} refreshControl={RefreshControl} />
+    return <ArtworkListEmptyState me={queryData.me} refreshControl={RefreshControl} />
   }
 
   return (
@@ -96,7 +96,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         ListHeaderComponent={
           <Box mx={-2}>
             <ArtworkListArtworksGridHeader
-              title={artworkList.name}
+              title={artworkList?.name ?? ""}
               artworksCount={artworksCount}
               onSortButtonPress={openSortModal}
             />

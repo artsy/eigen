@@ -34,7 +34,7 @@ function logToError(type: keyof typeof console, args: unknown[], constructorOpt:
   if (args[0] instanceof Error) {
     const msg = explanation + chalk.red(args[0].message)
     const err = new Error(msg)
-    err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+    err.stack = args[0].stack?.replace(`Error: ${args[0].message}`, msg)
     return err
   } else if (
     // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do

@@ -1215,6 +1215,11 @@ describe("selectedOptionsUnion", () => {
         { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
         {
           displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "estimateRange",
           paramValue: "",
         },
@@ -1338,6 +1343,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "estimateRange",
           paramValue: "",
         },
@@ -1453,6 +1463,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
+        },
+        {
+          displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1580,6 +1595,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "estimateRange",
           paramValue: "",
         },
@@ -1701,6 +1721,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
+        },
+        {
+          displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1843,6 +1868,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "estimateRange",
           paramValue: "",
         },
@@ -1946,6 +1976,11 @@ describe("selectedOptionsUnion", () => {
         })
       ).toEqual([
         { displayText: "Lot Number Descending", paramName: FilterParamName.sort },
+        {
+          displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
         {
           displayText: "All",
           paramName: "estimateRange",
@@ -2074,6 +2109,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Lot Number Ascending",
           paramName: "sort",
           paramValue: "position",
+        },
+        {
+          displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -2207,6 +2247,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
+        },
+        {
+          displayText: "All",
           paramName: "estimateRange",
           paramValue: "",
         },
@@ -2319,6 +2364,11 @@ describe("selectedOptionsUnion", () => {
           displayText: "Gallery Curated",
           paramName: FilterParamName.sort,
           paramValue: "partner_show_position",
+        },
+        {
+          displayText: "All",
+          paramName: "artistSeriesIDs",
+          paramValue: [],
         },
         {
           displayText: "All",

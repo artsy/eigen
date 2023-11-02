@@ -1306,7 +1306,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     first: Int
 
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
-    inEditorialFeed: Boolean
+    inEditorialFeed: Boolean = false
     last: Int
 
     # DEPRECATION REASON: Use `size` instead
@@ -13516,6 +13516,7 @@ type Partner implements Node {
     highQuality: Boolean
     last: Int
     partnerID: String
+    represented: Boolean
     since: SearchCriteriaSinceEnum
     sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection
@@ -15577,6 +15578,7 @@ type Query {
     highQuality: Boolean
     last: Int
     partnerID: String
+    represented: Boolean
     since: SearchCriteriaSinceEnum
     sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection
@@ -20140,6 +20142,7 @@ type Viewer {
     highQuality: Boolean
     last: Int
     partnerID: String
+    represented: Boolean
     since: SearchCriteriaSinceEnum
     sort: SearchCriteriaSortEnum
   ): SearchCriteriaConnection

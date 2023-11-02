@@ -349,6 +349,7 @@ export default createPaginationContainer(
         aggregations: filterArtworksConnection(
           first: 0
           aggregations: [
+            ARTIST_SERIES
             COLOR
             DIMENSION_RANGE
             LOCATION_CITY

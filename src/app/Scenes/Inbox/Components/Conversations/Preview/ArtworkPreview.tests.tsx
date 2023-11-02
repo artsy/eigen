@@ -3,7 +3,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkPreviewTestsQuery } from "__generated__/ArtworkPreviewTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import ArtworkPreview, { ArtworkPreviewProps } from "./ArtworkPreview"
+import { ArtworkPreview, ArtworkPreviewProps } from "./ArtworkPreview"
 
 describe("concerning selection handling", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkPreviewTestsQuery, ArtworkPreviewProps>({
@@ -31,7 +31,7 @@ describe("concerning selection handling", () => {
     )
 
     expect(screen.queryByText("Karl and Anna Face Off (Diptych) / 2016")).toBeTruthy()
-    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+    fireEvent.press(screen.getByText("Karl and Anna Face Off (Diptych) / 2016"))
 
     expect(onSelected).toHaveBeenCalledTimes(1)
   })

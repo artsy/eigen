@@ -4034,10 +4034,10 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
-"@react-native-community/datetimepicker@6.1.2":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.1.2.tgz#a897291bc8ff2394f922721f40692c812f9145a0"
-  integrity sha512-4D21x4eywCY2Ex4BI6tQhUEOOKSruz9uPbGK0azGKZap/etoiPtH3nuG56ACtpmUlu5d1R9zzTlumr02dp39hA==
+"@react-native-community/datetimepicker@6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.1.4.tgz#f4f04e3f2c7229980b68abb8bf3e8440c4231ed4"
+  integrity sha512-0QLUt1FZbK1YACutZ4RQbCg6riXd5S2wq9rfOl2fO8zmvAqNu8ENlp1KzIc12KDBWgakz9LpiOFWawl4dQ1HGg==
   dependencies:
     invariant "^2.2.4"
 
@@ -4046,15 +4046,15 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.0.6.tgz#e2c83c242f917ce5a494cedb161c37abd5f2a72a"
   integrity sha512-+iidKFgw1HxCJSHVnlywAKu6uerdpDAKTXLRnlsUdhgqtgTiIixb496Z267iPVFmIO1bp4lOU6UiwzmvcyXdbg==
 
-"@react-native-community/netinfo@9.3.7":
-  version "9.3.7"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.7.tgz#92407f679f00bae005c785a9284e61d63e292b34"
-  integrity sha512-+taWmE5WpBp0uS6kf+bouCx/sn89G9EpR4s2M/ReLvctVIFL2Qh8WnWfBxqK9qwgmFha/uqjSr2Gq03OOtiDcw==
+"@react-native-community/netinfo@9.3.11":
+  version "9.3.11"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.11.tgz#3e449612def3d33873a93bcdd4204b73e71573b5"
+  integrity sha512-zy47SjKuZVOlR+43rOVsD1BMLaHpeiICDye89YWUQKprFkI2AbnL0WrY/ezxL+n9nvoDJ2UTMpCUQe3tVu/ojQ==
 
-"@react-native-community/slider@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.1.tgz#8f1c8cf62de1bd91ce1e32585f7eb666f21e5025"
-  integrity sha512-6HUS5HbB9bvEN4GiwBlxECgPWQIugHE+kfnxqX2jHUl1SE57MRpw00m1qVs4hXtEPQndBl6mAQiGbKCOtLPVbg==
+"@react-native-community/slider@4.2.4":
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.4.tgz#8d88adceeb32f7997a122feba48d7186fca80346"
+  integrity sha512-uY51UoipQW4ELnFWMU6rTHRc4EUYaW+Z1O9Teijej6NYVYdUcUKq+t7WeBGjMAEc1ipyooMeBqRXToWO5zAU2Q==
 
 "@react-native-cookies/cookies@6.0.11":
   version "6.0.11"
@@ -4895,13 +4895,13 @@
     "@babel/runtime" "^7.12.5"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@12.3.0":
-  version "12.3.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.3.0.tgz#ebf04dddb7e1c34c869b97b187ecd061211c9466"
-  integrity sha512-E2Prl8D/ey9sRgzLyfCPPmqvsevJW5tVUy4E/pBbO7nOP6OzI/jn2P3vctn/kFdkPY2aE/udlU5ZeNAben9U2A==
+"@testing-library/react-native@12.3.2":
+  version "12.3.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.3.2.tgz#008ff0408bd51346d482688b18ee34bf72f32e09"
+  integrity sha512-S8ggbK5A8leTMp9ETiAMjUCMVdy7SHFH7566TLsF06sHEDqOB05ohQU28Qv0EQY6jr8P73qmQXUpWlPwnhJOUQ==
   dependencies:
-    jest-matcher-utils "^29.6.2"
-    pretty-format "^29.6.2"
+    jest-matcher-utils "^29.7.0"
+    pretty-format "^29.7.0"
     redent "^3.0.0"
 
 "@tootallnate/once@1":
@@ -11696,7 +11696,7 @@ jest-matcher-utils@^29.3.1:
     jest-get-type "^29.2.0"
     pretty-format "^29.3.1"
 
-jest-matcher-utils@^29.6.2:
+jest-matcher-utils@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-29.7.0.tgz#ae8fec79ff249fd592ce80e3ee474e83a6c44f12"
   integrity sha512-sBkD+Xi9DtcChsI3L3u0+N0opgPYnCRPtGcQYrgXmR+hmt/fYfWAL0xRXYU8eWOdfuLgBe0YCW3AFtnRLagq/g==
@@ -14456,7 +14456,7 @@ pretty-format@^29.3.1:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-pretty-format@^29.6.2, pretty-format@^29.7.0:
+pretty-format@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-29.7.0.tgz#ca42c758310f365bfa71a0bda0a807160b776812"
   integrity sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==

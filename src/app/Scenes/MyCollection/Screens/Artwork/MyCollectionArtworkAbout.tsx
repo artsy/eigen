@@ -51,7 +51,7 @@ const artworkFragment = graphql`
     }
     artist {
       slug
-      articles: articlesConnection(first: 10, inEditorialFeed: true, sort: PUBLISHED_AT_DESC) {
+      articles: articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) {
         totalCount
         edges {
           node {

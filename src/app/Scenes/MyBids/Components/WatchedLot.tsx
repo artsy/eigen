@@ -2,10 +2,10 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { WatchedLot_saleArtwork$data } from "__generated__/WatchedLot_saleArtwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { Watching } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
@@ -44,7 +44,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
   return (
     <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen} />
+        <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
         <Flex>
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
             <Text variant="xs">{sellingPrice}</Text>
