@@ -27,6 +27,8 @@ const ListItemImageView: React.FC<{
       ARTWORK_LIST_IMAGE_SIZE
     )
 
+    const testID = localImage?.path ? "Image-Local" : "Image-Remote"
+
     return (
       <Flex
         width={ARTWORK_LIST_IMAGE_SIZE}
@@ -38,6 +40,7 @@ const ListItemImageView: React.FC<{
         style={{ marginTop: 3 }}
       >
         <OpaqueImageView
+          testID={testID}
           imageURL={localImage?.path || image.url}
           width={imageDimensions.width}
           height={imageDimensions.height}
