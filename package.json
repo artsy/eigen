@@ -123,7 +123,7 @@
     "@react-native-community/datetimepicker": "6.1.4",
     "@react-native-community/geolocation": "3.0.6",
     "@react-native-community/netinfo": "9.3.11",
-    "@react-native-community/slider": "4.2.1",
+    "@react-native-community/slider": "4.2.4",
     "@react-native-cookies/cookies": "6.0.11",
     "@react-native-google-signin/google-signin": "6.0.0",
     "@react-native-mapbox-gl/maps": "8.5.0",
