@@ -19,7 +19,7 @@ describe("Articles", () => {
           ...Articles_artist
         }
 
-        articlesConnection(first: 5, inEditorialFeed: true) {
+        articlesConnection(first: 5) {
           edges {
             node {
               ...Articles_articles
