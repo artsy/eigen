@@ -15,16 +15,20 @@ export interface ProgressiveOnboardingModel {
   dismissed: DismissedKey[]
   dismiss: Action<this, ProgressiveOnboardingKey | readonly ProgressiveOnboardingKey[]>
   isDismissed: Computed<this, (key: ProgressiveOnboardingKey) => DismissedKeyStatus>
-  // Controls when the Progressive Onboarding Popovers are able to de displayed
-  // Right now we dispatch it from the home screen once it has focus
-  isReady: boolean
+  sessionState: {
+    // Controls when the Progressive Onboarding Popovers are able to de displayed
+    // Right now we dispatch it from the home screen once it has focus
+    isReady: boolean
+  }
   setIsReady: Action<this>
   __clearDissmissed: Action<this>
 }
 
 export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => ({
+  sessionState: {
+    isReady: false,
+  },
   dismissed: [],
-  isReady: false,
   dismiss: action((state, key) => {
     const keys = Array.isArray(key) ? key : [key]
     const timestamp = Date.now()
@@ -44,8 +48,8 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
     }
   }),
   setIsReady: action((state) => {
-    if (!state.isReady) {
-      state.isReady = true
+    if (!state.sessionState.isReady) {
+      state.sessionState.isReady = true
     }
   }),
   __clearDissmissed: action((state) => {

@@ -9,9 +9,10 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const [isVisible, setIsVisible] = useState(true)
   const [isInView, setIsInView] = useState(false)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isDismissed: _isDismissed, isReady } = GlobalStore.useAppState(
-    (state) => state.progressiveOnboarding
-  )
+  const {
+    isDismissed: _isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const data = useLazyLoadQuery<ProgressiveOnboardingSaveArtwork_Query>(query, {})
 
   const savedArtworks = data?.me.counts.savedArtworks

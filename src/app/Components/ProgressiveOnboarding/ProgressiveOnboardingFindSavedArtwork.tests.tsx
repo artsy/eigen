@@ -24,7 +24,9 @@ describe("ProgressiveOnboardingFindSavedArtwork", () => {
     )
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectState({ progressiveOnboarding: { isReady: true } })
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: { sessionState: { isReady: true } },
+    })
   })
 
   it("renders", () => {
@@ -48,7 +50,7 @@ describe("ProgressiveOnboardingFindSavedArtwork", () => {
   it("does not show the popover if 'find-save-artwork' is already dismissed", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        isReady: true,
+        sessionState: { isReady: true },
         dismissed: [{ key: "find-saved-artwork", timestamp: Date.now() }],
       },
     })
@@ -64,7 +66,9 @@ describe("ProgressiveOnboardingFindSavedArtwork", () => {
   })
 
   it("does not show the popover given isReady false", () => {
-    __globalStoreTestUtils__?.injectState({ progressiveOnboarding: { isReady: false } })
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: { sessionState: { isReady: false } },
+    })
     wrapper("home")
 
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()

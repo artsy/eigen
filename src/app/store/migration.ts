@@ -51,10 +51,9 @@ export const Versions = {
   AddUserPreferredArtistsView: 38,
   AddPushPromptLogicModel: 39,
   AddProgressiveOnboardingModel: 40,
-  AddProgressiveOnboardingIsReady: 41,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddProgressiveOnboardingIsReady
+export const CURRENT_APP_VERSION = Versions.AddProgressiveOnboardingModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -302,10 +301,6 @@ export const artsyAppMigrations: Migrations = {
         })),
       ],
     }
-  },
-  [Versions.AddProgressiveOnboardingIsReady]: (state) => {
-    state.progressiveOnboarding.isReady = false
-    delete state.auth.isFirstSession
   },
 }
 

@@ -24,7 +24,9 @@ describe("useEnableProgressiveOnboarding", () => {
   })
 
   it("does not set isReady if isReady is true", () => {
-    __globalStoreTestUtils__?.injectState({ progressiveOnboarding: { isReady: true } })
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: { sessionState: { isReady: true } },
+    })
     renderHook(() => useEnableProgressiveOnboarding(), { wrapper })
   })
 })

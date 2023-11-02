@@ -7,7 +7,10 @@ import { useEffect } from "react"
 export const useDismissSavedArtwork = (saved?: boolean | null) => {
   const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isDismissed, isReady } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const {
+    isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const isFocused = useIsFocused()
 
   const dismissed = isDismissed("save-artwork").status

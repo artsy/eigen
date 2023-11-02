@@ -14,7 +14,7 @@ describe("useDismissSavedArtwork", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        isReady: true,
+        sessionState: { isReady: true },
       },
     })
   })
@@ -36,7 +36,7 @@ describe("useDismissSavedArtwork", () => {
   it("it does not dismiss if it is already dismissed", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        isReady: true,
+        sessionState: { isReady: true },
         dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
       },
     })
@@ -48,7 +48,7 @@ describe("useDismissSavedArtwork", () => {
   it("it does not dismiss if isReady is false", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
-        isReady: false,
+        sessionState: { isReady: true },
       },
     })
     renderHook(() => useDismissSavedArtwork(true), { wrapper })

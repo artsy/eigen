@@ -8,7 +8,9 @@ import { InteractionManager } from "react-native"
  */
 export const useEnableProgressiveOnboarding = () => {
   const { setIsReady } = GlobalStore.actions.progressiveOnboarding
-  const { isReady } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const {
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const isFocused = useIsFocused()
 
   useEffect(() => {
