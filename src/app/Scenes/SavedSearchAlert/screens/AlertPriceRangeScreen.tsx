@@ -115,5 +115,5 @@ export const AlertPriceRangeScreenQueryRenderer: React.FC<AlertPriceRangeScreenQ
       artistID: artistID,
     })
 
-    return <AlertPriceRangeScreen artist={data.artist!} {...props} />
+    return <AlertPriceRangeScreen artist={data.artist} {...props} />
   }, Placeholder)

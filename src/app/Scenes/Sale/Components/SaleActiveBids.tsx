@@ -48,7 +48,7 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}
         ItemSeparatorComponent={() => <Separator my={0.5} />}
         renderItem={({ item }) => <SaleActiveBidItemContainer lotStanding={item!} />}
-        keyExtractor={(item) => item!.saleArtwork!.slug}
+        keyExtractor={(item) => `${item?.saleArtwork?.slug}`}
       />
     </Flex>
   )

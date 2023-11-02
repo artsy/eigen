@@ -2,7 +2,7 @@ import { Spacer, Box, Separator, Button } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
-import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
+import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal } from "app/system/navigation/navigate"
@@ -240,7 +240,7 @@ export class Inquiry extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={artwork as any} />
+            <ArtworkPreview artwork={artwork} />
             <InquiryTextInput
               value={message || undefined}
               keyboardAppearance="dark"

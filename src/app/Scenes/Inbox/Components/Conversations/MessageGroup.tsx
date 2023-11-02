@@ -2,6 +2,7 @@ import { Spacer, Flex } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
+import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { navigate } from "app/system/navigation/navigate"
 import moment from "moment"
 import { Component } from "react"
@@ -9,7 +10,6 @@ import { View } from "react-native"
 import styled from "styled-components/native"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
-import ArtworkPreview from "./Preview/ArtworkPreview"
 import ShowPreview from "./Preview/ShowPreview"
 import { TimeSince } from "./TimeSince"
 
@@ -52,7 +52,7 @@ const IndividualMessage: React.FC<{
         <Message
           message={message}
           showTimeSince={!!(message.createdAt && isSameDay && isLastMessage)}
-          conversationId={conversationId!}
+          conversationId={conversationId}
         />
       )}
       <Spacer y={spaceAfter} />
@@ -68,10 +68,10 @@ const InitialMessage: React.FC<{
     <>
       <SubjectContainer>
         {subjectItem?.__typename === "Artwork" && (
-          <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+          <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href)} />
         )}
         {subjectItem?.__typename === "Show" && (
-          <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+          <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href)} />
         )}
       </SubjectContainer>
       {!!createdAt && <TimeSince style={{ alignSelf: "center" }} time={createdAt} exact mb={1} />}
@@ -115,7 +115,7 @@ export class MessageGroup extends Component<MessageGroupProps> {
                   key={messageKey}
                   message={message}
                   nextMessage={group[messageIndex + 1]}
-                  isSameDay={moment(firstItem.createdAt!).isSame(moment(), "day")}
+                  isSameDay={moment(firstItem.createdAt).isSame(moment(), "day")}
                 />
               )
             })}

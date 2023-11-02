@@ -464,6 +464,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
         liveStartsAt: liveStartAt || undefined,
       })
     }
+    return null
   }
 
   const trackingInfo: Schema.PageView = {
@@ -495,7 +496,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
           <ArtworkStoreProvider
             runtimeModel={{
               ...artworkModel,
-              auctionState: getInitialAuctionTimerState()!,
+              auctionState: getInitialAuctionTimerState(),
             }}
           >
             <ArtworkListsProvider>

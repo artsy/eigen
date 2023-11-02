@@ -26,7 +26,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   const onTap = (event: GestureResponderEvent) => {
     onPress?.(event)
-    navigate(article.href!)
+    if (article.href) {
+      navigate(article.href)
+    }
   }
 
   const { space } = useTheme()

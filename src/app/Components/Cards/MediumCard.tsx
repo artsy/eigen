@@ -6,7 +6,7 @@ import { CardTag, CardTagProps } from "./CardTag"
 export interface MediumCardProps extends BoxProps {
   image: string
   title: string
-  subtitle?: string
+  subtitle?: string | null
   tag?: CardTagProps
 }
 

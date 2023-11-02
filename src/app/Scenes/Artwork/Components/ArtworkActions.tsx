@@ -55,8 +55,12 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
   const openOrUpcomingSale = isOpenOrUpcomingSale(sale)
 
   const openViewInRoom = () => {
-    const heightIn = cm2in(heightCm!)
-    const widthIn = cm2in(widthCm!)
+    if (image?.url == null || heightCm == null || widthCm == null) {
+      return
+    }
+
+    const heightIn = cm2in(heightCm)
+    const widthIn = cm2in(widthCm)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -65,7 +69,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
     })
 
     LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      image?.url!,
+      image?.url,
       widthIn,
       heightIn,
       slug,

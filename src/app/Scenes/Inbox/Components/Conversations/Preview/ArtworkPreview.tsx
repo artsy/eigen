@@ -1,11 +1,13 @@
-import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
+import {
+  ArtworkPreview_artwork$data,
+  ArtworkPreview_artwork$key,
+} from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Schema, Track, track as _track } from "app/utils/track"
-import { Touchable } from "@artsy/palette-mobile"
-import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { Schema } from "app/utils/track"
+import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 const Container = styled.View`
@@ -38,76 +40,70 @@ const TitleAndDate = styled.View`
   justify-content: flex-start;
 `
 export interface ArtworkPreviewProps {
-  artwork: ArtworkPreview_artwork$data
+  artwork: ArtworkPreview_artwork$key
   onSelected?: () => void
 }
 
-const track: Track<ArtworkPreviewProps> = _track
+export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelected }) => {
+  const artworkData = useFragment(ArtworkPreviewFragment, artwork)
 
-@track()
-export class ArtworkPreview extends React.Component<ArtworkPreviewProps> {
-  @track((props) => ({
-    action_type: Schema.ActionTypes.Tap,
-    action_name: Schema.ActionNames.ConversationAttachmentArtwork,
-    owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork.internalID,
-    owner_slug: props.artwork.slug,
-  }))
-  attachmentSelected() {
-    this.props.onSelected!()
+  const { image: artworkImage } = artworkData
+  const color = useColor()
+  const { trackEvent } = useTracking()
+
+  const attachmentSelected = () => {
+    if (!onSelected) {
+      return
+    }
+
+    onSelected()
+    trackEvent(tracks.tapAttachmentSelected(artworkData))
   }
 
-  render() {
-    const artwork = this.props.artwork
-    const artworkImage = artwork.image
-
-    return (
-      <ClassTheme>
-        {({ color }) => (
-          <Touchable
-            underlayColor={color("black10")}
-            onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
-          >
-            <Container>
-              {!!artworkImage && (
-                <ImageContainer>
-                  <OpaqueImageView
-                    aspectRatio={artworkImage.aspectRatio}
-                    imageURL={artworkImage.url}
-                  />
-                </ImageContainer>
-              )}
-              <TextContainer>
-                <Text variant="sm" color="white100">
-                  {artwork.artistNames}
-                </Text>
-                <TitleAndDate>
-                  {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-                  <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
-                    {`${artwork.title} / ${artwork.date}`}
-                  </Text>
-                </TitleAndDate>
-              </TextContainer>
-            </Container>
-          </Touchable>
+  return (
+    <Touchable underlayColor={color("black10")} onPress={attachmentSelected}>
+      <Container>
+        {!!artworkImage && (
+          <ImageContainer>
+            <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+          </ImageContainer>
         )}
-      </ClassTheme>
-    )
-  }
+        <TextContainer>
+          <Text variant="sm" color="white100">
+            {artworkData.artistNames}
+          </Text>
+          <TitleAndDate>
+            {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
+            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+              {`${artworkData.title} / ${artworkData.date}`}
+            </Text>
+          </TitleAndDate>
+        </TextContainer>
+      </Container>
+    </Touchable>
+  )
 }
 
-export default createFragmentContainer(ArtworkPreview, {
-  artwork: graphql`
-    fragment ArtworkPreview_artwork on Artwork {
-      slug
-      internalID
-      title
-      artistNames
-      date
-      image {
-        url
-        aspectRatio
-      }
+const ArtworkPreviewFragment = graphql`
+  fragment ArtworkPreview_artwork on Artwork {
+    slug
+    internalID
+    title
+    artistNames
+    date
+    image {
+      url
+      aspectRatio
     }
-  `,
-})
+  }
+`
+
+const tracks = {
+  tapAttachmentSelected: (artwork: ArtworkPreview_artwork$data) => ({
+    action_name: Schema.ActionNames.ConversationAttachmentArtwork,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: artwork.internalID,
+    owner_slug: artwork.slug,
+    owner_type: Schema.OwnerEntityTypes.Artwork,
+  }),
+}

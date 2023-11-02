@@ -74,31 +74,33 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
         <Join separator={<Spacer y={4} />}>
           <Touchable
             onPress={() => {
-              navigate(heroArticle!.href!)
+              if (heroArticle?.href) {
+                navigate(heroArticle.href)
+              }
             }}
           >
             <Box position="relative">
               <OpaqueImageView
                 width={imageWidth}
                 height={(4 / 3) * imageWidth}
-                imageURL={heroArticle!.thumbnailImage?.url}
+                imageURL={heroArticle?.thumbnailImage?.url}
               />
 
               <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
                 <Text variant="sm-display" mb={1}>
-                  {heroArticle!.title}
+                  {heroArticle?.title}
                 </Text>
 
                 <Text variant="xs" color="black60">
-                  {heroArticle!.author?.name}
+                  {heroArticle?.author?.name}
                 </Text>
 
-                <Text variant="xs">{heroArticle!.publishedAt}</Text>
+                <Text variant="xs">{heroArticle?.publishedAt}</Text>
 
                 <FairEditorialShare
                   mt={1}
-                  subject={heroArticle!.title!}
-                  url={`${webURL}${heroArticle!.href}`}
+                  subject={heroArticle?.title ?? ""}
+                  url={`${webURL}${heroArticle?.href}`}
                 />
               </Box>
             </Box>
@@ -112,30 +114,32 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
               return (
                 <Touchable
                   onPress={() => {
-                    navigate(article!.href!)
+                    if (article?.href) {
+                      navigate(article.href)
+                    }
                   }}
                 >
                   <OpaqueImageView
                     width={imageWidth}
                     height={(9 / 16) * imageWidth}
-                    imageURL={article!.thumbnailImage?.url}
+                    imageURL={article?.thumbnailImage?.url}
                   />
 
                   <Box width="95%">
                     <Text variant="sm-display" mt={1} mb={1}>
-                      {article!.title}
+                      {article?.title}
                     </Text>
 
                     <Text color="black60" variant="xs">
-                      {article!.author?.name}
+                      {article?.author?.name}
                     </Text>
 
-                    <Text variant="xs">{article!.publishedAt}</Text>
+                    <Text variant="xs">{article?.publishedAt}</Text>
 
                     <FairEditorialShare
                       mt={1}
-                      subject={article!.title!}
-                      url={`${webURL}${article!.href}`}
+                      subject={article?.title ?? ""}
+                      url={`${webURL}${article?.href}`}
                     />
                   </Box>
                 </Touchable>
