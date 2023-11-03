@@ -22,21 +22,23 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
   }
 
   const handlePress = () => {
-    navigate(viewingRoom.href!)
+    if (viewingRoom.href) {
+      navigate(viewingRoom.href)
 
-    const data: TappedViewingRoomCard = {
-      action: ActionType.tappedViewingRoomCard,
-      context_module: ContextModule.associatedViewingRoom,
-      context_screen_owner_type: OwnerType.show,
-      context_screen_owner_id: show.internalID,
-      context_screen_owner_slug: show.slug,
-      destination_screen_owner_type: OwnerType.viewingRoom,
-      destination_screen_owner_id: viewingRoom.internalID,
-      destination_screen_owner_slug: viewingRoom.slug,
-      type: "thumbnail",
+      const data: TappedViewingRoomCard = {
+        action: ActionType.tappedViewingRoomCard,
+        context_module: ContextModule.associatedViewingRoom,
+        context_screen_owner_type: OwnerType.show,
+        context_screen_owner_id: show.internalID,
+        context_screen_owner_slug: show.slug,
+        destination_screen_owner_type: OwnerType.viewingRoom,
+        destination_screen_owner_id: viewingRoom.internalID,
+        destination_screen_owner_slug: viewingRoom.slug,
+        type: "thumbnail",
+      }
+
+      tracking.trackEvent(data)
     }
-
-    tracking.trackEvent(data)
   }
 
   return (
