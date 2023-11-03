@@ -112,7 +112,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         gridRef.current?.scrollToOffset({ offset: 0, animated: true })
       }, 1000)
     }
-  })
+  }, [scrollToArtworksGrid])
+
   const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
     entityId: artist.internalID!,
     entityName: artist.name ?? "",
