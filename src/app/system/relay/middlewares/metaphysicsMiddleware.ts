@@ -2,7 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
-import _ from "lodash"
+import { omit } from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
 
 /**
@@ -28,7 +28,7 @@ export function metaphysicsExtensionsLoggerMiddleware() {
 
         // Grab the rest API requests (only ones that use DataLoader)
         // so this is kinda a sub-set but it's more or less everything
-        const apis = _.omit(requests, ["stitching"])
+        const apis = omit(requests, ["stitching"])
         const requestCount = Object.keys(apis)
           .map((k) => Object.keys(requests[k].requests).length) // API requests
           .reduce((a, c) => a + c, 0) // Add them all up
