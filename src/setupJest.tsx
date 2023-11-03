@@ -158,7 +158,7 @@ jest.mock("react-native-device-info", () => ({
   isTablet: jest.fn(),
 }))
 
-jest.mock("rn-fetch-blob", () => ({
+jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
