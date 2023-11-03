@@ -124,7 +124,7 @@ export class Event extends React.Component<Props, State> {
   render() {
     const node = this.props.event
     const { name, exhibition_period, partner, cover_image, is_followed, end_at } = node
-    const partnerName = partner! /* STRICTNESS_MIGRATION */.name
+    const partnerName = partner?.name
     const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
     return (
@@ -145,9 +145,9 @@ export class Event extends React.Component<Props, State> {
                   <Text variant="sm" numberOfLines={1} ellipsizeMode="tail">
                     {name}
                   </Text>
-                  {!!exhibition_period && (
+                  {!!exhibition_period && !!end_at && (
                     <Text variant="xs" color={color("black60")}>
-                      {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
+                      {exhibitionDates(exhibition_period, end_at)}
                     </Text>
                   )}
                 </TextContainer>

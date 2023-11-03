@@ -144,7 +144,7 @@ const InquiryQuestionOption: React.FC<{
 
 export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props }) => {
   const { toggleVisibility, modalIsVisible, relay, onMutationSuccessful } = props
-  const questions = artwork?.inquiryQuestions!
+  const questions = artwork?.inquiryQuestions
   const scrollViewRef = useRef<ScrollView>(null)
   const tracking = useTracking()
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)

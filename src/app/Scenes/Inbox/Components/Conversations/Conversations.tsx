@@ -108,7 +108,7 @@ export const Conversations: React.FC<Props> = (props) => {
             }}
           />
         }
-        keyExtractor={(item) => item.internalID!}
+        keyExtractor={(item, index) => `${item.internalID}-${index}`}
         ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
         ListFooterComponent={() => {
           if (!!(relay.hasMore() && isLoading)) {

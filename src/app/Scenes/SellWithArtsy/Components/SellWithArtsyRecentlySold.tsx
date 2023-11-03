@@ -40,14 +40,16 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
       <RecentlySoldArtworksRail
         recentlySoldArtworks={recentlySoldArtworksNodes}
         onPress={(recentlySoldArtwork) => {
-          tracking.trackEvent(
-            tappedEntityGroup({
-              ...trackingArgs,
-              destinationScreenOwnerId: recentlySoldArtwork!.artwork?.internalID,
-              destinationScreenOwnerSlug: recentlySoldArtwork!.artwork?.slug,
-            })
-          )
-          navigate(recentlySoldArtwork?.artwork?.href!)
+          if (recentlySoldArtwork?.artwork?.href) {
+            tracking.trackEvent(
+              tappedEntityGroup({
+                ...trackingArgs,
+                destinationScreenOwnerId: recentlySoldArtwork?.artwork?.internalID,
+                destinationScreenOwnerSlug: recentlySoldArtwork?.artwork?.slug,
+              })
+            )
+            navigate(recentlySoldArtwork.artwork.href)
+          }
         }}
         size="extraLarge"
         showPartnerName={false}

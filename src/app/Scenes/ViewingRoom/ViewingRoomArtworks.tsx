@@ -56,7 +56,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                 <OpaqueImageView
                   imageURL={artwork.image?.url}
                   width={width}
-                  aspectRatio={artwork.image!.aspectRatio}
+                  aspectRatio={artwork?.image?.aspectRatio}
                 />
                 <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
