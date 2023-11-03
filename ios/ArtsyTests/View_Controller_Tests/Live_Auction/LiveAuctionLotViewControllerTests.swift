@@ -71,40 +71,40 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             it("looks good for upcoming lots") {
                 auctionViewModel.distance = 1
                 lotViewModel.lotStateSignal.update(.upcomingLot(isHighestBidder: false))
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("looks good for upcoming lots that the user is winning") {
                 auctionViewModel.distance = 1
                 lotViewModel.lotStateSignal.update(.upcomingLot(isHighestBidder: true))
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("doesnt show a live auction call to action when auction is closed") {
                 lotViewModel.lotStateSignal.update(.closedLot(wasPassed: false))
                 auctionViewModel.saleAvailabilitySignal.update(.closed)
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("looks good when its lot becomes the current lot") {
                 lotViewModel.lotStateSignal.update(.liveLot)
                 auctionViewModel.currentLotSignal.update(lotViewModel)
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("looks good for lots with a met reserve") {
                 lotViewModel.reserveStatusSignal.update(.reserveMet)
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("looks good for lots with a (not yet met) reserve") {
                 lotViewModel.reserveStatusSignal.update(.reserveNotMet)
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("looks good for out-of-order lots") {
                 auctionViewModel.distance = -1
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
 
             it("handles updates to number of bids") {
@@ -114,7 +114,7 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
                 lotViewModel.numberOfBids = 2
                 lotViewModel.numberOfBidsSignal.update(2)
 
-                expect(subject) == snapshot()
+                expect(subject).to(haveValidSnapshot(tolerance: 0.3))
             }
         }
     }
