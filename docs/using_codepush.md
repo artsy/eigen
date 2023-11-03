@@ -14,15 +14,7 @@ You can read more about it in [the microsoft docs.](https://learn.microsoft.com/
 
 ### In betas
 
-There are 2 ways to get the latest code from main in a beta.
-
-**1.** On app start up if there is updated code available an alert will show, tap Update and the new code will download in the background. Once downloaded the app will restart with the latest code.
-
-<p align="center">
-  <img src="screenshots/codepush-update-dialog.jpeg" width="400"/>
-</p>
-
-**2.** In the dev menu there is a codepush section, select the staging option and tap Fetch and Download. Once downloaded the app will restart with the latest code.
+In the dev menu there is a codepush section, select the staging option and tap Fetch and Download. Once downloaded the app will restart with the latest code.
 
 <p align="center">
   <img src="screenshots/codepush-dev-menu.jpeg" width="400" />
