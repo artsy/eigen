@@ -41,14 +41,17 @@ describe("OnboardingSocialLink", () => {
   }
 
   describe("Link Account Buttons", () => {
-    it("Google Link Account Button logs in With Google and passes onSignIn callback", () => {
-      const spy = jest.spyOn(GlobalStore.actions.auth, "authGoogle")
+    it("Google Link Account Button logs in With Google and passes onSignIn callback", async () => {
+      const mockAuthGoogle = jest.fn(() => ({ success: true })) as any
+      GlobalStore.actions.auth.authGoogle = mockAuthGoogle
       const params = { ...defaultParams, providers: ["email", "google"] as OAuthProvider[] }
       const tree = getWrapper(params)
 
       const linkWithGoogle = tree.getByTestId("linkWithGoogle")
+      expect(linkWithGoogle).toBeDefined()
       fireEvent.press(linkWithGoogle)
-      expect(spy).toBeCalledWith(
+
+      expect(mockAuthGoogle).toBeCalledWith(
         expect.objectContaining({
           signInOrUp: "signIn",
           onSignIn: expect.any(Function),
@@ -62,7 +65,9 @@ describe("OnboardingSocialLink", () => {
         get: () => 14,
       })
 
-      const spy = jest.spyOn(GlobalStore.actions.auth, "authApple")
+      const mockAuthApple = jest.fn(() => ({ success: true })) as any
+      GlobalStore.actions.auth.authApple = mockAuthApple
+
       const params = {
         ...defaultParams,
         providers: ["email", "apple"] as OAuthProvider[],
@@ -75,13 +80,15 @@ describe("OnboardingSocialLink", () => {
 
       const linkWithApple = tree.getByTestId("linkWithApple")
       fireEvent.press(linkWithApple)
-      expect(spy).toBeCalledWith({
+      expect(mockAuthApple).toBeCalledWith({
         onSignIn: expect.any(Function),
       })
     })
 
     it("Facebook Link Account Button logs in With Facebook and passes onSignIn callback", () => {
-      const spy = jest.spyOn(GlobalStore.actions.auth, "authFacebook")
+      const mockAuthFB = jest.fn(() => ({ success: true })) as any
+      GlobalStore.actions.auth.authFacebook = mockAuthFB
+
       const params = {
         ...defaultParams,
         providers: ["email", "facebook"] as OAuthProvider[],
@@ -91,7 +98,7 @@ describe("OnboardingSocialLink", () => {
 
       const linkWithFacebook = tree.getByTestId("linkWithFacebook")
       fireEvent.press(linkWithFacebook)
-      expect(spy).toBeCalledWith({
+      expect(mockAuthFB).toBeCalledWith({
         signInOrUp: "signIn",
         onSignIn: expect.any(Function),
       })
