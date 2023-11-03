@@ -2,14 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-<<<<<<< HEAD
-import _ from "lodash"
-import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
-=======
 import { isEqual } from "lodash"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
->>>>>>> 4e696eb07a (remove all imports that import full lodash)
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
