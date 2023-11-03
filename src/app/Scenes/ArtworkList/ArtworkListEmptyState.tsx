@@ -7,7 +7,7 @@ import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
-  me: ArtworkListEmptyState_me$key | null
+  me: ArtworkListEmptyState_me$key | null | undefined
   refreshControl: JSX.Element
 }
 
