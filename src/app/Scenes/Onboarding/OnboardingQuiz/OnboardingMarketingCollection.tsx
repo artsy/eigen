@@ -44,7 +44,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
         <MarketingCollectionHeader
           collectionSlug={slug}
           description={description}
-          marketingCollection={marketingCollection!}
+          marketingCollection={marketingCollection}
         />
         <Spacer y={2} />
         <InfiniteScrollArtworksGrid

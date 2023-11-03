@@ -19,8 +19,10 @@ export const Article: React.FC<ArticleProps> = ({ article, artist, headline = fa
   const tracking = useTracking()
 
   const handleOnPress = () => {
-    tracking.trackEvent(tracks.tappedArticleGroup(articleData, artistData))
-    navigate(articleData.href!)
+    if (articleData.href) {
+      tracking.trackEvent(tracks.tappedArticleGroup(articleData, artistData))
+      navigate(articleData.href)
+    }
   }
 
   return (
@@ -86,7 +88,7 @@ const tracks = {
     context_screen_owner_slug: artist.slug,
     destination_screen_owner_type: OwnerType.article,
     destination_screen_owner_id: article.internalID,
-    destination_screen_owner_slug: article.slug!,
+    destination_screen_owner_slug: article.slug ?? "",
     type: "thumbnail",
   }),
 }

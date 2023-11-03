@@ -36,7 +36,7 @@ export const featuredFragment = graphql`
 `
 
 interface FeaturedRailProps {
-  featured: ViewingRoomsListFeatured_featured$key
+  featured?: ViewingRoomsListFeatured_featured$key | null
   trackInfo?: { screen: string; ownerType: string }
 }
 

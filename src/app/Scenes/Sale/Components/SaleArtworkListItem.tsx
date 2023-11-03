@@ -30,8 +30,10 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
   const tracking = useTracking()
 
   const onPress = () => {
-    trackArtworkTap()
-    navigate(artwork.href!)
+    if (artwork.href) {
+      trackArtworkTap()
+      navigate(artwork.href)
+    }
   }
 
   const trackArtworkTap = () => {

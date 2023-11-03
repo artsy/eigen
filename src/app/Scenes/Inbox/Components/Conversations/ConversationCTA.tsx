@@ -22,11 +22,11 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   const conversationalBuyNow = liveArtwork?.isAcquireable
 
   // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
-  const conversationID = conversation.conversationID!
+  const conversationID = conversation.conversationID
 
   const activeOrder = extractNodes(conversation.activeOrders)[0]
 
-  if (!activeOrder) {
+  if (!activeOrder && !!conversationID) {
     if (isOfferableFromInquiry || isOfferableConversationalBuyNow || conversationalBuyNow) {
       return (
         <CTAPopUp show={show}>
@@ -71,7 +71,7 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
   }
 
-  if (kind) {
+  if (!!kind && !!conversationID) {
     return (
       <CTAPopUp show={show}>
         <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />

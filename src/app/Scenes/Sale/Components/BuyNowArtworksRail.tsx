@@ -28,7 +28,9 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
       <SmallArtworkRail
         artworks={compact(artworks)}
         onPress={(artwork) => {
-          navigate(artwork?.href!)
+          if (artwork?.href) {
+            navigate(artwork.href)
+          }
         }}
       />
     </Flex>

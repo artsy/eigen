@@ -59,7 +59,7 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
             <ContextGridCTA
               contextModule={grid.__typename}
               href={grid.ctaHref || undefined}
-              label={grid.ctaTitle!}
+              label={grid.ctaTitle ?? ""}
             />
           </Box>
         </React.Fragment>

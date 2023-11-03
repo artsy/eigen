@@ -95,22 +95,24 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
           return (
             <Touchable
               onPress={() => {
-                trackEvent(
-                  trackInfo
-                    ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
-                        item.internalID,
-                        item.slug,
-                        trackInfo.screen,
-                        trackInfo.ownerType
-                      )
-                    : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
-                )
-                navigate(`/viewing-room/${item.slug!}`)
+                if (!!item.slug) {
+                  trackEvent(
+                    trackInfo
+                      ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                          item.internalID,
+                          item.slug,
+                          trackInfo.screen,
+                          trackInfo.ownerType
+                        )
+                      : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                  )
+                  navigate(`/viewing-room/${item.slug}`)
+                }
               }}
             >
               <MediumCard
                 title={item.title}
-                subtitle={item.partner!.name!}
+                subtitle={item?.partner?.name}
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />

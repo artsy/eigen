@@ -120,7 +120,13 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           </Flex>
         </Flex>
         <PartnerContainer>
-          <TouchableWithoutFeedback onPress={() => navigate(partner!.href!)}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              if (partner?.href) {
+                navigate(partner.href)
+              }
+            }}
+          >
             <Flex flexDirection="row" justifyContent="center" alignItems="center" mb={0.5}>
               {!!partnerIconImageURL && (
                 <Box mr={0.5}>
@@ -131,7 +137,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                 </Box>
               )}
               <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
-                {partner!.name}
+                {partner?.name}
               </Text>
             </Flex>
           </TouchableWithoutFeedback>

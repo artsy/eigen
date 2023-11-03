@@ -134,14 +134,12 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                 {closed
                   .filter((closedSale) => closedSale?.saleArtworks?.length)
                   .map((closedSale) => {
-                    const { saleArtworks } = closedSale!
-
                     return (
                       <Join
                         key={`${closedSale?.sale?.internalID}-join`}
                         separator={<Separator my={2} />}
                       >
-                        {saleArtworks!.map((saleArtwork) => {
+                        {closedSale?.saleArtworks?.map((saleArtwork) => {
                           if (!saleArtwork) {
                             return null
                           }
