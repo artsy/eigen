@@ -73,6 +73,9 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
     return clearTimeout(timeout)
   }, [])
 
+  // To avoid not having the form in an invalid state when one of the fields have no value yet
+  const valuesNotEmpty = !!values.email && !!values.password
+
   return (
     <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
@@ -115,6 +118,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               // enable autofill of login details from the device keychain.
               textContentType="username"
               error={errors.email}
+              testID="email-address"
             />
             <Spacer y={2} />
             <Input
@@ -134,7 +138,11 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
                 }
                 handleChange("password")(text)
               }}
-              onSubmitEditing={handleSubmit}
+              onSubmitEditing={() => {
+                if (dirty && valuesNotEmpty) {
+                  handleSubmit()
+                }
+              }}
               onBlur={() => validateForm()}
               placeholder="Password"
               placeholderTextColor={color("black30")}
@@ -147,6 +155,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               textContentType="password"
               value={values.password}
               error={errors.password}
+              testID="password"
             />
           </Box>
           <Spacer y={4} />
@@ -166,7 +175,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
             onPress={handleSubmit}
             block
             haptic="impactMedium"
-            disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
+            disabled={!isValid || !valuesNotEmpty}
             loading={isSubmitting}
             testID="loginButton"
             variant="fillDark"
