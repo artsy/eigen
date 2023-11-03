@@ -17,7 +17,7 @@ export interface ArtworkExtraLinksProps {
 export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, auctionState }) => {
   const artists = artwork.artists ?? []
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
-  const artistName = artists.length === 1 ? artists[0]!.name : null
+  const artistName = artists.length === 1 ? artists[0]?.name : null
 
   return (
     <>
