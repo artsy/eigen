@@ -1,3 +1,4 @@
+import * as LocalImageStore from "app/utils/LocalImageStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { MyCollectionImageView, MyCollectionImageViewProps } from "./MyCollectionImageView"
