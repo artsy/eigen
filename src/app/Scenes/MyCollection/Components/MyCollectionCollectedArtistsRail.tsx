@@ -14,8 +14,7 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { Animated } from "react-native"
-import { useFragment, usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, usePaginationFragment, graphql } from "react-relay"
 
 interface MyCollectionCollectedArtistsRailProps {
   me: MyCollectionCollectedArtistsRail_me$key

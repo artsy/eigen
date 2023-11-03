@@ -1,8 +1,7 @@
 import { useSaveArtworkMutation } from "__generated__/useSaveArtworkMutation.graphql"
 import { refreshOnArtworkSave } from "app/utils/refreshHelpers"
 import { useRef } from "react"
-import { useMutation } from "react-relay"
-import { Disposable, RecordSourceSelectorProxy, graphql } from "relay-runtime"
+import { Disposable, UseMutationConfig, graphql, useMutation } from "react-relay"
 
 export interface SaveArtworkOptions {
   id: string
@@ -12,7 +11,7 @@ export interface SaveArtworkOptions {
   onError?: (error: Error) => void
   optimisticUpdater?: (
     isSaved: boolean,
-    store: RecordSourceSelectorProxy,
+    store: Parameters<NonNullable<UseMutationConfig<useSaveArtworkMutation>["updater"]>>[0],
     isCalledBefore: boolean
   ) => void
 }

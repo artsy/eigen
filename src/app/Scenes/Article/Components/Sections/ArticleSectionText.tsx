@@ -3,9 +3,8 @@ import { Flex } from "@artsy/palette-mobile"
 import { ArticleSectionText_article$key } from "__generated__/ArticleSectionText_article.graphql"
 import { ArticleSectionText_section$key } from "__generated__/ArticleSectionText_section.graphql"
 import { HTML } from "app/Components/HTML"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 interface ArticleSectionTextProps {
   article: ArticleSectionText_article$key

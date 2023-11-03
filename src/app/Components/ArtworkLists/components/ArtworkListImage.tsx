@@ -5,7 +5,7 @@ import { FC } from "react"
 
 export interface ArtworkListImageProps extends FlexProps {
   size: number
-  imageURL: string | null
+  imageURL: string | null | undefined
   withoutBorder?: boolean
 }
 

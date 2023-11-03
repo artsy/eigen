@@ -9,14 +9,13 @@ import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 export const ARTWORK_LIST_IMAGE_SIZE = 80
 
 const ListItemImageView: React.FC<{
-  image?: MyCollectionArtworkListItem_artwork$data["image"] | null
+  image?: MyCollectionArtworkListItem_artwork$data["image"] | null | undefined
 }> = ({ image }) => {
   const localImage = useLocalImage(image, "small")
   // The order of image is important as local images are used before Gemini processed images are ready

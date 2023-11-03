@@ -17,7 +17,7 @@ describe("PartnerLocations", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<PartnerLocationsTestsQuery>
-        variables={{ partnerID: "gagosian" }}
+        variables={{}}
         environment={env}
         query={graphql`
           query PartnerLocationsTestsQuery @raw_response_type {

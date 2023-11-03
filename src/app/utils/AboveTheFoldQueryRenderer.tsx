@@ -1,12 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { QueryRenderer } from "react-relay"
-import {
-  CacheConfig,
-  Environment,
-  FetchPolicy,
-  GraphQLTaggedNode,
-  OperationType,
-} from "relay-runtime"
+import { QueryRenderer, Environment, GraphQLTaggedNode } from "react-relay"
+import { CacheConfig, FetchPolicy, OperationType } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 

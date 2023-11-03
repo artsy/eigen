@@ -31,8 +31,7 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { createFragmentContainer, RelayPaginationProp } from "react-relay"
-import { graphql } from "relay-runtime"
+import { createFragmentContainer, RelayPaginationProp, graphql } from "react-relay"
 import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**

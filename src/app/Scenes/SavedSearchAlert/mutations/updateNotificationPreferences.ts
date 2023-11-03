@@ -3,7 +3,7 @@ import {
   updateNotificationPreferencesMutation,
 } from "__generated__/updateNotificationPreferencesMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const updateNotificationPreferences = (
   subscriptionGroups: NotificationPreferenceInput[]

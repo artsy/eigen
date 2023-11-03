@@ -10,7 +10,7 @@ export type AuctionResultHelperData = Pick<
 
 export const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
   if (
-    auctionResult.priceRealized === null ||
+    !auctionResult.priceRealized ||
     auctionResult.priceRealized.cents === null ||
     auctionResult.priceRealized.display === null ||
     auctionResult.currency === null

@@ -174,9 +174,7 @@ export const FavoriteCategoriesQueryRenderer = () => {
           }
         }
       `}
-      variables={{
-        count: 10,
-      }}
+      variables={{}}
       render={renderWithLoadProgress(FavoriteCategoriesContainer)}
     />
   )

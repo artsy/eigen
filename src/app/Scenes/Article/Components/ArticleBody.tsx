@@ -4,8 +4,7 @@ import { FONTS, HTML } from "app/Components/HTML"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
 import { Fragment } from "react"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleBodyProps {
   article: ArticleBody_article$key

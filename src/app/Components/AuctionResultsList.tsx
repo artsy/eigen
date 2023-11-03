@@ -15,7 +15,7 @@ import Spinner from "./Spinner"
 
 interface AuctionResultsListProps {
   auctionResults: Array<
-    AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null }
+    AuctionResultListItem_auctionResult$key & { readonly saleDate: string | null | undefined }
   >
   refreshing: boolean
   handleRefresh: () => void

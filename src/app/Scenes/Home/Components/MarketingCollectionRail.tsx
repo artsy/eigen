@@ -11,12 +11,11 @@ import {
 } from "app/utils/track/ArtworkActions"
 import { memo } from "react"
 import { Image, TouchableOpacity } from "react-native"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 interface MarketingCollectionRailProps extends ArtworkActionTrackingProps {
-  home: MarketingCollectionRail_home$key | null
+  home: MarketingCollectionRail_home$key | null | undefined
   contextModuleKey: string
   marketingCollection: MarketingCollectionRail_marketingCollection$key
   marketingCollectionSlug: string

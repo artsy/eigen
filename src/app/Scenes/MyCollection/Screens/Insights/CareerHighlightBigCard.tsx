@@ -23,8 +23,7 @@ import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useState } from "react"
 import { FlatList, LayoutChangeEvent, View } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { CareerHighlightKind, getCareerHiglight } from "./CareerHighlightCard"
 
 const CardHeader: React.FC<{

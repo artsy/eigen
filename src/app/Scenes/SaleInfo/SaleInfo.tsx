@@ -139,10 +139,13 @@ const createPremiumDisplay = (props: { sale: SaleInfo_sale$data }) => {
 
 interface BuyersPremiumItemProps {
   sale: SaleInfo_sale$data
-  currentValue: {
-    amount: string | null
-    percent: number | null
-  } | null
+  currentValue:
+    | {
+        amount: string | null | undefined
+        percent: number | null | undefined
+      }
+    | null
+    | undefined
   index: number
 }
 

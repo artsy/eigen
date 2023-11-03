@@ -3,7 +3,7 @@ import {
   InquiryQuestionInput,
 } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { commitMutation, Environment, graphql } from "relay-runtime"
+import { Environment, commitMutation, graphql } from "react-relay"
 
 export const SubmitInquiryRequest = (
   environment: Environment,

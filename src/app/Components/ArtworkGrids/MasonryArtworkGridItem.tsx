@@ -7,9 +7,12 @@ import { FragmentRefs } from "relay-runtime"
 
 interface Artwork {
   readonly id: string
-  readonly image: {
-    readonly aspectRatio: number
-  } | null
+  readonly image:
+    | {
+        readonly aspectRatio: number
+      }
+    | null
+    | undefined
   readonly slug: string
   readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">
 }

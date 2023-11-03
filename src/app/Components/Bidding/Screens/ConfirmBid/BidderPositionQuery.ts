@@ -1,6 +1,6 @@
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { fetchQuery, graphql } from "relay-runtime"
+import { fetchQuery, graphql } from "react-relay"
 
 export const bidderPositionQuery = (bidderPositionID: string) => {
   return fetchQuery<BidderPositionQuery>(

@@ -14,7 +14,11 @@ import { debounce } from "lodash"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {
+export const ArtQuizArtist = ({
+  artistData,
+}: {
+  artistData: ArtQuizArtist_artist$key | null | undefined
+}) => {
   const textLimit = truncatedTextLimit()
   const artist = useFragment<ArtQuizArtist_artist$key>(artQuizArtistFragment, artistData)
 

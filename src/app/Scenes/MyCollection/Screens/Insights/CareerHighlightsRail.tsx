@@ -4,8 +4,7 @@ import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import {
   CareerHighlightKind,
   CareerHighlightPromotionalCard,

@@ -42,7 +42,7 @@ describe("Events", () => {
       },
     }
 
-    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail.key)
+    const headerTapEvent = HomeAnalytics.artworkHeaderTapEvent(artworkRail.key!)
     expect(headerTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
@@ -53,7 +53,7 @@ describe("Events", () => {
     })
 
     const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(
-      artworkRail.key,
+      artworkRail.key!,
       "some-slug",
       "some-id"
     )

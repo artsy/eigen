@@ -31,7 +31,7 @@ describe("Artist Series Rail", () => {
             }
           }
         `}
-        variables={{ artistSeriesID: "pumpkins" }}
+        variables={{}}
         render={({ props, error }) => {
           if (props?.artistSeries) {
             return <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />

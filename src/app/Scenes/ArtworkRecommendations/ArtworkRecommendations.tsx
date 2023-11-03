@@ -12,8 +12,7 @@ import { useRefreshControl } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
-import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 
 const SCREEN_TITLE = "Artwork Recommendations"
 

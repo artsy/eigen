@@ -2,8 +2,7 @@ import { Flex, Tabs } from "@artsy/palette-mobile"
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
@@ -13,8 +12,8 @@ import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
-  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null
-  me: MyCollectionArtworkInsights_me$key | null
+  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null | undefined
+  me: MyCollectionArtworkInsights_me$key | null | undefined
 }
 
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({

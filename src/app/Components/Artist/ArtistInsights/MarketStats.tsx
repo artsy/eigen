@@ -20,9 +20,8 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface MarketStatsProps {
   priceInsightsConnection: MarketStats_priceInsightsConnection$data
@@ -189,7 +188,7 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  environment: RelayModernEnvironment
+  environment: Environment
 }> = ({ artistInternalID, environment }) => {
   return (
     <QueryRenderer<MarketStatsQuery>

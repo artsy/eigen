@@ -124,7 +124,7 @@ interface Props {
 }
 
 interface State {
-  text: string | null
+  text: string | null | undefined
   sending: boolean
 }
 

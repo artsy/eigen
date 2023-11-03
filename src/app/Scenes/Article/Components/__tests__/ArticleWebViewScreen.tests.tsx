@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebViewScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 
 describe("ArticleWebViewScreen", () => {
   const { renderWithRelay } = setupTestWrapper({

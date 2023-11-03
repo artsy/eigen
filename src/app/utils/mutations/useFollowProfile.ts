@@ -1,5 +1,4 @@
-import { useMutation } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useMutation, graphql } from "react-relay"
 
 export interface FollowProfileOptions {
   id: string

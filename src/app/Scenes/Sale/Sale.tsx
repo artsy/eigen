@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Join } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
@@ -28,11 +28,10 @@ import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
@@ -108,7 +107,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   // poll every .5 seconds to check if sale has gone live
   useInterval(() => {
-    if (sale.liveStartAt === null) {
+    if (!sale.liveStartAt) {
       setIsLive(false)
       return
     }
@@ -118,7 +117,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         setIsLive(true)
         return
       }
-      if (now < DateTime.fromISO(sale.endAt)) {
+      if (sale.endAt && now < DateTime.fromISO(sale.endAt)) {
         setIsLive(true)
         return
       }
@@ -460,7 +459,7 @@ const SaleScreenBelowNewQuery = graphql`
 
 export const SaleQueryRenderer: React.FC<{
   saleID: string
-  environment?: RelayModernEnvironment
+  environment?: Environment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
   const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")

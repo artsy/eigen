@@ -1,7 +1,6 @@
 import { LotEndDateTime_artwork$key } from "__generated__/LotEndDateTime_artwork.graphql"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
 import { formatLotDateTime } from "./utils/formatLotDateTime"
 

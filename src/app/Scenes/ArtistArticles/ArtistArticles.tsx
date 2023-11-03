@@ -5,9 +5,13 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useState } from "react"
-import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { graphql } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import {
+  createPaginationContainer,
+  QueryRenderer,
+  RelayPaginationProp,
+  graphql,
+  Environment,
+} from "react-relay"
 
 const PAGE_SIZE = 10
 
@@ -91,7 +95,7 @@ export const ArtistArticlesContainer = createPaginationContainer(
 
 export const ArtistArticlesQueryRenderer: React.FC<{
   artistID: string
-  environment: RelayModernEnvironment
+  environment: Environment
 }> = ({ artistID, environment }) => {
   return (
     <QueryRenderer<ArtistArticlesResultQuery>

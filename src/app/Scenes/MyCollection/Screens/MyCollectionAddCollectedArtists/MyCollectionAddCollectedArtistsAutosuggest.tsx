@@ -27,8 +27,7 @@ import { sortBy, times } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, graphql } from "react-relay"
 
 export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => {
   const [query, setQuery] = useState("")

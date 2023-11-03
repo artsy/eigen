@@ -1,8 +1,7 @@
-import { Flex, Text, Button, FlexProps } from "@artsy/palette-mobile"
+import { Button, Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMarkAllAsReadSectionMutation.graphql"
-import { useMutation } from "react-relay"
-import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
+import { ConnectionHandler, UseMutationConfig, graphql, useMutation } from "react-relay"
 import { notificationTypes } from "./types"
 import { getNotificationTypes } from "./utils/getNotificationTypes"
 
@@ -22,8 +21,12 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
     try {
       commit({
         variables: {},
-        updater: markAllAsReadMutationUpdater,
-        optimisticUpdater: markAllAsReadMutationUpdater,
+        updater: (store) => {
+          markAllAsReadMutationUpdater(store)
+        },
+        optimisticUpdater: (store) => {
+          markAllAsReadMutationUpdater(store)
+        },
         onCompleted: (response) => {
           const errorMessage =
             response.markAllNotificationsAsRead?.responseOrError?.mutationError?.message
@@ -82,7 +85,11 @@ const MarkAllAsReadMutation = graphql`
   }
 `
 
-const markAllAsReadMutationUpdater = (store: RecordSourceSelectorProxy) => {
+const markAllAsReadMutationUpdater = (
+  store: Parameters<
+    NonNullable<UseMutationConfig<ActivityMarkAllAsReadSectionMutation>["updater"]>
+  >[0]
+) => {
   const root = store.getRoot()
   const me = root.getLinkedRecord("me")
   const viewer = root.getLinkedRecord("viewer")

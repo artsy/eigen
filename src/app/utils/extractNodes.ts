@@ -1,5 +1,10 @@
 type Connection<Node> =
-  | { readonly edges?: ReadonlyArray<{ readonly node?: Node | null } | null> | null }
+  | {
+      readonly edges?:
+        | ReadonlyArray<{ readonly node?: Node | null } | null | undefined>
+        | null
+        | undefined
+    }
   | undefined
   | null
 

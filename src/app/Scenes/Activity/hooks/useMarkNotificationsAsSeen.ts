@@ -1,13 +1,9 @@
 import { captureMessage } from "@sentry/react-native"
-import {
-  useMarkNotificationsAsSeenMutation,
-  useMarkNotificationsAsSeenMutation$data,
-} from "__generated__/useMarkNotificationsAsSeenMutation.graphql"
+import { useMarkNotificationsAsSeenMutation } from "__generated__/useMarkNotificationsAsSeenMutation.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
-import { graphql, useMutation } from "react-relay"
-import { RecordSourceSelectorProxy } from "relay-runtime"
+import { UseMutationConfig, graphql, useMutation } from "react-relay"
 
 export const useMarkNotificationsAsSeen = () => {
   const [commit] = useMutation<useMarkNotificationsAsSeenMutation>(MarkNotificationsAsSeenMutation)
@@ -21,8 +17,12 @@ export const useMarkNotificationsAsSeen = () => {
           until,
         },
       },
-      updater,
-      optimisticUpdater: updater,
+      updater: (store) => {
+        updater(store)
+      },
+      optimisticUpdater: (store) => {
+        updater(store)
+      },
       onCompleted: (response) => {
         const result = response.markNotificationsAsSeen?.responseOrError
         const errorMessage = result?.mutationError?.message
@@ -67,7 +67,11 @@ const MarkNotificationsAsSeenMutation = graphql`
   }
 `
 
-const updater = (store: RecordSourceSelectorProxy<useMarkNotificationsAsSeenMutation$data>) => {
+const updater = (
+  store: Parameters<
+    NonNullable<UseMutationConfig<useMarkNotificationsAsSeenMutation>["updater"]>
+  >[0]
+) => {
   const root = store.getRoot()
   const me = root.getLinkedRecord("me")
 

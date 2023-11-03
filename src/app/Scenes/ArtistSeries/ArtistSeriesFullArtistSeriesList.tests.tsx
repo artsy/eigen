@@ -26,7 +26,7 @@ describe("Full Artist Series List", () => {
           }
         }
       `}
-      variables={{ artistID: "a-great-artist" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artist) {
           return <ArtistSeriesFullArtistSeriesListFragmentContainer artist={props.artist} />

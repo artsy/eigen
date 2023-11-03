@@ -4,9 +4,8 @@ import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySe
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 interface MyCollectionWhySellProps {
   artwork: MyCollectionWhySell_artwork$key

@@ -12,7 +12,7 @@ export interface PartnerEntityHeaderProps extends BoxProps {
 }
 
 export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partner, ...rest }) => {
-  if (partner.name === null || partner.profile === null) {
+  if (!partner.name || !partner.profile) {
     return null
   }
 

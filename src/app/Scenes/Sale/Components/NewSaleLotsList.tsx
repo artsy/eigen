@@ -20,8 +20,8 @@ import { useTracking } from "react-tracking"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface NewSaleLotsListProps {
-  unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$data | null
-  viewer: NewSaleLotsList_viewer$data | null
+  unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$data | null | undefined
+  viewer: NewSaleLotsList_viewer$data | null | undefined
   saleID: string
   saleSlug: string
   relay: RelayPaginationProp

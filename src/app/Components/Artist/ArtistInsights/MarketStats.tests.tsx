@@ -1,12 +1,12 @@
-import { IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
+import { DecreaseIcon, IncreaseIcon } from "@artsy/palette-mobile"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { Environment } from "react-relay"
 import { ReactTestInstance } from "react-test-renderer"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -18,7 +18,7 @@ describe("MarketStats", () => {
     return (
       <MarketStatsQueryRenderer
         artistInternalID="some-id"
-        environment={environment as unknown as RelayModernEnvironment}
+        environment={environment as unknown as Environment}
       />
     )
   }

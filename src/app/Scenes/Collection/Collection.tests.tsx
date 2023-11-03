@@ -17,7 +17,7 @@ describe("Collection", () => {
           }
         }
       `}
-      variables={{ hello: true }}
+      variables={{}}
       render={({ props, error }) => {
         if (props) {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

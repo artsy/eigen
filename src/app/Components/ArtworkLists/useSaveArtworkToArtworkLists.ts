@@ -44,7 +44,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
     ...restOptions,
     id: artwork.id,
     internalID: artwork.internalID,
-    isSaved: artwork.isSaved,
+    isSaved: !!artwork.isSaved,
     onCompleted,
     optimisticUpdater: (isArtworkSaved, _store, isCalledBefore) => {
       if (isCalledBefore) {

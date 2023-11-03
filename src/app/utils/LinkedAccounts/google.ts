@@ -3,8 +3,7 @@ import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMuta
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { useEffect, useRef, useState } from "react"
-import { commitMutation, graphql } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Environment, commitMutation, graphql } from "react-relay"
 
 // TODO:- Remove this interface and import NativeModuleError from "@react-native-google-signin/google-signin"
 // after upgrading to > v7.1
@@ -12,7 +11,7 @@ interface GoogleSignInNativeModuleError extends Error {
   code: string
 }
 
-export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
+export const useGoogleLink = (relayEnvironment: Environment) => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 

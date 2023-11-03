@@ -15,8 +15,8 @@ import { getAttributionClassValueByName } from "app/utils/artworkRarityClassific
 import { omit, pickBy } from "lodash"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
+import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { fetchQuery, graphql } from "relay-runtime"
 
 export const MyCollectionArtworkFormArtwork: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
