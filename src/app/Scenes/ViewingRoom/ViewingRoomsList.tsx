@@ -7,13 +7,13 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
@@ -71,7 +71,7 @@ export const ViewingRoomsList = () => {
 
   const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(
     featuredFragment,
-    queryData.featured!
+    queryData.featured
   )
   const featuredLength = extractNodes(featuredData).length
 
@@ -108,7 +108,7 @@ export const ViewingRoomsList = () => {
                     <Flex mx={2}>
                       <SectionTitle title="Featured" />
                     </Flex>
-                    <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
+                    <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
                     <Spacer y={4} />
                   </>
                 )}

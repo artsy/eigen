@@ -7,7 +7,7 @@ interface ArtistSeriesHeaderProps {
   artistSeries: ArtistSeriesHeader_artistSeries$data
 }
 export const ArtistSeriesHeader: React.FC<ArtistSeriesHeaderProps> = ({ artistSeries }) => {
-  const url = artistSeries.image?.url!
+  const url = artistSeries.image?.url
 
   return (
     <Flex flexDirection="row" justifyContent="center" pt={1}>

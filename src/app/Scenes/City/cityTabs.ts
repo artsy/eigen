@@ -6,7 +6,7 @@ export const cityTabs: MapTab[] = [
     text: "All",
     getShows: (bucket) =>
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bucket!.museums ? bucket.museums.concat(bucket.galleries) : bucket.galleries,
+      bucket?.museums ? bucket.museums.concat(bucket.galleries) : bucket.galleries,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     getFairs: (bucket) => bucket.fairs,
   },

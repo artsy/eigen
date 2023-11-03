@@ -24,7 +24,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
 }) => {
   const tracking = useTracking()
 
-  const artworks = artistSeries?.artistSeriesArtworks!
+  const artworks = artistSeries?.artistSeriesArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
