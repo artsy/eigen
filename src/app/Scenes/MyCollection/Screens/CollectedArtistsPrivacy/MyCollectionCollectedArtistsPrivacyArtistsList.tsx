@@ -42,7 +42,7 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
           return (
             <SelectArtistToShareListItem
               key={item?.internalID}
-              artist={item?.node!}
+              artist={item?.node}
               interestID={item?.internalID}
               private={item.private}
             />

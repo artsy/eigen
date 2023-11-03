@@ -34,7 +34,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(({ disableLocation, loca
 
   const showsConnection = useFragment<ShowsRail_showsConnection$key>(
     showsFragment,
-    queryData?.me?.showsConnection!
+    queryData?.me?.showsConnection
   )
 
   const shows = extractNodes(showsConnection)

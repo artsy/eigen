@@ -97,9 +97,9 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
     <Touchable onPress={handleOnPress}>
       <Flex mx={hideImage ? 0 : 2} p={2} borderColor="black15" borderWidth={1}>
         <Flex flexDirection="row" justifyContent="space-between">
-          {!hideImage && (
+          {!hideImage && !!cover?.image?.url && (
             <Image
-              src={cover.image?.url!}
+              src={cover.image.url}
               aspectRatio={MINI_IMAGE_ASPECT_RATIO}
               width={60}
               testID="small-image-slideshow"
@@ -136,12 +136,14 @@ const LayoutFull: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
 
   return (
     <Flex p={2}>
-      <Image
-        src={cover.image?.url!}
-        aspectRatio={FULL_IMAGE_ASPECT_RATIO}
-        width={width - space(4)}
-        testID="image-slideshow"
-      />
+      {!!cover?.image?.url && (
+        <Image
+          src={cover.image.url}
+          aspectRatio={FULL_IMAGE_ASPECT_RATIO}
+          width={width - space(4)}
+          testID="image-slideshow"
+        />
+      )}
 
       <Flex
         position="absolute"

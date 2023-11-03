@@ -51,9 +51,15 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
           <Spacer y={1} />
         </>
       )}
-      <TouchableWithoutFeedback onPress={() => handleTap(partner.href!)}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (partner.href) {
+            handleTap(partner.href)
+          }
+        }}
+      >
         <EntityHeader
-          name={partner.name!}
+          name={partner.name ?? ""}
           meta={locationNames || undefined}
           imageUrl={partner.profile?.icon?.url || undefined}
           initials={partner.initials || undefined}

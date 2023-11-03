@@ -21,7 +21,13 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
 
   return (
     <Box {...rest}>
-      <TouchableWithoutFeedback onPress={() => navigate(partner.href!)}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (partner.href) {
+            navigate(partner.href)
+          }
+        }}
+      >
         <EntityHeader
           name={partner.name}
           meta={cities ?? undefined}

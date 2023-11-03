@@ -46,6 +46,7 @@
 		72B930384C1E516C2D20C622 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34CE551258CDFFF7B96A622E /* libPods-Artsy.a */; };
 		86C184E45BE1AB77984F038E /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F73EDC3B30A3B9A2CBD401A5 /* libPods-ArtsyTests.a */; };
 		8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* ARAppDelegate.mm */; };
+		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
 		CB18283A29D36A3A006A0805 /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */; };
@@ -137,7 +138,6 @@
 		CB43288527E8FEE500B29DD6 /* LiveAuctionBidViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274C27E8FEE300B29DD6 /* LiveAuctionBidViewControllerTests.swift */; };
 		CB43288627E8FEE500B29DD6 /* LiveAuctionLotSetViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274D27E8FEE300B29DD6 /* LiveAuctionLotSetViewControllerTests.swift */; };
 		CB43288727E8FEE500B29DD6 /* LiveAuctionLotListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274E27E8FEE300B29DD6 /* LiveAuctionLotListViewControllerTests.swift */; };
-		CB43288827E8FEE500B29DD6 /* LiveAuctionLotViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274F27E8FEE300B29DD6 /* LiveAuctionLotViewControllerTests.swift */; };
 		CB43288927E8FEE500B29DD6 /* LiveSalesPersonSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43275027E8FEE300B29DD6 /* LiveSalesPersonSpecs.swift */; };
 		CB43288B27E8FEE500B29DD6 /* ARNavigationButtonsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275427E8FEE300B29DD6 /* ARNavigationButtonsViewControllerTests.m */; };
 		CB43288C27E8FEE500B29DD6 /* ARNavigationButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275727E8FEE300B29DD6 /* ARNavigationButtonTests.m */; };
@@ -630,6 +630,7 @@
 		8E4207782A055D2D006888BD /* ARAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARAppDelegate.mm; sourceTree = "<group>"; };
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-Medium.otf"; sourceTree = "<group>"; };
@@ -727,7 +728,6 @@
 		CB43274C27E8FEE300B29DD6 /* LiveAuctionBidViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionBidViewControllerTests.swift; sourceTree = "<group>"; };
 		CB43274D27E8FEE300B29DD6 /* LiveAuctionLotSetViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionLotSetViewControllerTests.swift; sourceTree = "<group>"; };
 		CB43274E27E8FEE300B29DD6 /* LiveAuctionLotListViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionLotListViewControllerTests.swift; sourceTree = "<group>"; };
-		CB43274F27E8FEE300B29DD6 /* LiveAuctionLotViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionLotViewControllerTests.swift; sourceTree = "<group>"; };
 		CB43275027E8FEE300B29DD6 /* LiveSalesPersonSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveSalesPersonSpecs.swift; sourceTree = "<group>"; };
 		CB43275427E8FEE300B29DD6 /* ARNavigationButtonsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButtonsViewControllerTests.m; sourceTree = "<group>"; };
 		CB43275727E8FEE300B29DD6 /* ARNavigationButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButtonTests.m; sourceTree = "<group>"; };
@@ -859,13 +859,6 @@
 		CB4327F327E8FEE400B29DD6 /* text_is_taller_than_collapsed_height_before_expansion_looks_correct@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text_is_taller_than_collapsed_height_before_expansion_looks_correct@3x.png"; sourceTree = "<group>"; };
 		CB4327F427E8FEE400B29DD6 /* text_is_taller_than_collapsed_height_after_expansion_looks_correct@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "text_is_taller_than_collapsed_height_after_expansion_looks_correct@3x.png"; sourceTree = "<group>"; };
 		CB4327F527E8FEE400B29DD6 /* when_text_is_shorter_than_collapsed_height_looks_correct@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "when_text_is_shorter_than_collapsed_height_looks_correct@3x.png"; sourceTree = "<group>"; };
-		CB4327F727E8FEE400B29DD6 /* shows_a_removes_disconnected_screen_when_socket_reconnects@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shows_a_removes_disconnected_screen_when_socket_reconnects@3x.png"; sourceTree = "<group>"; };
-		CB4327F827E8FEE400B29DD6 /* looks_good_by_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "looks_good_by_default@3x.png"; sourceTree = "<group>"; };
-		CB4327F927E8FEE400B29DD6 /* shows_a_socket_disconnect_screen_when_socket_fails@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shows_a_socket_disconnect_screen_when_socket_fails@3x.png"; sourceTree = "<group>"; };
-		CB4327FA27E8FEE400B29DD6 /* shows_an_operator_disconnected_screen_when_operator_reconnects@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shows_an_operator_disconnected_screen_when_operator_reconnects@3x.png"; sourceTree = "<group>"; };
-		CB4327FB27E8FEE400B29DD6 /* shows_an_operator_disconnect_screen_when_operator_disconnects@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shows_an_operator_disconnect_screen_when_operator_disconnects@3x.png"; sourceTree = "<group>"; };
-		CB4327FC27E8FEE400B29DD6 /* handles_splitting_in_an_iPad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handles_splitting_in_an_iPad@3x.png"; sourceTree = "<group>"; };
-		CB4327FD27E8FEE400B29DD6 /* shows_an_error_screen_when_static_data_fails@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shows_an_error_screen_when_static_data_fails@3x.png"; sourceTree = "<group>"; };
 		CB4327FF27E8FEE400B29DD6 /* really_compact_horizontal_size_class__live_auctions_lot_set__looks_good_by_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "really_compact_horizontal_size_class__live_auctions_lot_set__looks_good_by_default@3x.png"; sourceTree = "<group>"; };
 		CB43280027E8FEE400B29DD6 /* compact_horizontal_size_class__live_auctions_lot_set__looks_good_by_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compact_horizontal_size_class__live_auctions_lot_set__looks_good_by_default@3x.png"; sourceTree = "<group>"; };
 		CB43280127E8FEE400B29DD6 /* regular_horizontal_size_class___live_auctions_lot_set__looks_good_by_default@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "regular_horizontal_size_class___live_auctions_lot_set__looks_good_by_default@3x.png"; sourceTree = "<group>"; };
@@ -1853,6 +1846,7 @@
 				CB43272E27E8FEE300B29DD6 /* SaleArtworkViewModelTests.swift */,
 				CB43272F27E8FEE300B29DD6 /* Views */,
 				CB43273227E8FEE300B29DD6 /* AuctionSaleNetworkModelTests.swift */,
+				CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */,
 			);
 			path = Auction;
 			sourceTree = "<group>";
@@ -1917,7 +1911,6 @@
 				CB43274C27E8FEE300B29DD6 /* LiveAuctionBidViewControllerTests.swift */,
 				CB43274D27E8FEE300B29DD6 /* LiveAuctionLotSetViewControllerTests.swift */,
 				CB43274E27E8FEE300B29DD6 /* LiveAuctionLotListViewControllerTests.swift */,
-				CB43274F27E8FEE300B29DD6 /* LiveAuctionLotViewControllerTests.swift */,
 				CB43275027E8FEE300B29DD6 /* LiveSalesPersonSpecs.swift */,
 			);
 			path = Live_Auction;
@@ -2086,7 +2079,6 @@
 				CB4327E227E8FEE400B29DD6 /* ARBidButtonSpec */,
 				CB4327EB27E8FEE400B29DD6 /* LiveAuctionFancyLotCollectionViewLayoutTests */,
 				CB4327F227E8FEE400B29DD6 /* ARCollapsableTextViewSpec */,
-				CB4327F627E8FEE400B29DD6 /* LiveAuctionViewControllerTests */,
 				CB4327FE27E8FEE400B29DD6 /* LiveAuctionLotSetViewControllerTests */,
 				CB43280227E8FEE400B29DD6 /* AuctionInformationViewControllerTests */,
 				CB43280427E8FEE400B29DD6 /* LiveAuctionLoadingViewSpec */,
@@ -2275,20 +2267,6 @@
 				CB4327F527E8FEE400B29DD6 /* when_text_is_shorter_than_collapsed_height_looks_correct@3x.png */,
 			);
 			path = ARCollapsableTextViewSpec;
-			sourceTree = "<group>";
-		};
-		CB4327F627E8FEE400B29DD6 /* LiveAuctionViewControllerTests */ = {
-			isa = PBXGroup;
-			children = (
-				CB4327F727E8FEE400B29DD6 /* shows_a_removes_disconnected_screen_when_socket_reconnects@3x.png */,
-				CB4327F827E8FEE400B29DD6 /* looks_good_by_default@3x.png */,
-				CB4327F927E8FEE400B29DD6 /* shows_a_socket_disconnect_screen_when_socket_fails@3x.png */,
-				CB4327FA27E8FEE400B29DD6 /* shows_an_operator_disconnected_screen_when_operator_reconnects@3x.png */,
-				CB4327FB27E8FEE400B29DD6 /* shows_an_operator_disconnect_screen_when_operator_disconnects@3x.png */,
-				CB4327FC27E8FEE400B29DD6 /* handles_splitting_in_an_iPad@3x.png */,
-				CB4327FD27E8FEE400B29DD6 /* shows_an_error_screen_when_static_data_fails@3x.png */,
-			);
-			path = LiveAuctionViewControllerTests;
 			sourceTree = "<group>";
 		};
 		CB4327FE27E8FEE400B29DD6 /* LiveAuctionLotSetViewControllerTests */ = {
@@ -4198,7 +4176,6 @@
 				CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */,
 				CB43295027E8FEE600B29DD6 /* UIApplicationStateEnumTests.m in Sources */,
 				CB4328BC27E8FEE500B29DD6 /* ArtsyAPI+SystemTimeTests.m in Sources */,
-				CB43288827E8FEE500B29DD6 /* LiveAuctionLotViewControllerTests.swift in Sources */,
 				CB43287727E8FEE500B29DD6 /* ARAugmentedRealityConfigSpec.m in Sources */,
 				CB43287A27E8FEE500B29DD6 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift in Sources */,
 				CB43296027E90FD900B29DD6 /* Fixtures.swift in Sources */,
@@ -4257,6 +4234,7 @@
 				CB43287427E8FEE500B29DD6 /* ARFileUtilsTests.m in Sources */,
 				CB43287B27E8FEE500B29DD6 /* SaleOnHoldOverlayViewTests.swift in Sources */,
 				CB4328BE27E8FEE500B29DD6 /* ARRouterTests.m in Sources */,
+				CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */,
 				CB43286E27E8FEE500B29DD6 /* TextStackTests.swift in Sources */,
 				CB43287927E8FEE500B29DD6 /* ARSerifNavigationViewControllerSpec.m in Sources */,
 				CB43289027E8FEE500B29DD6 /* ARTextViewTests.m in Sources */,

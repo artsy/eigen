@@ -59,7 +59,7 @@ export const SaleArtworkList: React.FC<Props> = ({
           contextScreenOwnerType={contextScreenOwnerType}
         />
       )}
-      keyExtractor={(item) => item.id!}
+      keyExtractor={(item, index) => `${item.id}-${index}`}
       style={{ paddingHorizontal: 20 }}
       ListEmptyComponent={() => (
         <ZeroState

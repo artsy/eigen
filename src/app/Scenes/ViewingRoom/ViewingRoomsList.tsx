@@ -71,7 +71,7 @@ export const ViewingRoomsList = () => {
 
   const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(
     featuredFragment,
-    queryData.featured!
+    queryData.featured
   )
   const featuredLength = extractNodes(featuredData).length
 
@@ -108,7 +108,7 @@ export const ViewingRoomsList = () => {
                     <Flex mx={2}>
                       <SectionTitle title="Featured" />
                     </Flex>
-                    <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
+                    <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
                     <Spacer y={4} />
                   </>
                 )}

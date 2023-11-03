@@ -1,6 +1,5 @@
-import { Touchable } from "@artsy/palette-mobile"
-import { Input } from "app/Components/Input"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
 
 const navigateMock = jest.fn()
@@ -38,94 +37,100 @@ describe("OnboardingLogin", () => {
     )
   }
 
-  describe("Forget Button", () => {
-    it("navigates to forgot password screen", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
-      forgotPasswordButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("navigates to forgot password screen", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent.press(screen.getByText("Forgot password?"))
+
+    expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
+  })
+
+  it("button remains disabled given a form in a blank state", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    expect(screen.getByTestId("loginButton").props.accessibilityState.disabled).toBe(true)
+  })
+
+  it("button remains disabled given a form with only email", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent.changeText(screen.getByTestId("email-address"), "test@artsymail.com")
+
+    expect(screen.getByTestId("loginButton").props.accessibilityState.disabled).toBe(true)
+  })
+
+  it("button remains disabled given a form with only password", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent.changeText(screen.getByTestId("password"), "123456")
+
+    expect(screen.getByTestId("loginButton").props.accessibilityState.disabled).toBe(true)
+  })
+
+  it("button is enabled given a form with email and password", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent.changeText(screen.getByTestId("email-address"), "test@artsymail.com")
+    fireEvent(screen.getByTestId("email-address"), "blur")
+    fireEvent.changeText(screen.getByTestId("password"), "123456")
+    fireEvent(screen.getByTestId("password"), "blur")
+
+    waitFor(() => {
+      expect(screen.getByTestId("loginButton").props.accessibilityState.disabled).toBe(false)
     })
   })
 
-  describe("Log in button", () => {
-    it("renders disabled on screen mount", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
-      expect(loginButton.props.disabled).toEqual(true)
-    })
-    it("renders disabled when the user set only the email address", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const emailInput = tree.root.findAllByType(Input)[0]
-      emailInput.props.onChangeText("test@artsymail.com")
-      const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
-      expect(loginButton.props.disabled).toEqual(true)
-    })
-    it("renders disabled when the user sets only the password input", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const passwordInput = tree.root.findAllByType(Input)[1]
-      passwordInput.props.onChangeText("password")
-      const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
-      expect(loginButton.props.disabled).toEqual(true)
-    })
+  it("validates email on blur and onSubmitEditing", () => {
+    renderWithHookWrappersTL(<TestProvider />)
 
-    it("renders enabled when a valid email and password are there", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const emailInput = tree.root.findAllByType(Input)[0]
-      const passwordInput = tree.root.findAllByType(Input)[1]
+    fireEvent.changeText(screen.getByTestId("email-address"), "invalidEmail 1")
+    fireEvent(screen.getByTestId("email-address"), "blur")
+    expect(mockValidateForm).toHaveBeenCalledTimes(1)
 
-      emailInput.props.onChangeText("example@mail.com")
-      passwordInput.props.onChangeText("password")
+    fireEvent.changeText(screen.getByTestId("email-address"), "invalidEmail 2")
+    fireEvent(screen.getByTestId("email-address"), "submitEditing")
+    expect(mockValidateForm).toHaveBeenCalledTimes(2)
+  })
 
-      const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
-      expect(loginButton.props.disabled).toEqual(true)
+  it("validates password on blur and onSubmitEditing", () => {
+    renderWithHookWrappersTL(<TestProvider />)
+
+    fireEvent.changeText(screen.getByTestId("password"), "password 1")
+    fireEvent(screen.getByTestId("password"), "blur")
+    expect(mockValidateForm).toHaveBeenCalledTimes(1)
+
+    fireEvent.changeText(screen.getByTestId("password"), "password 2")
+    fireEvent(screen.getByTestId("password"), "submitEditing")
+    waitFor(() => {
+      expect(mockValidateForm).toHaveBeenCalledTimes(2)
     })
   })
 
-  describe("Form", () => {
-    it("validates email on blur and onSubmitEditing", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const emailInput = tree.root.findAllByType(Input)[0]
+  it("does not submit the form given a submission in an empty form state", () => {
+    renderWithHookWrappersTL(<TestProvider />)
 
-      emailInput.props.onChangeText("invalidEmail 1")
-      emailInput.props.onBlur()
-      expect(mockValidateForm).toHaveBeenCalled()
+    fireEvent(screen.getByTestId("email-address"), "submitEditing")
+    fireEvent(screen.getByTestId("password"), "submitEditing")
 
-      emailInput.props.onChangeText("invalidEmail 2")
-      emailInput.props.onSubmitEditing()
-      expect(mockValidateForm).toHaveBeenCalled()
-    })
-
-    it("validates password on blur and onSubmitEditing", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const passwordInput = tree.root.findAllByType(Input)[1]
-
-      passwordInput.props.onChangeText("password 1")
-      passwordInput.props.onBlur()
-      expect(mockValidateForm).toHaveBeenCalled()
-
-      passwordInput.props.onChangeText("password 2")
-      passwordInput.props.onSubmitEditing()
-      expect(mockValidateForm).toHaveBeenCalled()
-    })
+    // email submitEditing triggers the validation but not password
+    expect(mockValidateForm).toHaveBeenCalledTimes(1)
   })
 
-  describe("autoFocus", () => {
-    it("is on the email input by default", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider />)
-      const emailInput = tree.root.findAllByType(Input)[0]
-      const passwordInput = tree.root.findAllByType(Input)[1]
+  it("autoFocus on email input by default", () => {
+    renderWithHookWrappersTL(<TestProvider />)
 
-      expect(emailInput.props.autoFocus).toBe(true)
-      expect(passwordInput.props.autoFocus).toBe(false)
-    })
+    expect(screen.getByTestId("email-address").props.autoFocus).toBe(true)
+    expect(screen.getByTestId("password").props.autoFocus).toBe(false)
+  })
 
-    it("is on the password input when the email navigation param is set", () => {
-      const tree = renderWithWrappersLEGACY(<TestProvider email="test@email.com" />)
-      const emailInput = tree.root.findAllByType(Input)[0]
-      const passwordInput = tree.root.findAllByType(Input)[1]
+  it("autoFocus on email given email navigation param", () => {
+    renderWithHookWrappersTL(<TestProvider email="test@email.com" />)
 
-      expect(emailInput.props.autoFocus).toBe(false)
-      expect(passwordInput.props.autoFocus).toBe(true)
-    })
+    expect(screen.getByTestId("email-address").props.autoFocus).toBe(false)
+    expect(screen.getByTestId("password").props.autoFocus).toBe(true)
   })
 })

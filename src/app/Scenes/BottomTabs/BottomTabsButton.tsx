@@ -69,7 +69,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       accessibilityRole="button"
       accessibilityLabel={`${tab} bottom tab`}
       onPressIn={() => {
-        clearTimeout(timeout.current!)
+        clearTimeout(timeout.current)
         setIsBeingPressed(true)
       }}
       onPressOut={() => {
