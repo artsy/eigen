@@ -191,7 +191,7 @@
     "react-native-shake": "5.5.2",
     "react-native-share": "8.2.1",
     "react-native-svg": "9.13.3",
-    "react-native-url-polyfill": "1.3.0",
+    "react-native-url-polyfill": "2.0.0",
     "react-native-view-shot": "3.4.0",
     "react-native-vimeo-iframe": "1.2.1",
     "react-native-webview": "13.6.2",
@@ -210,7 +210,7 @@
     "supercluster": "7.1.5",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "unleash-proxy-client": "3.1.0",
-    "url": "0.11.0",
+    "url": "0.11.3",
     "victory-native": "36.6.8",
     "yup": "0.31.1"
   },
