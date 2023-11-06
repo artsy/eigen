@@ -5,7 +5,7 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { ClearAllButton } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 
@@ -15,7 +15,7 @@ describe("ClearAllButton", () => {
   it("Is enabled when there are active filters", () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
-        <ClearAllButton />
+        <SavedSearchFilterScreen />
       </SavedSearchStoreProvider>
     )
 
@@ -34,7 +34,7 @@ describe("ClearAllButton", () => {
           attributes: {},
         }}
       >
-        <ClearAllButton />
+        <SavedSearchFilterScreen />
       </SavedSearchStoreProvider>
     )
 
@@ -55,7 +55,7 @@ describe("ClearAllButton", () => {
           },
         }}
       >
-        <ClearAllButton />
+        <SavedSearchFilterScreen />
       </SavedSearchStoreProvider>
     )
 
