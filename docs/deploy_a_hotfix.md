@@ -45,9 +45,12 @@ Compare the output hash to the earlier hash, if it is the same you can deploy vi
 <details>
   <summary>Codepush release hotfix process</summary>
 
-## Deploy your change to codepush staging deployment
+## Deploy your change to codepush canary deployment
 
-`./scripts/codepush/deploy-to-codepush.sh 'Staging' 'hotfix description'`
+Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to codepush or betas.
+
+Run the script to deploy the hotfix to the canary deployment:
+`./scripts/codepush/deploy-to-codepush.sh 'Canary' 'hotfix description'`
 
 ## Test your codepush change in the production app
 
