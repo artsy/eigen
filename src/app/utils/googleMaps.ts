@@ -1,5 +1,5 @@
-import { stringify } from "querystring"
 import { captureMessage } from "@sentry/react-native"
+import { stringify } from "query-string"
 import Config from "react-native-config"
 
 const API_KEY = Config.GOOGLE_MAPS_API_KEY

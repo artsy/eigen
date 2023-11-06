@@ -1,5 +1,5 @@
-import querystring from "querystring"
 import { Flex, Touchable } from "@artsy/palette-mobile"
+import { parse } from "query-string"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { Config } from "react-native-config"
@@ -97,7 +97,7 @@ const useVimeoVideoMetadata = (videoId: string) => {
 export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
   const [url, queryParams] = playerUrl.split("?")
   const videoId = url.replace("https://player.vimeo.com/video/", "")
-  const params = querystring.parse("?" + queryParams)
+  const params = parse("?" + queryParams)
 
   return {
     videoId,
