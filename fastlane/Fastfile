@@ -373,6 +373,10 @@ lane :deploy_to_codepush do |options|
   puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
 end
 
+lane :promote_codepush do |options|
+  puts "Here is where I should promote the codepush release"
+end
+
 def set_codepush_release_values(deployment_name, platform)
   date_str = DateTime.now.strftime("%Y.%m.%d.%H")
   latest_version = $APP_JSON['version']
