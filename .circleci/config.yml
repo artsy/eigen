@@ -400,7 +400,7 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2023.10.2-node
+      - image: cimg/android:2023.11.1-node
     resource_class: large
     steps:
       - prep-android-env
