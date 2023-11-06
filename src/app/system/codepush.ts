@@ -15,10 +15,15 @@ const codePushProdKey =
   Platform.OS == "ios"
     ? Config.CODE_PUSH_IOS_PRODUCTION_DEPLOYMENT_KEY
     : Config.CODE_PUSH_ANDROID_PRODUCTION_DEPLOYMENT_KEY
+const codePushHotfixTestKey =
+  Platform.OS == "ios"
+    ? Config.CODE_PUSH_IOS_HOTFIX_TEST_DEPLOYMENT_KEY
+    : Config.CODE_PUSH_ANDROID_HOTFIX_TEST_DEPLOYMENT_KEY
 
 export const stagingKey = codePushStagingKey ?? "Staging_Key"
 export const productionKey = codePushProdKey ?? "Production_Key"
 export const canaryKey = codePushCanaryKey ?? "Canary_Key"
+export const hotfixTestKey = codePushHotfixTestKey ?? "Hotfix_Test_Key"
 
 /**
  * CodePush options documented here: https://learn.microsoft.com/en-us/appcenter/distribution/codepush/rn-api-ref
@@ -34,7 +39,7 @@ const options = () => {
       checkFrequency: codePush.CheckFrequency.MANUAL,
     }
   } else {
-    return { deploymentKey: codePushProdKey }
+    return { deploymentKey: codePushHotfixTestKey }
   }
 }
 

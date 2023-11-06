@@ -8,7 +8,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
-import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
+import { canaryKey, productionKey, stagingKey, hotfixTestKey } from "app/system/codepush"
 import { Fragment, useEffect, useState } from "react"
 import CodePush from "react-native-code-push"
 import DeviceInfo from "react-native-device-info"
@@ -19,18 +19,20 @@ interface CodePushRelease {
   label: string
 }
 
-type CodePushDeployment = "Staging" | "Production" | "Canary"
+type CodePushDeployment = "Staging" | "Production" | "Canary" | "HotfixTest"
 
 const codePushDeploymentKeys: Record<CodePushDeployment, string> = {
   Staging: stagingKey,
   Production: productionKey,
   Canary: canaryKey,
+  HotfixTest: hotfixTestKey,
 }
 
 const codePushKeyToDeployment: { [key: string]: CodePushDeployment } = {
   [stagingKey]: "Staging",
   [productionKey]: "Production",
   [canaryKey]: "Canary",
+  [hotfixTestKey]: "HotfixTest",
 }
 
 export const CodePushOptions = () => {
