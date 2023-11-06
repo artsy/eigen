@@ -110,10 +110,7 @@ const TestWrapper: typeof AutosuggestResults = (props) => (
   </SearchContext.Provider>
 )
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  throttle: (f: any) => f,
-}))
+jest.mock("lodash/throttle", () => (f: any) => f)
 
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 

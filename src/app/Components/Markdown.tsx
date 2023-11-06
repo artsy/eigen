@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
-import _ from "lodash"
+import { isArray } from "lodash"
 import React from "react"
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 function stringifyChildren(children: any): string {
-  return _.isArray(children) ? children.join("") : children
+  return isArray(children) ? children.join("") : children
 }
 
 const basicRules = defaultRules({ modal: true })

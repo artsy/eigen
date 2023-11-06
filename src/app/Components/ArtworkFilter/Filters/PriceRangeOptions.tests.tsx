@@ -21,10 +21,7 @@ const DEFAULT_RANGE: Range = {
   max: "*",
 }
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  debounce: jest.fn(),
-}))
+jest.mock("lodash/debounce", () => jest.fn())
 
 describe("CustomPriceInput", () => {
   it("renders without error", () => {

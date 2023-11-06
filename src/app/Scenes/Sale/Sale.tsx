@@ -24,7 +24,7 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import _, { times } from "lodash"
+import { compact, times } from "lodash"
 import { DateTime } from "luxon"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
@@ -204,7 +204,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     )
   }
 
-  const saleSectionsData: SaleSection[] = _.compact([
+  const saleSectionsData: SaleSection[] = compact([
     {
       key: SALE_HEADER,
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,

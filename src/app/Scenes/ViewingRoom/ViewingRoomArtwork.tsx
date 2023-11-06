@@ -19,7 +19,7 @@ import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import _ from "lodash"
+import { drop } from "lodash"
 import { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -62,7 +62,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     )
   }
 
-  const moreImages = _.drop(selectedArtwork.figures!, 1)
+  const moreImages = drop(selectedArtwork.figures!, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 

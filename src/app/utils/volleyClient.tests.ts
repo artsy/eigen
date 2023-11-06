@@ -1,16 +1,13 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { volleyClient } from "./volleyClient"
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  throttle(fn: any, ms: any) {
-    let timeout = 0 as any
-    return () => {
-      clearTimeout(timeout)
-      timeout = setTimeout(fn, ms)
-    }
-  },
-}))
+jest.mock("lodash/throttle", () => (fn: any, ms: any) => {
+  let timeout = 0 as any
+  return () => {
+    clearTimeout(timeout)
+    timeout = setTimeout(fn, ms)
+  }
+})
 
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
