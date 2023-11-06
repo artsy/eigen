@@ -374,7 +374,19 @@ lane :deploy_to_codepush do |options|
 end
 
 lane :promote_codepush do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+
+  sh("appcenter login --token #{token}")
   puts "Here is where I should promote the codepush release"
+
+  sourceDeployment = "Canary"
+  targetDeployment = "HotfixTest"
+
+  # Promote to prod with 10% rollout, make it mandatory
+  sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r 10 --mandatory")
+  sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r 10 --mandatory")
 end
 
 def set_codepush_release_values(deployment_name, platform)
