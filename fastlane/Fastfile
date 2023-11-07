@@ -385,7 +385,7 @@ lane :promote_codepush do |options|
   sourceDeployment = "Canary"
   targetDeployment = "Production"
 
-  # Promote to prod with 10% rollout, make it mandatory
+  # Promote to prod with rollout percentage, make it mandatory
   sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
   sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
 end
