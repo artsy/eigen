@@ -34,12 +34,17 @@ const options = () => {
   if (__TEST__) {
     return {}
   } else if (ArtsyNativeModule.isBetaOrDev) {
-    return {
-      deploymentKey: stagingKey,
-      checkFrequency: codePush.CheckFrequency.MANUAL,
+    if (__DEV__) {
+      return {
+        deploymentKey: stagingKey,
+        checkFrequency: codePush.CheckFrequency.MANUAL,
+      }
+    } else {
+      // Test pulling hotfixes in beta
+      return { deploymentKey: hotfixTestKey }
     }
   } else {
-    return { deploymentKey: codePushHotfixTestKey }
+    return { deploymentKey: hotfixTestKey }
   }
 }
 
