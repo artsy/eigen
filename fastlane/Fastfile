@@ -390,6 +390,19 @@ lane :promote_codepush do |options|
   sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
 end
 
+lane :update_codepush_rollout do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+  sh("appcenter login --token #{token}")
+
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+  targetDeployment = "Production"
+
+  rolloutPercentage = options[:rollout_percentage]
+  sh("appcenter codepush patch -a #{androidAppName} #{targetDeployment} -r #{rolloutPercentage}")
+  sh("appcenter codepush patch -a #{iosAppName} #{targetDeployment} -r #{rolloutPercentage}")
+end
+
 def set_codepush_release_values(deployment_name, platform)
   date_str = DateTime.now.strftime("%Y.%m.%d.%H")
   latest_version = $APP_JSON['version']
