@@ -365,7 +365,6 @@ const Home = memo((props: HomeProps) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ backgroundColor: "purple", height: 200, width: "100%" }} />
       <AboveTheFoldFlatList<HomeModule>
         listRef={flatlistRef}
         testID="home-flat-list"
