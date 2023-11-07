@@ -68,6 +68,12 @@ Make sure to monitor the app as it rolls out to users.
 For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
 
+### Update rollout
+
+If all looks good with the fix you can update the rollout to all users:
+
+`./scripts/codepush/update_rollout.sh 100`
+
 </details>
 
 <details>
