@@ -36,7 +36,7 @@ export const OnboardingQuestionThree = () => {
       onDone()
     } else {
       // @ts-expect-error
-      navigate(nextScreen!)
+      navigate(nextScreen)
     }
   }, [navigate, nextScreen, questionThree, trackAnsweredQuestionThree])
 

@@ -56,12 +56,13 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
           // be cautious to avoid crashes if this assumption is broken.
           const artworkImageURLs = take(
             concat(
-              [result?.image?.url!],
-              extractNodes(result?.followedArtistArtworks, (artwork) => artwork.image?.url!),
-              extractNodes(result?.otherArtworks, (artwork) => artwork.image?.url!)
+              [result?.image?.url],
+              extractNodes(result?.followedArtistArtworks, (artwork) => artwork.image?.url),
+              extractNodes(result?.otherArtworks, (artwork) => artwork.image?.url)
             ),
             3
-          )
+          ).filter(Boolean) as string[]
+
           const location = result?.location?.city || result?.location?.country
           return (
             <CardRailCard

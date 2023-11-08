@@ -98,9 +98,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       )
       const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
         (sortEntity) => sortEntity.paramValue === "-published_at"
-      )!
+      )
 
-      filters = [...params, sortFilterItem]
+      filters = [...params, ...(Array.isArray(sortFilterItem) ? sortFilterItem : [])]
     }
 
     setInitialFilterStateAction(filters)
@@ -115,9 +115,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }, [scrollToArtworksGrid])
 
   const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
-    entityId: artist.internalID!,
+    entityId: artist.internalID,
     entityName: artist.name ?? "",
-    entitySlug: artist.slug!,
+    entitySlug: artist.slug,
     entityOwnerType: OwnerType.artist,
   })
 

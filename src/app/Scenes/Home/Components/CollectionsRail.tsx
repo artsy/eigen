@@ -50,8 +50,8 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
           // still be cautious to avoid crashes if this assumption is broken.
           const artworkImageURLs = extractNodes(
             item.artworksConnection,
-            (artwork) => artwork.image?.url!
-          )
+            (artwork) => artwork.image?.url
+          ).filter(Boolean) as string[]
 
           return (
             <CollectionCard

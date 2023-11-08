@@ -16,7 +16,7 @@ export function updateConversation(
 ) {
   return commitMutation<UpdateConversationMutation>(getRelayEnvironment(), {
     updater: (store) => {
-      store!.get(conversation.id)!.setValue(false, "unread")
+      store?.get(conversation.id)?.setValue(false, "unread")
     },
     onCompleted,
     onError,

@@ -24,7 +24,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => <SearchArtworksGridPlaceholder />,
           initialProps: { keyword },
-          renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
+          renderFallback: ({ retry }) => <LoadFailureView onRetry={retry || (() => {})} />,
         })}
         variables={{ count: 10, keyword }}
         cacheConfig={{ force: true }}
