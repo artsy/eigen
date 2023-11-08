@@ -51,18 +51,25 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const { trackEvent } = useTracking()
 
   const viewInAR = () => {
-    const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
+    if (
+      !!selectedArtwork.isHangable &&
+      !!selectedArtwork?.widthCm &&
+      !!selectedArtwork?.heightCm &&
+      !!selectedArtwork?.image?.url
+    ) {
+      const [widthIn, heightIn] = [selectedArtwork.widthCm, selectedArtwork.heightCm].map(cm2in)
 
-    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      selectedArtwork.image!.url!,
-      widthIn,
-      heightIn,
-      selectedArtwork.slug,
-      selectedArtwork.id
-    )
+      LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
+        selectedArtwork.image.url,
+        widthIn,
+        heightIn,
+        selectedArtwork.slug,
+        selectedArtwork.id
+      )
+    }
   }
 
-  const moreImages = drop(selectedArtwork.figures!, 1)
+  const moreImages = drop(selectedArtwork.figures, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
@@ -73,7 +80,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       <ScrollView>
         <Flex>
           <ImageCarousel
-            staticImages={[selectedArtwork.figures![0]] as any}
+            staticImages={[selectedArtwork.figures?.[0]] as any}
             cardHeight={screenHeight}
           />
           {!!(
@@ -120,10 +127,17 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             variant="fillDark"
             block
             onPress={() => {
-              trackEvent(
-                tracks.tap(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug)
-              )
-              navigate(selectedArtwork.href!)
+              if (!!selectedArtwork.href) {
+                trackEvent(
+                  tracks.tap(
+                    vrInfo.internalID,
+                    vrInfo.slug,
+                    selectedArtwork.id,
+                    selectedArtwork.slug
+                  )
+                )
+                navigate(selectedArtwork.href)
+              }
             }}
           >
             View more details
@@ -157,10 +171,16 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           <Text variant="sm">In viewing room</Text>
           <Spacer y={2} />
         </Box>
-        <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>
+        <Touchable
+          onPress={() => {
+            if (!!vrInfo.slug) {
+              navigate(`/viewing-room/${vrInfo.slug}`)
+            }
+          }}
+        >
           <LargeCard
             title={vrInfo.title}
-            subtitle={vrInfo.partner!.name!}
+            subtitle={vrInfo?.partner?.name ?? ""}
             image={vrInfo.heroImage?.imageURLs?.normalized ?? ""}
             tag={tag}
           />
