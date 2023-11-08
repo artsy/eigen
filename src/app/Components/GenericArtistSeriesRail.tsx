@@ -43,8 +43,8 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = extractNodes(
             result?.artworksConnection,
-            (artwork) => artwork.image?.url!
-          )
+            (artwork) => artwork.image?.url
+          ).filter(Boolean) as string[]
 
           return (
             <CardRailCard

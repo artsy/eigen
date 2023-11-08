@@ -58,7 +58,7 @@ export const GeneArtworks: React.FC<GeneArtworksContainerProps> = ({ gene, relay
           Showing {artworksTotal} works
         </Text>
         <InfiniteScrollArtworksGrid
-          connection={gene.artworks!}
+          connection={gene.artworks}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
         />
