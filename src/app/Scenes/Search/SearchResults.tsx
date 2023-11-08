@@ -22,15 +22,16 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
 
   const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
-    trackEvent(
-      tracks.tappedSearchResult({
-        type: result.displayType || result.__typename,
-        slug: result.slug!,
-        position: itemIndex!,
-        query,
-        contextModule: ContextModule.topTab,
-      })
-    )
+    if (typeof itemIndex === "number" && !!result.slug)
+      trackEvent(
+        tracks.tappedSearchResult({
+          type: result.displayType || result.__typename,
+          slug: result.slug,
+          position: itemIndex,
+          query,
+          contextModule: ContextModule.topTab,
+        })
+      )
   }
 
   if (isTopPillSelected) {
