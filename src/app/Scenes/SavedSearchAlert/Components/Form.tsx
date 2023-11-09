@@ -248,8 +248,6 @@ export const Form: React.FC<FormProps> = ({
                 </Text>
               </Box>
             )}
-            <Spacer y={4} />
-            <Spacer y={4} />
 
             {!!values.email && (
               <Text
