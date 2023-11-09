@@ -34,7 +34,7 @@ const options = () => {
       checkFrequency: codePush.CheckFrequency.MANUAL,
     }
   } else {
-    return { deploymentKey: codePushProdKey }
+    return { deploymentKey: productionKey }
   }
 }
 

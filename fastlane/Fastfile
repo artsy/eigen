@@ -373,6 +373,36 @@ lane :deploy_to_codepush do |options|
   puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
 end
 
+lane :promote_codepush do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+
+  rolloutPercentage = options[:rollout_percentage]
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+
+  sh("appcenter login --token #{token}")
+
+  sourceDeployment = "Canary"
+  targetDeployment = "Production"
+
+  # Promote to prod with rollout percentage, make it mandatory
+  sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
+  sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
+end
+
+lane :update_codepush_rollout do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+  sh("appcenter login --token #{token}")
+
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+  targetDeployment = "Production"
+
+  rolloutPercentage = options[:rollout_percentage]
+  sh("appcenter codepush patch -a #{androidAppName} #{targetDeployment} -r #{rolloutPercentage}")
+  sh("appcenter codepush patch -a #{iosAppName} #{targetDeployment} -r #{rolloutPercentage}")
+end
+
 def set_codepush_release_values(deployment_name, platform)
   date_str = DateTime.now.strftime("%Y.%m.%d.%H")
   latest_version = $APP_JSON['version']
