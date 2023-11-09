@@ -63,7 +63,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               ),
               3
             )
-          ) as string[]
+          )
 
           const location = result?.location?.city || result?.location?.country
           return (
