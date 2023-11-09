@@ -22,25 +22,23 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 
 `git checkout ios-7.2.0-2022.02.03.14-submission`
 
-## Create a branch for your hotfix
+## Create a branch for the hotfix
 
 `git branch 7.2.0-hotfix`
 
 `git checkout 7.2.0-hotfix`
 
-## Get the base native code hash of the release
+## Apply the fix(es) using the script
 
-Run the script `./scripts/codepush/calculate-native-hash.sh`
-Note the output hash in the last line of the output. You will use this to determine if native code changed.
+Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
+You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
 
-## Cherry-pick the pr with the fix
+Run the script `./scripts/codepush/apply-fix.sh <commit-hash>`
+Passing the commit hash of the fix, if there are multiple you can run multiple times.
 
-`git cherry-pick <hot-fix-commit-hash>`
-
-## Determine if your change affected native code
-
-Run the script `./scripts/codepush/calculate-native-hash.sh` again after your changes.
-Compare the output hash to the earlier hash, if it is the same you can deploy via codepush, otherwise you must go through the regular deployment process.
+If you see output like: `Warning: native code changed you cannot use codepush for this hotfix, please follow the native beta deployment steps.`
+The changes affected native code and cannot be deployed through codepush, please follow the `Native release hotfix process` section of this document.
+Otherwise follow the steps in `Codepush release hotfix process`.
 
 <details>
   <summary>Codepush release hotfix process</summary>
