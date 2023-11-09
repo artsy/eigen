@@ -49,7 +49,7 @@ export class Notification extends React.Component<Props> {
               <View style={styles.header}>
                 {!!notification.image && (
                   <Image
-                    source={{ uri: notification.image.resized?.url! }}
+                    source={{ uri: notification.image.resized?.url }}
                     style={[styles.artistAvatar, { backgroundColor: color("black5") }]}
                   />
                 )}

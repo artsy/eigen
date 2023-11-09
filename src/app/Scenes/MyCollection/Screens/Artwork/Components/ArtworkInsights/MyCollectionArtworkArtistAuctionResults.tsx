@@ -38,8 +38,10 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
       <SectionTitle
         title={`Auction Results for ${artwork?.artist?.name}`}
         onPress={() => {
-          trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork?.slug))
-          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
+          if (!!artwork?.artist?.slug) {
+            trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork.slug))
+            navigate(`/artist/${artwork.artist.slug}/auction-results`)
+          }
         }}
       />
 
@@ -52,8 +54,10 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
             <AuctionResultListItemFragmentContainer
               auctionResult={item}
               onPress={() => {
-                trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+                if (!!artist?.slug) {
+                  trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
+                  navigate(`/artist/${artist.slug}/auction-result/${item.internalID}`)
+                }
               }}
             />
           </>

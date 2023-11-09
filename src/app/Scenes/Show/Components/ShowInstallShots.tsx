@@ -23,17 +23,19 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         keyExtractor={(image, i) => String(image.internalID || i)}
         renderItem={({ item: image }) => {
-          if (!image.src || !image.dimensions) {
+          if (!image.src || !image.dimensions || !image.dimensions.width) {
             return null
           }
 
           return (
             <Box>
-              <OpaqueImageView
-                width={image.dimensions.width!}
-                height={image.dimensions.height!}
-                imageURL={image.src}
-              />
+              {!!image.dimensions.height && (
+                <OpaqueImageView
+                  width={image.dimensions.width}
+                  height={image.dimensions.height}
+                  imageURL={image.src}
+                />
+              )}
 
               {!!image.caption && (
                 <Text
@@ -42,7 +44,7 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
                   mt={0.5}
                   numberOfLines={1}
                   ellipsizeMode="tail"
-                  style={{ width: image.dimensions.width! }}
+                  style={{ width: image.dimensions.width }}
                 >
                   {image.caption}
                 </Text>

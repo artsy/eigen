@@ -40,7 +40,7 @@ export const OnboardingPartnerListItem: React.FC<OnboardingPartnerListItemProps>
 
   return (
     <EntityHeader
-      name={name!}
+      name={name ?? ""}
       meta={meta}
       imageUrl={imageUrl ?? undefined}
       initials={initials ?? undefined}

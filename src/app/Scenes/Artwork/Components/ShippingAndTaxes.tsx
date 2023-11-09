@@ -11,7 +11,9 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
   const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay, taxInfo } = artwork
 
   const handleLearnMorePress = () => {
-    navigate(taxInfo!.moreInfo.url)
+    if (!!taxInfo?.moreInfo?.url) {
+      navigate(taxInfo.moreInfo.url)
+    }
   }
 
   return (

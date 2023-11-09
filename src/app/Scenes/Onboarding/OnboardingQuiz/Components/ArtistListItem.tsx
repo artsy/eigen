@@ -33,7 +33,7 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
     <Flex {...rest}>
       <EntityHeader
         mr={1}
-        name={name!}
+        name={name ?? ""}
         meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
         imageUrl={coverArtwork?.image?.url ?? undefined}
         initials={initials ?? undefined}

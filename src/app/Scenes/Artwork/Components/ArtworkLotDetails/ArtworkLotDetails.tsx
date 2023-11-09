@@ -30,7 +30,9 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   const shouldRenderExtraInfo = shouldRenderInfo && !isLiveAuctionState
 
   const handleBuyersPremiumTap = () => {
-    navigate(`/auction/${internalID!}/buyers-premium`)
+    if (!!internalID) {
+      navigate(`/auction/${internalID}/buyers-premium`)
+    }
   }
 
   const handleConditionsOfSaleTap = () => {
@@ -76,8 +78,8 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
 
       {!!shouldRenderExtraInfo && renderLotDateTimeInfo()}
 
-      {!!(shouldRenderExtraInfo && cascadingEndTimeIntervalMinutes) && (
-        <LotCascadingEndTimesBanner sale={artworkData.sale!} />
+      {!!(shouldRenderExtraInfo && cascadingEndTimeIntervalMinutes) && !!artworkData?.sale && (
+        <LotCascadingEndTimesBanner sale={artworkData.sale} />
       )}
 
       {!!(shouldRenderExtraInfo && isWithBuyersPremium) && (
@@ -95,9 +97,9 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
         </Box>
       )}
 
-      {!!shouldRenderInfo && (
+      {!!shouldRenderInfo && !!artworkData?.sale && (
         <Text variant="sm" testID="conditions-of-sale">
-          By placing a bid you agree to {partnerName(artworkData.sale!)}{" "}
+          By placing a bid you agree to {partnerName(artworkData.sale)}{" "}
           <LinkText onPress={handleConditionsOfSaleTap}>Conditions of Sale</LinkText>.
         </Text>
       )}

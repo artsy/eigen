@@ -30,6 +30,8 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   const cascadingEndTimeFeatureEnabled = sale.cascadingEndTimeIntervalMinutes
 
+  const shouldShowShareButton = !!sale?.href && !!sale?.name
+
   return (
     <>
       {!!sale.coverImage?.url && (
@@ -97,27 +99,30 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
               </Text>
             </Flex>
             <Flex flex={0.1}>
-              <Touchable
-                onPress={() => {
-                  showShareSheet({
-                    type: "sale",
-                    slug: sale.slug,
-                    internalID: sale.internalID,
-                    href: sale.href!,
-                    title: sale.name!,
-                    artists: [],
-                  })
-                }}
-                style={{
-                  width: 30,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                haptic="impactLight"
-              >
-                <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-              </Touchable>
+              {!!shouldShowShareButton && (
+                <Touchable
+                  onPress={() => {
+                    !!shouldShowShareButton &&
+                      showShareSheet({
+                        type: "sale",
+                        slug: sale.slug,
+                        internalID: sale.internalID,
+                        href: sale.href,
+                        title: sale.name,
+                        artists: [],
+                      })
+                  }}
+                  style={{
+                    width: 30,
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  haptic="impactLight"
+                >
+                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+                </Touchable>
+              )}
             </Flex>
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (

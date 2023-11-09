@@ -55,7 +55,7 @@ class CitySavedList extends React.Component<Props, State> {
     return (
       <EventList
         header="Saved shows"
-        cityName={this.props.city.name!}
+        cityName={this.props.city.name}
         bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
         type="saved"
         relay={this.props.relay as any}

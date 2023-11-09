@@ -75,7 +75,7 @@ class Header extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            store!.get(id)!.setValue(!isFollowed, "isFollowed")
+            store?.get(id)?.setValue(!isFollowed, "isFollowed")
           },
           onError: () => this.failedFollowChange(),
         })
