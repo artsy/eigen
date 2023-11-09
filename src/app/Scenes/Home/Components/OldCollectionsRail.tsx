@@ -52,7 +52,7 @@ const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
           // still be cautious to avoid crashes if this assumption is broken.
           const artworkImageURLs = compact(
             extractNodes(result.artworksConnection, (artwork) => artwork.image?.url)
-          ) as string[]
+          )
 
           return (
             <CardRailCard
