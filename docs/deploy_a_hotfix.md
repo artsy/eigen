@@ -22,13 +22,16 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 
 `git checkout ios-7.2.0-2022.02.03.14-submission`
 
-## Create a branch for your hotfix
+## Create a branch for the hotfix
 
 `git branch 7.2.0-hotfix`
 
 `git checkout 7.2.0-hotfix`
 
-## Apply your fix using the script
+## Apply the fix(es) using the script
+
+Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
+You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
 
 Run the script `./scripts/codepush/apply-fix.sh <commit-hash>`
 Passing the commit hash of the fix, if there are multiple you can run multiple times.
