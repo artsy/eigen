@@ -454,6 +454,7 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
     hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
