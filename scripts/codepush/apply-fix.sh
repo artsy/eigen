@@ -36,7 +36,7 @@ echo "Final native code hash: $final_hash"
 
 # Step 5: Compare hashes and output message
 if [ "$initial_hash" != "$final_hash" ]; then
-    echo -e "\033[0;31mWarning: native code changed you cannot use codepush for this hotfix, please follow the native beta deployment steps\033[0m"
+    echo -e "\033[0;31mWarning: native code changed you cannot use codepush for this hotfix, please follow the native release hotfix process steps.\033[0m"
 else
-    echo "Fix applied and native code did not change!"
+    echo "Fix applied and native code did not change! You can continue with the codepush release process."
 fi
