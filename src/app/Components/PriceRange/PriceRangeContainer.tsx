@@ -105,6 +105,23 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
     <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
       {!!header && <Flex m={2}>{header}</Flex>}
 
+      <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
+        {!!shouldDisplayHistogram && (
+          <Flex mb={2}>
+            <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
+          </Flex>
+        )}
+
+        <PriceRangeSlider
+          sliderRange={sliderRange}
+          onSliderValueChange={handleSliderValueChange}
+          onMultiSliderValuesChangeStart={handleMultiSliderValuesChangeStart}
+          onMultiSliderValuesChangeFinish={handleMultiSliderValuesChangeFinish}
+        />
+      </Flex>
+
+      <Spacer y={2} />
+
       <Flex flexDirection="row" mx={2}>
         <Input
           containerStyle={{ flex: 1 }}
@@ -132,22 +149,6 @@ export const PriceRangeContainer: React.FC<PriceRangeContainerProps> = ({
           accessibilityLabel="Maximum Price Range Input"
         />
       </Flex>
-      <Spacer y={2} />
-      <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
-        {!!shouldDisplayHistogram && (
-          <Flex mb={2}>
-            <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
-          </Flex>
-        )}
-
-        <PriceRangeSlider
-          sliderRange={sliderRange}
-          onSliderValueChange={handleSliderValueChange}
-          onMultiSliderValuesChangeStart={handleMultiSliderValuesChangeStart}
-          onMultiSliderValuesChangeFinish={handleMultiSliderValuesChangeFinish}
-        />
-      </Flex>
-
       <Spacer y={2} />
 
       <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
