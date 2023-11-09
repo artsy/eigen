@@ -10,7 +10,7 @@ fi
 commit_hash=$1
 
 # Step 2: Calculate initial hash of native code
-initial_hash=$(./calculate-native-hash.sh)
+initial_hash=$(./scripts/codepush/calculate-native-hash.sh)
 if [ $? -ne 0 ]; then
     echo "Error calculating initial native code hash"
     exit 2
@@ -26,7 +26,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Step 4: Calculate final hash of native code
-final_hash=$(./calculate-native-hash.sh)
+final_hash=$(./scripts/codepush/calculate-native-hash.sh)
 if [ $? -ne 0 ]; then
     echo "Error calculating final native code hash"
     exit 4
