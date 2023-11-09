@@ -52,13 +52,13 @@ export const FancySwiperIcons = ({ swiper, OnPress }: FancySwiperIconsProps) => 
   return (
     <Flex flexDirection="row" justifyContent="space-around" pb={4} mx={4}>
       <Animated.View style={[{ flex: 1, alignItems: "center" }, dislikeIconAnimatedStyle]}>
-        <Touchable onPress={() => OnPress("left")}>
+        <Touchable onPress={() => OnPress("left")} accessibilityLabel="Skip">
           <CloseIcon height={40} width={50} />
         </Touchable>
       </Animated.View>
       <Flex flex={1} alignItems="center">
         <Animated.View style={[likeIconAnimatedStyle, { position: "absolute" }]}>
-          <Touchable onPress={() => OnPress("right")}>
+          <Touchable onPress={() => OnPress("right")} accessibilityLabel="Like">
             <HeartIcon height={40} width={50} />
           </Touchable>
         </Animated.View>
