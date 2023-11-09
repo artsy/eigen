@@ -38,9 +38,9 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
       <ScrollView>
         <Join separator={<Separator my={2} borderColor="black10" />}>
           <SavedSearchFilterAppliedFilters />
-          <SavedSearchFilterPriceRangeQR />
-          <SavedSearchFilterRarity />
           <SavedSearchFilterAdditionalGeneIDs />
+          <SavedSearchFilterRarity />
+          <SavedSearchFilterPriceRangeQR />
           <SavedSearchFilterWaysToBuy />
           <SavedSearchFilterColor />
         </Join>
