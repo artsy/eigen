@@ -16658,6 +16658,7 @@ type SearchCriteria {
     sort: ArtistSorts
     term: String
   ): ArtistConnection
+  artistSeriesIDs: [String!]!
   atAuction: Boolean
   attributionClass: [String!]!
   colors: [String!]!
@@ -16722,6 +16723,7 @@ input SearchCriteriaAttributes {
   # DEPRECATED Please use artistIDs instead
   artistID: String = null
   artistIDs: [String!] = []
+  artistSeriesIDs: [String!] = []
   atAuction: Boolean = null
   attributionClass: [String!] = []
   colors: [String!] = []
