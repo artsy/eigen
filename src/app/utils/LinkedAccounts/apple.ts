@@ -8,10 +8,9 @@ import { Toast } from "app/Components/Toast/Toast"
 import { AppleToken } from "app/Scenes/Onboarding/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
 import { useEffect, useRef, useState } from "react"
-import { commitMutation, graphql } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { commitMutation, Environment, graphql } from "react-relay"
 
-export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
+export const useAppleLink = (relayEnvironment: Environment) => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 

@@ -25,7 +25,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
 }) => {
   useArtworkFilters({
     relay,
-    aggregations: collection.collectionArtworks!.aggregations,
+    aggregations: collection?.collectionArtworks?.aggregations,
     componentPath: "Collection/CollectionArtworks",
     type: "sort",
     onApply: () => scrollToTop(),

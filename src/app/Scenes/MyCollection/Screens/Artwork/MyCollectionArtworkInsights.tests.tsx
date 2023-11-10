@@ -6,7 +6,7 @@ import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 describe("MyCollectionArtworkInsights", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkInsightsTestsQuery>({
     Component: (props) => {
-      if (!props?.artwork || !props?.marketPriceInsights) {
+      if (!props?.artwork || !props?.marketPriceInsights || !props.me) {
         return null
       }
       return (

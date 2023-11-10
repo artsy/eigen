@@ -2,15 +2,14 @@ import { Flex, Tabs, useTheme } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
-  marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
+  marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null | undefined
   renderWithoutScrollView?: boolean
 }
 

@@ -1,6 +1,5 @@
 import { LotUpcomingLiveDateTime_artwork$key } from "__generated__/LotUpcomingLiveDateTime_artwork.graphql"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
 import { formatLotDateTime } from "./utils/formatLotDateTime"
 

@@ -3,7 +3,7 @@ import {
   RequestCredentialsForAssetUploadInput,
 } from "__generated__/getGeminiCredentialsForEnvironmentMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export type AssetCredentials =
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

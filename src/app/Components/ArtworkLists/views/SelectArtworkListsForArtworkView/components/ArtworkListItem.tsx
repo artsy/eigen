@@ -4,8 +4,7 @@ import { ArtworkListImagePreview } from "app/Components/ArtworkLists/components/
 import { extractNodes } from "app/utils/extractNodes"
 import { FC, memo } from "react"
 import { TouchableOpacity } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 import { ArtworkListItemSelectedIcon } from "./ArtworkListItemSelectedIcon"
 
 export interface PressedArtworkListItem {

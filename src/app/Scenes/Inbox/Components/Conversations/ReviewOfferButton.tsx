@@ -8,7 +8,9 @@ import {
   Text,
   Color,
 } from "@artsy/palette-mobile"
+import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import { TouchableWithoutFeedback } from "react-native"
@@ -17,12 +19,7 @@ import { useTracking } from "react-tracking"
 export interface ReviewOfferButtonProps {
   conversationID: string
   kind: ReviewOfferCTAKind
-  activeOrder: {
-    internalID: string
-    stateExpiresAt: string | null
-    lastOffer?: { createdAt: string } | null
-    offers?: { edges: { length: number } | null } | null
-  }
+  activeOrder: ExtractNodeType<ConversationCTA_conversation$data["activeOrders"]>
 }
 
 export type ReviewOfferCTAKind =

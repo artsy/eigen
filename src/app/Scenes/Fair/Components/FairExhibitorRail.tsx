@@ -44,10 +44,12 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
-          trackEvent(
-            tracks.tappedArtwork(show, artwork?.internalID ?? "", artwork?.slug ?? "", position)
-          )
-          navigate(artwork?.href!)
+          if (artwork?.href) {
+            trackEvent(
+              tracks.tappedArtwork(show, artwork?.internalID ?? "", artwork?.slug ?? "", position)
+            )
+            navigate(artwork.href)
+          }
         }}
       />
     </>

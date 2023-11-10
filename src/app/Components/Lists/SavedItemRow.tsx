@@ -6,7 +6,7 @@ interface SavedItemRowProps {
   href: string
   name: string
   image: {
-    url: string | null
+    url: string | null | undefined
   }
   square_image?: boolean
   size?: number

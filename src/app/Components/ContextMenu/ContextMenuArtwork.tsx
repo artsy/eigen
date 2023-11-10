@@ -75,8 +75,12 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   })
 
   const openViewInRoom = () => {
-    const heightIn = cm2in(artwork?.heightCm!)
-    const widthIn = cm2in(artwork?.widthCm!)
+    if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
+      return
+    }
+
+    const heightIn = cm2in(artwork.heightCm)
+    const widthIn = cm2in(artwork.widthCm)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -85,7 +89,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     })
 
     LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      image?.url!,
+      image.url,
       widthIn,
       heightIn,
       slug,
@@ -110,17 +114,19 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         title: "Share",
         systemIcon: "square.and.arrow.up",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            showShareSheet({
-              type: "artwork",
-              artists: artists,
-              slug: slug,
-              internalID: internalID,
-              title: title!,
-              href: href!,
-              images: [],
+          if (title && href) {
+            InteractionManager.runAfterInteractions(() => {
+              showShareSheet({
+                type: "artwork",
+                artists: artists,
+                slug: slug,
+                internalID: internalID,
+                title: title,
+                href: href,
+                images: [],
+              })
             })
-          })
+          }
         },
       },
     ]

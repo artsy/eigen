@@ -15,8 +15,8 @@ import { NotificationType } from "./types"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityListProps {
-  viewer: ActivityList_viewer$key | null
-  me: ActivityList_me$key | null
+  viewer: ActivityList_viewer$key | null | undefined
+  me: ActivityList_me$key | null | undefined
   type: NotificationType
 }
 

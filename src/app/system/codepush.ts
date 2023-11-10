@@ -29,16 +29,12 @@ const options = () => {
   if (__TEST__) {
     return {}
   } else if (ArtsyNativeModule.isBetaOrDev) {
-    const checkFrequency = __DEV__
-      ? codePush.CheckFrequency.MANUAL
-      : codePush.CheckFrequency.ON_APP_START
     return {
       deploymentKey: stagingKey,
-      checkFrequency: checkFrequency,
-      updateDialog: true,
+      checkFrequency: codePush.CheckFrequency.MANUAL,
     }
   } else {
-    return { deploymentKey: codePushProdKey }
+    return { deploymentKey: productionKey }
   }
 }
 

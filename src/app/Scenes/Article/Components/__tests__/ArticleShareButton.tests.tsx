@@ -3,9 +3,9 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
+import { graphql } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 // Mock react-native-share module
 jest.mock("react-native-share", () => ({

@@ -14,9 +14,8 @@ import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClu
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { groupBy } from "lodash"
 import { FlatList } from "react-native"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 import { MedianAuctionPriceListItem } from "./MedianAuctionPriceListItem"
 
 interface MedianAuctionPriceRailProps {

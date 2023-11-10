@@ -1,5 +1,5 @@
 import { Flex, Text, TimerIcon } from "@artsy/palette-mobile"
-import { Time, useTimer } from "app/utils/useTimer"
+import { Time, getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
 import moment from "moment"
 import { useEffect, useState } from "react"
@@ -15,7 +15,7 @@ interface UrgencyInfoProps {
 
 export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
   const { timeText, previousTimeText, color } = useTimeText(props)
-  const { hasStarted } = useTimer(props.endAt, props.startAt)
+  const { hasStarted } = getTimer(props.endAt, props.startAt)
   const showDate =
     timeText !== "In progress" && props.isLiveAuction && !hasStarted && !!props.startAt
   const startDateTime = DateTime.fromISO(props.startAt)
@@ -82,7 +82,7 @@ const useTimeText = (props: UrgencyInfoProps) => {
     let prefix = isLiveAuction ? "Live in" : ""
     let suffix = isLiveAuction ? "" : "left"
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { time, hasEnded, hasStarted } = useTimer(endAt, startAt)
+    const { time, hasEnded, hasStarted } = getTimer(endAt, startAt)
 
     const { text, textColor } = getInfo(time)
 

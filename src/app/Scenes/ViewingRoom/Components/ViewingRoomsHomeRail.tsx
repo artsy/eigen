@@ -7,7 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
-import _ from "lodash"
+import { times } from "lodash"
 import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -64,7 +64,7 @@ const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex ml={2}>
       <Flex flexDirection="row">
-        {_.times(4).map((i) => (
+        {times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
@@ -95,22 +95,24 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
           return (
             <Touchable
               onPress={() => {
-                trackEvent(
-                  trackInfo
-                    ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
-                        item.internalID,
-                        item.slug,
-                        trackInfo.screen,
-                        trackInfo.ownerType
-                      )
-                    : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
-                )
-                navigate(`/viewing-room/${item.slug!}`)
+                if (!!item.slug) {
+                  trackEvent(
+                    trackInfo
+                      ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                          item.internalID,
+                          item.slug,
+                          trackInfo.screen,
+                          trackInfo.ownerType
+                        )
+                      : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                  )
+                  navigate(`/viewing-room/${item.slug}`)
+                }
               }}
             >
               <MediumCard
                 title={item.title}
-                subtitle={item.partner!.name!}
+                subtitle={item?.partner?.name}
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />

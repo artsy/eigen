@@ -10,7 +10,7 @@ import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { concat, take } from "lodash"
+import { compact, concat, take } from "lodash"
 import { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -54,14 +54,17 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
           // Fairs are expected to always have >= 2 artworks and a hero image.
           // We can make assumptions about this in UI layout, but should still
           // be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = take(
-            concat(
-              [result?.image?.url!],
-              extractNodes(result?.followedArtistArtworks, (artwork) => artwork.image?.url!),
-              extractNodes(result?.otherArtworks, (artwork) => artwork.image?.url!)
-            ),
-            3
+          const artworkImageURLs = compact(
+            take(
+              concat(
+                [result?.image?.url],
+                extractNodes(result?.followedArtistArtworks, (artwork) => artwork.image?.url),
+                extractNodes(result?.otherArtworks, (artwork) => artwork.image?.url)
+              ),
+              3
+            )
           )
+
           const location = result?.location?.city || result?.location?.country
           return (
             <CardRailCard

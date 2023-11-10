@@ -13513,7 +13513,6 @@ type Partner implements Node {
     artistID: ID
     before: String
     first: Int
-    highQuality: Boolean
     last: Int
     partnerID: String
     represented: Boolean
@@ -14443,6 +14442,8 @@ type Query {
 
     # Returns the first _n_ elements from the list.
     first: Int
+
+    # (Deprecated) No longer supported
     highQuality: Boolean
 
     # Returns the last _n_ elements from the list.
@@ -15575,7 +15576,6 @@ type Query {
     artistID: ID
     before: String
     first: Int
-    highQuality: Boolean
     last: Int
     partnerID: String
     represented: Boolean
@@ -16658,6 +16658,7 @@ type SearchCriteria {
     sort: ArtistSorts
     term: String
   ): ArtistConnection
+  artistSeriesIDs: [String!]!
   atAuction: Boolean
   attributionClass: [String!]!
   colors: [String!]!
@@ -16722,6 +16723,7 @@ input SearchCriteriaAttributes {
   # DEPRECATED Please use artistIDs instead
   artistID: String = null
   artistIDs: [String!] = []
+  artistSeriesIDs: [String!] = []
   atAuction: Boolean = null
   attributionClass: [String!] = []
   colors: [String!] = []
@@ -20139,7 +20141,6 @@ type Viewer {
     artistID: ID
     before: String
     first: Int
-    highQuality: Boolean
     last: Int
     partnerID: String
     represented: Boolean

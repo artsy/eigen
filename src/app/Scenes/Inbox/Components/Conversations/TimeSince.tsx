@@ -32,7 +32,7 @@ export const relativeDate = (time: string) => {
 
 interface TimeSinceProps extends Omit<BoxProps, "color"> {
   variant?: TextProps["variant"]
-  time: string | null
+  time: string | null | undefined
   exact?: boolean
   style?: ViewStyle
 }

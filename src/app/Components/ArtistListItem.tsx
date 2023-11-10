@@ -7,9 +7,14 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
 import { StyleProp, ViewStyle } from "react-native"
-import { RelayProp, commitMutation, createFragmentContainer, graphql } from "react-relay"
+import {
+  Environment,
+  RelayProp,
+  commitMutation,
+  createFragmentContainer,
+  graphql,
+} from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
   artist: ArtistListItem_artist$data
@@ -29,9 +34,9 @@ interface Props {
 }
 
 export const formatTombstoneText = (
-  nationality: string | null,
-  birthday: string | null,
-  deathday: string | null
+  nationality: string | null | undefined,
+  birthday: string | null | undefined,
+  deathday: string | null | undefined
 ) => {
   if (nationality && birthday && deathday) {
     return nationality.trim() + ", " + birthday + "-" + deathday
@@ -168,11 +173,11 @@ export const followArtistMutation = ({
   artistID,
   isFollowed,
 }: {
-  environment: RelayModernEnvironment
+  environment: Environment
   onCompleted: () => void
   artistID: string
   artistSlug: string
-  isFollowed: boolean | null
+  isFollowed: boolean | null | undefined
 }) =>
   commitMutation<ArtistListItemFollowArtistMutation>(environment, {
     onCompleted,

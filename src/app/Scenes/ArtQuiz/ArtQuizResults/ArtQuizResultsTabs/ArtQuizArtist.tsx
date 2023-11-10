@@ -14,7 +14,11 @@ import { debounce } from "lodash"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {
+export const ArtQuizArtist = ({
+  artistData,
+}: {
+  artistData: ArtQuizArtist_artist$key | null | undefined
+}) => {
   const textLimit = truncatedTextLimit()
   const artist = useFragment<ArtQuizArtist_artist$key>(artQuizArtistFragment, artistData)
 
@@ -23,10 +27,14 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
   const [followOrUnfollowArtist] =
     useMutation<ArtQuizArtistFollowArtistMutation>(FollowArtistMutation)
 
-  const handleFollowChange = debounce((artist: ArtQuizArtist_artist$data) => {
+  const handleFollowChange = debounce((artist?: ArtQuizArtist_artist$data | null) => {
+    if (!artist) {
+      return
+    }
+
     followOrUnfollowArtist({
       variables: {
-        input: { artistID: artist?.slug!, unfollow: artist?.isFollowed },
+        input: { artistID: artist?.slug, unfollow: artist?.isFollowed },
       },
       optimisticResponse: {
         followArtist: {
@@ -56,26 +64,30 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           <Flex>
             <FollowButton
               isFollowed={!!artist?.isFollowed}
-              onPress={() => handleFollowChange(artist!)}
+              onPress={() => handleFollowChange(artist)}
             />
           </Flex>
         </Flex>
         <Spacer y={1} />
         <Flex>
-          <ReadMore
-            content={artist?.biographyBlurb?.text!}
-            maxChars={textLimit}
-            textStyle="new"
-            textVariant="sm"
-            linkTextVariant="sm-display"
-          />
+          {!!artist?.biographyBlurb?.text && (
+            <ReadMore
+              content={artist?.biographyBlurb?.text}
+              maxChars={textLimit}
+              textStyle="new"
+              textVariant="sm"
+              linkTextVariant="sm-display"
+            />
+          )}
         </Flex>
         <Spacer y={2} />
         <Flex mx={-2}>
           <SmallArtworkRail
             artworks={artworks}
             onPress={(artwork) => {
-              navigate(artwork?.href!)
+              if (artwork?.href) {
+                navigate(artwork.href)
+              }
             }}
           />
         </Flex>

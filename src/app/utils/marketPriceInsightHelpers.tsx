@@ -90,8 +90,8 @@ export const computeCategoriesForChart = (
   return catForChart.map((cat) => ({ name: cat.name, color: cat.color }))
 }
 
-export const formatSellThroughRate = (sellThroughRate: number | null) => {
-  if (sellThroughRate === null) {
+export const formatSellThroughRate = (sellThroughRate: number | null | undefined) => {
+  if (!sellThroughRate) {
     return ""
   }
 

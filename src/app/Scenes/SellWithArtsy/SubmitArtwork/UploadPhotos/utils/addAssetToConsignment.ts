@@ -3,7 +3,7 @@ import {
   AddAssetToConsignmentSubmissionInput,
 } from "__generated__/addAssetToConsignmentMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const addAssetToConsignment = (input: AddAssetToConsignmentSubmissionInput) => {
   return new Promise<addAssetToConsignmentMutation["response"]>((resolve, reject) => {

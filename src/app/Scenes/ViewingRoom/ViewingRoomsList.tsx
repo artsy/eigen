@@ -7,13 +7,13 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { PAGE_SIZE } from "app/Components/constants"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import _ from "lodash"
+import { times } from "lodash"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
-import { useScreenDimensions } from "app/utils/hooks"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 
@@ -71,7 +71,7 @@ export const ViewingRoomsList = () => {
 
   const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(
     featuredFragment,
-    queryData.featured!
+    queryData.featured
   )
   const featuredLength = extractNodes(featuredData).length
 
@@ -108,7 +108,7 @@ export const ViewingRoomsList = () => {
                     <Flex mx={2}>
                       <SectionTitle title="Featured" />
                     </Flex>
-                    <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
+                    <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
                     <Spacer y={4} />
                   </>
                 )}
@@ -177,14 +177,14 @@ const Placeholder = () => (
       <Flex ml={2} testID="viewing-rooms-list-placeholder">
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         <Flex flexDirection="row">
-          {_.times(4).map((i) => (
+          {times(4).map((i) => (
             <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
           ))}
         </Flex>
       </Flex>
       <Flex mx={2} mt={4}>
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-        {_.times(2).map((i) => (
+        {times(2).map((i) => (
           <React.Fragment key={i}>
             <PlaceholderBox width="100%" height={220} />
             <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
@@ -199,7 +199,7 @@ const Placeholder = () => (
 const LoadingMorePlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex mx={2} mt={4}>
-      {_.times(2).map((i) => (
+      {times(2).map((i) => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />

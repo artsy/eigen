@@ -8,9 +8,8 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isTablet } from "react-native-device-info"
-import { usePaginationFragment } from "react-relay"
+import { usePaginationFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 import { TrendingArtistCard } from "./components/TrendingArtistCard"
 
 const MAX_TRENDING_ARTTISTS_PER_RAIL = 20

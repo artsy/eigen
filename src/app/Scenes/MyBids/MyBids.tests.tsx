@@ -41,7 +41,7 @@ describe("My Bids", () => {
           }
         }
       `}
-      variables={{ artistSeriesID: "pumpkins" }}
+      variables={{}}
       render={({ props, error }) => {
         if (Boolean(props?.me)) {
           return <MyBidsContainer isActiveTab me={props!.me!} />

@@ -14,9 +14,8 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
-import { QueryRenderer, createFragmentContainer } from "react-relay"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
-import { graphql } from "relay-runtime"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
   artist: MyCollectionBottomSheetModalArtistPreview_artist$data

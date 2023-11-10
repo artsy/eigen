@@ -2,8 +2,7 @@ import { Join, Spacer, useSpace } from "@artsy/palette-mobile"
 import { ArtistKindPills_artist$key } from "__generated__/ArtistKindPills_artist.graphql"
 import { Pill } from "app/Components/Pill"
 import { ScrollView } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArtistKindPillsProps {
   artist: ArtistKindPills_artist$key

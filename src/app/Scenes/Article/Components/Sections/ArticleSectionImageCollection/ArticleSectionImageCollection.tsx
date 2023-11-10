@@ -5,8 +5,7 @@ import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Compone
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionImageCollectionProps {
   section: ArticleSectionImageCollection_section$key

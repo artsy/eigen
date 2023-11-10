@@ -11,6 +11,7 @@ import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
 
+import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
@@ -157,7 +158,7 @@ jest.mock("react-native-device-info", () => ({
   isTablet: jest.fn(),
 }))
 
-jest.mock("rn-fetch-blob", () => ({
+jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
@@ -231,8 +232,6 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
   ShapeSource: () => null,
   SymbolLayer: () => null,
 }))
-
-const _ = jest.requireActual("lodash")
 
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
@@ -538,7 +537,7 @@ Object.assign(NativeModules, getNativeModules())
 beforeEach(() => {
   function reset(a: any, b: any) {
     Object.keys(a).forEach((k) => {
-      if (_.isPlainObject(a[k])) {
+      if (isPlainObject(a[k])) {
         reset(a[k], b[k])
       } else {
         if (a[k]?.mockReset) {

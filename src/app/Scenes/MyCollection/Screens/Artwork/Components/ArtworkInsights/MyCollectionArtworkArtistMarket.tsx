@@ -3,10 +3,10 @@ import { Spacer, IncreaseIcon, DecreaseIcon, Flex, useSpace, Text } from "@artsy
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { useScreenDimensions } from "app/utils/hooks"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { ReactElement } from "react"
 import { FlatList, View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -22,8 +22,8 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 ) => {
   const { trackEvent } = useTracking()
   const space = useSpace()
-  const screenDimensions = useScreenDimensions()
-  const isIPad = screenDimensions.width > 700
+  const isIPad = isTablet()
+  const numColumns = isIPad ? 3 : 2
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -132,14 +132,15 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
       <View
         style={{
-          flex: isIPad ? 3 : 2, // the number of columns
+          flex: numColumns,
           justifyContent: "space-between",
           alignItems: "stretch",
         }}
       >
         <FlatList
           data={marketData}
-          numColumns={isIPad ? 3 : 2}
+          key={numColumns}
+          numColumns={numColumns}
           renderItem={({ item }) => (
             <View
               style={{

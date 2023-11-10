@@ -1,8 +1,7 @@
 import { Separator } from "@artsy/palette-mobile"
 import { ArtworkEditionSetInformation_artwork$data } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { createFragmentContainer } from "react-relay"
-import { graphql } from "relay-runtime"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
 
 interface ArtworkEditionSetInformationProps {

@@ -17,8 +17,8 @@ const MyAccountEditPriceRange: React.FC<{
 }> = ({ me }) => {
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
-  const [priceRangeMax, setPriceRangeMax] = useState<number | null>(me.priceRangeMax)
-  const [priceRangeMin, setPriceRangeMin] = useState<number | null>(me.priceRangeMin)
+  const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
+  const [priceRangeMin, setPriceRangeMin] = useState<number | null | undefined>(me.priceRangeMin)
 
   useEffect(() => {
     setReceivedError(undefined)

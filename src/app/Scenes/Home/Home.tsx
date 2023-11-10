@@ -89,10 +89,8 @@ import {
   ViewabilityConfig,
 } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
+import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
@@ -112,18 +110,18 @@ export interface HomeModule extends ArtworkActionTrackingProps {
 }
 
 export interface HomeProps extends ViewProps {
-  articlesConnection: Home_articlesConnection$data | null
-  featured: Home_featured$data | null
-  homePageAbove: Home_homePageAbove$data | null
-  homePageBelow: Home_homePageBelow$data | null
-  newWorksForYou: Home_newWorksForYou$data | null
-  notificationsConnection: Home_notificationsConnection$data | null
+  articlesConnection: Home_articlesConnection$data | null | undefined
+  featured: Home_featured$data | null | undefined
+  homePageAbove: Home_homePageAbove$data | null | undefined
+  homePageBelow: Home_homePageBelow$data | null | undefined
+  newWorksForYou: Home_newWorksForYou$data | null | undefined
+  notificationsConnection: Home_notificationsConnection$data | null | undefined
   loading: boolean
-  meAbove: Home_meAbove$data | null
-  meBelow: Home_meBelow$data | null
+  meAbove: Home_meAbove$data | null | undefined
+  meBelow: Home_meBelow$data | null | undefined
   relay: RelayRefetchProp
-  emergingPicks: Home_emergingPicks$data | null
-  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null
+  emergingPicks: Home_emergingPicks$data | null | undefined
+  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null | undefined
 }
 
 const Home = memo((props: HomeProps) => {
@@ -742,7 +740,7 @@ const messages = {
 }
 
 interface HomeQRProps {
-  environment?: RelayModernEnvironment | RelayMockEnvironment
+  environment?: Environment
 }
 
 export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
@@ -835,9 +833,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             }
           }
         `,
-        variables: {
-          version: worksForYouRecommendationsModel.payload || "B",
-        },
+        variables: {},
       }}
       render={{
         renderComponent: ({ above, below }) => {

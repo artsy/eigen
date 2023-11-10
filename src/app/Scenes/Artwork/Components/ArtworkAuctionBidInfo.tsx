@@ -6,8 +6,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { ArtworkAuctionBidInfo_artwork$key } from "__generated__/ArtworkAuctionBidInfo_artwork.graphql"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArtworkAuctionBidInfoProps extends FlexProps {
   artwork: ArtworkAuctionBidInfo_artwork$key

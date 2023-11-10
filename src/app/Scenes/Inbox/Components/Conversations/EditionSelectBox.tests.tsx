@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 describe("EditionSelectBox", () => {

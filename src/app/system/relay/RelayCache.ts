@@ -1,15 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import _ from "lodash"
+import { isArray, isPlainObject } from "lodash"
 
 const CACHE_KEY_PREFIX = "RelayCache:"
 
 function stableSerialize(val: any): string {
-  if (_.isPlainObject(val)) {
+  if (isPlainObject(val)) {
     return `{${Object.keys(val as object)
       .sort()
       .map((k) => `${JSON.stringify(k)}:${stableSerialize(val[k])}`)
       .join(",")}}`
-  } else if (_.isArray(val)) {
+  } else if (isArray(val)) {
     return `[${val.map(stableSerialize).join(",")}]`
   } else {
     return JSON.stringify(val)

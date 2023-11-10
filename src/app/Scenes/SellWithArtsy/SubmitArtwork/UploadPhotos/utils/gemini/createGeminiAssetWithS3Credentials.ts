@@ -3,7 +3,7 @@ import {
   CreateGeminiEntryForAssetInput,
 } from "__generated__/createGeminiAssetWithS3CredentialsMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAssetInput) => {
   return new Promise<string>((resolve, reject) => {

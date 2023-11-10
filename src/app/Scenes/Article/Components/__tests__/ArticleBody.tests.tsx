@@ -4,7 +4,7 @@ import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { ArticleSection } from "app/Scenes/Article/Components/ArticleSection"
 import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 
 describe("ArticleBody", () => {
   const { renderWithRelay } = setupTestWrapper({

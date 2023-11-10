@@ -4,8 +4,7 @@ import { ArticleSectionImageCollectionImageTestQuery } from "__generated__/Artic
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
-import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, graphql } from "react-relay"
 
 describe("ArticleSectionImageCollectionImage", () => {
   const Article = () => {

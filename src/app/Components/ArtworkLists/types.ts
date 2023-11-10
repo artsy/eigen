@@ -15,9 +15,9 @@ export interface ArtworkEntity {
   id: string
   internalID: string
   title: string
-  year: string | null
-  artistNames: string | null
-  imageURL: string | null
+  year: string | null | undefined
+  artistNames: string | null | undefined
+  imageURL: string | null | undefined
 }
 
 export type SaveResult = {

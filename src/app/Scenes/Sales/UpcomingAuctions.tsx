@@ -14,7 +14,7 @@ export type UpcomingAuctionsRefetchType = RefetchFnDynamic<
 >
 
 interface UpcomingAuctionsProps {
-  sales: UpcomingAuctions_viewer$key | null
+  sales: UpcomingAuctions_viewer$key | null | undefined
   setRefetchPropOnParent: (refetchProp: UpcomingAuctionsRefetchType) => void
   setSalesCountOnParent: (count: number) => void
 }

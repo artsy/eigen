@@ -4,7 +4,7 @@ import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/Bottom
 import { GlobalStore } from "app/store/GlobalStore"
 import { bottomTabsRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, action, computed, Computed, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
-import { fetchQuery, graphql } from "react-relay"
+import { Environment, fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
@@ -69,7 +69,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        bottomTabsRelayEnvironment,
+        bottomTabsRelayEnvironment as Environment,
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {
@@ -105,7 +105,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchNotificationsInfo: thunk(async () => {
     try {
       const query = fetchQuery<BottomTabsModelFetchNotificationsInfoQuery>(
-        bottomTabsRelayEnvironment,
+        bottomTabsRelayEnvironment as Environment,
         graphql`
           query BottomTabsModelFetchNotificationsInfoQuery {
             me @principalField {

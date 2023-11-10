@@ -5,9 +5,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
-import { createFragmentContainer } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 import { AuctionFaqSection } from "./AuctionFaqSection"
 
 export interface ArtworkExtraLinksProps {
@@ -18,7 +17,7 @@ export interface ArtworkExtraLinksProps {
 export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, auctionState }) => {
   const artists = artwork.artists ?? []
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
-  const artistName = artists.length === 1 ? artists[0]!.name : null
+  const artistName = artists.length === 1 ? artists[0]?.name : null
 
   return (
     <>

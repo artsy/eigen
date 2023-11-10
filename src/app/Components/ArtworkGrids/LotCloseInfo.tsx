@@ -1,8 +1,8 @@
 import { Text } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
+import { Time, getTimer } from "app/utils/getTimer"
 import { getTimerInfo } from "app/utils/saleTime"
-import { Time, useTimer } from "app/utils/useTimer"
 
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>
@@ -27,9 +27,9 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   if (!lotEndAt) {
     return null
   }
-  const { hasEnded: lotHasClosed } = useTimer(lotEndAt, sale.startAt ?? "")
+  const { hasEnded: lotHasClosed } = getTimer(lotEndAt, sale.startAt ?? "")
 
-  const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
+  const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = getTimer(
     sale.endAt!,
     sale.startAt!
   )

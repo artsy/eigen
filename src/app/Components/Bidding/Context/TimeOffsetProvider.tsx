@@ -2,7 +2,7 @@ import { TimeOffsetProviderQuery } from "__generated__/TimeOffsetProviderQuery.g
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import PropTypes from "prop-types"
 import React from "react"
-import { fetchQuery, graphql } from "relay-runtime"
+import { fetchQuery, graphql } from "react-relay"
 
 const getLocalTimestampInMilliSeconds = () => {
   return Date.now()

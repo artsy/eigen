@@ -1,11 +1,12 @@
 import { SendConversationMessageMutation } from "__generated__/SendConversationMessageMutation.graphql"
-import { commitMutation, graphql } from "react-relay"
 import {
   ConnectionHandler,
   Environment,
-  MutationConfig,
-  RecordSourceSelectorProxy,
-} from "relay-runtime"
+  UseMutationConfig,
+  commitMutation,
+  graphql,
+} from "react-relay"
+import { MutationConfig } from "relay-runtime"
 
 interface Conversation {
   lastMessageID: string
@@ -23,9 +24,10 @@ export function sendConversationMessage(
   onCompleted: MutationConfig<any>["onCompleted"],
   onError: MutationConfig<any>["onError"]
 ) {
-  const storeUpdater = (store: RecordSourceSelectorProxy) => {
+  const storeUpdater = (
+    store: Parameters<NonNullable<UseMutationConfig<SendConversationMessageMutation>["updater"]>>[0]
+  ) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
     const connection = ConnectionHandler.getConnection(
@@ -39,8 +41,12 @@ export function sendConversationMessage(
   return commitMutation<SendConversationMessageMutation>(environment, {
     onCompleted,
     onError,
-    optimisticUpdater: storeUpdater,
-    updater: storeUpdater,
+    optimisticUpdater: (store) => {
+      storeUpdater(store)
+    },
+    updater: (store) => {
+      storeUpdater(store)
+    },
 
     // TODO: See if we can extract the field selections into a fragment and share it with the normal pagination fragment.
     //      Also looks like we can get rid of the `body` selection.

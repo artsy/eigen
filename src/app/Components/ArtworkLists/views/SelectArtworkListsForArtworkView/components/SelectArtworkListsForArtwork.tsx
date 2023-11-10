@@ -22,6 +22,9 @@ const SelectArtworkListsForArtworkContent = () => {
     }
   )
 
+  if (!queryData.me) {
+    return null
+  }
   return <ArtworkLists me={queryData.me} />
 }
 

@@ -13,7 +13,7 @@ interface EstimatePriceType {
 
 interface MyCollectionArtworkAboutWorkProps {
   artwork: MyCollectionArtworkAboutWork_artwork$key
-  marketPriceInsights: MyCollectionArtworkAboutWork_marketPriceInsights$key | null
+  marketPriceInsights: MyCollectionArtworkAboutWork_marketPriceInsights$key | null | undefined
 }
 
 export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWorkProps> = (

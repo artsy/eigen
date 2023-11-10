@@ -12,7 +12,7 @@ export const navigateToActivityItem = (targetHref: string) => {
 
   const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
     (sortEntity) => sortEntity.paramValue === "-published_at"
-  )!
+  )
 
   const passProps: any = {
     predefinedFilters: [sortFilterItem] as FilterArray,

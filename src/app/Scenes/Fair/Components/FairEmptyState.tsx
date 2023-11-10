@@ -13,7 +13,7 @@ const FairEmptyState: React.FC<FairEmptyStateProps> = ({ fair }) => {
 
   const message = [
     "This fair is currently unavailable.",
-    ...(fair.endAt !== null && Date.parse(fair.endAt) > Date.now()
+    ...(fair.endAt !== null && fair.endAt !== undefined && Date.parse(fair.endAt) > Date.now()
       ? [`Please check back closer to the fair for artworks.`]
       : []),
   ].join(" ")

@@ -1,3 +1,4 @@
+import { Environment as IEnvironment } from "react-relay"
 import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
@@ -47,7 +48,7 @@ const defaultEnvironment = new Environment({ network, store })
 /**
  * If you're in a test file, make sure to use `getMockRelayEnvironment` instead.
  */
-export const getRelayEnvironment = () => defaultEnvironment
+export const getRelayEnvironment = () => defaultEnvironment as IEnvironment
 
 // We could get rid of this, if we could type `getRelayEnvironment`
 // to be a func that returns `Environment` for regular code and

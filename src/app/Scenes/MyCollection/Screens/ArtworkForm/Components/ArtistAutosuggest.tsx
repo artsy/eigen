@@ -13,8 +13,7 @@ import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sortBy } from "lodash"
-import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, graphql } from "react-relay"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void

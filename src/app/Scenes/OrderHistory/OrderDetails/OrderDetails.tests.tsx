@@ -40,7 +40,7 @@ describe(OrderDetailsQueryRender, () => {
           }
         }
       `}
-      variables={{ id: "order-id" }}
+      variables={{}}
       render={({ props }) => {
         if (props?.commerceOrder) {
           return <OrderDetailsContainer order={props.commerceOrder} />

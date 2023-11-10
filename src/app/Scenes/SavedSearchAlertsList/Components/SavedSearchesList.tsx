@@ -120,7 +120,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(error.stack!)
+          captureMessage(error.message)
         }
       }
 

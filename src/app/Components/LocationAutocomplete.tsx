@@ -245,7 +245,7 @@ const LocationPredictions = ({
   )
 }
 
-export const buildLocationDisplay = (location: LocationDisplay | null): string =>
+export const buildLocationDisplay = (location: LocationDisplay | null | undefined): string =>
   [location?.city, location?.state, location?.country].filter((x) => x).join(", ")
 
 interface LocationDisplay {

@@ -44,7 +44,7 @@ describe("Artist Series Artworks", () => {
           }
         }
       `}
-      variables={{ first: 10 }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artworksConnection) {
           return (

@@ -37,7 +37,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   return (
     <Flex py={2}>
       <InfiniteScrollArtworksGridContainer
-        connection={viewer.artworks!}
+        connection={viewer.artworks}
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
         contextScreenQuery={keyword}
@@ -139,7 +139,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
           onPress,
           setShowSkipAheadToAddArtworkLink,
         },
-        renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
+        renderFallback: ({ retry }) => <LoadFailureView onRetry={retry || (() => {})} />,
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
       cacheConfig={{ force: true }}

@@ -166,7 +166,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const handleArtworkSave = useSaveArtwork({
     id: artwork.id,
     internalID: artwork.internalID,
-    isSaved: artwork.isSaved,
+    isSaved: !!artwork.isSaved,
     onCompleted: onArtworkSavedOrUnSaved,
   })
 
@@ -348,7 +348,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                     testID="save-artwork-icon"
                   >
-                    <ArtworkHeartIcon isSaved={isSaved} index={itemIndex} />
+                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
                   </Touchable>
                 </Flex>
               )}
@@ -400,13 +400,19 @@ export const saleMessageOrBidInfo = ({
   isSmallTile = false,
 }: {
   artwork: Readonly<{
-    sale: { isAuction: boolean | null; isClosed: boolean | null } | null
-    saleArtwork: {
-      counts: { bidderPositions: number | null } | null | null
-      currentBid: { display: string | null } | null
-    } | null
-    saleMessage: string | null
-    realizedPrice: string | null
+    sale:
+      | { isAuction: boolean | null | undefined; isClosed: boolean | null | undefined }
+      | null
+      | undefined
+    saleArtwork:
+      | {
+          counts: { bidderPositions: number | null | undefined } | null | undefined
+          currentBid: { display: string | null | undefined } | null | undefined
+        }
+      | null
+      | undefined
+    saleMessage: string | null | undefined
+    realizedPrice: string | null | undefined
   }>
   isSmallTile?: boolean
 }): string | null | undefined => {

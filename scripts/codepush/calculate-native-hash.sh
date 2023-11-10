@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 # Directory paths to be checked for changes
 declare -a android_paths_to_check=("./android/app/src")

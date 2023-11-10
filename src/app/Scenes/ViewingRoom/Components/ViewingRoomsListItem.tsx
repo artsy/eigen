@@ -10,8 +10,8 @@ import { useTracking } from "react-tracking"
 
 export const tagForStatus = (
   status: string,
-  distanceToOpen: string | null,
-  distanceToClose: string | null
+  distanceToOpen: string | null | undefined,
+  distanceToClose: string | null | undefined
 ): CardTagProps | undefined => {
   switch (status) {
     case "closed":

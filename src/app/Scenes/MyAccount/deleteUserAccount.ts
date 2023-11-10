@@ -3,8 +3,7 @@ import {
   deleteUserAccountMutation,
 } from "__generated__/deleteUserAccountMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Environment } from "react-relay"
-import { commitMutation, graphql } from "relay-runtime"
+import { Environment, commitMutation, graphql } from "react-relay"
 
 export const deleteUserAccount = async (
   input: DeleteAccountInput = {},
