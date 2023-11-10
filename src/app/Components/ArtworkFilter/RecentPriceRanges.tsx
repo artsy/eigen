@@ -1,5 +1,4 @@
-import { Spacer, Flex, Box, useSpace, Text, Join } from "@artsy/palette-mobile"
-import { Pill } from "app/Components/Pill"
+import { Spacer, Flex, Box, useSpace, Text, Join, Pill } from "@artsy/palette-mobile"
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
@@ -118,7 +117,6 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
             return (
               <Pill
                 key={value}
-                rounded
                 accessibilityLabel="Price range pill"
                 selected={isSelectedPriceRange(value)}
                 onPress={() => onSelected(recentPrice)}
