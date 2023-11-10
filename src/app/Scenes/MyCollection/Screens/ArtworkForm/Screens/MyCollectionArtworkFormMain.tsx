@@ -224,11 +224,13 @@ export const MyCollectionArtworkFormMain: React.FC<
   }
 
   const deleteArtwork = async (shouldDeleteArtist?: boolean) => {
-    trackEvent(tracks.deleteCollectedArtwork(artwork!.internalID, artwork!.slug))
+    if (!artwork) return
+
+    trackEvent(tracks.deleteCollectedArtwork(artwork.internalID, artwork?.slug))
     try {
       // TODO: Fix this separetely
       if (!__TEST__) {
-        await myCollectionDeleteArtwork(artwork!.internalID)
+        await myCollectionDeleteArtwork(artwork.internalID)
       }
 
       if (shouldDeleteArtist && formikValues.artistSearchResult?.internalID) {
