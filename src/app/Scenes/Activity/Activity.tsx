@@ -1,10 +1,12 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { Tabs } from "@artsy/palette-mobile"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 
 import { useMarkNotificationsAsSeen } from "app/Scenes/Activity/hooks/useMarkNotificationsAsSeen"
 import { goBack } from "app/system/navigation/navigate"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
 import { OnTabChangeCallback } from "react-native-collapsible-tab-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -52,22 +54,26 @@ export const Activity = () => {
   }
 
   return (
-    <Tabs.TabsWithHeader
-      title="Activity"
-      onTabChange={handleTabPress}
-      headerProps={{ onBack: goBack }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.activities })}
     >
-      <Tabs.Tab name="All" label="All">
-        <Tabs.Lazy>
-          <ActivityContainer type="all" />
-        </Tabs.Lazy>
-      </Tabs.Tab>
-      <Tabs.Tab name="Alerts" label="Alerts">
-        <Tabs.Lazy>
-          <ActivityContainer type="alerts" />
-        </Tabs.Lazy>
-      </Tabs.Tab>
-    </Tabs.TabsWithHeader>
+      <Tabs.TabsWithHeader
+        title="Activity"
+        onTabChange={handleTabPress}
+        headerProps={{ onBack: goBack }}
+      >
+        <Tabs.Tab name="All" label="All">
+          <Tabs.Lazy>
+            <ActivityContainer type="all" />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+        <Tabs.Tab name="Alerts" label="Alerts">
+          <Tabs.Lazy>
+            <ActivityContainer type="alerts" />
+          </Tabs.Lazy>
+        </Tabs.Tab>
+      </Tabs.TabsWithHeader>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
