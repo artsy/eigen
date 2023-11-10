@@ -6,6 +6,7 @@ export enum SearchCriteria {
   additionalGeneIDs = "additionalGeneIDs",
   artistID = "artistID",
   artistIDs = "artistIDs",
+  artistSeriesIDs = "artistSeriesIDs",
   atAuction = "atAuction",
   attributionClass = "attributionClass",
   colors = "colors",
@@ -27,6 +28,7 @@ export interface SearchCriteriaAttributes {
   [SearchCriteria.additionalGeneIDs]?: string[] | null
   [SearchCriteria.artistID]?: string | null
   [SearchCriteria.artistIDs]?: string[] | null
+  [SearchCriteria.artistSeriesIDs]?: string[] | null
   [SearchCriteria.atAuction]?: boolean | null
   [SearchCriteria.attributionClass]?: string[] | null
   [SearchCriteria.colors]?: string[] | null
