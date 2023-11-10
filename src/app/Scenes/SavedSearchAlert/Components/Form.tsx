@@ -300,7 +300,7 @@ export const Form: React.FC<FormProps> = ({
         )}
 
         {!isEditMode && (
-          <Text variant="sm" color="black60" textAlign="center" mt={2}>
+          <Text variant="xs" color="black60" textAlign="center" mt={2}>
             Access all your saved alerts in your profile.
           </Text>
         )}
