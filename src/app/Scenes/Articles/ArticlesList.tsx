@@ -10,7 +10,7 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import _ from "lodash"
+import { times } from "lodash"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { useTracking } from "react-tracking"
@@ -133,7 +133,7 @@ export const ArticlesPlaceholder = () => {
               numColumns={numColumns}
               key={`${numColumns}`}
               ListHeaderComponent={() => <ArticlesHeader title="Artsy Editorial" />}
-              data={_.times(6)}
+              data={times(6)}
               keyExtractor={(item) => `${item}-${numColumns}`}
               renderItem={({ item }) => {
                 return (

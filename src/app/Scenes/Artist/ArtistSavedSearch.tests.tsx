@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import _ from "lodash"
-import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
+import { isEqual } from "lodash"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
@@ -34,7 +34,7 @@ describe("Saved search banner on artist screen", () => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
           // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
-          if (_.isEqual(path, ["artist", "id"])) {
+          if (isEqual(path, ["artist", "id"])) {
             return "artist-id"
           }
         },

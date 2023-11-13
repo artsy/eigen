@@ -10,7 +10,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import _ from "lodash"
+import { times } from "lodash"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
@@ -177,14 +177,14 @@ const Placeholder = () => (
       <Flex ml={2} testID="viewing-rooms-list-placeholder">
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         <Flex flexDirection="row">
-          {_.times(4).map((i) => (
+          {times(4).map((i) => (
             <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
           ))}
         </Flex>
       </Flex>
       <Flex mx={2} mt={4}>
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-        {_.times(2).map((i) => (
+        {times(2).map((i) => (
           <React.Fragment key={i}>
             <PlaceholderBox width="100%" height={220} />
             <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
@@ -199,7 +199,7 @@ const Placeholder = () => (
 const LoadingMorePlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex mx={2} mt={4}>
-      {_.times(2).map((i) => (
+      {times(2).map((i) => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />

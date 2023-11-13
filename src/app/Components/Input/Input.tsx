@@ -10,7 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MeasuredView } from "app/utils/MeasuredView"
-import _ from "lodash"
+import { isArray, isString } from "lodash"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -169,7 +169,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [placeholderWidths, setPlaceholderWidths] = useState<number[]>([])
     const [inputWidth, setInputWidth] = useState(0)
     const placeholderMeasuringHack =
-      Platform.OS === "android" && _.isArray(placeholder) ? (
+      Platform.OS === "android" && isArray(placeholder) ? (
         <>
           {placeholder.map((placeholderString, index) => (
             <MeasuredView
@@ -207,11 +207,11 @@ export const Input = forwardRef<InputRef, InputProps>(
 
       // ios works well. just return the longest placeholder
       if (Platform.OS === "ios") {
-        return _.isArray(placeholder) ? placeholder[0] : placeholder
+        return isArray(placeholder) ? placeholder[0] : placeholder
       }
 
       // if it's android and we only have one string, return that string
-      if (_.isString(placeholder)) {
+      if (isString(placeholder)) {
         return placeholder
       }
 

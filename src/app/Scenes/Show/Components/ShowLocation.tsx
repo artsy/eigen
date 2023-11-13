@@ -19,11 +19,11 @@ export const ShowLocation: React.FC<ShowLocationProps> = ({ show, ...rest }) => 
       <LocationMap
         {...(!!show.fair
           ? {
-              partnerName: `${show.partner.name} at ${show.fair!.name}`,
+              partnerName: `${show.partner.name} at ${show.fair.name}`,
               location,
             }
           : {
-              partnerName: show.partner.name!,
+              partnerName: show.partner.name,
               location,
             })}
       />

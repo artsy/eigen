@@ -24,7 +24,7 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import _, { times } from "lodash"
+import { compact, times } from "lodash"
 import { DateTime } from "luxon"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
@@ -143,7 +143,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
   const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
-    const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
+    const artworksItem = (viewableItems ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item?.key === "saleLotsList"
     })
     setArtworksGridVisible(artworksItem?.isViewable ?? false)
@@ -172,7 +172,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         return (
           <NewSaleLotsListContainer
             unfilteredArtworks={
-              (below as unknown as SaleBelowTheFoldNewQuery$data).viewer?.unfilteredArtworks!
+              (below as unknown as SaleBelowTheFoldNewQuery$data).viewer?.unfilteredArtworks
             }
             viewer={(below as unknown as SaleBelowTheFoldNewQuery$data).viewer}
             saleID={sale.internalID}
@@ -204,7 +204,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     )
   }
 
-  const saleSectionsData: SaleSection[] = _.compact([
+  const saleSectionsData: SaleSection[] = compact([
     {
       key: SALE_HEADER,
       content: <SaleHeader sale={sale} scrollAnim={scrollAnim} />,
@@ -498,7 +498,7 @@ export const SaleQueryRenderer: React.FC<{
           if (__DEV__) {
             console.error(error)
           } else {
-            captureMessage(error.stack!)
+            captureMessage(error.message)
           }
           return <LoadFailureView />
         }

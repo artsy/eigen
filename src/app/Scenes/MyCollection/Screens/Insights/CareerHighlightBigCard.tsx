@@ -101,17 +101,17 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
           return (
             <EntityHeader
               mb={2}
-              name={item.artist!.name!}
+              name={item?.artist?.name ?? ""}
               meta={
                 formatTombstoneText(
-                  item.artist!.nationality,
-                  item.artist!.birthday,
-                  item.artist!.deathday
+                  item?.artist?.nationality,
+                  item?.artist?.birthday,
+                  item?.artist?.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist!.image?.url ?? undefined}
-              initials={item.artist!.initials ?? undefined}
-              key={`${item.artist!.id}_${type}`}
+              imageUrl={item?.artist?.image?.url ?? undefined}
+              initials={item?.artist?.initials ?? undefined}
+              key={`${item?.artist?.id}_${type}`}
             />
           )
         }}
@@ -188,17 +188,17 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
           return (
             <EntityHeader
               mb={2}
-              name={item.artist!.name!}
+              name={item?.artist?.name ?? ""}
               meta={
                 formatTombstoneText(
-                  item.artist!.nationality,
-                  item.artist!.birthday,
-                  item.artist!.deathday
+                  item?.artist?.nationality,
+                  item?.artist?.birthday,
+                  item?.artist?.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist!.image?.url ?? undefined}
-              initials={item.artist!.initials ?? undefined}
-              key={`${item.artist!.id}_${type}`}
+              imageUrl={item?.artist?.image?.url ?? undefined}
+              initials={item?.artist?.initials ?? undefined}
+              key={`${item?.artist?.id}_${type}`}
             />
           )
         }}
@@ -274,17 +274,17 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
           return (
             <EntityHeader
               mb={2}
-              name={item.artist!.name!}
+              name={item?.artist?.name ?? ""}
               meta={
                 formatTombstoneText(
-                  item.artist!.nationality,
-                  item.artist!.birthday,
-                  item.artist!.deathday
+                  item?.artist?.nationality,
+                  item?.artist?.birthday,
+                  item?.artist?.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist!.image?.url ?? undefined}
-              initials={item.artist!.initials ?? undefined}
-              key={`${item.artist!.id}_${type}`}
+              imageUrl={item?.artist?.image?.url ?? undefined}
+              initials={item?.artist?.initials ?? undefined}
+              key={`${item?.artist?.id}_${type}`}
             />
           )
         }}
@@ -358,17 +358,17 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
           return (
             <EntityHeader
               mb={2}
-              name={item.artist!.name!}
+              name={item?.artist?.name ?? ""}
               meta={
                 formatTombstoneText(
-                  item.artist!.nationality,
-                  item.artist!.birthday,
-                  item.artist!.deathday
+                  item?.artist?.nationality,
+                  item?.artist?.birthday,
+                  item?.artist?.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist!.image?.url ?? undefined}
-              initials={item.artist!.initials ?? undefined}
-              key={`${item.artist!.id}_${type}`}
+              imageUrl={item?.artist?.image?.url ?? undefined}
+              initials={item?.artist?.initials ?? undefined}
+              key={`${item?.artist?.id}_${type}`}
             />
           )
         }}
@@ -443,17 +443,17 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
           return (
             <EntityHeader
               mb={2}
-              name={item.artist!.name!}
+              name={item?.artist?.name ?? ""}
               meta={
                 formatTombstoneText(
-                  item.artist!.nationality,
-                  item.artist!.birthday,
-                  item.artist!.deathday
+                  item?.artist?.nationality,
+                  item?.artist?.birthday,
+                  item?.artist?.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist!.image?.url ?? undefined}
-              initials={item.artist!.initials ?? undefined}
-              key={`${item.artist!.id}_${type}`}
+              imageUrl={item?.artist?.image?.url ?? undefined}
+              initials={item?.artist?.initials ?? undefined}
+              key={`${item?.artist?.id}_${type}`}
             />
           )
         }}

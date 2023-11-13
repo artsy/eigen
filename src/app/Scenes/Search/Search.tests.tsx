@@ -4,14 +4,10 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen } from "./Search"
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  throttle: (fn: any) => {
-    fn.flush = jest.fn()
-
-    return fn
-  },
-}))
+jest.mock("lodash/throttle", () => (fn: any) => {
+  fn.flush = jest.fn()
+  return fn
+})
 
 describe("Search", () => {
   const { renderWithRelay } = setupTestWrapper({

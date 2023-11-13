@@ -11,6 +11,15 @@ module.exports = (api) => {
       ["@babel/plugin-proposal-decorators", { version: "legacy" }],
       ["@babel/plugin-proposal-private-methods", { loose: true }], // needed for latest jest, must come after decorators
       ["@babel/plugin-proposal-class-properties", { loose: true }], // must come after decorators
+      [
+        "transform-imports",
+        {
+          lodash: {
+            transform: "lodash/${member}",
+            preventFullImport: true,
+          },
+        },
+      ],
       "import-graphql", // to enable import syntax for .graphql and .gql files.
       "relay",
 

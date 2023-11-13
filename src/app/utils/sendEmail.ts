@@ -1,10 +1,10 @@
-import _ from "lodash"
+import { toPairs } from "lodash"
 import { Alert, Linking } from "react-native"
 
 export const sendEmail = (emailAddress: string, params?: { [key: string]: string }) => {
   let mailToString = `mailto:${emailAddress}`
   if (params) {
-    const paramsString = _.toPairs(params)
+    const paramsString = toPairs(params)
       .map(([key, value]) => `${key}=${value}`)
       .join("&")
     mailToString += `?${paramsString}`

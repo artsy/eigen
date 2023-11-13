@@ -36,7 +36,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   const screenWidth = useScreenDimensions().width
 
-  const artworks = fair.fairArtworks!
+  const artworks = fair.fairArtworks
   const artworksTotal = artworks?.counts?.total ?? 0
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(

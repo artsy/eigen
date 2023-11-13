@@ -95,7 +95,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
       environment={getRelayEnvironment()}
       query={graphql`
         query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
-          gene(id: $geneID) {
+          gene(id: $geneID) @principalField {
             displayName
             name
             slug
