@@ -266,6 +266,75 @@ type Agreement {
   updatedAt: ISO8601DateTime!
 }
 
+type Alert {
+  additionalGeneNames: [String]
+  attributionClass: [String]
+  formattedPriceRange: String
+  hasRecentlyEnabledUserSearchCriteria: Boolean
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  materialsTerms: [String]
+  priceRange: String
+  summary: JSON
+  totalUserSearchCriteriaCount: Int
+}
+
+# A connection to a list of items.
+type AlertConnection {
+  # A list of edges.
+  edges: [AlertEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AlertEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Alert
+}
+
+# A connection to a list of items.
+type AlertsSummaryArtistConnection {
+  # A list of edges.
+  edges: [AlertsSummaryArtistEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AlertsSummaryArtistEdge {
+  counts: AlertsSummaryCounts
+
+  # A cursor for use in pagination
+  cursor: String!
+  isRecentlyEnabled: Boolean
+
+  # The item at the end of the edge
+  node: Artist
+  topHit: Alert
+}
+
+type AlertsSummaryCounts {
+  totalUserSearchCriteriaCount: Int
+  totalWithAdditionalGeneIdsCount: Int
+  totalWithAttributionClassCount: Int
+  totalWithOtherMetadataCount: Int
+  totalWithPriceRangeCount: Int
+}
+
 type Algolia {
   apiKey: String! @deprecated(reason: "Algolia search is no longer supported")
   appID: String! @deprecated(reason: "Algolia search is no longer supported")
@@ -1299,6 +1368,13 @@ type ArticleUnpublishedArtworkPartner {
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
+  alertsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: String
+  ): AlertConnection
   alternateNames: [String]
   articlesConnection(
     after: String
@@ -13286,6 +13362,13 @@ type PageInfo {
 }
 
 type Partner implements Node {
+  alertsSummaryArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AlertsSummaryArtistConnection
+
   # A connection of all artists from a Partner.
   allArtistsConnection(
     displayOnPartnerProfile: Boolean
