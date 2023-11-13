@@ -40,6 +40,7 @@ export const Rarity: React.FC = () => {
           <Flex flex={1}>
             <Flex>
               <Input
+                accessibilityLabel="Edition number input"
                 title="Edition number"
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionNumber")}
@@ -79,7 +80,7 @@ const RarityInfoModal: React.FC<{
   onDismiss(): any
 }> = ({ title, visible, onDismiss }) => {
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
+    <FancyModal visible={visible} onBackgroundPressed={onDismiss} testID="RarityInfoModal">
       <FancyModalHeader onLeftButtonPress={onDismiss} useXButton>
         {title}
       </FancyModalHeader>
