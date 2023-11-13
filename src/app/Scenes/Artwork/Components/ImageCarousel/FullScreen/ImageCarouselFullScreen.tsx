@@ -120,12 +120,16 @@ export const ImageCarouselFullScreen = () => {
                   />
                 )
               }
+
+              if (!zoomViewRefs[index]) {
+                return null
+              }
+
               return (
                 <ImageZoomView
                   image={item}
                   index={index}
                   ref={(ref) => {
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     zoomViewRefs[index] = ref
                   }}
                 />
