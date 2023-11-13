@@ -7,29 +7,83 @@ jest.mock("app/utils/PushNotification", () => ({
   getNotificationPermissionsStatus: jest.fn(),
 }))
 
+import { waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
+
+jest.mock("react-native", () => {
+  return {
+    NativeModules: {
+      ArtsyNativeModule: {
+        gitCommitShortHash: "1234567",
+      },
+    },
+    Platform: {
+      isPad: true,
+      OS: "ios",
+    },
+    Alert: {
+      alert: jest.fn(),
+    },
+  }
+})
+
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { Alert } from "react-native"
 
 describe("requestPushNotificationsPermission", () => {
-  let alertSpy: jest.SpyInstance
-
-  beforeEach(() => {
-    jest.useFakeTimers({
-      legacyFakeTimers: true,
-    })
-
-    alertSpy = jest.spyOn(Alert, "alert")
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
-  afterEach(() => {
-    jest.runAllTimers()
-    jest.useRealTimers()
-    jest.clearAllMocks()
+  it("sets the pushNotificationDialogLastSeenDate to the current date after showing the pre-prompt", async () => {
+    // Set the last seen date to more than a week ago
+    const dateMoreThanAWeekAgo = new Date()
+    dateMoreThanAWeekAgo.setDate(dateMoreThanAWeekAgo.getDate() - 8)
+
+    __globalStoreTestUtils__?.injectState({
+      artsyPrefs: {
+        pushPromptLogic: {
+          pushNotificationDialogLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
+          pushPermissionsRequestedThisSession: false,
+        },
+      },
+    })
+
+    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
+
+    const currentDate = new Date("2023-05-23T00:00:00Z")
+    Date.now = jest.fn().mockReturnValue(currentDate.getTime())
+
+    const requestPushPromise = requestPushNotificationsPermission()
+
+    await requestPushPromise
+
+    await waitFor(
+      () => {
+        // The pre-prompt alert should have been shown
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "Artsy Would Like to Send You Notifications",
+          "Turn on notifications to get important updates about artists you follow.",
+          [
+            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+            { text: "OK", onPress: expect.any(Function) },
+          ]
+        )
+      },
+      { timeout: 10000 }
+    )
+
+    // Now check if the pushNotificationDialogLastSeenDate in GlobalStore was updated to the current date
+    const pushNotificationDialogLastSeenTimestamp =
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
+        .pushNotificationDialogLastSeenTimestamp
+
+    expect(pushNotificationDialogLastSeenTimestamp).toEqual(currentDate.getTime())
   })
 
   it("does not request push permissions if push permissions were requested this session", async () => {
@@ -49,10 +103,9 @@ describe("requestPushNotificationsPermission", () => {
     jest.runAllTimers()
     jest.advanceTimersByTime(5000)
 
-    await new Promise(setImmediate) // Wait for next tick in the JavaScript event loop
     await requestPushPromise
 
-    expect(alertSpy).not.toHaveBeenCalled()
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 
   it("marks push requested this session after a request", async () => {
@@ -70,18 +123,20 @@ describe("requestPushNotificationsPermission", () => {
 
     const requestPushPromise = requestPushNotificationsPermission()
 
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
     await requestPushPromise
 
-    expect(alertSpy).toHaveBeenCalledWith(
-      "Artsy Would Like to Send You Notifications",
-      "Turn on notifications to get important updates about artists you follow.",
-      [
-        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-        { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
-      ]
+    await waitFor(
+      () => {
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "Artsy Would Like to Send You Notifications",
+          "Turn on notifications to get important updates about artists you follow.",
+          [
+            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+            { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
+          ]
+        )
+      },
+      { timeout: 10000 }
     )
 
     const pushRequestedThisSession =
@@ -105,14 +160,18 @@ describe("requestPushNotificationsPermission", () => {
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
 
     await requestPushNotificationsPermission()
-
-    expect(alertSpy).toHaveBeenCalledWith(
-      "Artsy Would Like to Send You Notifications",
-      "Turn on notifications to get important updates about artists you follow.",
-      [
-        { text: "Not Now", style: "cancel" },
-        { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
-      ]
+    await waitFor(
+      () => {
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "Artsy Would Like to Send You Notifications",
+          "Turn on notifications to get important updates about artists you follow.",
+          [
+            { text: "Not Now", style: "cancel" },
+            { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
+          ]
+        )
+      },
+      { timeout: 10000 }
     )
   })
 
@@ -132,7 +191,7 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushNotificationsPermission()
 
-    expect(alertSpy).not.toHaveBeenCalled()
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 
   it("marks settings alert as seen after showing", async () => {
@@ -151,7 +210,7 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushNotificationsPermission()
 
-    expect(alertSpy).toHaveBeenCalledWith(
+    expect(Alert.alert).toHaveBeenCalledWith(
       "Artsy Would Like to Send You Notifications",
       "Turn on notifications to get important updates about artists you follow.",
       [
@@ -183,19 +242,21 @@ describe("requestPushNotificationsPermission", () => {
 
     const requestPushPromise = requestPushNotificationsPermission()
 
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
     await requestPushPromise
 
-    // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
-    expect(alertSpy).toHaveBeenCalledWith(
-      "Artsy Would Like to Send You Notifications",
-      "Turn on notifications to get important updates about artists you follow.",
-      [
-        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-        { text: "OK", onPress: expect.any(Function) },
-      ]
+    await waitFor(
+      () => {
+        // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "Artsy Would Like to Send You Notifications",
+          "Turn on notifications to get important updates about artists you follow.",
+          [
+            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+            { text: "OK", onPress: expect.any(Function) },
+          ]
+        )
+      },
+      { timeout: 10000 }
     )
   })
 
@@ -219,19 +280,22 @@ describe("requestPushNotificationsPermission", () => {
 
     const requestPushPromise = requestPushNotificationsPermission()
 
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
     await requestPushPromise
 
     // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
-    expect(alertSpy).toHaveBeenCalledWith(
-      "Artsy Would Like to Send You Notifications",
-      "Turn on notifications to get important updates about artists you follow.",
-      [
-        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-        { text: "OK", onPress: expect.any(Function) },
-      ]
+    await waitFor(
+      () => {
+        // The pre-prompt alert should have been shown
+        expect(Alert.alert).toHaveBeenCalledWith(
+          "Artsy Would Like to Send You Notifications",
+          "Turn on notifications to get important updates about artists you follow.",
+          [
+            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+            { text: "OK", onPress: expect.any(Function) },
+          ]
+        )
+      },
+      { timeout: 10000 }
     )
   })
 
@@ -260,51 +324,6 @@ describe("requestPushNotificationsPermission", () => {
 
     await requestPushPromise
 
-    expect(alertSpy).not.toHaveBeenCalled()
-  })
-
-  it("sets the pushNotificationDialogLastSeenDate to the current date after showing the pre-prompt", async () => {
-    // Set the last seen date to more than a week ago
-    const dateMoreThanAWeekAgo = new Date()
-    dateMoreThanAWeekAgo.setDate(dateMoreThanAWeekAgo.getDate() - 8)
-
-    __globalStoreTestUtils__?.injectState({
-      artsyPrefs: {
-        pushPromptLogic: {
-          pushNotificationDialogLastSeenTimestamp: dateMoreThanAWeekAgo.getTime(),
-          pushPermissionsRequestedThisSession: false,
-        },
-      },
-    })
-
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
-    mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
-
-    const currentDate = new Date("2023-05-23T00:00:00Z")
-    Date.now = jest.fn().mockReturnValue(currentDate.getTime())
-
-    const requestPushPromise = requestPushNotificationsPermission()
-
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
-    await requestPushPromise
-
-    // The pre-prompt alert should have been shown
-    expect(alertSpy).toHaveBeenCalledWith(
-      "Artsy Would Like to Send You Notifications",
-      "Turn on notifications to get important updates about artists you follow.",
-      [
-        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-        { text: "OK", onPress: expect.any(Function) },
-      ]
-    )
-
-    // Now check if the pushNotificationDialogLastSeenDate in GlobalStore was updated to the current date
-    const pushNotificationDialogLastSeenTimestamp =
-      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.pushPromptLogic
-        .pushNotificationDialogLastSeenTimestamp
-
-    expect(pushNotificationDialogLastSeenTimestamp).toEqual(currentDate.getTime())
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 })
