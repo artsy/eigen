@@ -56,6 +56,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}
         value={artist}
+        accessibilityLabel="Artist"
         onBlur={() => setFocused(false)}
         onFocus={() => setFocused(true)}
         enableClearButton

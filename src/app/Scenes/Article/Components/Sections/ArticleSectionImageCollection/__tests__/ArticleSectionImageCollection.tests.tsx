@@ -4,33 +4,20 @@ import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sec
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
-import { useLazyLoadQuery, graphql } from "react-relay"
+import { graphql } from "react-relay"
 
 describe("ArticleSectionImageCollection", () => {
-  const Article = () => {
-    const data = useLazyLoadQuery<ArticleSectionImageCollectionTestQuery>(
-      graphql`
-        query ArticleSectionImageCollectionTestQuery @relay_test_operation {
-          article(id: "foo") {
-            sections {
-              ...ArticleSectionImageCollection_section
-            }
+  const { renderWithRelay } = setupTestWrapper<ArticleSectionImageCollectionTestQuery>({
+    Component: (props) => <ArticleSectionImageCollection section={props.article?.sections[0]!} />,
+    query: graphql`
+      query ArticleSectionImageCollectionTestQuery @relay_test_operation {
+        article(id: "foo") {
+          sections {
+            ...ArticleSectionImageCollection_section
           }
         }
-      `,
-      {}
-    )
-
-    return <ArticleSectionImageCollection section={data.article!.sections[0]} />
-  }
-
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => (
-      <Suspense fallback={null}>
-        <Article />
-      </Suspense>
-    ),
+      }
+    `,
   })
 
   it("renders", async () => {
