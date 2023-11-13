@@ -288,32 +288,30 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   createBidder() {
-    const error: Error = new Error("createBidder")
-    this.presentErrorModal(error, null)
-    // commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
-    //   onCompleted: (results, errors) =>
-    //     isEmpty(errors)
-    //       ? this.presentRegistrationSuccess(results)
-    //       : this.presentErrorModal(errors, null),
-    //   onError: (error) => this.presentErrorModal(error, null),
-    //   mutation: graphql`
-    //     mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
-    //       createBidder(input: $input) {
-    //         bidder {
-    //           internalID
-    //           qualified_for_bidding: qualifiedForBidding
-    //           sale {
-    //             registrationStatus {
-    //               qualifiedForBidding
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   `,
-    //   // FIXME: Should this be slug or internalID?
-    //   variables: { input: { saleID: this.props.sale.slug } },
-    // })
+    commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
+      onCompleted: (results, errors) =>
+        isEmpty(errors)
+          ? this.presentRegistrationSuccess(results)
+          : this.presentErrorModal(errors, null),
+      onError: (error) => this.presentErrorModal(error, null),
+      mutation: graphql`
+        mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
+          createBidder(input: $input) {
+            bidder {
+              internalID
+              qualified_for_bidding: qualifiedForBidding
+              sale {
+                registrationStatus {
+                  qualifiedForBidding
+                }
+              }
+            }
+          }
+        }
+      `,
+      // FIXME: Should this be slug or internalID?
+      variables: { input: { saleID: this.props.sale.slug } },
+    })
   }
 
   presentRegistrationSuccess({ createBidder }: RegistrationCreateBidderMutation$data) {
@@ -415,7 +413,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       >
         <Box p={2} pt="25px" flex={1}>
           <Text fontSize={16} variant="xs" mb={2}>
-            "Hamburgers"
+            {sale.name}
           </Text>
 
           {saleTimeDetails.absolute !== null && (
@@ -485,7 +483,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
 // const RequiredInfoForm: React.FC<{}> = ({navigator, onCreditrCardAdded, onBillingAddressAdded, billingAddress, creditCardFormParams, creditCardToken})
 
-export const RegistrationContainer = createFragmentContainer(Registration, {
+const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
       slug

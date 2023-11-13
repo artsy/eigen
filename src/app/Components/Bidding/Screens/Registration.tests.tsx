@@ -1,6 +1,5 @@
-import { Text, LinkText, Checkbox, Button, Check } from "@artsy/palette-mobile"
-import { RenderAPI, fireEvent, screen } from "@testing-library/react-native"
-import { RegistrationTestsQuery } from "__generated__/RegistrationTestsQuery.graphql"
+import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
+import { RenderAPI } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -11,17 +10,15 @@ import {
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { TouchableWithoutFeedback } from "react-native"
-import relay, { graphql } from "react-relay"
+import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
-import { Registration, RegistrationContainer } from "./Registration"
+import { Registration } from "./Registration"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -475,61 +472,6 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  const { renderWithRelay } = setupTestWrapper<RegistrationTestsQuery>({
-    Component: (props) => <RegistrationContainer sale={props.sale!} me={props.me!} />,
-    query: graphql`
-      query RegistrationTestsQuery @relay_test_operation {
-        sale(id: "sale-id") {
-          ...Registration_sale
-        }
-        me {
-          ...Registration_me
-        }
-      }
-    `,
-  })
-
-  it.only("displays an error message on a createCreditCard mutation network failure test", async () => {
-    console.error = jest.fn() // Silences component logging.
-    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-
-    const { mockResolveLastOperation, mockRejectLastOperation } = renderWithRelay({
-      Me: () => ({
-        ...me,
-        hasCreditCards: false,
-        phoneNumber: {
-          isValid: true,
-        },
-      }),
-    })
-
-    // const addButtons = screen.getAllByText("Add")
-    // fireEvent.press(addButtons[0])
-
-    const registrationScreen = screen.UNSAFE_getByType(Registration)
-    registrationScreen.instance.setState({ billingAddress })
-    registrationScreen.instance.setState({ creditCardToken: stripeToken })
-    const checkbox = screen.UNSAFE_getByType(Checkbox)
-    const registerButton = screen.getByTestId("register-button")
-
-    expect(checkbox).toBeOnTheScreen()
-    fireEvent.press(checkbox)
-    fireEvent.press(registerButton)
-
-    // mockResolveLastOperation({
-    //   CreateCreditCard: () => mockRequestResponses.creatingCreditCardSuccess,
-    // })
-
-    const error: Error = new Error("malformed error")
-    mockRejectLastOperation(error)
-
-    const errorMessage = await screen.findByText(
-      "There was a problem processing your information. Check your payment details and try again."
-    )
-
-    screen.debug()
-  })
-
   it("displays an error message on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
@@ -549,7 +491,6 @@ describe("when pressing register button", () => {
     const component = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
-
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
