@@ -121,10 +121,6 @@ export const ImageCarouselFullScreen = () => {
                 )
               }
 
-              if (!zoomViewRefs[index]) {
-                return null
-              }
-
               return (
                 <ImageZoomView
                   image={item}
