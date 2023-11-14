@@ -117,6 +117,7 @@ describe("EditSavedSearchAlert", () => {
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
           artistIDs: ["artistID"],
+          artistSeriesIDs: ["monkeys"],
           materialsTerms: ["paper"],
         },
         userAlertSettings: {
@@ -302,6 +303,7 @@ const searchCriteria = {
   acquireable: null,
   additionalGeneIDs: [],
   artistIDs: ["artistID"],
+  artistSeriesIDs: ["monkeys"],
   atAuction: null,
   attributionClass: [],
   colors: [],
