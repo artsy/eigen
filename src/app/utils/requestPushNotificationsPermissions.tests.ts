@@ -1,18 +1,10 @@
-jest.mock("react-native-push-notification", () => ({
-  requestPermissions: jest.fn(),
-}))
-
-jest.mock("app/utils/PushNotification", () => ({
-  ...jest.requireActual("app/utils/PushNotification"),
-  getNotificationPermissionsStatus: jest.fn(),
-}))
-
-import { waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   PushAuthorizationStatus,
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
+import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
+import { Alert } from "react-native"
 
 jest.mock("react-native", () => {
   return {
@@ -31,12 +23,26 @@ jest.mock("react-native", () => {
   }
 })
 
-import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
-import { Alert } from "react-native"
+jest.mock("react-native-push-notification", () => ({
+  requestPermissions: jest.fn(),
+}))
+
+jest.mock("app/utils/PushNotification", () => ({
+  ...jest.requireActual("app/utils/PushNotification"),
+  getNotificationPermissionsStatus: jest.fn(),
+}))
 
 describe("requestPushNotificationsPermission", () => {
+  const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
+  const alertDelay = 3000
+
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
   })
 
   it("sets the pushNotificationDialogLastSeenDate to the current date after showing the pre-prompt", async () => {
@@ -53,29 +59,21 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
     const currentDate = new Date("2023-05-23T00:00:00Z")
     Date.now = jest.fn().mockReturnValue(currentDate.getTime())
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
+    jest.advanceTimersByTime(alertDelay)
 
-    await requestPushPromise
-
-    await waitFor(
-      () => {
-        // The pre-prompt alert should have been shown
-        expect(Alert.alert).toHaveBeenCalledWith(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-            { text: "OK", onPress: expect.any(Function) },
-          ]
-        )
-      },
-      { timeout: 10000 }
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+        { text: "OK", onPress: expect.any(Function) },
+      ]
     )
 
     // Now check if the pushNotificationDialogLastSeenDate in GlobalStore was updated to the current date
@@ -95,15 +93,13 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
 
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
-    await requestPushPromise
+    // We don't need to advance the timers here, because the requestPushNotificationsPermission
+    // doesn't have a setTimeout in this case but leaving that here to prevent false positive tests
+    jest.advanceTimersByTime(alertDelay)
 
     expect(Alert.alert).not.toHaveBeenCalled()
   })
@@ -118,25 +114,19 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
 
-    await requestPushPromise
+    jest.advanceTimersByTime(alertDelay)
 
-    await waitFor(
-      () => {
-        expect(Alert.alert).toHaveBeenCalledWith(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-            { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
-          ]
-        )
-      },
-      { timeout: 10000 }
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+        { text: "OK", onPress: expect.any(Function) }, // we're just checking if it's a function
+      ]
     )
 
     const pushRequestedThisSession =
@@ -156,22 +146,17 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
 
     await requestPushNotificationsPermission()
-    await waitFor(
-      () => {
-        expect(Alert.alert).toHaveBeenCalledWith(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Not Now", style: "cancel" },
-            { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
-          ]
-        )
-      },
-      { timeout: 10000 }
+
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Not Now", style: "cancel" },
+        { text: "Settings", onPress: expect.any(Function) }, // we're just checking if it's a function
+      ]
     )
   })
 
@@ -186,7 +171,6 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
 
     await requestPushNotificationsPermission()
@@ -205,7 +189,6 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.Denied)
 
     await requestPushNotificationsPermission()
@@ -237,26 +220,20 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
 
-    await requestPushPromise
+    jest.advanceTimersByTime(alertDelay)
 
-    await waitFor(
-      () => {
-        // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
-        expect(Alert.alert).toHaveBeenCalledWith(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-            { text: "OK", onPress: expect.any(Function) },
-          ]
-        )
-      },
-      { timeout: 10000 }
+    // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+        { text: "OK", onPress: expect.any(Function) },
+      ]
     )
   })
 
@@ -275,27 +252,20 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
 
-    await requestPushPromise
+    jest.advanceTimersByTime(alertDelay)
 
     // We're expecting the pre-prompt to show, so we can check if the Alert.alert has been called with the correct arguments
-    await waitFor(
-      () => {
-        // The pre-prompt alert should have been shown
-        expect(Alert.alert).toHaveBeenCalledWith(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
-            { text: "OK", onPress: expect.any(Function) },
-          ]
-        )
-      },
-      { timeout: 10000 }
+    expect(Alert.alert).toHaveBeenCalledWith(
+      "Artsy Would Like to Send You Notifications",
+      "Turn on notifications to get important updates about artists you follow.",
+      [
+        { text: "Not Now", style: "cancel", onPress: expect.any(Function) },
+        { text: "OK", onPress: expect.any(Function) },
+      ]
     )
   })
 
@@ -314,15 +284,13 @@ describe("requestPushNotificationsPermission", () => {
       },
     })
 
-    const mockGetNotificationPermissionsStatus = getNotificationPermissionsStatus as jest.Mock
     mockGetNotificationPermissionsStatus.mockResolvedValue(PushAuthorizationStatus.NotDetermined)
 
-    const requestPushPromise = requestPushNotificationsPermission()
+    await requestPushNotificationsPermission()
 
-    jest.runAllTimers()
-    jest.advanceTimersByTime(5000)
-
-    await requestPushPromise
+    // We don't need to advance the timers here, because the requestPushNotificationsPermission
+    // doesn't have a setTimeout in this case but leaving that here to prevent false positive tests
+    jest.advanceTimersByTime(alertDelay)
 
     expect(Alert.alert).not.toHaveBeenCalled()
   })

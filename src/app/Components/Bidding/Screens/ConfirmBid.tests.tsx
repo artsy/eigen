@@ -583,10 +583,6 @@ describe("ConfirmBid", () => {
   })
 
   describe("ConfirmBid for unqualified user", () => {
-    //   const newMountConfirmBidComponent = (props: ConfirmBidProps) => {
-    //   return renderWithWrappersLEGACY(<ConfirmBid {...props} />)
-    // }
-
     const fillOutFormAndSubmit = (component: ReactTestRenderer) => {
       // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
       component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
