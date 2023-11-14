@@ -110,6 +110,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [AppCenterReactNative register];
 
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    self.bridge = bridge;
     [emission setBridge:bridge];
 
     self.moduleName = @"eigen";
