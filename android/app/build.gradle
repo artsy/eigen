@@ -75,14 +75,13 @@ def enableProguardInReleaseBuilds = false
  * give correct results when using with locales other than en-US. Note that
  * this variant is about 6MiB larger per architecture than default.
  */
+ def jscFlavor = 'org.webkit:android-jsc:+'
 
 // order matters here, this must be set before the react.gradle apply
 project.ext.react = [
     entryFile: "index.android.js",
     enableHermes: true,  // clean and rebuild if changing
 ]
-
-apply from: "../../node_modules/react-native/react.gradle"
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -134,6 +133,9 @@ android {
 }
 
 dependencies {
+    // The version of react-native is set by the React Native Gradle Plugin
+    implementation("com.facebook.react:react-android")
+
     // This is required to fix an issue that causes the app to crash on startup
     // This can be removed as soon as we get to a react-native version above 0.66
     // See https://github.com/facebook/react-native/issues/31725#issuecomment-901682370
@@ -171,4 +173,5 @@ dependencies {
     }
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
+applyNativeModulesAppBuildGradle(project)
