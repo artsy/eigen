@@ -118,7 +118,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -417,7 +417,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
