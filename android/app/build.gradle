@@ -77,12 +77,6 @@ def enableProguardInReleaseBuilds = false
  */
  def jscFlavor = 'org.webkit:android-jsc:+'
 
-// order matters here, this must be set before the react.gradle apply
-project.ext.react = [
-    entryFile: "index.android.js",
-    enableHermes: true,  // clean and rebuild if changing
-]
-
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -152,7 +146,6 @@ dependencies {
     implementation 'commons-io:commons-io:2.8.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
@@ -173,5 +166,4 @@ dependencies {
     }
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle");
-applyNativeModulesAppBuildGradle(project)
+apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
