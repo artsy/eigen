@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
@@ -209,7 +210,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         hideSaveIcon
         onPress={(slug: string) => {
           closeModal?.()
-          // TODO: tracking
+          tracks.tappedArtworkGroup(slug)
           requestAnimationFrame(() => {
             navigateToPageableRoute?.(`artwork/${slug}`)
           })
@@ -225,4 +226,13 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
       )}
     </Box>
   )
+}
+
+const tracks = {
+  tappedArtworkGroup: (slug: string) => ({
+    context_module: ContextModule.alertConfirmation,
+    context_screen_owner_type: OwnerType.alerts,
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_slug: slug,
+  }),
 }
