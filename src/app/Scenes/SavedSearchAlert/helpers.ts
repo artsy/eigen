@@ -9,7 +9,6 @@ import {
   getNotificationPermissionsStatus,
 } from "app/utils/PushNotification"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
-import { ActionCreator } from "easy-peasy"
 import { isEqual, omit } from "lodash"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
@@ -160,82 +159,6 @@ export const useSearchCriteriaAttributes = (criterion: SearchCriteria) => {
   return attributes[criterion]
 }
 
-export const handlePressForArrayValues = ({
-  criterion,
-  selectedAttributes,
-  value,
-  addValueToAttributesByKeyAction,
-  removeValueFromAttributesByKeyAction,
-}: {
-  criterion: SearchCriteria
-  selectedAttributes: string[]
-  value: string
-  addValueToAttributesByKeyAction: ActionCreator<{
-    key: SearchCriteria
-    value: string | boolean | string[] | null
-  }>
-  removeValueFromAttributesByKeyAction: ActionCreator<{
-    key: SearchCriteria
-    value: string | number | boolean | string[]
-  }>
-}) => {
-  const isSelected = isValueSelected({
-    selectedAttributes,
-    value: value,
-  })
-
-  if (isSelected) {
-    removeValueFromAttributesByKeyAction({
-      key: criterion,
-      value: value,
-    })
-  } else {
-    const newValues = (selectedAttributes || []).concat(value)
-
-    addValueToAttributesByKeyAction({
-      key: criterion,
-      value: newValues,
-    })
-  }
-}
-
-export const handlePressForStringValues = ({
-  criterion,
-  selectedAttributes,
-  value,
-  addValueToAttributesByKeyAction,
-  removeValueFromAttributesByKeyAction,
-}: {
-  criterion: SearchCriteria
-  selectedAttributes: string[] | string
-  value: string
-  addValueToAttributesByKeyAction: ActionCreator<{
-    key: SearchCriteria
-    value: string | boolean | string[] | null
-  }>
-  removeValueFromAttributesByKeyAction: ActionCreator<{
-    key: SearchCriteria
-    value: string | number | boolean | string[]
-  }>
-}) => {
-  const isSelected = isValueSelected({
-    selectedAttributes,
-    value: value,
-  })
-
-  if (isSelected) {
-    removeValueFromAttributesByKeyAction({
-      key: criterion,
-      value: value,
-    })
-  } else {
-    addValueToAttributesByKeyAction({
-      key: criterion,
-      value: value,
-    })
-  }
-}
-
 export const useSavedSearchFilter = ({ criterion }: { criterion: SearchCriteria }) => {
   const selectedAttributes = useSearchCriteriaAttributes(criterion)
 
@@ -247,32 +170,38 @@ export const useSavedSearchFilter = ({ criterion }: { criterion: SearchCriteria 
   )
 
   const handlePress = (value: string) => {
+    const isSelected = isValueSelected({
+      selectedAttributes,
+      value: value,
+    })
+
+    let fromattedValue: string | string[] | undefined = undefined
+
     // For array values
     switch (criterion) {
       case SearchCriteria.attributionClass:
       case SearchCriteria.additionalGeneIDs:
-        return handlePressForArrayValues({
-          criterion,
-          selectedAttributes: selectedAttributes as string[],
-          value,
-          addValueToAttributesByKeyAction,
-          removeValueFromAttributesByKeyAction,
-        })
-
+        fromattedValue = ((selectedAttributes as string[]) || []).concat(value)
         break
 
       // For string values
       case SearchCriteria.priceRange:
-        return handlePressForStringValues({
-          criterion,
-          selectedAttributes: selectedAttributes as string,
-          value,
-          addValueToAttributesByKeyAction,
-          removeValueFromAttributesByKeyAction,
-        })
-
-      default:
+        fromattedValue = value
         break
+    }
+
+    if (fromattedValue) {
+      if (isSelected) {
+        removeValueFromAttributesByKeyAction({
+          key: criterion,
+          value: value,
+        })
+      } else {
+        addValueToAttributesByKeyAction({
+          key: criterion,
+          value: fromattedValue,
+        })
+      }
     }
   }
 

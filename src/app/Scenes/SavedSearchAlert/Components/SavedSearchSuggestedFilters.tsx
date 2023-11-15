@@ -8,11 +8,7 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import {
-  handlePressForArrayValues,
-  handlePressForStringValues,
-  isValueSelected,
-} from "app/Scenes/SavedSearchAlert/helpers"
+import { isValueSelected, useSavedSearchFilter } from "app/Scenes/SavedSearchAlert/helpers"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEffect, useState } from "react"
 import { fetchQuery, graphql } from "react-relay"
@@ -33,15 +29,19 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
+  const { handlePress: handleAttributionClassPress } = useSavedSearchFilter({
+    criterion: SearchCriteria.attributionClass,
+  })
+  const { handlePress: handleAdditionalGeneIDsPress } = useSavedSearchFilter({
+    criterion: SearchCriteria.additionalGeneIDs,
+  })
+
+  const { handlePress: handlePriceRangePress } = useSavedSearchFilter({
+    criterion: SearchCriteria.priceRange,
+  })
+
   const [suggestedFilters, setSuggestedFilters] = useState<SuggestedFilterT[]>([])
   const [isLoading, setIsLoading] = useState(true)
-
-  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.addValueToAttributesByKeyAction
-  )
-  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.removeValueFromAttributesByKeyAction
-  )
 
   // Get list of suggested filters
   useEffect(() => {
@@ -78,26 +78,15 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     switch (field) {
       // These are all array values
       case SearchCriteria.attributionClass:
+        handleAttributionClassPress(value)
+        break
       case SearchCriteria.additionalGeneIDs:
-        handlePressForArrayValues({
-          selectedAttributes: attributes[field] || [],
-          value: value,
-          addValueToAttributesByKeyAction,
-          removeValueFromAttributesByKeyAction,
-          criterion: field,
-        })
+        handleAdditionalGeneIDsPress(value)
         break
 
       // These are all string values
       case SearchCriteria.priceRange:
-        handlePressForStringValues({
-          selectedAttributes: attributes[field] || [],
-          value: value,
-          addValueToAttributesByKeyAction,
-          removeValueFromAttributesByKeyAction,
-          criterion: field,
-        })
-
+        handlePriceRangePress(value)
         break
 
       default:
