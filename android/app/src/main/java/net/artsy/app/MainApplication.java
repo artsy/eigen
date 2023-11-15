@@ -1,22 +1,26 @@
 package net.artsy.app;
 
 import android.app.Application;
-import android.util.Log;
-
-import com.braze.Braze;
-import com.braze.support.BrazeLogger;
-import com.appboy.AppboyLifecycleCallbackListener;
-import com.segment.analytics.Analytics;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
+import java.util.List;
+
+import android.content.Context;
+import android.util.Log;
+import com.braze.Braze;
+import com.braze.support.BrazeLogger;
+import com.appboy.AppboyLifecycleCallbackListener;
+import com.segment.analytics.Analytics;
 import net.artsy.app.utils.ReactNativeConfigUtils;
 import io.sentry.react.RNSentryPackage;
-import java.util.List;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.microsoft.codepush.react.CodePush;
+
 
 public class MainApplication extends Application implements ReactApplication {
   private static final String TAG = MainApplication.class.getName();
@@ -43,11 +47,6 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     @Override
-    protected String getJSBundleFile() {
-      return CodePush.getJSBundleFile();
-    }
-
-    @Override
     protected boolean isNewArchEnabled() {
       return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     }
@@ -55,10 +54,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected Boolean isHermesEnabled() {
       return BuildConfig.IS_HERMES_ENABLED;
     }
-  };
 
-  private final ReactNativeHost mNewArchitectureNativeHost =
-    new MainApplicationReactNativeHost(this);
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+  };
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -68,8 +69,11 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
-
     SoLoader.init(this, /* native exopackage */ false);
+    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+      // If you opted-in for the New Architecture, we load the native entry point for this app.
+      DefaultNewArchitectureEntryPoint.load();
+    }
 
     ArtsyNativeModule.didLaunch(
         this.getSharedPreferences("launchConfig", MODE_PRIVATE));
@@ -98,10 +102,6 @@ public class MainApplication extends Application implements ReactApplication {
       Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
     });
 
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      // If you opted-in for the New Architecture, we load the native entry point for this app.
-      DefaultNewArchitectureEntryPoint.load();
-    }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
 
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
