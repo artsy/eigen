@@ -1,12 +1,4 @@
-import {
-  ChevronIcon,
-  Flex,
-  Skeleton,
-  SkeletonBox,
-  Spinner,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ChevronIcon, Flex, Skeleton, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import {
   SavedSearchSuggestedFiltersFetchQuery,
@@ -116,25 +108,10 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   if (isLoading) {
     return (
       <Skeleton>
-        <Flex p={2} alignItems="center" justifyContent="center">
-          <Spinner />
+        <Flex p={2} justifyContent="center">
           <Flex flexDirection="row">
-            <SkeletonBox
-              // key={`artwork-image-placeholder-${index}`}
-              mr={1}
-              // mb={GAP_BETWEEN_IMAGES}
-              width={100}
-              height={30}
-              borderRadius={15}
-            />
-            <SkeletonBox
-              // key={`artwork-image-placeholder-${index}`}
-              mr={1}
-              // mb={GAP_BETWEEN_IMAGES}
-              width={140}
-              height={30}
-              borderRadius={15}
-            />
+            <SkeletonBox mr={1} mb={1} width={100} height={30} borderRadius={15} />
+            <SkeletonBox mr={1} mb={1} width={140} height={30} borderRadius={15} />
           </Flex>
         </Flex>
       </Skeleton>
