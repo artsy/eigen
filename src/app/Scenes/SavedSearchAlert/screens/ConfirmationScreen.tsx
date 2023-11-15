@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, TappedEntityGroup } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
@@ -229,10 +229,10 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 }
 
 const tracks = {
-  tappedArtworkGroup: (slug: string): TappedEntityGroup => ({
+  tappedArtworkGroup: (slug: string): TappedArtworkGroup => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.alertConfirmation,
-    context_screen_owner_type: OwnerType.alerts,
+    context_screen_owner_type: OwnerType.alertConfirmation,
     destination_screen_owner_type: OwnerType.artwork,
     destination_screen_owner_slug: slug,
     type: "thumbnail",
