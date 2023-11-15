@@ -62,7 +62,7 @@ describe("SavedSearchSuggestedFilters", () => {
     })
   })
 
-  it.only("shows only the supported suggested filters", async () => {
+  it("shows only the supported suggested filters", async () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchSuggestedFilters />
