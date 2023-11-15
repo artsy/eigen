@@ -21,7 +21,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:7.3.0")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath('com.google.gms:google-services:4.3.8')
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
