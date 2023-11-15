@@ -2,6 +2,7 @@ import { IS_USA } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "./types"
 
 export const shouldExtractValueNamesFromAggregation = [
+  SearchCriteria.artistSeriesIDs,
   SearchCriteria.locationCities,
   SearchCriteria.materialsTerms,
   SearchCriteria.additionalGeneIDs,
@@ -11,6 +12,7 @@ export const shouldExtractValueNamesFromAggregation = [
 export const allowedSearchCriteriaKeys = [
   SearchCriteria.artistID,
   SearchCriteria.artistIDs,
+  SearchCriteria.artistSeriesIDs,
   SearchCriteria.locationCities,
   SearchCriteria.colors,
   SearchCriteria.partnerIDs,

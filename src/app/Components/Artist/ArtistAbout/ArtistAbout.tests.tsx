@@ -24,6 +24,25 @@ describe("ArtistAbout", () => {
     variables: { artistID: "artist-id" },
   })
 
+  it("renders the empty state", () => {
+    renderWithRelay({
+      Artist: () => ({
+        hasArtistSeriesConnection: { totalCount: 0 },
+        counts: { articles: 0, relatedArtists: 0 },
+        insights: [],
+      }),
+      ArtistBlurb: () => ({
+        text: null,
+      }),
+      ShowConnection: () => ({ totalCount: 0 }),
+      GeneConnection: () => ({ edges: [] }),
+    })
+
+    expect(
+      screen.getByText(/We'll update this page when more information is available/)
+    ).toBeOnTheScreen()
+  })
+
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
       renderWithRelay({
@@ -69,7 +88,9 @@ describe("ArtistAbout", () => {
 
     it("does not render when there are no articles", () => {
       renderWithRelay({
-        ArticleConnection: () => ({ edges: null }),
+        Artist: () => ({
+          counts: { articles: 0 },
+        }),
       })
 
       expect(screen.queryByText(/Artsy Editorial Featuring/)).not.toBeOnTheScreen()
