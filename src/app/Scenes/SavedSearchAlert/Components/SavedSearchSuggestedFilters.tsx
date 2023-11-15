@@ -1,4 +1,12 @@
-import { ChevronIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  ChevronIcon,
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  Spinner,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import {
   SavedSearchSuggestedFiltersFetchQuery,
@@ -32,7 +40,9 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+
   const [suggestedFilters, setSuggestedFilters] = useState<SuggestedFilterT[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.addValueToAttributesByKeyAction
@@ -47,22 +57,28 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   }, [])
 
   const getSuggestedFilters = async () => {
-    const response = await fetchQuery<SavedSearchSuggestedFiltersFetchQuery>(
-      getRelayEnvironment(),
-      savedSearchSuggestedFiltersFetchQuery,
-      {
-        attributes,
-      }
-    ).toPromise()
+    try {
+      const response = await fetchQuery<SavedSearchSuggestedFiltersFetchQuery>(
+        getRelayEnvironment(),
+        savedSearchSuggestedFiltersFetchQuery,
+        {
+          attributes,
+        }
+      ).toPromise()
 
-    if (response?.previewSavedSearch?.suggestedFilters) {
-      setSuggestedFilters(
-        response.previewSavedSearch.suggestedFilters.filter((filter) => {
-          // Adding this check to make sure we don't add a filter type that's not
-          // supported in the app
-          return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
-        })
-      )
+      if (response?.previewSavedSearch?.suggestedFilters) {
+        setSuggestedFilters(
+          response.previewSavedSearch.suggestedFilters.filter((filter) => {
+            // Adding this check to make sure we don't add a filter type that's not
+            // supported in the app
+            return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
+          })
+        )
+      }
+    } catch (error) {
+      console.error("Unable to fetch suggested filters", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -97,8 +113,35 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     }
   }
 
+  if (isLoading) {
+    return (
+      <Skeleton>
+        <Flex p={2} alignItems="center" justifyContent="center">
+          <Spinner />
+          <Flex flexDirection="row">
+            <SkeletonBox
+              // key={`artwork-image-placeholder-${index}`}
+              mr={1}
+              // mb={GAP_BETWEEN_IMAGES}
+              width={100}
+              height={30}
+              borderRadius={15}
+            />
+            <SkeletonBox
+              // key={`artwork-image-placeholder-${index}`}
+              mr={1}
+              // mb={GAP_BETWEEN_IMAGES}
+              width={140}
+              height={30}
+              borderRadius={15}
+            />
+          </Flex>
+        </Flex>
+      </Skeleton>
+    )
+  }
   return (
-    <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+    <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
       {suggestedFilters.map((pill) => (
         <SavedSearchFilterPill
           key={pill.name + pill.value}
