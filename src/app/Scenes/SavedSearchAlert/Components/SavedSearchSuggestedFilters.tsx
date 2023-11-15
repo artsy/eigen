@@ -44,7 +44,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   // Get list of suggested filters
   useEffect(() => {
     getSuggestedFilters()
-  }, [attributes])
+  }, [])
 
   const getSuggestedFilters = async () => {
     const response = await fetchQuery<SavedSearchSuggestedFiltersFetchQuery>(
