@@ -125,6 +125,7 @@ describe("CreateSavedSearchModal", () => {
     const { mockResolveLastOperation } = renderWithRelay()
 
     await waitFor(() => {
+      mockResolveLastOperation({})
       mockResolveLastOperation({
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })

@@ -110,6 +110,8 @@ describe("CreateSavedSearchAlert", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -144,6 +146,7 @@ describe("CreateSavedSearchAlert", () => {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
       resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
     })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -176,6 +179,8 @@ describe("CreateSavedSearchAlert", () => {
       renderWithWrappers(<TestRenderer />)
 
       await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment)
+
         resolveMostRecentRelayOperation(mockEnvironment, {
           PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
@@ -221,6 +226,8 @@ describe("CreateSavedSearchAlert", () => {
       renderWithWrappers(<TestRenderer />)
 
       await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment)
+
         resolveMostRecentRelayOperation(mockEnvironment, {
           PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })

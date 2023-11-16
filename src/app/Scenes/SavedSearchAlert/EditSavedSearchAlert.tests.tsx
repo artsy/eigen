@@ -38,6 +38,8 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -59,6 +61,9 @@ describe("EditSavedSearchAlert", () => {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
+
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -117,6 +122,7 @@ describe("EditSavedSearchAlert", () => {
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
           artistIDs: ["artistID"],
+          artistSeriesIDs: ["monkeys"],
           materialsTerms: ["paper"],
         },
         userAlertSettings: {
@@ -142,6 +148,9 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
+
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           internalID: "artistID",
@@ -302,6 +311,7 @@ const searchCriteria = {
   acquireable: null,
   additionalGeneIDs: [],
   artistIDs: ["artistID"],
+  artistSeriesIDs: ["monkeys"],
   atAuction: null,
   attributionClass: [],
   colors: [],

@@ -1,8 +1,11 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
-import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import {
+  isValueSelected,
+  useSavedSearchFilter,
+  useSearchCriteriaAttributes,
+} from "app/Scenes/SavedSearchAlert/helpers"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { useState } from "react"
@@ -13,35 +16,10 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
     SearchCriteria.additionalGeneIDs
   ) as string[]
 
+  const { handlePress } = useSavedSearchFilter({ criterion: SearchCriteria.additionalGeneIDs })
+
   // If the user has selected any values, show all the options on initial render
   const [showAll, setShowAll] = useState(!!selectedAttributes?.length)
-
-  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.addValueToAttributesByKeyAction
-  )
-  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.removeValueFromAttributesByKeyAction
-  )
-
-  const handlePress = (value: string) => {
-    const isSelected = isValueSelected({
-      selectedAttributes,
-      value: value,
-    })
-
-    if (isSelected) {
-      removeValueFromAttributesByKeyAction({
-        key: SearchCriteria.additionalGeneIDs,
-        value: value,
-      })
-    } else {
-      const newValues = (selectedAttributes || []).concat(value)
-      addValueToAttributesByKeyAction({
-        key: SearchCriteria.additionalGeneIDs,
-        value: newValues,
-      })
-    }
-  }
 
   return (
     <Flex px={2}>
@@ -61,7 +39,7 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
                   value: option.value,
                 })}
                 onPress={() => {
-                  handlePress(option.value as string)
+                  handlePress(option.value)
                 }}
               >
                 {option.label}
@@ -82,7 +60,7 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
                         value: option.value,
                       })}
                       onPress={() => {
-                        handlePress(option.value as string)
+                        handlePress(option.value)
                       }}
                     >
                       {option.label}

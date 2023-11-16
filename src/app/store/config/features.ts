@@ -247,6 +247,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableAlertsSuggestedFilters: {
+    description: "Enable alerts suggested filters",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsSuggestedFilters",
+  },
 }
 
 export interface DevToggleDescriptor {

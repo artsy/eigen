@@ -16,9 +16,10 @@ import {
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { Input, InputTitle } from "app/Components/Input"
+import { Input } from "app/Components/Input"
 import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
+import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -64,6 +65,7 @@ export const Form: React.FC<FormProps> = ({
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
   const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
+  const enableAlertsSuggestedFilters = useFeatureFlag("AREnableAlertsSuggestedFilters")
 
   const tracking = useTracking()
   const { space } = useTheme()
@@ -151,7 +153,7 @@ export const Form: React.FC<FormProps> = ({
             <SavedSearchNameInputQueryRenderer attributes={attributes} />
 
             <Box mt={2}>
-              <InputTitle>Filters</InputTitle>
+              <Text variant="sm-display">Filters</Text>
               <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
                 {pills.map((pill, index) => (
                   <Pill
@@ -169,7 +171,7 @@ export const Form: React.FC<FormProps> = ({
             </Box>
           </Box>
 
-          {!!enableAlertsFilters ? (
+          {!!enableAlertsFilters && !enableAlertsSuggestedFilters ? (
             <Flex mt={2}>
               <MenuItem
                 title="Add Filters"
@@ -183,6 +185,13 @@ export const Form: React.FC<FormProps> = ({
                 }}
                 px={0}
               />
+            </Flex>
+          ) : null}
+
+          {enableAlertsFilters && enableAlertsSuggestedFilters ? (
+            <Flex mt={2}>
+              <Text variant="sm-display">Suggested Filters</Text>
+              <SavedSearchSuggestedFiltersQueryRenderer />
             </Flex>
           ) : null}
 
