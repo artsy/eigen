@@ -69,7 +69,6 @@ export const legacyErrorMiddleware = async (
 export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
   const res = await next(req)
 
-  const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
   const usePrincipalFieldMiddleware = unsafe_getFeatureFlag(
     "ARUsePrincipalFieldErrorHandlerMiddleware"
   )
@@ -78,9 +77,7 @@ export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: Gra
     req.operation.name
   )
 
-  const enableNewErrorMiddleware =
-    usePrincipalFieldMiddleware ||
-    (useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware)
+  const enableNewErrorMiddleware = usePrincipalFieldMiddleware || isScreenUsingNewErrorMiddleware
 
   if (!!enableNewErrorMiddleware) {
     return principalFieldErrorHandlerMiddleware(req, res)

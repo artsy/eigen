@@ -195,12 +195,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
-  ARUseNewErrorMiddleware: {
-    description: "Use updated error middleware",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUseNewErrorMiddleware",
-  },
   ARUsePrincipalFieldErrorHandlerMiddleware: {
     description: "Use new error middleware but for every query",
     readyForRelease: false,
