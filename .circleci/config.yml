@@ -130,6 +130,9 @@ commands:
           name: Clear project dir
           command: |
             rm -rf /home/circleci/project/*
+      - run:
+          name: Install ninja
+          command: sudo apt-get install ninja-build
       - checkout
       - install-node
       - setup-awscli
