@@ -296,11 +296,18 @@ type AlertConnection {
 
 # An edge in a connection.
 type AlertEdge {
+  counts: AlertsCounts
+
   # A cursor for use in pagination
   cursor: String!
+  isRecentlyEnabled: Boolean
 
   # The item at the end of the edge
   node: Alert
+}
+
+type AlertsCounts {
+  totalUserSearchCriteriaCount: Int
 }
 
 # A connection to a list of items.
