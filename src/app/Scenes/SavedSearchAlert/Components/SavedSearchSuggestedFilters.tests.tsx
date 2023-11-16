@@ -1,15 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SavedSearchSuggestedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Suspense } from "react"
 
 const mockNavigate = jest.fn()
 
@@ -26,53 +25,27 @@ jest.mock("@react-navigation/native", () => {
 })
 
 describe("SavedSearchSuggestedFilters", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-    env = getMockRelayEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
+      <Suspense fallback={null}>
+        <SavedSearchStoreProvider runtimeModel={initialData}>
+          <SavedSearchSuggestedFilters />
+        </SavedSearchStoreProvider>
+      </Suspense>
+    ),
   })
 
   it("shows all suggested filters unselected", async () => {
-    const { getByText } = renderWithWrappers(
-      <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchSuggestedFilters />
-      </SavedSearchStoreProvider>
-    )
-
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "SavedSearchSuggestedFiltersFetchQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          previewSavedSearch: {
-            suggestedFilters: mockSuggestedFilters,
-          },
-        },
-      })
-    })
+    renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
 
     await flushPromiseQueue()
 
     mockSuggestedFilters.forEach((filter) => {
-      expect(getByText(filter.displayValue)).toBeTruthy()
+      expect(screen.getByText(filter.displayValue)).toBeTruthy()
     })
   })
 
   it("shows only the supported suggested filters", async () => {
-    const { getByText } = renderWithWrappers(
-      <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchSuggestedFilters />
-      </SavedSearchStoreProvider>
-    )
-
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "SavedSearchSuggestedFiltersFetchQuery"
-    )
-
     const notSupportedFilters = [
       {
         displayValue: "Valid value but not yet supported filter",
@@ -88,53 +61,30 @@ describe("SavedSearchSuggestedFilters", () => {
         value: "invalid-value",
       },
     ]
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          previewSavedSearch: {
-            suggestedFilters: [...mockSuggestedFilters, ...notSupportedFilters],
-          },
-        },
-      })
+
+    renderWithRelay({
+      PreviewSavedSearch: () => ({
+        suggestedFilters: [...mockSuggestedFilters, ...notSupportedFilters],
+      }),
     })
 
     await flushPromiseQueue()
 
     mockSuggestedFilters.forEach((filter) => {
-      expect(getByText(filter.displayValue)).toBeTruthy()
+      expect(screen.getByText(filter.displayValue)).toBeTruthy()
     })
 
     notSupportedFilters.forEach((filter) => {
-      expect(() => getByText(filter.displayValue)).toThrow()
+      expect(() => screen.getByText(filter.displayValue)).toThrow()
     })
   })
 
   it("navigates to filters screen on See More press", async () => {
-    const { getByText } = renderWithWrappers(
-      <SavedSearchStoreProvider runtimeModel={initialData}>
-        <SavedSearchSuggestedFilters />
-      </SavedSearchStoreProvider>
-    )
-
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "SavedSearchSuggestedFiltersFetchQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          previewSavedSearch: {
-            suggestedFilters: mockSuggestedFilters,
-          },
-        },
-      })
-    })
+    renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
 
     await flushPromiseQueue()
 
-    const moreFiltersButton = getByText("More Filters")
+    const moreFiltersButton = screen.getByText("More Filters")
     fireEvent(moreFiltersButton, "onPress")
 
     expect(mockNavigate).toHaveBeenCalledWith("SavedSearchFilterScreen")
