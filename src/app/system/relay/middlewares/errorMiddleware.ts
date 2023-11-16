@@ -70,13 +70,17 @@ export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: Gra
   const res = await next(req)
 
   const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
+  const usePrincipalFieldMiddleware = unsafe_getFeatureFlag(
+    "ARUsePrincipalFieldErrorHandlerMiddleware"
+  )
 
   const isScreenUsingNewErrorMiddleware = newErrorMiddlewareOptedInQueries.includes(
     req.operation.name
   )
 
   const enableNewErrorMiddleware =
-    useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware
+    usePrincipalFieldMiddleware ||
+    (useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware)
 
   if (!!enableNewErrorMiddleware) {
     return principalFieldErrorHandlerMiddleware(req, res)

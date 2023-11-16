@@ -201,6 +201,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "ARUseNewErrorMiddleware",
   },
+  ARUsePrincipalFieldErrorHandlerMiddleware: {
+    description: "Use new error middleware but for every query",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,
