@@ -38,7 +38,7 @@ type RenderWithRelay = RenderResult & {
  * }
  *
  * const { renderWithRelay } = setupTestWrapper({
- *   Component: Foo
+ *   Component: () => <Suspense><Foo /></Suspense>
  * })
  *
  * it('works', () => {
