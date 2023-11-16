@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   Button,
   Flex,
@@ -18,6 +19,8 @@ import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Compo
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
 import { Alert, Platform, ScrollView } from "react-native"
 
@@ -26,7 +29,11 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   return (
-    <>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.alertFilters,
+      })}
+    >
       <FancyModalHeader
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
@@ -58,7 +65,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           Set Filters
         </Button>
       </Flex>
-    </>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
