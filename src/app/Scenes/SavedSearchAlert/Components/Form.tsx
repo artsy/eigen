@@ -19,7 +19,7 @@ import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input } from "app/Components/Input"
 import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
-import { SavedSearchSuggestedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
+import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -191,7 +191,7 @@ export const Form: React.FC<FormProps> = ({
           {enableAlertsFilters && enableAlertsSuggestedFilters ? (
             <Flex mt={2}>
               <Text variant="sm-display">Suggested Filters</Text>
-              <SavedSearchSuggestedFilters />
+              <SavedSearchSuggestedFiltersQueryRenderer />
             </Flex>
           ) : null}
 
