@@ -38,6 +38,8 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -59,6 +61,9 @@ describe("EditSavedSearchAlert", () => {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
+
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -143,6 +148,9 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
+
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           internalID: "artistID",

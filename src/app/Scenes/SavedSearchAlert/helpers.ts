@@ -158,3 +158,54 @@ export const useSearchCriteriaAttributes = (criterion: SearchCriteria) => {
 
   return attributes[criterion]
 }
+
+export const useSavedSearchFilter = ({ criterion }: { criterion: SearchCriteria }) => {
+  const selectedAttributes = useSearchCriteriaAttributes(criterion)
+
+  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.addValueToAttributesByKeyAction
+  )
+  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
+    (actions) => actions.removeValueFromAttributesByKeyAction
+  )
+
+  const handlePress = (value: string) => {
+    const isSelected = isValueSelected({
+      selectedAttributes,
+      value: value,
+    })
+
+    let fromattedValue: string | string[] | undefined = undefined
+
+    // For array values
+    switch (criterion) {
+      case SearchCriteria.attributionClass:
+      case SearchCriteria.additionalGeneIDs:
+        fromattedValue = ((selectedAttributes as string[]) || []).concat(value)
+        break
+
+      // For string values
+      case SearchCriteria.priceRange:
+        fromattedValue = value
+        break
+    }
+
+    if (fromattedValue) {
+      if (isSelected) {
+        removeValueFromAttributesByKeyAction({
+          key: criterion,
+          value: value,
+        })
+      } else {
+        addValueToAttributesByKeyAction({
+          key: criterion,
+          value: fromattedValue,
+        })
+      }
+    }
+  }
+
+  return {
+    handlePress,
+  }
+}
