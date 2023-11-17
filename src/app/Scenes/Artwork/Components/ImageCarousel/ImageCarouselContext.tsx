@@ -152,4 +152,4 @@ export function useNewImageCarouselContext({
   )
 }
 
-export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null as any)
+export const ImageCarouselContext = React.createContext<ImageCarouselContext | null>(null)
