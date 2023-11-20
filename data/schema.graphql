@@ -13659,17 +13659,6 @@ type Partner implements Node {
   profile: Profile
   profileArtistsLayout: String
   profileBannerDisplay: String
-  searchCriteriaConnection(
-    after: String
-    artistID: ID
-    before: String
-    first: Int
-    last: Int
-    partnerID: String
-    represented: Boolean
-    since: SearchCriteriaSinceEnum
-    sort: SearchCriteriaSortEnum
-  ): SearchCriteriaConnection
   showPromoted: Boolean
 
   # A connection of shows from a Partner.
@@ -14614,35 +14603,6 @@ type Query {
 
     # Returns saved searches sorted by input (default: by created date in descending order)
     sort: SavedSearchesSortEnum
-  ): SearchCriteriaConnection
-
-  # List of more general partner facing search criteria data
-  _unused_gravity_searchCriteriaConnection(
-    # Returns the elements in the list that come after the specified cursor.
-    after: String
-    artistID: ID
-
-    # Returns the elements in the list that come before the specified cursor.
-    before: String
-
-    # Returns the first _n_ elements from the list.
-    first: Int
-
-    # (Deprecated) No longer supported
-    highQuality: Boolean
-
-    # Returns the last _n_ elements from the list.
-    last: Int
-    partnerID: ID
-
-    # Only works if partnerID is also passed and artistID is not. Return search
-    # criteria by artists this partner does/does not represent. Not passing will
-    # return all criteria.
-    represented: Boolean
-    since: SearchCriteriaSinceEnum
-
-    # Returns search criteria sorted by input (default: by high quality and count desc)
-    sort: [SearchCriteriaSortEnum!] = [COUNT_DESC]
   ): SearchCriteriaConnection
 
   # List enabled Two-Factor Authentication factors
@@ -15756,17 +15716,6 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-  searchCriteriaConnection(
-    after: String
-    artistID: ID
-    before: String
-    first: Int
-    last: Int
-    partnerID: String
-    represented: Boolean
-    since: SearchCriteriaSinceEnum
-    sort: SearchCriteriaSortEnum
-  ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
   # A Show
@@ -16967,32 +16916,6 @@ type SearchCriteriaLabel {
 
 # A search criteria or errors object
 union SearchCriteriaOrErrorsUnion = Errors | SearchCriteria
-
-# Time range for the since argument
-enum SearchCriteriaSinceEnum {
-  # Query for search criteria enabled within the last 1 day
-  LAST_1_DAY
-
-  # Query for search criteria enabled within the last 15 days
-  LAST_15_DAYS
-
-  # Query for search criteria enabled within the last 30 days
-  LAST_30_DAYS
-
-  # Query for search criteria enabled within the last 7 days
-  LAST_7_DAYS
-
-  # Query for search criteria enabled within the last 90 days
-  LAST_90_DAYS
-}
-
-enum SearchCriteriaSortEnum {
-  # Sort by most popular search criteria in descending order
-  COUNT_DESC
-
-  # Sort by search criteria with price presence on top
-  PRICE_PRESENCE
-}
 
 enum SearchEntity {
   ARTICLE
@@ -20321,17 +20244,6 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-  searchCriteriaConnection(
-    after: String
-    artistID: ID
-    before: String
-    first: Int
-    last: Int
-    partnerID: String
-    represented: Boolean
-    since: SearchCriteriaSinceEnum
-    sort: SearchCriteriaSortEnum
-  ): SearchCriteriaConnection
   shortcut(id: ID!): Shortcut
 
   # A Show
