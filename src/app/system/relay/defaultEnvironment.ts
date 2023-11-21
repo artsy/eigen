@@ -17,7 +17,6 @@ import {
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
-import { uploadMiddleware } from "./middlewares/uploadMiddleware"
 
 const network = new RelayNetworkLayer(
   [
@@ -27,7 +26,6 @@ const network = new RelayNetworkLayer(
     persistedQueryMiddleware(),
     metaphysicsURLMiddleware(),
     rateLimitMiddleware(),
-    uploadMiddleware(),
     // @ts-expect-error
     errorMiddleware(),
     metaphysicsExtensionsLoggerMiddleware(),
