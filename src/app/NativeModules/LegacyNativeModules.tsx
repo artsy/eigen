@@ -63,8 +63,7 @@ interface LegacyNativeModules {
       widthInches: number,
       heightInches: number,
       artworkSlug: string,
-      artworkId: string,
-      enableInstantVIR: boolean
+      artworkId: string
     ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void

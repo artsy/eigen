@@ -1,6 +1,6 @@
 src/__generated__/*
 data/complete.queryMap.json
-Pod/Assets/PreHeatedGraphQLCache/*.json
+data/PreHeatedGraphQLCache/*.json
 node_modules
 package.json
 src/storybook/storybook.requires.js

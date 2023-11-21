@@ -3,11 +3,10 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
-import { graphql, QueryRenderer } from "react-relay"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { graphql, QueryRenderer, Environment } from "react-relay"
 
 export interface SearchCriteriaQueryRendererProps {
-  environment?: RelayModernEnvironment
+  environment?: Environment
   searchCriteriaId?: string
   render: {
     renderPlaceholder: () => React.ReactElement

@@ -1,7 +1,7 @@
 import moment from "moment-timezone"
 import { useState } from "react"
 import useInterval from "react-use/lib/useInterval"
-import { Time, useTimer } from "./useTimer"
+import { Time, getTimer } from "./getTimer"
 
 interface TimerInfo {
   copy: string
@@ -9,10 +9,10 @@ interface TimerInfo {
 }
 
 export interface SaleTimeFeature {
-  startAt: string | null
-  endAt: string | null
-  endedAt: string | null
-  timeZone: string | null
+  startAt: string | null | undefined
+  endAt: string | null | undefined
+  endedAt: string | null | undefined
+  timeZone: string | null | undefined
 }
 
 export const getTimerInfo = (
@@ -97,10 +97,10 @@ export const getTimerInfo = (
 }
 
 export const saleTime = (sale: {
-  startAt: string | null
-  liveStartAt: string | null
-  endAt: string | null
-  timeZone: string | null
+  startAt: string | null | undefined
+  liveStartAt: string | null | undefined
+  endAt: string | null | undefined
+  timeZone: string | null | undefined
 }): { absolute: string | null; relative: string | null } => {
   if (!sale.timeZone) {
     return { absolute: null, relative: null }
@@ -110,12 +110,12 @@ export const saleTime = (sale: {
 
   const saleType = sale.liveStartAt != null ? "live" : "timed"
   const userTimeZone = moment.tz.guess()
-  const startDateMoment =
-    startDate !== null
-      ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
-      : null
-  const endDateMoment =
-    endDate !== null ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone) : null
+  const startDateMoment = startDate
+    ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+    : null
+  const endDateMoment = endDate
+    ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+    : null
   const now = moment()
 
   return {
@@ -236,7 +236,7 @@ const getMomentForDate = (date: string, timeZone: string): moment.Moment => {
   return moment.tz(date, moment.ISO_8601, timeZone).tz(userTimeZone)
 }
 
-export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null => {
+export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null | undefined => {
   if (!sale.timeZone) {
     return null
   }
@@ -264,15 +264,17 @@ export const useRelativeTimeOfSale = (
   const [relativeTime, setRelativeTime] = useState<TimerInfo | null>(null)
 
   const saleHasEnded = !!sale.endedAt
-  if (saleHasEnded || !(sale.endAt && sale.startAt)) {
-    return null
-  }
 
   const callback = () => {
+    if (saleHasEnded || !(sale.endAt && sale.startAt)) {
+      return null
+    }
+
     if (!sale.endAt || !sale.startAt) {
       return
     }
-    const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
+
+    const { hasEnded, time, hasStarted } = getTimer(sale.endAt, sale.startAt)
     const relativeTimeInfo = getTimerInfo(time, {
       hasStarted,
       saleHasEnded: hasEnded,

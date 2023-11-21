@@ -1,10 +1,16 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { BackButton, Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderText } from "app/utils/placeholders"
 
 export const EditSavedSearchFormPlaceholder = () => {
   return (
-    <PageWithSimpleHeader title="Edit your Alert">
+    <PageWithSimpleHeader
+      title="Edit your Alert"
+      titleWeight="regular"
+      noSeparator
+      left={<BackButton onPress={goBack} />}
+    >
       <Box p={2}>
         {/* Input name */}
         <Box mb={2}>

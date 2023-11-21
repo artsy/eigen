@@ -22,16 +22,25 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     artwork
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const { title, artistNames, isInAuction, sale, saleArtwork, internalID, slug } = artworkData
+  const {
+    artistNames,
+    internalID,
+    isEligibleToCreateAlert,
+    isInAuction,
+    sale,
+    saleArtwork,
+    slug,
+    title,
+  } = artworkData
   const formattedArtistNames = artistNames ? artistNames + ", " : ""
-  const hasArtists = artistNames?.length ?? 0 > 0
 
   const hasArtworksSuggestions =
     (artworkData.savedSearch?.suggestedArtworksConnection?.totalCount ?? 0) > 0
 
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
-  const displayAuctionCreateAlertHeader = hasArtists && isInAuction && isLotClosedOrBiddingEnded
+  const displayAuctionCreateAlertHeader =
+    isEligibleToCreateAlert && isInAuction && isLotClosedOrBiddingEnded
 
   if (!displayAuctionCreateAlertHeader) {
     return null
@@ -119,6 +128,7 @@ const artworkAuctionCreateAlertHeaderFragment = graphql`
   fragment ArtworkAuctionCreateAlertHeader_artwork on Artwork {
     title
     internalID
+    isEligibleToCreateAlert
     artistNames
     isInAuction
     internalID

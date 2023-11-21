@@ -9,16 +9,19 @@ import { useEffect } from "react"
  */
 export const useDismissSavedHighlight = () => {
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+  const {
+    isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const focusedTab = Tabs.useFocusedTab()
 
   const dismissed = isDismissed("save-highlight").status
 
   useEffect(() => {
-    if (dismissed || !focusedTab || focusedTab !== Tab.savedWorks) {
+    if (dismissed || !focusedTab || focusedTab !== Tab.savedWorks || !isReady) {
       return
     }
 
     dismiss("save-highlight")
-  }, [dismissed, dismiss, focusedTab])
+  }, [dismissed, dismiss, focusedTab, isReady])
 }

@@ -1,6 +1,5 @@
-import querystring from "querystring"
-import { Flex } from "@artsy/palette-mobile"
-import { Touchable } from "@artsy/palette-mobile"
+import { Flex, Touchable } from "@artsy/palette-mobile"
+import { parse } from "query-string"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { Config } from "react-native-config"
@@ -42,7 +41,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
       accessibilityLabel="Vimeo Video Player"
       alignContent="center"
     >
-      {coverImage && !isPlaying && (
+      {!!coverImage && !isPlaying && (
         <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
           <Image
             source={{ uri: coverImage }}
@@ -51,7 +50,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
           />
         </Touchable>
       )}
-      {isPlaying && (
+      {!!isPlaying && (
         <Flex accessibilityLabel="Vimeo Video Player Controls" width="100%" height="100%">
           <Vimeo
             videoId={videoId}
@@ -98,7 +97,7 @@ const useVimeoVideoMetadata = (videoId: string) => {
 export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
   const [url, queryParams] = playerUrl.split("?")
   const videoId = url.replace("https://player.vimeo.com/video/", "")
-  const params = querystring.parse("?" + queryParams)
+  const params = parse("?" + queryParams)
 
   return {
     videoId,

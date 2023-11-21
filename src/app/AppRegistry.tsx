@@ -8,9 +8,11 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ActivityItemScreenQueryRenderer } from "app/Scenes/Activity/ActivityItemScreen"
 import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
+import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
@@ -34,10 +36,9 @@ import { SafeAreaInsets, useScreenDimensions } from "app/utils/hooks"
 import { useSelectedTab } from "app/utils/hooks/useSelectedTab"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
-import { GraphQLTaggedNode } from "relay-runtime"
+import { GraphQLTaggedNode } from "react-relay"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { CityGuideView } from "./NativeModules/CityGuideView"
-import { DevMenuOld } from "./NativeModules/DevMenuOld"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
@@ -80,7 +81,7 @@ import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversati
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
-  LotsByArtistsYouFollowQueryRenderer,
+  LotsByArtistsYouFollowScreen,
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map/MapContainer"
@@ -338,6 +339,9 @@ export const modules = defineModules({
     fullBleed: true,
     hidesBackButton: true,
   }),
+  ActivityItem: reactModule(ActivityItemScreenQueryRenderer, {
+    hidesBottomTabs: true,
+  }),
   About: reactModule(About),
   AddMyCollectionArtist: reactModule(AddMyCollectionArtist, {
     hidesBackButton: true,
@@ -350,6 +354,11 @@ export const modules = defineModules({
   Article: reactModule(ArticleScreen, {
     fullBleed: true,
     hidesBackButton: true,
+  }),
+  ArticleSlideShow: reactModule(ArticlesSlideShowScreen, {
+    fullBleed: true,
+    hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   Articles: reactModule(
     ArticlesScreen,
@@ -442,9 +451,11 @@ export const modules = defineModules({
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
-  DevMenuOld: reactModule(DevMenuOld, { alwaysPresentModally: true }),
   DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
-  EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
+  EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer, {
+    hidesBackButton: true,
+    hidesBottomTabs: true,
+  }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true, hidesBackButton: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
@@ -475,7 +486,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, [
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowScreen, {}, [
     LotsByArtistsYouFollowScreenQuery,
   ]),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {

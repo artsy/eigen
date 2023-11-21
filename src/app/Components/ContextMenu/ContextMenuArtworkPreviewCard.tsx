@@ -6,9 +6,9 @@ import { RecentlySoldCardSection } from "app/Components/ArtworkRail/ArtworkRailC
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { isPad } from "app/utils/hardware"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { PixelRatio } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 
 const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
@@ -18,10 +18,9 @@ const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = 400
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 const useFullWidth = () => {
-  const isTablet = isPad()
   const space = useSpace()
   const { width } = useScreenDimensions()
-  const extraLargeWidth = isTablet ? 400 : width - space(4)
+  const extraLargeWidth = isTablet() ? 400 : width - space(4)
   return extraLargeWidth
 }
 

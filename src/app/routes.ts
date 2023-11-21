@@ -123,10 +123,12 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/", "Home"),
     addRoute("/about", "About"),
     addRoute("/activity", "Activity"),
+    addRoute("/activity/:notificationID", "ActivityItem"),
     addRoute("/art-quiz", "ArtQuiz"),
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
     addRoute("/article/:articleID", "Article"),
+    addRoute("/article/:articleID/slideshow", "ArticleSlideShow"),
     addRoute("/articles", "Articles"),
     addRoute("/artist-series/:artistSeriesID", "ArtistSeries"),
     addRoute("/artist/:artistID", "Artist"),
@@ -136,6 +138,11 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
+    })),
+    addRoute("/artist/:artistID/artworks", "Artist", (params) => ({
+      ...params,
+      initialTab: "Artworks",
+      scrollToArtworksGrid: true,
     })),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
 
@@ -174,7 +181,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/conversation/:conversationID", "Conversation"),
     addRoute("/conversation/:conversationID/details", "ConversationDetails"),
-    addRoute("/dev-menu-old", "DevMenuOld"),
     addRoute("/dev-menu", "DevMenu"),
     addRoute("/fair/:fairID", "Fair"),
     addRoute("/fair/:fairID/articles", "FairArticles"),

@@ -6,7 +6,7 @@ import { matchRoute } from "app/routes"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { useAndroidGoBack } from "app/utils/hooks/useBackHandler"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import { Schema } from "app/utils/track"
@@ -67,7 +67,6 @@ export const ArtsyWebViewPage = ({
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
   const saInsets = useSafeAreaInsets()
-  useAndroidGoBack()
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -108,28 +107,33 @@ export const ArtsyWebViewPage = ({
     }
   }
 
+  const handleBackButtonPress = () => {
+    if (isPresentedModally && !canGoBack) {
+      dismissModal()
+    } else if (!canGoBack) {
+      handleGoBack()
+    } else {
+      if (systemBackAction) {
+        systemBackAction()
+      } else {
+        ref.current?.goBack()
+      }
+    }
+  }
+
+  useBackHandler(() => {
+    handleBackButtonPress()
+    return true
+  })
+
+  const leftButton = useRightCloseButton && !canGoBack ? undefined : handleBackButtonPress
+
   return (
     <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={!!isPresentedModally && !canGoBack}
-          onLeftButtonPress={
-            useRightCloseButton && !canGoBack
-              ? undefined
-              : () => {
-                  if (isPresentedModally && !canGoBack) {
-                    dismissModal()
-                  } else if (!canGoBack) {
-                    handleGoBack()
-                  } else {
-                    if (systemBackAction) {
-                      systemBackAction()
-                    } else {
-                      ref.current?.goBack()
-                    }
-                  }
-                }
-          }
+          onLeftButtonPress={leftButton}
           useShareButton={showShareButton}
           rightCloseButton={useRightCloseButton}
           onRightButtonPress={
@@ -179,16 +183,18 @@ export const ArtsyWebView = forwardRef<
     const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
-    const [loadProgress, setLoadProgress] = useState<number | null>(null)
-    const showIndicator = useDevToggle("DTShowWebviewIndicator")
+    const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
 
     const webURL = useEnvironment().webURL
     const uri = url.startsWith("/") ? webURL + url : url
 
     // Debounce calls just in case multiple stopLoading calls are made in a row
-    const stopLoading = debounce(() => {
+    const stopLoading = debounce((needToGoBack = true) => {
       innerRef.current?.stopLoading()
-      innerRef.current?.goBack()
+
+      if (needToGoBack) {
+        innerRef.current?.goBack()
+      }
     }, 500)
 
     const onNavigationStateChange = (evt: WebViewNavigation) => {
@@ -212,13 +218,13 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        (["ReactWebView", "ModalWebView"].includes(result.module) ||
-          result.module === "VanityURLEntity")
+        ["ReactWebView", "ModalWebView", "VanityURLEntity"].includes(result.module)
       ) {
         innerRef.current!.shareTitleUrl = targetURL
         return
       } else {
-        stopLoading()
+        const needToGoBack = result.type !== "external_url"
+        stopLoading(needToGoBack)
       }
 
       // In case of a webview presented modally, if the targetURL is a tab View,
@@ -235,7 +241,6 @@ export const ArtsyWebView = forwardRef<
       if (!__TEST__) {
         innerRef.current?.stopLoading()
       }
-      setLoadProgress(null)
 
       if (shouldDismissModal) {
         dismissModal(() => {
@@ -258,7 +263,7 @@ export const ArtsyWebView = forwardRef<
           decelerationRate="normal"
           source={{ uri }}
           style={{ flex: 1 }}
-          userAgent={userAgent}
+          applicationNameForUserAgent={userAgent}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {
@@ -268,23 +273,9 @@ export const ArtsyWebView = forwardRef<
               console.log("error parsing webview message data", e, data)
             }
           }}
-          onLoadStart={() => {
-            setLoadProgress((p) => Math.max(0.02, p ?? 0))
-          }}
-          onLoadEnd={() => setLoadProgress(null)}
-          onLoadProgress={(e) => {
-            // we don't want to set load progress after navigating away from this
-            // web view (in onShouldStartLoadWithRequest). So we set
-            // loadProgress to null after navigating to another screen, and we
-            // check for that case here.
-            if (loadProgress !== null) {
-              setLoadProgress(e.nativeEvent.progress)
-            }
-          }}
           onNavigationStateChange={onNavigationStateChange}
         />
-        <ProgressBar loadProgress={loadProgress} />
-        {showIndicator ? (
+        {!!showDevToggleIndicator && (
           <Flex
             position="absolute"
             top={50}
@@ -293,30 +284,11 @@ export const ArtsyWebView = forwardRef<
           >
             <Text color="red">webview</Text>
           </Flex>
-        ) : null}
+        )}
       </SafeAreaView>
     )
   }
 )
-
-const ProgressBar = ({ loadProgress }: { loadProgress: number | null }) => {
-  if (loadProgress === null) {
-    return null
-  }
-
-  const progressPercent = Math.max(loadProgress * 100, 2)
-  return (
-    <Flex
-      testID="progress-bar"
-      position="absolute"
-      top={0}
-      left={0}
-      width={progressPercent + "%"}
-      height={2}
-      backgroundColor="blue100"
-    />
-  )
-}
 
 export function useWebViewCookies() {
   const accessToken = GlobalStore.useAppState((store) => store.auth.userAccessToken)

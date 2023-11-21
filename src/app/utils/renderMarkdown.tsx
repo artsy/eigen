@@ -1,7 +1,7 @@
 import { ClassTheme, Text, LinkText, TextProps, Separator } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
-import _ from "lodash"
+import { map } from "lodash"
 import { Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
 import { sendEmailWithMailTo } from "./sendEmail"
@@ -123,7 +123,7 @@ export function defaultRules({
 
     list: {
       react: (node, output, state) => {
-        const items = _.map(node.items, (item, i) => {
+        const items = map(node.items, (item, i) => {
           let bullet
           if (node.ordered) {
             bullet = <Text variant="sm" key={state.key}>{`${i + 1} . `}</Text>

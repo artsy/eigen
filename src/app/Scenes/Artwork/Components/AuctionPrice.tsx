@@ -109,7 +109,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             </Text>
           )}
         </Flex>
-        {!!sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
+        {!!sale?.isWithBuyersPremium && (
           <>
             <Spacer y={1} />
             <Text variant="sm" color="black60">

@@ -1,7 +1,7 @@
 import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
 
 const mockInfo = {

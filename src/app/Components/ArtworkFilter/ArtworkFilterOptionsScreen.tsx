@@ -16,9 +16,10 @@ import {
   ArtworkFiltersModel,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import _ from "lodash"
+import { compact } from "lodash"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -47,6 +48,7 @@ export enum FilterModalMode {
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
+  const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -81,7 +83,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const isClearAllButtonEnabled = appliedFiltersState.length > 0 || selectedFiltersState.length > 0
 
-  const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
+  const aggregateFilterOptions: FilterDisplayConfig[] = compact(
     concreteAggregations.map((aggregation) => {
       if (aggregation?.counts?.length === 0) {
         return null
@@ -100,6 +102,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
+    // Filter out the Artist Series filter if the feature flag is disabled
+    .filter(
+      (filterOption) => enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs"
+    )
 
   const clearAllFilters = () => {
     clearFiltersZeroStateAction()
@@ -380,6 +386,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "artistNationalities",
     ScreenComponent: "ArtistNationalitiesOptionsScreen",
   },
+  artistSeriesIDs: {
+    displayText: FilterDisplayName.artistSeriesIDs,
+    filterType: "artistSeriesIDs",
+    ScreenComponent: "ArtistSeriesOptionsScreen",
+  },
   attributionClass: {
     displayText: FilterDisplayName.attributionClass,
     filterType: "attributionClass",
@@ -486,6 +497,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
+  "artistSeriesIDs",
   "attributionClass",
   "medium",
   "additionalGeneIDs",

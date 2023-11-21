@@ -20,41 +20,33 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "16.18.0"
+          node-version: "20.9.0"
   generate-checksums:
     steps:
       - run:
           name: "Generate initial checksum manifests"
           command: |
             mkdir .manifests
-            scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
-            scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
-            scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
-            scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
+            scripts/ci/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
+            scripts/ci/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
+            scripts/ci/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
+            scripts/ci/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/ci/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
           name: "Set up aws cli not installed"
-          command: scripts/setup-awscli
+          command: scripts/setup/setup-awscli
   install-node-modules:
     steps:
-      - restore_cache:
-          keys:
-            - v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
-      - run:
-          name: Install node modules
-          command: ls node_modules || yarn install
-      - save_cache:
-          key: v12-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
-          paths:
-            - node_modules
+      - node/install-packages:
+          pkg-manager: yarn
   run-relay-compiler:
     steps:
       - run:
@@ -64,7 +56,7 @@ commands:
     steps:
       - run:
           name: Update echo
-          command: ./scripts/update-echo
+          command: ./scripts/setup/update-echo
   generate-query-map:
     steps:
       - run:
@@ -74,7 +66,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v8-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -107,10 +99,13 @@ commands:
             - v15-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-assets
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
-          command: ./scripts/ci-ios
+          command: ./scripts/ci/ci-ios
       - save_cache:
           key: v15-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
@@ -120,16 +115,6 @@ commands:
     steps:
       - attach_workspace:
           at: ../workspace
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf /Users/distiller/project
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
       - restore_cache:
           keys:
             - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
@@ -140,6 +125,14 @@ commands:
             then
               circleci step halt
             fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /home/circleci/project/*
+      - checkout
+      - install-node
+      - setup-awscli
+      - setup-env-file
       - install-node-modules
       - run-relay-compiler
       - update-echo
@@ -148,16 +141,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-app_build_android-{{ checksum ".manifests/app_build" }}
+            - v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
-          command: ./scripts/download-assets
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
-          command: ./scripts/ci-android
+          command: ./scripts/ci/ci-android
       - save_cache:
-          key: v4-app_build_android-{{ checksum ".manifests/app_build" }}
+          key: v4-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -170,34 +166,66 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: ./scripts/secrets-check-all
+      - run: ./scripts/detect-secrets/secrets-check-all
 
   deploy-nightly-beta:
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: small
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy betas
+          command: ./scripts/deploys/deploy-beta-both
+
+  check-and-deploy:
     environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
+      BUNDLE_PATH: .vendor
 
     macos:
       xcode: 15.0.0
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
 
     steps:
       - checkout
       - install-node
+      - install-gems
+      - setup-awscli
       - run:
-          name: Deploy beta
-          command: ./scripts/deploy-beta-both
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, new beta needed!"
+              ./scripts/codepush/maybe_notify_beta_needed.sh
+              circleci-agent step halt
+            fi
+      - install-node-modules
+      - run:
+          name: Install CodePush CLI
+          command: yarn global add appcenter-cli
+      - run-relay-compiler
+      - run:
+          name: Handle Deployment for codepush
+          command: |
+            echo "Triggering CodePush deployment..."
+            ./scripts/codepush/deploy-to-codepush.sh Staging
 
   test-js:
     parallelism: 8
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "20.9.0"
     resource_class: large
     steps:
       - checkout
-      - node/install-packages:
-          cache-version: "v2"
-          pkg-manager: yarn
+      - install-node-modules
       - run-relay-compiler
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
@@ -210,24 +238,10 @@ jobs:
       - store_test_results:
           path: ./reports/junit/
 
-  type-check:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    resource_class: small
-    steps:
-      - checkout
-      - node/install-packages:
-          cache-version: "v2"
-          pkg-manager: yarn
-      - run-relay-compiler
-      - run:
-          command: yarn type-check
-
   update-metaphysics:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "20.9.0"
     resource_class: medium
     steps:
       - checkout
@@ -242,12 +256,21 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "20.9.0"
     resource_class: small
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - install-node-modules
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
+      - run:
+          name: Check Branch and Exit Early if Ignored
+          command: |
+            if [[ "$CIRCLE_BRANCH" == "main" || "$CIRCLE_BRANCH" == "beta-ios" || "$CIRCLE_BRANCH" == "beta-android" ]]; then
+              echo "On ignored branch ($CIRCLE_BRANCH). Exiting early."
+              circleci-agent step halt
+            fi
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -258,7 +281,7 @@ jobs:
 
     macos:
       xcode: 15.0.0
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
 
     steps:
       - checkout
@@ -267,12 +290,12 @@ jobs:
       - install-gems
       - run:
           name: Check flags
-          command: ./scripts/biweekly-flag-check.sh
+          command: ./scripts/check-flags/biweekly-flag-check.sh
 
   build-test-js:
     executor:
       name: node/default
-      tag: "16.18.0"
+      tag: "20.9.0"
     resource_class: medium
     steps:
       - checkout
@@ -293,7 +316,7 @@ jobs:
             fi
       - run:
           name: Generate app_build manifest
-          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
+          command: ./scripts/ci/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - persist_to_workspace:
@@ -308,7 +331,7 @@ jobs:
 
     macos:
       xcode: 15.0.0
-      resource_class: macos.x86.medium.gen2
+      resource_class: macos.m1.medium.gen1
 
     steps:
       - attach_workspace:
@@ -335,7 +358,7 @@ jobs:
       - run:
           name: Clear project dir
           command: |
-            rm -rf /Users/distiller/project
+            rm -rf  /Users/distiller/project/*
       - checkout
       - attach_workspace:
           at: .
@@ -352,9 +375,13 @@ jobs:
           platform: "iOS"
           device: "iPhone 15 Pro"
       - build-app-ios
+      - macos/install-rosetta
+      - macos/preboot-simulator:
+          device: "iPhone 14 Pro"
+          version: "16.4"
       - run:
           name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci-test-ios
+          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
           key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
@@ -373,11 +400,11 @@ jobs:
       - run:
           name: Deploy if beta
           no_output_timeout: 20m
-          command: ./scripts/deploy-if-beta-branch-ios
+          command: ./scripts/deploys/deploy-if-beta-branch-ios
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2023.09.1-node
+      - image: cimg/android:2023.11.1-node
     resource_class: large
     steps:
       - prep-android-env
@@ -398,20 +425,7 @@ jobs:
             - build-success.log
       - run:
           name: Deploy if beta - play store and firebase
-          command: ./scripts/deploy-if-beta-branch-android BOTH
-
-  release-ios-app:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 15.0.0
-      resource_class: macos.x86.medium.gen2
-    steps:
-      - checkout
-      - install-gems
-      - run:
-          name: Release app version
-          command: ./scripts/release-ios-app-branch
+          command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
 workflows:
   version: 2
@@ -437,14 +451,6 @@ workflows:
     jobs:
       - check-flags
 
-  release-ios-app-workflow:
-    jobs:
-      - release-ios-app:
-          filters:
-            branches:
-              only:
-                - release-ios-app
-
   test-build-deploy:
     jobs:
       - detect-secrets:
@@ -452,40 +458,19 @@ workflows:
             branches:
               ignore:
                 - main
-                - release
-                - staging
-
-      - test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-
-      - type-check:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
 
       - check-code:
           context: danger-github-oss
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
-                - app_store_submission
-                - play_store_submission
 
-      - build-test-js:
+      - check-and-deploy:
           filters:
             branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
+              only:
+                - main
+
+      - test-js
+
+      - build-test-js
 
       - horizon/block:
           context: horizon
@@ -500,12 +485,10 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-android
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block
 
@@ -513,12 +496,10 @@ workflows:
           filters:
             branches:
               ignore:
-                - app_store_submission
-                - play_store_submission
                 - beta-ios
           requires:
             - test-js
-            - type-check
+            - check-code
             - build-test-js
             - horizon/block
 

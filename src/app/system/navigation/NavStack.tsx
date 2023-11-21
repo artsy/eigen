@@ -3,10 +3,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
-import { isPad } from "app/utils/hardware"
 import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/hooks"
 import { createContext, useState } from "react"
 import { View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { BackButton } from "./BackButton"
 
 const Stack = createNativeStackNavigator()
@@ -96,7 +96,7 @@ export const NavStack: React.FC<{
             backgroundColor: "white",
             marginBottom: bottomTabBarHeight,
           },
-          orientation: isPad() ? "default" : "portrait",
+          orientation: isTablet() ? "default" : "portrait",
         }
 
         if (isPresentedModally || module?.options?.hidesBottomTabs) {

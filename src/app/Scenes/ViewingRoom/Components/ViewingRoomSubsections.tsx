@@ -8,40 +8,48 @@ interface ViewingRoomSubsectionProps {
 }
 
 export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (props) => {
-  const subsections = props.viewingRoom.subsections! /* STRICTNESS_MIGRATION */
+  const subsections = props.viewingRoom.subsections
+
   return (
     <>
-      {subsections.map((subsection, index) => (
-        <Box key={index} mt={4}>
-          {!!subsection.title && (
-            <Box mx={2} testID="subsection">
-              <Text mb={1} variant="sm-display" maxWidth>
-                {subsection.title}
-              </Text>
-            </Box>
-          )}
-          {!!subsection.body && (
-            <Box mx={2}>
-              <Text mb={2} variant="sm" maxWidth>
-                {subsection.body}
-              </Text>
-            </Box>
-          )}
-          {!!subsection.image?.imageURLs?.normalized && (
-            <OpaqueImageView
-              imageURL={subsection.image.imageURLs.normalized}
-              aspectRatio={subsection.image.width! / subsection.image.height!}
-            />
-          )}
-          {!!subsection.caption && (
-            <Box mx={2}>
-              <Text mt={1} variant="xs" color="black60">
-                {subsection.caption}
-              </Text>
-            </Box>
-          )}
-        </Box>
-      ))}
+      {subsections.map((subsection, index) => {
+        const shouldDisplayImage =
+          !!subsection.image?.imageURLs?.normalized &&
+          !!subsection?.image?.width &&
+          !!subsection?.image?.height
+
+        return (
+          <Box key={index} mt={4}>
+            {!!subsection.title && (
+              <Box mx={2} testID="subsection">
+                <Text mb={1} variant="sm-display" maxWidth>
+                  {subsection.title}
+                </Text>
+              </Box>
+            )}
+            {!!subsection.body && (
+              <Box mx={2}>
+                <Text mb={2} variant="sm" maxWidth>
+                  {subsection.body}
+                </Text>
+              </Box>
+            )}
+            {!!shouldDisplayImage && (
+              <OpaqueImageView
+                imageURL={subsection.image.imageURLs.normalized}
+                aspectRatio={subsection.image.width / subsection.image.height}
+              />
+            )}
+            {!!subsection.caption && (
+              <Box mx={2}>
+                <Text mt={1} variant="xs" color="black60">
+                  {subsection.caption}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        )
+      })}
     </>
   )
 }

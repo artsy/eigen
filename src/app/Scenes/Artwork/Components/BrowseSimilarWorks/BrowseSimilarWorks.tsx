@@ -44,11 +44,11 @@ export interface BrowseSimilarWorksProps {
 const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> = (props) => {
   const artwork = useFragment(similarWorksFragment, props.artwork)
 
-  const artworkAlert = computeArtworkAlertProps(artwork)
-
-  if (!artworkAlert.hasArtists) {
+  if (!artwork.isEligibleToCreateAlert) {
     return null
   }
+
+  const artworkAlert = computeArtworkAlertProps(artwork)
 
   const params: BrowseSimilarWorksProps = {
     aggregations: artworkAlert.aggregations!,
@@ -79,6 +79,7 @@ const similarWorksFragment = graphql`
     title
     internalID
     slug
+    isEligibleToCreateAlert
     artistsArray: artists {
       internalID
       name

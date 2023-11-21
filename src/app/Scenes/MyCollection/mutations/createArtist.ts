@@ -4,7 +4,7 @@ import {
   createArtistMutation$data,
 } from "__generated__/createArtistMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const createArtist = (
   input: CreateArtistMutationInput

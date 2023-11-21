@@ -10,8 +10,6 @@ export * from "./LegacyTab"
 
 export { NavigationalTabs, ContentTabs, StepTabs }
 
-export const TAB_BAR_HEIGHT = 44
-
 export type TabsType = Array<{
   label: string
   superscript?: string

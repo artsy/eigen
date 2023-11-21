@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment } from "relay-test-utils"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
@@ -58,11 +57,7 @@ describe("New SellWithArtsyLandingPage", () => {
     })
 
     const TestWrapper = () => {
-      return (
-        <SellWithArtsyHomeQueryRenderer
-          environment={mockEnvironment as unknown as RelayModernEnvironment}
-        />
-      )
+      return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
     }
 
     // HEADER

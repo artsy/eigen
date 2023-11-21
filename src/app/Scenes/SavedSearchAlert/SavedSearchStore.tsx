@@ -6,27 +6,32 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { Action, action, createContextStore } from "easy-peasy"
+import { pick } from "lodash"
 
-interface SavedSearchModel {
+export interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
   entity: SavedSearchEntity
   dirty: boolean
+  /** Artwork ID, if the current saved search alert is being set from an artwork */
+  currentArtworkID?: string
 
-  setValueToAttributesByKeyAction: Action<
+  setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
+  addValueToAttributesByKeyAction: Action<
     this,
     {
       key: SearchCriteria
-      value: string | null
+      value: string | string[] | boolean | null
     }
   >
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
       key: SearchCriteria
-      value: string | number | boolean
+      value: string | string[] | number | boolean
     }
   >
+  clearAllAttributesAction: Action<this>
 }
 
 export const savedSearchModel: SavedSearchModel = {
@@ -41,9 +46,14 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
+  currentArtworkID: undefined,
 
-  setValueToAttributesByKeyAction: action((state, payload) => {
-    if (payload.key === "priceRange") {
+  setAttributeAction: action((state, payload) => {
+    state.attributes[payload.key] = payload.value
+  }),
+
+  addValueToAttributesByKeyAction: action((state, payload) => {
+    if (payload.key === "priceRange" && typeof payload.value === "string") {
       // set form dirty on price update
       if (state.attributes[payload.key] !== payload.value) {
         state.dirty = true
@@ -67,6 +77,11 @@ export const savedSearchModel: SavedSearchModel = {
       state.attributes[payload.key] = null
     }
 
+    state.dirty = true
+  }),
+
+  clearAllAttributesAction: action((state) => {
+    state.attributes = pick(state.attributes, ["artistIDs", "artistID"])
     state.dirty = true
   }),
 }

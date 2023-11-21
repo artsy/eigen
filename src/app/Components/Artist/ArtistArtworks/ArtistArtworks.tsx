@@ -1,19 +1,22 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  useSpace,
-  useScreenDimensions,
-  Flex,
-  Tabs,
-  Text,
+  BellIcon,
   Box,
   Button,
-  Spacer,
-  BellIcon,
-  Spinner,
+  Flex,
   Message,
+  Spacer,
+  Spinner,
+  Tabs,
+  Text,
+  useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
+import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
+import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -34,9 +37,8 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo } from "react"
-import { Dimensions } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
@@ -44,22 +46,30 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
   predefinedFilters?: FilterArray
+  scrollToArtworksGrid: boolean
 }
 
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   artist,
   relay,
   predefinedFilters,
+  scrollToArtworksGrid,
   searchCriteria,
   ...props
 }) => {
+  const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
+
   const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
     useShowArtworksFilterModal({ artist })
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
+
+  const gridRef = useRef<MasonryFlashListRef<typeof artworks[0]>>(null)
+
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
@@ -88,13 +98,28 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       )
       const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
         (sortEntity) => sortEntity.paramValue === "-published_at"
-      )!
+      )
 
-      filters = [...params, sortFilterItem]
+      filters = [...params, ...(Array.isArray(sortFilterItem) ? sortFilterItem : [])]
     }
 
     setInitialFilterStateAction(filters)
   }, [])
+
+  useEffect(() => {
+    if (scrollToArtworksGrid) {
+      setTimeout(() => {
+        gridRef.current?.scrollToOffset({ offset: 0, animated: true })
+      }, 1000)
+    }
+  }, [scrollToArtworksGrid])
+
+  const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
+    entityId: artist.internalID,
+    entityName: artist.name ?? "",
+    entitySlug: artist.slug,
+    entityOwnerType: OwnerType.artist,
+  })
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -105,6 +130,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
     })
+  }
+
+  const handleCompleteSavedSearch = () => {
+    // TODO: Get the new count of the artist saved alerts
   }
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
@@ -123,15 +152,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         icon={<BellIcon />}
         size="small"
         onPress={() => {
-          openFilterArtworksModal("createAlert")
+          // Could be useful to differenciate between the two at a later point
+          tracking.trackEvent(
+            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
+          )
 
-          tracking.trackEvent({
-            action: ActionType.tappedCreateAlert,
-            context_screen_owner_type: OwnerType.artist,
-            context_screen_owner_id: artist.internalID,
-            context_screen_owner_slug: artist.slug,
-            context_module: ContextModule.artistArtworksGridEnd,
-          })
+          if (enableAlertsFilters) {
+            setIsCreateAlertModalVisible(true)
+          } else {
+            openFilterArtworksModal("createAlert")
+          }
         }}
       >
         Create Alert
@@ -158,6 +188,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         <CreateAlertButton />
 
         <Spacer y={6} />
+
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -169,6 +200,17 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           mode={FilterModalMode.ArtistArtworks}
           shouldShowCreateAlertButton
         />
+
+        {!!enableAlertsFilters && (
+          <CreateSavedSearchModal
+            aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+            attributes={attributes}
+            closeModal={() => setIsCreateAlertModalVisible(false)}
+            entity={savedSearchEntity}
+            onComplete={handleCompleteSavedSearch}
+            visible={isCreateAlertModalVisible}
+          />
+        )}
       </Tabs.ScrollView>
     )
   }
@@ -185,13 +227,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     if (showCreateAlertAtEndOfList && !relay.hasMore()) {
       return (
         <Message
-          title="Get notified when works you're looking for are added."
-          containerStyle={{ width: Dimensions.get("window").width, left: -space(2), mt: 2 }}
+          title="Get notified when new works are added."
+          containerStyle={{ my: 2 }}
           IconComponent={() => {
             return <CreateAlertButton />
           }}
           iconPosition="right"
-          showCloseButton
         />
       )
     }
@@ -205,6 +246,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         numColumns={NUM_COLUMNS_MASONRY}
         estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
+        innerRef={gridRef}
         ListEmptyComponent={
           <Box mb="80px" pt={2}>
             <FilteredArtworkGridZeroState
@@ -246,9 +288,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
         ListHeaderComponent={
-          <Tabs.SubTabBar>
-            <ArtistArtworksFilterHeader artist={artist} />
-          </Tabs.SubTabBar>
+          <>
+            <Tabs.SubTabBar>
+              <ArtistArtworksFilterHeader
+                artist={artist}
+                showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
+              />
+            </Tabs.SubTabBar>
+            <Flex pt={1}>
+              <Text variant="xs" weight="medium">{`${artist.counts?.artworks} Artwork${
+                artist.counts?.artworks > 1 ? "s" : ""
+              }:`}</Text>
+            </Flex>
+          </>
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
@@ -263,6 +315,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+      {!!enableAlertsFilters && (
+        <CreateSavedSearchModal
+          aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+          attributes={attributes}
+          closeModal={() => setIsCreateAlertModalVisible(false)}
+          entity={savedSearchEntity}
+          onComplete={handleCompleteSavedSearch}
+          visible={isCreateAlertModalVisible}
+        />
+      )}
     </>
   )
 }
@@ -282,9 +344,13 @@ export default createPaginationContainer(
         slug
         name
         internalID
+        counts {
+          artworks
+        }
         aggregations: filterArtworksConnection(
           first: 0
           aggregations: [
+            ARTIST_SERIES
             COLOR
             DIMENSION_RANGE
             LOCATION_CITY
@@ -352,3 +418,13 @@ export default createPaginationContainer(
     `,
   }
 )
+
+const tracks = {
+  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    context_module: ContextModule.artistArtworksGridEnd,
+  }),
+}

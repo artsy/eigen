@@ -24,8 +24,8 @@ interface State {
 @screenTrack((props: Props) => ({
   context_screen: Schema.PageNames.CityGuideFairsList,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.city.slug! /* STRICTNESS_MIGRATION */,
-  context_screen_owner_id: props.city.slug! /* STRICTNESS_MIGRATION */,
+  context_screen_owner_slug: props.city.slug,
+  context_screen_owner_id: props.city.slug,
 }))
 class CityFairList extends React.Component<Props, State> {
   state = {

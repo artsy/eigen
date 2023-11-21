@@ -23,7 +23,7 @@ describe("Artist Series Header", () => {
           }
         }
       `}
-      variables={{ artistSeriesID: "pumpkins" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artistSeries) {
           return <ArtistSeriesHeaderFragmentContainer artistSeries={props.artistSeries} />

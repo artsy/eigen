@@ -1,12 +1,6 @@
 import * as fs from "fs"
 import prettier from "prettier"
-
-export const changelogTemplateSections = {
-  androidUserFacingChanges: "Android user-facing changes",
-  crossPlatformUserFacingChanges: "Cross-platform user-facing changes",
-  devChanges: "Dev changes",
-  iOSUserFacingChanges: "iOS user-facing changes",
-}
+import { changelogTemplateSections } from "./changelogTemplateSections"
 
 export const generateChangelogSectionTemplate = () => {
   return `### Changelog updates

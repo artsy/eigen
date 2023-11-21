@@ -10,7 +10,7 @@ interface ArtistListItemProps extends FlexProps {
 }
 
 export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFollow, ...rest }) => {
-  const { name, nationality, birthday, deathday, initials, image, isFollowed, slug } =
+  const { name, nationality, birthday, deathday, initials, coverArtwork, isFollowed, slug } =
     useFragment<ArtistListItemNew_artist$key>(ArtistListItemFragment, artist)
 
   const [commit, isInFlight] = useMutation(FollowArtistMutation)
@@ -33,9 +33,9 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
     <Flex {...rest}>
       <EntityHeader
         mr={1}
-        name={name!}
+        name={name ?? ""}
         meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
-        imageUrl={image?.url ?? undefined}
+        imageUrl={coverArtwork?.image?.url ?? undefined}
         initials={initials ?? undefined}
         FollowButton={
           <FollowButton
@@ -74,8 +74,10 @@ const ArtistListItemFragment = graphql`
     nationality
     birthday
     deathday
-    image {
-      url
+    coverArtwork {
+      image {
+        url
+      }
     }
   }
 `

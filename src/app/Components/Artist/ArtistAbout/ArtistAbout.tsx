@@ -21,16 +21,21 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const relatedArtists = extractNodes(artist.related?.artistsConnection)
   const relatedGenes = extractNodes(artist.related?.genes)
 
-  const isDisplayable =
-    artist.hasMetadata || !!articles.length || !!relatedArtists.length || !!relatedGenes.length
-
   const hasInsights = artist.hasArtistInsights.length > 0
   const hasArtistSeries = artist.hasArtistSeriesConnection?.totalCount ?? 0 > 0
   const hasShows = artist.hasArtistShows?.totalCount ?? 0 > 0
   const hasBiography = !!artist.hasBiographyBlurb?.text
-  const hasArticles = articles.length > 0
-  const hasRelatedArtists = relatedArtists.length > 0
+  const hasArticles = artist.counts?.articles ?? 0 > 0
+  const hasRelatedArtists = artist.counts?.relatedArtists ?? 0 > 0
   const hasRelatedGenes = relatedGenes.length > 0
+
+  const isDisplayable =
+    hasArtistSeries ||
+    hasInsights ||
+    hasBiography ||
+    hasArticles ||
+    hasRelatedArtists ||
+    hasRelatedGenes
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0 }}>
@@ -58,7 +63,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
             {!!hasArticles && <Articles articles={articles} artist={artist} />}
             {!!hasShows && <ArtistAboutShowsFragmentContainer artist={artist} />}
 
-            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} />}
+            {!!hasRelatedArtists && <RelatedArtistsRail artists={relatedArtists} artist={artist} />}
             {!!hasRelatedGenes && <ArtistAboutRelatedGenes genes={relatedGenes} />}
           </Join>
           <Spacer y={4} />
@@ -79,7 +84,6 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       hasBiographyBlurb: biographyBlurb(format: PLAIN, partnerBio: false) {
         text
       }
-      hasMetadata
       internalID
       hasArtistInsights: insights {
         entities
@@ -93,6 +97,11 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
       ...Articles_artist
       ...ArtistAboutShows_artist
       ...ArtistCareerHighlights_artist
+      ...RelatedArtistsRailCell_artist
+      counts {
+        articles
+        relatedArtists
+      }
       related {
         artistsConnection(first: 12) {
           edges {
@@ -109,7 +118,7 @@ export const ArtistAboutContainer = createFragmentContainer(ArtistAbout, {
           }
         }
       }
-      articlesConnection(first: 5, inEditorialFeed: true) {
+      articlesConnection(first: 5) {
         edges {
           node {
             ...Articles_articles

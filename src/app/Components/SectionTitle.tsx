@@ -15,7 +15,6 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
 }
 
 export const SectionTitle: React.FC<{
-  fontWeight?: string
   title: React.ReactNode
   titleVariant?: TextProps["variant"]
   subtitle?: React.ReactNode
@@ -24,7 +23,6 @@ export const SectionTitle: React.FC<{
   mb?: SpacingUnit
   capitalized?: boolean
 }> = ({
-  fontWeight,
   title,
   titleVariant = "sm-display",
   subtitle,
@@ -50,7 +48,6 @@ export const SectionTitle: React.FC<{
             ellipsizeMode="tail"
             numberOfLines={1}
             testID="title"
-            fontWeight={fontWeight}
           >
             {typeof title === "string" ? titleText : title}
           </Text>

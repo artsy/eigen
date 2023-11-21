@@ -8,10 +8,10 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/hooks"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 
 interface MyCollectionArtworkComparableWorksProps {
   artwork: MyCollectionArtworkComparableWorks_artwork$key
@@ -21,6 +21,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
   MyCollectionArtworkComparableWorksProps
 > = (props) => {
   const { trackEvent } = useTracking()
+  const { width } = useScreenDimensions()
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -47,7 +48,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
           />
         )}
         ItemSeparatorComponent={AuctionResultListSeparator}
-        style={{ width: useScreenDimensions().width, left: -20 }}
+        style={{ width, left: -20 }}
       />
     </Flex>
   )

@@ -22,13 +22,12 @@ import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/Search
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { sortBy, times } from "lodash"
 import { useState } from "react"
 import { LayoutAnimation } from "react-native"
-import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { isTablet } from "react-native-device-info"
+import { useLazyLoadQuery, graphql } from "react-relay"
 
 export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => {
   const [query, setQuery] = useState("")
@@ -63,8 +62,6 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   )
 
   const showResults = trimmedQuery.length > 2
-
-  const isTablet = isPad()
 
   // We are using this gymnastics to make sure that sent params are captured no matter if we navigate
   // using navigation.navigate or the global navigate function
@@ -123,7 +120,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
               showQuickNavigationButtons={false}
               onResultPress={(result) => addOrRemoveArtist(result.internalID!)}
               HeaderComponent={HeaderComponent}
-              numColumns={isTablet ? 5 : 2}
+              numColumns={isTablet() ? 5 : 2}
               CustomListItemComponent={(props) => (
                 <CollectedArtistListItem
                   {...props}
@@ -176,10 +173,8 @@ const myCollectionAddCollectedArtistsAutosuggestQuery = graphql`
 const ARTIST_LIST_ITEM_HEIGHT = 100
 
 const MyCollectionAddCollectedArtistsAutosuggestPlaceholder: React.FC<{}> = ({}) => {
-  const isTablet = isPad()
-
   const Circle = () => (
-    <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
+    <Flex alignItems="center" justifyContent="center" width={isTablet() ? "20%" : "50%"} mt={2}>
       <PlaceholderBox
         height={ARTIST_LIST_ITEM_HEIGHT}
         width={ARTIST_LIST_ITEM_HEIGHT}
@@ -201,7 +196,7 @@ const MyCollectionAddCollectedArtistsAutosuggestPlaceholder: React.FC<{}> = ({})
 
   return (
     <ProvidePlaceholderContext>
-      {times(isTablet ? 10 : 4).map((i) => (
+      {times(isTablet() ? 10 : 4).map((i) => (
         <Row key={i} />
       ))}
     </ProvidePlaceholderContext>
@@ -213,7 +208,6 @@ const CollectedArtistListItem: React.FC<{
   highlight: string
   item: AutosuggestResult
 }> = ({ disabled = false, highlight, item: artist }) => {
-  const isTablet = isPad()
   const artistIds = MyCollectionAddCollectedArtistsStore.useStoreState((state) => state.artistIds)
 
   const [isSelected, setIsSelected] = useState(artistIds.includes(artist.internalID!))
@@ -229,7 +223,7 @@ const CollectedArtistListItem: React.FC<{
   }
 
   return (
-    <Flex alignItems="center" justifyContent="center" width={isTablet ? "20%" : "50%"} mt={2}>
+    <Flex alignItems="center" justifyContent="center" width={isTablet() ? "20%" : "50%"} mt={2}>
       <Touchable onPress={handlePress} disabled={disabled}>
         <Flex width="100%" alignItems="center">
           <Flex

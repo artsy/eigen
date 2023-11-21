@@ -19,7 +19,7 @@ lane :upload_sentry_artifacts do |options|
   end
 
   settings = platform_settings(options[:platform])
-  source_map_path = settings[:source_map_path]
+  sourcemap_path = settings[:sourcemap_path]
   bundle_path = settings[:bundle_path]
   outfile = settings[:outfile]
 
@@ -50,15 +50,37 @@ lane :upload_sentry_artifacts do |options|
     end
   end
 
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: sentry_release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+  )
+end
+
+lane :upload_sentry_sourcemaps do |options|
+  sentry_cli_path = options[:sentry_cli_path]
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+  sentry_release_name = options[:sentry_release_name]
+  dist = options[:dist]
+  bundle_path = options[:bundle_path]
+  sourcemap_path = options[:sourcemap_path]
+
   begin
-    sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
-                            sentry_cli_path: sentry_cli_path,
-                            org_slug: org_slug,
-                            project_slug: project_slug,
-                            version: sentry_release_name,
-                            dist: dist_version,
-                            sourcemap: [bundle_path, source_map_path],
-                            rewrite: true)
+    sentry_upload_sourcemap(
+      auth_token: ENV['SentryUploadAuthKey'],
+      sentry_cli_path: sentry_cli_path,
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_release_name,
+      dist: dist,
+      sourcemap: [bundle_path, sourcemap_path],
+      rewrite: true
+    )
     puts "Uploaded source js and js.map for #{project_slug}"
   rescue StandardError => e
     message = 'Uploading the JS bundle and/or sourcemap to Sentry failed. This sometimes happens when shipping many builds to Sentry.'
@@ -92,15 +114,53 @@ end
 def platform_settings(platform)
   settings = {
     ios: {
-      source_map_path: 'dist/main.jsbundle.map',
+      sourcemap_path: 'dist/main.jsbundle.map',
       bundle_path: 'dist/main.jsbundle'
     },
     android: {
-      source_map_path: 'android/app/src/main/assets/index.android.bundle.map',
+      sourcemap_path: 'android/app/src/main/assets/index.android.bundle.map',
       bundle_path: 'android/app/src/main/assets/index.android.bundle'
     }
   }
   settings[platform.to_sym]
+end
+
+lane :sentry_slack_ios do |options|
+  build_number = options[:build_number]
+  version = options[:version]
+
+  sentry_url = "https://artsynet.sentry.io/releases/ios-#{version}-#{build_number}/?project=5867225"
+  message = <<~MSG
+                :apple: :iphone: :tada:
+                iOS #{version} (#{build_number}) was submitted to the app store!
+                Monitor [here](#{sentry_url})
+              MSG
+
+  puts message
+  slack(
+    message: message,
+    success: true,
+    default_payloads: []
+  )
+end
+
+lane :sentry_slack_android do |options|
+  build_number = options[:build_number]
+  version = options[:version]
+
+  sentry_url = "https://artsynet.sentry.io/releases/android-#{version}-#{build_number}/?project=5867225"
+  message = <<~MSG
+                :android-2: :tada:
+                Android #{version} (#{build_number}) was submitted to the app store!
+                Monitor [here](#{sentry_url})
+              MSG
+
+  puts message
+  slack(
+    message: message,
+    success: true,
+    default_payloads: []
+  )
 end
 
 def handle_error(e, message)

@@ -5,12 +5,12 @@ import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
-import _ from "lodash"
+import { times } from "lodash"
 import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import {
@@ -64,7 +64,7 @@ const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex ml={2}>
       <Flex flexDirection="row">
-        {_.times(4).map((i) => (
+        {times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
         ))}
       </Flex>
@@ -79,8 +79,6 @@ interface ViewingRoomsHomeRailProps {
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trackInfo }) => {
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
   const regular = extractNodes(queryData.viewingRooms)
-
-  const isTablet = isPad()
   const { trackEvent } = useTracking()
 
   return (
@@ -90,29 +88,31 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
-        initialNumToRender={isTablet ? 10 : 5}
+        initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
             <Touchable
               onPress={() => {
-                trackEvent(
-                  trackInfo
-                    ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
-                        item.internalID,
-                        item.slug,
-                        trackInfo.screen,
-                        trackInfo.ownerType
-                      )
-                    : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
-                )
-                navigate(`/viewing-room/${item.slug!}`)
+                if (!!item.slug) {
+                  trackEvent(
+                    trackInfo
+                      ? featuredTracks.tappedFeaturedViewingRoomRailItemFromElsewhere(
+                          item.internalID,
+                          item.slug,
+                          trackInfo.screen,
+                          trackInfo.ownerType
+                        )
+                      : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
+                  )
+                  navigate(`/viewing-room/${item.slug}`)
+                }
               }}
             >
               <MediumCard
                 title={item.title}
-                subtitle={item.partner!.name!}
+                subtitle={item?.partner?.name}
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />

@@ -7,18 +7,23 @@ import { RelatedArtistsRail } from "./RelatedArtistsRail"
 
 describe("RelatedArtistsRail", () => {
   const { renderWithRelay } = setupTestWrapper<RelatedArtistsRailTestQuery>({
-    Component: ({ artistsConnection }) => {
-      const artists = extractNodes(artistsConnection)
-      return <RelatedArtistsRail artists={artists} />
+    Component: ({ artist }) => {
+      const artists = extractNodes(artist?.related?.artistsConnection)
+      return <RelatedArtistsRail artists={artists} artist={artist as any} />
     },
     query: graphql`
       query RelatedArtistsRailTestQuery @relay_test_operation {
-        artistsConnection(first: 2) {
-          edges {
-            node {
-              ...RelatedArtistsRail_artists
+        artist(id: "artist-id") {
+          related {
+            artistsConnection(first: 2) {
+              edges {
+                node {
+                  ...RelatedArtistsRail_artists
+                }
+              }
             }
           }
+          ...RelatedArtistsRailCell_artist
         }
       }
     `,

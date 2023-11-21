@@ -110,10 +110,7 @@ const TestWrapper: typeof AutosuggestResults = (props) => (
   </SearchContext.Provider>
 )
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  throttle: (f: any) => f,
-}))
+jest.mock("lodash/throttle", () => (f: any) => f)
 
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 
@@ -317,9 +314,8 @@ describe("AutosuggestResults", () => {
 
     rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
-    expect(
-      getByText("There seems to be a problem with the connection. Please try again shortly.")
-    ).toBeTruthy()
+    expect(getByText("There seems to be a problem with the connection.")).toBeTruthy()
+    expect(getByText("Please try again shortly.")).toBeTruthy()
   })
 
   it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
@@ -329,6 +325,7 @@ describe("AutosuggestResults", () => {
 
     rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
-    expect(getByText("Unable to load")).toBeTruthy()
+    expect(getByText("Something went wrong.")).toBeTruthy()
+    expect(getByText("Please adjust your query or try again shortly.")).toBeTruthy()
   })
 })

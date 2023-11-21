@@ -7,11 +7,12 @@ import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
-import { isPad } from "app/utils/hardware"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -25,7 +26,6 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
-import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
@@ -35,7 +35,8 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
-  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
+  const scrollableRef = useBottomTabsScrollToTop("search")
+
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -44,7 +45,7 @@ export const Search: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
+  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
   const {
     data: queryData,
     refetch,
@@ -62,7 +63,7 @@ export const Search: React.FC = () => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery))
   }
 
   const isSelected = (pill: PillType) => {
@@ -148,20 +149,14 @@ export const Search: React.FC = () => {
               />
             </>
           ) : (
-            <Scrollable>
+            <Scrollable ref={scrollableRef}>
               <HorizontalPadding>
                 <RecentSearches />
               </HorizontalPadding>
 
-              {!!isSearchDiscoveryContentEnabled ? (
-                <>
-                  <Spacer y={4} />
-                  <TrendingArtists data={queryData} mb={4} />
-                  <CuratedCollections collections={queryData} mb={4} />
-                </>
-              ) : (
-                <Spacer y={4} />
-              )}
+              <Spacer y={4} />
+              <TrendingArtists data={queryData} mb={4} />
+              <CuratedCollections collections={queryData} mb={4} />
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 

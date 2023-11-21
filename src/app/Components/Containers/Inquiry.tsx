@@ -2,7 +2,7 @@ import { Spacer, Box, Separator, Button } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
-import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
+import { ArtworkPreview } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal } from "app/system/navigation/navigate"
@@ -11,11 +11,10 @@ import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
-import { Dimensions, View } from "react-native"
+import { View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
-
-const isPad = Dimensions.get("window").width > 700
 
 const Container = styled.View`
   flex: 1;
@@ -53,8 +52,8 @@ const CancelButton = styled.TouchableOpacity`
 const Content = styled.View`
   margin-left: 20px;
   margin-right: 20px;
-  align-self: ${isPad ? "center" : "stretch"};
-  ${isPad ? "width: 472px;" : ""};
+  align-self: ${isTablet() ? "center" : "stretch"};
+  ${isTablet() ? "width: 472px;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
@@ -125,7 +124,7 @@ interface Props {
 }
 
 interface State {
-  text: string | null
+  text: string | null | undefined
   sending: boolean
 }
 
@@ -241,7 +240,7 @@ export class Inquiry extends React.Component<Props, State> {
             </HeaderTextContainer>
           </Header>
           <Content>
-            <ArtworkPreview artwork={artwork as any} />
+            <ArtworkPreview artwork={artwork} />
             <InquiryTextInput
               value={message || undefined}
               keyboardAppearance="dark"

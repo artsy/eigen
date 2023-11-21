@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text, Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,
@@ -11,8 +10,9 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import _ from "lodash"
+import { times } from "lodash"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { useTracking } from "react-tracking"
 interface ArticlesListProps {
   articles: ArticleCard_article$data[]
@@ -107,9 +107,8 @@ export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, in
 
 export const useNumColumns = () => {
   const { orientation } = useScreenDimensions()
-  const isTablet = isPad()
 
-  if (!isTablet) {
+  if (!isTablet()) {
     return 1
   }
 
@@ -134,7 +133,7 @@ export const ArticlesPlaceholder = () => {
               numColumns={numColumns}
               key={`${numColumns}`}
               ListHeaderComponent={() => <ArticlesHeader title="Artsy Editorial" />}
-              data={_.times(6)}
+              data={times(6)}
               keyExtractor={(item) => `${item}-${numColumns}`}
               renderItem={({ item }) => {
                 return (

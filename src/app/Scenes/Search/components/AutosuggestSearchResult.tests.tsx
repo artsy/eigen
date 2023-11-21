@@ -1,3 +1,4 @@
+import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent } from "@testing-library/react-native"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
@@ -5,7 +6,6 @@ import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/nav
 import { CatchErrors } from "app/utils/CatchErrors"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "@artsy/palette-mobile"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
@@ -92,7 +92,7 @@ describe(AutosuggestSearchResult, () => {
     tree.root.findByType(Touchable).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
-    expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
+    expect(navigate).toHaveBeenCalledWith(`${result.href}`)
   })
 
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
@@ -253,7 +253,7 @@ describe(AutosuggestSearchResult, () => {
       tree.root.findAllByType(Pressable)[0].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/artworks", {
       passProps: { initialTab: "Artworks" },
     })
 
@@ -261,7 +261,7 @@ describe(AutosuggestSearchResult, () => {
       tree.root.findAllByType(Pressable)[1].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte/auction-results", {
       passProps: { initialTab: "Insights" },
     })
   })

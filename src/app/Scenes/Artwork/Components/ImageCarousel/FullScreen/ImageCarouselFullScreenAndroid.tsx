@@ -4,11 +4,11 @@ import {
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { createZoomListComponent } from "react-native-reanimated-zoom"
-import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomViewAndroid } from "./ImageZoomViewAndroid"
 import { IndexIndicator } from "./IndexIndicator"
@@ -44,7 +44,7 @@ export const ImageCarouselFullScreenAndroid = () => {
           <ImageCarouselVimeoVideo
             width={screenDimensions.width}
             height={screenDimensions.height}
-            vimeoUrl={item.url!}
+            vimeoUrl={item.url}
           />
         )
       }
@@ -81,7 +81,7 @@ export const ImageCarouselFullScreenAndroid = () => {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           horizontal
-          keyExtractor={(item) => item.url!}
+          keyExtractor={(item, index) => `${item.url}-${index}`}
           renderItem={renderItem}
           key={screenDimensions.orientation}
           initialScrollIndex={initialScrollIndex}

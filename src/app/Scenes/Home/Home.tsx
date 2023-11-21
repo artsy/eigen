@@ -29,6 +29,7 @@ import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/Art
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
+import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
 import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
@@ -58,9 +59,9 @@ import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/View
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
-import { isPad } from "app/utils/hardware"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
@@ -77,16 +78,7 @@ import {
 } from "app/utils/track/ArtworkActions"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
-import React, {
-  RefObject,
-  createRef,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import React, { RefObject, createRef, memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   Alert,
   ListRenderItem,
@@ -96,11 +88,9 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
-import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
-
+import { isTablet } from "react-native-device-info"
+import { Environment, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { HeroUnitsRail } from "./Components/HeroUnitsRail"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./useHomeModules"
@@ -120,24 +110,25 @@ export interface HomeModule extends ArtworkActionTrackingProps {
 }
 
 export interface HomeProps extends ViewProps {
-  articlesConnection: Home_articlesConnection$data | null
-  featured: Home_featured$data | null
-  homePageAbove: Home_homePageAbove$data | null
-  homePageBelow: Home_homePageBelow$data | null
-  newWorksForYou: Home_newWorksForYou$data | null
-  notificationsConnection: Home_notificationsConnection$data | null
+  articlesConnection: Home_articlesConnection$data | null | undefined
+  featured: Home_featured$data | null | undefined
+  homePageAbove: Home_homePageAbove$data | null | undefined
+  homePageBelow: Home_homePageBelow$data | null | undefined
+  newWorksForYou: Home_newWorksForYou$data | null | undefined
+  notificationsConnection: Home_notificationsConnection$data | null | undefined
   loading: boolean
-  meAbove: Home_meAbove$data | null
-  meBelow: Home_meBelow$data | null
+  meAbove: Home_meAbove$data | null | undefined
+  meBelow: Home_meBelow$data | null | undefined
   relay: RelayRefetchProp
-  emergingPicks: Home_emergingPicks$data | null
-  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null
+  emergingPicks: Home_emergingPicks$data | null | undefined
+  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null | undefined
 }
 
 const Home = memo((props: HomeProps) => {
   useDismissSavedArtwork(
     props.meAbove?.counts?.savedArtworks != null && props.meAbove.counts.savedArtworks > 0
   )
+  useEnableProgressiveOnboarding()
   const viewedRails = useRef<Set<string>>(new Set()).current
 
   const [visibleRails, setVisibleRails] = useState<Set<string>>(new Set())
@@ -219,6 +210,8 @@ const Home = memo((props: HomeProps) => {
   ).current
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
+
+  const flatlistRef = useBottomTabsScrollToTop("home")
 
   const renderItem: ListRenderItem<HomeModule> | null | undefined = useCallback(
     ({ item, index }: { item: HomeModule; index: number }) => {
@@ -373,6 +366,7 @@ const Home = memo((props: HomeProps) => {
   return (
     <View style={{ flex: 1 }}>
       <AboveTheFoldFlatList<HomeModule>
+        listRef={flatlistRef}
         testID="home-flat-list"
         data={modules}
         onViewableItemsChanged={onViewableItemsChanged}
@@ -394,28 +388,27 @@ const Home = memo((props: HomeProps) => {
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
   const [isRefreshing, setIsRefreshing] = useState(false)
-  return useMemo(() => {
-    const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-    const handleRefresh = async () => {
-      setIsRefreshing(true)
+  const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
 
-      relay.refetch(
-        { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
-        {},
-        (error) => {
-          if (error) {
-            console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
-          }
-          setIsRefreshing(false)
-          scrollRailsToTop()
-        },
-        { force: true }
-      )
-    }
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
 
-    return { scrollRefs, isRefreshing, handleRefresh }
-  }, [modules.join(""), relay])
+    relay.refetch(
+      { heroImageVersion: isTablet() ? "WIDE" : "NARROW" },
+      {},
+      (error) => {
+        if (error) {
+          console.error("Home.tsx - Error refreshing ForYou rails:", error.message)
+        }
+        setIsRefreshing(false)
+        scrollRailsToTop()
+      },
+      { force: true }
+    )
+  }
+
+  return { scrollRefs, isRefreshing, handleRefresh }
 }
 
 export const HomeFragmentContainer = memo(
@@ -530,7 +523,17 @@ export const HomeFragmentContainer = memo(
       `,
       notificationsConnection: graphql`
         fragment Home_notificationsConnection on Viewer {
-          ...ActivityRail_notificationsConnection
+          ...ActivityRail_notificationsConnection @arguments(count: 10)
+          notificationsConnection(
+            first: 10
+            notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED]
+          ) {
+            edges {
+              node {
+                internalID
+              }
+            }
+          }
         }
       `,
 
@@ -582,8 +585,7 @@ export const HomeFragmentContainer = memo(
         featured: viewingRooms(featured: true) @optionalField {
           ...Home_featured
         }
-        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-          @optionalField {
+        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) @optionalField {
           ...Home_articlesConnection
         }
         newWorksForYou: viewer {
@@ -738,7 +740,7 @@ const messages = {
 }
 
 interface HomeQRProps {
-  environment?: RelayModernEnvironment | RelayMockEnvironment
+  environment?: Environment
 }
 
 export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
@@ -826,15 +828,12 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-              @optionalField {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) @optionalField {
               ...Home_articlesConnection
             }
           }
         `,
-        variables: {
-          version: worksForYouRecommendationsModel.payload || "B",
-        },
+        variables: {},
       }}
       render={{
         renderComponent: ({ above, below }) => {

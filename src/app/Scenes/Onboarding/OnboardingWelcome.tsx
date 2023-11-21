@@ -14,13 +14,13 @@ import {
 } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/hooks"
 import backgroundImage from "images/WelcomeImage.webp"
+import { MotiView } from "moti"
 import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
   withSequence,
   withTiming,
 } from "react-native-reanimated"
@@ -37,16 +37,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
   const { height: screenHeight } = Dimensions.get("screen")
-
-  // text and logo appearance
-  const opacity = useSharedValue(0)
-  const appearAnim = useAnimatedStyle(() => {
-    "worklet"
-    return { opacity: opacity.value }
-  })
-  useEffect(() => {
-    opacity.value = withDelay(100, withTiming(1))
-  }, [])
 
   // background sliding
   const translateX = useSharedValue(0)
@@ -129,19 +119,24 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       <LegacyScreen.Body>
         <Spacer y={1} />
 
-        <Animated.View style={[{ alignItems: "center", width: "100%" }, appearAnim]}>
+        <MotiView
+          style={{ alignItems: "center", width: "100%" }}
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ type: "timing", duration: 1500 }}
+        >
           <ArtsyLogoWhiteIcon height={25} width={75} />
-        </Animated.View>
+        </MotiView>
 
-        <Animated.View
-          style={[
-            {
-              flex: 1,
-              paddingTop: space(2),
-              justifyContent: "flex-end",
-            },
-            appearAnim,
-          ]}
+        <MotiView
+          style={{
+            flex: 1,
+            paddingTop: space(2),
+            justifyContent: "flex-end",
+          }}
+          from={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ type: "timing", duration: 1500 }}
         >
           <Text variant="xl" color="white">
             Collect Art by the World’s Leading Artists
@@ -192,7 +187,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           </Text>
 
           <LegacyScreen.SafeBottomPadding />
-        </Animated.View>
+        </MotiView>
       </LegacyScreen.Body>
     </LegacyScreen>
   )

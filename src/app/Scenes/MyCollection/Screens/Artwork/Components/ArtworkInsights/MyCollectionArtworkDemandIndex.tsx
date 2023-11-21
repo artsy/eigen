@@ -53,10 +53,10 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
   )
 }
 
-const DemandRankScale: React.FC<{ demandRank: number; demandRankDisplayText: string | null }> = ({
-  demandRank,
-  demandRankDisplayText,
-}) => {
+const DemandRankScale: React.FC<{
+  demandRank: number
+  demandRankDisplayText: string | null | undefined
+}> = ({ demandRank, demandRankDisplayText }) => {
   let width = demandRank * 10
   if (width > 100) {
     width = 100

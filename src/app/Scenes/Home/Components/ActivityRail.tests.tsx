@@ -4,7 +4,7 @@ import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 
 describe("ActivityRail", () => {
   const { renderWithRelay } = setupTestWrapper<ActivityRailTestQuery>({

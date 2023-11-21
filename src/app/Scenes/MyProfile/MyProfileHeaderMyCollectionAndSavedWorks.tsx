@@ -97,8 +97,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
   )
 }
 
-export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
-
 export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   const tabProps = useMyProfileTabProps()
   const key = useMemo(() => `${Date.now()}`, [tabProps])

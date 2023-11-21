@@ -28,6 +28,8 @@ export interface FancyModalHeaderProps {
   alignItems?: ResponsiveAlignItemsValue
 }
 
+// Beware: If you're using this in the context of a non fancy modal,
+// it might break the behaviour of ArtsyKeyboardAvoidingView
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   children,
   hideBottomDivider = false,

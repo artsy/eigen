@@ -69,7 +69,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
       accessibilityRole="button"
       accessibilityLabel={`${tab} bottom tab`}
       onPressIn={() => {
-        clearTimeout(timeout.current!)
+        clearTimeout(timeout.current)
         setIsBeingPressed(true)
       }}
       onPressOut={() => {
@@ -165,7 +165,7 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
           backgroundColor: color("red100"),
         }}
       >
-        <Text variant="xs" weight="medium" color="white">
+        <Text variant="xs" weight="medium" color="white" lineHeight="14px">
           {count > 99 ? "99+" : count}
         </Text>
       </View>

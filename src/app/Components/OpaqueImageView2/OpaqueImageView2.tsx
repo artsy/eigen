@@ -1,7 +1,7 @@
 import { useColor, Text } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import _ from "lodash"
+import { isNumber, isString } from "lodash"
 import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
@@ -87,6 +87,37 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const [fIHeight, setFIHeight] = useState(0)
   const [fIWidth, setFIWidth] = useState(0)
   const style = StyleSheet.flatten(props.style) ?? {}
+
+  const getActualDimensions = useCallback(() => {
+    if (props.height && props.width) {
+      return [props.width, props.height]
+    }
+    if (style.height && style.width) {
+      return [Number(style.width), Number(style.height)]
+    }
+    const width = props.width ?? style.width
+    if (isNumber(width)) {
+      return [width, width / aspectRatio!]
+    }
+    if (isString(width)) {
+      return [layoutWidth, layoutWidth / aspectRatio!]
+    }
+    const height = props.height ?? style.height
+    if (isNumber(height)) {
+      return [height * aspectRatio!, height]
+    }
+    if (isString(height)) {
+      return [layoutHeight * aspectRatio!, layoutHeight]
+    }
+    return [layoutWidth, layoutHeight]
+  }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
+
+  useEffect(() => {
+    const [fWidth, fHeight] = getActualDimensions()
+    setFIHeight(fHeight)
+    setFIWidth(fWidth)
+  }, [getActualDimensions])
+
   if (__DEV__) {
     if (
       !(
@@ -103,38 +134,6 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     }
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const getActualDimensions = useCallback(() => {
-    if (props.height && props.width) {
-      return [props.width, props.height]
-    }
-    if (style.height && style.width) {
-      return [Number(style.width), Number(style.height)]
-    }
-    const width = props.width ?? style.width
-    if (_.isNumber(width)) {
-      return [width, width / aspectRatio!]
-    }
-    if (_.isString(width)) {
-      return [layoutWidth, layoutWidth / aspectRatio!]
-    }
-    const height = props.height ?? style.height
-    if (_.isNumber(height)) {
-      return [height * aspectRatio!, height]
-    }
-    if (_.isString(height)) {
-      return [layoutHeight * aspectRatio!, layoutHeight]
-    }
-    return [layoutWidth, layoutHeight]
-  }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    const [fWidth, fHeight] = getActualDimensions()
-    setFIHeight(fHeight)
-    setFIWidth(fWidth)
-  }, [getActualDimensions])
-
   if (React.Children.count(props.children) > 0) {
     console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
     return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
@@ -143,10 +142,15 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const getImageURL = () => {
     const { imageURL, useRawURL } = props
 
+    if (!layoutHeight || !layoutWidth) {
+      return
+    }
+
     if (imageURL) {
       if (useRawURL) {
         return imageURL
       }
+
       return createGeminiUrl({
         imageURL,
         width: layoutWidth,

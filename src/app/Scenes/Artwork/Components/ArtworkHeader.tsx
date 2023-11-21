@@ -1,4 +1,3 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -143,20 +142,3 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
     }
   `,
 })
-
-export const tracks = {
-  customShare: (service: string, id: string, slug?: string) => ({
-    context_module: ContextModule.artworkImage,
-    context_owner_type: OwnerType.artwork,
-    context_owner_id: id,
-    context_owner_slug: slug,
-    service,
-  }),
-  iosShare: (app: string, id: string, slug?: string) => ({
-    context_module: ContextModule.artworkImage,
-    context_owner_type: OwnerType.artwork,
-    context_owner_id: id,
-    context_owner_slug: slug,
-    service: app,
-  }),
-}

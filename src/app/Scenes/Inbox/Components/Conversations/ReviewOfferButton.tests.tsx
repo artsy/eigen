@@ -1,5 +1,7 @@
 import { AlertCircleFillIcon, MoneyFillIcon } from "@artsy/palette-mobile"
+import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -11,7 +13,7 @@ import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from ".
 describe("ReviewOfferButton", () => {
   const getWrapper = (
     kind: ReviewOfferCTAKind,
-    activeOrder: Partial<ReviewOfferButtonProps["activeOrder"]> = {}
+    activeOrder: Partial<ReviewOfferButtonProps["activeOrder"]> = {} as any
   ) => {
     const props = {
       conversationID: "conversation-id",
@@ -20,9 +22,9 @@ describe("ReviewOfferButton", () => {
         internalID: "order-id",
         stateExpiresAt: new Date().toISOString(),
         lastOffer: { createdAt: new Date().toISOString() },
-        offers: { edges: [{}] },
+        offers: { edges: [{} as any] },
         ...activeOrder,
-      },
+      } as ExtractNodeType<ConversationCTA_conversation$data["activeOrders"]>,
     }
     return renderWithWrappersLEGACY(<ReviewOfferButton {...props} />)
   }
@@ -33,7 +35,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_ACCEPTED", { offers: { edges: [{}] } })
+    const wrapper = getWrapper("OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Accepted")
@@ -41,7 +43,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{}] } })
+    const wrapper = getWrapper("OFFER_ACCEPTED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Accepted - Confirm total")
@@ -49,7 +51,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{}] } })
+    const wrapper = getWrapper("OFFER_RECEIVED_CONFIRM_NEEDED", { offers: { edges: [{} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received - Confirm Total")
@@ -57,7 +59,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message for accepted offers", () => {
-    const wrapper = getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{}] } })
+    const wrapper = getWrapper("PROVISIONAL_OFFER_ACCEPTED", { offers: { edges: [{} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Accepted")
@@ -73,7 +75,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct message and icon for received offers", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{}] } })
+    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Received")
@@ -81,7 +83,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("shows correct messaging and icon when offer is a counteroffer", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{}, {}] } })
+    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
@@ -91,7 +93,7 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in minutes when there is less than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ minutes: 31 })
     const wrapper = getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{}, {}] },
+      offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
@@ -103,7 +105,7 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in hours when there is more than 1 hour left", () => {
     const expirationTime = DateTime.local().plus({ hours: 10 })
     const wrapper = getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{}, {}] },
+      offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
@@ -115,7 +117,7 @@ describe("ReviewOfferButton", () => {
   it("shows correct expiration in hours when there is more than 24 hours left", () => {
     const expirationTime = DateTime.local().plus({ hours: 72 })
     const wrapper = getWrapper("OFFER_RECEIVED", {
-      offers: { edges: [{}, {}] },
+      offers: { edges: [{} as any, {} as any] },
       stateExpiresAt: expirationTime.toString(),
     })
 
@@ -125,7 +127,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("tapping it opens the review offer webview with the correct modal title and tracks event", () => {
-    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{}, {}] } })
+    const wrapper = getWrapper("OFFER_RECEIVED", { offers: { edges: [{} as any, {} as any] } })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
 
@@ -142,7 +144,7 @@ describe("ReviewOfferButton", () => {
   })
 
   it("tapping it opens the correct webview with the correct title for offers where payment fails", () => {
-    const wrapper = getWrapper("PAYMENT_FAILED", { offers: { edges: [{}, {}] } })
+    const wrapper = getWrapper("PAYMENT_FAILED", { offers: { edges: [{} as any, {} as any] } })
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
 

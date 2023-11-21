@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
@@ -40,11 +41,21 @@ export const getEchoModel = (): EchoModel => ({
       return
     }
 
-    const result = await fetch("https://echo.artsy.net/Echo.json")
+    let result
 
-    if (result.ok) {
-      const json = await result.json()
-      actions.setEchoState(json)
+    try {
+      result = await fetch("https://echo.artsy.net/Echo.json")
+
+      if (result?.ok) {
+        const json = await result.json()
+        actions.setEchoState(json)
+      }
+    } catch (error) {
+      if (__DEV__) {
+        console.warn(error)
+      } else {
+        captureMessage(`Failed to fetch Echo data: ${error}`, "error")
+      }
     }
   }),
   didRehydrate: thunkOn(

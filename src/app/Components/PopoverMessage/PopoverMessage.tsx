@@ -1,7 +1,6 @@
-import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
-import { Touchable } from "@artsy/palette-mobile"
-import { Animated, StyleProp, ViewStyle } from "react-native"
+import { Flex, Box, useColor, Text, Touchable } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
+import { Animated, StyleProp, ViewStyle } from "react-native"
 import { usePopoverMessage } from "./popoverMessageHooks"
 
 export const AnimatedFlex = Animated.createAnimatedComponent(Flex)

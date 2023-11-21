@@ -2,8 +2,6 @@
 
 #import "ARFonts.h"
 
-#import <EDColor/EDColor.h>
-
 NSString *const ARBidButtonRegisterStateTitle = @"Register to bid";
 NSString *const ARBidButtonRegisteredStateTitle = @"You are registered to bid";
 NSString *const ARBidBUttonBidStateTitle = @"Bid";
@@ -47,17 +45,17 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"Registration closed";
 
     if (state & ARAuctionStateEnded) {
         title = ARBidButtonBiddingClosedStateTitle;
-        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        backgroundColor = [UIColor ar_colorWithHex:0xE5E5E5];
         self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateUserPendingRegistration) {
         title = ARBidButtonRegistionPendingStateTitle;
-        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        backgroundColor = [UIColor ar_colorWithHex:0xE5E5E5];
         self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateUserRegistrationClosed) {
         title = ARBidButtonRegistionClosedStateTitle;
-        backgroundColor = [UIColor colorWithHex:0xE5E5E5];
+        backgroundColor = [UIColor ar_colorWithHex:0xE5E5E5];
         self.shouldAnimateStateChange = NO;
         enabled = NO;
     } else if (state & ARAuctionStateStarted && state & ARAuctionStateUserIsRegistered) {
@@ -65,7 +63,7 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"Registration closed";
     } else if (state & ARAuctionStateUserIsRegistered) {
         title = ARBidButtonRegisteredStateTitle;
         // TODO: replace with a standard artsy color
-        backgroundColor = [UIColor colorWithHex:0x529900];
+        backgroundColor = [UIColor ar_colorWithHex:0x529900];
         // don't want the 'disabled' flavor of the green color
         enabled = YES;
         interactionEnabled = NO;

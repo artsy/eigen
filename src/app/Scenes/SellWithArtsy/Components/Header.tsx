@@ -6,9 +6,9 @@ import {
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
 import { Flex, Text, Button } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
@@ -18,7 +18,6 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
   const buttonText = "Start Selling"
   const { width } = useScreenDimensions()
-  const isTablet = isPad()
 
   const handleSubmitPress = (subject: string) => {
     onConsignPress(tracks.consignArgs(subject))
@@ -32,8 +31,8 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
     <Flex>
       <Image
         source={require("images/swa-landing-page-header.webp")}
-        style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
-        resizeMode={isTablet ? "contain" : "cover"}
+        style={{ width: isTablet() ? "100%" : width, height: isTablet() ? 480 : 340 }}
+        resizeMode={isTablet() ? "contain" : "cover"}
       />
 
       <Flex mx={2} mt={1}>

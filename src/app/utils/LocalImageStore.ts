@@ -53,7 +53,7 @@ export const cleanLocalImages = async () => {
  * Returns the local image if it is stored and the requested image version is not available
  */
 export const useLocalImage = (
-  image: { internalID: string | null; versions?: any } | null | undefined,
+  image: { internalID: string | null | undefined; versions?: any } | null | undefined,
   requestedImageVersion?: string
 ) => {
   return useLocalImageStorage(image?.internalID, image?.versions, requestedImageVersion)
@@ -63,7 +63,10 @@ export const useLocalImage = (
  * Returns local images if they are stored and the requested image version is not available
  */
 export const useLocalImages = (
-  images: ({ internalID: string | null; versions?: any } | null | undefined)[] | null | undefined,
+  images:
+    | ({ internalID: string | null | undefined; versions?: any } | null | undefined)[]
+    | null
+    | undefined,
   requestedImageVersion?: string,
   refreshKey?: any
 ) => {
@@ -106,7 +109,7 @@ export const useLocalImagesStorage = (
 
           if (isImageAvailable || !image.key) return null
 
-          return getLocalImage(image.key!)
+          return getLocalImage(image.key)
         })
       )
 

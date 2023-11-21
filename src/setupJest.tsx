@@ -1,5 +1,4 @@
 import { format } from "util"
-// @ts-expect-error
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 // @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
@@ -10,13 +9,13 @@ import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
-import expect from "expect"
-import "jest-extended"
+import * as matchers from "jest-extended"
+
+import { isPlainObject } from "lodash"
 import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
-import diff from "snapshot-diff"
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
 require("setimmediate")
 /**
@@ -27,6 +26,8 @@ require("setimmediate")
 global.__TEST__ = true
 declare const process: any
 
+expect.extend(matchers)
+
 function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
   const explanation =
     chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
@@ -34,7 +35,7 @@ function logToError(type: keyof typeof console, args: unknown[], constructorOpt:
   if (args[0] instanceof Error) {
     const msg = explanation + chalk.red(args[0].message)
     const err = new Error(msg)
-    err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+    err.stack = args[0].stack?.replace(`Error: ${args[0].message}`, msg)
     return err
   } else if (
     // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
@@ -76,9 +77,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
     done() // it is important to call this here or every test will timeout
   })
 }
-
-// Waiting on https://github.com/thymikee/snapshot-diff/pull/17
-expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 /**
  * External deps mocks
@@ -134,6 +132,18 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
+jest.mock("react-native-webview", () => {
+  const React = require("react")
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    default: React.forwardRef((props: any, ref: any) => {
+      return <View ref={ref} {...props} />
+    }),
+  }
+})
+
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
@@ -148,7 +158,7 @@ jest.mock("react-native-device-info", () => ({
   isTablet: jest.fn(),
 }))
 
-jest.mock("rn-fetch-blob", () => ({
+jest.mock("react-native-blob-util", () => ({
   fs: {
     dirs: {
       DocumentDir: "",
@@ -222,8 +232,6 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
   ShapeSource: () => null,
   SymbolLayer: () => null,
 }))
-
-const _ = jest.requireActual("lodash")
 
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
@@ -529,7 +537,7 @@ Object.assign(NativeModules, getNativeModules())
 beforeEach(() => {
   function reset(a: any, b: any) {
     Object.keys(a).forEach((k) => {
-      if (_.isPlainObject(a[k])) {
+      if (isPlainObject(a[k])) {
         reset(a[k], b[k])
       } else {
         if (a[k]?.mockReset) {
@@ -647,6 +655,15 @@ jest.mock("@shopify/flash-list", () => {
     MasonryFlashList: FlatList,
   }
 })
+
+jest.mock("prettier", () => ({
+  format: jest.fn((content) => content), // just return content as-is for tests
+}))
+
+jest.mock("react-native-code-push", () => ({
+  checkForUpdate: jest.fn(),
+  sync: jest.fn(),
+}))
 
 jest.mock("@react-native-community/geolocation", () => ({
   addListener: jest.fn(),

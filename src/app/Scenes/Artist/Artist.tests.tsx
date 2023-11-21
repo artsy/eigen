@@ -4,8 +4,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
@@ -46,11 +45,7 @@ describe("Artist", () => {
 
   const TestWrapper = (props: Record<string, any>) => (
     <ModalStack>
-      <ArtistQueryRenderer
-        artistID="ignored"
-        environment={mockEnvironment as unknown as RelayModernEnvironment}
-        {...props}
-      />
+      <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
     </ModalStack>
   )
 

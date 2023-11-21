@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 describe("EditionSelectBox", () => {
@@ -96,7 +95,6 @@ describe("EditionSelectBox", () => {
   })
 
   it("renders edition set with isAcquireable and the feature flag", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
     const { getByText } = renderWithRelay({
       Artwork: () => ({
         slug: "test-artwork",

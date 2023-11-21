@@ -54,6 +54,20 @@ lane :notify_beta_failed do |options|
   )
 end
 
+desc "Notifies in slack if a new beta is needed"
+lane :notify_beta_needed do
+  message = <<~MSG
+              :warning: :iphone:
+              Native code has changed, new testflight needed!
+              Deploy new betas from main to keep testing.
+            MSG
+  slack(
+    message: message,
+    success: false,
+    default_payloads: []
+  )
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
@@ -69,16 +83,10 @@ lane :check_flags do
   flag_file = File.read('./flags.json')
   flags = JSON.parse(flag_file)
   hidden_flags = flags['hiddenFlags']
-  released_flags = flags['releasedFlags']
 
   hidden_flags_message = ''
   hidden_flags.each do |flag_name|
     hidden_flags_message += "\n :x: #{flag_name}"
-  end
-
-  released_flags_message = ''
-  released_flags.each do |flag_name|
-    released_flags_message += "\n :white_check_mark: #{flag_name}"
   end
 
   message = <<~MSG
@@ -87,13 +95,12 @@ lane :check_flags do
     Are your features ready?
     *Features HIDDEN in the upcoming release*:
     #{hidden_flags_message}
-    *Features LIVE in the upcoming release*:
-    #{released_flags_message}
-    If you see a feature that should be going out this release that isn't
-    marked ready please follow the docs here ahead of release QA:
+    If a feature here should be going out this release please follow the docs here
+    ahead of release QA:
     https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
+    @onyx-devs @phires @amber-devs @diamond-devs @onyx-devs @amber-devs
   MSG
-  slack(message: message, default_payloads: [])
+  slack(message: message, default_payloads: [], link_names: true)
 end
 
 def generate_app_store_connect_api_key

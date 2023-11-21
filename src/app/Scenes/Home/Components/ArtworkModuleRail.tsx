@@ -61,7 +61,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const viewAllUrl = getViewAllUrl(rail)
 
-  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key)
+  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key!)
 
   const context = rail.context
   let subtitle: string | undefined
@@ -87,7 +87,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const handleTitlePress = viewAllUrl
     ? () => {
-        const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+        const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key!)
         if (tapEvent) {
           tracking.trackEvent(tapEvent)
         }
@@ -97,7 +97,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const handlePressMore = viewAllUrl
     ? () => {
-        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key)
+        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key!)
         if (tapEvent) {
           tracking.trackEvent(tapEvent)
         }

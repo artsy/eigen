@@ -39,7 +39,7 @@ export const useClientQuery = <T extends OperationType>({
     const exec = async () => {
       try {
         const res = await fetchQuery<T>(
-          (environment || relayEnvironment)!,
+          environment || relayEnvironment,
           query,
           variables,
           cacheConfig

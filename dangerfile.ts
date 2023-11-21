@@ -1,7 +1,7 @@
 import * as fs from "fs"
 import { danger, fail, markdown, warn } from "danger"
-import { pickBy } from "lodash"
-import { changelogTemplateSections } from "./scripts/changelog/generateChangelogSectionTemplate"
+import { isArray, pickBy } from "lodash"
+import { changelogTemplateSections } from "./scripts/changelog/changelogTemplateSections"
 import { ParseResult, parsePRDescription } from "./scripts/changelog/parsePRDescription"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
@@ -140,11 +140,13 @@ export const validatePRChangelog = () => {
   // and res contains a list of the changes
   console.log("PR Changelog is valid")
 
-  const { type, ...changedSections } = res
+  const { ...changedSections } = res
 
   const message =
     "### This PR contains the following changes:\n" +
-    Object.entries(pickBy(changedSections, (changesArray) => changesArray.length))
+    Object.entries(
+      pickBy(changedSections, (changesArray) => isArray(changesArray) && changesArray.length > 0)
+    )
       .map(([section, sectionValue]) => {
         return `\n- ${
           changelogTemplateSections[section as keyof typeof changedSections]

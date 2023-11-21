@@ -12,7 +12,6 @@ submission_information(
   add_id_info_tracks_install: true,
   add_id_info_uses_idfa: false,
   content_rights_has_rights: true,
-  content_rights_contains_third_party_content: true,
   export_compliance_platform: 'ios',
   export_compliance_compliance_required: false,
   export_compliance_encryption_updated: false,

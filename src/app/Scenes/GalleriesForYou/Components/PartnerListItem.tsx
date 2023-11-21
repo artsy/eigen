@@ -11,10 +11,10 @@ import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { Location } from "app/utils/hooks/useLocation"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { pluralize } from "app/utils/pluralize"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerListItemProps {
@@ -32,12 +32,11 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
   onFollow,
   userLocation,
 }) => {
-  const isTablet = isPad()
   const space = useSpace()
 
   const { width: screenWidth } = useScreenDimensions()
 
-  const width = (isTablet ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
+  const width = (isTablet() ? MAX_PARTNER_LIST_ITEM_WIDTH : screenWidth) - 2 * space(2)
 
   const { internalID, initials, locationsConnection, name, profile } = useFragment(
     PartnerListItemFragment,

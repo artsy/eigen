@@ -6,8 +6,8 @@ import { CardRailCard, CardRailMetadataContainer } from "app/Components/Home/Car
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"
+import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -24,7 +24,7 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
   const item = useFragment(CuratedCollectionItemFragment, collection)
   const imageURLs = extractNodes(item.artworksConnection, (artwork) => artwork.image?.url)
   const availableArtworkImageURLs = compact(imageURLs)
-  const textVariant: TextProps["variant"] = isPad() ? "xs" : "sm-display"
+  const textVariant: TextProps["variant"] = isTablet() ? "xs" : "sm-display"
 
   const onPress = () => {
     tracking.trackEvent(trackingEvent.tappedCollectionGroup(item.internalID, item.slug, position))

@@ -50,9 +50,8 @@ const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
         renderItem={({ item: result, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = extractNodes(
-            result.artworksConnection,
-            (artwork) => artwork.image?.url!
+          const artworkImageURLs = compact(
+            extractNodes(result.artworksConnection, (artwork) => artwork.image?.url)
           )
 
           return (

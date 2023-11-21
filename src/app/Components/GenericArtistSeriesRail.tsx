@@ -5,6 +5,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
+import { compact } from "lodash"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -41,9 +42,8 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         ListFooterComponent={() => <Spacer x={2} />}
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
-          const artworkImageURLs = extractNodes(
-            result?.artworksConnection,
-            (artwork) => artwork.image?.url!
+          const artworkImageURLs = compact(
+            extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url)
           )
 
           return (

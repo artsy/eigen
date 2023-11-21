@@ -33,7 +33,7 @@ describe("Artist Series Meta", () => {
           }
         }
       `}
-      variables={{ artistSeriesID: "pumpkins" }}
+      variables={{}}
       render={({ props, error }) => {
         if (props?.artistSeries) {
           return <ArtistSeriesMetaFragmentContainer artistSeries={props.artistSeries} />

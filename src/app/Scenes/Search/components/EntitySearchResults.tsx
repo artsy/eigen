@@ -8,9 +8,9 @@ import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/place
 import { SEARCH_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { Suspense, useContext, useEffect, useRef } from "react"
 import { FlatList, Keyboard } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResultsProps {
@@ -18,7 +18,7 @@ interface SearchResultsProps {
   selectedPill: PillType
 }
 
-const PAGE_SIZE = isPad() ? 20 : 10
+const PAGE_SIZE = isTablet() ? 20 : 10
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()

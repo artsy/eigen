@@ -100,7 +100,7 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
     filterType,
   })
 
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)
 
   return {
     aggregation,

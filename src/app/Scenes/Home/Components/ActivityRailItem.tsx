@@ -4,10 +4,12 @@ import {
   ActivityRailItem_item$key,
 } from "__generated__/ActivityRailItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
-import { getNotificationTypeLabel } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -20,6 +22,7 @@ export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 55
 const MAX_WIDTH = 220
 
 export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
@@ -30,32 +33,35 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
     markAsRead(item)
 
-    navigateToActivityItem(item.targetHref)
+    if (enableNavigateToASingleNotification) {
+      navigate(`/activity/${item.internalID}`)
+    } else {
+      navigateToActivityItem(item.targetHref)
+    }
   }
 
-  const imageURL = artworks[0].image?.preview?.src
-
-  const notificationTypeLabel = getNotificationTypeLabel(item.notificationType)
+  const imageURL = artworks[0]?.image?.preview?.src
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row">
-        <Flex mr={1} accessibilityLabel="Activity Artwork Image">
-          <OpaqueImageView
-            imageURL={imageURL}
-            width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-            height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
-          />
-        </Flex>
+        {!!imageURL ? (
+          <Flex mr={1} accessibilityLabel="Activity Artwork Image">
+            <OpaqueImageView
+              imageURL={imageURL}
+              width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+              height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+            />
+          </Flex>
+        ) : null}
 
         <Flex maxWidth={MAX_WIDTH} overflow="hidden">
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
-            {!!notificationTypeLabel && (
-              <Text variant="xs" fontWeight="bold">
-                {notificationTypeLabel}{" "}
-              </Text>
-            )}
-            <Text variant="xs">{item.publishedAt}</Text>
+            <ActivityItemTypeLabel notificationType={item.notificationType} />
+
+            <Text variant="xs" color="black60">
+              {item.publishedAt}
+            </Text>
           </Flex>
 
           <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>

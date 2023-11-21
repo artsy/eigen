@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, SpacingUnit, useSpace, Separator } from "@artsy/palette-mobile"
+import { Box, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -29,10 +29,15 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import {
+  Environment,
+  RelayRefetchProp,
+  commitMutation,
+  createRefetchContainer,
+  graphql,
+} from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { ArtworkStore, ArtworkStoreProvider, artworkModel } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
@@ -57,9 +62,9 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
-  artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
-  artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null
-  me: Artwork_me$data | null
+  artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null | undefined
+  artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
+  me: Artwork_me$data | null | undefined
   isVisible: boolean
   onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
@@ -464,6 +469,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
         liveStartsAt: liveStartAt || undefined,
       })
     }
+    return null
   }
 
   const trackingInfo: Schema.PageView = {
@@ -495,7 +501,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
           <ArtworkStoreProvider
             runtimeModel={{
               ...artworkModel,
-              auctionState: getInitialAuctionTimerState()!,
+              auctionState: getInitialAuctionTimerState(),
             }}
           >
             <ArtworkListsProvider>
@@ -629,7 +635,7 @@ export const ArtworkContainer = createRefetchContainer(
 
 export const ArtworkScreenQuery = graphql`
   query ArtworkAboveTheFoldQuery($artworkID: String!) {
-    artwork(id: $artworkID) {
+    artwork(id: $artworkID) @principalField {
       ...Artwork_artworkAboveTheFold
     }
     me {
@@ -683,7 +689,7 @@ interface ArtworkPageableScreenProps {
   artworkID: string
   isVisible: boolean
   pageableSlugs: string[]
-  environment?: RelayModernEnvironment | RelayMockEnvironment
+  environment?: Environment | RelayMockEnvironment
   tracking?: TrackingProp
   onLoad: ArtworkProps["onLoad"]
 }

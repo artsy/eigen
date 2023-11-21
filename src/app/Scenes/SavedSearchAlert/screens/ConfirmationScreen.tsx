@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { Box, Button, Flex, Spacer, Text, useTheme, Pill } from "@artsy/palette-mobile"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import {
@@ -31,6 +32,7 @@ export const ConfirmationScreen: React.FC = () => {
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
   const pills = useSavedSearchPills()
+
   const { space } = useTheme()
 
   useEffect(() => {
@@ -117,12 +119,14 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
   ({ closeModal }) => {
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+    const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
     const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {
       first: NUMBER_OF_ARTWORKS_TO_SHOW,
       input: {
         ...attributes,
         forSale: true,
         sort: "-published_at",
+        excludeArtworkIDs: currentArtworkID ? [currentArtworkID] : undefined,
       } as FilterArtworksInput,
     })
 
@@ -203,9 +207,10 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
       <GenericGrid
         width={screen.width - space(2)}
         artworks={artworks}
+        hideSaveIcon
         onPress={(slug: string) => {
           closeModal?.()
-          // TODO: tracking
+          tracks.tappedArtworkGroup(slug)
           requestAnimationFrame(() => {
             navigateToPageableRoute?.(`artwork/${slug}`)
           })
@@ -221,4 +226,15 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
       )}
     </Box>
   )
+}
+
+const tracks = {
+  tappedArtworkGroup: (slug: string): TappedArtworkGroup => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.alertConfirmation,
+    context_screen_owner_type: OwnerType.alertConfirmation,
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_slug: slug,
+    type: "thumbnail",
+  }),
 }

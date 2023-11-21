@@ -15,7 +15,7 @@ export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProp
   onSortButtonPress,
 }) => {
   return (
-    <Flex mb={1}>
+    <Flex>
       <ArtworkListTitle title={title} />
       <Separator borderColor="black10" mt={1} />
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">

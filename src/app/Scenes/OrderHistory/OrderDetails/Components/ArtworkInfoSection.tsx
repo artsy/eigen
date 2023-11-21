@@ -52,8 +52,8 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
         {!!dimensions?.in && !!dimensions?.cm && (
           <Text variant="sm" color="black60">
             {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
-              ? dimensions!.in
-              : dimensions!.cm}
+              ? dimensions?.in
+              : dimensions?.cm}
           </Text>
         )}
 

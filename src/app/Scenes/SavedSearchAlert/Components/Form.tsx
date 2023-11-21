@@ -1,19 +1,25 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArrowRightIcon,
+  ArtsyKeyboardAvoidingView,
   Box,
   Button,
   Flex,
+  Join,
   Pill,
   Spacer,
   Text,
   Touchable,
+  useScreenDimensions,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { Input, InputTitle } from "app/Components/Input"
+import { Input } from "app/Components/Input"
+import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
+import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
@@ -23,10 +29,12 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
+import { Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
+  contentContainerStyle?: StyleProp<ViewStyle>
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
   isLoading?: boolean
@@ -41,6 +49,7 @@ interface FormProps {
 }
 
 export const Form: React.FC<FormProps> = ({
+  contentContainerStyle,
   pills,
   savedSearchAlertId,
   isLoading,
@@ -53,13 +62,16 @@ export const Form: React.FC<FormProps> = ({
   onToggleEmailNotification,
   onRemovePill,
 }) => {
-  const isFallbackToGeneratedAlertNamesEnabled = useFeatureFlag(
-    "AREnableFallbackToGeneratedAlertNames"
-  )
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
+  const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
+  const enableAlertsSuggestedFilters = useFeatureFlag("AREnableAlertsSuggestedFilters")
 
   const tracking = useTracking()
+  const { space } = useTheme()
+  const { bottom } = useScreenDimensions().safeAreaInsets
+
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
-  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
@@ -67,7 +79,6 @@ export const Form: React.FC<FormProps> = ({
 
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
-  const priceControlEnabled = useFeatureFlag("AREnablePriceControlForCreateAlertFlow")
 
   // Data has not changed
   if (isEditMode && !dirty) {
@@ -108,116 +119,169 @@ export const Form: React.FC<FormProps> = ({
   const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (
-    <Box>
-      {!isEditMode && (
-        <InfoButton
-          titleElement={
-            <Text variant="lg-display" mb={1} mr={0.5}>
-              Create Alert
-            </Text>
-          }
-          trackEvent={() => {
-            tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
-          }}
-          maxModalHeight={300}
-          modalTitle="Create Alert"
-          modalContent={
-            <Flex py={1}>
-              <Text>
-                On the hunt for a particular work? Create an alert and we’ll let you know when
-                matching works are added to Artsy.
+    <ArtsyKeyboardAvoidingView>
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
+      >
+        {!isEditMode && (
+          <InfoButton
+            titleElement={
+              <Text variant="lg-display" mb={1} mr={0.5}>
+                Create Alert
               </Text>
-            </Flex>
-          }
-        />
-      )}
-
-      <Box mb={2}>
-        {isFallbackToGeneratedAlertNamesEnabled ? (
-          <SavedSearchNameInputQueryRenderer attributes={attributes} />
-        ) : (
-          <Input
-            title="Name"
-            placeholder={entity.artists[0]?.name}
-            value={values.name}
-            onChangeText={handleChange("name")}
-            onBlur={handleBlur("name")}
-            error={errors.name}
-            testID="alert-input-name"
-            maxLength={75}
+            }
+            trackEvent={() => {
+              tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
+            }}
+            maxModalHeight={300}
+            modalTitle="Create Alert"
+            modalContent={
+              <Flex py={1}>
+                <Text>
+                  On the hunt for a particular work? Create an alert and we’ll let you know when
+                  matching works are added to Artsy.
+                </Text>
+              </Flex>
+            }
           />
         )}
-      </Box>
-      <Box mb={2}>
-        <InputTitle>Filters</InputTitle>
-        <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill
-              testID="alert-pill"
-              m={0.5}
-              variant="filter"
-              disabled={isArtistPill(pill)}
-              key={`filter-label-${index}`}
-              onPress={() => onRemovePill(pill)}
-            >
-              {pill.label}
-            </Pill>
-          ))}
-        </Flex>
-      </Box>
-      {!!priceControlEnabled && (
-        <>
-          <Spacer y={2} />
-          <Touchable
-            accessibilityLabel="Set price range"
-            accessibilityRole="button"
-            onPress={() => navigation.navigate("AlertPriceRange")}
-          >
-            <Flex flexDirection="row" alignItems="center" py={1}>
-              <Flex flex={1}>
-                <Text variant="sm-display">Set price range you are interested in</Text>
+
+        <Join separator={<Spacer y={2} />}>
+          <Box>
+            <SavedSearchNameInputQueryRenderer attributes={attributes} />
+
+            <Box mt={2}>
+              <Text variant="sm-display">Filters</Text>
+              <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+                {pills.map((pill, index) => (
+                  <Pill
+                    testID="alert-pill"
+                    m={0.5}
+                    variant="filter"
+                    disabled={isArtistPill(pill)}
+                    key={`filter-label-${index}`}
+                    onPress={() => onRemovePill(pill)}
+                  >
+                    {pill.label}
+                  </Pill>
+                ))}
               </Flex>
-              <Flex alignSelf="center" mt={0.5}>
-                <ArrowRightIcon />
-              </Flex>
+            </Box>
+          </Box>
+
+          {!!enableAlertsFilters && !enableAlertsSuggestedFilters ? (
+            <Flex mt={2}>
+              <MenuItem
+                title="Add Filters"
+                description={
+                  enableAlertsFiltersSizeFiltering
+                    ? "Including Price Range, Rarity, Medium, Size, Color"
+                    : "Including Price Range, Rarity, Medium, Color"
+                }
+                onPress={() => {
+                  navigation.navigate("SavedSearchFilterScreen")
+                }}
+                px={0}
+              />
             </Flex>
-          </Touchable>
-          <Spacer y={4} />
-        </>
-      )}
-      <SavedSearchAlertSwitch
-        label="Mobile Alerts"
-        onChange={onTogglePushNotification}
-        active={values.push}
-      />
-      <Spacer y={2} />
-      <SavedSearchAlertSwitch
-        label="Email Alerts"
-        onChange={onToggleEmailNotification}
-        active={values.email}
-      />
-      {!!shouldShowEmailWarning && (
-        <Box backgroundColor="orange10" my={1} p={2}>
-          <Text variant="xs" color="orange150">
-            Change your email preferences
-          </Text>
-          <Text variant="xs" mt={0.5}>
-            To receive Email Alerts, please update your email preferences.
-          </Text>
-        </Box>
-      )}
-      {!!values.email && (
-        <Text
-          onPress={handleUpdateEmailPreferencesPress}
-          variant="xs"
-          color="black60"
-          style={{ textDecorationLine: "underline" }}
-          mt={1}
-        >
-          Update email preferences
-        </Text>
-      )}
-      <Box mt={6}>
+          ) : null}
+
+          {enableAlertsFilters && enableAlertsSuggestedFilters ? (
+            <Flex mt={2}>
+              <Text variant="sm-display">Suggested Filters</Text>
+              <SavedSearchSuggestedFiltersQueryRenderer />
+            </Flex>
+          ) : null}
+
+          {/* Price range is part of the new filters screen, no need to show it here anymore */}
+          {!enableAlertsFilters && (
+            <Flex my={1}>
+              <Touchable
+                accessibilityLabel="Set price range"
+                accessibilityRole="button"
+                onPress={() => navigation.navigate("AlertPriceRange")}
+              >
+                <Flex flexDirection="row" alignItems="center" py={1}>
+                  <Flex flex={1}>
+                    <Text variant="sm-display">Set price range you are interested in</Text>
+                  </Flex>
+                  <Flex alignSelf="center" mt={0.5}>
+                    <ArrowRightIcon />
+                  </Flex>
+                </Flex>
+              </Touchable>
+            </Flex>
+          )}
+
+          {!!enableDetailsInput && (
+            <Flex>
+              <Text>Tell us more about what you’re looking for</Text>
+              <Spacer y={1} />
+              <Input
+                placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
+                value={values.details}
+                onChangeText={handleChange("details")}
+                onBlur={handleBlur("details")}
+                error={errors.details}
+                multiline
+                maxLength={700}
+                testID="alert-input-details"
+              />
+            </Flex>
+          )}
+
+          <Box>
+            <SavedSearchAlertSwitch
+              label="Push Notifications"
+              onChange={onTogglePushNotification}
+              active={values.push}
+            />
+
+            <Spacer y={1} />
+
+            <SavedSearchAlertSwitch
+              label="Email"
+              onChange={onToggleEmailNotification}
+              active={values.email}
+            />
+
+            {!!shouldShowEmailWarning && (
+              <Box backgroundColor="orange10" my={1} p={2}>
+                <Text variant="xs" color="orange150">
+                  Change your email preferences
+                </Text>
+                <Text variant="xs" mt={0.5}>
+                  To receive alerts via email, please update your email preferences.
+                </Text>
+              </Box>
+            )}
+
+            {!!values.email && (
+              <Text
+                onPress={handleUpdateEmailPreferencesPress}
+                variant="xs"
+                color="black60"
+                style={{ textDecorationLine: "underline" }}
+                mt={1}
+              >
+                Update email preferences
+              </Text>
+            )}
+          </Box>
+        </Join>
+
+        <Spacer y={2} />
+      </ScrollView>
+
+      <Flex
+        p={2}
+        mb={`${bottom}px`}
+        pb={Platform.OS === "android" ? 2 : 0}
+        borderTopWidth={1}
+        borderTopColor="black10"
+      >
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}
@@ -226,8 +290,9 @@ export const Form: React.FC<FormProps> = ({
           block
           onPress={onSubmitPress}
         >
-          Save Alert
+          {isEditMode ? "Save Alert" : "Create Alert"}
         </Button>
+
         {!!isEditMode && (
           <>
             <Spacer y={2} />
@@ -242,13 +307,14 @@ export const Form: React.FC<FormProps> = ({
             </Button>
           </>
         )}
+
         {!isEditMode && (
-          <Text variant="sm" color="black60" textAlign="center" my={2}>
+          <Text variant="xs" color="black60" textAlign="center" mt={2}>
             Access all your saved alerts in your profile.
           </Text>
         )}
-      </Box>
-    </Box>
+      </Flex>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 

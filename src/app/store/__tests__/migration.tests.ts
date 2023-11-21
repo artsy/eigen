@@ -3,7 +3,7 @@ import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "app/store/migration"
 import { sanitize } from "app/store/persistence"
-import _ from "lodash"
+import { max, min, range } from "lodash"
 import { Platform } from "react-native"
 
 jest.mock("app/NativeModules/LegacyNativeModules", () => ({
@@ -176,13 +176,13 @@ describe("artsy app store migrations", () => {
   })
 
   it("CURRENT_APP_VERSION is always the latest one", () => {
-    expect(CURRENT_APP_VERSION).toBe(_.max(Object.values(Versions)))
+    expect(CURRENT_APP_VERSION).toBe(max(Object.values(Versions)))
   })
 
   it("Versions list starts from `1` and increases by `1`", () => {
-    expect(_.min(Object.values(Versions))).toBe(1)
+    expect(min(Object.values(Versions))).toBe(1)
     expect(Object.values(Versions).sort((a, b) => a - b)).toStrictEqual(
-      _.range(1, Object.values(Versions).length + 1)
+      range(1, Object.values(Versions).length + 1)
     )
   })
 })

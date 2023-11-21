@@ -1,11 +1,11 @@
 import { VariableSizeShowsList_shows$data } from "__generated__/VariableSizeShowsList_shows.graphql"
 import { Stack } from "app/Components/Stack"
-import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { Component } from "react"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtistShowFragmentContainer } from "./ArtistShow"
+import { ArtistShow } from "./ArtistShow"
 
 interface Props {
   shows: VariableSizeShowsList_shows$data
@@ -28,7 +28,7 @@ class ShowsList extends Component<Props, State> {
     const showSize = this.props.showSize
 
     const marginSpace = 20 * (this.numberOfColumns() - 1)
-    const imageWidth = isPad() ? (width - marginSpace) / this.numberOfColumns() : width
+    const imageWidth = isTablet() ? (width - marginSpace) / this.numberOfColumns() : width
 
     const aspectRatio = showSize === "large" ? 1.6 : 1.4
     const imageHeight = Math.floor(imageWidth / aspectRatio)
@@ -36,7 +36,7 @@ class ShowsList extends Component<Props, State> {
   }
 
   numberOfColumns = () => {
-    if (isPad()) {
+    if (isTablet()) {
       return this.props.showSize === "large" ? 2 : 3
     }
 
@@ -65,8 +65,8 @@ class ShowsList extends Component<Props, State> {
         <Stack>
           {chunk(this.props.shows, this.numberOfColumns()).map((shows, index) => (
             <Stack horizontal key={index} style={{ flex: 0 }}>
-              {shows.map((show) => (
-                <ArtistShowFragmentContainer show={show} styles={showStyles} key={show.id} />
+              {shows.map((show, index) => (
+                <ArtistShow show={show} styles={showStyles} key={show.id} index={index} />
               ))}
             </Stack>
           ))}

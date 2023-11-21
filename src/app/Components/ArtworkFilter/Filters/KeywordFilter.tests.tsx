@@ -9,10 +9,7 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { KeywordFilter } from "./KeywordFilter"
 
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  debounce: jest.fn(),
-}))
+jest.mock("lodash/debounce", () => jest.fn())
 
 describe("KeywordFilter", () => {
   beforeEach(() => {

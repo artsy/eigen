@@ -1,6 +1,5 @@
 import {
   Flex,
-  Join,
   Screen,
   Separator,
   ShareIcon,
@@ -17,10 +16,7 @@ import {
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
-import {
-  ArtistHeaderFragmentContainer,
-  useArtistHeaderImageDimensions,
-} from "app/Components/Artist/ArtistHeader"
+import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
@@ -43,8 +39,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
-import { graphql } from "react-relay"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
 
@@ -52,11 +47,12 @@ interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   auctionResultsInitialFilters?: FilterArray
-  environment?: RelayModernEnvironment
+  environment?: Environment
   fetchCriteriaError: Error | null
   initialTab?: string
   me: ArtistAboveTheFoldQuery["response"]["me"]
   predefinedFilters?: FilterArray
+  scrollToArtworksGrid: boolean
   searchCriteria: SearchCriteriaAttributes | null
 }
 
@@ -69,6 +65,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     initialTab = INITIAL_TAB,
     me,
     predefinedFilters,
+    scrollToArtworksGrid,
     searchCriteria,
   } = props
 
@@ -92,16 +89,16 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       type: "artist",
       internalID: artistAboveTheFold.internalID,
       slug: artistAboveTheFold.slug,
-      artists: [{ name: artistAboveTheFold.name }],
+      artists: [{ name: artistAboveTheFold.name ?? null }],
       title: artistAboveTheFold.name!,
       href: artistAboveTheFold.href!,
-      currentImageUrl: artistAboveTheFold.image?.url ?? undefined,
+      currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
     })
   }
 
   const renderBelowTheHeaderComponent = useCallback(
     () => (
-      <ArtistHeaderFragmentContainer
+      <ArtistHeader
         artist={artistAboveTheFold!}
         me={me!}
         onLayoutChange={({ nativeEvent }) => {
@@ -142,6 +139,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
                 artist={artistAboveTheFold}
                 searchCriteria={searchCriteria}
                 predefinedFilters={predefinedFilters}
+                scrollToArtworksGrid={scrollToArtworksGrid}
               />
             </Tabs.Lazy>
           </Tabs.Tab>
@@ -175,19 +173,20 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 }
 
 interface ArtistQueryRendererProps {
-  environment?: RelayModernEnvironment
-  initialTab?: string
-  searchCriteriaID?: string
-  search_criteria_id?: string
   artistID: string
-  predefinedFilters?: FilterArray
   categories?: string[]
+  environment?: Environment
+  initialTab?: string
+  predefinedFilters?: FilterArray
+  scrollToArtworksGrid?: boolean
+  search_criteria_id?: string
+  searchCriteriaID?: string
   sizes?: string[]
 }
 
 export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
-    artist(id: $artistID) {
+    artist(id: $artistID) @principalField {
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
       ...ArtistHeaderNavRight_artist
@@ -196,8 +195,10 @@ export const ArtistScreenQuery = graphql`
       slug
       href
       name
-      image {
-        url(version: "large")
+      coverArtwork {
+        image {
+          url(version: "larger")
+        }
       }
     }
     me {
@@ -215,12 +216,13 @@ export const defaultArtistVariables = () => ({
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const {
     artistID,
+    categories,
     environment,
     initialTab,
-    searchCriteriaID,
-    search_criteria_id,
     predefinedFilters,
-    categories,
+    search_criteria_id,
+    scrollToArtworksGrid = false,
+    searchCriteriaID,
     sizes,
   } = props
 
@@ -290,6 +292,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                         categories: categories ?? [],
                         sizes: sizes ?? [],
                       })}
+                      scrollToArtworksGrid={scrollToArtworksGrid}
                     />
                   )
                 },
@@ -324,14 +327,12 @@ const ArtistSkeleton: React.FC = () => {
       <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
       <Screen.Body fullwidth>
         <Skeleton>
+          <SkeletonBox width={width} height={height} />
+          <Spacer y={2} />
           <Flex px={2}>
-            <SkeletonBox width={width} height={height} />
-            <Spacer y={2} />
-            <Join separator={<Spacer y={0.5} />}>
-              <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
-              <SkeletonText variant="xs">American, b. 1945</SkeletonText>
-              <SkeletonText variant="xs">40 Works, 45 Followers</SkeletonText>
-            </Join>
+            <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+            <Spacer y={0.5} />
+            <SkeletonText variant="lg">American, b. 1945</SkeletonText>
           </Flex>
 
           <Spacer y={4} />

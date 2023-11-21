@@ -3,16 +3,16 @@ import moment from "moment"
 export type SaleStatus = "notYetOpen" | "active" | "closed"
 
 export const saleStatus = (
-  startAt: string | null,
-  endAt: string | null,
-  registrationEndsAt: string | null
+  startAt: string | null | undefined,
+  endAt: string | null | undefined,
+  registrationEndsAt: string | null | undefined
 ): SaleStatus => {
   const now = moment()
   if (registrationEndsAt && moment(registrationEndsAt).isBefore(now)) {
     return "closed"
   }
 
-  if (startAt === null || endAt === null) {
+  if (!startAt || !endAt) {
     return "notYetOpen"
   }
 

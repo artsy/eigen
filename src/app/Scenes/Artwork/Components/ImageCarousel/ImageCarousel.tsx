@@ -3,12 +3,12 @@ import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useLocalImages } from "app/utils/LocalImageStore"
-import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
@@ -173,7 +173,7 @@ const useImageCarouselMedia = (
 
   const embeddedCardBoundingBox = {
     width: screenDimensions.width,
-    height: isPad() ? 460 : props.cardHeight,
+    height: isTablet() ? 460 : props.cardHeight,
   }
 
   const imageFigures = props.staticImages?.length

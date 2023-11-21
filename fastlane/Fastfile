@@ -6,7 +6,7 @@ require 'fileutils'
 require 'json'
 require 'dotenv'
 
-Dotenv.load('../.env.shared')
+Dotenv.load('../.env.releases')
 
 skip_docs
 
@@ -67,7 +67,7 @@ lane :ship_beta_ios do
 
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-  # important! this much match the release version specified
+  # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
@@ -144,6 +144,9 @@ lane :promote_beta_ios do
   formatted_build_number = format_build_number(build_number)
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{formatted_build_number}-submission")
+
+  sentry_slack_ios(build_number: formatted_build_number, version: next_app_store_version)
+
   UI.success('All done!')
 end
 
@@ -269,8 +272,12 @@ lane :promote_beta_android do
     skip_upload_screenshots: true,
   )
 
-  vname, vcode = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  version, build_number = set_build_version_android(version_code: selected_version_code)
+  tag_and_push(tag: "android-#{version}-#{selected_version_code}-submission")
+
+  sentry_slack_android(build_number: build_number, version: version)
+
+  UI.success('All done!')
 end
 
 desc "Set the build version in the android app build.gradle"
@@ -315,6 +322,95 @@ lane :flag_android_beta do |options|
   is_android_beta = options[:is_android_beta]
   $APP_JSON['isAndroidBeta'] = is_android_beta
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
+end
+
+# Codepush
+
+lane :deploy_to_codepush do |options|
+  platform = options[:platform]
+  deployment_name = options[:deployment_name]
+  description = options[:description]
+
+  puts "Got platform #{platform}"
+
+  # important! this must match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  release_name, dist_version, release_version = set_codepush_release_values(deployment_name, platform)
+
+  app_name = platform == "ios" ? "Eigen" : "Eigen-Android"
+  sourcemap_output = platform == "ios" ? "./build/CodePush/main.jsbundle.map" : "./build/CodePush/index.android.bundle.map"
+  bundle_path = platform == "ios" ? "./build/CodePush/main.jsbundle" : "./build/CodePush/index.android.bundle"
+
+  appcenter_codepush_release_react(
+    api_token: ENV['APP_CENTER_API_TOKEN'],
+    owner_name: "mobile-artsy",
+    app_name: app_name,
+    description: "'#{description}'",
+    deployment: deployment_name,
+    sourcemap_output: sourcemap_output,
+    output_dir: "./build",
+    mandatory: false,
+    target_version: release_version,
+  )
+
+  # Sentry config
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
+  project_slug = 'eigen'
+  org_slug = 'artsynet'
+
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: release_name,
+    dist: dist_version,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_output,
+  )
+
+  tag_and_push(tag: release_name)
+
+  puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
+end
+
+lane :promote_codepush do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+
+  rolloutPercentage = options[:rollout_percentage]
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+
+  sh("appcenter login --token #{token}")
+
+  sourceDeployment = "Canary"
+  targetDeployment = "Production"
+
+  # Promote to prod with rollout percentage, make it mandatory
+  sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
+  sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
+end
+
+lane :update_codepush_rollout do |options|
+  token = ENV['APP_CENTER_API_TOKEN']
+  sh("appcenter login --token #{token}")
+
+  androidAppName = "mobile-artsy/Eigen-Android"
+  iosAppName = "mobile-artsy/Eigen"
+  targetDeployment = "Production"
+
+  rolloutPercentage = options[:rollout_percentage]
+  sh("appcenter codepush patch -a #{androidAppName} #{targetDeployment} -r #{rolloutPercentage}")
+  sh("appcenter codepush patch -a #{iosAppName} #{targetDeployment} -r #{rolloutPercentage}")
+end
+
+def set_codepush_release_values(deployment_name, platform)
+  date_str = DateTime.now.strftime("%Y.%m.%d.%H")
+  latest_version = $APP_JSON['version']
+  release_name = "codepush-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
+  $APP_JSON['codePushReleaseName'] = release_name
+  $APP_JSON['codePushDist'] = date_str
+  write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
+  [release_name, date_str, latest_version]
 end
 
 error do |lane, exception|

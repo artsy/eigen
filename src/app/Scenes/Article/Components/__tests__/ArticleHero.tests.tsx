@@ -2,7 +2,7 @@ import { Image } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
 import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "relay-runtime"
+import { graphql } from "react-relay"
 
 describe("ArticleHero", () => {
   const { renderWithRelay } = setupTestWrapper({

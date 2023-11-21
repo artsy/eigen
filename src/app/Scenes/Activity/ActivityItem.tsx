@@ -5,13 +5,14 @@ import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
-import { shouldDisplayNotificationTypeLabel } from "./utils/shouldDisplayNotificationTypeLabel"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -21,6 +22,7 @@ const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const markAsRead = useMarkNotificationAsRead()
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
@@ -32,10 +34,14 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const handlePress = () => {
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
 
-    navigateToActivityItem(item.targetHref)
-
     if (item.isUnread) {
       markAsRead(item)
+    }
+
+    if (enableNavigateToASingleNotification) {
+      navigate(`/activity/${item.internalID}`)
+    } else {
+      navigateToActivityItem(item.targetHref)
     }
   }
 
@@ -44,9 +50,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       <Flex py={2} flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Flex flexDirection="row">
-            {shouldDisplayNotificationTypeLabel(item.notificationType) && (
-              <ActivityItemTypeLabel notificationType={item.notificationType} />
-            )}
+            <ActivityItemTypeLabel notificationType={item.notificationType} />
 
             <Text variant="xs" color="black60">
               {item.publishedAt}

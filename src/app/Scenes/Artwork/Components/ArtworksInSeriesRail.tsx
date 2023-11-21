@@ -41,8 +41,10 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
       <SmallArtworkRail
         artworks={artworks}
         onPress={(item) => {
-          trackEvent(tracks.tappedArtwork(artwork, item))
-          navigate(item.href!)
+          if (!!item.href) {
+            trackEvent(tracks.tappedArtwork(artwork, item))
+            navigate(item.href)
+          }
         }}
         ListHeaderComponent={null}
         ListFooterComponent={null}

@@ -12,7 +12,7 @@ export interface PartnerEntityHeaderProps extends BoxProps {
 }
 
 export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partner, ...rest }) => {
-  if (partner.name === null || partner.profile === null) {
+  if (!partner.name || !partner.profile) {
     return null
   }
 
@@ -21,7 +21,13 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
 
   return (
     <Box {...rest}>
-      <TouchableWithoutFeedback onPress={() => navigate(partner.href!)}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (partner.href) {
+            navigate(partner.href)
+          }
+        }}
+      >
         <EntityHeader
           name={partner.name}
           meta={cities ?? undefined}

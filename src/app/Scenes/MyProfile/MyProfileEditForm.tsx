@@ -35,9 +35,8 @@ import { useHasBeenTrue } from "app/utils/useHasBeenTrue"
 import { useFormik } from "formik"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
-import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { useLazyLoadQuery, useRefetchableFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
@@ -50,7 +49,7 @@ interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
-  location: EditableLocationProps | null
+  location: Partial<EditableLocationProps> | null | undefined
   profession: string
   otherRelevantPositions: string
   bio: string
@@ -144,7 +143,10 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess 
       initialValues: {
         name: me?.name ?? "",
         displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
-        location: me?.location ?? null,
+        location:
+          {
+            ...me?.location,
+          } ?? undefined,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",

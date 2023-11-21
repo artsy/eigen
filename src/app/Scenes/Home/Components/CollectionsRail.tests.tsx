@@ -1,15 +1,14 @@
+import { fireEvent } from "@testing-library/react-native"
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
-import { fireEvent } from "@testing-library/react-native"
 
 describe("CollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>

@@ -5,8 +5,7 @@ import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Compone
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionImageCollectionProps {
   section: ArticleSectionImageCollection_section$key
@@ -44,7 +43,9 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
           return (
             <Flex key={`ImageCollection-${index}`} flexDirection="column" justifyContent="center">
               <ArticleSectionImageCollectionImage figure={item} />
-              <ArticleSectionImageCollectionCaption figure={item} />
+              <Flex px={2} py={1}>
+                <ArticleSectionImageCollectionCaption figure={item} />
+              </Flex>
             </Flex>
           )
         }}
@@ -63,7 +64,6 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
 
 const ArticleSectionImageCollectionQuery = graphql`
   fragment ArticleSectionImageCollection_section on ArticleSectionImageCollection {
-    layout
     figures {
       ...ArticleSectionImageCollectionImage_figure
       ...ArticleSectionImageCollectionCaption_figure

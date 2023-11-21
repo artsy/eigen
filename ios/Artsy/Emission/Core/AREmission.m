@@ -1,9 +1,6 @@
 #import "AREmission.h"
 #import "AREventsModule.h"
 #import "ARTemporaryAPIModule.h"
-#import "ARNotificationsManager.h"
-#import "ARCocoaConstantsModule.h"
-
 
 @implementation AREmission
 

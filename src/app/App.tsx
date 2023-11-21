@@ -35,7 +35,6 @@ import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndic
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useDebugging } from "./utils/useDebugging"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -58,7 +57,6 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const Main = () => {
   useRageShakeDevMenu()
-  useDebugging()
   useEffect(() => {
     if (Config.OSS === "true") {
       return

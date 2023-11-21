@@ -3,9 +3,8 @@ import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graph
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import "react-native"
-import { QueryRenderer } from "react-relay"
+import { QueryRenderer, graphql } from "react-relay"
 import { act } from "react-test-renderer"
-import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
 

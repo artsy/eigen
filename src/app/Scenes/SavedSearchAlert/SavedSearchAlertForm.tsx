@@ -1,12 +1,17 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
-import { Dialog, quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
+import { Dialog, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import React, { useEffect, useState } from "react"
-import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
+import { useEffect, useState } from "react"
+import { Alert, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
@@ -21,6 +26,7 @@ import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
   showWarningMessageForDuplicateAlert,
+  useSearchCriteriaAttributes,
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
@@ -50,6 +56,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     onDeleteComplete,
     ...other
   } = props
+  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+
   const isUpdateForm = !!savedSearchAlertId
   const isFirstRender = useFirstMountState()
   const pills = useSavedSearchPills()
@@ -58,8 +66,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
+
+  const selectedRriceRange = useSearchCriteriaAttributes(SearchCriteria.priceRange) as string
+
   const tracking = useTracking()
-  const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] = useState(
     !userAllowsEmails
@@ -76,6 +86,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         name: values.name,
         email: values.email,
         push: values.push,
+        details: values.details,
       }
 
       try {
@@ -118,6 +129,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         await submitHandler(userAlertSettings, clearedAttributes)
+
+        // If the user set a price range, we would like to save it in the store to prompt it the next time
+        if (enableAlertsFilters && selectedRriceRange) {
+          GlobalStore.actions.recentPriceRanges.addNewPriceRange(selectedRriceRange)
+        }
       } catch (error) {
         console.error(error)
       }
@@ -128,21 +144,25 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     userAlertSettings: SavedSearchAlertFormValues,
     alertAttributes: SearchCriteriaAttributes
   ) => {
+    if (!savedSearchAlertId) return
+
     try {
       formik.setSubmitting(true)
 
       const response = await updateSavedSearchAlert(
-        savedSearchAlertId!,
+        savedSearchAlertId,
         userAlertSettings,
         alertAttributes
       )
+
       tracking.trackEvent(
-        tracks.editedSavedSearch(savedSearchAlertId!, initialValues, userAlertSettings)
+        tracks.editedSavedSearch(savedSearchAlertId, initialValues, userAlertSettings)
       )
 
       const result: SavedSearchAlertMutationResult = {
-        id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
+        id: response.updateSavedSearch?.savedSearchOrErrors.internalID,
       }
+
       onComplete?.(result)
     } catch (error) {
       console.error(error)
@@ -159,7 +179,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       formik.setSubmitting(true)
       const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
       const result: SavedSearchAlertMutationResult = {
-        id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+        id: response.createSavedSearch?.savedSearchOrErrors.internalID,
       }
 
       navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
@@ -219,9 +239,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const onDelete = async () => {
+    if (!savedSearchAlertId) return
+
     try {
-      await deleteSavedSearchMutation(savedSearchAlertId!)
-      tracking.trackEvent(tracks.deletedSavedSearch(savedSearchAlertId!))
+      await deleteSavedSearchMutation(savedSearchAlertId)
+      tracking.trackEvent(tracks.deletedSavedSearch(savedSearchAlertId))
       onDeleteComplete?.()
     } catch (error) {
       console.error(error)
@@ -243,24 +265,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <ScrollView
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
-      >
-        <Form
-          pills={pills}
-          savedSearchAlertId={savedSearchAlertId}
-          hasChangedFilters={hasChangedFilters}
-          onDeletePress={handleDeletePress}
-          onSubmitPress={formik.handleSubmit}
-          onTogglePushNotification={handleTogglePushNotification}
-          onToggleEmailNotification={handleToggleEmailNotification}
-          onRemovePill={handleRemovePill}
-          shouldShowEmailWarning={shouldShowEmailWarning}
-          {...other}
-        />
-      </ScrollView>
+      <Form
+        contentContainerStyle={contentContainerStyle}
+        pills={pills}
+        savedSearchAlertId={savedSearchAlertId}
+        hasChangedFilters={hasChangedFilters}
+        onDeletePress={handleDeletePress}
+        onSubmitPress={formik.handleSubmit}
+        onTogglePushNotification={handleTogglePushNotification}
+        onToggleEmailNotification={handleToggleEmailNotification}
+        onRemovePill={handleRemovePill}
+        shouldShowEmailWarning={shouldShowEmailWarning}
+        {...other}
+      />
       {!!savedSearchAlertId && (
         <Dialog
           isVisible={visibleDeleteDialog}

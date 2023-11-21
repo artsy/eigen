@@ -8,13 +8,12 @@ import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { FlatList, TouchableOpacity } from "react-native"
-import { useFragment } from "react-relay"
+import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-runtime"
 
 interface MyCollectionArtworkArticlesProps {
   articles: MyCollectionArtworkArticles_article$key
-  artistNames: string | null
+  artistNames: string | null | undefined
   artistSlug: string | undefined
   totalCount: number | null | undefined
 }

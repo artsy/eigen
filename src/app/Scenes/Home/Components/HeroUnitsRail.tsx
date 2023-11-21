@@ -9,8 +9,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useFragment, graphql } from "react-relay"
 
 interface HeroUnitProps {
   item: NonNullable<

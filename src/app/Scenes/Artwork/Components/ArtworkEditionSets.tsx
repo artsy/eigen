@@ -2,8 +2,7 @@ import { Separator, Join } from "@artsy/palette-mobile"
 import { ArtworkEditionSets_artwork$data } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { compact } from "lodash"
 import { useEffect, useState } from "react"
-import { createFragmentContainer } from "react-relay"
-import { graphql } from "relay-runtime"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkEditionSetItemFragmentContainer as ArtworkEditionSetItem } from "./ArtworkEditionSetItem"
 
 interface ArtworkEditionSetsProps {

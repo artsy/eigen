@@ -13,8 +13,8 @@ import { LotFragmentContainer as Lot } from "./Lot"
 type BidderResult = "won" | "lost" | "passed"
 
 const saleClosedMessage: (sale: {
-  endAt: string | null
-  status: string | null
+  endAt: string | null | undefined
+  status: string | null | undefined
 }) => string | undefined = (sale) => {
   const timelySale = TimelySale.create(sale)
   if (timelySale.isClosed) {

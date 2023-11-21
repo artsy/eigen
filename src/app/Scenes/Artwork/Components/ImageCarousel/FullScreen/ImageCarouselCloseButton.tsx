@@ -1,8 +1,8 @@
 import { CloseIcon } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useScreenDimensions } from "app/utils/hooks"
 import { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { boxShadow } from "./boxShadow"
 
 // taken from https://github.com/artsy/eigen/blob/0831853cb574566415f3bd8b3908b26b61f61eec/Artsy/View_Controllers/Util/ARNavigationController.m#L125

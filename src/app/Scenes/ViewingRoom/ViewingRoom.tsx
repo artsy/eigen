@@ -36,7 +36,7 @@ export enum ViewingRoomStatus {
   CLOSED = "closed",
 }
 
-export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = ({
+export const ClosedNotice: React.FC<{ status: string; partnerHref?: string | null }> = ({
   status,
   partnerHref,
 }) => {
@@ -54,9 +54,11 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
       <Text variant="sm" mt={4} mx={4} textAlign="center">
         {finalText}
       </Text>
-      <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
-        Visit gallery
-      </Button>
+      {!!partnerHref && (
+        <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
+          Visit gallery
+        </Button>
+      )}
     </Flex>
   )
 }
@@ -98,7 +100,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     sections.push({
       key: "closedNotice",
       content: (
-        <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom.partner!.href!} />
+        <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom?.partner?.href} />
       ),
     })
   } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {

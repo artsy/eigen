@@ -1,9 +1,9 @@
 import { EventStream } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useEventStream"
 import { ImageDescriptor } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { fitInside, Rect } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
-import { useScreenDimensions } from "app/utils/hooks"
 import { DeepZoomLevel } from "./DeepZoomLevel"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import {

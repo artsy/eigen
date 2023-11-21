@@ -11,9 +11,9 @@ export enum Router {
 }
 
 export interface PartialShowForRouting {
-  is_fair_booth: boolean | null
+  is_fair_booth: boolean | null | undefined
   slug: string
-  href: string | null
+  href: string | null | undefined
 }
 
 /** Takes a subset of a Show and makes a linkable URL */

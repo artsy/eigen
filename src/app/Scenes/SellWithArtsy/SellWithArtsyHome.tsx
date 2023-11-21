@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Spacer, Flex, Join, LegacyScreen } from "@artsy/palette-mobile"
+import { Flex, Join, LegacyScreen, Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
@@ -13,15 +13,15 @@ import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { useEffect } from "react"
 import { ScrollView, StatusBarStyle } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, Environment, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
@@ -41,6 +41,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
   const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
+
+  const scrollViewRef = useBottomTabsScrollToTop("sell")
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
@@ -96,7 +98,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         minHeight={screenHeight}
         style={{ paddingTop: safeAreaInsets.top }}
       >
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
             <Spacer y={4} />
@@ -116,7 +118,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <Spacer y={6} />
             <CollectorsNetwork />
             <Spacer y={6} />
-            <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
+
+            {!!recentlySoldArtworks && (
+              <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
+            )}
             <Join separator={<Spacer y={6} />}>
               <></>
               {!!enableTestimonials && <Testimonials />}
@@ -150,7 +155,7 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
 })
 
 interface SellWithArtsyHomeQueryRendererProps {
-  environment?: RelayModernEnvironment
+  environment?: Environment
 }
 
 export const SellWithArtsyHomeScreenQuery = graphql`

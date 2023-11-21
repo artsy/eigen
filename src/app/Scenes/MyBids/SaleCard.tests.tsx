@@ -30,7 +30,7 @@ describe("SaleCard", () => {
       variables={{ saleID: "test-sale" }}
       render={({ error, props }) => {
         if (props?.sale && props?.me) {
-          return <SaleCardFragmentContainer me={props.me} sale={props.sale} />
+          return <SaleCardFragmentContainer smallScreen me={props.me} sale={props.sale} />
         } else if (error) {
           console.error(error)
         }

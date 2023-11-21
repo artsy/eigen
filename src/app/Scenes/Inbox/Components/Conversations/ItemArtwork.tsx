@@ -1,8 +1,7 @@
-import { Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
 import { ItemArtwork_artwork$data } from "__generated__/ItemArtwork_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Touchable } from "@artsy/palette-mobile"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ItemArtworkProps {

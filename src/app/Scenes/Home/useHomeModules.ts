@@ -9,6 +9,7 @@ import { isEmpty } from "lodash"
 import { useMemo } from "react"
 
 export const useHomeModules = (props: HomeProps) => {
+  // ⚠️⚠️⚠️ IMPORTANT: remember when adding a feature flag to also add it to the dependency array of the useMemo hook
   const enableLatestActivityRail = useFeatureFlag("AREnableLatestActivityRail")
   const enableGalleriesForYou = useFeatureFlag("AREnableGalleriesForYou")
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
@@ -23,7 +24,7 @@ export const useHomeModules = (props: HomeProps) => {
         contextScreen: "home",
         contextScreenOwnerType: OwnerType.home,
         data: props.notificationsConnection,
-        isEmpty: isEmpty(props.notificationsConnection),
+        isEmpty: !props.notificationsConnection?.notificationsConnection?.edges?.length,
         key: "latestActivityRail",
         title: "Latest Activity",
         type: "activity",
@@ -253,5 +254,6 @@ export const useHomeModules = (props: HomeProps) => {
     enableCuratorsPickRail,
     enableDoMoreOnArtsyRail,
     enableMeetYourNewAdvisoryRail,
+    enableLatestActivityRail,
   ])
 }

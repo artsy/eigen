@@ -9,12 +9,12 @@ import {
   useSWALandingPageData,
 } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
-import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { uniqBy } from "lodash"
 import { MotiView } from "moti"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 
@@ -142,7 +142,7 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-  const bioTextLimit = isPad() ? 160 : 88
+  const bioTextLimit = isTablet() ? 160 : 88
 
   const buttonText = `Contact ${specialist.firstName}`
 

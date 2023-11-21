@@ -1,7 +1,7 @@
 import { useSpace } from "@artsy/palette-mobile"
-import { isPad } from "app/utils/hardware"
 import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "app/utils/hooks"
 import { findRelayRecord, findRelayRecordByDataID } from "app/utils/relayHelpers"
+import { isTablet } from "react-native-device-info"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 import { getMeasurements } from "./Components/ImageCarousel/geometry"
 
@@ -22,7 +22,7 @@ export const getImageDimensionsByImage = (
 ) => {
   const boundingBox = {
     width: screenDimensions.width,
-    height: isPad() ? 460 : screenDimensions.width >= 375 ? 340 : 290,
+    height: isTablet() ? 460 : screenDimensions.width >= 375 ? 340 : 290,
   }
 
   const imageSize = {

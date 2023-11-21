@@ -19,7 +19,7 @@ export interface FeatureDescriptorReadyForRelease {
   readonly readyForRelease: true
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
-   * Make sure to add the flag to echo before setting this value. Then run `./scripts/update-echo`.
+   * Make sure to add the flag to echo before setting this value. Then run `./scripts/setup/update-echo`.
    */
   readonly echoFlagKey: string
 }
@@ -42,58 +42,22 @@ export type FeatureDescriptor = (
 export type FeatureName = keyof typeof features
 
 export const features: { [key: string]: FeatureDescriptor } = {
-  AROptionsPriceTransparency: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsPriceTransparency",
-    description: "Price Transparency",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
+    showInDevMenu: true,
     description: "Support dark mode",
   },
-  AREnablePriceEstimateRange: {
+  AREnableArticleSlideShow: {
     readyForRelease: false,
-    description: "Enable My Collection Price Estimate Range",
-    showInDevMenu: false,
+    description: "Enable slideshow elements and route on Article screen",
+    echoFlagKey: "AREnableArticleSlideShow",
+    showInDevMenu: true,
   },
-  AREnableConversationalBuyNow: {
-    readyForRelease: true,
-    description: "Conversational Buy Now",
-    echoFlagKey: "AREnableConversationalBuyNow",
-  },
-  AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: true,
-    description: "Enable My Collection artworks from non-Artsy artists",
-    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
-  },
+  // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
-  AREnableNewRequestPriceEstimateLogic: {
-    description: "Enable new request price estimate logic",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
-  },
-  ARReorderSWAArtworkSubmissionFlow: {
-    description: "Reorder SWA Artwork submission flow",
-    readyForRelease: true,
-    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
-  },
-  AREnablePanOnStaticHeader: {
-    description: "Enable Scroll/Pan on StaticHeader",
-    readyForRelease: false,
-  },
-  AREnableSearchDiscoveryContentIOS: {
-    description: "Display discovery content on Search tab on iOS",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentIOS",
-  },
-  AREnableSearchDiscoveryContentAndroid: {
-    description: "Display discovery content on Search tab on Android",
-    readyForRelease: true,
-    echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
@@ -109,11 +73,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable save icon for large artwork rails",
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
-  },
-  AREnableConsignmentInquiry: {
-    description: "Enable Sell With Artsy Inquiry",
-    readyForRelease: true,
-    echoFlagKey: "AREnableConsignmentInquiry",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
@@ -140,6 +99,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
+  // Not yet released - don't cleanup waiting design feedback
   AREnablePageableArtworkScreens: {
     description: "Enable pageable artwork screens",
     readyForRelease: false,
@@ -159,12 +119,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Enable Testimonials on SWA Landing Page",
     readyForRelease: true,
     echoFlagKey: "AREnableSWALandingPageTestimonials",
-  },
-  AREnableInstantViewInRoom: {
-    description: "Enable Instant View In Room",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableInstantViewInRoom",
   },
   AREnableSkeletonAnimation: {
     description: "Enable Skeleton Animation",
@@ -204,6 +158,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionCollectedArtists",
   },
+  // TODO: need to refresh it, not released yet but marked as ready since 3 months
   AREnableLongPressOnArtworkCards: {
     description: "Enable Context Menu on artwork cards",
     readyForRelease: true,
@@ -221,12 +176,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableGalleriesForYou",
-  },
-  AREnablePriceControlForCreateAlertFlow: {
-    description: "Enable Inline price control for Create Alert modal flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnablePriceControlForCreateAlertFlow",
   },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
@@ -246,17 +195,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
-  AREnableFallbackToGeneratedAlertNames: {
-    description: "Enable fallback to generated alert names",
-    readyForRelease: true,
+  ARUsePrincipalFieldErrorHandlerMiddleware: {
+    description: "Use new error middleware but for every query",
+    readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableFallbackToGeneratedAlertNames",
-  },
-  ARUseNewErrorMiddleware: {
-    description: "Use updated error middleware",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUseNewErrorMiddleware",
   },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
@@ -266,13 +208,13 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableLatestActivityRail: {
     description: "Enable Latest Activity Rail",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableLatestActivityRail",
   },
   ARShowArtistsAlertsSet: {
     description: "Show Artists Alerts Set in Artist Page",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "ARShowArtistsAlertsSet",
   },
@@ -281,6 +223,34 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableSingleActivityPanelScreen",
+  },
+  AREnableAlertsFilters: {
+    description: "Enable filters in alerts screen",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsFilters",
+  },
+  AREnableAlertsFiltersSizeFiltering: {
+    description: "Enable size filtering in alerts filters screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableAlertDetailsInput: {
+    description: "Enable 'details' text input for alerts",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertDetailsInput",
+  },
+  AREnableArtistSeriesFilter: {
+    description: "Enable artist series filter on Artist screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableAlertsSuggestedFilters: {
+    description: "Enable alerts suggested filters",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsSuggestedFilters",
   },
 }
 

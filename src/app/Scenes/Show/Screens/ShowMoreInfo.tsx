@@ -30,9 +30,8 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
   const displayablePartnerType =
     DISPLAYABLE_PARTNER_TYPES[show.partner?.type as keyof typeof DISPLAYABLE_PARTNER_TYPES]
   const location = show.location ?? show.fair?.location
-  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(
-    show.partner?.type!
-  )
+  const shouldDisplayPartnerType =
+    !!show.partner?.type && Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(show.partner?.type)
   const shouldDisplayHours =
     (location?.openingHours?.__typename === "OpeningHoursArray" &&
       !!location.openingHours.schedules) ||

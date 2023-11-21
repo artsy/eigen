@@ -74,7 +74,7 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(error?.stack!)
+          captureMessage(error?.message)
         }
       },
     })

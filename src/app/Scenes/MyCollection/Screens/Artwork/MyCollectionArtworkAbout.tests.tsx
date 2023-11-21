@@ -1,5 +1,4 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
@@ -31,10 +30,6 @@ describe("MyCollectionArtworkAbout", () => {
 
   describe("about the work section", () => {
     it("renders the lables and the data when the data is available", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnablePriceEstimateRange: true,
-      })
-
       const { getByText } = renderWithRelay({
         Query: () => artworkDataAvailable,
       })
@@ -111,24 +106,6 @@ describe("MyCollectionArtworkAbout", () => {
 
       expect(getByText("100 × 104 cm")).toBeTruthy()
     })
-  })
-
-  it("renders no estimate range when feature flag is disabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnablePriceEstimateRange: false,
-    })
-
-    const { queryByText } = renderWithRelay({
-      Query: () => ({
-        marketPriceInsights: {
-          lowRangeCents: 1780000,
-          highRangeCents: 4200000,
-        },
-      }),
-    })
-
-    expect(await queryByText("Estimate Range")).toBeFalsy()
-    expect(await queryByText("$17,800 - $42,000")).toBeFalsy()
   })
 
   it("renders articles section", () => {

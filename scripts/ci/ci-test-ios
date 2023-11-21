@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+source ./scripts/ci/ci-setup-export-vars
+
+if [ "${LOCAL_BRANCH}" != "beta-ios" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
+	echo "If tests fail because of snapshots, look in the \`getting_started.md\` in the \`Update snapshots\` section."
+	./scripts/ci/test-ios
+else
+	echo "Skipping test run on beta deploy."
+fi

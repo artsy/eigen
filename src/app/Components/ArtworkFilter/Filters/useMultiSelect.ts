@@ -63,7 +63,7 @@ export const useMultiSelect = ({
           return String(
             options.find(({ displayText }) => {
               return displayText === option.displayText
-            })!.paramValue
+            })?.paramValue
           )
 
         case "string":

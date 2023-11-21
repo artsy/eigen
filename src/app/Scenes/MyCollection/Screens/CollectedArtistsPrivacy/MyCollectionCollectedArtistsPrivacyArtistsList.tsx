@@ -3,14 +3,11 @@ import { MyCollectionCollectedArtistsPrivacyArtistsList_me$key } from "__generat
 import { SelectArtistToShareListItem } from "app/Scenes/MyCollection/Components/SelectArtistToShareListItem"
 import { extractEdges } from "app/utils/extractEdges"
 import { FlatList } from "react-native"
-import { usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { usePaginationFragment, graphql } from "react-relay"
 
 interface MyCollectionCollectedArtistsPrivacyArtistsListProps {
   me: MyCollectionCollectedArtistsPrivacyArtistsList_me$key
 }
-
-export const ARTIST_CIRCLE_DIAMETER = 100
 
 export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
   MyCollectionCollectedArtistsPrivacyArtistsListProps
@@ -45,7 +42,7 @@ export const MyCollectionCollectedArtistsPrivacyArtistsList: React.FC<
           return (
             <SelectArtistToShareListItem
               key={item?.internalID}
-              artist={item?.node!}
+              artist={item?.node}
               interestID={item?.internalID}
               private={item.private}
             />

@@ -15,14 +15,15 @@ interface ArtworkMakerProps {
 const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
   const { trackEvent } = useTracking()
 
-  const handleArtistTap = (artistHref: string) => {
-    trackEvent({
-      action_name: Schema.ActionNames.ArtistName,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.ArtworkTombstone,
-    })
-
-    navigate(artistHref)
+  const handleArtistTap = (artistHref?: string | null) => {
+    if (artistHref) {
+      trackEvent({
+        action_name: Schema.ActionNames.ArtistName,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: Schema.ContextModules.ArtworkTombstone,
+      })
+      navigate(artistHref)
+    }
   }
 
   return (
@@ -30,7 +31,7 @@ const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
       accessibilityRole="link"
       accessibilityHint="Go to artist page"
       disabled={!href}
-      onPress={() => handleArtistTap(href!)}
+      onPress={() => handleArtistTap(href)}
     >
       <Text variant="lg-display">{artistName}</Text>
     </TouchableWithoutFeedback>
@@ -50,23 +51,33 @@ const ArtworkMultipleMakers: React.FC<ArtworkMultipleMakersProps> = ({ artists }
 
   const truncatedArtists = !showMoreArtists ? artists?.slice(0, 3) : artists
 
-  const artistNames = truncatedArtists?.map((artist, index) => {
-    const artistNameWithComma = index !== artists!.length - 1 ? artist!.name + ", " : artist!.name!
-
-    return <ArtworkMaker key={artist!.href} artistName={artistNameWithComma} href={artist!.href} />
-  })
-
   return (
     <Flex flexDirection="row" flexWrap="wrap">
       <Text variant="lg-display">
-        {artistNames}
-        {!showMoreArtists && artists!.length > 3 && (
+        {!!artists &&
+          truncatedArtists?.map((artist, index) => {
+            if (!artist?.name) {
+              return null
+            }
+
+            const artistNameWithComma =
+              index !== artists.length - 1 ? artist.name + ", " : artist.name
+
+            return (
+              <ArtworkMaker
+                key={artist?.href}
+                artistName={artistNameWithComma}
+                href={artist?.href}
+              />
+            )
+          })}
+        {!showMoreArtists && !!artists && artists?.length > 3 && (
           <TouchableWithoutFeedback
             accessibilityRole="togglebutton"
             accessibilityHint={!showMoreArtists ? "Show more artists" : "Show less artists"}
             onPress={toggleShowMoreArtists}
           >
-            <Text variant="lg-display">{artists!.length - 3} more</Text>
+            <Text variant="lg-display">{artists.length - 3} more</Text>
           </TouchableWithoutFeedback>
         )}
       </Text>
@@ -85,8 +96,8 @@ const ArtworkMakerTitle: React.FC<ArtworkMakerTitleProps> = ({ artwork }) => {
     return <ArtworkMaker artistName={culturalMaker} />
   }
 
-  if (artists?.length === 1) {
-    return <ArtworkMaker artistName={artists[0]!.name!} href={artists[0]!.href!} />
+  if (!!artists && artists?.length === 1 && !!artists[0]?.name) {
+    return <ArtworkMaker artistName={artists[0].name} href={artists[0].href} />
   }
 
   if (!!artists && artists?.length > 1) {

@@ -6,9 +6,9 @@ import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/u
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
-import { isPad } from "app/utils/hardware"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 /**
@@ -23,7 +23,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
  * 1 default artwork list + 23 custom artwork lists = 24 artwork lists
  * 24 / 3 column = 8 rows
  */
-const PAGE_SIZE = isPad() ? 23 : 11
+const PAGE_SIZE = isTablet() ? 23 : 11
 
 export const ArtworkLists = () => {
   const space = useSpace()

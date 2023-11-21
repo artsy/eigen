@@ -1,11 +1,11 @@
-import { CheckIcon, Box, Text } from "@artsy/palette-mobile"
+import { Box, CheckIcon, Color, Text } from "@artsy/palette-mobile"
 import { TouchableRow, TouchableRowProps } from "app/Components/TouchableRow"
 
 type ColorsSwatchProps = TouchableRowProps & {
   width: number
   name: string
   backgroundColor: string
-  foregroundColor: string
+  foregroundColor?: Color
   selected: boolean
 }
 
@@ -13,7 +13,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
   width,
   name,
   backgroundColor,
-  foregroundColor,
+  foregroundColor = "white100",
   selected,
   ...rest
 }) => {
@@ -37,7 +37,8 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
               height="18px"
               marginTop="-9px"
               marginLeft="-9px"
-              fill={foregroundColor as any} // Annoying
+              testID={`check-icon-${name}`}
+              fill={foregroundColor}
             />
           )}
         </Box>

@@ -10,7 +10,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
-import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -281,12 +281,6 @@ describe("MyCollectionArtworkForm", () => {
     })
 
     describe("when skipping the artist selection", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableArtworksFromNonArtsyArtists: true,
-        })
-      })
-
       it("initializes the artist name input field", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
           <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,

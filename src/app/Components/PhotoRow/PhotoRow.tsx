@@ -24,7 +24,7 @@ const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, 
     >
       {children}
     </Flex>
-    {error && errorMsg && (
+    {!!error && !!errorMsg && (
       <Text variant="xs" color="red100">
         {errorMsg}
       </Text>

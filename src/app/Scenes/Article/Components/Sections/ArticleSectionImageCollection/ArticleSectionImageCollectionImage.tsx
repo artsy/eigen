@@ -1,7 +1,7 @@
 import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionImageCollectionImage_figure$key } from "__generated__/ArticleSectionImageCollectionImage_figure.graphql"
-import { useFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { ArticleSectionArtworkImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionArtworkImage"
+import { useFragment, graphql } from "react-relay"
 
 interface ArticleSectionImageCollectionImageProps {
   figure: ArticleSectionImageCollectionImage_figure$key
@@ -11,10 +11,13 @@ export const ArticleSectionImageCollectionImage: React.FC<
   ArticleSectionImageCollectionImageProps
 > = ({ figure }) => {
   const { width } = useScreenDimensions()
-
   const data = useFragment(ArticleSectionImageCollectionImageQuery, figure)
 
-  if (!data.image?.url) {
+  if (data.__typename === "Artwork") {
+    return <ArticleSectionArtworkImage artwork={data} />
+  }
+
+  if (data.__typename === "%other" || !data.image?.url) {
     return null
   }
 
@@ -22,39 +25,27 @@ export const ArticleSectionImageCollectionImage: React.FC<
   const height = (data.image?.height ?? width) * widthShrinkPercentage
   const aspectRatio = width / height
 
-  return (
-    <Image
-      src={data.image.url}
-      width={width}
-      height={height}
-      aspectRatio={aspectRatio}
-      geminiResizeMode="fill"
-    />
-  )
+  return <Image src={data.image.url} width={width} height={height} aspectRatio={aspectRatio} />
 }
 
 const ArticleSectionImageCollectionImageQuery = graphql`
   fragment ArticleSectionImageCollectionImage_figure on ArticleSectionImageCollectionFigure {
+    __typename
     ... on ArticleImageSection {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }
     }
     ... on Artwork {
-      id
-      image {
-        url
-        width
-        height
-      }
+      ...ArticleSectionArtworkImage_artwork
     }
     ... on ArticleUnpublishedArtwork {
       id
       image {
-        url
+        url(version: ["main", "normalized", "larger", "large"])
         width
         height
       }

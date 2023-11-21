@@ -1,7 +1,7 @@
 import { Spacer, Flex, Text, Spinner } from "@artsy/palette-mobile"
 import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
 import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
-import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
+import { ArtistShow } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -57,7 +57,9 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
       <Animated.FlatList
         data={pastShows}
         ListHeaderComponent={() => header}
-        renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
+        renderItem={({ item, index }) => (
+          <ArtistShow show={item} styles={showStyles} index={index} />
+        )}
         keyExtractor={({ id }) => id}
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer y={2} />}

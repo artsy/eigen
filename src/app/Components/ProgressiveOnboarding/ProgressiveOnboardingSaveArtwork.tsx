@@ -9,43 +9,47 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const [isVisible, setIsVisible] = useState(true)
   const [isInView, setIsInView] = useState(false)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isDismissed: _isDismissed } = GlobalStore.useAppState(
-    (state) => state.progressiveOnboarding
-  )
+  const {
+    isDismissed: _isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const data = useLazyLoadQuery<ProgressiveOnboardingSaveArtwork_Query>(query, {})
 
   const savedArtworks = data?.me.counts.savedArtworks
   const isDismissed = _isDismissed("save-artwork").status
-  const isDisplayable = !isDismissed && savedArtworks === 0
+  const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
 
   const handleDismiss = () => {
     setIsVisible(false)
     dismiss("save-artwork")
   }
 
-  if (!isDisplayable) {
-    if (isInView) {
-      return <>{children}</>
-    }
-
-    return <ElementInView onVisible={() => setIsInView(true)}>{children}</ElementInView>
+  // all conditions met we show the popover
+  if (isDisplayable) {
+    return (
+      <Popover
+        visible={isVisible}
+        onDismiss={handleDismiss}
+        onPressOutside={handleDismiss}
+        title={
+          <Text weight="medium" color="white100">
+            Like what you see?
+          </Text>
+        }
+        content={<Text color="white100">Hit the heart to save an artwork.</Text>}
+      >
+        <Flex>{children}</Flex>
+      </Popover>
+    )
   }
 
-  return (
-    <Popover
-      visible={isVisible}
-      onDismiss={handleDismiss}
-      onPressOutside={handleDismiss}
-      title={
-        <Text weight="medium" color="white100">
-          Like what you see?
-        </Text>
-      }
-      content={<Text color="white100">Hit the heart to save an artwork.</Text>}
-    >
-      <Flex>{children}</Flex>
-    </Popover>
-  )
+  // if the artwork element is shown but no conditions met displays only the children
+  if (isInView) {
+    return <>{children}</>
+  }
+
+  // no conditions met and children is not visible in the screen yet
+  return <ElementInView onVisible={() => setIsInView(true)}>{children}</ElementInView>
 }
 
 const query = graphql`

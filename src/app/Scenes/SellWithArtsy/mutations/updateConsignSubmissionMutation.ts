@@ -3,7 +3,7 @@ import {
   UpdateSubmissionMutationInput,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const updateConsignSubmission = (input: UpdateSubmissionMutationInput) => {
   return new Promise<string>((resolve, reject) => {
@@ -27,7 +27,9 @@ export const updateConsignSubmission = (input: UpdateSubmissionMutationInput) =>
           return
         }
 
-        resolve(res.updateConsignmentSubmission!.consignmentSubmission!.internalID!)
+        if (res.updateConsignmentSubmission?.consignmentSubmission?.internalID) {
+          resolve(res.updateConsignmentSubmission.consignmentSubmission.internalID)
+        }
       },
     })
   })

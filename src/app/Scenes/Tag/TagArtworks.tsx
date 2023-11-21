@@ -63,7 +63,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
         Showing {artworksTotal} works
       </Text>
       <InfiniteScrollArtworksGridContainer
-        connection={tag.artworks!}
+        connection={tag.artworks}
         hasMore={relay.hasMore}
         loadMore={relay.loadMore}
       />

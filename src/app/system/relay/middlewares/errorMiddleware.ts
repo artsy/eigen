@@ -10,6 +10,12 @@ const newErrorMiddlewareOptedInQueries = [
   "HomeBelowTheFoldQuery",
   "ArtworkAboveTheFoldQuery",
   "ArtworkBelowTheFoldQuery",
+  "SearchQuery",
+  "ArtistAboveTheFoldQuery",
+  "ArtistBelowTheFoldQuery",
+  "InboxQuery",
+  "BottomTabsModelFetchCurrentUnreadConversationCountQuery",
+  "BottomTabsModelFetchNotificationsInfoQuery",
 ]
 
 export const legacyErrorMiddleware = async (
@@ -30,7 +36,7 @@ export const legacyErrorMiddleware = async (
     resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
   if (allErrorsAreOptional) {
-    trackError(req.operation.name, req.operation.kind, "optionalField")
+    trackError(req.operation.name, req.operation.operationKind, "optionalField")
     return res
   }
 
@@ -39,7 +45,7 @@ export const legacyErrorMiddleware = async (
   const requestHasPrincipalField = req.operation.text?.includes("@principalField")
 
   if (!requestHasPrincipalField) {
-    trackError(req.operation.name, req.operation.kind, "default")
+    trackError(req.operation.name, req.operation.operationKind, "default")
     return throwError(req, res)
   }
 
@@ -53,7 +59,7 @@ export const legacyErrorMiddleware = async (
   )
 
   if (principalFieldWasInvolvedInError) {
-    trackError(req.operation.name, req.operation.kind, "principalField")
+    trackError(req.operation.name, req.operation.operationKind, "principalField")
     return throwError(req, res)
   }
 
@@ -63,14 +69,15 @@ export const legacyErrorMiddleware = async (
 export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
   const res = await next(req)
 
-  const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
+  const usePrincipalFieldMiddleware = unsafe_getFeatureFlag(
+    "ARUsePrincipalFieldErrorHandlerMiddleware"
+  )
 
   const isScreenUsingNewErrorMiddleware = newErrorMiddlewareOptedInQueries.includes(
     req.operation.name
   )
 
-  const enableNewErrorMiddleware =
-    useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware
+  const enableNewErrorMiddleware = usePrincipalFieldMiddleware || isScreenUsingNewErrorMiddleware
 
   if (!!enableNewErrorMiddleware) {
     return principalFieldErrorHandlerMiddleware(req, res)

@@ -26,19 +26,29 @@ export interface CreateSavedSearchModalProps {
   closeModal: () => void
   onComplete?: () => void
   contextModule?: ContextModule
+  currentArtworkID?: string
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, entity, attributes, aggregations, closeModal, onComplete, contextModule } = props
+  const {
+    visible,
+    entity,
+    attributes,
+    aggregations,
+    closeModal,
+    onComplete,
+    contextModule,
+    currentArtworkID,
+  } = props
   const tracking = useTracking()
 
   useEffect(() => {
     if (visible) {
       const event = tracks.tappedCreateAlert({
         contextModule: contextModule,
-        ownerId: entity?.owner.id!,
-        ownerType: entity?.owner.type!,
-        ownerSlug: entity?.owner.slug!,
+        ownerId: entity?.owner.id,
+        ownerType: entity?.owner.type,
+        ownerSlug: entity?.owner.slug,
       })
 
       tracking.trackEvent(event)
@@ -47,6 +57,11 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     const { owner } = entity
+
+    if (!result.id) {
+      return
+    }
+
     tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
   }
 
@@ -54,6 +69,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     aggregations,
     attributes,
     entity,
+    currentArtworkID,
     onClosePress: () => {
       onComplete?.() // close the filter modal stack (if coming from artist artwork grid)
       closeModal() // close the alert modal stack

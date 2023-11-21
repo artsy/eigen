@@ -33,7 +33,7 @@ export const CTAPopUp = ({ show, children }: { show: boolean; children: React.Re
           {
             translateY: animationProgress.interpolate({
               inputRange: [0, 1],
-              outputRange: [0, CTAHeight!],
+              outputRange: [0, CTAHeight],
             }),
           },
         ],

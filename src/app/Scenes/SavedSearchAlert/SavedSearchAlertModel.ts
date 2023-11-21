@@ -9,10 +9,11 @@ export interface SavedSearchAlertFormValues {
   name: string
   push: boolean
   email: boolean
+  details?: string
 }
 
 export interface SavedSearchAlertMutationResult {
-  id: string
+  id?: string
 }
 
 // Navigation
@@ -20,6 +21,7 @@ export interface CreateSavedSearchAlertParams {
   aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   entity: SavedSearchEntity
+  currentArtworkID?: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
@@ -36,6 +38,7 @@ export type CreateSavedSearchAlertNavigationStack = {
   AlertPriceRange: undefined
   EmailPreferences: undefined
   ConfirmationScreen: ConfirmationScreenParams
+  SavedSearchFilterScreen: undefined
 }
 
 export interface EditSavedSearchAlertParams {
@@ -43,6 +46,7 @@ export interface EditSavedSearchAlertParams {
     email: boolean
     name?: string | null
     push: boolean
+    details?: string | null
   }
   savedSearchAlertId?: string
   userAllowsEmails: boolean
@@ -55,6 +59,7 @@ export type EditSavedSearchAlertNavigationStack = {
   AlertPriceRange: undefined
   EmailPreferences: undefined
   ConfirmationScreen: ConfirmationScreenParams
+  SavedSearchFilterScreen: undefined
 }
 
 export interface SavedSearchPill {
@@ -64,6 +69,6 @@ export interface SavedSearchPill {
 }
 
 export interface ConfirmationScreenParams {
-  searchCriteriaID: string
+  searchCriteriaID?: string
   closeModal?: () => void
 }

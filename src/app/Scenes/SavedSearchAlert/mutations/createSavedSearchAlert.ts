@@ -2,7 +2,7 @@ import { createSavedSearchAlertMutation } from "__generated__/createSavedSearchA
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchAlertFormValues } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { commitMutation, graphql } from "relay-runtime"
+import { commitMutation, graphql } from "react-relay"
 
 export const createSavedSearchAlert = (
   userAlertSettings: SavedSearchAlertFormValues,

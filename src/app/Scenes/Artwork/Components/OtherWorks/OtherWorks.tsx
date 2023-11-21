@@ -17,7 +17,7 @@ type ArtworkGrid = NonNullable<
 >
 type Grid = OtherWorksGrid | ArtworkGrid
 
-export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
+export const populatedGrids = (grids?: ReadonlyArray<Grid | null | undefined> | null) => {
   if (grids && grids.length > 0) {
     return filter(grids, (grid) => {
       return (grid?.artworks?.edges?.length ?? 0) > 0
@@ -59,7 +59,7 @@ const OtherWorks: React.FC<{ artwork: OtherWorks_artwork$data }> = ({ artwork })
             <ContextGridCTA
               contextModule={grid.__typename}
               href={grid.ctaHref || undefined}
-              label={grid.ctaTitle!}
+              label={grid.ctaTitle ?? ""}
             />
           </Box>
         </React.Fragment>

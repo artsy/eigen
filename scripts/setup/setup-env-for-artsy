@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+aws s3 cp s3://artsy-citadel/eigen/.env.shared ./
+
+cp metaflags.example.json metaflags.json
+
+./scripts/setup/download-assets
+./scripts/setup/update-echo

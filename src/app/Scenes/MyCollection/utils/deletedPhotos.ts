@@ -9,7 +9,7 @@ export function deletedPhotos(initialPhotos: Image[], submittedPhotos: Image[]) 
       )
       if (photoRemoved) {
         removedPhotos = removedPhotos.concat({
-          id: photo.internalID!,
+          id: photo.internalID,
           index,
         })
       }

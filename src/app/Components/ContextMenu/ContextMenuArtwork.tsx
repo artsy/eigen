@@ -11,10 +11,9 @@ import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import React from "react"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
-import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
+import { trigger, HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { useTracking } from "react-tracking"
 
 interface ContextAction extends Omit<ContextMenuAction, "subtitle"> {
@@ -54,7 +53,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableInstantVIR = useFeatureFlag("AREnableInstantViewInRoom")
   const enableContextMenu = useFeatureFlag("AREnableLongPressOnArtworkCards")
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -77,8 +75,12 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   })
 
   const openViewInRoom = () => {
-    const heightIn = cm2in(artwork?.heightCm!)
-    const widthIn = cm2in(artwork?.widthCm!)
+    if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
+      return
+    }
+
+    const heightIn = cm2in(artwork.heightCm)
+    const widthIn = cm2in(artwork.widthCm)
 
     trackEvent({
       action_name: Schema.ActionNames.ViewInRoom,
@@ -87,12 +89,11 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     })
 
     LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      image?.url!,
+      image.url,
       widthIn,
       heightIn,
       slug,
-      id,
-      enableInstantVIR
+      id
     )
   }
 
@@ -113,17 +114,19 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         title: "Share",
         systemIcon: "square.and.arrow.up",
         onPress: () => {
-          InteractionManager.runAfterInteractions(() => {
-            showShareSheet({
-              type: "artwork",
-              artists: artists,
-              slug: slug,
-              internalID: internalID,
-              title: title!,
-              href: href!,
-              images: [],
+          if (title && href) {
+            InteractionManager.runAfterInteractions(() => {
+              showShareSheet({
+                type: "artwork",
+                artists: artists,
+                slug: slug,
+                internalID: internalID,
+                title: title,
+                href: href,
+                images: [],
+              })
             })
-          })
+          }
         },
       },
     ]
@@ -160,7 +163,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
     if (haptic) {
-      Haptic.trigger(haptic === true ? "impactLight" : haptic)
+      trigger(haptic === true ? "impactLight" : haptic)
     }
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress

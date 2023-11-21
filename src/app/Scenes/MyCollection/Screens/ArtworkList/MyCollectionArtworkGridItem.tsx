@@ -7,11 +7,11 @@ import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
-import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/hooks"
 import { View } from "react-native"
+import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {
@@ -40,7 +40,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
-  const sectionCount = isPad() ? 3 : 2
+  const sectionCount = isTablet() ? 3 : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1

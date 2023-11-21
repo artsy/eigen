@@ -3,12 +3,10 @@ import { ModalStack } from "app/system/navigation/ModalStack"
 import { switchTab } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
-import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "./BottomTabsButton"
-
-const trackEvent = useTracking().trackEvent
 
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
   return (
@@ -33,11 +31,11 @@ describe(BottomTabsButton, () => {
 
   it(`dispatches an analytics action on press`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper tab="sell" />)
-    expect(trackEvent).not.toHaveBeenCalled()
+    expect(mockTrackEvent).not.toHaveBeenCalled()
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
     expect(switchTab).toHaveBeenCalledWith("sell")
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedTabBar",
       badge: false,
       context_module: "tabBar",

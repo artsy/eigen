@@ -24,6 +24,7 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               acquireable
               additionalGeneIDs
               artistIDs
+              artistSeriesIDs
               atAuction
               attributionClass
               colors
@@ -42,6 +43,7 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
                 email
                 name
                 push
+                details
               }
               width
             }

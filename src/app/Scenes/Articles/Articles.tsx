@@ -4,8 +4,7 @@ import { Articles_articlesConnection$key } from "__generated__/Articles_articles
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
-import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { graphql } from "relay-runtime"
+import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 
 export const Articles: React.FC = () => {
@@ -59,15 +58,13 @@ export const ArticlesScreen: React.FC = () => (
 )
 
 export const ArticlesScreenQuery = graphql`
-  query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
-    ...Articles_articlesConnection
-      @arguments(count: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
+  query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts) {
+    ...Articles_articlesConnection @arguments(count: $count, after: $after, sort: $sort)
   }
 `
 
 export const articlesQueryVariables = {
   count: 10,
-  inEditorialFeed: true,
   sort: "PUBLISHED_AT_DESC" as ArticleSorts,
 }
 
@@ -78,14 +75,9 @@ const articlesConnectionFragment = graphql`
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
     sort: { type: "ArticleSorts" }
-    inEditorialFeed: { type: "Boolean" }
   ) {
-    articlesConnection(
-      first: $count
-      after: $after
-      sort: $sort
-      inEditorialFeed: $inEditorialFeed
-    ) @connection(key: "Articles_articlesConnection") {
+    articlesConnection(first: $count, after: $after, sort: $sort)
+      @connection(key: "Articles_articlesConnection") {
       edges {
         cursor
         node {
