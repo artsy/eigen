@@ -2,6 +2,7 @@ import { Environment as IEnvironment } from "react-relay"
 import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
+  uploadMiddleware,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
@@ -26,6 +27,7 @@ const network = new RelayNetworkLayer(
     persistedQueryMiddleware(),
     metaphysicsURLMiddleware(),
     rateLimitMiddleware(),
+    uploadMiddleware(),
     // @ts-expect-error
     errorMiddleware(),
     metaphysicsExtensionsLoggerMiddleware(),
