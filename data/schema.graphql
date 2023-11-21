@@ -2409,6 +2409,9 @@ type Artwork implements Node & Searchable & Sellable {
   # spreadsheet data.
   realizedPrice: String
   realizedToEstimate: String
+
+  # Count of collected artworks, in saves collections, in the last 30 days
+  recentSavesCount: Int
   related(size: Int): [Artwork]
   sale: Sale
   saleArtwork(saleID: String = null): SaleArtwork
