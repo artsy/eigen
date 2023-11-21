@@ -71,7 +71,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Added",
+            paramValue: "-published_at",
           },
         ],
         previouslyAppliedFilters: [
@@ -79,7 +79,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Added",
+            paramValue: "-published_at",
           },
         ],
         applyFilters: false,
@@ -106,7 +106,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Added",
+            paramValue: "-published_at",
           },
         ],
         appliedFilters: [],
@@ -135,7 +135,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Added",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Added",
+            paramValue: "-published_at",
           },
         ],
         appliedFilters: [
@@ -143,7 +143,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Updated",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Updated",
+            paramValue: "-partner_updated_at",
           },
         ],
         previouslyAppliedFilters: [
@@ -151,7 +151,7 @@ describe("Sort Options Screen", () => {
             displayText: "Recently Updated",
 
             paramName: FilterParamName.sort,
-            paramValue: "Recently Updated",
+            paramValue: "-partner_updated_at",
           },
         ],
         applyFilters: false,
@@ -179,13 +179,13 @@ describe("Sort Options Screen", () => {
           displayText: "Price (High to Low)",
 
           paramName: FilterParamName.sort,
-          paramValue: "Price (High to Low)",
+          paramValue: "-has_price,-prices",
         },
         {
           displayText: "Price (Low to High)",
 
           paramName: FilterParamName.sort,
-          paramValue: "Price (Low to High)",
+          paramValue: "-has_price,prices",
         },
       ],
       appliedFilters: [],

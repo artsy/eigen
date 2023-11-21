@@ -240,7 +240,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
   // to make sure the filters are applied correctly
   const route = useRoute()
-  const routeParams = (route?.params as any).props
+  const routeParams = (route?.params as any)?.props || {}
   const filters: FilterArray = [
     ...(predefinedFilters || []),
     ...getFilterParamsFromRouteParams(routeParams),

@@ -81,6 +81,7 @@ export const QueryParamsToFilterValueMapping: Record<string, FilterParamName> = 
   additional_gene_ids: FilterParamName.additionalGeneIDs,
   artist_ids: FilterParamName.artistIDs,
   artist_nationalities: FilterParamName.artistNationalities,
+  artist_series_ids: FilterParamName.artistSeriesIDs,
   include_artworks_by_followed_artists: FilterParamName.artistsIFollow,
   attribution_class: FilterParamName.attributionClass,
   something: FilterParamName.categories,
