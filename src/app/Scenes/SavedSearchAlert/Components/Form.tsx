@@ -190,7 +190,6 @@ export const Form: React.FC<FormProps> = ({
 
           {enableAlertsFilters && enableAlertsSuggestedFilters ? (
             <Flex mt={2}>
-              <Text variant="sm-display">Suggested Filters</Text>
               <SavedSearchSuggestedFiltersQueryRenderer />
             </Flex>
           ) : null}

@@ -35,59 +35,70 @@ describe("SavedSearchSuggestedFilters", () => {
     ),
   })
 
-  it("shows all suggested filters unselected", async () => {
-    renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
+  describe("when there are suggested filters", () => {
+    it("show Add Filters Menu", async () => {
+      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: [] }) })
 
-    await flushPromiseQueue()
+      await flushPromiseQueue()
 
-    mockSuggestedFilters.forEach((filter) => {
-      expect(screen.getByText(filter.displayValue)).toBeTruthy()
+      expect(screen.getByText("Add Filters")).toBeTruthy()
     })
   })
+  describe("when there are suggested filters", () => {
+    it("shows all suggested filters unselected", async () => {
+      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
 
-  it("shows only the supported suggested filters", async () => {
-    const notSupportedFilters = [
-      {
-        displayValue: "Valid value but not yet supported filter",
-        field: "notSupportedFilter",
-        name: "NotSuupported Filter",
-        value: "valid-value-but-not-yet-supported-filter",
-      },
+      await flushPromiseQueue()
 
-      {
-        displayValue: "invalid value",
-        field: "invalid-filter",
-        name: "Invalid filter",
-        value: "invalid-value",
-      },
-    ]
-
-    renderWithRelay({
-      PreviewSavedSearch: () => ({
-        suggestedFilters: [...mockSuggestedFilters, ...notSupportedFilters],
-      }),
+      mockSuggestedFilters.forEach((filter) => {
+        expect(screen.getByText(filter.displayValue)).toBeTruthy()
+      })
     })
 
-    await flushPromiseQueue()
+    it("shows only the supported suggested filters", async () => {
+      const notSupportedFilters = [
+        {
+          displayValue: "Valid value but not yet supported filter",
+          field: "notSupportedFilter",
+          name: "NotSuupported Filter",
+          value: "valid-value-but-not-yet-supported-filter",
+        },
 
-    mockSuggestedFilters.forEach((filter) => {
-      expect(screen.getByText(filter.displayValue)).toBeTruthy()
+        {
+          displayValue: "invalid value",
+          field: "invalid-filter",
+          name: "Invalid filter",
+          value: "invalid-value",
+        },
+      ]
+
+      renderWithRelay({
+        PreviewSavedSearch: () => ({
+          suggestedFilters: [...mockSuggestedFilters, ...notSupportedFilters],
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      mockSuggestedFilters.forEach((filter) => {
+        expect(screen.getByText(filter.displayValue)).toBeTruthy()
+      })
+
+      notSupportedFilters.forEach((filter) => {
+        expect(() => screen.getByText(filter.displayValue)).toThrow()
+      })
     })
 
-    notSupportedFilters.forEach((filter) => {
-      expect(() => screen.getByText(filter.displayValue)).toThrow()
+    it("navigates to filters screen on See More press", async () => {
+      renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
+
+      await flushPromiseQueue()
+
+      const moreFiltersButton = screen.getByText("More Filters")
+      fireEvent(moreFiltersButton, "onPress")
+
+      expect(mockNavigate).toHaveBeenCalledWith("SavedSearchFilterScreen")
     })
-  })
-
-  it("navigates to filters screen on See More press", async () => {
-    renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
-
-    await flushPromiseQueue()
-
-    const moreFiltersButton = screen.getByText("More Filters")
-    fireEvent(moreFiltersButton, "onPress")
-
-    expect(mockNavigate).toHaveBeenCalledWith("SavedSearchFilterScreen")
   })
 })
 
