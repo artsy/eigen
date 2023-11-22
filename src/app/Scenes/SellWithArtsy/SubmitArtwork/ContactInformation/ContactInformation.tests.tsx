@@ -1,11 +1,12 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { updateConsignSubmission } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { useTracking } from "react-tracking"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils/"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
@@ -27,22 +28,17 @@ describe("ContactInformationForm", () => {
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
-  const TestRenderer = ({ isLastStep = true }: { isLastStep?: boolean }) => (
-    <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep={isLastStep} />
-  )
 
-  it("renders without throwing an error", () => {
-    renderWithWrappers(
-      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} isLastStep />
-    )
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep />,
   })
 
   it("renders Form instructions", () => {
-    const { findByText } = renderWithWrappers(<TestRenderer />)
+    renderWithRelay({})
 
     expect(
-      findByText("We will only use these details to contact you regarding your submission.")
-    ).toBeTruthy()
+      screen.queryByText("We will only use these details to contact you regarding your submission.")
+    ).toBeOnTheScreen()
   })
 
   it("Happy path: User can submit information", async () => {
@@ -95,24 +91,21 @@ describe("ContactInformationForm", () => {
   })
 
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
-    const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-    updateConsignSubmissionMock.mockResolvedValue("adsfasd")
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          ...mockQueryDataInfoMissing,
-        }),
-      })
-    )
+    renderWithRelay({
+      Me: () => ({
+        ...mockQueryDataInfoMissing,
+      }),
+    })
+
     const inputs = {
-      nameInput: getByPlaceholderText("Your full name"),
-      emailInput: getByPlaceholderText("Your email address"),
-      phoneInput: getByPlaceholderText("(000) 000-0000"),
+      nameInput: screen.getByPlaceholderText("Your full name"),
+      emailInput: screen.getByPlaceholderText("Your email address"),
+      phoneInput: screen.getByPlaceholderText("(000) 000-0000"),
     }
 
-    const submitButton = getByText("Submit Artwork")
+    const submitButton = screen.getByText("Submit Artwork")
 
-    await flushPromiseQueue()
+    await waitFor(() => expect(submitButton).toBeDisabled())
 
     expect(submitButton).toBeDisabled()
 
@@ -120,60 +113,44 @@ describe("ContactInformationForm", () => {
     fireEvent.changeText(inputs.emailInput, "aa@aa.aaa")
     fireEvent.changeText(inputs.phoneInput, "2025550155")
 
-    await flushPromiseQueue()
-
-    expect(submitButton).not.toBeDisabled()
+    await waitFor(() => expect(submitButton).toBeEnabled())
   })
 
   describe("validation", () => {
     it("displays error message for name", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
-
-      await flushPromiseQueue()
+      renderWithRelay({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       const inputs = {
-        nameInput: getByPlaceholderText("Your full name"),
-        emailInput: getByPlaceholderText("Your email address"),
+        nameInput: screen.getByPlaceholderText("Your full name"),
+        emailInput: screen.getByPlaceholderText("Your email address"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
       fireEvent.changeText(inputs.emailInput, "aa")
 
-      await flushPromiseQueue()
-
-      expect(getByText("Please enter your full name.")).toBeTruthy()
+      await waitFor(() => screen.getByText("Please enter your full name."))
     })
 
     it("displays error message for email address", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
-
-      await flushPromiseQueue()
+      renderWithRelay({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       const inputs = {
-        emailInput: getByPlaceholderText("Your email address"),
-        phoneInput: getByPlaceholderText("(000) 000-0000"),
+        emailInput: screen.getByPlaceholderText("Your email address"),
+        phoneInput: screen.getByPlaceholderText("(000) 000-0000"),
       }
 
       fireEvent.changeText(inputs.emailInput, "aa")
       fireEvent.changeText(inputs.phoneInput, "12")
 
-      await flushPromiseQueue()
-
-      expect(getByText("Please enter a valid email address.")).toBeTruthy()
+      await waitFor(() => screen.getByText("Please enter a valid email address."))
     })
   })
 
