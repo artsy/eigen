@@ -2,6 +2,7 @@ import { ChevronIcon, Flex, Skeleton, SkeletonBox, Text, Touchable } from "@arts
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SavedSearchSuggestedFiltersFetchQuery } from "__generated__/SavedSearchSuggestedFiltersFetchQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
@@ -16,6 +17,9 @@ const SUPPORTED_SEARCH_CRITERIA = [
 ]
 
 export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
+
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
 
   const data = useLazyLoadQuery<SavedSearchSuggestedFiltersFetchQuery>(
@@ -34,23 +38,20 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     criterion: SearchCriteria.priceRange,
   })
 
-  if (!data?.previewSavedSearch?.suggestedFilters) {
-    return (
-      <Flex py={1}>
-        <Flex flexDirection="row" alignItems="center" flexWrap="wrap">
-          <Text color="black60">
-            There are no suggested filters for this artist, set your own filters manually.
-            <MoreFiltersButton text="Add Filters" />
-          </Text>
-        </Flex>
-      </Flex>
-    )
-  }
+  const supportedSuggestedFitlers =
+    data?.previewSavedSearch?.suggestedFilters.filter((filter) => {
+      // Adding this check to make sure we don't add a filter type that's not
+      // supported in the app
+      return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
+    }) || []
 
-  const suggestedFilters = data.previewSavedSearch.suggestedFilters.filter((filter) => {
-    // Adding this check to make sure we don't add a filter type that's not
-    // supported in the app
-    return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
+  const suggestedFilters = supportedSuggestedFitlers.filter((filter) => {
+    // Adding this check to make sure we don't add a filter type that's already
+    // selected
+    return !isValueSelected({
+      selectedAttributes: attributes[filter.field as SearchCriteria] || [],
+      value: filter.value,
+    })
   })
 
   const handlePress = (field: SearchCriteria, value: string) => {
@@ -73,26 +74,44 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     }
   }
 
-  return (
-    <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
-      {suggestedFilters.map((pill) => (
-        <SavedSearchFilterPill
-          key={pill.name + pill.value}
-          m={0.5}
-          accessibilityLabel={"Select " + pill.displayValue + " as a " + pill.name}
-          selected={isValueSelected({
-            selectedAttributes: attributes[pill.field as SearchCriteria] || [],
-            value: pill.value,
-          })}
-          onPress={() => {
-            handlePress(pill.field as SearchCriteria, pill.value)
-          }}
-        >
-          {pill.displayValue}
-        </SavedSearchFilterPill>
-      ))}
+  if (!supportedSuggestedFitlers.length) {
+    return (
+      <MenuItem
+        title="Add Filters"
+        description="Including Price Range, Rarity, Medium, Color"
+        onPress={() => {
+          navigation.navigate("SavedSearchFilterScreen")
+        }}
+        px={0}
+      />
+    )
+  }
 
-      <MoreFiltersButton text="More Filters" />
+  return (
+    <Flex>
+      <Text variant="sm-display">Suggested Filters</Text>
+
+      <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
+        {suggestedFilters.map((pill) => (
+          <SavedSearchFilterPill
+            key={pill.name + pill.value}
+            m={0.5}
+            accessibilityLabel={"Select " + pill.displayValue + " as a " + pill.name}
+            selected={isValueSelected({
+              selectedAttributes: attributes[pill.field as SearchCriteria] || [],
+              value: pill.value,
+            })}
+            variant="dotted"
+            onPress={() => {
+              handlePress(pill.field as SearchCriteria, pill.value)
+            }}
+          >
+            {pill.displayValue}
+          </SavedSearchFilterPill>
+        ))}
+
+        <MoreFiltersButton text="More Filters" />
+      </Flex>
     </Flex>
   )
 }
