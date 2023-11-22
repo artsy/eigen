@@ -6,8 +6,6 @@ yarn jetifier
 cd android
 mkdir -p android/app/src/main/assets
 touch android/app/src/main/assets/index.android.bundle
-cd .. && yarn bundle:android
-cd android
 ./gradlew clean
-./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
+yarn react-native build-android --mode=release
 cd -
