@@ -224,7 +224,6 @@
     "@babel/runtime": "^7.20.0",
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
-    "@react-native-community/cli-platform-ios": "6.2.0",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.11",
     "@sentry/cli": "2.21.2",
