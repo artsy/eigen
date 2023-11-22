@@ -38,24 +38,12 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     criterion: SearchCriteria.priceRange,
   })
 
-  if (!data?.previewSavedSearch?.suggestedFilters) {
-    return (
-      <Flex py={1}>
-        <Flex flexDirection="row" alignItems="center" flexWrap="wrap">
-          <Text color="black60">
-            There are no suggested filters for this artist, set your own filters manually.
-            <MoreFiltersButton text="Add Filters" />
-          </Text>
-        </Flex>
-      </Flex>
-    )
-  }
-
-  const supportedSuggestedFitlers = data.previewSavedSearch.suggestedFilters.filter((filter) => {
-    // Adding this check to make sure we don't add a filter type that's not
-    // supported in the app
-    return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
-  })
+  const supportedSuggestedFitlers =
+    data?.previewSavedSearch?.suggestedFilters.filter((filter) => {
+      // Adding this check to make sure we don't add a filter type that's not
+      // supported in the app
+      return SUPPORTED_SEARCH_CRITERIA.indexOf(filter.field as SearchCriteria) > -1
+    }) || []
 
   const suggestedFilters = supportedSuggestedFitlers.filter((filter) => {
     // Adding this check to make sure we don't add a filter type that's already
