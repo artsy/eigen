@@ -17,17 +17,17 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.157.0":
-  version "4.157.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.157.0.tgz#2d08c1b3c1217b7269adfe1acfd22b3ec1534ae6"
-  integrity sha512-JlNbcVz1MeAN5b6aFWbc3ZZNBujNPFiZtRoyJrE5FZ/PW4BeE0dV2NrzaQf+9WaxzO28H82lb4ujS9YXXaTSDw==
+"@artsy/cohesion@4.158.0":
+  version "4.158.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.158.0.tgz#351174a08d1be56355dc0bbf2c8d34703137bd53"
+  integrity sha512-77Dzs80DrQg1jEQsN+PvDT8OrFXtvPzsZtPLrf/smtN88N/hxFiLq5TW4eK82qLb2CGhFUUkBhJP84QGjEOFCw==
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.0.22":
-  version "13.0.22"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.0.22.tgz#6758a2c69b78a8eda0f4eaea966228e2eea7220a"
-  integrity sha512-n9+QQDtsrYpxiJ9o44X6DaqnE0CUlv7kO25iQJU/CjbrbqyDI0b/cPuGPJ+KdMTP6/HDG/ZsG/GgpGQpDq325g==
+"@artsy/palette-mobile@13.0.25":
+  version "13.0.25"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.0.25.tgz#5160623ba9327fbe1ef05c2e47ebd6693d6a425f"
+  integrity sha512-RINtd5rgEU0j/jtlzlZAMoDPo2slZ1h8vhCRTAT4uT6qgu3pZimbKRnpmmTvj/Xy4ga0Je5qQwZctJu9Q886uw==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
@@ -5301,11 +5301,6 @@
   resolved "https://registry.yarnpkg.com/@types/dedent/-/dedent-0.7.0.tgz#155f339ca404e6dd90b9ce46a3f78fd69ca9b050"
   integrity sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==
 
-"@types/extract-files@8.1.1":
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/@types/extract-files/-/extract-files-8.1.1.tgz#11b67e795ad2c8b483431e8d4f190db2fd22944b"
-  integrity sha512-dMJJqBqyhsfJKuK7p7HyyNmki7qj1AlwhUKWx6KrU7i1K2T2SPsUsSUTWFmr/sEM1q8rfR8j5IyUmYrDbrhfjQ==
-
 "@types/geojson@*", "@types/geojson@^7946.0.7":
   version "7946.0.7"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.7.tgz#c8fa532b60a0042219cdf173ca21a975ef0666ad"
@@ -9413,7 +9408,7 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-files@9.0.0, extract-files@^9.0.0:
+extract-files@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/extract-files/-/extract-files-9.0.0.tgz#8a7744f2437f81f5ed3250ed9f1550de902fe54a"
   integrity sha512-CvdFfHkC95B4bBBk36hcEmvdR2awOdhhVUYH6S/zrVj3477zven/fJMYg7121h4T1xHZC+tetUpubpAhxwI7hQ==

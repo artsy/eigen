@@ -19,14 +19,14 @@ asdf plugin add java
 
 ### Set up iOS
 
-Download Xcode version 14. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
+Download Xcode version 15. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
 Ask your mentor to add you on the [firebase.console](https://console.firebase.google.com/project/eigen-a7d3b/settings/iam) to be able to release.
 
 <details><summary>NOTE: After installing Xcode</summary>
 
 Check that Command Line Tools version is added in the Locations tab. Xcode>Settings>Locations:
-<img width="375" alt="" src="https://user-images.githubusercontent.com/29984068/123970729-6009cf00-d987-11eb-933a-1603ba4d6ae8.png">
+![command-line-tools](./screenshots/command-line-tools.png)
 
 </details>
 

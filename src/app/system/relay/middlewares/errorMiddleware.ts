@@ -69,14 +69,15 @@ export const legacyErrorMiddleware = async (
 export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
   const res = await next(req)
 
-  const useNewErrorMiddlewareFeatureFlag = unsafe_getFeatureFlag("ARUseNewErrorMiddleware")
+  const usePrincipalFieldMiddleware = unsafe_getFeatureFlag(
+    "ARUsePrincipalFieldErrorHandlerMiddleware"
+  )
 
   const isScreenUsingNewErrorMiddleware = newErrorMiddlewareOptedInQueries.includes(
     req.operation.name
   )
 
-  const enableNewErrorMiddleware =
-    useNewErrorMiddlewareFeatureFlag && isScreenUsingNewErrorMiddleware
+  const enableNewErrorMiddleware = usePrincipalFieldMiddleware || isScreenUsingNewErrorMiddleware
 
   if (!!enableNewErrorMiddleware) {
     return principalFieldErrorHandlerMiddleware(req, res)

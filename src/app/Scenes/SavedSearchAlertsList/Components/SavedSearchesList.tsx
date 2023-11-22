@@ -243,6 +243,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
           edges {
             node {
               internalID
+              artistSeriesIDs
               displayName
             }
           }

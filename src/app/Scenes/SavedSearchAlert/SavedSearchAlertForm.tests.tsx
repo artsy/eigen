@@ -77,6 +77,8 @@ describe("SavedSearchAlertForm", () => {
     it("correctly renders default placeholder for input name", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
+      resolveMostRecentRelayOperation(mockEnvironment)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         PreviewSavedSearch: () => ({ displayName: "Banana" }),
       })
@@ -91,6 +93,8 @@ describe("SavedSearchAlertForm", () => {
       )
 
       await waitFor(() => {
+        resolveMostRecentRelayOperation(mockEnvironment)
+
         resolveMostRecentRelayOperation(mockEnvironment, {
           PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
@@ -249,6 +253,8 @@ describe("SavedSearchAlertForm", () => {
         )
 
         await waitFor(() => {
+          resolveMostRecentRelayOperation(mockEnvironment)
+
           resolveMostRecentRelayOperation(mockEnvironment, {
             PreviewSavedSearch: () => ({ displayName: "Banana" }),
           })

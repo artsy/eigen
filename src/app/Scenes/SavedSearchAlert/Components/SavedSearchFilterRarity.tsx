@@ -2,40 +2,18 @@ import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
-import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { isValueSelected, useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
+import {
+  isValueSelected,
+  useSavedSearchFilter,
+  useSearchCriteriaAttributes,
+} from "app/Scenes/SavedSearchAlert/helpers"
 
 export const SavedSearchFilterRarity = () => {
+  const { handlePress } = useSavedSearchFilter({ criterion: SearchCriteria.attributionClass })
+
   const selectedAttributes = useSearchCriteriaAttributes(
     SearchCriteria.attributionClass
   ) as string[]
-
-  const addValueToAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.addValueToAttributesByKeyAction
-  )
-  const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (actions) => actions.removeValueFromAttributesByKeyAction
-  )
-
-  const handlePress = (value: string) => {
-    const isSelected = isValueSelected({
-      selectedAttributes,
-      value: value,
-    })
-
-    if (isSelected) {
-      removeValueFromAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
-        value: value,
-      })
-    } else {
-      const newValues = (selectedAttributes || []).concat(value)
-      addValueToAttributesByKeyAction({
-        key: SearchCriteria.attributionClass,
-        value: newValues,
-      })
-    }
-  }
 
   return (
     <Flex px={2}>

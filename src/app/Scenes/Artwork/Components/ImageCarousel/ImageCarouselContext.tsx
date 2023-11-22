@@ -110,8 +110,7 @@ export function useNewImageCarouselContext({
               setImageIndex(action.nextImageIndex)
               setIsZoomedCompletelyOut(true)
               if (fullScreenState.current !== "none") {
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                embeddedFlatListRef.current.scrollToIndex({
+                embeddedFlatListRef?.current?.scrollToIndex({
                   index: action.nextImageIndex,
                   animated: false,
                 })
@@ -128,7 +127,7 @@ export function useNewImageCarouselContext({
             break
           case "TAPPED_TO_GO_FULL_SCREEN":
             // some artwork images are corrupt (!?) and do not have deepZoom
-            if ((media[imageIndex.current] as ImageDescriptor).deepZoom) {
+            if (!!(media[imageIndex.current] as ImageDescriptor)?.deepZoom) {
               tracking.trackEvent({
                 action_name: Schema.ActionNames.ArtworkImageZoom,
                 action_type: Schema.ActionTypes.Tap,
@@ -153,6 +152,4 @@ export function useNewImageCarouselContext({
   )
 }
 
-export const ImageCarouselContext = React.createContext<ImageCarouselContext>(
-  null as any /* STRICTNESS_MIGRATION */
-)
+export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null as any)
