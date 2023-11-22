@@ -199,20 +199,13 @@ lane :ship_beta_android do |options|
   is_android_beta = deployment_target == 'firebase'
   flag_android_beta(is_android_beta: is_android_beta)
 
-
   vname, vcode = set_build_version_android
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon -x bundleReleaseJsAndAssets",
-  )
+  sh("yarn react-native build-android --mode=release")
 
   upload_sentry_artifacts(
     sentry_release_name: sentry_release_name,
