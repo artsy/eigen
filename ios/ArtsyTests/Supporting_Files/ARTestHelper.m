@@ -16,12 +16,12 @@
 {
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-    NSAssert(version.majorVersion == 16 && version.minorVersion == 4,
-             @"The tests should be run on iOS 16.4, not %ld.%ld", version.majorVersion, version.minorVersion);
+    NSAssert(version.majorVersion == 17 && version.minorVersion == 2,
+             @"The tests should be run on iOS 17.2, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1179, 2556)),
-             @"The tests should be run on an iPhone 14 Pro, not a device with native resolution %@",
+             @"The tests should be run on an iPhone 15 Pro, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
