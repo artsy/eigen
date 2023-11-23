@@ -44,6 +44,7 @@ export type UserPushNotificationSettings =
   | "receiveOrderNotification"
   | "receiveViewingRoomNotification"
   | "receivePartnerShowNotification"
+  | "receivePartnerOfferNotification"
 
 export const OpenSettingsBanner = () => (
   <>
@@ -180,6 +181,17 @@ export const MyProfilePushNotifications: React.FC<{
       }
     >
       <Join separator={<Separator my={1} />}>
+        <NotificationPermissionsBox title="Gallery Offers" isLoading={isLoading}>
+          <SwitchMenu
+            title="Offers on Saved Artworks"
+            description="Offers from galleries on artworks you saved"
+            value={!!userNotificationSettings.receivePartnerOfferNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receivePartnerOfferNotification", value)
+            }}
+          />
+        </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
             title="Messages"
@@ -315,6 +327,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receiveOrderNotification
         receiveViewingRoomNotification
         receivePartnerShowNotification
+        receivePartnerOfferNotification
       }
     `,
   },
