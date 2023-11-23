@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/numandev1/cocoapods-patch.git
-  revision: dc7a15df46064ca92161004ba9731209555ec4c2
-  branch: feat/cocoapod_1.13.0
-  specs:
-    cocoapods-patch (1.3.0)
-      cocoapods (~> 1.13.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,12 +39,12 @@ GEM
       nio4r (>= 1.1)
       timers (>= 4.1.1)
     claide (1.1.0)
-    cocoapods (1.13.0)
+    cocoapods (1.14.3)
       addressable (~> 2.8)
       claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.13.0)
+      cocoapods-core (= 1.14.3)
       cocoapods-deintegrate (>= 1.0.3, < 2.0)
-      cocoapods-downloader (>= 1.6.0, < 2.0)
+      cocoapods-downloader (>= 2.1, < 3.0)
       cocoapods-plugins (>= 1.0.0, < 2.0)
       cocoapods-search (>= 1.0.0, < 2.0)
       cocoapods-trunk (>= 1.6.0, < 2.0)
@@ -67,7 +59,7 @@ GEM
       xcodeproj (>= 1.23.0, < 2.0)
     cocoapods-check (1.1.0)
       cocoapods (~> 1.0)
-    cocoapods-core (1.13.0)
+    cocoapods-core (1.14.3)
       activesupport (>= 5.0, < 8)
       addressable (~> 2.8)
       algoliasearch (~> 1.0)
@@ -78,7 +70,9 @@ GEM
       public_suffix (~> 4.0)
       typhoeus (~> 1.0)
     cocoapods-deintegrate (1.0.5)
-    cocoapods-downloader (1.6.3)
+    cocoapods-downloader (2.1)
+    cocoapods-patch (1.3.0)
+      cocoapods (>= 1.12.0, < 2.0)
     cocoapods-plugins (1.0.0)
       nap
     cocoapods-search (1.0.1)
@@ -278,7 +272,7 @@ GEM
     tty-screen (0.8.1)
     tty-spinner (0.9.3)
       tty-cursor (~> 0.7)
-    typhoeus (1.4.0)
+    typhoeus (1.4.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -311,7 +305,7 @@ DEPENDENCIES
   activesupport (>= 6.1.7.3, < 7.1.0)
   cocoapods (~> 1.13)
   cocoapods-check
-  cocoapods-patch!
+  cocoapods-patch (~> 1.3.0)
   dotenv
   down
   fastlane
