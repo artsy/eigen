@@ -123,6 +123,14 @@ module.exports = {
     "react/prop-types": OFF,
     "react-native/no-inline-styles": OFF,
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
+    "no-restricted-imports": [
+      "error",
+      {
+        name: "react-runtime",
+        importNames: ["graphql", "ConnectionHandler", "RecordSourceSelectorProxy", "fetchQuery"],
+        message: "Please import  from `react-relay`.",
+      },
+    ],
   },
   overrides: [
     {
