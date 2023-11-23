@@ -7,6 +7,7 @@ import {
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -73,6 +74,9 @@ describe("CreateSavedSearchAlert", () => {
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
     notificationPermissions.mockClear()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableAlertsSuggestedFilters: true,
+    })
   })
 
   const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {

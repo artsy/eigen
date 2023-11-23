@@ -27,6 +27,7 @@ describe("SavedSearchAlertForm", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableAlertDetailsInput: true,
+      AREnableAlertsSuggestedFilters: true,
     })
 
     mockEnvironment = getMockRelayEnvironment()
