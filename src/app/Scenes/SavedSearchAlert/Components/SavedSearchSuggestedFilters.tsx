@@ -83,6 +83,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
           navigation.navigate("SavedSearchFilterScreen")
         }}
         px={0}
+        py={0}
       />
     )
   }

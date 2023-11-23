@@ -148,55 +148,49 @@ export const Form: React.FC<FormProps> = ({
           />
         )}
 
-        <Join separator={<Spacer y={2} />}>
-          <Box>
-            <SavedSearchNameInputQueryRenderer attributes={attributes} />
+        <Join separator={<Spacer y={4} />}>
+          <SavedSearchNameInputQueryRenderer attributes={attributes} />
 
-            <Box mt={2}>
-              <Text variant="sm-display">Filters</Text>
-              <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-                {pills.map((pill, index) => (
-                  <Pill
-                    testID="alert-pill"
-                    m={0.5}
-                    variant="filter"
-                    disabled={isArtistPill(pill)}
-                    key={`filter-label-${index}`}
-                    onPress={() => onRemovePill(pill)}
-                  >
-                    {pill.label}
-                  </Pill>
-                ))}
-              </Flex>
-            </Box>
+          <Box>
+            <Text variant="sm-display">Filters</Text>
+            <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
+              {pills.map((pill, index) => (
+                <Pill
+                  testID="alert-pill"
+                  m={0.5}
+                  variant="filter"
+                  disabled={isArtistPill(pill)}
+                  key={`filter-label-${index}`}
+                  onPress={() => onRemovePill(pill)}
+                >
+                  {pill.label}
+                </Pill>
+              ))}
+            </Flex>
           </Box>
 
           {!!enableAlertsFilters && !enableAlertsSuggestedFilters ? (
-            <Flex mt={2}>
-              <MenuItem
-                title="Add Filters"
-                description={
-                  enableAlertsFiltersSizeFiltering
-                    ? "Including Price Range, Rarity, Medium, Size, Color"
-                    : "Including Price Range, Rarity, Medium, Color"
-                }
-                onPress={() => {
-                  navigation.navigate("SavedSearchFilterScreen")
-                }}
-                px={0}
-              />
-            </Flex>
+            <MenuItem
+              title="Add Filters"
+              description={
+                enableAlertsFiltersSizeFiltering
+                  ? "Including Price Range, Rarity, Medium, Size, Color"
+                  : "Including Price Range, Rarity, Medium, Color"
+              }
+              onPress={() => {
+                navigation.navigate("SavedSearchFilterScreen")
+              }}
+              px={0}
+            />
           ) : null}
 
           {enableAlertsFilters && enableAlertsSuggestedFilters ? (
-            <Flex mt={2}>
-              <SavedSearchSuggestedFiltersQueryRenderer />
-            </Flex>
+            <SavedSearchSuggestedFiltersQueryRenderer />
           ) : null}
 
           {/* Price range is part of the new filters screen, no need to show it here anymore */}
           {!enableAlertsFilters && (
-            <Flex my={1}>
+            <Flex>
               <Touchable
                 accessibilityLabel="Set price range"
                 accessibilityRole="button"
