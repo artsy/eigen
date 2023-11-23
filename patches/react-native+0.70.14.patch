@@ -38,4 +38,4 @@ index d59ba34..8023167 100644
 +    return require("deprecated-react-native-prop-types").ViewPropTypes
    },
  };
- 
+
