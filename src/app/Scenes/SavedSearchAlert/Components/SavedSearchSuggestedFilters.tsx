@@ -90,13 +90,10 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
 
   return (
     <Flex>
-      <Text variant="sm-display">Suggested Filters</Text>
-
-      <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
+      <Flex flexDirection="row" flexWrap="wrap" alignItems="center">
         {suggestedFilters.map((pill) => (
           <SavedSearchFilterPill
             key={pill.name + pill.value}
-            m={0.5}
             accessibilityLabel={"Select " + pill.displayValue + " as a " + pill.name}
             selected={isValueSelected({
               selectedAttributes: attributes[pill.field as SearchCriteria] || [],
@@ -106,6 +103,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
             onPress={() => {
               handlePress(pill.field as SearchCriteria, pill.value)
             }}
+            mr={1}
           >
             {pill.displayValue}
           </SavedSearchFilterPill>
@@ -127,7 +125,7 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
         navigation.navigate("SavedSearchFilterScreen")
       }}
     >
-      <Flex px={1} flexDirection="row" alignItems="center">
+      <Flex px={1} flexDirection="row" alignItems="center" height={30}>
         <Text color="blue" variant="xs">
           {text}
         </Text>
@@ -148,20 +146,21 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
 
 export const SavedSearchSuggestedFiltersQueryRenderer = () => {
   return (
-    <Suspense fallback={<SavedSearchSuggestedFiltersPlaceholder />}>
-      <SavedSearchSuggestedFilters />
-    </Suspense>
+    <Flex pt={1}>
+      <Suspense fallback={<SavedSearchSuggestedFiltersPlaceholder />}>
+        <SavedSearchSuggestedFilters />
+      </Suspense>
+    </Flex>
   )
 }
 
 const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
   return (
     <Skeleton>
-      <Flex p={2} justifyContent="center">
-        <Flex flexDirection="row">
-          <SkeletonBox mr={1} mb={1} width={100} height={30} borderRadius={15} />
-          <SkeletonBox mr={1} mb={1} width={140} height={30} borderRadius={15} />
-        </Flex>
+      <Flex alignItems="center" flexDirection="row" flexWrap="wrap">
+        <SkeletonBox mr={1} mb={1} width={80} height={30} borderRadius={15} />
+        <SkeletonBox mr={1} mb={1} width={100} height={30} borderRadius={15} />
+        <MoreFiltersButton text="More Filters" />
       </Flex>
     </Skeleton>
   )
