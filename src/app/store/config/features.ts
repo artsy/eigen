@@ -248,7 +248,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableAlertsSuggestedFilters: {
     description: "Enable alerts suggested filters",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertsSuggestedFilters",
   },
