@@ -205,6 +205,14 @@ lane :ship_beta_android do |options|
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
+  # workaround for duplicate resources errors from codepush
+  # https://github.com/microsoft/react-native-code-push/issues/2497
+  # should be able to get rid of once resolved there
+  gradle(
+    task: "clean",
+    project_dir: "android/"
+  )
+  sh("rm -rf android/app/build/generated")
   sh("yarn react-native build-android --mode=release --extra-params=--no-daemon")
 
   upload_sentry_artifacts(
