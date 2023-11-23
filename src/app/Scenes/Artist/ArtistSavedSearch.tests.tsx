@@ -9,6 +9,8 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
+// TODO: fix this false positive tests ~ incorrect usage of `waitFor` and `flushPromiseQueue`
+// makes the tests pass when they should fail due to not actually displaying the elements.
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 
 describe("Saved search banner on artist screen", () => {
