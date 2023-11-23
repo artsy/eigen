@@ -84,7 +84,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             variant="outline"
             haptic
             onPress={() => {
-              navigate("/my-profile/saved-search-alerts")
+              navigate("/settings/alerts")
             }}
             icon={<BellIcon fill="black100" />}
             block

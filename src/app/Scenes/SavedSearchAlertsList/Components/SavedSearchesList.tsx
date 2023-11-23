@@ -80,7 +80,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
           <SavedSearchListItem
             title={item.displayName}
             onPress={() => {
-              navigate(`my-profile/saved-search-alerts/${item.internalID}`)
+              navigate(`settings/alerts/${item.internalID}/edit`)
             }}
           />
         )
