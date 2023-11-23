@@ -168,7 +168,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
           <Touchable
             haptic
             onPress={() => {
-              navigate(`/my-profile/saved-search-alerts?artistID=${artistData.internalID}`)
+              navigate(`/settings/alerts?artistID=${artistData.internalID}`)
             }}
           >
             <Text variant="xs" color="blue100">

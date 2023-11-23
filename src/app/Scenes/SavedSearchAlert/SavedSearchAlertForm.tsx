@@ -121,7 +121,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
               goBack()
 
               requestAnimationFrame(() => {
-                navigate(`/my-profile/saved-search-alerts/${duplicateSavedSearchId}`)
+                navigate(`/settings/alerts/${duplicateSavedSearchId}/edit`)
               })
             },
           })

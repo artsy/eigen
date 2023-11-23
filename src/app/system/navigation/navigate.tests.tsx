@@ -238,7 +238,7 @@ describe(navigate, () => {
 
   it("pop to root tab view in cases where that's required", async () => {
     await navigate("my-profile/payment")
-    await navigate("my-profile/saved-search-alerts", {
+    await navigate("settings/alerts", {
       popToRootTabView: true,
       showInTabName: "profile",
     })

@@ -127,7 +127,7 @@ describe(ConfirmationScreen, () => {
       fireEvent.press(manageButton!)
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("/my-profile/saved-search-alerts")
+      expect(navigate).toHaveBeenCalledWith("/settings/alerts")
     })
 
     it("renders see-all button if there are more works to show", async () => {
