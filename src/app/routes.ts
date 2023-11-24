@@ -251,7 +251,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/sell/inquiry", "ConsignmentInquiry"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
     addRoute("/settings/alerts", "SavedSearchAlertsList"),
-    addRoute("/settings/alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+    addRoute("/settings/alerts/:savedSearchAlertId/edit", "EditSavedSearchAlert"),
     addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/show/:showID", "Show"),
     addRoute("/show/:showID/info", "ShowMoreInfo"),
