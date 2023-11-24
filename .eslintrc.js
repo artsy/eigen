@@ -126,9 +126,13 @@ module.exports = {
     "no-restricted-imports": [
       "error",
       {
-        name: "react-runtime",
-        importNames: ["graphql", "ConnectionHandler", "RecordSourceSelectorProxy", "fetchQuery"],
-        message: "Please import  from `react-relay`.",
+        paths: [
+          {
+            name: "relay-runtime",
+            importNames: ["graphql"],
+            message: "Please import `graphql` from `react-relay`.",
+          },
+        ],
       },
     ],
   },

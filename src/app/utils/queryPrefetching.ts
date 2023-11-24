@@ -4,10 +4,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
-import { GraphQLTaggedNode } from "react-relay"
+import { fetchQuery, GraphQLTaggedNode } from "react-relay"
 import {
   createOperationDescriptor,
-  fetchQuery,
   getRequest,
   OperationType,
   Variables,
