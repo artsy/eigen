@@ -38,7 +38,6 @@ describe("Rarity", () => {
 
     await waitFor(() => screen.getByText("Classifications"))
 
-    // screen.debug()
 
     expect(screen.getByText("Unique")).toBeTruthy()
     // there are two of these because even though the modal is open,
