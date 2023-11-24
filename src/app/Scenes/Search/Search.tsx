@@ -52,11 +52,9 @@ export const Search: React.FC = () => {
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
-  const focusSearchInput = () => {
+  const scrollableRef = useBottomTabsScrollToTop("search", () => {
     searchProviderValues.inputRef.current?.focus()
-  }
-
-  const scrollableRef = useBottomTabsScrollToTop("search", focusSearchInput)
+  })
 
   // TODO: to be removed on ES results PR
   const handleRetry = () => {
