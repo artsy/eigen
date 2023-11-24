@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -13,21 +13,17 @@ jest.spyOn(Alert, "alert")
 
 describe("ClearAllButton", () => {
   it("Is enabled when there are active filters", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <ClearAllButton />
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
-
-    waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalled()
-    })
+    expect(screen.getByText("Clear All")).toHaveAccessibilityState({ disabled: false })
   })
 
   it("Is disabled on load", async () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -38,15 +34,13 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
+    fireEvent(screen.getByText("Clear All"), "onPress")
 
-    waitFor(() => {
-      expect(Alert.alert).not.toHaveBeenCalled()
-    })
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 
   it("Is disabled when array attrbutes are empty", async () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -59,11 +53,9 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
+    fireEvent(screen.getByText("Clear All"), "onPress")
 
-    waitFor(() => {
-      expect(Alert.alert).not.toHaveBeenCalled()
-    })
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 })
 
