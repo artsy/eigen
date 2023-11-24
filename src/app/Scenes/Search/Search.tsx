@@ -56,11 +56,11 @@ export const Search: React.FC = () => {
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
-  const scrollableRef = useBottomTabsScrollToTop("search")
-
   const focusSearchInput = () => {
     searchProviderValues.inputRef.current?.focus()
   }
+
+  const scrollableRef = useBottomTabsScrollToTop("search", focusSearchInput)
 
   useEffect(() => {
     BottomTabsEvents.addListener(`${SCROLL_TO_TOP_EVENT}-search`, focusSearchInput)
