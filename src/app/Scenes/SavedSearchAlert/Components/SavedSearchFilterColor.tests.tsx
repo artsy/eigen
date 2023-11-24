@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import {
   COLORS_INDEXED_BY_VALUE,
   COLOR_OPTIONS,
@@ -56,9 +56,7 @@ describe("SavedSearchFilterColor", () => {
 
     fireEvent(getByText("Red"), "onPress")
 
-    waitFor(() => {
-      expect(getByTestId("check-icon-Red")).toBeDefined()
-    })
+    expect(getByTestId("check-icon-Red")).toBeDefined()
   })
 })
 

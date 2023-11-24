@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import {
   SavedSearchModel,
@@ -59,9 +59,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
 
     fireEvent(getByText("Work on Paper"), "onPress")
 
-    waitFor(() => {
-      expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
-    })
+    expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
   })
 
   it("Shows all categories if the user has already selected mediums", () => {

@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { Field } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -7,26 +7,26 @@ describe("Field", () => {
     const { queryByText } = renderWithWrappers(
       <Field label="Test" value={longText} truncateLimit={5} />
     )
-    expect(queryByText(longText)).toBeNull()
+    expect(queryByText(longText)).not.toBeOnTheScreen()
 
-    expect(queryByText("Lorem")).not.toBeNull()
+    expect(queryByText("Lorem")).toBeOnTheScreen()
   })
 
   it("Value is NOT truncated when truncateLimit is not given", () => {
     const { queryByText } = renderWithWrappers(<Field label="Test" value={longText} />)
-    expect(queryByText(longText)).not.toBeNull()
+    expect(queryByText(longText)).toBeOnTheScreen()
   })
 
   it("Read More button is only present if value can be expanded", () => {
     const { queryByText: queryByTextOne } = renderWithWrappers(
       <Field label="Test" value={longText} truncateLimit={longText.length} />
     )
-    expect(queryByTextOne("Read More")).toBeNull()
+    expect(queryByTextOne("Read More")).not.toBeOnTheScreen()
 
     const { queryByText: queryByTextTwo } = renderWithWrappers(
       <Field label="Test" value={longText} truncateLimit={longText.length - 20} />
     )
-    expect(queryByTextTwo("Read More")).not.toBeNull()
+    expect(queryByTextTwo("Read More")).toBeOnTheScreen()
   })
 
   it('Pressing "Read More" expands the text value', async () => {
@@ -34,14 +34,12 @@ describe("Field", () => {
       <Field label="Test" value={longText} truncateLimit={10} />
     )
 
-    expect(queryByText(longText)).toBeNull()
+    expect(queryByText(longText)).not.toBeOnTheScreen()
 
     const button = await findByTestId("ReadMoreButton")
 
-    waitFor(() => {
-      fireEvent.press(button)
-      expect(queryByText(longText)).not.toBeNull()
-    })
+    fireEvent.press(button)
+    expect(queryByText(longText)).toBeOnTheScreen()
   })
 })
 

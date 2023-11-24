@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { WAYS_TO_BUY_OPTIONS } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import {
@@ -58,9 +58,7 @@ describe("SavedSearchFilterWaysToBuy", () => {
 
     fireEvent(getByText("Bid"), "onPress")
 
-    waitFor(() => {
-      expect(getByText("Bid")).not.toHaveStyle({ color: black100Hex })
-    })
+    expect(getByText("Bid")).not.toHaveStyle({ color: black100Hex })
   })
 })
 
