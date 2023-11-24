@@ -24,8 +24,7 @@ const componentWithWrappers = (component: ReactElement) => {
 }
 
 /**
- * @deprecated
- * Use `renderWithWrappers` instead.
+ * @deprecated Use `renderWithWrappers` instead.
  *
  * Renders a React Component with our page wrappers
  * @param component
@@ -62,6 +61,8 @@ class PureWrapper extends Component {
 /**
  * Renders a React Component with our page wrappers
  * by using @testing-library/react-native
+ * IMPORTANT: It is meant to be used for non-Relay components
+ *
  * @param component
  */
 export const renderWithWrappers = (component: ReactElement, wrapperProps?: WrappersProps) => {
@@ -76,6 +77,10 @@ export const renderWithWrappers = (component: ReactElement, wrapperProps?: Wrapp
   }
 }
 
+/**
+ * @deprecated Use `setupTestWrapper` instead.
+ *
+ */
 export const renderWithHookWrappersTL = (
   component: ReactElement,
   environment: Environment = getRelayEnvironment()
