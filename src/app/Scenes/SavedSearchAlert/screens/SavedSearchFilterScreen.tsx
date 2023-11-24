@@ -97,7 +97,7 @@ export const ClearAllButton = () => {
       disabled={disabled}
       accessibilityState={{ disabled }}
       onPress={() => {
-        Alert.alert("Are you sure you want to clear all filters?", undefined, [
+        Alert.alert("Clear Filters", "Are you sure you want to clear all filters?", [
           {
             text: "Cancel",
             style: "cancel",
@@ -106,7 +106,6 @@ export const ClearAllButton = () => {
           {
             text: "Clear All",
             onPress() {
-              // Trigger action to clear all filters
               clearAllFiltersAction()
             },
             style: "destructive",
