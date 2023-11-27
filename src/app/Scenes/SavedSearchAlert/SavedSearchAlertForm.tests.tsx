@@ -548,8 +548,8 @@ describe("SavedSearchAlertForm", () => {
       expect(getByText("artistName")).toBeTruthy()
       expect(getByText("artistName")).not.toHaveProp("onPress")
 
-    //   fireEvent.press(getByText("Prints"))
-    //   fireEvent.press(getByText("Photography"))
+      fireEvent.press(getByText("Prints"))
+      fireEvent.press(getByText("Photography"))
 
       expect(screen.queryByText("Prints")).not.toBeOnTheScreen()
       expect(screen.queryByText("Photography")).not.toBeOnTheScreen()
