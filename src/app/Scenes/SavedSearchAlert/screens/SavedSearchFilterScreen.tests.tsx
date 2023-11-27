@@ -12,7 +12,15 @@ import { Alert } from "react-native"
 jest.spyOn(Alert, "alert")
 
 describe("ClearAllButton", () => {
-  it("Is enabled when there are active filters", () => {
+  beforeEach(() => {
+    ;(Alert.alert as jest.Mock).mockClear()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("Is enabled when there are active filters", async () => {
     renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <ClearAllButton />
@@ -20,6 +28,10 @@ describe("ClearAllButton", () => {
     )
 
     expect(screen.getByText("Clear All")).toHaveAccessibilityState({ disabled: false })
+
+    fireEvent(screen.getByText("Clear All"), "onPress")
+
+    expect(Alert.alert).toHaveBeenCalled()
   })
 
   it("Is disabled on load", async () => {
@@ -61,7 +73,10 @@ describe("ClearAllButton", () => {
 
 const initialData: SavedSearchModel = {
   ...savedSearchModel,
-  attributes: {},
+  attributes: {
+    inquireableOnly: true,
+    offerable: true,
+  },
   entity: {
     artists: [{ id: "artistID", name: "Banksy" }],
     owner: {

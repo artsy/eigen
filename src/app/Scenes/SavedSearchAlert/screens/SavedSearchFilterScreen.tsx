@@ -115,7 +115,6 @@ export const ClearAllButton = () => {
       }}
     >
       <MotiView
-        accessibilityLabel="Image Pagination Indicator"
         animate={{ opacity: disabled ? 0.3 : 1 }}
         transition={{ type: "timing", duration: 200 }}
       >
