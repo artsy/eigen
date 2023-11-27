@@ -252,6 +252,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertsSuggestedFilters",
   },
+  AREnablePartnerOffersNotificationSwitch: {
+    description: "Enable partner offers notification switch",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
+  },
 }
 
 export interface DevToggleDescriptor {
