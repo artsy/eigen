@@ -60,15 +60,11 @@ module.exports = {
     "no-autofix/unused-imports/no-unused-imports": ERR,
 
     /**
-     * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules
-     * to add / remove rules.
+     * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
+     * on default enabled rules or to remove rules.
      */
 
-    "testing-library/await-async-queries": ERR,
-    "testing-library/no-unnecessary-act": ERR,
-    "testing-library/no-await-sync-queries": ERR,
-    "testing-library/no-wait-for-multiple-assertions": ERR,
-    "testing-library/await-async-utils": ERR,
+    "testing-library/no-global-regexp-flag-in-query": OFF,
 
     /**
      * Warnings
