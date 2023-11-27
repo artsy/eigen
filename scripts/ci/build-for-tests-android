@@ -3,9 +3,7 @@ set -exo pipefail
 
 yarn jetifier
 
-cd android
-mkdir -p android/app/src/main/assets
-touch android/app/src/main/assets/index.android.bundle
+pushd android
 ./gradlew clean
 yarn react-native build-android --mode=release
-cd -
+popd
