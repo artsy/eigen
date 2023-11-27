@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
 import {
@@ -41,20 +41,16 @@ describe("SavedSearchFilterRarity", () => {
     expect(getByText("Open Edition")).toHaveStyle({ color: black100Hex })
   })
 
-  it("Updates selected filters on press", () => {
+  it("Updates selected filters on press", async () => {
     const { getByText } = renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterRarity />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Unique")).toHaveStyle({ color: black100Hex })
-
     fireEvent(getByText("Unique"), "onPress")
 
-    waitFor(() => {
-      expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
-    })
+    expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
   })
 })
 

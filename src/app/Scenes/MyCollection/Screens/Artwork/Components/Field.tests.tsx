@@ -1,47 +1,44 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Field } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Field", () => {
   it("Value is truncated when truncateLimit is set", () => {
-    const { queryByText } = renderWithWrappers(
-      <Field label="Test" value={longText} truncateLimit={5} />
-    )
-    expect(queryByText(longText)).toBeNull()
+    renderWithWrappers(<Field label="Test" value={longText} truncateLimit={5} />)
 
-    expect(queryByText("Lorem")).not.toBeNull()
+    expect(screen.queryByText(longText)).not.toBeOnTheScreen()
+    expect(screen.getByText("Lorem")).toBeOnTheScreen()
   })
 
   it("Value is NOT truncated when truncateLimit is not given", () => {
-    const { queryByText } = renderWithWrappers(<Field label="Test" value={longText} />)
-    expect(queryByText(longText)).not.toBeNull()
+    renderWithWrappers(<Field label="Test" value={longText} />)
+
+    expect(screen.getByText(longText)).toBeOnTheScreen()
   })
 
-  it("Read More button is only present if value can be expanded", () => {
-    const { queryByText: queryByTextOne } = renderWithWrappers(
-      <Field label="Test" value={longText} truncateLimit={longText.length} />
-    )
-    expect(queryByTextOne("Read More")).toBeNull()
+  describe("Read More button is only present if value can be expanded", () => {
+    it("Read More button is not present if truncateLimit is not given", () => {
+      renderWithWrappers(<Field label="Test" value={longText} truncateLimit={longText.length} />)
+      expect(screen.queryByText("Read More")).not.toBeOnTheScreen()
+    })
 
-    const { queryByText: queryByTextTwo } = renderWithWrappers(
-      <Field label="Test" value={longText} truncateLimit={longText.length - 20} />
-    )
-    expect(queryByTextTwo("Read More")).not.toBeNull()
+    it("Read More button is not present if truncateLimit is given", () => {
+      renderWithWrappers(
+        <Field label="Test" value={longText} truncateLimit={longText.length - 20} />
+      )
+      expect(screen.getByText("Read More")).toBeOnTheScreen()
+    })
   })
 
   it('Pressing "Read More" expands the text value', async () => {
-    const { findByTestId, queryByText } = renderWithWrappers(
-      <Field label="Test" value={longText} truncateLimit={10} />
-    )
+    renderWithWrappers(<Field label="Test" value={longText} truncateLimit={10} />)
 
-    expect(queryByText(longText)).toBeNull()
+    expect(screen.queryByText(longText)).not.toBeOnTheScreen()
 
-    const button = await findByTestId("ReadMoreButton")
+    const button = screen.getByTestId("ReadMoreButton")
 
-    waitFor(() => {
-      fireEvent.press(button)
-      expect(queryByText(longText)).not.toBeNull()
-    })
+    fireEvent.press(button)
+    expect(screen.getByText(longText)).toBeOnTheScreen()
   })
 })
 

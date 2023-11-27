@@ -16,6 +16,7 @@ module.exports = {
   ],
   extends: [
     "eslint:recommended",
+    "plugin:testing-library/react",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
@@ -57,6 +58,13 @@ module.exports = {
     "react-hooks/rules-of-hooks": ERR,
     "unused-imports/no-unused-imports": OFF, // look below
     "no-autofix/unused-imports/no-unused-imports": ERR,
+
+    /**
+     * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
+     * on default enabled rules or to remove rules.
+     */
+
+    "testing-library/no-global-regexp-flag-in-query": OFF,
 
     /**
      * Warnings
@@ -142,6 +150,10 @@ module.exports = {
       rules: {
         "@typescript-eslint/no-non-null-assertion": OFF,
       },
+    },
+    {
+      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      extends: ["plugin:testing-library/react"],
     },
   ],
 }

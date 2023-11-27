@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -542,7 +542,7 @@ describe("SavedSearchAlertForm", () => {
       expect(getByText("Prints")).toBeTruthy()
     })
 
-    it("should have removable filter pills", () => {
+    it("should have removable filter pills", async () => {
       const { getByText } = renderWithWrappers(<TestRenderer />)
       // artist pill should appear and not be removable
       expect(getByText("artistName")).toBeTruthy()
@@ -551,8 +551,8 @@ describe("SavedSearchAlertForm", () => {
       fireEvent.press(getByText("Prints"))
       fireEvent.press(getByText("Photography"))
 
-      waitForElementToBeRemoved(() => getByText("Prints"))
-      waitForElementToBeRemoved(() => getByText("Photography"))
+      expect(screen.queryByText("Prints")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Photography")).not.toBeOnTheScreen()
     })
   })
 

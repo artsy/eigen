@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import {
   SavedSearchModel,
@@ -13,22 +13,22 @@ const black100Hex = "#000000"
 
 describe("SavedSearchFilterAdditionalGeneIDs", () => {
   it("shows all available categories unselected", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
     )
 
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
-      expect(getByText(option.label)).toBeDefined()
-      expect(getByText(option.label)).toHaveStyle({
+      expect(screen.getByText(option.label)).toBeOnTheScreen()
+      expect(screen.getByText(option.label)).toHaveStyle({
         color: black100Hex,
       })
     })
   })
 
   it("shows the right selected categories", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{ ...initialData, attributes: { additionalGeneIDs: ["painting"] } }}
       >
@@ -38,10 +38,10 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
 
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
       if (option.value === "painting") {
-        expect(getByText("Painting")).not.toHaveStyle({ color: black100Hex })
+        expect(screen.getByText("Painting")).not.toHaveStyle({ color: black100Hex })
       } else {
-        expect(getByText(option.label)).toBeDefined()
-        expect(getByText(option.label)).toHaveStyle({
+        expect(screen.getByText(option.label)).toBeOnTheScreen()
+        expect(screen.getByText(option.label)).toHaveStyle({
           color: black100Hex,
         })
       }
@@ -49,23 +49,21 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
   })
 
   it("Updates selected categories filters on press", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <SavedSearchFilterAdditionalGeneIDs />
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Work on Paper")).toHaveStyle({ color: black100Hex })
+    expect(screen.getByText("Work on Paper")).toHaveStyle({ color: black100Hex })
 
-    fireEvent(getByText("Work on Paper"), "onPress")
+    fireEvent(screen.getByText("Work on Paper"), "onPress")
 
-    waitFor(() => {
-      expect(getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
-    })
+    expect(screen.getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
   })
 
   it("Shows all categories if the user has already selected mediums", () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -79,7 +77,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     )
 
     gravityArtworkMediumCategories.forEach((option) => {
-      expect(getByText(option.label)).toBeDefined()
+      expect(screen.getByText(option.label)).toBeDefined()
     })
   })
 })
