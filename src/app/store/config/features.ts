@@ -59,11 +59,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableAndroidImagesGallery: {
-    description: "Enable images gallery on Android",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAndroidImagesGallery",
-  },
   AREnableLargeArtworkRailSaveIcon: {
     description: "Enable save icon for large artwork rails",
     readyForRelease: true,
