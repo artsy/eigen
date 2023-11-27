@@ -206,7 +206,7 @@ const EmbeddedItem: React.FC<{
     )
   }
 
-  if (!item.url) {
+  if (!item.url || !(item as ImageCarouselImage).resized?.src) {
     return null
   }
 
