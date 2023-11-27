@@ -213,7 +213,7 @@ lane :ship_beta_android do |options|
     project_dir: "android/"
   )
   sh("rm -rf android/app/build/generated")
-  sh("yarn react-native build-android --mode=release --extra-params=--no-daemon")
+  sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 4'")
 
   upload_sentry_artifacts(
     sentry_release_name: sentry_release_name,
