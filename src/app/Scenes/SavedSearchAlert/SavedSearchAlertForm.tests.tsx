@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -542,18 +542,18 @@ describe("SavedSearchAlertForm", () => {
       expect(getByText("Prints")).toBeTruthy()
     })
 
-    // it("should have removable filter pills", async () => {
-    //   const { getByText } = renderWithWrappers(<TestRenderer />)
-    //   // artist pill should appear and not be removable
-    //   expect(getByText("artistName")).toBeTruthy()
-    //   expect(getByText("artistName")).not.toHaveProp("onPress")
+    it("should have removable filter pills", async () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+      // artist pill should appear and not be removable
+      expect(getByText("artistName")).toBeTruthy()
+      expect(getByText("artistName")).not.toHaveProp("onPress")
 
     //   fireEvent.press(getByText("Prints"))
     //   fireEvent.press(getByText("Photography"))
 
-    //   await waitForElementToBeRemoved(() => getByText("Prints"))
-    //   await waitForElementToBeRemoved(() => getByText("Photography"))
-    // })
+      expect(screen.queryByText("Prints")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Photography")).not.toBeOnTheScreen()
+    })
   })
 
   describe("Create alert button", () => {
@@ -815,7 +815,7 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
 
-        expect(navigate).toBeCalledWith("/my-profile/saved-search-alerts/internalID-1")
+        expect(navigate).toBeCalledWith("/settings/alerts/internalID-1/edit")
       })
 
       it('should call update mutation when "Replace" button is pressed', async () => {

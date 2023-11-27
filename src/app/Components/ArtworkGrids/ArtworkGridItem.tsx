@@ -27,7 +27,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -102,7 +101,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const itemRef = useRef<any>()
   const color = useColor()
   const tracking = useTracking()
-  const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   let filterParams: any = undefined
@@ -177,16 +175,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    navigateToPageableRoute?.(artwork.href!)
+    if (artwork.href) {
+      navigateToPageableRoute?.(artwork.href)
+    }
   }
 
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
     // taps from the grid.
-    if (trackTap || contextScreenOwnerType) {
+    if (trackTap) {
+      trackTap(artwork.slug, itemIndex)
+    } else if (contextScreenOwnerType) {
       const genericTapEvent = tappedMainArtworkGrid({
         contextScreen,
-        contextScreenOwnerType: contextScreenOwnerType!,
+        contextScreenOwnerType: contextScreenOwnerType,
         contextScreenOwnerId,
         contextScreenOwnerSlug,
         destinationScreenOwnerId: artwork.internalID,
@@ -196,8 +198,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         sort: String(filterParams?.sort),
         query: contextScreenQuery,
       })
-
-      trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)
+      tracking.trackEvent(genericTapEvent)
     }
   }
 
@@ -341,7 +342,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
               </Flex>
-              {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
+              {!hideSaveIcon && (
                 <Flex>
                   <Touchable
                     haptic

@@ -1,0 +1,21 @@
+appId: ${MAESTRO_APP_ID}
+---
+- runFlow:
+    file: signup.yml
+- waitForAnimationToEnd:
+    timeout: 10000
+- tapOn: "Start Onboarding Quiz"
+- tapOn: "No, I’m just starting out"
+- tapOn: "Next Next"
+- tapOn: "Developing my art tastes"
+- tapOn: "Next Next"
+- tapOn: "The Art Taste Quiz"
+- tapOn: "Next Next"
+- tapOn: "Start the Quiz Start the Quiz"
+- evalScript: ${output.onboardingQuizCounter = 0}
+- repeat:
+    while:
+      notVisible: "Explore Your Quiz Results"
+    commands:
+      - tapOn: "${output.onboardingQuizCounter % 2 === 0 ? 'Like' : 'Skip'}"
+      - evalScript: ${output.onboardingQuizCounter++}

@@ -49,7 +49,7 @@ export const ConfirmationScreen: React.FC = () => {
   const handleManageAlerts = () => {
     closeModal?.()
     requestAnimationFrame(() => {
-      navigate("/my-profile/saved-search-alerts")
+      navigate("/settings/alerts")
     })
   }
 

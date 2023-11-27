@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   SavedSearchModel,
   SavedSearchStoreProvider,
@@ -12,22 +12,30 @@ import { Alert } from "react-native"
 jest.spyOn(Alert, "alert")
 
 describe("ClearAllButton", () => {
-  it("Is enabled when there are active filters", () => {
-    const { getByText } = renderWithWrappers(
+  beforeEach(() => {
+    ;(Alert.alert as jest.Mock).mockClear()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("Is enabled when there are active filters", async () => {
+    renderWithWrappers(
       <SavedSearchStoreProvider runtimeModel={initialData}>
         <ClearAllButton />
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
+    expect(screen.getByText("Clear All")).toHaveAccessibilityState({ disabled: false })
 
-    waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalled()
-    })
+    fireEvent(screen.getByText("Clear All"), "onPress")
+
+    expect(Alert.alert).toHaveBeenCalled()
   })
 
   it("Is disabled on load", async () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -38,15 +46,13 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
+    fireEvent(screen.getByText("Clear All"), "onPress")
 
-    waitFor(() => {
-      expect(Alert.alert).not.toHaveBeenCalled()
-    })
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 
   it("Is disabled when array attrbutes are empty", async () => {
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <SavedSearchStoreProvider
         runtimeModel={{
           ...initialData,
@@ -59,17 +65,18 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
-    fireEvent(getByText("Clear All"), "onPress")
+    fireEvent(screen.getByText("Clear All"), "onPress")
 
-    waitFor(() => {
-      expect(Alert.alert).not.toHaveBeenCalled()
-    })
+    expect(Alert.alert).not.toHaveBeenCalled()
   })
 })
 
 const initialData: SavedSearchModel = {
   ...savedSearchModel,
-  attributes: {},
+  attributes: {
+    inquireableOnly: true,
+    offerable: true,
+  },
   entity: {
     artists: [{ id: "artistID", name: "Banksy" }],
     owner: {
