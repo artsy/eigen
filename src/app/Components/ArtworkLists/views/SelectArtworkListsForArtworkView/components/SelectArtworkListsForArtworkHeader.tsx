@@ -28,6 +28,7 @@ export const SelectArtworkListsForArtworkHeader = () => {
     <>
       <Box mx={2} mb={2}>
         <Text>Select where you’d like to save this artwork:</Text>
+
         <Spacer y={2} />
 
         <Flex flexDirection="row" justifyContent="space-between">

@@ -2,7 +2,6 @@ import * as Sentry from "@sentry/react-native"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useCallback, useContext } from "react"
 import {
   Animated,
@@ -13,9 +12,14 @@ import {
   View,
 } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
+import {
+  ImageCarouselContext,
+  ImageCarouselImage,
+  ImageCarouselMedia,
+  ImageDescriptor,
+} from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
-import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"
+import { ImageMeasurements, findClosestIndex, getMeasurements } from "./geometry"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
@@ -30,7 +34,6 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   onImagePressed,
 }) => {
   const screenDimensions = useScreenDimensions()
-  const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
   const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
 
   const embeddedCardBoundingBox = {
@@ -57,7 +60,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       if (scrollEnabled) {
-        Animated.spring(xScrollOffsetAnimatedValue.current!, {
+        Animated.spring(xScrollOffsetAnimatedValue.current || new Animated.Value(0), {
           toValue: e.nativeEvent.contentOffset.x / Math.max(...offsets),
           useNativeDriver: true,
           speed: 20,
@@ -80,7 +83,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     onImagePressed?.()
     if (
       (Platform.OS === "ios" && !disableFullScreen) ||
-      (Platform.OS === "android" && !!enableAndroidImagesGallery && !disableFullScreen)
+      (Platform.OS === "android" && !disableFullScreen)
     ) {
       dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
       // This is here to avoid a bug where the modal would show up with the dev menu at the same
@@ -149,7 +152,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
         length: embeddedCardBoundingBox.width,
       })}
       snapToOffsets={offsets}
-      keyExtractor={(item) => item.url!}
+      keyExtractor={(item, index) => item.url || index.toString()}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
@@ -192,31 +195,33 @@ const EmbeddedItem: React.FC<{
 }) => {
   const { ...styles } = measurements[index]
 
-  if (item.__typename === "Video") {
+  if (item.__typename === "Video" && item.url) {
     return (
       <ImageCarouselVimeoVideo
         width={styles.width}
         height={styles.height}
         maxHeight={embeddedCardBoundingBox.height}
-        vimeoUrl={item.url!}
+        vimeoUrl={item.url}
       />
     )
   }
 
-  if (!item.url) {
+  if (!item.url || !(item as ImageCarouselImage).resized?.src) {
     return null
   }
 
   return (
     <ImageWithLoadingState
-      imageURL={item.resized?.src || item.url!}
+      imageURL={(item as ImageCarouselImage).resized?.src || item.url}
       width={styles.width}
       height={styles.height}
       onPress={goFullScreen}
       // make sure first image loads first
       highPriority={index === 0}
       ref={(ref) => {
-        embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
+        if (ref) {
+          embeddedImageRefs[index] = ref
+        }
       }}
       style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
     />
