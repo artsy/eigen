@@ -1,11 +1,16 @@
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { createElement } from "react"
+import { ComponentClass, FunctionComponent, createElement } from "react"
+
+interface Route {
+  component?: FunctionComponent | ComponentClass
+  passProps?: any
+}
 
 /**
  * @deprecated Stop using this. This is for mocking NavigationIOS, which has been deprecated for years.
  */
 export class FakeNavigator {
-  private stack: any[] = []
+  private stack: Route[] = []
 
   push(route: any) {
     this.stack.push(route)
