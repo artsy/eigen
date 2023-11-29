@@ -11975,6 +11975,9 @@ type Me implements Node {
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
 
+  # This user should receive partner offer notifications
+  receivePartnerOfferNotification: Boolean
+
   # This user should receive partner show notifications
   receivePartnerShowNotification: Boolean
 
@@ -18394,6 +18397,9 @@ input UpdateMyProfileInput {
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
 
+  # This user should receive partner offer notifications
+  receivePartnerOfferNotification: Boolean
+
   # This user should receive partner show notifications
   receivePartnerShowNotification: Boolean
 
@@ -18884,6 +18890,9 @@ type User implements Node {
 
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
+
+  # This user should receive partner offer notifications
+  receivePartnerOfferNotification: Boolean
 
   # This user should receive partner show notifications
   receivePartnerShowNotification: Boolean
