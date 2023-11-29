@@ -5417,6 +5417,9 @@ enum CommerceOrderSourceEnum {
   # The order was originated on a conversation
   inquiry
 
+  # The order was originated from a partner offer
+  partner_offer
+
   # The order was originated from a private sale
   private_sale
 }
