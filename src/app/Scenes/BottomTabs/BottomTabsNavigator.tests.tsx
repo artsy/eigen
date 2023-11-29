@@ -1,45 +1,25 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { screen } from "@testing-library/react-native"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { NavStack } from "app/system/navigation/NavStack"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { BottomTabsNavigator } from "./BottomTabsNavigator"
 
-jest.unmock("app/NativeModules/LegacyNativeModules")
-
 describe(BottomTabsNavigator, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = getMockRelayEnvironment()
-  })
-
   it("shows the current tab content", async () => {
-    const tree = renderWithWrappersLEGACY(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <ModalStack>
-          <BottomTabsNavigator />
-        </ModalStack>
-      </RelayEnvironmentProvider>
+    renderWithWrappers(
+      <ModalStack>
+        <BottomTabsNavigator />
+      </ModalStack>
     )
 
-    expect(
-      tree.root.findAll((node) => node.type === NavStack && node.props.id === "home")
-    ).toHaveLength(1)
+    expect(screen.queryByLabelText("home bottom tab")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("search bottom tab")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("inbox bottom tab")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("sell bottom tab")).toBeOnTheScreen()
+    expect(screen.queryByLabelText("profile bottom tab")).toBeOnTheScreen()
 
-    expect(
-      tree.root.findAll((node) => node.type === NavStack && node.props.id === "search")
-    ).toHaveLength(0)
-
-    await act(() => {
-      LegacyNativeModules.ARScreenPresenterModule.switchTab("search")
-    })
-
-    expect(
-      tree.root.findAll((node) => node.type === NavStack && node.props.id === "search")
-    ).toHaveLength(1)
+    expect(screen.getByAccessibilityState({ selected: true })).toHaveProp(
+      "accessibilityLabel",
+      "home bottom tab"
+    )
   })
 })

@@ -1,7 +1,7 @@
 import { Flex, Touchable } from "@artsy/palette-mobile"
 import { parse } from "query-string"
 import { useEffect, useState } from "react"
-import { Image } from "react-native"
+import { DimensionValue, Image } from "react-native"
 import { Config } from "react-native-config"
 import { Vimeo } from "react-native-vimeo-iframe"
 
@@ -33,6 +33,8 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
   const { videoId, token } = extractVimeoVideoDataFromUrl(vimeoUrl)
   const { coverImage } = useVimeoVideoMetadata(videoId)
   const containerHeight = maxHeight ?? height
+  const imageWidth = width as DimensionValue
+  const imageHeight = containerHeight as DimensionValue
 
   return (
     <Flex
@@ -45,7 +47,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
         <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
           <Image
             source={{ uri: coverImage }}
-            style={{ width, height: containerHeight }}
+            style={{ width: imageWidth, height: imageHeight }}
             resizeMode="contain"
           />
         </Touchable>

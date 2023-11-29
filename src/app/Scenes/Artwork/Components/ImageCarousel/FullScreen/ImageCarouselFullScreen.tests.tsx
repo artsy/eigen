@@ -42,7 +42,6 @@ describe("ImageCarouselFullScreen", () => {
 
   it("render only the current zoomable image as a perf optimisation", () => {
     const { getAllByLabelText } = renderWithWrappers(<Mock />)
-
     expect(getAllByLabelText("Full Screen Image")).toHaveLength(1)
     expect(getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)
   })

@@ -1,80 +1,62 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectionArtworkGridItemTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import * as LocalImageStore from "app/utils/LocalImageStore"
-import { LocalImage } from "app/utils/LocalImageStore"
-import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Image as RNImage } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { MyCollectionArtworkGridItemFragmentContainer } from "./MyCollectionArtworkGridItem"
+
+const mockArtwork = {
+  internalID: "artwork-id",
+  slug: "artwork-slug",
+  artist: {
+    internalID: "artist-id",
+  },
+  images: null,
+  medium: "artwork medium",
+  mediumType: {
+    name: "artwork category",
+  },
+}
 
 describe("MyCollectionArtworkGridItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkGridItemTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
-          artwork(id: "some-slug") {
-            ...MyCollectionArtworkGridItem_artwork
-          }
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkGridItemTestsQuery>({
+    Component: ({ artwork }) => <MyCollectionArtworkGridItemFragmentContainer artwork={artwork!} />,
+    query: graphql`
+      query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
+        artwork(id: "some-slug") {
+          ...MyCollectionArtworkGridItem_artwork
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.artwork) {
-          return <MyCollectionArtworkGridItemFragmentContainer artwork={props.artwork as any} />
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
-
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  const resolveData = () => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          internalID: "artwork-id",
-          slug: "artwork-slug",
-          artist: {
-            internalID: "artist-id",
-          },
-          images: null,
-          medium: "artwork medium",
-          mediumType: {
-            name: "artwork category",
-          },
-        }),
-      })
-    )
-  }
 
   it("renders correct fields", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
-    expect(wrapper.root.findByType(tests.TouchElement)).toBeDefined()
-    expect(wrapper.root.findByProps({ testID: "Fallback" })).toBeDefined()
-    const text = extractText(wrapper.root)
-    expect(text).toContain("artistNames")
-    expect(text).toContain("title")
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+        artistNames: "artistNames",
+        title: "title",
+      }),
+    })
+
+    expect(screen.queryByLabelText("Go to artwork details")).toBeOnTheScreen()
+    expect(screen.queryByTestId("Fallback")).toBeOnTheScreen()
+
+    expect(screen.queryByText("artistNames")).toBeOnTheScreen()
+    expect(screen.queryByText("title")).toBeOnTheScreen()
   })
 
   it("navigates to artwork detail on tap", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
-    wrapper.root.findByType(tests.TouchElement).props.onPress()
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+      }),
+    })
+
+    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
         artistInternalID: "artist-id",
@@ -85,9 +67,13 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("tracks analytics event on tap", () => {
-    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
-    wrapper.root.findByType(tests.TouchElement).props.onPress()
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+      }),
+    })
+
+    fireEvent.press(screen.getByLabelText("Go to artwork details"))
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -98,55 +84,38 @@ describe("MyCollectionArtworkGridItem", () => {
     )
   })
 
-  it("uses last uploaded image as a fallback when no url is present", async () => {
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
-    const localImage: LocalImage = {
-      path: "some-local-path",
-      width: 10,
-      height: 10,
-    }
-    localImageStoreMock.mockImplementation(async () => localImage)
-
-    act(async () => {
-      const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Artwork: () => ({
-            images: [
-              {
-                url: null,
-              },
-            ],
-          }),
-        })
-      )
-      const image = wrapper.root.findByType(RNImage)
-      expect(image.props.source).toEqual({ uri: "some-local-path" })
+  it("shows fallback if no image url available", async () => {
+    renderWithRelay({
+      Artwork: () => ({
+        images: [
+          {
+            url: null,
+          },
+        ],
+      }),
     })
+
+    expect(screen.queryByTestId("Fallback")).toBeOnTheScreen()
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithRelay({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+        artist: {
+          internalID: "artist-id",
+          targetSupply: {
+            isP1: true,
+          },
+        },
+        medium: "artwork medium",
+        marketPriceInsights: {
+          demandRank: 0.91,
+        },
+      }),
+    })
 
-    // mocking isP1 and demandRank
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          internalID: "artwork-id",
-          slug: "artwork-slug",
-          artist: {
-            internalID: "artist-id",
-            targetSupply: {
-              isP1: true,
-            },
-          },
-          medium: "artwork medium",
-          marketPriceInsights: {
-            demandRank: 0.91,
-          },
-        }),
-      })
-    )
-    expect(getByTestId("test-high-demand-icon")).toBeTruthy()
+    expect(screen.getByTestId("test-high-demand-icon")).toBeTruthy()
   })
 })

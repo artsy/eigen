@@ -338,16 +338,6 @@ When we upgrade to Reanimated 3.4.0
 
 Fixes some issues on Android when Reanimated stops. https://github.com/software-mansion/react-native-reanimated/issues/4626
 
-# Patch-package for react-native-codepush
-
-#### When can we remove this:
-
-When this issue is fixed: https://github.com/microsoft/react-native-code-push/issues/1578
-
-#### Explanation/Context:
-
-Release builds fail on Android without this patch, more explanation in the issue: https://github.com/microsoft/react-native-code-push/issues/1578
-
 # Pod patch for NimbleSnapshots type failure
 
 #### When can we remove this:
@@ -359,3 +349,12 @@ And we update to the new version.
 
 Test compilations started failing in Xcode 15 due to a type conflict:
 https://github.com/ashfurrow/Nimble-Snapshots/pull/268
+
+# Patch-package for @react-navigation/native
+
+When we upgrade to 6.0.14 or higher, should do shortly but requires fixing a fair few type issues.
+
+### Explanation/Context
+
+React native removed removeEventListener which this library uses and causes jest tests to fail with type errors. This commit fixes the issue:
+https://github.com/react-navigation/react-navigation/commit/6e9da7304127a7c33cda2da2fa9ea1740ef56604

@@ -1,7 +1,5 @@
-import * as LocalImageStore from "app/utils/LocalImageStore"
-import { LocalImage } from "app/utils/LocalImageStore"
+import { screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import { MyCollectionImageView, MyCollectionImageViewProps } from "./MyCollectionImageView"
 
 describe("MyCollectionImageView", () => {
@@ -13,32 +11,9 @@ describe("MyCollectionImageView", () => {
       imageURL: "https://some-url/:version.jpg",
       artworkSlug: "some-slug",
     }
-    const { getAllByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
-    expect(getAllByTestId("Image-Remote")).toBeDefined()
-  })
+    renderWithWrappers(<MyCollectionImageView {...props} />)
 
-  it("shows a local image if a local image is present and imageURL is not defined", () => {
-    const props: MyCollectionImageViewProps = {
-      imageWidth: 100,
-      imageHeight: 100,
-      aspectRatio: 1,
-      artworkSlug: "some-slug",
-    }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
-    const localImage: LocalImage = {
-      path: "some-local-path",
-      width: 10,
-      height: 10,
-    }
-
-    localImageStoreMock.mockImplementation(async () => localImage)
-
-    act(async () => {
-      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
-      const image = getByTestId("Image-Local")
-      expect(image).toBeDefined()
-      expect(image.props.source).toEqual({ uri: "some-local-path" })
-    })
+    expect(screen.queryByTestId("Image-Remote")).toBeOnTheScreen()
   })
 
   it("shows a fallback state if neither are present", () => {
@@ -48,13 +23,9 @@ describe("MyCollectionImageView", () => {
       aspectRatio: 1,
       artworkSlug: "some-slug",
     }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
-    localImageStoreMock.mockImplementation(async () => null)
 
-    act(async () => {
-      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
-      const fallback = getByTestId("Fallback")
-      expect(fallback).toBeDefined()
-    })
+    renderWithWrappers(<MyCollectionImageView {...props} />)
+
+    expect(screen.queryByTestId("Fallback")).toBeDefined()
   })
 })

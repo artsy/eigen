@@ -1,5 +1,5 @@
 import { delay } from "app/utils/delay"
-import React, { useCallback, useState, useEffect, useRef } from "react"
+import { useCallback, useState, useEffect, useRef, createContext } from "react"
 import { Animated } from "react-native"
 import { PopoverMessage, PopoverMessageItem } from "./PopoverMessage"
 
@@ -12,7 +12,7 @@ const SHOW_ANIMATION_VELOCITY = 450
 const HIDE_ANIMATION_VELOCITY = 400
 const REPLACE_ANIMATION_VELOCITY = 350
 
-export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
+export const PopoverMessageContext = createContext<PopoverMessageContextContextValue>({
   show: () => {},
 
   hide: () => {},
@@ -22,7 +22,7 @@ export const PopoverMessageProvider: React.FC = ({ children }) => {
   const [popoverMessage, setPopoverMessage] = useState<PopoverMessageItem | null>(null)
   const showingPopoverMessage = useRef<boolean>(false)
   const lastStartedAt = useRef<number | null>(null)
-  const timer = useRef<NodeJS.Timeout | null>(null)
+  const timer = useRef<number | null>(null)
   const [opacityAnim] = useState(new Animated.Value(0))
   const [translateYAnim] = useState(new Animated.Value(0))
 

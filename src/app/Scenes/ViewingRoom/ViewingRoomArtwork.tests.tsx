@@ -1,7 +1,5 @@
-import { Button } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
@@ -25,9 +23,9 @@ describe("ViewingRoomArtwork", () => {
       }),
     })
 
-    await flushPromiseQueue()
+    await waitForElementToBeRemoved(() => screen.getByTestId("viewing-room-artwork-placeholder"))
 
-    screen.UNSAFE_getByType(Button).props.onPress()
+    fireEvent.press(screen.getByText("View more details"))
 
     expect(navigate).toHaveBeenCalledWith(
       "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1"

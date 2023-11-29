@@ -1,6 +1,6 @@
 import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import React from "react"
+import { Component } from "react"
 import { Animated } from "react-native"
 import styled from "styled-components/native"
 
@@ -18,7 +18,7 @@ interface TabBarProps {
   /** Auto: How much horiztonal space do you have */
   containerWidth?: number
   /** Auto: Handled by ScrollableTabView */
-  scrollValue?: Animated.AnimatedInterpolation
+  scrollValue?: Animated.AnimatedInterpolation<number>
   /** Should space tabs evenly */
   spaceEvenly?: boolean
 }
@@ -51,7 +51,7 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   `};
 `
 
-export default class TabBar extends React.Component<TabBarProps> {
+export default class TabBar extends Component<TabBarProps> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   renderTab(name, page, isTabActive, onPressHandler) {
     return (

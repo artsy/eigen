@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { getOffsetBetweenGravityClock } from "./Bidding/Context/TimeOffsetProvider"
 
 const getCurrentTimeAsIsoString = () => DateTime.local().toString()
@@ -38,7 +38,7 @@ export const WithCurrentTime: React.FC<WithCurrentTimeProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(getCurrentTimeAsIsoString())
   const [timeOffsetInMilliseconds, setTimeOffsetInMilliseconds] = useState(0)
-  let intervalId: NodeJS.Timeout
+  let intervalId: number
 
   function updateCurrentTime() {
     setCurrentTime(getCurrentTimeAsIsoString())

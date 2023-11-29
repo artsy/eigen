@@ -153,7 +153,6 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
               {item.component}
             </View>
           )}
-          listKey="artwork-artist-marker"
         />
       </View>
     </Flex>

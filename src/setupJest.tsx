@@ -68,7 +68,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
         const handler = (...args: unknown[]) => {
           const error = logToError(type, args, handler)
           if (error) {
-            done.fail(error)
+            done(error)
           }
         }
         jest.spyOn(console, type).mockImplementation(handler)

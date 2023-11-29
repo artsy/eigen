@@ -81,6 +81,10 @@ describe("ArtworkDetails", () => {
   })
 
   describe("Save & Continue button", () => {
+    beforeEach(() => {
+      fetchMock.mockResponse(JSON.stringify({ predictions: [] }))
+    })
+
     it("corrently rendered", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()

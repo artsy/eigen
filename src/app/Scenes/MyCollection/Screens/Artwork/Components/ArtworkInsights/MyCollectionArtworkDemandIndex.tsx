@@ -4,6 +4,7 @@ import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyColl
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
+import { DimensionValue } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -94,6 +95,7 @@ const DemandRankScale: React.FC<{
 const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   const pctWidth = width + "%"
   const opacity = width / 100
+  const gradientWidth = pctWidth as DimensionValue
 
   return (
     <>
@@ -108,7 +110,7 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={{
-            width: pctWidth,
+            width: gradientWidth,
             height: 24,
           }}
         />

@@ -47,6 +47,7 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: yarn
+          cache-version: v4
   run-relay-compiler:
     steps:
       - run:
@@ -117,7 +118,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - run:
           name: Quit early if possible
           command: |
@@ -129,6 +130,9 @@ commands:
           name: Clear project dir
           command: |
             rm -rf /home/circleci/project/*
+      - run:
+          name: Install ninja
+          command: sudo apt-get install ninja-build
       - checkout
       - install-node
       - setup-awscli
@@ -417,7 +421,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v9-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v10-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:

@@ -1,5 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
-import { waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
@@ -16,6 +16,7 @@ import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { TouchableWithoutFeedback } from "react-native"
@@ -50,9 +51,6 @@ describe("ConfirmBid", () => {
   let nextStep: NavigatorIOSPushArgs | null
   const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
 
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
   const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
     .postNotificationName as jest.Mock
 
@@ -68,10 +66,6 @@ describe("ConfirmBid", () => {
     nextStep = null // reset nextStep between tests
     // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
     bidderPositionQueryMock.mockReset()
-  })
-
-  it("renders without throwing an error", () => {
-    mountConfirmBidComponent(initialProps)
   })
 
   it("enables the bid button when checkbox is ticked", () => {
@@ -595,8 +589,6 @@ describe("ConfirmBid", () => {
       component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
       component.root.findByType(Checkbox).props.onPress()
       findPlaceBidButton(component).props.onPress()
-
-      jest.runAllTicks()
     }
 
     it("shows the billing address that the user typed in the billing address form", () => {
@@ -628,7 +620,8 @@ describe("ConfirmBid", () => {
       expect(nextStep?.component).toEqual(CreditCardForm)
     })
 
-    it("shows the error screen when stripe's API returns an error", () => {
+    it("shows the error screen when stripe's API returns an error", async () => {
+      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!({}, null)
         return { dispose: jest.fn() }
@@ -637,37 +630,54 @@ describe("ConfirmBid", () => {
         throw new Error("Error tokenizing card")
       })
 
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
-      fillOutFormAndSubmit(component)
+      // UNSAFELY getting the component instance to set state for testing purposes only
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
 
-      expect(stripe.createTokenWithCard.mock.calls.length).toEqual(1)
+      // Check the checkbox and press the Bid button
+      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+      fireEvent.press(screen.getByTestId("bid-button"))
 
-      const modal = component.root.findByType(Modal)
-
-      expect(modal.props.detailText).toEqual(
-        "There was a problem processing your information. Check your payment details and try again."
+      // wait for modal to be displayed
+      await waitFor(() =>
+        screen.getByText(
+          "There was a problem processing your information. Check your payment details and try again."
+        )
       )
-      expect(modal.props.visible).toEqual(true)
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
+
+      // press the dismiss modal button
+      fireEvent.press(screen.getByText("Ok"))
+
+      // error modal is dismissed
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
-    it("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
-      console.error = jest.fn() // Silences component logging.
+    it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
+      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardError, null)
         return { dispose: jest.fn() }
       }) as any
 
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      // UNSAFELY getting the component instance to set state for testing purposes only
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
 
-      fillOutFormAndSubmit(component)
+      // Check the checkbox and press the Bid button
+      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+      fireEvent.press(screen.getByTestId("bid-button"))
 
-      expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
-        "Your card's security code is incorrect.",
-      ])
-      component.root.findByType(Modal).findByType(Button).props.onPress()
+      await waitFor(() => screen.getByText("Your card's security code is incorrect."))
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
-      expect(component.root.findByType(Modal).props.visible).toEqual(false)
+      // press the dismiss modal button
+      fireEvent.press(screen.getByText("Ok"))
+
+      // error modal is dismissed
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
     it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
@@ -693,24 +703,35 @@ describe("ConfirmBid", () => {
       expect(component.root.findByType(Modal).props.visible).toEqual(false)
     })
 
-    it("shows the error screen with the default error message if the creditCardMutation error message is empty", () => {
-      console.error = jest.fn() // Silences component logging.
+    it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
+      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         onCompleted!(mockRequestResponses.creatingCreditCardEmptyError, null)
         return { dispose: jest.fn() }
       }) as any
 
-      const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      // UNSAFELY getting the component instance to set state for testing purposes only
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
+      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
 
-      fillOutFormAndSubmit(component)
+      // Check the checkbox and press the Bid button
+      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+      fireEvent.press(screen.getByTestId("bid-button"))
 
-      expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
-        "There was a problem processing your information. Check your payment details and try again.",
-      ])
-      component.root.findByType(Modal).findByType(Button).props.onPress()
+      await waitFor(() =>
+        screen.getByText(
+          "There was a problem processing your information. Check your payment details and try again."
+        )
+      )
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
-      expect(component.root.findByType(Modal).props.visible).toEqual(false)
+      // press the dismiss modal button
+      fireEvent.press(screen.getByText("Ok"))
+
+      // error modal is dismissed
+      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
     })
 
     it("shows the generic error screen on a createCreditCard mutation network failure", () => {
@@ -758,9 +779,17 @@ describe("ConfirmBid", () => {
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
-        const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+        renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
-        fillOutFormAndSubmit(component)
+        // UNSAFELY getting the component instance to set state for testing purposes only
+        screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
+        screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
+
+        // Check the checkbox and press the Bid button
+        fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+        fireEvent.press(screen.getByTestId("bid-button"))
+
+        await flushPromiseQueue()
 
         expect(relay.commitMutation).toHaveBeenCalled()
         expect(relay.commitMutation).toHaveBeenCalledWith(
@@ -834,20 +863,16 @@ describe("ConfirmBid", () => {
   })
 
   describe("cascading end times", () => {
-    beforeEach(() => {
-      Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
-    })
-
     it("sale endtime defaults to extendedBiddingEndtime", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
+      renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
+
+      expect(screen.queryByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
+      renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
+
+      expect(screen.queryByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
   })
 

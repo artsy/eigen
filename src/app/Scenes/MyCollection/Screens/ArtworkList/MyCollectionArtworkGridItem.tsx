@@ -50,6 +50,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   return (
     <TouchElement
+      accessibilityLabel="Go to artwork details"
+      accessibilityRole="link"
       onPress={() => {
         if (!!artist) {
           trackEvent(tracks.tappedCollectedArtwork(internalID, slug))

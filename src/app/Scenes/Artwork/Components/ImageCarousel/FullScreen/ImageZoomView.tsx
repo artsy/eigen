@@ -150,7 +150,11 @@ export const ImageZoomView =
     useEffect(() => {
       // animate image transition on mount
 
-      if (fullScreenState.current !== "entered" && imageIndex.current === index) {
+      if (
+        fullScreenState.current !== "entered" &&
+        imageIndex.current === index &&
+        embeddedImageRefs[imageIndex.current]
+      ) {
         getTransitionOffset({
           fromRef: embeddedImageRefs[imageIndex.current],
           toBox: {

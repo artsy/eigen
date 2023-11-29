@@ -1,6 +1,10 @@
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import React from "react"
-import { Route } from "react-native"
+import { ComponentClass, FunctionComponent, createElement } from "react"
+
+interface Route {
+  component?: FunctionComponent | ComponentClass
+  passProps?: any
+}
 
 /**
  * @deprecated Stop using this. This is for mocking NavigationIOS, which has been deprecated for years.
@@ -8,7 +12,7 @@ import { Route } from "react-native"
 export class FakeNavigator {
   private stack: Route[] = []
 
-  push(route: Route) {
+  push(route: any) {
     this.stack.push(route)
   }
 
@@ -37,17 +41,21 @@ export class FakeNavigator {
   nextStep() {
     const currentRoute = this.stack[this.stack.length - 1]
 
-    return renderWithWrappersLEGACY(
-      <>
-        {React.createElement(currentRoute.component!, {
-          ...currentRoute.passProps,
-          nextScreen: true,
-          navigator: this,
-          relay: {
-            environment: null,
-          },
-        })}
-      </>
-    )
+    if (currentRoute.component) {
+      return renderWithWrappersLEGACY(
+        <>
+          {createElement(currentRoute.component, {
+            ...currentRoute.passProps,
+            nextScreen: true,
+            navigator: this,
+            relay: {
+              environment: null,
+            },
+          })}
+        </>
+      )
+    } else {
+      throw "No component found on route"
+    }
   }
 }

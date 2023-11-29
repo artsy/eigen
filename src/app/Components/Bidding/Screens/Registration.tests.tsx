@@ -1,5 +1,5 @@
 import { Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
-import { RenderAPI } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -10,7 +10,6 @@ import {
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
@@ -23,58 +22,37 @@ import { Registration } from "./Registration"
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
-jest.mock("tipsi-stripe", () => ({
-  setOptions: jest.fn(),
-  paymentRequestWithCardForm: jest.fn(),
-  createTokenWithCard: jest.fn(),
-}))
-
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
-jest.useFakeTimers({
-  legacyFakeTimers: true,
-})
+
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
-beforeEach(() => {
-  Date.now = jest.fn(() => 1525983752116)
-  mockTimezone("America/New_York")
-})
-
 it("renders properly for a user without a credit card", () => {
-  const component = renderWithWrappersLEGACY(
-    <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
-  )
+  renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-  expect(component.root.findAllByType(Text)[5].props.children).toEqual(
-    "A valid credit card is required."
-  )
+  expect(screen.queryByText("A valid credit card is required.")).toBeOnTheScreen()
 })
 
 describe("User does not have a valid phone number", () => {
-  let rendered: RenderAPI
-
-  beforeEach(() => {
-    rendered = renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
-  })
-
   it("renders properly for a user without a phone number", () => {
-    rendered.getByText("A valid phone number is required.")
+    renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
+
+    expect(screen.queryByText("A valid phone number is required.")).toBeOnTheScreen()
   })
 })
 
 it("renders properly for a user with a credit card and phone", () => {
-  const rendered = renderWithWrappers(
-    <Registration {...initialPropsForUserWithCreditCardAndPhone} />
-  )
+  renderWithWrappers(<Registration {...initialPropsForUserWithCreditCardAndPhone} />)
 
-  rendered.getByText(
-    "To complete your registration, please confirm that you agree to the Conditions of Sale."
-  )
+  expect(
+    screen.queryByText(
+      "To complete your registration, please confirm that you agree to the Conditions of Sale."
+    )
+  ).toBeOnTheScreen()
 })
 
 it("renders properly for a verified user with a credit card and phone", () => {
-  const rendered = renderWithWrappers(
+  renderWithWrappers(
     <Registration
       {...initialProps}
       sale={{ ...sale, requireIdentityVerification: true }}
@@ -86,11 +64,13 @@ it("renders properly for a verified user with a credit card and phone", () => {
     />
   )
 
-  rendered.getByText(
-    "To complete your registration, please confirm that you agree to the Conditions of Sale."
-  )
-  expect(rendered.queryByText("valid phone number")).toBeNull()
-  expect(rendered.queryByText("valid credit card")).toBeNull()
+  expect(
+    screen.queryByText(
+      "To complete your registration, please confirm that you agree to the Conditions of Sale."
+    )
+  ).toBeOnTheScreen()
+  expect(screen.queryByText("valid phone number")).not.toBeOnTheScreen()
+  expect(screen.queryByText("valid credit card")).not.toBeOnTheScreen()
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
@@ -282,8 +262,6 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a stripe failure", async () => {
-    console.error = jest.fn() // Silences component logging.
-
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) =>
@@ -315,7 +293,6 @@ describe("when pressing register button", () => {
   it("displays the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
     const errors = [{ message: "malformed error" }]
 
-    console.error = jest.fn() // Silences component logging.
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -333,8 +310,6 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    jest.runAllTicks()
-
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
@@ -345,8 +320,6 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a updateUserProfile failure", async () => {
-    console.error = jest.fn() // Silences component logging.
-
     const errors = [{ message: "There was an error with your request" }]
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
@@ -364,7 +337,6 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
-    jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
@@ -374,7 +346,6 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a updateUserProfile mutation network failure", () => {
-    console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
@@ -398,8 +369,9 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("displays an error message on a creditCardMutation failure", () => {
-    console.error = jest.fn() // Silences component logging.
+  it("displays an error message on a creditCardMutation failure", async () => {
+    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -414,28 +386,29 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappersLEGACY(
-      <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
-    )
+    // UNSAFELY getting the component instance to set state for testing purposes only
+    screen.UNSAFE_getByType(Registration).instance.setState({ billingAddress })
+    screen.UNSAFE_getByType(Registration).instance.setState({ creditCardToken: stripeToken })
 
-    component.root.findByType(Registration).instance.setState({ billingAddress })
-    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).props.onPress()
-    component.root.findByProps({ testID: "register-button" }).props.onPress()
+    // Check the checkbox and press the Register button
+    fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+    fireEvent.press(screen.getByTestId("register-button"))
 
-    jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
-      "Your card's security code is incorrect.",
-    ])
-    component.root.findByType(Modal).findByType(Button).props.onPress()
+    // Wait for the error modal to be displayed
+    await waitFor(() => screen.getByText("Your card's security code is incorrect."))
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
-    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+    // press the dismiss modal button
+    fireEvent.press(screen.getByText("Ok"))
+
+    // error modal is dismissed
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
   })
 
-  it("displays the default error message if there are unhandled errors from the createCreditCard mutation", () => {
-    const errors = [{ message: "malformed error" }]
+  it("displays the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
+    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
 
-    console.error = jest.fn() // Silences component logging.
+    const errors = [{ message: "malformed error" }]
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
     relay.commitMutation = commitMutationMock()
@@ -451,29 +424,32 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappersLEGACY(
-      <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
+    // UNSAFELY getting the component instance to set state for testing purposes only
+    screen.UNSAFE_getByType(Registration).instance.setState({ billingAddress })
+    screen.UNSAFE_getByType(Registration).instance.setState({ creditCardToken: stripeToken })
+
+    // Check the checkbox and press the Register button
+    fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+    fireEvent.press(screen.getByTestId("register-button"))
+
+    // Wait for the error modal to be displayed
+    await waitFor(() =>
+      screen.getByText(
+        "There was a problem processing your information. Check your payment details and try again."
+      )
     )
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
-    component.root.findByType(Registration).instance.setState({ billingAddress })
-    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).props.onPress()
-    component.root.findByProps({ testID: "register-button" }).props.onPress()
+    // press the dismiss modal button
+    fireEvent.press(screen.getByText("Ok"))
 
-    jest.runAllTicks()
-
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
-      "There was a problem processing your information. Check your payment details and try again.",
-    ])
-    component.root.findByType(Modal).findByType(Button).props.onPress()
-
-    // it dismisses the modal
-    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+    // error modal is dismissed
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
   })
 
-  it("displays an error message on a createCreditCard mutation network failure", () => {
-    console.error = jest.fn() // Silences component logging.
+  it("displays an error message on a createCreditCard mutation network failure", async () => {
+    renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCardOrPhone} />)
+
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -488,23 +464,27 @@ describe("when pressing register button", () => {
         return null
       }) as any
 
-    const component = renderWithWrappersLEGACY(
-      <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
+    // UNSAFELY getting the component instance to set state for testing purposes only
+    screen.UNSAFE_getByType(Registration).instance.setState({ billingAddress })
+    screen.UNSAFE_getByType(Registration).instance.setState({ creditCardToken: stripeToken })
+
+    // Check the checkbox and press the Register button
+    fireEvent.press(screen.UNSAFE_getByType(Checkbox))
+    fireEvent.press(screen.getByTestId("register-button"))
+
+    // Wait for the error modal to be displayed
+    await waitFor(() =>
+      screen.getByText(
+        "There was a problem processing your information. Check your payment details and try again."
+      )
     )
-    component.root.findByType(Registration).instance.setState({ billingAddress })
-    component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
-    component.root.findByType(Checkbox).props.onPress()
-    component.root.findByProps({ testID: "register-button" }).props.onPress()
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
-    jest.runAllTicks()
+    // press the dismiss modal button
+    fireEvent.press(screen.getByText("Ok"))
 
-    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
-      "There was a problem processing your information. Check your payment details and try again.",
-    ])
-    component.root.findByType(Modal).findByType(Button).props.onPress()
-
-    // it dismisses the modal
-    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+    // error modal is dismissed
+    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
   })
 
   it("displays an error message on a bidderMutation failure", async () => {
@@ -513,7 +493,6 @@ describe("when pressing register button", () => {
         'https://stagingapi.artsy.net/api/v1/bidder?sale_id=leclere-impressionist-and-modern-art - {"error":"Invalid Sale"}',
     }
 
-    console.error = jest.fn() // Silences component logging.
     relay.commitMutation = jest
       .fn()
       .mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
@@ -535,8 +514,6 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a network failure", async () => {
-    console.error = jest.fn() // Silences component logging.
-
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onError }) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -574,7 +551,6 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Checkbox).props.onPress()
     component.root.findByProps({ testID: "register-button" }).props.onPress()
-    jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: "sale-id",
@@ -606,7 +582,6 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Checkbox).props.onPress()
     component.root.findByProps({ testID: "register-button" }).props.onPress()
-    jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
     expect(nextStep.passProps).toEqual({
@@ -629,8 +604,6 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Checkbox).props.onPress()
     component.root.findByProps({ testID: "register-button" }).props.onPress()
-
-    jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
       ARAuctionID: "sale-id",
@@ -663,7 +636,6 @@ describe("when pressing register button", () => {
 
     component.root.findByType(Checkbox).props.onPress()
     component.root.findByProps({ testID: "register-button" }).props.onPress()
-    jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
     expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)

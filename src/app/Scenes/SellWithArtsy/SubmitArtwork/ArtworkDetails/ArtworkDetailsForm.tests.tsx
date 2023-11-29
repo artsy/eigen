@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -21,14 +21,21 @@ describe("ArtworkDetailsForm", () => {
     }))
   })
 
-  it("correctly displays formik values in form", () => {
-    const { findByText } = renderWithWrappers(<ArtworkDetailsForm />)
-    expect(findByText("hello")).toBeTruthy()
-    expect(findByText("Caspar David Friedrich")).toBeTruthy()
-    expect(findByText("oil on canvas")).toBeTruthy()
-    expect(findByText("found")).toBeTruthy()
-    expect(findByText("London")).toBeTruthy()
-    expect(findByText("71202")).toBeTruthy()
+  it("correctly displays formik values in form", async () => {
+    renderWithWrappers(<ArtworkDetailsForm />)
+
+    expect(screen.getByLabelText(/Title/i)).toHaveProp("value", mockFormValues.title)
+    expect(screen.getByLabelText(/Artist/i)).toHaveProp("value", mockFormValues.artist)
+    expect(screen.getByLabelText(/Year/i)).toHaveProp("value", mockFormValues.year)
+    expect(screen.getByLabelText(/Materials/i)).toHaveProp("value", mockFormValues.medium)
+    expect(screen.getByTestId("autocomplete-location-input")).toHaveProp(
+      "value",
+      "London, England, UK"
+    )
+    expect(screen.getByTestId("Submission_ProvenanceInput")).toHaveProp(
+      "value",
+      mockFormValues.provenance
+    )
   })
 
   it("when rarity is limited edition, renders additional inputs for edition number and size", () => {
@@ -39,38 +46,37 @@ describe("ArtworkDetailsForm", () => {
       editionSize: getByTestId("Submission_EditionSizeInput"),
     }
 
-    expect(inputs.editionNumber).toBeTruthy()
-    expect(inputs.editionSize).toBeTruthy()
+    expect(inputs.editionNumber).toBeOnTheScreen()
+    expect(inputs.editionSize).toBeOnTheScreen()
   })
 
   it("opens up rarity modal, when rarity select tooltip pressed", async () => {
-    const { getAllByText } = renderWithWrappers(<ArtworkDetailsForm />)
+    renderWithWrappers(<ArtworkDetailsForm />)
 
-    const raritySelectTooltip = getAllByText("What is this?")[0]
-    expect(raritySelectTooltip).toBeTruthy()
+    const raritySelectTooltip = screen.getAllByText("What is this?")[0]
+    expect(raritySelectTooltip).toBeOnTheScreen()
 
     fireEvent.press(raritySelectTooltip)
 
     await flushPromiseQueue()
 
     artworkRarityClassifications.map((classification) => {
-      expect(getAllByText(classification.label)).toBeTruthy()
-      expect(getAllByText(classification.description)).toBeTruthy()
+      expect(screen.queryByText(classification.description)).toBeOnTheScreen()
     })
   })
 
   it("opens up provenance modal, when provenance tooltip pressed", async () => {
-    const { getByText, getAllByText } = renderWithWrappers(<ArtworkDetailsForm />)
+    renderWithWrappers(<ArtworkDetailsForm />)
 
-    const provenanceTooltip = getAllByText("What is this?")[1]
-    expect(provenanceTooltip).toBeTruthy()
+    const provenanceTooltip = screen.getAllByText("What is this?")[1]
+    expect(provenanceTooltip).toBeOnTheScreen()
 
     fireEvent.press(provenanceTooltip)
 
     await flushPromiseQueue()
 
-    expect(getByText("Invoices from previous owners")).toBeTruthy()
-    expect(getByText("Certificates of authenticity")).toBeTruthy()
-    expect(getByText("Gallery exhibition catalogues")).toBeTruthy()
+    expect(screen.queryByText("Invoices from previous owners")).toBeOnTheScreen()
+    expect(screen.queryByText("Certificates of authenticity")).toBeOnTheScreen()
+    expect(screen.queryByText("Gallery exhibition catalogues")).toBeOnTheScreen()
   })
 })

@@ -1,5 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Rarity } from "./Rarity"
@@ -13,32 +12,38 @@ describe("Rarity", () => {
     useFormikContextMock.mockImplementation(() => ({
       handleChange: jest.fn(() => jest.fn()),
       values: {
-        attributionClass: "Limited Edition",
+        attributionClass: "LIMITED_EDITION",
       },
       setFieldValue: jest.fn(() => jest.fn()),
+      handleBlur: jest.fn(() => jest.fn()),
     }))
   })
 
   it("displays the correct rarity", async () => {
-    const { getByText, findByText, getByTestId } = renderWithWrappers(<Rarity />)
+    renderWithWrappers(<Rarity />)
 
-    fireEvent.press(getByTestId("rarity-select"))
-    await flushPromiseQueue()
-    fireEvent.press(getByText("Limited Edition"))
-    await flushPromiseQueue()
+    fireEvent.press(screen.getByTestId("rarity-select"))
 
-    expect(findByText("EDITION NUMBER")).toBeTruthy()
+    await waitFor(() => screen.getByText("Limited Edition"))
+
+    fireEvent.press(screen.getByText("Limited Edition"))
+
+    await waitFor(() => screen.getByLabelText("Edition number input"))
   })
 
   it("displays the modal with all classification types", async () => {
-    const { getByText } = renderWithWrappers(<Rarity />)
+    renderWithWrappers(<Rarity />)
 
-    fireEvent.press(getByText("What is this?"))
-    await flushPromiseQueue()
+    fireEvent.press(screen.getByText("What is this?"))
 
-    expect(getByText("Unique")).toBeTruthy()
-    expect(getByText("Limited Edition")).toBeTruthy()
-    expect(getByText("Open Edition")).toBeTruthy()
-    expect(getByText("Unknown Edition")).toBeTruthy()
+    await waitFor(() => screen.getByText("Classifications"))
+
+
+    expect(screen.getByText("Unique")).toBeTruthy()
+    // there are two of these because even though the modal is open,
+    // testing library also renders on the test dom the underlying component
+    expect(screen.getAllByText("Limited Edition")).toHaveLength(2)
+    expect(screen.getByText("Open Edition")).toBeTruthy()
+    expect(screen.getByText("Unknown Edition")).toBeTruthy()
   })
 })

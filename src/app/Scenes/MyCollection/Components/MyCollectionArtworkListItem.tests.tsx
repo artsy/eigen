@@ -1,57 +1,33 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
+import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { navigate } from "app/system/navigation/navigate"
 import * as LocalImageStore from "app/utils/LocalImageStore"
-import { LocalImage } from "app/utils/LocalImageStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
+jest.mock("app/utils/LocalImageStore", () => ({
+  ...jest.requireActual("app/utils/LocalImageStore"),
+  useLocalImage: jest.fn(),
+}))
+
 describe("MyCollectionArtworkListItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
-            artwork(id: "artwork-id") {
-              ...MyCollectionArtworkListItem_artwork
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return <MyCollectionArtworkListItem artwork={props.artwork} />
-          }
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkListItemTestsQuery>({
+    Component: ({ artwork }) => <MyCollectionArtworkListItem artwork={artwork!} />,
+    query: graphql`
+      query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
+        artwork(id: "artwork-id") {
+          ...MyCollectionArtworkListItem_artwork
+        }
+      }
+    `,
   })
-
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  const resolveData = (mockResolver = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((opration) =>
-      MockPayloadGenerator.generate(opration, mockResolver)
-    )
-  }
 
   it("renders the fields correctly", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -63,16 +39,14 @@ describe("MyCollectionArtworkListItem", () => {
       }),
     })
 
-    expect(getByTestId("no-artwork-icon")).toBeTruthy()
-    expect(getByTestId("artwork-title")).toBeTruthy()
-    expect(getByTestId("artwork-date")).toBeTruthy()
-    expect(getByTestId("artwork-medium")).toBeTruthy()
+    expect(screen.getByTestId("no-artwork-icon")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-title")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-date")).toBeOnTheScreen()
+    expect(screen.getByTestId("artwork-medium")).toBeOnTheScreen()
   })
 
   it("navigates to artwork details on tap", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
-
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -87,7 +61,7 @@ describe("MyCollectionArtworkListItem", () => {
       }),
     })
 
-    const touchable = getByTestId("list-item-touchable")
+    const touchable = screen.getByTestId("list-item-touchable")
     fireEvent.press(touchable)
 
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
@@ -100,8 +74,7 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("tracks analytics event on tap", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -113,7 +86,7 @@ describe("MyCollectionArtworkListItem", () => {
       }),
     })
 
-    const touchable = getByTestId("list-item-touchable")
+    const touchable = screen.getByTestId("list-item-touchable")
     fireEvent.press(touchable)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -126,8 +99,7 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("renders the high demand icon if the artists is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -144,26 +116,24 @@ describe("MyCollectionArtworkListItem", () => {
       }),
     })
 
-    expect(getByTestId("test-high-demand-icon")).toBeTruthy()
+    expect(screen.getByTestId("test-high-demand-icon")).toBeOnTheScreen()
   })
 
   describe("Images", () => {
+    const localImage: LocalImageStore.LocalImage = {
+      path: "some-local-path",
+      width: 10,
+      height: 10,
+    }
+
+    beforeEach(() => {
+      ;(LocalImageStore.useLocalImage as jest.Mock).mockReturnValue(localImage)
+    })
+
     it("displays local image if available", () => {
-      const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
-      const localImage: LocalImage = {
-        path: "some-local-path",
-        width: 10,
-        height: 10,
-      }
+      renderWithRelay({})
 
-      localImageStoreMock.mockImplementation(async () => localImage)
-
-      act(async () => {
-        const { getByTestId } = renderWithWrappers(<TestRenderer />)
-        const image = getByTestId("Image-Local")
-        expect(image).toBeDefined()
-        expect(image.props.source).toEqual({ uri: "some-local-path" })
-      })
+      expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp("imageURL", "some-local-path")
     })
   })
 })

@@ -44,7 +44,6 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
     <Flex mb={2}>
       <FlatList
         data={groupedArtworks}
-        listKey="median-sale-prices"
         scrollEnabled={false}
         nestedScrollEnabled={false}
         ListHeaderComponent={() => (

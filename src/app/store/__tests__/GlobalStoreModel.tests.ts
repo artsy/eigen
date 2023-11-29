@@ -1,7 +1,24 @@
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION } from "app/store/migration"
+import mockFetch from "jest-fetch-mock"
 
 describe("GlobalStoreModel", () => {
+  beforeEach(() => {
+    mockFetch.mockReturnValue(
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => {
+          "someValue"
+        },
+      } as any)
+    )
+  })
+
+  afterEach(() => {
+    mockFetch.mockClear()
+  })
+
   it("has latest version on install", () => {
     expect(__globalStoreTestUtils__?.getCurrentState().version).toBe(CURRENT_APP_VERSION)
   })
@@ -23,7 +40,6 @@ describe("GlobalStoreModel", () => {
         ],
       },
     })
-
     expect(
       __globalStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel
     ).toEqual("Banksy")
@@ -32,7 +48,6 @@ describe("GlobalStoreModel", () => {
   it("can be manipulated", () => {
     // Here we will be using `testStuff` that doesn't exist, but it is safe to test with this.
     // We don't have any other simple thing that we can test with.
-
     GlobalStore.actions.__manipulate((store) => {
       // @ts-expect-error
       store.sessionState.testStuff = ["wow", 8]
@@ -42,7 +57,6 @@ describe("GlobalStoreModel", () => {
       "wow",
       8,
     ])
-
     GlobalStore.actions.rehydrate({
       sessionState: {
         // @ts-expect-error
@@ -53,7 +67,6 @@ describe("GlobalStoreModel", () => {
     expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([
       "new stuff!",
     ])
-
     GlobalStore.actions.rehydrate({
       sessionState: {
         // @ts-expect-error
@@ -65,7 +78,6 @@ describe("GlobalStoreModel", () => {
       "wow",
       "once again",
     ])
-
     GlobalStore.actions.__manipulate((store) => {
       // @ts-expect-error
       store.sessionState.testStuff = []
@@ -73,7 +85,6 @@ describe("GlobalStoreModel", () => {
     // @ts-expect-error
     expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([])
   })
-
   it("can have feature flags changed/injected", () => {
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
@@ -81,9 +92,7 @@ describe("GlobalStoreModel", () => {
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
     ).toStrictEqual(false)
-
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
-
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
     ).toStrictEqual({ ARDarkModeSupport: true })
