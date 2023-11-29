@@ -4,7 +4,6 @@ import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useLocalImages } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
@@ -82,17 +81,11 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 }
 
 export const ImagesCarousel = () => {
-  const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
-
   if (Platform.OS === "ios") {
     return <ImageCarouselFullScreen />
   }
 
-  if (enableAndroidImagesGallery) {
-    return <ImageCarouselFullScreenAndroid />
-  }
-
-  return null
+  return <ImageCarouselFullScreenAndroid />
 }
 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {

@@ -35,8 +35,6 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
-  const scrollableRef = useBottomTabsScrollToTop("search")
-
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -53,6 +51,11 @@ export const Search: React.FC = () => {
   } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryDefaultVariables)
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
+
+  const scrollableRef = useBottomTabsScrollToTop("search", () => {
+    // Focus input and open keyboard on bottom nav Search tab double-tab
+    searchProviderValues.inputRef.current?.focus()
+  })
 
   // TODO: to be removed on ES results PR
   const handleRetry = () => {

@@ -698,9 +698,11 @@ PODS:
   - RNScreens (3.26.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (5.9.1):
+  - RNSentry (5.14.1):
+    - hermes-engine
     - React-Core
-    - Sentry/HybridSDK (= 8.10.0)
+    - React-hermes
+    - Sentry/HybridSDK (= 8.15.2)
   - RNShare (8.2.1):
     - React-Core
   - RNSVG (9.13.3):
@@ -717,9 +719,9 @@ PODS:
   - Segment-Appboy/Full-SDK (4.5.0):
     - Analytics
     - Appboy-iOS-SDK (~> 4.4.1)
-  - Sentry/HybridSDK (8.10.0):
-    - SentryPrivate (= 8.10.0)
-  - SentryPrivate (8.10.0)
+  - Sentry/HybridSDK (8.15.2):
+    - SentryPrivate (= 8.15.2)
+  - SentryPrivate (8.15.2)
   - Sift (2.1.5)
   - sift-react-native (0.1.8):
     - React
@@ -1179,7 +1181,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: dce1b253fde81078249ea9cd4b948e4ac7b761a9
-  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
@@ -1208,7 +1210,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: 5337263514dd6f09803962437687240c5dc39aa4
   GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
@@ -1305,14 +1307,14 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 38e8c4a0232f4596ba46b547ae8b9a8192322dea
   RNScreens: e145ee71415e19fdcbcd98d85247f5baf4feafad
-  RNSentry: 0a1daa8ee81e2776f977ae8c66e67c8d85587828
+  RNSentry: ee1a9a80996414205d84ce9180c31bd855fd4641
   RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
-  Sentry: 71cd4427146ac56eab6e70401ac7a24384c3d3b5
-  SentryPrivate: 9334613897c85a9e30f2c9d7a331af8aaa4fe71f
+  Sentry: 6f5742b4c47c17c9adcf265f6f328cf4a0ed1923
+  SentryPrivate: b2f7996f37781080f04a946eb4e377ff63c64195
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
