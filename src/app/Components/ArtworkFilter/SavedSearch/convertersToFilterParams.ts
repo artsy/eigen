@@ -137,6 +137,7 @@ export const convertAggregationValueNamesToFilterParam = (
   criteriaValues: string[]
 ): FilterData | null => {
   const aggregationByValue = keyBy(aggregations, "value")
+
   const availableValues = criteriaValues.filter(
     (criteriaValue) => !!aggregationByValue[criteriaValue]
   )
@@ -248,7 +249,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
   // Extract value names from aggregation
   shouldExtractValueNamesFromAggregation.forEach((filterParamName) => {
     const aggregationValue = aggregationValueByFilterParamName[filterParamName]
-    const criteriaValue = criteria[filterParamName] as string[]
+    const criteriaValue = (criteria[filterParamName] as string[]) || []
 
     if (aggregationValue) {
       const filterParamItem = convertAggregationValueNamesToFilterParam(
