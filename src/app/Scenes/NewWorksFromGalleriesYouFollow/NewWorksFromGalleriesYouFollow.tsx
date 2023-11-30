@@ -69,7 +69,8 @@ const artworkConnectionFragment = graphql`
   @refetchable(queryName: "NewWorksFromGalleriesYouFollow_artworksConnectionRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
     newWorksFromGalleriesYouFollowConnection(first: $count, after: $after)
-      @connection(key: "NewWorksFromGalleriesYouFollow_newWorksFromGalleriesYouFollowConnection") {
+      @connection(key: "NewWorksFromGalleriesYouFollow_newWorksFromGalleriesYouFollowConnection")
+      @principalField {
       edges {
         cursor
         node {

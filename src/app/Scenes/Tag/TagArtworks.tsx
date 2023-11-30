@@ -14,7 +14,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 
 interface TagArtworksContainerProps {
-  tag: TagArtworks_tag$data
+  tag?: TagArtworks_tag$data | null
   relay: RelayPaginationProp
 }
 
@@ -24,16 +24,18 @@ interface TagArtworksProps extends TagArtworksContainerProps {
 
 export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilterModal }) => {
   const tracking = useTracking()
-  const artworksTotal = tag.artworks?.counts?.total ?? 0
+  const artworksTotal = tag?.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
 
   const trackClear = () => {
-    tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
+    if (tag?.id && tag?.slug) {
+      tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
+    }
   }
 
   useArtworkFilters({
     relay,
-    aggregations: tag.artworks?.aggregations,
+    aggregations: tag?.artworks?.aggregations,
     componentPath: "Tag/TagArtworks",
   })
 
@@ -48,7 +50,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   if (artworksTotal === 0) {
     return (
       <Box pt={2}>
-        <FilteredArtworkGridZeroState id={tag.id} slug={tag.slug} trackClear={trackClear} />
+        <FilteredArtworkGridZeroState id={tag?.id} slug={tag?.slug} trackClear={trackClear} />
       </Box>
     )
   }
@@ -63,7 +65,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
         Showing {artworksTotal} works
       </Text>
       <InfiniteScrollArtworksGridContainer
-        connection={tag.artworks}
+        connection={tag?.artworks}
         hasMore={relay.hasMore}
         loadMore={relay.loadMore}
       />
@@ -80,13 +82,17 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
-    tracking.trackEvent(tracks.openFilterWindow(tag.id, tag.slug))
-    handleOpenFilterArtworksModal()
+    if (tag?.id && tag?.slug) {
+      tracking.trackEvent(tracks.openFilterWindow(tag.id, tag.slug))
+      handleOpenFilterArtworksModal()
+    }
   }
 
   const closeFilterArtworksModal = () => {
-    tracking.trackEvent(tracks.closeFilterWindow(tag.id, tag.slug))
-    handleCloseFilterArtworksModal()
+    if (tag?.id && tag?.slug) {
+      tracking.trackEvent(tracks.closeFilterWindow(tag.id, tag.slug))
+      handleCloseFilterArtworksModal()
+    }
   }
 
   return (
@@ -95,8 +101,8 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
         <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
-          id={tag.internalID}
-          slug={tag.slug}
+          id={tag?.internalID}
+          slug={tag?.slug}
           visible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
@@ -162,12 +168,12 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props.tag.artworks
+      return props?.tag?.artworks
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         input: fragmentVariables.input,
-        id: props.tag.slug,
+        id: props?.tag?.slug,
         count,
         cursor,
       }

@@ -137,7 +137,7 @@ export const PartnerQueryRenderer: React.FC<{
     environment: getRelayEnvironment(),
     query: graphql`
       query PartnerInitialQuery($partnerID: String!) {
-        partner(id: $partnerID) {
+        partner(id: $partnerID) @principalField {
           displayArtistsSection
         }
       }
