@@ -67,7 +67,7 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
           includeBackfill: $includeBackfill
           maxWorksPerArtist: $maxWorksPerArtist
           version: $version
-        ) @connection(key: "NewWorksForYou_artworks") {
+        ) @connection(key: "NewWorksForYou_artworks") @principalField {
           edges {
             node {
               id

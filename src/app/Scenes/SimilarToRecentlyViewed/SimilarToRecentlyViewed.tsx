@@ -69,7 +69,8 @@ const artworkConnectionFragment = graphql`
   @refetchable(queryName: "SimilarToRecentlyViewed_artworksConnectionRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
     similarToRecentlyViewedConnection(first: $count, after: $after)
-      @connection(key: "SimilarToRecentlyViewed_similarToRecentlyViewedConnection") {
+      @connection(key: "SimilarToRecentlyViewed_similarToRecentlyViewedConnection")
+      @principalField {
       edges {
         node {
           id

@@ -133,7 +133,7 @@ export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = (
     environment={getRelayEnvironment()}
     query={graphql`
       query CollectionQuery($collectionID: String!) {
-        collection: marketingCollection(slug: $collectionID) {
+        collection: marketingCollection(slug: $collectionID) @principalField {
           ...Collection_collection
         }
       }

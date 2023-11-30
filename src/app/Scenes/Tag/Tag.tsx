@@ -39,9 +39,9 @@ export const Tag: React.FC<TagProps> = (props) => {
         context_screen_owner_slug: tag?.slug,
       }}
     >
-      <Tabs.TabsWithHeader title={tag?.name!} headerProps={{ onBack: goBack }}>
+      <Tabs.TabsWithHeader title={tag?.name ?? ""} headerProps={{ onBack: goBack }}>
         <Tabs.Tab name="Artworks" label="Artworks">
-          <TagArtworksPaginationContainer tag={tag!} />
+          <TagArtworksPaginationContainer tag={tag} />
         </Tabs.Tab>
         {!!tag?.description ? (
           <Tabs.Tab name="About" label="About">
@@ -61,7 +61,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
       environment={getRelayEnvironment()}
       query={graphql`
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
-          tag(id: $tagID) {
+          tag(id: $tagID) @principalField {
             slug
             name
             description
