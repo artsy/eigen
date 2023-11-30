@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { errorMiddleware } from "./errorMiddleware"
 import { GraphQLRequest } from "./types"
@@ -11,6 +12,12 @@ jest.mock("@sentry/react-native", () => ({
 
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARUsePrincipalFieldErrorHandlerMiddleware: false,
+    })
+  })
 
   describe("without princialField", () => {
     const request: GraphQLRequest = {
