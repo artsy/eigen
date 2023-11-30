@@ -28,7 +28,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   const initialArtworksTotal = useRef(artworksTotal)
 
   const trackClear = () => {
-    if (!!tag && !!tag.id && !!tag.slug) {
+    if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.clearFilters(tag.id, tag.slug))
     }
   }
@@ -82,14 +82,14 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
   const openFilterArtworksModal = () => {
-    if (!!tag && !!tag.id && !!tag.slug) {
+    if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.openFilterWindow(tag.id, tag.slug))
       handleOpenFilterArtworksModal()
     }
   }
 
   const closeFilterArtworksModal = () => {
-    if (!!tag && !!tag.id && !!tag.slug) {
+    if (tag?.id && tag?.slug) {
       tracking.trackEvent(tracks.closeFilterWindow(tag.id, tag.slug))
       handleCloseFilterArtworksModal()
     }
