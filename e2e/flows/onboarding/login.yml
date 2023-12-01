@@ -3,6 +3,7 @@ appId: ${MAESTRO_APP_ID}
 - launchApp:
     clearState: true
     clearKeychain: true
+    permissions: { all: deny }
 - tapOn: "Log in.*"
 - tapOn: "Continue with Email.*"
 - inputText: ${MAESTRO_TEST_EMAIL}
