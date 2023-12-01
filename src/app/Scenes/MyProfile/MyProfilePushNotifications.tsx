@@ -250,6 +250,7 @@ export const MyProfilePushNotifications: React.FC<{
         </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Recommendations" isLoading={isLoading}>
           <SwitchMenu
+            testID="newWorksSwitch"
             title="New Works for You"
             description="New works added by artists you follow"
             value={!!userNotificationSettings.receiveNewWorksNotification}
