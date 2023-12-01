@@ -1380,6 +1380,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     before: String
     first: Int
     last: Int
+    page: Int
+    size: Int
     sort: String
   ): AlertConnection
   alternateNames: [String]
@@ -13441,7 +13443,9 @@ type Partner implements Node {
     before: String
     first: Int
     last: Int
+    page: Int
     represented: Boolean
+    size: Int
   ): AlertsSummaryArtistConnection
 
   # A connection of all artists from a Partner.
