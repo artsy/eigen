@@ -161,7 +161,17 @@ commands:
           paths:
             - android/build
             - android/app/build
-            - node_modules/react-native-config
+            - node_modules/react-native-config:
+  install-maestro:
+    steps:
+      - run:
+          name: Install Maestro
+          command: curl -Ls "https://get.maestro.mobile.dev" | bash
+  maestro-run-tests:
+    steps:
+      - run:
+          name: Run tests
+          command: maestro test e2e/config.yml
 jobs:
   detect-secrets:
     docker:
@@ -328,6 +338,39 @@ jobs:
           paths:
             - .manifests
             - dist
+
+  maestro-test-app-ios:
+    environment:
+      MAESTRO_APP_ID: net.artsy.artsy
+
+    macos:
+      xcode: 15.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          keys:
+            - v11-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+      - checkout
+      - attach_workspace:
+          at: .
+      - macos/install-rosetta
+      - install-node
+      - setup-env-file
+      - install-node-modules
+      - install-maestro
+      - run-relay-compiler
+      - install-gems
+      - install-cocoapods
+      - macos/preboot-simulator:
+          version: "17.2"
+          platform: "iOS"
+          device: "iPhone 15 Pro"
+      - run: yarn maestro:ios:release:build
+      - run: yarn maestro:ios:release:install
+      - maestro-run-tests
 
   build-test-app-ios:
     environment:
@@ -513,3 +556,12 @@ workflows:
           requires:
             - build-test-app-ios
             - build-test-app-android
+
+      - approve-maestro-ios-test:
+          type: approval
+          requires:
+            - build-test-app-ios
+
+      - maestro-test-app-ios:
+          requires:
+            - approve-maestro-ios-test
