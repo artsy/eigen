@@ -45,7 +45,7 @@ export const useHandleIDVerification = (initiatorID: string) => {
         setShowVerificationBanner(true)
       }
     } catch (error) {
-      captureMessage(`useHandleIDVerification ${error}`, "log")
+      captureMessage(`useHandleIDVerification ${JSON.stringify(error)}`, "log")
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
