@@ -1,5 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtsyKeyboardAvoidingView, Flex, Spacer, Text, Button } from "@artsy/palette-mobile"
+import {
+  ArtsyKeyboardAvoidingView,
+  Flex,
+  Spacer,
+  Text,
+  Button,
+  BackButton,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -13,7 +21,7 @@ import {
   paramsToSnakeCase,
 } from "app/Scenes/PriceDatabase/utils/helpers"
 import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { stringify } from "query-string"
 import { ScrollView } from "react-native"
@@ -24,6 +32,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
 }) => {
   const toast = useToast()
   const { trackEvent } = useTracking()
+  const { space } = useTheme()
 
   const { values, isValid } = useFormikContext<PriceDatabaseSearchModel>()
 
@@ -52,6 +61,11 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardShouldPersistTaps="handled">
+        <BackButton
+          onPress={() => goBack()}
+          style={{ top: space(2), left: space(2), zIndex: 100 }}
+        />
+
         <Flex my={2}>
           <Flex mx={2} my={2}>
             <Text variant="lg" mb={0.5}>
