@@ -213,7 +213,7 @@ export const getStaticFilterOptionsByMode = (
       ]
 
     case FilterModalMode.Custom:
-      return customFilterOptions!
+      return customFilterOptions || []
 
     default:
       return [
