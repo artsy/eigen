@@ -30,7 +30,7 @@ export const rateLimitMiddleware = (
 
       if (isWithinInterval && count >= limit) {
         const message = `Rate limit exceeded: ${operationName}`
-        captureMessage(message)
+        captureMessage(message, "log")
         throw new Error(message)
       }
 

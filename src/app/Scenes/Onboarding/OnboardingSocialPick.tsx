@@ -84,7 +84,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleError = (error: AuthPromiseRejectType) => {
-    captureMessage("AUTH_FAILURE: " + error.message)
+    captureMessage("AUTH_FAILURE: " + error.message, "log")
 
     const canBeLinked =
       error.error === "User Already Exists" && error.meta && error.meta.existingProviders

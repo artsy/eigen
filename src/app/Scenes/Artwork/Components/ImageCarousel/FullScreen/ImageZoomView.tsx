@@ -138,7 +138,7 @@ export const ImageZoomView =
       if (__DEV__) {
         console.error("No image size info found")
       } else {
-        captureMessage("No image size info found (see breadcrumbs for artowrk id)")
+        captureMessage("No image size info found (see breadcrumbs for artowrk id)", "log")
       }
     }
     const imageSize = {

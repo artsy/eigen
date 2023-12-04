@@ -191,7 +191,7 @@ const useImageCarouselMedia = (
 
         if (!imageWidth || !imageHeight) {
           if (!__DEV__) {
-            captureMessage("ImageCarousel: image width or height is missing.")
+            captureMessage("ImageCarousel: image width or height is missing.", "log")
           }
           console.log("ImageCarousel: image width or height is missing", image)
         }

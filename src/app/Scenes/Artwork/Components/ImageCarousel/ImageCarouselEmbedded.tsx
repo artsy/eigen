@@ -114,7 +114,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       if (!__DEV__) {
         Sentry.withScope((scope) => {
           scope.setExtra(touchBank, indexOfSingleActiveTouch)
-          Sentry.captureMessage("touchBank has unexpected structure")
+          Sentry.captureMessage("touchBank has unexpected structure", "log")
         })
       }
       return

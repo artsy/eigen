@@ -47,12 +47,12 @@ const showError = (
         `you will first need to sign up with ${providerName}. ` +
         `You will then have the option to link the two accounts.
         `
-      Sentry.captureMessage("AUTH_FAILURE: " + message)
+      Sentry.captureMessage("AUTH_FAILURE: " + message, "log")
       reject(new AuthError(message))
       return
     } else {
       const message = "Login attempt failed"
-      Sentry.captureMessage("AUTH_FAILURE: " + message)
+      Sentry.captureMessage("AUTH_FAILURE: " + message, "log")
       reject(new AuthError(message))
       return
     }
@@ -100,7 +100,7 @@ const handleSignUpError = ({
     message = "Failed to sign up"
   }
 
-  Sentry.captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
+  Sentry.captureMessage("AUTH_SIGN_UP_FAILURE: " + message, "log")
 
   return {
     message,
@@ -120,7 +120,7 @@ export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
       {
         text: "OK",
         onPress: () => {
-          Sentry.captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
+          Sentry.captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported", "log")
         },
       },
     ]
