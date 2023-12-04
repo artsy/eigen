@@ -51,7 +51,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       action: ActionType.createdArtworkList,
       context_owner_id: analytics.contextScreenOwnerId,
       context_owner_slug: analytics.contextScreenOwnerSlug,
-      context_owner_type: analytics.contextScreenOwnerType,
+      context_owner_type: analytics.contextScreenOwnerType!,
       owner_id: artworkListId,
     }
 
