@@ -497,11 +497,11 @@ const CollectionFiltersSorted: FilterScreen[] = [
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
-  "artistSeriesIDs",
   "attributionClass",
   "medium",
   "additionalGeneIDs",
   "priceRange",
+  "artistSeriesIDs",
   "sizes",
   "waysToBuy",
   "materialsTerms",
