@@ -213,7 +213,7 @@ export const getStaticFilterOptionsByMode = (
       ]
 
     case FilterModalMode.Custom:
-      return customFilterOptions!
+      return customFilterOptions || []
 
     default:
       return [
@@ -497,11 +497,11 @@ const CollectionFiltersSorted: FilterScreen[] = [
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
-  "artistSeriesIDs",
   "attributionClass",
   "medium",
   "additionalGeneIDs",
   "priceRange",
+  "artistSeriesIDs",
   "sizes",
   "waysToBuy",
   "materialsTerms",
