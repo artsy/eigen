@@ -137,7 +137,9 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
           if (__DEV__) {
             console.error(error)
           } else {
-            captureMessage(error.stack!)
+            if (error.stack) {
+              captureMessage(error.stack)
+            }
           }
         }
 

@@ -1,10 +1,12 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { Dialog, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { LengthUnitPreference } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -25,6 +27,7 @@ import { SavedSearchStore } from "./SavedSearchStore"
 import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
+  localizeHeightAndWidthAttributes,
   showWarningMessageForDuplicateAlert,
   useSearchCriteriaAttributes,
 } from "./helpers"
@@ -57,12 +60,20 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     ...other
   } = props
   const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
+  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
 
   const isUpdateForm = !!savedSearchAlertId
   const isFirstRender = useFirstMountState()
-  const pills = useSavedSearchPills()
+
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
+  const unit = SavedSearchStore.useStoreState((state) => state.unit)
+
+  const pills = useSavedSearchPills({
+    convertUnit: false,
+    unit,
+  })
+
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
@@ -90,7 +101,25 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
 
       try {
-        const clearedAttributes = clearDefaultAttributes(attributes)
+        const clearedAttributes = clearDefaultAttributes(
+          enableAlertsFiltersSizeFiltering
+            ? // Our backend currently suports storing only inches for size
+              localizeHeightAndWidthAttributes({
+                attributes: attributes as SearchCriteriaAttributes,
+                from: unit,
+                to: "in",
+              })
+            : attributes
+        )
+
+        if (enableAlertsFiltersSizeFiltering) {
+          // Update the user profile metric to be the same as the selected metric
+          updateMyUserProfile({
+            lengthUnitPreference: unit.toUpperCase() as LengthUnitPreference,
+          })
+          GlobalStore.actions.userPrefs.setMetric(unit)
+        }
+
         const submitHandler = isUpdateForm ? handleUpdateAlert : handleCreateAlert
         let duplicateSavedSearchId: string | undefined
 

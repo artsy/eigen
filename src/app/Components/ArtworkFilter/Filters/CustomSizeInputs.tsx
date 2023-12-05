@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, useColor, Text, Join } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { Input } from "app/Components/Input"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import React, { useState } from "react"

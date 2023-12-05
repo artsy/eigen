@@ -1,3 +1,4 @@
+import { cmToIn, inToCm, parseRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
@@ -208,4 +209,40 @@ export const useSavedSearchFilter = ({ criterion }: { criterion: SearchCriteria 
   return {
     handlePress,
   }
+}
+
+export const localizeHeightAndWidthAttributes = ({
+  attributes,
+  from,
+  to,
+}: {
+  attributes: SearchCriteriaAttributes
+  from: "cm" | "in"
+  to: "cm" | "in"
+}) => {
+  if (from === to) {
+    return attributes
+  }
+
+  const localizedAttributes = { ...attributes }
+
+  const convert = from === "cm" && to === "in" ? cmToIn : inToCm
+
+  const roundDigits = to == "in" ? 2 : 0
+
+  if (localizedAttributes[SearchCriteria.width]) {
+    const range = parseRange(localizedAttributes[SearchCriteria.width])
+    const localizedMinWidth = convert(range.min, true, roundDigits)
+    const localizedMaxWidth = convert(range.max, true, roundDigits)
+    localizedAttributes[SearchCriteria.width] = `${localizedMinWidth}-${localizedMaxWidth}`
+  }
+
+  if (localizedAttributes[SearchCriteria.height]) {
+    const range = parseRange(localizedAttributes[SearchCriteria.height])
+    const localizedMinHeight = convert(range.min, true, roundDigits)
+    const localizedMaxHeight = convert(range.max, true, roundDigits)
+    localizedAttributes[SearchCriteria.width] = `${localizedMinHeight}-${localizedMaxHeight}`
+  }
+
+  return localizedAttributes
 }

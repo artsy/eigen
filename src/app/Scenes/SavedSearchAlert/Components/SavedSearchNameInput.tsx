@@ -64,7 +64,7 @@ export const SavedSearchNameInputQueryRenderer: React.FC<
         }
       `}
       variables={{
-        attributes: omit(attributes, ["displayName", "dimensionRange"]),
+        attributes: omit(attributes, ["displayName", "dimensionRange", "height", "width"]),
       }}
       render={({ props, error }) => {
         if (error) {

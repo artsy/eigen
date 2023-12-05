@@ -15,6 +15,7 @@ import {
   localizeDimension,
   parsePriceRangeLabel,
   parseRange,
+  round,
 } from "app/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "app/Components/ArtworkFilter/SavedSearch/constants"
 import {
@@ -32,6 +33,7 @@ interface ExtractFromCriteriaOptions {
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
   unit: Metric
+  convertUnit?: boolean // default true
 }
 
 type ExtractPillsOptions = ExtractFromCriteriaOptions & {
@@ -66,14 +68,18 @@ export const extractSizeLabel = ({
   prefix,
   value,
   unit,
+  convertUnit = true,
 }: {
   prefix: string
   value: string
   unit: Metric
+  convertUnit?: boolean
 }) => {
   const range = parseRange(value)
-  const min = localizeDimension(range.min, unit)
-  const max = localizeDimension(range.max, unit)
+
+  const min = convertUnit ? localizeDimension(range.min, unit) : round(range.min)
+  const max = convertUnit ? localizeDimension(range.max, unit) : round(range.max)
+
   let label
 
   if (max === "*") {
@@ -185,7 +191,12 @@ export const extractPillsFromCriteria = (
 
     if (paramName === SearchCriteria.width) {
       return {
-        label: extractSizeLabel({ prefix: "w", value: paramValue, unit }),
+        label: extractSizeLabel({
+          prefix: "w",
+          value: paramValue,
+          unit,
+          convertUnit: !!options.convertUnit,
+        }),
         value: paramValue,
         paramName: SearchCriteria.width,
       } as SavedSearchPill
@@ -193,7 +204,12 @@ export const extractPillsFromCriteria = (
 
     if (paramName === SearchCriteria.height) {
       return {
-        label: extractSizeLabel({ prefix: "h", value: paramValue, unit }),
+        label: extractSizeLabel({
+          prefix: "h",
+          value: paramValue,
+          unit,
+          convertUnit: !!options.convertUnit,
+        }),
         value: paramValue,
         paramName: SearchCriteria.height,
       } as SavedSearchPill
@@ -261,6 +277,7 @@ export const extractPills = (options: ExtractPillsOptions) => {
     attributes,
     aggregations,
     unit,
+    convertUnit: !!options.convertUnit,
   })
 
   return compact([...artistPills, ...pillsFromCriteria])
