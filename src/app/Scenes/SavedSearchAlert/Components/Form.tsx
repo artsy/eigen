@@ -151,7 +151,7 @@ export const Form: React.FC<FormProps> = ({
           <SavedSearchNameInputQueryRenderer attributes={attributes} />
 
           <Box>
-            <Text variant="sm-display">Filters</Text>
+            <Text variant="sm-display">We'll send you alerts for</Text>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
               {pills.map((pill, index) => (
                 <Pill
