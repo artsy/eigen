@@ -1,22 +1,20 @@
 import { Text } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { debounce } from "lodash"
 import { Platform, Switch } from "react-native"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-import {
-  AllowPushNotificationsBanner,
-  MyProfilePushNotifications,
-  MyProfilePushNotificationsQueryRenderer,
-  OpenSettingsBanner,
-} from "./MyProfilePushNotifications"
+import relay, { graphql } from "react-relay"
+import { MyProfilePushNotificationsQueryRenderer } from "./MyProfilePushNotifications"
+
+jest.mock("lodash/debounce", () => jest.fn())
 
 describe(SwitchMenu, () => {
-  it("title is set to black100 when enabled", () => {
+  it("title is set to black100 when enabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -24,13 +22,16 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: false,
     }
-    const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
+    const { root } = renderWithWrappers(<SwitchMenu {...props} />)
     // default state
-    expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(false)
-    expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black100")
+    const switchElement = await root.findByType(Switch)
+    const switchTextElements = await root.findAllByType(Text)
+
+    expect(switchElement.props.disabled).toBe(false)
+    expect(switchTextElements[0].props.color).toEqual("black100")
   })
 
-  it("title is set to black60 when disabled", () => {
+  it("title is set to black60 when disabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -38,140 +39,161 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: true,
     }
-    const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
+    const { root } = renderWithWrappers(<SwitchMenu {...props} />)
     // default state
-    expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(true)
-    expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black60")
+    const switchElement = await root.findByType(Switch)
+    const switchTextElements = await root.findAllByType(Text)
+
+    expect(switchElement.props.disabled).toBe(true)
+    expect(switchTextElements[0].props.color).toEqual("black60")
   })
 })
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = getMockRelayEnvironment()
+  afterEach(() => {
+    jest.resetAllMocks()
   })
 
-  it("Loads until the operation resolves", () => {
-    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
-    expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
-    expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(true)
+  const { renderWithRelay } = setupTestWrapper<MyProfilePushNotificationsTestQuery>({
+    Component: MyProfilePushNotificationsQueryRenderer,
+    query: graphql`
+      query MyProfilePushNotificationsTestQuery @relay_test_operation {
+        me {
+          ...MyProfilePushNotifications_me
+        }
+      }
+    `,
   })
 
-  it("renders without throwing an error", () => {
-    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
+  describe("on iOS", () => {
+    beforeEach(() => (Platform.OS = "ios"))
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
+    it("should show the allow notification banner if the user was never prompted to allow push notifications", async () => {
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, PushAuthorizationStatus.NotDetermined)
+      )
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-            receivePartnerShowNotification: true,
-          },
-        },
-      })
+      renderWithRelay({ Me: () => mockNotificationsPreferences })
+
+      expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
+      expect(
+        screen.getByText(/We need your permission to send push notifications/i)
+      ).toBeOnTheScreen()
     })
 
-    expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
-    expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(undefined)
-  })
+    it("should show the open settings banner on iOS if the user did not allow push notifications", async () => {
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, PushAuthorizationStatus.Denied)
+      )
 
-  it("should show the allow notification banner if the user was never prompted to allow push notifications", () => {
-    mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-      cb(null, PushAuthorizationStatus.NotDetermined)
-    )
-    Platform.OS = "ios"
-    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
+      renderWithRelay({ Me: () => mockNotificationsPreferences })
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
+      expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-            receivePartnerShowNotification: true,
-          },
-        },
-      })
+      expect(await screen.findByText(/enable them in your iOS Settings/i)).toBeOnTheScreen()
+      expect(screen.getByText("Open settings")).toBeOnTheScreen()
     })
-    expect(tree.root.findAllByType(AllowPushNotificationsBanner)).toHaveLength(1)
   })
 
-  it("should NEVER show Allow Notification Banner on android", () => {
-    mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
-    Platform.OS = "android"
+  describe("on Android", () => {
+    beforeEach(() => (Platform.OS = "android"))
 
-    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
+    it("should NEVER show Allow Notification Banner on android", () => {
+      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
+      renderWithRelay({ Me: () => mockNotificationsPreferences })
 
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-            receivePartnerShowNotification: true,
-          },
-        },
-      })
+      expect(screen.queryByText("Artsy would like to send you notifications")).toBeFalsy()
     })
-    expect(tree.root.findAllByType(AllowPushNotificationsBanner)).toHaveLength(0)
+
+    // FIXME: Platform.select always defaults to iOS, which breaks this test
+    it.skip("should show the open settings banner on Android if the user did not allow push notifications", async () => {
+      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+
+      renderWithRelay({ Me: () => mockNotificationsPreferences })
+
+      expect(screen.getByText("Artsy would like to send you notifications")).toBeOnTheScreen()
+
+      expect(
+        await screen.findByText(/you will need to enable them in your device settings/i)
+      ).toBeOnTheScreen()
+      expect(screen.getByText("Open settings")).toBeOnTheScreen()
+    })
   })
 
-  it("should show the open settings banner on iOS if the user did not allow push notifications", async () => {
-    mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-      cb(null, PushAuthorizationStatus.Denied)
-    )
-    Platform.OS = "ios"
-    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
+  describe("update notification preferences", () => {
+    relay.commitMutation = jest.fn()
 
-    await flushPromiseQueue()
-    tree.update(<MyProfilePushNotificationsQueryRenderer />)
-    expect(tree.root.findAllByType(OpenSettingsBanner)).toHaveLength(1)
+    beforeEach(() => {
+      ;(debounce as jest.Mock).mockImplementation((func) => func)
+    })
+
+    it("should set the notification preference to true", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      mockResolveLastOperation({ Me: () => mockNotificationsPreferences })
+
+      const switchElement = await screen.findByTestId("newWorksSwitch")
+
+      expect(switchElement.props.on).toBe(true)
+
+      fireEvent(switchElement, "onValueChange", false)
+
+      expect(switchElement.props.on).toBe(false)
+
+      expect(relay.commitMutation).toHaveBeenCalledTimes(1)
+      expect(relay.commitMutation).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          variables: {
+            input: {
+              ...mockNotificationsPreferences,
+              receiveNewWorksNotification: false,
+            },
+          },
+        })
+      )
+    })
+
+    it("should set the notification preference to true", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      mockResolveLastOperation({
+        Me: () => ({ ...mockNotificationsPreferences, receiveNewWorksNotification: false }),
+      })
+
+      const switchElement = screen.getByTestId("newWorksSwitch")
+
+      expect(switchElement.props.on).toBe(false)
+
+      fireEvent(switchElement, "onValueChange", true)
+
+      expect(switchElement.props.on).toBe(true)
+
+      expect(relay.commitMutation).toHaveBeenCalledTimes(1)
+      expect(relay.commitMutation).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          variables: {
+            input: {
+              ...mockNotificationsPreferences,
+              receiveNewWorksNotification: true,
+            },
+          },
+        })
+      )
+    })
   })
 })
 
-it("should show the open settings banner on Android if the user did not allow push notifications", async () => {
-  mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
-  Platform.OS = "android"
-  const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
-  await flushPromiseQueue()
-  tree.update(<MyProfilePushNotificationsQueryRenderer />)
-  expect(tree.root.findAllByType(OpenSettingsBanner)).toHaveLength(1)
-})
+const mockNotificationsPreferences = {
+  receiveLotOpeningSoonNotification: true,
+  receiveNewSalesNotification: true,
+  receiveNewWorksNotification: true,
+  receiveOutbidNotification: true,
+  receivePromotionNotification: true,
+  receivePurchaseNotification: true,
+  receiveSaleOpeningClosingNotification: true,
+  receiveOrderNotification: true,
+  receiveViewingRoomNotification: true,
+  receivePartnerShowNotification: true,
+  receivePartnerOfferNotification: true,
+}

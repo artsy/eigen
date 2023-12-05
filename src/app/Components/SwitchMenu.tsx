@@ -7,6 +7,7 @@ interface SwitchMenuProps {
   title: string
   description: string
   disabled?: boolean
+  testID?: string
 }
 
 export const SwitchMenu = ({
@@ -15,6 +16,7 @@ export const SwitchMenu = ({
   title,
   description,
   disabled = false,
+  testID,
 }: SwitchMenuProps) => {
   const color = useColor()
   return (
@@ -29,6 +31,7 @@ export const SwitchMenu = ({
       </Flex>
       <Flex style={{ width: "20%" }} alignItems="flex-end">
         <Switch
+          testID={testID}
           trackColor={{
             false: color("black10"),
             true: disabled ? color("black30") : color("black100"),

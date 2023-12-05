@@ -9,6 +9,7 @@ import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import useAppState from "app/utils/useAppState"
@@ -44,6 +45,7 @@ export type UserPushNotificationSettings =
   | "receiveOrderNotification"
   | "receiveViewingRoomNotification"
   | "receivePartnerShowNotification"
+  | "receivePartnerOfferNotification"
 
 export const OpenSettingsBanner = () => (
   <>
@@ -121,6 +123,10 @@ export const MyProfilePushNotifications: React.FC<{
     useState<MyProfilePushNotifications_me$data>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
+  const enablePartnerOffersNotificationSwitch = useFeatureFlag(
+    "AREnablePartnerOffersNotificationSwitch"
+  )
+
   useEffect(() => {
     getPermissionStatus()
   }, [])
@@ -180,6 +186,19 @@ export const MyProfilePushNotifications: React.FC<{
       }
     >
       <Join separator={<Separator my={1} />}>
+        {!!enablePartnerOffersNotificationSwitch && (
+          <NotificationPermissionsBox title="Gallery Offers" isLoading={isLoading}>
+            <SwitchMenu
+              title="Offers on Saved Artworks"
+              description="Offers from galleries on artworks you saved"
+              value={!!userNotificationSettings.receivePartnerOfferNotification}
+              disabled={isLoading}
+              onChange={(value) => {
+                handleUpdateUserNotificationSettings("receivePartnerOfferNotification", value)
+              }}
+            />
+          </NotificationPermissionsBox>
+        )}
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
             title="Messages"
@@ -231,6 +250,7 @@ export const MyProfilePushNotifications: React.FC<{
         </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Recommendations" isLoading={isLoading}>
           <SwitchMenu
+            testID="newWorksSwitch"
             title="New Works for You"
             description="New works added by artists you follow"
             value={!!userNotificationSettings.receiveNewWorksNotification}
@@ -315,6 +335,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receiveOrderNotification
         receiveViewingRoomNotification
         receivePartnerShowNotification
+        receivePartnerOfferNotification
       }
     `,
   },
