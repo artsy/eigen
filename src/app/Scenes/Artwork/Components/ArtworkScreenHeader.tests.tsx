@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { goBack } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -13,11 +12,9 @@ describe("ArtworkScreenHeader", () => {
     Component: (props) => {
       if (props?.artwork) {
         return (
-          <ArtworkFiltersStoreProvider>
-            <ArtworkStoreProvider>
-              <ArtworkScreenHeader artwork={props.artwork} />
-            </ArtworkStoreProvider>
-          </ArtworkFiltersStoreProvider>
+          <ArtworkStoreProvider>
+            <ArtworkScreenHeader artwork={props.artwork} />
+          </ArtworkStoreProvider>
         )
       }
       return null

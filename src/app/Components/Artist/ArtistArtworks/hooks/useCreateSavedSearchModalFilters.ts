@@ -17,11 +17,11 @@ export const useCreateSavedSearchModalFilters = ({
   entityOwnerType: ScreenOwnerType
 }) => {
   const savedSearchEntity: SavedSearchEntity = {
-    artists: [{ id: entityId!, name: entityName! }],
+    artists: [{ id: entityId, name: entityName }],
     owner: {
       type: entityOwnerType,
-      id: entityId!,
-      slug: entitySlug!,
+      id: entityId,
+      slug: entitySlug,
     },
   }
 
@@ -32,5 +32,6 @@ export const useCreateSavedSearchModalFilters = ({
   return {
     attributes,
     savedSearchEntity,
+    sizeMetric: filterState.sizeMetric,
   }
 }

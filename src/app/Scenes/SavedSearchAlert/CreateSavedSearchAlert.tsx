@@ -1,7 +1,6 @@
 import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import {
   savedSearchModel,
@@ -23,8 +22,7 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
-  const { attributes, aggregations, entity, currentArtworkID } = params
-  const selectedMetric = ArtworksFiltersStore.useStoreState((state) => state.sizeMetric)
+  const { attributes, aggregations, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
 
   return (
@@ -35,12 +33,12 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           attributes: localizeHeightAndWidthAttributes({
             attributes: attributes,
             from: "in",
-            to: selectedMetric || localizedUnit,
+            to: sizeMetric || localizedUnit,
           }),
           aggregations,
           currentArtworkID,
           entity,
-          unit: selectedMetric || localizedUnit,
+          unit: sizeMetric || localizedUnit,
         }}
       >
         <NavigationContainer independent>
@@ -55,6 +53,20 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   cardStyle: { backgroundColor: "white" },
                 }}
               >
+                <Stack.Screen
+                  name="CreateSavedSearchAlert"
+                  component={CreateSavedSearchAlertContentQueryRenderer}
+                  initialParams={params}
+                />
+                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                <Stack.Screen
+                  name="AlertPriceRange"
+                  component={AlertPriceRangeScreenQueryRenderer}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
+                  }}
+                />
                 <Stack.Screen
                   name="CreateSavedSearchAlert"
                   component={CreateSavedSearchAlertContentQueryRenderer}
