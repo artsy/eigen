@@ -251,8 +251,7 @@ describe("MyProfileEditForm", () => {
 
           expect(() => screen.getByText("ID verification link sent to", { exact: false })).toThrow()
           expect(Sentry.captureMessage).toHaveBeenCalledWith(
-            `useHandleIDVerification ${JSON.stringify(relayResponse.errors)}`,
-            "log"
+            `useHandleIDVerification ${JSON.stringify(relayResponse.errors)}`
           )
         })
       })
