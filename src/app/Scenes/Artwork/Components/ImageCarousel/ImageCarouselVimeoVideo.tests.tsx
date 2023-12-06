@@ -2,7 +2,7 @@ import { extractVimeoVideoDataFromUrl } from "./ImageCarouselVimeoVideo"
 
 describe("ImageCarouselVimeoVideo", () => {
   describe("extractVimeoVideoDataFromUrl", () => {
-    test("extracts the video props from vimeo url", () => {
+    it("extracts the video props from vimeo url", () => {
       const url = "https://player.vimeo.com/video/123456789?h=123456789&width=640&height=360"
       const result = extractVimeoVideoDataFromUrl(url)
 
