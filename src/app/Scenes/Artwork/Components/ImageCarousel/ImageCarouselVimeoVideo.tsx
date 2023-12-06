@@ -103,7 +103,7 @@ export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
 
   return {
     videoId,
-    token: params["?h"],
+    token: params.h,
     width: params.width,
     height: params.height,
   }
