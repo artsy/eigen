@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { ArtsyKeyboardAvoidingView } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -110,48 +111,50 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <SavedSearchStoreProvider
-        runtimeModel={{
-          ...savedSearchModel,
-          attributes: attributes as SearchCriteriaAttributes,
-          aggregations,
-          entity,
-        }}
-      >
-        <NavigationContainer independent>
-          <Stack.Navigator
-            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-            detachInactiveScreens={false}
-            screenOptions={{
-              ...TransitionPresets.SlideFromRightIOS,
-              headerShown: false,
-              cardStyle: { backgroundColor: "white" },
-            }}
-          >
-            <Stack.Screen
-              name="EditSavedSearchAlertContent"
-              component={EditSavedSearchAlertContent}
-              initialParams={params}
-            />
-            <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-            <Stack.Screen
-              name="AlertPriceRange"
-              component={AlertPriceRangeScreenQueryRenderer}
-              options={{
-                // Avoid PanResponser conflicts between the slider and the slide back gesture
-                gestureEnabled: false,
+      <ArtsyKeyboardAvoidingView>
+        <SavedSearchStoreProvider
+          runtimeModel={{
+            ...savedSearchModel,
+            attributes: attributes as SearchCriteriaAttributes,
+            aggregations,
+            entity,
+          }}
+        >
+          <NavigationContainer independent>
+            <Stack.Navigator
+              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+              detachInactiveScreens={false}
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+                cardStyle: { backgroundColor: "white" },
               }}
-            />
-            <Stack.Screen
-              name="SavedSearchFilterScreen"
-              component={SavedSearchFilterScreen}
-              options={{
-                gestureEnabled: false,
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SavedSearchStoreProvider>
+            >
+              <Stack.Screen
+                name="EditSavedSearchAlertContent"
+                component={EditSavedSearchAlertContent}
+                initialParams={params}
+              />
+              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+              <Stack.Screen
+                name="AlertPriceRange"
+                component={AlertPriceRangeScreenQueryRenderer}
+                options={{
+                  // Avoid PanResponser conflicts between the slider and the slide back gesture
+                  gestureEnabled: false,
+                }}
+              />
+              <Stack.Screen
+                name="SavedSearchFilterScreen"
+                component={SavedSearchFilterScreen}
+                options={{
+                  gestureEnabled: false,
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SavedSearchStoreProvider>
+      </ArtsyKeyboardAvoidingView>
     </ProvideScreenTracking>
   )
 }

@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -24,62 +24,64 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const { attributes, aggregations, entity, currentArtworkID } = params
 
   return (
-    <SavedSearchStoreProvider
-      runtimeModel={{
-        ...savedSearchModel,
-        attributes: attributes as SearchCriteriaAttributes,
-        aggregations,
-        entity,
-        currentArtworkID,
-      }}
-    >
-      <NavigationContainer independent>
-        <FancyModal visible={visible} fullScreen>
-          <Box flex={1}>
-            <Stack.Navigator
-              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-              detachInactiveScreens={false}
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                cardStyle: { backgroundColor: "white" },
-              }}
-            >
-              <Stack.Screen
-                name="CreateSavedSearchAlert"
-                component={CreateSavedSearchAlertContentQueryRenderer}
-                initialParams={params}
-              />
-              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-              <Stack.Screen
-                name="AlertPriceRange"
-                component={AlertPriceRangeScreenQueryRenderer}
-                options={{
-                  // Avoid PanResponser conflicts between the slider and the slide back gesture
-                  gestureEnabled: false,
+    <ArtsyKeyboardAvoidingView>
+      <SavedSearchStoreProvider
+        runtimeModel={{
+          ...savedSearchModel,
+          attributes: attributes as SearchCriteriaAttributes,
+          aggregations,
+          entity,
+          currentArtworkID,
+        }}
+      >
+        <NavigationContainer independent>
+          <FancyModal visible={visible} fullScreen>
+            <Box flex={1}>
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: { backgroundColor: "white" },
                 }}
-              />
-              <Stack.Screen
-                name="ConfirmationScreen"
-                component={ConfirmationScreen}
-                options={{
-                  gestureEnabled: false,
-                }}
-                initialParams={{
-                  closeModal: params.onClosePress,
-                }}
-              />
-              <Stack.Screen
-                name="SavedSearchFilterScreen"
-                component={SavedSearchFilterScreen}
-                options={{
-                  gestureEnabled: false,
-                }}
-              />
-            </Stack.Navigator>
-          </Box>
-        </FancyModal>
-      </NavigationContainer>
-    </SavedSearchStoreProvider>
+              >
+                <Stack.Screen
+                  name="CreateSavedSearchAlert"
+                  component={CreateSavedSearchAlertContentQueryRenderer}
+                  initialParams={params}
+                />
+                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                <Stack.Screen
+                  name="AlertPriceRange"
+                  component={AlertPriceRangeScreenQueryRenderer}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="ConfirmationScreen"
+                  component={ConfirmationScreen}
+                  options={{
+                    gestureEnabled: false,
+                  }}
+                  initialParams={{
+                    closeModal: params.onClosePress,
+                  }}
+                />
+                <Stack.Screen
+                  name="SavedSearchFilterScreen"
+                  component={SavedSearchFilterScreen}
+                  options={{
+                    gestureEnabled: false,
+                  }}
+                />
+              </Stack.Navigator>
+            </Box>
+          </FancyModal>
+        </NavigationContainer>
+      </SavedSearchStoreProvider>
+    </ArtsyKeyboardAvoidingView>
   )
 }
