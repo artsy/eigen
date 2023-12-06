@@ -27,13 +27,11 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const NUMBER_OF_ARTWORKS_TO_SHOW = 10
 
-export interface BrowseSimilarWorksContentProps {
-  params: BrowseSimilarWorksProps
-}
-
-export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps> = (props) => {
-  const { params } = props
-  const { attributes, aggregations, entity } = params
+export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksProps> = ({
+  attributes,
+  aggregations,
+  entity,
+}) => {
   const { localizedUnit } = useLocalizedUnit()
   const { space } = useTheme()
   const { bottom: bottomInset } = useSafeAreaInsets()

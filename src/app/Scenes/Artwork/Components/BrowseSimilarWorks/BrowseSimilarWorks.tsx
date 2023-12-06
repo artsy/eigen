@@ -48,15 +48,19 @@ const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> 
     return null
   }
 
-  const artworkAlert = computeArtworkAlertProps(artwork)
+  const artworkAlertProps = computeArtworkAlertProps(artwork)
 
-  const params: BrowseSimilarWorksProps = {
-    aggregations: artworkAlert.aggregations!,
-    attributes: artworkAlert.attributes!,
-    entity: artworkAlert.entity!,
+  if (!artworkAlertProps) {
+    return null
   }
 
-  return <BrowseSimilarWorksContent params={params} />
+  return (
+    <BrowseSimilarWorksContent
+      attributes={artworkAlertProps?.attributes}
+      aggregations={artworkAlertProps?.aggregations}
+      entity={artworkAlertProps?.entity}
+    />
+  )
 }
 
 export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense(
@@ -69,7 +73,7 @@ export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = 
       return <BrowseSimilarWorksErrorState />
     }
 
-    return <BrowseSimilarWorks artwork={data.artwork!} />
+    return <BrowseSimilarWorks artwork={data.artwork} />
   },
   BrowseSimilarWorksPlaceholder
 )
@@ -83,6 +87,13 @@ const similarWorksFragment = graphql`
     artistsArray: artists {
       internalID
       name
+    }
+    artistSeriesConnection(first: 5) {
+      edges {
+        node {
+          slug
+        }
+      }
     }
     attributionClass {
       internalID

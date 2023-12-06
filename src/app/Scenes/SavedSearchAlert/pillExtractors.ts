@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import {
   aggregationForFilter,
   Aggregations,
@@ -156,6 +157,16 @@ export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill
   })
 }
 
+export const extractPillFromArtistSeriesIDs = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
+    return {
+      label: toTitleCase(value.replaceAll("-", " ")),
+      value,
+      paramName: SearchCriteria.artistSeriesIDs,
+    }
+  })
+}
+
 export const extractPriceRangePill = (value: string): SavedSearchPill => {
   const { min, max } = parseRange(value)
 
@@ -237,6 +248,10 @@ export const extractPillsFromCriteria = (
 
     if (paramName === SearchCriteria.additionalGeneIDs) {
       return extractAdditionalGeneIDsPills(paramValue)
+    }
+
+    if (paramName === SearchCriteria.artistSeriesIDs) {
+      return extractPillFromArtistSeriesIDs(paramValue)
     }
 
     // Extract label from aggregations

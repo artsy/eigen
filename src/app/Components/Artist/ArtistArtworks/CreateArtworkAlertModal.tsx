@@ -11,6 +11,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
@@ -30,6 +31,13 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
   const data = useFragment<CreateArtworkAlertModalProps["artwork"]>(
     graphql`
       fragment CreateArtworkAlertModal_artwork on Artwork {
+        artistSeriesConnection(first: 5) {
+          edges {
+            node {
+              slug
+            }
+          }
+        }
         title
         internalID
         slug
@@ -60,12 +68,16 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
 
   const artworkAlert = computeArtworkAlertProps(data)
 
+  if (!artworkAlert) {
+    return null
+  }
+
   return (
     <CreateSavedSearchModal
       visible={visible}
-      entity={artworkAlert.entity!}
-      attributes={artworkAlert.attributes!}
-      aggregations={artworkAlert.aggregations!}
+      entity={artworkAlert.entity}
+      attributes={artworkAlert.attributes}
+      aggregations={artworkAlert.aggregations}
       closeModal={onClose}
       contextModule={contextModule}
       currentArtworkID={data.internalID}
@@ -79,11 +91,7 @@ export const computeArtworkAlertProps = (
   const { isEligibleToCreateAlert } = artwork
 
   if (!isEligibleToCreateAlert) {
-    return {
-      entity: null,
-      attributes: null,
-      aggregations: null,
-    }
+    return null
   }
 
   let aggregations: Aggregations = []
@@ -93,7 +101,7 @@ export const computeArtworkAlertProps = (
   const attributionClass = compact([artwork?.attributionClass?.internalID])
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
-    name: artist.name!,
+    name: artist.name || "",
   }))
 
   const entity: SavedSearchEntity = {
@@ -121,10 +129,13 @@ export const computeArtworkAlertProps = (
     ]
   }
 
+  const artistSeriesIDs = extractNodes(artwork?.artistSeriesConnection).map((series) => series.slug)
+
   const attributes: SearchCriteriaAttributes = {
     artistIDs: formattedArtists.map((artist) => artist.id),
     attributionClass,
     additionalGeneIDs,
+    artistSeriesIDs,
   }
 
   return {

@@ -57,7 +57,7 @@ const artworkFragment = graphql`
   fragment ArtworksInSeriesRail_artwork on Artwork {
     internalID
     slug
-    artistSeriesConnection(first: 1) {
+    artistSeriesConnection(first: 5) {
       edges {
         node {
           slug

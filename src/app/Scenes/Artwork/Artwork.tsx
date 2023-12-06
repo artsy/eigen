@@ -589,7 +589,7 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        artistSeriesConnection(first: 1) {
+        artistSeriesConnection(first: 5) {
           edges {
             node {
               filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
