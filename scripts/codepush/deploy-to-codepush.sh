@@ -30,5 +30,6 @@ fi
 
 # Deploy to codepush
 bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:ios
+bundle exec fastlane deploy_to_codepush deployment_name:$deployment description:"$description" platform:android
 
 echo "Release to $deployment deployment successful."
