@@ -137,7 +137,7 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
           if (__DEV__) {
             console.error(error)
           } else {
-            captureMessage(`CreateSavedSearchAlertContentQueryRenderer ${error.message}`, "log")
+            captureMessage(`CreateSavedSearchAlertContentQueryRenderer ${error.message}`)
           }
         }
 

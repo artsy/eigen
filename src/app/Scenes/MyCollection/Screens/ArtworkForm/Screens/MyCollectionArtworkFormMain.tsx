@@ -247,7 +247,7 @@ export const MyCollectionArtworkFormMain: React.FC<
       if (__DEV__) {
         console.error(e)
       } else {
-        captureMessage(`deleteArtwork ${e}`, "log")
+        captureMessage(`deleteArtwork ${JSON.stringify(e)}`)
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     }

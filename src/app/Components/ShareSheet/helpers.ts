@@ -81,7 +81,7 @@ export async function getImageBase64(url: string): Promise<string> {
     if (__DEV__) {
       console.warn(`Failed to fetch image from ${url}: ${error}`)
     } else {
-      captureMessage(`getImageBase64 Failed to fetch image from ${url}: ${error}`, "log")
+      captureMessage(`getImageBase64 Failed to fetch image from ${url}: ${error}`)
     }
     return ""
   }

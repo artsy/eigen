@@ -93,7 +93,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`useCreateNewArtworkListMutation ${error?.message}`, "log")
+          captureMessage(`useCreateNewArtworkListMutation ${error?.message}`)
         }
       },
     })

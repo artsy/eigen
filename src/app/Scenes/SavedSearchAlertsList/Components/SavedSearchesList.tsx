@@ -120,7 +120,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`, "log")
+          captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`)
         }
       }
 

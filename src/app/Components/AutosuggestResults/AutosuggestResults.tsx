@@ -367,7 +367,7 @@ export const AutosuggestResults: React.FC<{
             if (__DEV__) {
               console.error(error)
             } else {
-              captureMessage(`AutosuggestResultsQuery ${error.message}`, "log")
+              captureMessage(`AutosuggestResultsQuery ${error.message}`)
             }
 
             if (showOnRetryErrorMessage && retry) {

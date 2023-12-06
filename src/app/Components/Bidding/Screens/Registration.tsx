@@ -161,7 +161,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       if (__DEV__) {
         console.error(e)
       } else {
-        captureMessage(`setupPhoneNumberAndBidder: ${JSON.stringify(e)}`, "log")
+        captureMessage(`setupPhoneNumberAndBidder: ${JSON.stringify(e)}`)
       }
       if (!this.state.errorModalVisible) {
         this.presentErrorModal(e as Error, null)
@@ -182,7 +182,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       if (__DEV__) {
         console.error(e)
       } else {
-        captureMessage(`setupAddressCardAndBidder: ${JSON.stringify(e)}`, "log")
+        captureMessage(`setupAddressCardAndBidder: ${JSON.stringify(e)}`)
       }
       if (!this.state.errorModalVisible) {
         this.presentErrorModal(e as Error, null)

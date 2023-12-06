@@ -212,7 +212,7 @@ export const ArtistAutosuggestResults: React.FC<{
             if (__DEV__) {
               console.error(error)
             } else {
-              captureMessage(`ArtistAutosuggestResults ${error.message}`, "log")
+              captureMessage(`ArtistAutosuggestResults ${error.message}`)
             }
 
             return (

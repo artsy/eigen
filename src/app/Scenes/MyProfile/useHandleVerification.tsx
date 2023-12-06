@@ -16,7 +16,7 @@ export const useHandleEmailVerification = () => {
 
       setShowVerificationBanner(true)
     } catch (error) {
-      captureMessage(`useHandleEmailVerification ${error}`, "log")
+      captureMessage(`useHandleEmailVerification ${JSON.stringify(error)}`)
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
@@ -45,7 +45,7 @@ export const useHandleIDVerification = (initiatorID: string) => {
         setShowVerificationBanner(true)
       }
     } catch (error) {
-      captureMessage(`useHandleIDVerification ${JSON.stringify(error)}`, "log")
+      captureMessage(`useHandleIDVerification ${JSON.stringify(error)}`)
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {

@@ -40,7 +40,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
       if (__DEV__) {
         console.error(e)
       } else {
-        captureMessage(`ActivityMarkAllAsReadSection ${e}`, "log")
+        captureMessage(`ActivityMarkAllAsReadSection ${JSON.stringify(e)}`)
       }
     }
   }

@@ -34,7 +34,7 @@ export const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) 
     // issues we should pay attention to in the issues list until we open the issue page separately
     // We want to fix that by changing that title into a properly formatted error
     sentryFormattedError.name = formatName(req, res.errors)
-    Sentry.captureException(sentryFormattedError)
+    Sentry.captureException(sentryFormattedError, { level: "info" })
   })
   throw createRequestError(req, res)
 }

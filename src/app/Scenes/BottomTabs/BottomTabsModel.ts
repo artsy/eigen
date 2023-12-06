@@ -95,7 +95,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         )
         console.log(e)
       } else {
-        captureMessage(`fetchCurrentUnreadConversationCount failed: ${e}`, "log")
+        captureMessage(`fetchCurrentUnreadConversationCount failed: ${JSON.stringify(e)}`)
       }
     }
   }),
@@ -133,7 +133,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         )
         console.log(e)
       } else {
-        captureMessage(`fetchNotificationsInfo failed: ${e}`, "log")
+        captureMessage(`fetchNotificationsInfo failed: ${JSON.stringify(e)}`)
       }
     }
   }),

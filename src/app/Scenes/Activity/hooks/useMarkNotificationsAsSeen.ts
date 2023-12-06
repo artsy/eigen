@@ -43,7 +43,7 @@ export const useMarkNotificationsAsSeen = () => {
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`useMarkNotificationsAsSeen ${error?.message}`, "log")
+          captureMessage(`useMarkNotificationsAsSeen ${error?.message}`)
         }
       },
     })

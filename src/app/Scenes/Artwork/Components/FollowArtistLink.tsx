@@ -61,7 +61,7 @@ export class FollowArtistLink extends React.Component<Props> {
         } else if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`FollowArtistLinkMutation ${error?.message}`, "log")
+          captureMessage(`FollowArtistLinkMutation ${error?.message}`)
         }
       },
     })

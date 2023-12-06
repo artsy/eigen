@@ -62,7 +62,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(`useDeleteArtworkList ${error.message}`, "log")
+          captureMessage(`useDeleteArtworkList ${error.message}`)
         }
       },
     })
