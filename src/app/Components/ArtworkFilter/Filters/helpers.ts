@@ -27,15 +27,20 @@ export const localizeDimension = (value: Numeric, unit: Metric) => {
   return round(value)
 }
 
-export const cmToIn = (centimeters: Numeric) => {
+export const cmToIn = (centimeters: Numeric, shouldRound = true, roundDigits = 2) => {
   if (centimeters === "*") {
     return centimeters
+  }
+
+  if (shouldRound) {
+    // Round off floating point precision errors.
+    return round(centimeters / ONE_IN_TO_CM, roundDigits)
   }
 
   return centimeters / ONE_IN_TO_CM
 }
 
-export const inToCm = (inches: Numeric, shouldRound = true) => {
+export const inToCm = (inches: Numeric, shouldRound = true, roundDigits = 2) => {
   if (inches === "*") {
     return inches
   }
@@ -44,7 +49,7 @@ export const inToCm = (inches: Numeric, shouldRound = true) => {
 
   if (shouldRound) {
     // Round off floating point precision errors.
-    return round(centimeters)
+    return round(centimeters, roundDigits)
   }
 
   return centimeters
@@ -63,12 +68,12 @@ export const toIn = (value: Numeric, unit: Metric): Numeric => {
  * e.g. `round(0.9999999999999999)` => `1`;
  * `round(1.19499)` => `1.19`
  */
-export const round = (value: Numeric) => {
+export const round = (value: Numeric, roundDigits = 2) => {
   if (value === "*") {
     return value
   }
 
-  return __round__(value, 2)
+  return __round__(value, roundDigits)
 }
 
 const enforceNumeric = (value: Numeric | undefined | null): Numeric => {

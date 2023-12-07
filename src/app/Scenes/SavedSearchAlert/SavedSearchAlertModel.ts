@@ -24,6 +24,7 @@ export interface CreateSavedSearchAlertParams {
   currentArtworkID?: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
+  sizeMetric?: "cm" | "in" | undefined
 }
 
 export interface CreateSavedSearchAlertProps {

@@ -114,7 +114,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [scrollToArtworksGrid])
 
-  const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
+  const { savedSearchEntity, attributes, sizeMetric } = useCreateSavedSearchModalFilters({
     entityId: artist.internalID,
     entityName: artist.name ?? "",
     entitySlug: artist.slug,
@@ -133,7 +133,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   const handleCompleteSavedSearch = () => {
-    // TODO: Get the new count of the artist saved alerts
+    // TODO: Get the new count of the artist alerts
   }
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
@@ -209,6 +209,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             entity={savedSearchEntity}
             onComplete={handleCompleteSavedSearch}
             visible={isCreateAlertModalVisible}
+            sizeMetric={sizeMetric}
           />
         )}
       </Tabs.ScrollView>

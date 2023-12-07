@@ -10,7 +10,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState, Fragment } from "react"
 import { CustomSizeInputs } from "./CustomSizeInputs"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { localizeDimension, parseRange, Range, toIn } from "./helpers"
@@ -109,7 +109,7 @@ export const checkIsEmptyCustomValues = (values: CustomSize) => {
   })
 }
 
-const metrics: Metric[] = ["cm", "in"]
+export const UNIT_METRICS: Metric[] = ["cm", "in"]
 
 const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   values,
@@ -125,10 +125,10 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   return (
     <Box mx="15px" my={2}>
       <Flex flexDirection="row">
-        {metrics.map((currentMetric) => {
+        {UNIT_METRICS.map((currentMetric) => {
           const isSelected = metric === currentMetric
           return (
-            <React.Fragment key={currentMetric}>
+            <Fragment key={currentMetric}>
               <RadioButton
                 accessibilityState={{ checked: isSelected }}
                 accessibilityLabel={currentMetric}
@@ -136,7 +136,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
                 onPress={() => handleMetricChange(currentMetric)}
               />
               <Text marginRight="4">{currentMetric}</Text>
-            </React.Fragment>
+            </Fragment>
           )
         })}
       </Flex>

@@ -52,8 +52,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 > = ({ navigation }) => {
   const { trackEvent } = useTracking()
 
-  const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
-  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
@@ -354,7 +352,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <MoneyInput
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
-                format={enableMoneyFormatting}
+                format
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
@@ -388,18 +386,16 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
-              {!!enableNotesField && (
-                <Input
-                  multiline
-                  maxLength={500}
-                  title="Notes"
-                  onChangeText={formik.handleChange("confidentialNotes")}
-                  onBlur={formik.handleBlur("confidentialNotes")}
-                  testID="NotesInput"
-                  accessibilityLabel="Notes"
-                  value={formikValues.confidentialNotes}
-                />
-              )}
+              <Input
+                multiline
+                maxLength={500}
+                title="Notes"
+                onChangeText={formik.handleChange("confidentialNotes")}
+                onBlur={formik.handleBlur("confidentialNotes")}
+                testID="NotesInput"
+                accessibilityLabel="Notes"
+                value={formikValues.confidentialNotes}
+              />
             </Join>
           </Flex>
 
