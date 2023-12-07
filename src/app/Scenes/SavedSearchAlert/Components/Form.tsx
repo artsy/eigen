@@ -96,11 +96,6 @@ export const Form: React.FC<FormProps> = ({
     isSaveAlertButtonDisabled = false
   }
 
-  // Disable button if notification toggles were not enabled
-  if (!values.push && !values.email) {
-    isSaveAlertButtonDisabled = true
-  }
-
   const handleUpdateEmailPreferencesPress = () => {
     if (onUpdateEmailPreferencesPress) {
       return onUpdateEmailPreferencesPress()
