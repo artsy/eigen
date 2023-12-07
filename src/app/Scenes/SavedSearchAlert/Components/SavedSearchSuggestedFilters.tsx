@@ -92,7 +92,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     <Flex>
       <Text variant="sm-display">Add Filters</Text>
 
-      <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
+      <Flex flexDirection="row" flexWrap="wrap" mt={0.5} mx={-0.5} alignItems="center">
         {suggestedFilters.map((pill) => (
           <SavedSearchFilterPill
             key={pill.name + pill.value}
