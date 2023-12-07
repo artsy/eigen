@@ -36,7 +36,7 @@ describe("OnboardingMarketingCollection", () => {
       env
     )
 
-    expect(screen.queryByText(placeholderText)).toBeTruthy()
+    expect(screen.getByText(placeholderText)).toBeTruthy()
 
     resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({
@@ -44,13 +44,13 @@ describe("OnboardingMarketingCollection", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByText(placeholderText))
+    await waitForElementToBeRemoved(() => screen.queryByText(placeholderText))
 
     expect(screen.queryByText(placeholderText)).toBeNull()
 
-    expect(screen.queryByText("Example Collection")).toBeTruthy()
-    expect(screen.queryByText(description)).toBeTruthy()
+    expect(screen.getByText("Example Collection")).toBeTruthy()
+    expect(screen.getByText(description)).toBeTruthy()
 
-    expect(screen.queryByText("Explore More on Artsy")).toBeTruthy()
+    expect(screen.getByText("Explore More on Artsy")).toBeTruthy()
   })
 })

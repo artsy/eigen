@@ -80,11 +80,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: false,
     showInDevMenu: true,
   },
-  AREnableMyCollectionNotesField: {
-    description: "Enable My Collection Notes Field",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMyCollectionNotesField",
-  },
   AREnableSWALandingPageMeetTheSpecialist: {
     description: "Enable MeetTheSpecialist on SWA Landing Page",
     readyForRelease: true,

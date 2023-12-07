@@ -52,7 +52,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 > = ({ navigation }) => {
   const { trackEvent } = useTracking()
 
-  const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
@@ -387,18 +386,16 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
-              {!!enableNotesField && (
-                <Input
-                  multiline
-                  maxLength={500}
-                  title="Notes"
-                  onChangeText={formik.handleChange("confidentialNotes")}
-                  onBlur={formik.handleBlur("confidentialNotes")}
-                  testID="NotesInput"
-                  accessibilityLabel="Notes"
-                  value={formikValues.confidentialNotes}
-                />
-              )}
+              <Input
+                multiline
+                maxLength={500}
+                title="Notes"
+                onChangeText={formik.handleChange("confidentialNotes")}
+                onBlur={formik.handleBlur("confidentialNotes")}
+                testID="NotesInput"
+                accessibilityLabel="Notes"
+                value={formikValues.confidentialNotes}
+              />
             </Join>
           </Flex>
 
