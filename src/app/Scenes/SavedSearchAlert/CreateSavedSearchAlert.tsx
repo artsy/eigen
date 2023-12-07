@@ -1,16 +1,17 @@
 import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import {
   savedSearchModel,
   SavedSearchStoreProvider,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { CreateSavedSearchAlertContentQueryRenderer } from "app/Scenes/SavedSearchAlert/containers/CreateSavedSearchContentContainer"
+import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -21,17 +22,23 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, params } = props
-  const { attributes, aggregations, entity, currentArtworkID } = params
+  const { attributes, aggregations, entity, currentArtworkID, sizeMetric } = params
+  const { localizedUnit } = useLocalizedUnit()
 
   return (
     <ArtsyKeyboardAvoidingView>
       <SavedSearchStoreProvider
         runtimeModel={{
           ...savedSearchModel,
-          attributes: attributes as SearchCriteriaAttributes,
+          attributes: localizeHeightAndWidthAttributes({
+            attributes: attributes,
+            from: "in",
+            to: sizeMetric || localizedUnit,
+          }),
           aggregations,
-          entity,
           currentArtworkID,
+          entity,
+          unit: sizeMetric || localizedUnit,
         }}
       >
         <NavigationContainer independent>

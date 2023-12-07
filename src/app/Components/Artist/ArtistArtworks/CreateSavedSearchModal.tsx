@@ -19,26 +19,28 @@ import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
-  visible: boolean
-  entity: SavedSearchEntity
-  attributes: SearchCriteriaAttributes
   aggregations: Aggregations
+  attributes: SearchCriteriaAttributes
   closeModal: () => void
-  onComplete?: () => void
   contextModule?: ContextModule
   currentArtworkID?: string
+  entity: SavedSearchEntity
+  onComplete?: () => void
+  sizeMetric?: "cm" | "in" | undefined
+  visible: boolean
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
   const {
-    visible,
-    entity,
-    attributes,
     aggregations,
+    attributes,
     closeModal,
-    onComplete,
     contextModule,
     currentArtworkID,
+    entity,
+    onComplete,
+    sizeMetric,
+    visible,
   } = props
   const tracking = useTracking()
 
@@ -75,6 +77,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
       closeModal() // close the alert modal stack
     },
     onComplete: handleComplete,
+    sizeMetric,
   }
 
   if (!visible) return null

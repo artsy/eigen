@@ -114,7 +114,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [scrollToArtworksGrid])
 
-  const { savedSearchEntity, attributes } = useCreateSavedSearchModalFilters({
+  const { savedSearchEntity, attributes, sizeMetric } = useCreateSavedSearchModalFilters({
     entityId: artist.internalID,
     entityName: artist.name ?? "",
     entitySlug: artist.slug,
@@ -209,6 +209,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             entity={savedSearchEntity}
             onComplete={handleCompleteSavedSearch}
             visible={isCreateAlertModalVisible}
+            sizeMetric={sizeMetric}
           />
         )}
       </Tabs.ScrollView>
