@@ -36,7 +36,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Account Settings" onPress={() => navigate("my-account")} />
         <Separator my={1} borderColor={separatorColor} />
-        <MenuItem title="Saved Alerts" onPress={() => navigate("settings/alerts")} />
+        <MenuItem title="Alerts" onPress={() => navigate("settings/alerts")} />
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Follows" onPress={() => navigate("favorites")} />
         <Separator my={1} borderColor={separatorColor} />

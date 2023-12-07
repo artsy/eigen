@@ -200,7 +200,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
           return <SortButton onPress={() => setModalVisible(true)} />
         }}
       >
-        Saved Alerts
+        Alerts
       </FancyModalHeader>
 
       <SavedSearchesList
