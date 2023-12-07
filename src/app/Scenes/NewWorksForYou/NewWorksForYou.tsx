@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
+import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
@@ -7,14 +7,12 @@ import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/Ma
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useEffect } from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { QueryRenderer, RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
@@ -155,25 +153,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const version = isReferredFromEmail
     ? versionProp?.toUpperCase() || undefined
     : worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION
-
-  useEffect(() => {
-    if (isReferredFromEmail) {
-      return
-    }
-
-    // We would like to trigger the tracking only if the experiment is enabled
-    if (worksForYouRecommendationsModel.enabled) {
-      maybeReportExperimentVariant({
-        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-        enabled: worksForYouRecommendationsModel.enabled,
-        variantName: worksForYouRecommendationsModel.variant,
-        payload: worksForYouRecommendationsModel.payload,
-        context_owner_type: OwnerType.newWorksForYou,
-        context_owner_screen: OwnerType.newWorksForYou,
-        storeContext: true,
-      })
-    }
-  }, [worksForYouRecommendationsModel.enabled])
 
   return (
     <QueryRenderer<NewWorksForYouQuery>
