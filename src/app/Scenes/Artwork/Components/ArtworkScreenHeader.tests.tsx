@@ -35,15 +35,15 @@ describe("ArtworkScreenHeader", () => {
       }),
     })
 
-    expect(screen.queryByLabelText("Artwork page header")).toBeTruthy()
-    expect(screen.queryByLabelText("Go back")).toBeTruthy()
-    expect(screen.queryByText("Create Alert")).toBeTruthy()
+    expect(screen.getByLabelText("Artwork page header")).toBeTruthy()
+    expect(screen.getByLabelText("Go back")).toBeTruthy()
+    expect(screen.getByText("Create Alert")).toBeTruthy()
   })
 
   it("calls go back when the back button is pressed", () => {
     renderWithRelay({})
 
-    expect(screen.queryByLabelText("Go back")).toBeTruthy()
+    expect(screen.getByLabelText("Go back")).toBeTruthy()
 
     fireEvent.press(screen.getByLabelText("Go back"))
 
@@ -58,12 +58,12 @@ describe("ArtworkScreenHeader", () => {
         }),
       })
 
-      expect(screen.queryByLabelText("Go back")).toBeTruthy()
+      expect(screen.getByLabelText("Go back")).toBeTruthy()
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 
     it("should correctly track event when `Create Alert` button is pressed", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Artwork: () => ({
           internalID: "internalID-1",
           slug: "slug-1",
@@ -71,7 +71,7 @@ describe("ArtworkScreenHeader", () => {
         }),
       })
 
-      fireEvent.press(getByText("Create Alert"))
+      fireEvent.press(screen.getByText("Create Alert"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         [

@@ -31,7 +31,11 @@ export const ConfirmationScreen: React.FC = () => {
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
-  const pills = useSavedSearchPills()
+
+  const unit = SavedSearchStore.useStoreState((state) => state.unit)
+  const pills = useSavedSearchPills({
+    unit,
+  })
 
   const { space } = useTheme()
 

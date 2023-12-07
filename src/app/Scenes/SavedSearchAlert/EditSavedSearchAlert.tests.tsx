@@ -26,7 +26,7 @@ describe("EditSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { getAllByTestId, getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -45,13 +45,17 @@ describe("EditSavedSearchAlert", () => {
       })
     })
 
-    expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["name-1", "Lithograph", "Paper"])
-    expect(getByTestId("alert-input-name").props.value).toBe("")
-    expect(getByTestId("alert-input-name").props.placeholder).toBe("Banana")
+    expect(screen.getAllByTestId("alert-pill").map(extractText)).toEqual([
+      "name-1",
+      "Lithograph",
+      "Paper",
+    ])
+    expect(screen.getByTestId("alert-input-name").props.value).toBe("")
+    expect(screen.getByTestId("alert-input-name").props.placeholder).toBe("Banana")
   })
 
   it("should navigate go back if the update mutation is successful", async () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -69,8 +73,8 @@ describe("EditSavedSearchAlert", () => {
       })
     })
 
-    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getByTestId("save-alert-button"))
+    fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
+    fireEvent.press(screen.getByTestId("save-alert-button"))
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -82,7 +86,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should pass updated criteria to update mutation when pills are removed", async () => {
-    const { getByText, getAllByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
@@ -102,8 +106,8 @@ describe("EditSavedSearchAlert", () => {
 
     await flushPromiseQueue()
 
-    fireEvent.press(getByText("Lithograph"))
-    fireEvent.press(getAllByText("Save Alert")[0])
+    fireEvent.press(screen.getByText("Lithograph"))
+    fireEvent.press(screen.getAllByText("Save Alert")[0])
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
@@ -136,7 +140,7 @@ describe("EditSavedSearchAlert", () => {
   })
 
   it("should display saved search preview display name as placeholder for input name", async () => {
-    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -166,7 +170,7 @@ describe("EditSavedSearchAlert", () => {
       })
     })
 
-    expect(getByPlaceholderText("Banana")).toBeTruthy()
+    expect(screen.getByPlaceholderText("Banana")).toBeTruthy()
   })
 
   describe("Notificaton toggles", () => {

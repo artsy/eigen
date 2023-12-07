@@ -4,7 +4,7 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { throttle } from "lodash"
-import React, { useState } from "react"
+import { useState } from "react"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
