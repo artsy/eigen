@@ -59,20 +59,10 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableMoneyFormattingInMyCollectionForm: {
-    description: "Enable Money formatting in MyCollection Form",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
-  },
   AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
-  },
-  AREnableNewCollectionsRail: {
-    description: "Enable New Collections Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewCollectionsRail",
   },
   AREnableCuratorsPickRail: {
     description: "Enable Curators Pick Rail",
