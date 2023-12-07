@@ -74,11 +74,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
   },
-  AREnableNewCollectionsRail: {
-    description: "Enable New Collections Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewCollectionsRail",
-  },
   AREnableCuratorsPickRail: {
     description: "Enable Curators Pick Rail",
     readyForRelease: true,
