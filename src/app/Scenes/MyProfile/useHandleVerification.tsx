@@ -1,4 +1,4 @@
-import { captureException } from "@sentry/react-native"
+import { captureMessage } from "@sentry/react-native"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
@@ -16,7 +16,7 @@ export const useHandleEmailVerification = () => {
 
       setShowVerificationBanner(true)
     } catch (error) {
-      captureException(error)
+      captureMessage(`useHandleEmailVerification ${JSON.stringify(error)}`)
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
@@ -45,7 +45,7 @@ export const useHandleIDVerification = (initiatorID: string) => {
         setShowVerificationBanner(true)
       }
     } catch (error) {
-      captureException(error)
+      captureMessage(`useHandleIDVerification ${JSON.stringify(error)}`)
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {

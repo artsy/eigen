@@ -58,6 +58,7 @@ export function setupSentry(props: SetupSentryProps = {}) {
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
+    attachStacktrace: true,
     ...props,
   })
 }

@@ -59,11 +59,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableBrowseMoreArtworksCard: {
-    description: "Enable Browse All Artworks Card on Home Screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableBrowseMoreArtworksCard",
-  },
   AREnableCuratorsPickRail: {
     description: "Enable Curators Pick Rail",
     readyForRelease: true,

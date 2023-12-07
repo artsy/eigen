@@ -54,7 +54,7 @@ export const getEchoModel = (): EchoModel => ({
       if (__DEV__) {
         console.warn(error)
       } else {
-        captureMessage(`Failed to fetch Echo data: ${error}`, "error")
+        captureMessage(`Failed to fetch Echo data: ${error}`)
       }
     }
   }),

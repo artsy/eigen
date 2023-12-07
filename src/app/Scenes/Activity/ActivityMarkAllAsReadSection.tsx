@@ -1,5 +1,5 @@
 import { Button, Flex, FlexProps, Text } from "@artsy/palette-mobile"
-import { captureException } from "@sentry/react-native"
+import { captureMessage } from "@sentry/react-native"
 import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMarkAllAsReadSectionMutation.graphql"
 import { ConnectionHandler, UseMutationConfig, graphql, useMutation } from "react-relay"
 import { notificationTypes } from "./types"
@@ -40,7 +40,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
       if (__DEV__) {
         console.error(e)
       } else {
-        captureException(e)
+        captureMessage(`ActivityMarkAllAsReadSection ${JSON.stringify(e)}`)
       }
     }
   }
