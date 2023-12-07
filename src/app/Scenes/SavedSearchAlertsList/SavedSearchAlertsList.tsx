@@ -40,7 +40,7 @@ export const SavedSearchAlertsListQueryRenderer: React.FC<Props> = ({ artistID }
               onRightButtonPress={() => {}}
               renderRightButton={() => <SortButton disabled />}
             >
-              Saved Alerts
+              Alerts
             </FancyModalHeader>
             <SavedSearchAlertsListPlaceholder />
           </Flex>

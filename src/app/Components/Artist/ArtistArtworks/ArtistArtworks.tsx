@@ -133,7 +133,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }
 
   const handleCompleteSavedSearch = () => {
-    // TODO: Get the new count of the artist saved alerts
+    // TODO: Get the new count of the artist alerts
   }
 
   const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
