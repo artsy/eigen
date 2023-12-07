@@ -29,7 +29,7 @@ export const SavedSearchAlertSwitch = ({
   }
 
   return (
-    <Flex flexDirection="row" alignItems="center" py={1}>
+    <Flex flexDirection="row" alignItems="center">
       <Flex flex={1} mr={2}>
         <Text numberOfLines={1}>{label}</Text>
       </Flex>

@@ -25,7 +25,7 @@ export const EditSavedSearchFormPlaceholder = () => {
         <Flex px={2}>
           <Join separator={<Spacer y={4} />}>
             {/* Filter pills */}
-            <Box mt={4}>
+            <Box mt={2}>
               <SkeletonText variant="sm-display">We'll send you alerts for</SkeletonText>
               <Spacer y={1} />
               <Flex flexDirection="row" flexWrap="wrap" mx={-0.5}>
@@ -55,7 +55,16 @@ export const EditSavedSearchFormPlaceholder = () => {
                 Tell us more about what you’re looking for
               </SkeletonText>
               <Spacer y={1} />
-              <SkeletonBox height={150} />
+              <SkeletonBox height={100} />
+            </Box>
+
+            {/* Notification Preference */}
+            <Box>
+              <SkeletonBox width="100%" height={30} />
+              <Spacer y={2} />
+              <SkeletonBox width="100%" height={30} />
+              <Spacer y={0.5} />
+              <SkeletonText variant="xs">Update email preferences</SkeletonText>
             </Box>
           </Join>
         </Flex>

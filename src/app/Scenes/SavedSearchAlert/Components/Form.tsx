@@ -231,7 +231,7 @@ export const Form: React.FC<FormProps> = ({
               active={values.push}
             />
 
-            <Spacer y={1} />
+            <Spacer y={2} />
 
             <SavedSearchAlertSwitch
               label="Email"
