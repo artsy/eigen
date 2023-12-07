@@ -8,7 +8,6 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -28,7 +27,6 @@ interface NewWorksForYouRailProps extends ArtworkActionTrackingProps {
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
   ({ title, artworkConnection, isRailVisible, scrollRef, ...restProps }) => {
     const { trackEvent } = useTracking()
-    const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
     const trackingProps = extractArtworkActionTrackingProps(restProps)
 
@@ -83,7 +81,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             {...trackingProps}
             artworks={artworks}
             onPress={handleOnArtworkPress}
-            showSaveIcon={enableSaveIcon}
+            showSaveIcon
             onMorePress={() => {
               trackEvent(tracks.tappedMoreCard())
               navigate("/new-for-you")
