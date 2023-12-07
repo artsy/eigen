@@ -1,5 +1,4 @@
-import { Flex, Button } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { Button, Flex } from "@artsy/palette-mobile"
 
 interface BrowseMoreRailCardProps {
   dark?: boolean
@@ -8,12 +7,6 @@ interface BrowseMoreRailCardProps {
 }
 
 export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({ dark, onPress, text }) => {
-  const enableBrowseMoreRailCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
-
-  if (!enableBrowseMoreRailCard) {
-    return null
-  }
-
   return (
     <Flex flex={1} px={1} mx={2} justifyContent="center">
       <Button
