@@ -17,14 +17,12 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input } from "app/Components/Input"
 import { MenuItem } from "app/Components/MenuItem"
-import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchPill,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
@@ -70,7 +68,6 @@ export const Form: React.FC<FormProps> = ({
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
 
-  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
@@ -125,31 +122,32 @@ export const Form: React.FC<FormProps> = ({
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         {!isEditMode && (
-          <InfoButton
-            titleElement={
-              <Text variant="lg-display" mb={1} mr={0.5}>
-                Create Alert
-              </Text>
-            }
-            trackEvent={() => {
-              tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
-            }}
-            maxModalHeight={300}
-            modalTitle="Create Alert"
-            modalContent={
-              <Flex py={1}>
-                <Text>
-                  On the hunt for a particular work? Create an alert and we’ll let you know when
-                  matching works are added to Artsy.
+          <>
+            <InfoButton
+              titleElement={
+                <Text variant="lg-display" mb={1} mr={0.5}>
+                  Create Alert
                 </Text>
-              </Flex>
-            }
-          />
+              }
+              trackEvent={() => {
+                tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
+              }}
+              maxModalHeight={300}
+              modalTitle="Create Alert"
+              modalContent={
+                <Flex py={1}>
+                  <Text>
+                    On the hunt for a particular work? Create an alert and we’ll let you know when
+                    matching works are added to Artsy.
+                  </Text>
+                </Flex>
+              }
+            />
+            <Spacer y={4} />
+          </>
         )}
 
         <Join separator={<Spacer y={4} />}>
-          <SavedSearchNameInputQueryRenderer attributes={attributes} />
-
           <Box>
             <Text variant="sm-display">We'll send you alerts for</Text>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
