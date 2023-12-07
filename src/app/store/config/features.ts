@@ -64,11 +64,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
-  AREnableMoneyFormattingInMyCollectionForm: {
-    description: "Enable Money formatting in MyCollection Form",
-    readyForRelease: true,
-    echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
-  },
   AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
     readyForRelease: true,
