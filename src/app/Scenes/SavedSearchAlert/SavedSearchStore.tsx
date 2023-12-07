@@ -5,7 +5,6 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { getPreferredUnit } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterSize"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Action, action, createContextStore } from "easy-peasy"
 import { pick } from "lodash"
@@ -54,7 +53,8 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
-  unit: getPreferredUnit(),
+  // this will be overwritten by the user's default unit when we initialize the store
+  unit: "in",
 
   addValueToAttributesByKeyAction: action((state, payload) => {
     if (payload.key === "priceRange" && typeof payload.value === "string") {

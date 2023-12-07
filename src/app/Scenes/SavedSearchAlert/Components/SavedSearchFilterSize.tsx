@@ -10,21 +10,6 @@ import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/Sa
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSearchCriteriaAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { useState } from "react"
-import { getCountry } from "react-native-localize"
-
-// Helper to get the initial metric based on the user's country
-export const getPreferredUnit = () => {
-  const countryCode = getCountry()
-  switch (countryCode) {
-    case "US":
-    case "LR":
-    case "MM":
-    case "GB":
-      return "in"
-    default:
-      return "cm"
-  }
-}
 
 export const SavedSearchFilterSize = () => {
   const selectedAttributes = useSearchCriteriaAttributes(SearchCriteria.sizes) as string[]
