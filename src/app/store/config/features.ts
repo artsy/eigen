@@ -64,11 +64,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
-  AREnableBrowseMoreArtworksCard: {
-    description: "Enable Browse All Artworks Card on Home Screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableBrowseMoreArtworksCard",
-  },
   AREnableCuratorsPickRail: {
     description: "Enable Curators Pick Rail",
     readyForRelease: true,
