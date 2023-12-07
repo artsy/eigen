@@ -60,7 +60,6 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
@@ -742,22 +741,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   }
 
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
-
-  useEffect(() => {
-    // We would like to trigger the tracking only if the experiment is enabled
-    if (worksForYouRecommendationsModel.enabled) {
-      maybeReportExperimentVariant({
-        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-        enabled: worksForYouRecommendationsModel.enabled,
-        variantName: worksForYouRecommendationsModel.variant,
-        payload: worksForYouRecommendationsModel.payload,
-        context_module: ContextModule.newWorksForYouRail,
-        context_owner_type: OwnerType.home,
-        context_owner_screen: OwnerType.home,
-        storeContext: true,
-      })
-    }
-  }, [worksForYouRecommendationsModel.enabled])
 
   useEffect(() => {
     if (flash_message) {
