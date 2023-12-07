@@ -46,7 +46,6 @@ import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAdvisorRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
-import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
@@ -166,7 +165,6 @@ const Home = memo((props: HomeProps) => {
 
   const { loading, relay } = props
 
-  const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
@@ -282,14 +280,8 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "collections":
-          return enableNewCollectionsRail ? (
+          return (
             <CollectionsRailFragmentContainer
-              title={item.title}
-              collectionsModule={item.data}
-              scrollRef={scrollRefs.current[index]}
-            />
-          ) : (
-            <OldCollectionsRailFragmentContainer
               title={item.title}
               collectionsModule={item.data}
               scrollRef={scrollRefs.current[index]}
@@ -461,7 +453,6 @@ export const HomeFragmentContainer = memo(
             ...FairsRail_fairsModule
           }
           marketingCollectionsModule {
-            ...OldCollectionsRail_collectionsModule
             ...CollectionsRail_collectionsModule
           }
           _onboardingModule: onboardingModule @optionalField {
