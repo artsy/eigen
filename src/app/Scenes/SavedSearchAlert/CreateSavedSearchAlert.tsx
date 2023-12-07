@@ -68,34 +68,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   }}
                 />
                 <Stack.Screen
-                  name="CreateSavedSearchAlert"
-                  component={CreateSavedSearchAlertContentQueryRenderer}
-                  initialParams={params}
-                />
-                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                <Stack.Screen
-                  name="AlertPriceRange"
-                  component={AlertPriceRangeScreenQueryRenderer}
-                  options={{
-                    // Avoid PanResponser conflicts between the slider and the slide back gesture
-                    gestureEnabled: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="CreateSavedSearchAlert"
-                  component={CreateSavedSearchAlertContentQueryRenderer}
-                  initialParams={params}
-                />
-                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                <Stack.Screen
-                  name="AlertPriceRange"
-                  component={AlertPriceRangeScreenQueryRenderer}
-                  options={{
-                    // Avoid PanResponser conflicts between the slider and the slide back gesture
-                    gestureEnabled: false,
-                  }}
-                />
-                <Stack.Screen
                   name="ConfirmationScreen"
                   component={ConfirmationScreen}
                   options={{

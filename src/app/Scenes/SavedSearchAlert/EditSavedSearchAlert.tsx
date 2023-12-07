@@ -156,20 +156,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 }}
               />
               <Stack.Screen
-                name="EditSavedSearchAlertContent"
-                component={EditSavedSearchAlertContent}
-                initialParams={params}
-              />
-              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-              <Stack.Screen
-                name="AlertPriceRange"
-                component={AlertPriceRangeScreenQueryRenderer}
-                options={{
-                  // Avoid PanResponser conflicts between the slider and the slide back gesture
-                  gestureEnabled: false,
-                }}
-              />
-              <Stack.Screen
                 name="SavedSearchFilterScreen"
                 component={SavedSearchFilterScreen}
                 options={{
