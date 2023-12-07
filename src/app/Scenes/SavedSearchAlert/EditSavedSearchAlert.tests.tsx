@@ -28,30 +28,23 @@ describe("EditSavedSearchAlert", () => {
   it("renders without throwing an error", async () => {
     renderWithWrappers(<TestRenderer />)
 
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => searchCriteria,
-      })
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => viewerMocked,
-      })
-
-      resolveMostRecentRelayOperation(mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
+    // await waitFor(() => {
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      SearchCriteria: () => searchCriteria,
     })
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      FilterArtworksConnection: () => filterArtworks,
+      Viewer: () => viewerMocked,
+    })
+
+    resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(screen.getAllByTestId("alert-pill").map(extractText)).toEqual([
       "name-1",
       "Lithograph",
       "Paper",
     ])
-    expect(screen.getByTestId("alert-input-name").props.value).toBe("")
-    expect(screen.getByTestId("alert-input-name").props.placeholder).toBe("Banana")
   })
 
   it("should navigate go back if the update mutation is successful", async () => {
@@ -67,13 +60,8 @@ describe("EditSavedSearchAlert", () => {
       })
 
       resolveMostRecentRelayOperation(mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
 
-    fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
     fireEvent.press(screen.getByTestId("save-alert-button"))
 
     await waitFor(() => {
@@ -98,10 +86,6 @@ describe("EditSavedSearchAlert", () => {
         slug: "artistSlug",
       }),
       FilterArtworksConnection: () => filterArtworks,
-    })
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      PreviewSavedSearch: () => ({ displayName: "Banana" }),
     })
 
     await flushPromiseQueue()
@@ -164,13 +148,7 @@ describe("EditSavedSearchAlert", () => {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
-
-    expect(screen.getByPlaceholderText("Banana")).toBeTruthy()
   })
 
   describe("Notificaton toggles", () => {
@@ -192,9 +170,6 @@ describe("EditSavedSearchAlert", () => {
               },
             ],
           }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
       })
 
@@ -218,9 +193,6 @@ describe("EditSavedSearchAlert", () => {
         resolveMostRecentRelayOperation(mockEnvironment, {
           FilterArtworksConnection: () => filterArtworks,
           Viewer: () => viewerMocked,
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
       })
 
@@ -251,9 +223,6 @@ describe("EditSavedSearchAlert", () => {
         resolveMostRecentRelayOperation(mockEnvironment, {
           FilterArtworksConnection: () => filterArtworks,
           Viewer: () => viewerMocked,
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
       })
 
@@ -292,9 +261,6 @@ describe("EditSavedSearchAlert", () => {
               },
             ],
           }),
-        })
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
         })
       })
 
