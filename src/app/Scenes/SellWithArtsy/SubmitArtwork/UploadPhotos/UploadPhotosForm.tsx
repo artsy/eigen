@@ -133,7 +133,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
-      captureMessage(JSON.stringify(error))
+      captureMessage(`handlePhotoDelete: ${JSON.stringify(error)}`)
     }
   }
 

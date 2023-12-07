@@ -14,7 +14,7 @@ import {
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { captureException } from "@sentry/react-native"
+import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
@@ -245,7 +245,7 @@ export const MyCollectionArtworkFormMain: React.FC<
       if (__DEV__) {
         console.error(e)
       } else {
-        captureException(e)
+        captureMessage(`deleteArtwork ${JSON.stringify(e)}`)
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     }

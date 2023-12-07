@@ -498,7 +498,7 @@ export const SaleQueryRenderer: React.FC<{
           if (__DEV__) {
             console.error(error)
           } else {
-            captureMessage(error.message)
+            captureMessage(`SaleQueryRenderer ${error.message}`)
           }
           return <LoadFailureView />
         }

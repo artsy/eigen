@@ -38,7 +38,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
         if (error) {
           scope.setExtra("error", error)
         }
-        Sentry.captureMessage("Unable to load in tab: " + activeTab)
+        Sentry.captureMessage("Unable to load in tab: " + activeTab, "error")
       })
     }
   }

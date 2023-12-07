@@ -136,7 +136,8 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       }
     } catch (error) {
       // Error with mutation.
-      captureMessage(JSON.stringify(error))
+
+      captureMessage(`createOrUpdateSubmission ${JSON.stringify(error)}`)
       setHasError(true)
       return
     }

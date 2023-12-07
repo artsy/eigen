@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react-native"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
 import { MyProfileEditForm } from "app/Scenes/MyProfile/MyProfileEditForm"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -17,7 +17,7 @@ jest.mock("@react-navigation/native", () => {
 })
 
 jest.mock("@sentry/react-native", () => ({
-  captureException: jest.fn(),
+  captureMessage: jest.fn(),
 }))
 
 describe("MyProfileEditForm", () => {
@@ -38,43 +38,43 @@ describe("MyProfileEditForm", () => {
   })
 
   it("shows the profile verification section", () => {
-    const { getByTestId } = renderWithRelay()
-    expect(getByTestId("profile-verifications")).toBeDefined()
+    renderWithRelay()
+    expect(screen.getByTestId("profile-verifications")).toBeDefined()
   })
 
   describe("Email Verification", () => {
     describe("when the email is verified in Gravity", () => {
       it("is shown as verified", async () => {
-        const { getByText } = renderWithRelay({
+        renderWithRelay({
           Me: () => ({
             canRequestEmailConfirmation: false,
             isEmailConfirmed: true,
           }),
         })
-        expect(getByText("Email Address Verified")).toBeTruthy()
+        expect(screen.getByText("Email Address Verified")).toBeTruthy()
       })
     })
 
     describe("when the email is not verified in Gravity", () => {
       it("is shown as non verified", () => {
-        const { getByText } = renderWithRelay({
+        renderWithRelay({
           Me: () => ({
             canRequestEmailConfirmation: true,
             isEmailConfirmed: false,
           }),
         })
-        expect(getByText("Verify Your Email")).toBeTruthy()
+        expect(screen.getByText("Verify Your Email")).toBeTruthy()
       })
 
       describe("when canRequestEmailConfirmation is set to true", () => {
         it("triggers the email verification when the user presses on Verify Your Email", async () => {
-          const { getByTestId, env } = renderWithRelay({
+          const { env } = renderWithRelay({
             Me: () => ({
               canRequestEmailConfirmation: true,
               isEmailConfirmed: false,
             }),
           })
-          const VerifyYouEmailButton = getByTestId("verify-your-email")
+          const VerifyYouEmailButton = screen.getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
           fireEvent(VerifyYouEmailButton, "onPress")
@@ -93,26 +93,26 @@ describe("MyProfileEditForm", () => {
 
           await flushPromiseQueue()
 
-          expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
+          expect(screen.getByTestId("verification-confirmation-banner")).toBeTruthy()
         })
       })
 
       describe("when canRequestEmailConfirmation is set to false", () => {
         it("does not allow the user to request email verification", async () => {
-          const { getByTestId } = renderWithRelay({
+          renderWithRelay({
             Me: () => ({
               canRequestEmailConfirmation: false,
               isEmailConfirmed: false,
             }),
           })
-          const VerifyYouEmailButton = getByTestId("verify-your-email")
+          const VerifyYouEmailButton = screen.getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
           fireEvent(VerifyYouEmailButton, "onPress")
 
           await flushPromiseQueue()
 
-          expect(() => getByTestId("verification-confirmation-banner")).toThrow()
+          expect(() => screen.getByTestId("verification-confirmation-banner")).toThrow()
         })
       })
     })
@@ -120,31 +120,31 @@ describe("MyProfileEditForm", () => {
 
   describe("ID Verification", () => {
     it("is shown as verified when it's verified in gravity", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Me: () => ({
           isIdentityVerified: true,
         }),
       })
-      expect(getByText("ID Verified")).toBeTruthy()
+      expect(screen.getByText("ID Verified")).toBeTruthy()
     })
     it("is shown as non verified when it's not verified in gravity", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Me: () => ({
           isIdentityVerified: false,
         }),
       })
-      expect(getByText("Verify Your ID")).toBeTruthy()
+      expect(screen.getByText("Verify Your ID")).toBeTruthy()
     })
 
     describe("requesting IDV", () => {
       describe("with successful IDV request", () => {
         it("displays confirmation banner ", async () => {
-          const { getByText, env } = renderWithRelay({
+          const { env } = renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify Your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")
@@ -165,19 +165,19 @@ describe("MyProfileEditForm", () => {
 
           await flushPromiseQueue()
 
-          expect(getByText("ID verification link sent to", { exact: false })).toBeTruthy()
+          expect(screen.getByText("ID verification link sent to", { exact: false })).toBeTruthy()
         })
       })
 
       describe("with IDV request that returns structured error", () => {
         // This isn't _good_ behavior, but it is what is currently happening
         it("fails silently", async () => {
-          const { getByText, env } = renderWithRelay({
+          const { env } = renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify Your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")
@@ -199,8 +199,8 @@ describe("MyProfileEditForm", () => {
 
           await flushPromiseQueue()
 
-          expect(() => getByText("ID verification link sent to", { exact: false })).toThrow()
-          expect(Sentry.captureException).not.toHaveBeenCalled()
+          expect(() => screen.getByText("ID verification link sent to", { exact: false })).toThrow()
+          expect(Sentry.captureMessage).not.toHaveBeenCalled()
         })
       })
 
@@ -235,12 +235,12 @@ describe("MyProfileEditForm", () => {
               },
             },
           }
-          const { getByText, env } = renderWithRelay({
+          const { env } = renderWithRelay({
             Me: () => ({
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify Your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")
@@ -249,8 +249,10 @@ describe("MyProfileEditForm", () => {
 
           await flushPromiseQueue()
 
-          expect(() => getByText("ID verification link sent to", { exact: false })).toThrow()
-          expect(Sentry.captureException).toHaveBeenCalledWith(relayResponse.errors)
+          expect(() => screen.getByText("ID verification link sent to", { exact: false })).toThrow()
+          expect(Sentry.captureMessage).toHaveBeenCalledWith(
+            `useHandleIDVerification ${JSON.stringify(relayResponse.errors)}`
+          )
         })
       })
     })
@@ -258,19 +260,19 @@ describe("MyProfileEditForm", () => {
 
   describe("Complete your profile banner", () => {
     it("shows when the user has empty fields in their profile", () => {
-      const { getByText } = renderWithRelay({
+      renderWithRelay({
         Me: () => ({ collectorProfile: { isProfileComplete: false } }),
       })
 
-      expect(getByText("Complete your profile and make a great impression")).toBeTruthy()
+      expect(screen.getByText("Complete your profile and make a great impression")).toBeTruthy()
     })
 
     it("does not show when the user has completed their profile", () => {
-      const { queryByText } = renderWithRelay({
+      renderWithRelay({
         Me: () => ({ collectorProfile: { isProfileComplete: true } }),
       })
 
-      expect(queryByText("Complete your profile and make a great impression")).toBeFalsy()
+      expect(screen.queryByText("Complete your profile and make a great impression")).toBeFalsy()
     })
   })
 })

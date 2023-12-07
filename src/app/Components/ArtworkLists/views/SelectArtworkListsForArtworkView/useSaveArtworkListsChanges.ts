@@ -58,7 +58,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(error?.stack!)
+          captureMessage(`useUpdateArtworkListsForArtworkMutation: ${error.message}`)
         }
 
         options?.onError?.(error)
