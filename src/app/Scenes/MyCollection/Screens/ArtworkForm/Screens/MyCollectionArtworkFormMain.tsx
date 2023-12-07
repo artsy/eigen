@@ -53,7 +53,6 @@ export const MyCollectionArtworkFormMain: React.FC<
   const { trackEvent } = useTracking()
 
   const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
-  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
   const enableCollectedArtists = useFeatureFlag("AREnableMyCollectionCollectedArtists")
 
   const artworkActions = GlobalStore.actions.myCollection.artwork
@@ -354,7 +353,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <MoneyInput
                 accessibilityLabel="Price paid"
                 currencyTextVariant="xs"
-                format={enableMoneyFormatting}
+                format
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
