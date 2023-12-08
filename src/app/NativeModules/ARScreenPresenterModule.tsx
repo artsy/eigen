@@ -130,12 +130,21 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
-    dispatchNavAction(
-      StackActions.push("screen:" + stackKey, {
-        moduleName: viewDescriptor.moduleName,
-        props: viewDescriptor.props,
-      })
-    )
+    if (viewDescriptor.replaceActiveScreen) {
+      dispatchNavAction(
+        StackActions.replace("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    } else {
+      dispatchNavAction(
+        StackActions.push("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    }
   },
   popStack(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
