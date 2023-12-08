@@ -459,9 +459,16 @@ workflows:
             branches:
               ignore:
                 - main
+                - beta-ios
+                - beta-android
 
       - check-code:
           context: danger-github-oss
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+                - beta-android
 
       - check-and-deploy:
           filters:
@@ -469,9 +476,19 @@ workflows:
               only:
                 - main
 
-      - test-js
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+                - beta-android
 
-      - build-test-js
+      - build-test-js:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+                - beta-android
 
       - horizon/block:
           context: horizon
@@ -487,11 +504,6 @@ workflows:
             branches:
               ignore:
                 - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
 
       - build-test-app-android:
           filters:
