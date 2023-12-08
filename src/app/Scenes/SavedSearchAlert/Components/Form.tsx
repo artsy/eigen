@@ -17,17 +17,16 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input } from "app/Components/Input"
 import { MenuItem } from "app/Components/MenuItem"
-import { SavedSearchNameInputQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchNameInput"
 import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchPill,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
+import { MotiView } from "moti"
 import { Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -70,7 +69,6 @@ export const Form: React.FC<FormProps> = ({
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
 
-  const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const navigation =
@@ -120,31 +118,32 @@ export const Form: React.FC<FormProps> = ({
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         {!isEditMode && (
-          <InfoButton
-            titleElement={
-              <Text variant="lg-display" mb={1} mr={0.5}>
-                Create Alert
-              </Text>
-            }
-            trackEvent={() => {
-              tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
-            }}
-            maxModalHeight={300}
-            modalTitle="Create Alert"
-            modalContent={
-              <Flex py={1}>
-                <Text>
-                  On the hunt for a particular work? Create an alert and we’ll let you know when
-                  matching works are added to Artsy.
+          <>
+            <InfoButton
+              titleElement={
+                <Text variant="lg-display" mb={1} mr={0.5}>
+                  Create Alert
                 </Text>
-              </Flex>
-            }
-          />
+              }
+              trackEvent={() => {
+                tracking.trackEvent(tracks.tappedCreateAlertHeaderButton())
+              }}
+              maxModalHeight={300}
+              modalTitle="Create Alert"
+              modalContent={
+                <Flex py={1}>
+                  <Text>
+                    On the hunt for a particular work? Create an alert and we’ll let you know when
+                    matching works are added to Artsy.
+                  </Text>
+                </Flex>
+              }
+            />
+            <Spacer y={4} />
+          </>
         )}
 
         <Join separator={<Spacer y={4} />}>
-          <SavedSearchNameInputQueryRenderer attributes={attributes} />
-
           <Box>
             <Text variant="sm-display">We'll send you alerts for</Text>
             <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
@@ -228,7 +227,7 @@ export const Form: React.FC<FormProps> = ({
               active={values.push}
             />
 
-            <Spacer y={1} />
+            <Spacer y={2} />
 
             <SavedSearchAlertSwitch
               label="Email"
@@ -264,45 +263,47 @@ export const Form: React.FC<FormProps> = ({
         <Spacer y={2} />
       </ScrollView>
 
-      <Flex
-        p={2}
-        mb={`${bottom}px`}
-        pb={Platform.OS === "android" ? 2 : 0}
-        borderTopWidth={1}
-        borderTopColor="black10"
-      >
-        <Button
-          testID="save-alert-button"
-          disabled={isSaveAlertButtonDisabled}
-          loading={isSubmitting || isLoading}
-          size="large"
-          block
-          onPress={onSubmitPress}
+      <MotiView from={{ opacity: 0 }} animate={{ opacity: 1 }} delay={200}>
+        <Flex
+          p={2}
+          mb={`${bottom}px`}
+          pb={Platform.OS === "android" ? 2 : 0}
+          borderTopWidth={1}
+          borderTopColor="black10"
         >
-          {isEditMode ? "Save Alert" : "Create Alert"}
-        </Button>
+          <Button
+            testID="save-alert-button"
+            disabled={isSaveAlertButtonDisabled}
+            loading={isSubmitting || isLoading}
+            size="large"
+            block
+            onPress={onSubmitPress}
+          >
+            {isEditMode ? "Save Alert" : "Create Alert"}
+          </Button>
 
-        {!!isEditMode && (
-          <>
-            <Spacer y={2} />
-            <Button
-              testID="delete-alert-button"
-              variant="outline"
-              size="large"
-              block
-              onPress={onDeletePress}
-            >
-              Delete Alert
-            </Button>
-          </>
-        )}
+          {!!isEditMode && (
+            <>
+              <Spacer y={2} />
+              <Button
+                testID="delete-alert-button"
+                variant="outline"
+                size="large"
+                block
+                onPress={onDeletePress}
+              >
+                Delete Alert
+              </Button>
+            </>
+          )}
 
-        {!isEditMode && (
-          <Text variant="xs" color="black60" textAlign="center" mt={2}>
-            Access all your alerts in your profile.
-          </Text>
-        )}
-      </Flex>
+          {!isEditMode && (
+            <Text variant="xs" color="black60" textAlign="center" mt={2}>
+              Access all your alerts in your profile.
+            </Text>
+          )}
+        </Flex>
+      </MotiView>
     </>
   )
 }

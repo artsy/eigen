@@ -75,18 +75,6 @@ describe("SavedSearchAlertForm", () => {
       renderWithWrappers(<TestRenderer />)
     })
 
-    it("correctly renders default placeholder for input name", () => {
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
-
-      expect(screen.getByTestId("alert-input-name").props.placeholder).toEqual("Banana")
-    })
-
     it("calls onComplete when mutation is completed", async () => {
       const onCompleteMock = jest.fn()
       renderWithWrappers(
@@ -95,13 +83,9 @@ describe("SavedSearchAlertForm", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment)
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
-        })
       })
 
-      fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
+      fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
       fireEvent.press(screen.getByTestId("save-alert-button"))
 
       await waitFor(() => {
@@ -115,7 +99,7 @@ describe("SavedSearchAlertForm", () => {
       it("calls create mutation when `Create Alert` button is pressed", async () => {
         renderWithWrappers(<TestRenderer />)
 
-        fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
         fireEvent.changeText(
           screen.getByTestId("alert-input-details"),
           "I'm looking for signed works by Damon Zucconi"
@@ -136,7 +120,7 @@ describe("SavedSearchAlertForm", () => {
             input: {
               attributes: createMutationAttributes,
               userAlertSettings: {
-                name: "something new",
+                name: "name",
                 email: true,
                 push: true,
                 details: "I'm looking for signed works by Damon Zucconi",
@@ -187,14 +171,14 @@ describe("SavedSearchAlertForm", () => {
           />
         )
 
-        fireEvent.changeText(screen.getByTestId("alert-input-name"), "")
+        fireEvent.changeText(screen.getByTestId("alert-input-details"), "")
         fireEvent.press(screen.getByTestId("save-alert-button"))
 
         await waitFor(() => {
           expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
             input: {
               userAlertSettings: {
-                name: "",
+                name: "update value",
               },
             },
           })
@@ -204,7 +188,7 @@ describe("SavedSearchAlertForm", () => {
       it("calls update mutation when `Save Alert` button is pressed", async () => {
         renderWithWrappers(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
 
-        fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
         fireEvent.changeText(
           screen.getByTestId("alert-input-details"),
           "I'm looking for signed works by Damon Zucconi"
@@ -225,7 +209,7 @@ describe("SavedSearchAlertForm", () => {
               attributes,
               searchCriteriaID: "savedSearchAlertId",
               userAlertSettings: {
-                name: "something new",
+                name: "name",
                 email: true,
                 push: true,
                 details: "I'm looking for signed works by Damon Zucconi",
@@ -237,12 +221,6 @@ describe("SavedSearchAlertForm", () => {
 
       it("tracks analytics event when `Delete Alert` button is pressed", async () => {
         renderWithWrappers(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
-
-        await waitFor(() => {
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            PreviewSavedSearch: () => ({ displayName: "Banana" }),
-          })
-        })
 
         fireEvent.press(screen.getByTestId("delete-alert-button"))
         fireEvent.press(screen.getByTestId("dialog-primary-action-button"))
@@ -259,13 +237,9 @@ describe("SavedSearchAlertForm", () => {
 
         await waitFor(() => {
           resolveMostRecentRelayOperation(mockEnvironment)
-
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            PreviewSavedSearch: () => ({ displayName: "Banana" }),
-          })
         })
 
-        fireEvent.changeText(screen.getByTestId("alert-input-name"), "something new")
+        fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
         fireEvent.changeText(
           screen.getByTestId("alert-input-details"),
           "I'm looking for signed works by Damon Zucconi"
@@ -281,7 +255,7 @@ describe("SavedSearchAlertForm", () => {
             "savedSearchAlertId",
             { name: "name", email: true, push: true },
             {
-              name: "something new",
+              name: "name",
               email: true,
               push: true,
               details: "I'm looking for signed works by Damon Zucconi",
@@ -534,7 +508,7 @@ describe("SavedSearchAlertForm", () => {
         />
       )
 
-      fireEvent.changeText(screen.getByTestId("alert-input-name"), "updated name")
+      fireEvent.changeText(screen.getByTestId("alert-input-details"), "update details")
       fireEvent.press(screen.getByTestId("save-alert-button"))
 
       await flushPromiseQueue()
@@ -628,7 +602,7 @@ describe("SavedSearchAlertForm", () => {
           />
         )
 
-        fireEvent.changeText(screen.getByTestId("alert-input-name"), "updated name")
+        fireEvent.changeText(screen.getByTestId("alert-input-details"), "update details")
 
         expect(screen.getByTestId("save-alert-button")).not.toBeDisabled()
       })
