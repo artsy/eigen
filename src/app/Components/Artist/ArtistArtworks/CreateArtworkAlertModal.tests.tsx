@@ -1,7 +1,8 @@
+import { screen } from "@testing-library/react-native"
 import { CreateArtworkAlertModal_artwork$data } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
 import {
   CreateArtworkAlertModal,
-  computeArtworkAlertProps,
+  useComputeArtworkAlertProps,
 } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -9,6 +10,10 @@ import { graphql } from "react-relay"
 
 jest.mock("app/Components/Artist/ArtistArtworks/CreateSavedSearchModal", () => ({
   CreateSavedSearchModal: () => "CreateSavedSearchModal",
+}))
+
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: () => true,
 }))
 
 describe("CreateArtworkAlertModal", () => {
@@ -24,13 +29,13 @@ describe("CreateArtworkAlertModal", () => {
   })
 
   it("returns null if artwork is ineligible", () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         isEligibleToCreateAlert: false,
       }),
     })
 
-    expect(queryByText("CreateSavedSearchModal")).toBeFalsy()
+    expect(screen.queryByText("CreateSavedSearchModal")).toBeFalsy()
   })
 
   it("returns renders modal", () => {
@@ -48,13 +53,14 @@ describe("CreateArtworkAlertModal", () => {
   })
 })
 
-describe("computeArtworkAlertProps", () => {
+describe("useCmputeArtworkAlertProps", () => {
   const artwork = {
     artistsArray: [{ name: "foo", internalID: "bar" }],
     isEligibleToCreateAlert: true,
     attributionClass: {
       internalID: "1",
     },
+    artistSeriesIDs: [],
     title: "Test Artwork",
     internalID: "2",
     slug: "test-artwork",
@@ -67,17 +73,13 @@ describe("computeArtworkAlertProps", () => {
   } as unknown as CreateArtworkAlertModal_artwork$data
 
   it("should return default props when artwork is ineligible for alert", () => {
-    const result = computeArtworkAlertProps({ ...artwork, isEligibleToCreateAlert: false })
+    const result = useComputeArtworkAlertProps({ ...artwork, isEligibleToCreateAlert: false })
 
-    expect(result).toEqual({
-      entity: null,
-      attributes: null,
-      aggregations: null,
-    })
+    expect(result).toEqual(null)
   })
 
   it("should return correct props when artwork is eligible for alert", () => {
-    const result = computeArtworkAlertProps(artwork)
+    const result = useComputeArtworkAlertProps(artwork)
 
     expect(result).toEqual({
       aggregations: [
@@ -89,6 +91,7 @@ describe("computeArtworkAlertProps", () => {
       attributes: {
         artistIDs: ["bar"],
         attributionClass: ["1"],
+        artistSeriesIDs: [],
         additionalGeneIDs: ["test-gene"],
       },
       entity: {
@@ -99,7 +102,7 @@ describe("computeArtworkAlertProps", () => {
   })
 
   it("should omit a medium if filterGene isnt provided", () => {
-    const result = computeArtworkAlertProps({ ...artwork, mediumType: { filterGene: null } })
+    const result = useComputeArtworkAlertProps({ ...artwork, mediumType: { filterGene: null } })
 
     expect(result).toEqual({
       aggregations: [],
@@ -107,6 +110,7 @@ describe("computeArtworkAlertProps", () => {
         artistIDs: ["bar"],
         attributionClass: ["1"],
         additionalGeneIDs: [],
+        artistSeriesIDs: [],
       },
       entity: {
         artists: [{ id: "bar", name: "foo" }],

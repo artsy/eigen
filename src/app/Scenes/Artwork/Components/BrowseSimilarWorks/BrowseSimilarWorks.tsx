@@ -1,7 +1,7 @@
 import { Flex, Screen, Box, Spacer } from "@artsy/palette-mobile"
 import { BrowseSimilarWorksQuery } from "__generated__/BrowseSimilarWorksQuery.graphql"
 import { BrowseSimilarWorks_artwork$key } from "__generated__/BrowseSimilarWorks_artwork.graphql"
-import { computeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { useComputeArtworkAlertProps } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -44,11 +44,11 @@ export interface BrowseSimilarWorksProps {
 const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> = (props) => {
   const artwork = useFragment(similarWorksFragment, props.artwork)
 
+  const artworkAlertProps = useComputeArtworkAlertProps(artwork)
+
   if (!artwork.isEligibleToCreateAlert) {
     return null
   }
-
-  const artworkAlertProps = computeArtworkAlertProps(artwork)
 
   if (!artworkAlertProps) {
     return null

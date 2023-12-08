@@ -12,6 +12,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
@@ -60,13 +61,13 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
     artwork
   )
 
+  const artworkAlert = useComputeArtworkAlertProps(data)
+
   const { isEligibleToCreateAlert } = data
 
   if (!isEligibleToCreateAlert) {
     return null
   }
-
-  const artworkAlert = computeArtworkAlertProps(data)
 
   if (!artworkAlert) {
     return null
@@ -85,9 +86,11 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
   )
 }
 
-export const computeArtworkAlertProps = (
+export const useComputeArtworkAlertProps = (
   artwork: CreateArtworkAlertModal_artwork$data | BrowseSimilarWorks_artwork$data
 ) => {
+  const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
+
   const { isEligibleToCreateAlert } = artwork
 
   if (!isEligibleToCreateAlert) {
@@ -129,7 +132,9 @@ export const computeArtworkAlertProps = (
     ]
   }
 
-  const artistSeriesIDs = extractNodes(artwork?.artistSeriesConnection).map((series) => series.slug)
+  const artistSeriesIDs = enableArtistSeriesFilter
+    ? extractNodes(artwork?.artistSeriesConnection).map((series) => series.slug)
+    : []
 
   const attributes: SearchCriteriaAttributes = {
     artistIDs: formattedArtists.map((artist) => artist.id),
