@@ -209,8 +209,9 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableArtistSeriesFilter: {
     description: "Enable artist series filter on Artist screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableArtistSeriesFilter",
   },
   AREnableAlertsSuggestedFilters: {
     description: "Enable alerts suggested filters",
