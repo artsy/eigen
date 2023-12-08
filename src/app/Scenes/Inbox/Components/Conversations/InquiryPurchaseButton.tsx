@@ -93,21 +93,23 @@ export const InquiryPurchaseButton: React.FC<InquiryPurchaseButtonProps> = ({
       onCompleted: (data) => {
         setIsCommittingMutation(false)
 
-        const orderOrError = data.createInquiryOrder?.orderOrError!
-        if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
-          onMutationError(orderOrError.error)
-          return
-        }
+        if (data.createInquiryOrder?.orderOrError) {
+          const orderOrError = data.createInquiryOrder?.orderOrError
+          if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
+            onMutationError(orderOrError.error)
+            return
+          }
 
-        if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-          navigate(`/orders/${orderOrError.order.internalID}`, {
-            modal: true,
-            replace: !!replaceModalView,
-            passProps: {
-              orderID: orderOrError.order.internalID,
-              title: "Purchase",
-            },
-          })
+          if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
+            navigate(`/orders/${orderOrError.order.internalID}`, {
+              modal: true,
+              replaceActiveModal: !!replaceModalView,
+              passProps: {
+                orderID: orderOrError.order.internalID,
+                title: "Purchase",
+              },
+            })
+          }
         }
       },
       onError: (error) => {

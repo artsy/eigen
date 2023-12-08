@@ -84,7 +84,7 @@ describe("InquiryPurchaseButton", () => {
 
     expect(navigate).toHaveBeenCalledWith("/orders/4567", {
       modal: true,
-      replace: true,
+      replaceActiveModal: true,
       passProps: { orderID: "4567", title: "Purchase" },
     })
   })

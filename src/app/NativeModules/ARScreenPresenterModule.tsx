@@ -94,7 +94,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     dispatchNavAction(TabActions.jumpTo(tab))
   },
   presentModal(viewDescriptor: ViewDescriptor) {
-    if (viewDescriptor.replace) {
+    if (viewDescriptor.replaceActiveModal) {
       dispatchNavAction(
         StackActions.replace("modal", {
           rootModuleName: viewDescriptor.moduleName,
