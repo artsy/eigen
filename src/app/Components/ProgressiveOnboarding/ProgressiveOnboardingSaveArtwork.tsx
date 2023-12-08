@@ -1,5 +1,6 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingSaveArtwork_Query } from "__generated__/ProgressiveOnboardingSaveArtwork_Query.graphql"
+import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ElementInView } from "app/utils/ElementInView"
 import { useState } from "react"
@@ -18,6 +19,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const savedArtworks = data?.me.counts.savedArtworks
   const isDismissed = _isDismissed("save-artwork").status
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
+  const { isActive } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsVisible(false)
@@ -28,7 +30,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   if (isDisplayable) {
     return (
       <Popover
-        visible={isVisible}
+        visible={!!isVisible && !!isActive}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         title={
