@@ -232,6 +232,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),
     addRoute("/orders", "OrderHistory"),
     addRoute("/partner-locations/:partnerID", "PartnerLocations"),
+    addRoute("/partner-offer/:partnerOfferID/checkout", "PartnerOfferContainer"),
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/artists/:artistID", "Partner"),
     addRoute("/partner/:partnerID/shows", "Partner", (params) => ({
