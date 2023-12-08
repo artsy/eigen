@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, SelectedSuggestedFilter } from "@artsy/cohesion"
 import {
   ChevronIcon,
   Flex,
@@ -17,6 +18,7 @@ import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSavedSearchFilter } from "app/Scenes/SavedSearchAlert/helpers"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const SUPPORTED_SEARCH_CRITERIA = [
   SearchCriteria.additionalGeneIDs,
@@ -25,10 +27,13 @@ const SUPPORTED_SEARCH_CRITERIA = [
 ]
 
 export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
+  const tracking = useTracking()
+
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const isEditFlow = !!SavedSearchStore.useStoreState((state) => state.currentSavedSearchID)
 
   const data = useLazyLoadQuery<SavedSearchSuggestedFiltersFetchQuery>(
     savedSearchSuggestedFiltersFetchQuery,
@@ -112,6 +117,12 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
             })}
             variant="dotted"
             onPress={() => {
+              tracking.trackEvent(
+                tracks.selectedSuggestedFilterTapped({
+                  criterion: pill.field as SearchCriteria,
+                  contextModule: isEditFlow ? OwnerType.editAlert : OwnerType.createAlert,
+                })
+              )
               handlePress(pill.field as SearchCriteria, pill.value)
             }}
           >
@@ -202,3 +213,19 @@ const savedSearchSuggestedFiltersFetchQuery = graphql`
     }
   }
 `
+
+const tracks = {
+  selectedSuggestedFilterTapped: ({
+    criterion,
+    contextModule,
+  }: {
+    criterion: SearchCriteria
+    contextModule: OwnerType.createAlert | OwnerType.editAlert
+  }): SelectedSuggestedFilter => {
+    return {
+      action: ActionType.selectedSuggestedFilter,
+      context_module: contextModule,
+      subject: criterion,
+    }
+  },
+}
