@@ -126,9 +126,6 @@ describe("CreateSavedSearchModal", () => {
 
     await waitFor(() => {
       mockResolveLastOperation({})
-      mockResolveLastOperation({
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
 
     expect(screen.getByTestId("save-alert-button")).toBeOnTheScreen()
