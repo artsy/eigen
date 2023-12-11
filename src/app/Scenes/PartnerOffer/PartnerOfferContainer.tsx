@@ -15,18 +15,21 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
 
       if (code === "expired_partner_offer") {
         // TODO: add params to show expired banner (EMI-1606)
-        navigate(`/artwork/${artworkId}`)
+        navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
         return
       }
 
       if (code === "not_acquireable") {
         // TODO: add params to show unavailable/sold banner (EMI-1606)
-        navigate(`/artwork/${artworkId}`)
+        navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
         return
       }
     }
 
     if (orderOrError?.order) {
+      // we need to go back to the home screen before navigating to the orders screen
+      // to prevent the user from closing the modal and navigating back to the this screen
+      goBack()
       navigate(`/orders/${orderOrError.order?.internalID}`)
       return
     }
