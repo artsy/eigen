@@ -4,6 +4,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { MotiPressable } from "moti/interactions"
 import { LayoutAnimation } from "react-native"
+import { isTablet } from "react-native-device-info"
 
 const ICON_SIZE = 28
 
@@ -24,7 +25,7 @@ export const NewWorksForYouHeaderComponent: React.FC<{
         <Text variant="xs" mt={1}>
           {artworksCount} {pluralize("Artwork", artworksCount)}
         </Text>
-        {!!enableNewWorksForYouFeed && (
+        {!!enableNewWorksForYouFeed && !isTablet() && (
           <MotiPressable
             onPress={() => {
               setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")

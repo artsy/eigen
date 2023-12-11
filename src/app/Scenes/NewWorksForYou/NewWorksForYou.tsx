@@ -8,6 +8,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { times } from "lodash"
 import { MotiView } from "moti"
 import { Suspense } from "react"
+import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "New Works for You"
 export const PAGE_SIZE = 100
@@ -57,7 +58,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
 
-  if (enableNewWorksForYouFeed) {
+  if (enableNewWorksForYouFeed && !isTablet()) {
     return (
       <MotiView
         from={{ opacity: 0 }}
