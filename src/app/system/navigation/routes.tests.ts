@@ -962,6 +962,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to PartnerOfferContainer", () => {
+    expect(matchRoute("/partner-offer/:partnerOfferID/checkout")).toMatchInlineSnapshot(`
+      {
+        "module": "PartnerOfferContainer",
+        "params": {
+          "partnerOfferID": ":partnerOfferID",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   describe("Fair routing", () => {
     it("routes to Fair", () => {
       expect(matchRoute("/fair/red/artworks")).toMatchInlineSnapshot(`

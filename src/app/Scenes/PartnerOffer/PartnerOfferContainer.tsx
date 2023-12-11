@@ -44,7 +44,7 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
   }, [])
 
   return (
-    <Flex flex={1}>
+    <Flex testID="partner-offer-container-loading-screen" flex={1}>
       <LoadingSpinner />
     </Flex>
   )
