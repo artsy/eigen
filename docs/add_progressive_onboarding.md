@@ -5,6 +5,9 @@ Progressive Onboarding Model is a simple store that controlls dismissed messages
 - dismissed: array of dismissed strings triggered by the user and/or code
 - dismiss: function that dismisses one or more alerts at the same time
 - isDimissed: function that checks if a specific onboarding string is dismissed
+- sessionState:
+  - isReady: controls the feature if is ready to be used or not
+  - activePopover: sets an identifier of the current popover being displayed
 
 ## Create a Progressive Onboarding
 

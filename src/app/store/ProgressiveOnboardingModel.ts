@@ -19,8 +19,12 @@ export interface ProgressiveOnboardingModel {
     // Controls when the Progressive Onboarding Popovers are able to de displayed
     // Right now we dispatch it from the home screen once it has focus
     isReady: boolean
+    // we use this to control which popover is active, we cannot have 2 popovers
+    // active at the same time
+    activePopover?: string
   }
   setIsReady: Action<this>
+  setActivePopover: Action<this, string>
   __clearDissmissed: Action<this>
 }
 
@@ -37,6 +41,7 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
       [...state.dismissed, ...keys.map((k) => ({ key: k, timestamp }))],
       (d) => d.key
     )
+    state.sessionState = { isReady: state.sessionState.isReady }
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
@@ -51,6 +56,9 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
     if (!state.sessionState.isReady) {
       state.sessionState.isReady = true
     }
+  }),
+  setActivePopover: action((state, id) => {
+    state.sessionState.activePopover = id
   }),
   __clearDissmissed: action((state) => {
     state.dismissed = []
