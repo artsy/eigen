@@ -94,7 +94,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
     dispatchNavAction(TabActions.jumpTo(tab))
   },
   presentModal(viewDescriptor: ViewDescriptor) {
-    if (viewDescriptor.replace) {
+    if (viewDescriptor.replaceActiveModal) {
       dispatchNavAction(
         StackActions.replace("modal", {
           rootModuleName: viewDescriptor.moduleName,
@@ -130,12 +130,21 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
-    dispatchNavAction(
-      StackActions.push("screen:" + stackKey, {
-        moduleName: viewDescriptor.moduleName,
-        props: viewDescriptor.props,
-      })
-    )
+    if (viewDescriptor.replaceActiveScreen) {
+      dispatchNavAction(
+        StackActions.replace("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    } else {
+      dispatchNavAction(
+        StackActions.push("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    }
   },
   popStack(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
