@@ -9,7 +9,7 @@ import { NewWorksForYouScreenProps } from "app/Scenes/NewWorksForYou/NewWorksFor
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
-import { Animated } from "react-native"
+import { Animated, Dimensions } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -33,9 +33,8 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
       </Flex>
     ),
   })
-
   return (
-    <SafeAreaView edges={["top"]} style={{ height: "100%" }}>
+    <SafeAreaView edges={["top"]} style={{ height: Dimensions.get("screen").height }}>
       <AnimatedFlashlist
         estimatedItemSize={400}
         data={artworks}
