@@ -1,5 +1,5 @@
 import { Flex, Box, Text, LinkText, Checkbox, Button } from "@artsy/palette-mobile"
-import { captureException } from "@sentry/react-native"
+import { captureMessage } from "@sentry/react-native"
 import {
   RegistrationCreateBidderMutation,
   RegistrationCreateBidderMutation$data,
@@ -161,7 +161,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       if (__DEV__) {
         console.error(e)
       } else {
-        captureException(e)
+        captureMessage(`setupPhoneNumberAndBidder: ${JSON.stringify(e)}`)
       }
       if (!this.state.errorModalVisible) {
         this.presentErrorModal(e as Error, null)
@@ -182,7 +182,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       if (__DEV__) {
         console.error(e)
       } else {
-        captureException(e)
+        captureMessage(`setupAddressCardAndBidder: ${JSON.stringify(e)}`)
       }
       if (!this.state.errorModalVisible) {
         this.presentErrorModal(e as Error, null)

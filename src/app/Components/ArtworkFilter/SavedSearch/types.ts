@@ -1,5 +1,5 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { ArtworkSizes } from "__generated__/SavedSearchNameInputQuery.graphql"
+import { ArtworkSizes } from "__generated__/SavedSearchSuggestedFiltersFetchQuery.graphql"
 
 export enum SearchCriteria {
   acquireable = "acquireable",

@@ -5,18 +5,20 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Action, action, createContextStore } from "easy-peasy"
 import { pick } from "lodash"
 
 export interface SavedSearchModel {
-  attributes: SearchCriteriaAttributes
   aggregations: Aggregations
-  entity: SavedSearchEntity
-  dirty: boolean
+  attributes: SearchCriteriaAttributes
   /** Artwork ID, if the current saved search alert is being set from an artwork */
   currentArtworkID?: string
+  currentSavedSearchID?: string
+  dirty: boolean
+  entity: SavedSearchEntity
+  unit: Metric
 
-  setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
   addValueToAttributesByKeyAction: Action<
     this,
     {
@@ -24,6 +26,7 @@ export interface SavedSearchModel {
       value: string | string[] | boolean | null
     }
   >
+  clearAllAttributesAction: Action<this>
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
@@ -31,12 +34,16 @@ export interface SavedSearchModel {
       value: string | string[] | number | boolean
     }
   >
-  clearAllAttributesAction: Action<this>
+  setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
+  setUnitAction: Action<this, Metric>
+  setCurrentSavedSearchID: Action<this, string>
 }
 
 export const savedSearchModel: SavedSearchModel = {
   attributes: {},
   aggregations: [],
+  currentArtworkID: undefined,
+  currentSavedSearchID: undefined,
   dirty: false,
   entity: {
     artists: [],
@@ -46,11 +53,8 @@ export const savedSearchModel: SavedSearchModel = {
       slug: "",
     },
   },
-  currentArtworkID: undefined,
-
-  setAttributeAction: action((state, payload) => {
-    state.attributes[payload.key] = payload.value
-  }),
+  // this will be overwritten by the user's default unit when we initialize the store
+  unit: "in",
 
   addValueToAttributesByKeyAction: action((state, payload) => {
     if (payload.key === "priceRange" && typeof payload.value === "string") {
@@ -64,6 +68,11 @@ export const savedSearchModel: SavedSearchModel = {
     } else {
       state.attributes[payload.key] = payload.value as unknown as null | undefined
     }
+  }),
+
+  clearAllAttributesAction: action((state) => {
+    state.attributes = pick(state.attributes, ["artistIDs", "artistID"])
+    state.dirty = true
   }),
 
   removeValueFromAttributesByKeyAction: action((state, payload) => {
@@ -80,9 +89,16 @@ export const savedSearchModel: SavedSearchModel = {
     state.dirty = true
   }),
 
-  clearAllAttributesAction: action((state) => {
-    state.attributes = pick(state.attributes, ["artistIDs", "artistID"])
-    state.dirty = true
+  setAttributeAction: action((state, payload) => {
+    state.attributes[payload.key] = payload.value
+  }),
+
+  setUnitAction: action((state, payload) => {
+    state.unit = payload
+  }),
+
+  setCurrentSavedSearchID: action((state, payload) => {
+    state.currentSavedSearchID = payload
   }),
 }
 

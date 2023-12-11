@@ -43,7 +43,7 @@ export const getLocationPredictions = async (query: string): Promise<SimpleLocat
     if (__DEV__) {
       console.warn(error)
     } else {
-      captureMessage(`Error fetching location predictions on: ${url} -> Error: ${error}`, "error")
+      captureMessage(`Error fetching location predictions on: ${url} -> Error: ${error}`)
     }
   }
 

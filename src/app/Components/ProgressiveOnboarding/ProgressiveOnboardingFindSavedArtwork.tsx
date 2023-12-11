@@ -1,4 +1,5 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
+import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore } from "app/store/GlobalStore"
 
@@ -19,8 +20,9 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
     (state) => state.bottomTabs.sessionState.tabProps.profile
   )
 
-  const isFindSavedArtworkDisplayable =
+  const isDisplayable =
     isReady && !isDismissed("find-saved-artwork").status && !!profileTabProps?.savedArtwork
+  const { isActive } = useSetActivePopover(isDisplayable)
 
   if (tab !== "profile") {
     return <>{children}</>
@@ -32,7 +34,7 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
 
   return (
     <Popover
-      visible={isFindSavedArtworkDisplayable}
+      visible={!!isDisplayable && !!isActive}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       title={

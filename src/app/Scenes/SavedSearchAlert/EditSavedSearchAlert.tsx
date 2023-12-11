@@ -18,6 +18,7 @@ import {
   EditSavedSearchAlertNavigationStack,
   EditSavedSearchAlertParams,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/helpers"
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { EmailPreferencesScreen } from "app/Scenes/SavedSearchAlert/screens/EmailPreferencesScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
@@ -25,6 +26,7 @@ import { GoBackProps, goBack, navigationEvents } from "app/system/navigation/nav
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import React, { useCallback, useEffect } from "react"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
@@ -48,6 +50,8 @@ const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
+  const { localizedUnit } = useLocalizedUnit()
+
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...attributes } = me?.savedSearch ?? {}
   const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
@@ -115,9 +119,16 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         <SavedSearchStoreProvider
           runtimeModel={{
             ...savedSearchModel,
-            attributes: attributes as SearchCriteriaAttributes,
+            currentSavedSearchID: savedSearchAlertId,
+            attributes: localizeHeightAndWidthAttributes({
+              attributes: attributes as SearchCriteriaAttributes,
+              // Sizes are always injected in inches
+              from: "in",
+              to: localizedUnit,
+            }),
             aggregations,
             entity,
+            unit: localizedUnit,
           }}
         >
           <NavigationContainer independent>

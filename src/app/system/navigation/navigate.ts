@@ -16,7 +16,8 @@ export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
   moduleName: AppModule
   // Whether the new view should replace the previous (modal only)
-  replace?: boolean
+  replaceActiveModal?: boolean
+  replaceActiveScreen?: boolean
   props: object
 }
 
@@ -30,7 +31,8 @@ export interface NavigateOptions {
     backProps?: GoBackProps
     [key: string]: any
   }
-  replace?: boolean
+  replaceActiveModal?: boolean
+  replaceActiveScreen?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
   ignoreDebounce?: boolean
@@ -96,12 +98,18 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
-  const { replace = false, popToRootTabView, showInTabName } = options
+  const {
+    replaceActiveModal = false,
+    replaceActiveScreen = false,
+    popToRootTabView,
+    showInTabName,
+  } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
     moduleName: result.module,
-    replace,
+    replaceActiveModal,
+    replaceActiveScreen,
     props: {
       ...result.params,
       ...options.passProps,

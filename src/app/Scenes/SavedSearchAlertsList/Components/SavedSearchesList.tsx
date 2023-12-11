@@ -120,7 +120,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(error.message)
+          captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`)
         }
       }
 
@@ -200,7 +200,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
           return <SortButton onPress={() => setModalVisible(true)} />
         }}
       >
-        Saved Alerts
+        Alerts
       </FancyModalHeader>
 
       <SavedSearchesList

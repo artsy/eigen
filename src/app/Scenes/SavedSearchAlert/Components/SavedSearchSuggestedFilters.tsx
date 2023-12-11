@@ -1,4 +1,12 @@
-import { ChevronIcon, Flex, Skeleton, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  ChevronIcon,
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  Spacer,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SavedSearchSuggestedFiltersFetchQuery } from "__generated__/SavedSearchSuggestedFiltersFetchQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -92,7 +100,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     <Flex>
       <Text variant="sm-display">Add Filters</Text>
 
-      <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5} alignItems="center">
+      <Flex flexDirection="row" flexWrap="wrap" mt={0.5} mx={-0.5} alignItems="center">
         {suggestedFilters.map((pill) => (
           <SavedSearchFilterPill
             key={pill.name + pill.value}
@@ -154,16 +162,31 @@ export const SavedSearchSuggestedFiltersQueryRenderer = () => {
   )
 }
 
-const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
+export const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
+  const navigation =
+    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
+
   return (
-    <Skeleton>
-      <Flex p={2} justifyContent="center">
+    <Flex>
+      <Touchable
+        onPress={() => {
+          navigation.navigate("SavedSearchFilterScreen")
+        }}
+      >
+        <Text variant="sm-display">Add Filters</Text>
+      </Touchable>
+
+      <Spacer y={1} />
+
+      <Skeleton>
         <Flex flexDirection="row">
-          <SkeletonBox mr={1} mb={1} width={100} height={30} borderRadius={15} />
-          <SkeletonBox mr={1} mb={1} width={140} height={30} borderRadius={15} />
+          <SkeletonBox mr={1} mb={1} width={80} height={30} borderRadius={17} />
+          <SkeletonBox mr={1} mb={1} width={120} height={30} borderRadius={17} />
+          <SkeletonBox mr={1} mb={1} width={90} height={30} borderRadius={17} />
+          <SkeletonBox mr={1} mb={1} width={140} height={30} borderRadius={17} />
         </Flex>
-      </Flex>
-    </Skeleton>
+      </Skeleton>
+    </Flex>
   )
 }
 

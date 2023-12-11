@@ -40,7 +40,7 @@ export const useMarkNotificationAsRead = () => {
         store?.get?.(item.id)?.setValue(false, "isUnread")
       },
       onError: (error) => {
-        captureMessage(error?.message)
+        captureMessage(`useMarkNotificationAsReadMutation ${error?.message}`)
       },
     })
   }

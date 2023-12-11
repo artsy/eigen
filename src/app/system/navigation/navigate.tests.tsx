@@ -54,7 +54,8 @@ describe(navigate, () => {
             "props": {
               "artworkID": "josef-albers-homage-to-the-square",
             },
-            "replace": false,
+            "replaceActiveModal": false,
+            "replaceActiveScreen": false,
             "type": "react",
           },
         ]
@@ -74,7 +75,8 @@ describe(navigate, () => {
             "props": {
               "artistID": "banksy",
             },
-            "replace": false,
+            "replaceActiveModal": false,
+            "replaceActiveScreen": false,
             "type": "react",
           },
         ]
@@ -93,7 +95,8 @@ describe(navigate, () => {
             "props": {
               "slug": "artsy-vanguard-2019",
             },
-            "replace": false,
+            "replaceActiveModal": false,
+            "replaceActiveScreen": false,
             "type": "react",
           },
         ]
@@ -125,7 +128,8 @@ describe(navigate, () => {
             "artistID": "banksy",
             "someAdditionalKey": "value",
           },
-          "replace": false,
+          "replaceActiveModal": false,
+          "replaceActiveScreen": false,
           "type": "react",
         },
       ]
@@ -157,7 +161,8 @@ describe(navigate, () => {
             "props": {
               "artistID": "kaws",
             },
-            "replace": false,
+            "replaceActiveModal": false,
+            "replaceActiveScreen": false,
             "type": "react",
           },
         ]
@@ -179,7 +184,8 @@ describe(navigate, () => {
             "props": {
               "slug": "blah",
             },
-            "replace": false,
+            "replaceActiveModal": false,
+            "replaceActiveScreen": false,
             "type": "react",
           },
         ]
@@ -229,7 +235,8 @@ describe(navigate, () => {
           "props": {
             "conversationID": "234",
           },
-          "replace": false,
+          "replaceActiveModal": false,
+          "replaceActiveScreen": false,
           "type": "react",
         },
       ]
@@ -254,7 +261,8 @@ describe(navigate, () => {
         {
           "moduleName": "SavedSearchAlertsList",
           "props": {},
-          "replace": false,
+          "replaceActiveModal": false,
+          "replaceActiveScreen": false,
           "type": "react",
         },
       ]

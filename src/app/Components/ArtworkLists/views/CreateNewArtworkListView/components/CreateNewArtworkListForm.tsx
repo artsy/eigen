@@ -71,8 +71,8 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       onCompleted: (data) => {
         const response = data.createCollection?.responseOrError
 
-        if (response?.__typename === "CreateCollectionSuccess") {
-          const artworkList = response?.collection!
+        if (response?.__typename === "CreateCollectionSuccess" && !!response?.collection) {
+          const artworkList = response?.collection
           const result: ArtworkListEntity = {
             name: artworkList.name,
             internalID: artworkList.internalID,
@@ -93,7 +93,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
         if (__DEV__) {
           console.error(error)
         } else {
-          captureMessage(error?.stack!)
+          captureMessage(`useCreateNewArtworkListMutation ${error?.message}`)
         }
       },
     })

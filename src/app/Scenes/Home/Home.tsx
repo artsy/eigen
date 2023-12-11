@@ -46,7 +46,6 @@ import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAdvisorRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
-import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
@@ -61,7 +60,6 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   PlaceholderBox,
@@ -166,7 +164,6 @@ const Home = memo((props: HomeProps) => {
 
   const { loading, relay } = props
 
-  const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
@@ -282,14 +279,8 @@ const Home = memo((props: HomeProps) => {
             />
           )
         case "collections":
-          return enableNewCollectionsRail ? (
+          return (
             <CollectionsRailFragmentContainer
-              title={item.title}
-              collectionsModule={item.data}
-              scrollRef={scrollRefs.current[index]}
-            />
-          ) : (
-            <OldCollectionsRailFragmentContainer
               title={item.title}
               collectionsModule={item.data}
               scrollRef={scrollRefs.current[index]}
@@ -461,7 +452,6 @@ export const HomeFragmentContainer = memo(
             ...FairsRail_fairsModule
           }
           marketingCollectionsModule {
-            ...OldCollectionsRail_collectionsModule
             ...CollectionsRail_collectionsModule
           }
           _onboardingModule: onboardingModule @optionalField {
@@ -751,22 +741,6 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
   }
 
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
-
-  useEffect(() => {
-    // We would like to trigger the tracking only if the experiment is enabled
-    if (worksForYouRecommendationsModel.enabled) {
-      maybeReportExperimentVariant({
-        experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
-        enabled: worksForYouRecommendationsModel.enabled,
-        variantName: worksForYouRecommendationsModel.variant,
-        payload: worksForYouRecommendationsModel.payload,
-        context_module: ContextModule.newWorksForYouRail,
-        context_owner_type: OwnerType.home,
-        context_owner_screen: OwnerType.home,
-        storeContext: true,
-      })
-    }
-  }, [worksForYouRecommendationsModel.enabled])
 
   useEffect(() => {
     if (flash_message) {

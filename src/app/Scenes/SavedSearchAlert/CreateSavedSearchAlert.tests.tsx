@@ -107,30 +107,21 @@ describe("CreateSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     await waitFor(() => {
       resolveMostRecentRelayOperation(mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
     })
 
-    expect(getByText("Bid")).toBeTruthy()
-    expect(getByText("Open Edition")).toBeTruthy()
+    expect(screen.getByText("Bid")).toBeTruthy()
+    expect(screen.getByText("Open Edition")).toBeTruthy()
   })
 
   it("should call onClosePress handler when the close button is pressed", async () => {
     const onClosePressMock = jest.fn()
-    const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
+    renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
-    })
-    fireEvent.press(getByTestId("fancy-modal-header-left-button"))
+    fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
 
     expect(onClosePressMock).toBeCalled()
   })
@@ -139,18 +130,15 @@ describe("CreateSavedSearchAlert", () => {
     const onCompleteMock = jest.fn()
 
     setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-    const { getByTestId } = renderWithWrappers(<TestRenderer onComplete={onCompleteMock} />)
+    renderWithWrappers(<TestRenderer onComplete={onCompleteMock} />)
 
     await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
       resolveMostRecentRelayOperation(mockEnvironment)
       resolveMostRecentRelayOperation(mockEnvironment)
     })
 
-    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getByTestId("save-alert-button"))
+    fireEvent.changeText(screen.getByTestId("alert-input-details"), "something new")
+    fireEvent.press(screen.getByTestId("save-alert-button"))
 
     // Check alert duplicate
     await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
@@ -181,9 +169,6 @@ describe("CreateSavedSearchAlert", () => {
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
-        })
         resolveMostRecentRelayOperation(mockEnvironment, {
           Viewer: () => ({
             notificationPreferences: [
@@ -227,10 +212,6 @@ describe("CreateSavedSearchAlert", () => {
 
       await waitFor(() => {
         resolveMostRecentRelayOperation(mockEnvironment)
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          PreviewSavedSearch: () => ({ displayName: "Banana" }),
-        })
       })
 
       expect(screen.queryByLabelText("Push Notifications Toggler")).toHaveProp(
