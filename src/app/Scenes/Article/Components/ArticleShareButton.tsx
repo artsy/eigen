@@ -2,8 +2,8 @@ import { ActionType, ContextModule, OwnerType, TappedArticleShare } from "@artsy
 import { DEFAULT_HIT_SLOP, ShareIcon } from "@artsy/palette-mobile"
 import { ArticleShareButton_article$key } from "__generated__/ArticleShareButton_article.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { TouchableOpacity } from "react-native"
-import RNShare from "react-native-share"
+import { Platform, TouchableOpacity } from "react-native"
+import Share, { ShareOptions } from "react-native-share"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -21,12 +21,31 @@ export const ArticleShareButton: React.FC<ArticleShareButtonProps> = (props) => 
 
       const url = getShareURL(`${data.href}?utm_content=article-share`)
       const message = `${data.title} on Artsy`
+      const title = data.title ?? ""
 
-      await RNShare.open({
-        title: data.title ?? "",
-        message: message + "\n" + url,
-        failOnCancel: false,
+      const options = Platform.select<ShareOptions>({
+        ios: {
+          subject: message,
+          activityItemSources: [
+            {
+              placeholderItem: { type: "url", content: url },
+              item: {
+                default: { type: "url", content: url },
+              },
+              subject: {
+                default: message,
+              },
+            },
+          ],
+        },
+        default: {
+          title,
+          message: message + "\n" + url,
+          url,
+        },
       })
+
+      await Share.open({ ...options, failOnCancel: false })
     } catch (error) {
       console.error("[ArticleScreen] Error sharing article:", error)
     }

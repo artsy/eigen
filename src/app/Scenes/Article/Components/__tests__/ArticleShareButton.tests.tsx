@@ -4,7 +4,6 @@ import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareBu
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
 import { graphql } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
 // Mock react-native-share module
@@ -42,14 +41,22 @@ describe("ArticleShareButton", () => {
 
     expect(screen.UNSAFE_getByType(ShareIcon)).toBeOnTheScreen()
 
-    act(() => {
-      fireEvent.press(screen.getByTestId("shareButton"))
-    })
+    fireEvent.press(screen.getByTestId("shareButton"))
 
+    const expectedURL = "https://staging.artsy.net/article/foo?utm_content=article-share"
     expect(RNShare.open).toHaveBeenCalledWith({
-      title: "Example Article",
-      message:
-        "Example Article on Artsy\nhttps://staging.artsy.net/article/foo?utm_content=article-share",
+      subject: "Example Article on Artsy",
+      activityItemSources: [
+        {
+          placeholderItem: { type: "url", content: expectedURL },
+          item: {
+            default: { type: "url", content: expectedURL },
+          },
+          subject: {
+            default: "Example Article on Artsy",
+          },
+        },
+      ],
       failOnCancel: false,
     })
 
