@@ -63,6 +63,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     if (this.isNestedInAVirtualizedListWithSameOrientation()) {
       this.context.unregisterAsNestedChild({
         key: this.state.key,
+        ref: this,
         state: null,
       })
     }
