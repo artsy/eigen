@@ -351,6 +351,7 @@ lane :deploy_to_codepush do |options|
     sourcemap_output: sourcemap_output,
     output_dir: "./build",
     mandatory: false,
+    no_duplicate_release_error: true,
     target_version: release_version,
   )
 
