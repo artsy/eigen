@@ -32,7 +32,7 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
-  me: ArtistHeader_me$key
+  me: ArtistHeader_me$key | null | undefined
   onLayoutChange?: ViewProps["onLayout"]
 }
 
@@ -147,7 +147,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
             renderItem={({ item }) => (
               <Pill
                 variant="profile"
-                src={item.partner.profile?.icon?.url!}
+                src={item.partner.profile?.icon?.url ?? undefined}
                 onPress={() => handleRepresentativePress(item.partner)}
               >
                 {item.partner.name}
@@ -163,7 +163,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
 
       <Spacer y={2} />
 
-      {!!showAlertsSet && (
+      {!!showAlertsSet && !!meData.savedSearchesConnection?.totalCount && (
         <Box mx={2} maxWidth={120}>
           <Touchable
             haptic
@@ -172,8 +172,8 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
             }}
           >
             <Text variant="xs" color="blue100">
-              {meData.savedSearchesConnection!.totalCount}{" "}
-              {pluralize("Alert", meData.savedSearchesConnection!.totalCount!)} Set
+              {meData.savedSearchesConnection.totalCount}{" "}
+              {pluralize("Alert", meData.savedSearchesConnection.totalCount as number)} Set
             </Text>
           </Touchable>
         </Box>

@@ -85,22 +85,29 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   }, [fetchCriteriaError])
 
   const handleSharePress = () => {
-    showShareSheet({
-      type: "artist",
-      internalID: artistAboveTheFold.internalID,
-      slug: artistAboveTheFold.slug,
-      artists: [{ name: artistAboveTheFold.name ?? null }],
-      title: artistAboveTheFold.name!,
-      href: artistAboveTheFold.href!,
-      currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
-    })
+    if (
+      artistAboveTheFold.name &&
+      artistAboveTheFold.name &&
+      artistAboveTheFold.slug &&
+      artistAboveTheFold.href
+    ) {
+      showShareSheet({
+        type: "artist",
+        internalID: artistAboveTheFold.internalID,
+        slug: artistAboveTheFold.slug,
+        artists: [{ name: artistAboveTheFold.name ?? null }],
+        title: artistAboveTheFold.name,
+        href: artistAboveTheFold.href,
+        currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
+      })
+    }
   }
 
   const renderBelowTheHeaderComponent = useCallback(
     () => (
       <ArtistHeader
-        artist={artistAboveTheFold!}
-        me={me!}
+        artist={artistAboveTheFold}
+        me={me}
         onLayoutChange={({ nativeEvent }) => {
           if (headerHeight !== nativeEvent.layout.height) {
             setHeaderHeight(nativeEvent.layout.height)
@@ -123,7 +130,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       <ArtworkFiltersStoreProvider>
         <Tabs.TabsWithHeader
           initialTabName={initialTab}
-          title={artistAboveTheFold.name!}
+          title={artistAboveTheFold.name ?? ""}
           showLargeHeaderText={false}
           headerProps={{
             rightElements: (
@@ -275,7 +282,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
               render={{
                 renderPlaceholder: () => <ArtistSkeleton />,
                 renderComponent: ({ above, below }) => {
-                  // return <ArtistSkeleton />
                   if (!above.artist) {
                     throw new Error("no artist data")
                   }

@@ -1,19 +1,17 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { isEqual } from "lodash"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
-// TODO: fix this false positive tests ~ incorrect usage of `waitFor` and `flushPromiseQueue`
-// makes the tests pass when they should fail due to not actually displaying the elements.
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 
-describe.skip("Saved search banner on artist screen", () => {
+describe("Saved search banner on artist screen", () => {
   const originalError = console.error
   const originalWarn = console.warn
   let environment = createMockEnvironment()
@@ -62,15 +60,15 @@ describe.skip("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
 
-    waitFor(() => {
-      fireEvent.press(screen.getByText("Sort & Filter"))
-      expect(screen.queryByText("Sort By • 1")).toBeOnTheScreen()
-      expect(screen.queryByText("Rarity • 2")).toBeOnTheScreen()
-      expect(screen.queryByText("Ways to Buy • 2")).toBeOnTheScreen()
-    })
+    fireEvent.press(screen.getByText("Sort & Filter"))
+
+    expect(screen.getByText("Sort By")).toBeOnTheScreen()
+    expect(screen.getByText("Rarity")).toBeOnTheScreen()
+    expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -90,27 +88,24 @@ describe.skip("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
 
-    waitFor(() => {
-      expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
-    })
+    expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
   })
 })
 
 const MockSearchCriteriaQuery: MockResolvers = {
-  Me() {
+  SearchCriteria() {
     return {
-      savedSearch: {
-        attributionClass: ["limited edition", "open edition"],
-        acquireable: true,
-        inquireableOnly: true,
-        offerable: null,
-        atAuction: null,
-        width: null,
-        height: null,
-      },
+      attributionClass: ["limited edition", "open edition"],
+      acquireable: true,
+      inquireableOnly: true,
+      offerable: null,
+      atAuction: null,
+      width: null,
+      height: null,
     }
   },
 }

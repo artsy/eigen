@@ -16,6 +16,7 @@ import { NativeModules } from "react-native"
 // @ts-expect-error
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
+
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
 require("setimmediate")
 /**
