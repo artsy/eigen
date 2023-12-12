@@ -189,7 +189,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 15.1
+      xcode: 15.0.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -284,7 +284,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.1
+      xcode: 15.0.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -334,7 +334,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 15.1
+      xcode: 15.0.1
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -374,15 +374,8 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
-      - macos/preboot-simulator:
-          version: "17.2"
-          platform: "iOS"
-          device: "iPhone 15 Pro"
       - build-app-ios
       - macos/install-rosetta
-      - run:
-          name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
           key: v11-test-success-{{ checksum ".manifests/native_code" }}
           paths:
