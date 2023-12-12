@@ -22,7 +22,6 @@ import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
-  allowedFilterParams,
   filterArtworksParams,
   getFilterArrayFromQueryParams,
   getFilterParamsFromRouteParams,
@@ -259,12 +258,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           let initialArtworksInput = {
             ...defaultArtistVariables().input,
             ...predefinedFilterParams,
-          }
-
-          const allowedFilterRouteParams = allowedFilterParams(routeParams)
-
-          if (allowedFilterRouteParams?.sort) {
-            initialArtworksInput.sort = allowedFilterRouteParams.sort
           }
 
           if (savedSearchCriteria) {
