@@ -231,7 +231,8 @@ def deploy_android_beta(deployment_target:)
       skip_upload_metadata: true,
       skip_upload_changelogs: true,
       skip_upload_images: true,
-      skip_upload_screenshots: true
+      skip_upload_screenshots: true,
+      aab: "./android/app/build/outputs/bundle/release/app-release.aab"
     )
   elsif deployment_target == 'firebase'
     firebase_app_distribution(
