@@ -8,9 +8,8 @@ import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
-  const [isVisible, setIsVisible] = useState(true)
   const [isInView, setIsInView] = useState(false)
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const {
     isDismissed: _isDismissed,
     sessionState: { isReady },
@@ -20,16 +19,16 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const savedArtworks = data?.me.counts.savedArtworks
   const isDismissed = _isDismissed("save-artwork").status
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
-  const { isActive } = useSetActivePopover(isDisplayable)
+  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const handleDismiss = () => {
-    setIsVisible(false)
+    setIsReady(false)
     dismiss("save-artwork")
   }
 
   // all conditions met we show the popover
-  if (isDisplayable) {
+  if (isDisplayable && isActive) {
     const content = (
       <Text color="white100">
         {isPartnerOfferEnabled
@@ -40,9 +39,10 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
 
     return (
       <Popover
-        visible={!!isVisible && !!isActive}
+        visible={isActive}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
+        onCloseComplete={clearActivePopover}
         title={
           <Text weight="medium" color="white100">
             Like what you see?

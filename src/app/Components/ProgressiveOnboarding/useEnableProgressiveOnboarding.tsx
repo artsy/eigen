@@ -16,7 +16,7 @@ export const useEnableProgressiveOnboarding = () => {
   useEffect(() => {
     if (isFocused && !isReady) {
       InteractionManager.runAfterInteractions(() => {
-        setIsReady()
+        setIsReady(true)
       })
     }
   }, [setIsReady, isFocused, isReady])

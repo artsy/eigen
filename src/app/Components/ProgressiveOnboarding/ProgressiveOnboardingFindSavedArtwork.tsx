@@ -15,7 +15,7 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss, setActivePopover } = GlobalStore.actions.progressiveOnboarding
   const profileTabProps = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.profile
   )
@@ -32,11 +32,16 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
     dismiss("find-saved-artwork")
   }
 
+  if (!isActive) {
+    ;<>{children}</>
+  }
+
   return (
     <Popover
-      visible={!!isDisplayable && !!isActive}
+      visible={!!isDisplayable}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
+      onCloseComplete={() => setActivePopover(undefined)}
       title={
         <Text variant="xs" color="white100" numberOfLines={1}>
           Find and edit all your Saves here

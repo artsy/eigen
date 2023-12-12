@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
+import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {
@@ -23,14 +24,16 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
         haptic
         onPress={handlePress}
         render={({ color }) => (
-          <Flex flexDirection="row" alignItems="center">
-            <Box backgroundColor="white">
-              <BellIcon fill={color} width="16px" height="16px" />
-            </Box>
-            <Text variant="xs" color={color} ml={0.5} numberOfLines={1} lineHeight="16px">
-              Create Alert
-            </Text>
-          </Flex>
+          <ProgressiveOnboardingSaveAlert>
+            <Flex flexDirection="row" alignItems="center">
+              <Box backgroundColor="white">
+                <BellIcon fill={color} width="16px" height="16px" />
+              </Box>
+              <Text variant="xs" color={color} ml={0.5} numberOfLines={1} lineHeight="16px">
+                Create Alert
+              </Text>
+            </Flex>
+          </ProgressiveOnboardingSaveAlert>
         )}
       />
     </Box>

@@ -23,8 +23,8 @@ export interface ProgressiveOnboardingModel {
     // active at the same time
     activePopover?: string
   }
-  setIsReady: Action<this>
-  setActivePopover: Action<this, string>
+  setIsReady: Action<this, boolean>
+  setActivePopover: Action<this, string | undefined>
   __clearDissmissed: Action<this>
 }
 
@@ -52,10 +52,8 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
         : { status: false, timestamp: 0 }
     }
   }),
-  setIsReady: action((state) => {
-    if (!state.sessionState.isReady) {
-      state.sessionState.isReady = true
-    }
+  setIsReady: action((state, isReady) => {
+    state.sessionState.isReady = isReady
   }),
   setActivePopover: action((state, id) => {
     state.sessionState.activePopover = id
@@ -75,10 +73,23 @@ export const PROGRESSIVE_ONBOARDING_SAVE_CHAIN = [
   PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT,
 ]
 
+// Alerts
+export const PROGRESSIVE_ONBOARDING_ALERT_CREATE = "alert-create"
+export const PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS = "alert-select-filters"
+export const PROGRESSIVE_ONBOARDING_ALERT_FINISH = "alert-finish"
+export const PROGRESSIVE_ONBOARDING_ALERT_CHAIN = [
+  PROGRESSIVE_ONBOARDING_ALERT_CREATE,
+  PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS,
+  PROGRESSIVE_ONBOARDING_ALERT_FINISH,
+] as const
+
 export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
   PROGRESSIVE_ONBOARDING_FIND_SAVED_ARTWORK,
   PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT,
+  PROGRESSIVE_ONBOARDING_ALERT_CREATE,
+  PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS,
+  PROGRESSIVE_ONBOARDING_ALERT_FINISH,
 ] as const
 
 export type ProgressiveOnboardingKey = typeof PROGRESSIVE_ONBOARDING_KEYS[number]
