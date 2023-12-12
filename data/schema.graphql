@@ -268,6 +268,7 @@ type Agreement {
 
 type Alert {
   additionalGeneNames: [String]
+  artists: [Artist!]!
   attributionClass: [String]
   formattedPriceRange: String
   hasRecentlyEnabledUserSearchCriteria: Boolean
@@ -304,6 +305,11 @@ type AlertEdge {
 
   # The item at the end of the edge
   node: Alert
+}
+
+type AlertNotificationItem {
+  alert: Alert
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 }
 
 type AlertsCounts {
@@ -1173,6 +1179,11 @@ type ArticleEdge {
 
   # The item at the end of the edge
   node: Article
+}
+
+type ArticleFeaturedArtistNotificationItem {
+  article: Article
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
 }
 
 type ArticleFeatureSection {
@@ -2678,6 +2689,11 @@ type ArtworkPriceInsights {
   ): String
   medium: String
   sellThroughRate: Float
+}
+
+type ArtworkPublishedNotificationItem {
+  artists: [Artist!]!
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 }
 
 # The results for one of the requested aggregations
@@ -13168,6 +13184,7 @@ type Notification implements Node {
   # A type-specific ID.
   internalID: ID!
   isUnread: Boolean!
+  item: NotificationItem
   message: String!
   notificationType: NotificationTypesEnum!
   objectsCount: Int!
@@ -13218,6 +13235,13 @@ type NotificationEdge {
   # The item at the end of the edge
   node: Notification
 }
+
+union NotificationItem =
+    AlertNotificationItem
+  | ArticleFeaturedArtistNotificationItem
+  | ArtworkPublishedNotificationItem
+  | ShowOpenedNotificationItem
+  | ViewingRoomPublishedNotificationItem
 
 type NotificationPreference {
   # email | push
@@ -17469,6 +17493,11 @@ type ShowFollowArtistEdge {
   node: ShowFollowArtist
 }
 
+type ShowOpenedNotificationItem {
+  partner: Partner
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
+}
+
 enum ShowSorts {
   END_AT_ASC
   END_AT_DESC
@@ -20438,6 +20467,19 @@ type ViewingRoomEdge {
 
 # A viewing room or errors object
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
+
+type ViewingRoomPublishedNotificationItem {
+  partner: Partner
+
+  # The IDs of the viewing rooms, for use in stitching
+  viewingRoomIDs: [String]
+  viewingRoomsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ViewingRoomsConnection
+}
 
 # The connection type for ViewingRoom.
 type ViewingRoomsConnection {
