@@ -10,31 +10,32 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
     const orderOrError = response.commerceCreatePartnerOfferOrder?.orderOrError
 
     if (orderOrError?.error) {
-      const { code, data } = orderOrError.error
-      const artworkId = JSON.parse(data?.toString() ?? "")?.artwork_id
+      const { code: errorCode, data: artwork } = orderOrError.error
+      const artworkId = JSON.parse(artwork?.toString() ?? "{}")?.artwork_id
 
-      if (code === "expired_partner_offer") {
+      if (errorCode === "expired_partner_offer") {
         // TODO: add params to show expired banner (EMI-1606)
         navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
+
         return
       }
 
-      if (code === "not_acquireable") {
+      if (errorCode === "not_acquireable") {
         // TODO: add params to show unavailable/sold banner (EMI-1606)
         navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
+
         return
       }
-    }
-
-    if (orderOrError?.order) {
+    } else if (orderOrError?.order) {
       // we need to go back to the home screen before navigating to the orders screen
       // to prevent the user from closing the modal and navigating back to the this screen
       goBack()
       navigate(`/orders/${orderOrError.order?.internalID}`)
-      return
-    }
 
-    goBack()
+      return
+    } else {
+      goBack()
+    }
   }
 
   const { commitMutation } = usePartnerOfferMutation(handleRedirect)
