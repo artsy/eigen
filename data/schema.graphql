@@ -20549,7 +20549,6 @@ input ViewingRoomSubsectionInput {
 }
 
 enum Visibility {
-  DRAFT
   LISTED
   UNLISTED
 }
