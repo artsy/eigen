@@ -8,6 +8,22 @@ There are 2 methods of deploying hot fixes depending on the issue:
 
 2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
 
+## Install Prerequisites
+
+The first time you deploy a hotfix you will need to install the app-center cli:
+
+```
+yarn global add appcenter-cli
+```
+
+## Get the release files and environment variables
+
+Run:
+
+```
+yarn setup:releases
+```
+
 ## Check out the tag corresponding with the last release of Eigen
 
 All our live release versions should have a corresponding tag in git that will end in `-submission`.

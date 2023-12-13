@@ -24,7 +24,7 @@ lane :upload_sentry_artifacts do |options|
   outfile = settings[:outfile]
 
   begin
-    sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
+    sentry_create_release(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
@@ -72,7 +72,7 @@ lane :upload_sentry_sourcemaps do |options|
 
   begin
     sentry_upload_sourcemap(
-      auth_token: ENV['SentryUploadAuthKey'],
+      auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
@@ -101,7 +101,7 @@ private_lane :upload_dsyms_to_sentry do |options|
 
   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
     # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-    sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
+    sentry_upload_dsym(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
                        sentry_cli_path: sentry_cli_path,
                        org_slug: org_slug,
                        project_slug: project_slug,
