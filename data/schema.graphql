@@ -316,6 +316,20 @@ type AlertsCounts {
   totalUserSearchCriteriaCount: Int
 }
 
+input AlertSource {
+  # The database id of the object from which the alert originates
+  id: ID
+
+  # The type of object from which the alert originates
+  type: AlertSourceType
+}
+
+# The context from which the alert originates
+enum AlertSourceType {
+  ARTIST
+  ARTWORK
+}
+
 # A connection to a list of items.
 type AlertsSummaryArtistConnection {
   # A list of edges.
@@ -14223,7 +14237,10 @@ type PreviewSavedSearch {
   labels: [SearchCriteriaLabel]!
 
   # Suggested filters for the user to use based on their search criteria
-  suggestedFilters: [SearchCriteriaLabel!]!
+  suggestedFilters(
+    # The context from which the alert originates
+    source: AlertSource
+  ): [SearchCriteriaLabel!]!
 }
 
 input PreviewSavedSearchAttributes {
@@ -15605,7 +15622,10 @@ type Query {
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # A previewed saved search
-  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
+  previewSavedSearch(
+    # The criteria which describe the alert
+    attributes: PreviewSavedSearchAttributes
+  ): PreviewSavedSearch
 
   # Get all price insights for an artist.
   priceInsights(
@@ -20156,7 +20176,10 @@ type Viewer {
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # A previewed saved search
-  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
+  previewSavedSearch(
+    # The criteria which describe the alert
+    attributes: PreviewSavedSearchAttributes
+  ): PreviewSavedSearch
 
   # A Profile
   profile(
