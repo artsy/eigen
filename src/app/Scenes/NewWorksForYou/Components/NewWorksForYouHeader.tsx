@@ -19,7 +19,7 @@ export const NewWorksForYouHeaderComponent: React.FC<{
   )
 
   return (
-    <Flex mb={1}>
+    <Flex my={1}>
       <Text variant="lg-display">New Works For You</Text>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="xs" mt={1}>

@@ -4,6 +4,7 @@ import { NewWorksForYouGridQR } from "app/Scenes/NewWorksForYou/Components/NewWo
 import { NewWorksForYouListQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouList"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { times } from "lodash"
 import { MotiView } from "moti"
@@ -51,6 +52,9 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   version: versionProp,
 }) => {
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
+  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
+
+  console.log({ experiment })
 
   const isReferredFromEmail = utm_medium === "email"
 
@@ -58,7 +62,16 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
 
-  if (enableNewWorksForYouFeed && !isTablet()) {
+  if (
+    // The feed is not optimised for tablets yet.
+    !isTablet() &&
+    // Release only when ready for release!
+    enableNewWorksForYouFeed &&
+    // Release only when the experiment is enabled.
+    experiment.enabled &&
+    // Show only if the experiment payload is "gridAndList".
+    experiment.payload !== "gridOnly"
+  ) {
     return (
       <MotiView
         from={{ opacity: 0 }}
@@ -90,7 +103,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
     <Skeleton>
       <Spacer y={4} />
       <Flex flexDirection="row">
-        <Flex my={1} px={2}>
+        <Flex my={2} px={2}>
           <SkeletonText variant="lg-display">New Works For You</SkeletonText>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="xs" mt={1}>
