@@ -231,6 +231,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewWorksForYouScreenFeed",
   },
+  AREnablePartnerOffer: {
+    description: "Enable partner offer content in the app",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnablePartnerOffer",
+  },
 }
 
 export interface DevToggleDescriptor {

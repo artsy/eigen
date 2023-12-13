@@ -3,6 +3,7 @@ import { ProgressiveOnboardingSaveArtwork_Query } from "__generated__/Progressiv
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ElementInView } from "app/utils/ElementInView"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -20,6 +21,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   const isDismissed = _isDismissed("save-artwork").status
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
   const { isActive } = useSetActivePopover(isDisplayable)
+  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const handleDismiss = () => {
     setIsVisible(false)
@@ -28,6 +30,14 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
 
   // all conditions met we show the popover
   if (isDisplayable) {
+    const content = (
+      <Text color="white100">
+        {isPartnerOfferEnabled
+          ? "Tap the heart to save an artwork\nand signal your interest to galleries."
+          : "Hit the heart to save an artwork."}
+      </Text>
+    )
+
     return (
       <Popover
         visible={!!isVisible && !!isActive}
@@ -38,7 +48,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
             Like what you see?
           </Text>
         }
-        content={<Text color="white100">Hit the heart to save an artwork.</Text>}
+        content={content}
       >
         <Flex>{children}</Flex>
       </Popover>

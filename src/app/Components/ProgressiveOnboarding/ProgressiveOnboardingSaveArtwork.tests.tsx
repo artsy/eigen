@@ -1,4 +1,4 @@
-import { fireEvent, screen, act } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { useEffect } from "react"
@@ -52,9 +52,7 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
 
     expect(screen.getByText("Popover")).toBeOnTheScreen()
 
-    act(() => {
-      fireEvent.press(screen.getByText("Popover"))
-    })
+    fireEvent.press(screen.getByText("Popover"))
 
     expect(__globalStoreTestUtils__?.getLastAction().type).toContain(
       "progressiveOnboarding.dismiss"
