@@ -6,4 +6,4 @@ set -euxo pipefail
 echo 'Clean global yarn & pod caches (┛✧Д✧))┛彡┻━┻'
 yarn cache clean
 bundle exec pod cache clean --all
-./scripts/flip-table
+./scripts/utils/flip-table
