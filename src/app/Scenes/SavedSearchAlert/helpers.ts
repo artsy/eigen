@@ -182,6 +182,7 @@ export const useSavedSearchFilter = ({ criterion }: { criterion: SearchCriteria 
     switch (criterion) {
       case SearchCriteria.attributionClass:
       case SearchCriteria.additionalGeneIDs:
+      case SearchCriteria.artistSeriesIDs:
         fromattedValue = ((selectedAttributes as string[]) || []).concat(value)
         break
 

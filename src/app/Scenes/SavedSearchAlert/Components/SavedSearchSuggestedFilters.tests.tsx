@@ -6,6 +6,7 @@ import {
   SavedSearchStoreProvider,
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
@@ -25,6 +26,10 @@ jest.mock("@react-navigation/native", () => {
 })
 
 describe("SavedSearchSuggestedFilters", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistSeriesSuggestions: true })
+  })
+
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
       <Suspense fallback={null}>
@@ -133,5 +138,11 @@ const mockSuggestedFilters = [
     field: "priceRange",
     name: "Price",
     value: "*-10000",
+  },
+  {
+    displayValue: "Toys",
+    field: "artistSeriesIDs",
+    name: "Artist Series",
+    value: "kaws-toys",
   },
 ]

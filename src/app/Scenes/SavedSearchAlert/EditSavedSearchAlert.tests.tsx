@@ -42,6 +42,7 @@ describe("EditSavedSearchAlert", () => {
 
     expect(screen.getAllByTestId("alert-pill").map(extractText)).toEqual([
       "name-1",
+      "Monkeys",
       "Lithograph",
       "Paper",
     ])

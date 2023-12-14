@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import {
   aggregationForFilter,
   Aggregations,
@@ -142,6 +143,15 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
   })
 }
 
+export const extractPillFromArtistSeriesIDs = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
+    return {
+      label: toTitleCase(value.replaceAll("-", " ")),
+      value,
+      paramName: SearchCriteria.artistSeriesIDs,
+    }
+  })
+}
 export const extractAdditionalGeneIDsPills = (values: string[]): SavedSearchPill[] => {
   return values.map((value) => {
     const additionalGeneOption = gravityArtworkMediumCategories.find(
@@ -229,6 +239,10 @@ export const extractPillsFromCriteria = (
 
     if (paramName === SearchCriteria.attributionClass) {
       return extractAttributionPills(paramValue)
+    }
+
+    if (paramName === SearchCriteria.artistSeriesIDs) {
+      return extractPillFromArtistSeriesIDs(paramValue)
     }
 
     if (paramName === SearchCriteria.priceRange) {

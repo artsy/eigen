@@ -237,6 +237,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffer",
   },
+  AREnableArtistSeriesSuggestions: {
+    description: "Enable artist series suggestions",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtistSeriesSuggestions",
+  },
 }
 
 export interface DevToggleDescriptor {

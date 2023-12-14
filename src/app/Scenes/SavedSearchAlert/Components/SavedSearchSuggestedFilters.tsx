@@ -16,6 +16,7 @@ import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/Sa
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSavedSearchFilter } from "app/Scenes/SavedSearchAlert/helpers"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,16 +29,31 @@ const SUPPORTED_SEARCH_CRITERIA = [
 
 export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   const tracking = useTracking()
+  const isArtistSeriesSuggestionEnabled = useFeatureFlag("AREnableArtistSeriesSuggestions")
+
+  if (isArtistSeriesSuggestionEnabled) {
+    SUPPORTED_SEARCH_CRITERIA.push(SearchCriteria.artistSeriesIDs)
+  }
 
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const isEditFlow = !!SavedSearchStore.useStoreState((state) => state.currentSavedSearchID)
+  const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
 
   const data = useLazyLoadQuery<SavedSearchSuggestedFiltersFetchQuery>(
     savedSearchSuggestedFiltersFetchQuery,
-    { attributes: { artistIDs: attributes.artistIDs } }
+    {
+      attributes: { artistIDs: attributes.artistIDs },
+      source:
+        isArtistSeriesSuggestionEnabled && currentArtworkID
+          ? {
+              type: "ARTWORK",
+              id: currentArtworkID,
+            }
+          : undefined,
+    }
   )
 
   const { handlePress: handleAttributionClassPress } = useSavedSearchFilter({
@@ -45,6 +61,9 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   })
   const { handlePress: handleAdditionalGeneIDsPress } = useSavedSearchFilter({
     criterion: SearchCriteria.additionalGeneIDs,
+  })
+  const { handlePress: handleArtistSeriesPress } = useSavedSearchFilter({
+    criterion: SearchCriteria.artistSeriesIDs,
   })
 
   const { handlePress: handlePriceRangePress } = useSavedSearchFilter({
@@ -75,6 +94,9 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
         break
       case SearchCriteria.additionalGeneIDs:
         handleAdditionalGeneIDsPress(value)
+        break
+      case SearchCriteria.artistSeriesIDs:
+        isArtistSeriesSuggestionEnabled && handleArtistSeriesPress(value)
         break
 
       // These are all string values
@@ -202,9 +224,12 @@ export const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
 }
 
 const savedSearchSuggestedFiltersFetchQuery = graphql`
-  query SavedSearchSuggestedFiltersFetchQuery($attributes: PreviewSavedSearchAttributes!) {
+  query SavedSearchSuggestedFiltersFetchQuery(
+    $attributes: PreviewSavedSearchAttributes!
+    $source: AlertSource
+  ) {
     previewSavedSearch(attributes: $attributes) @optionalField {
-      suggestedFilters {
+      suggestedFilters(source: $source) {
         displayValue
         field
         name
