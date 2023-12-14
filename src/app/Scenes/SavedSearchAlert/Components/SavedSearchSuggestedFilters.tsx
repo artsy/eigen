@@ -22,6 +22,7 @@ import { useTracking } from "react-tracking"
 
 const SUPPORTED_SEARCH_CRITERIA = [
   SearchCriteria.additionalGeneIDs,
+  SearchCriteria.artistSeriesIDs,
   SearchCriteria.attributionClass,
   SearchCriteria.priceRange,
 ]
@@ -34,10 +35,19 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
 
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const isEditFlow = !!SavedSearchStore.useStoreState((state) => state.currentSavedSearchID)
+  const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
 
   const data = useLazyLoadQuery<SavedSearchSuggestedFiltersFetchQuery>(
     savedSearchSuggestedFiltersFetchQuery,
-    { attributes: { artistIDs: attributes.artistIDs } }
+    {
+      attributes: { artistIDs: attributes.artistIDs },
+      source: currentArtworkID
+        ? {
+            type: "ARTWORK",
+            id: currentArtworkID,
+          }
+        : undefined,
+    }
   )
 
   const { handlePress: handleAttributionClassPress } = useSavedSearchFilter({
@@ -45,6 +55,9 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   })
   const { handlePress: handleAdditionalGeneIDsPress } = useSavedSearchFilter({
     criterion: SearchCriteria.additionalGeneIDs,
+  })
+  const { handlePress: handleArtistSeriesPress } = useSavedSearchFilter({
+    criterion: SearchCriteria.artistSeriesIDs,
   })
 
   const { handlePress: handlePriceRangePress } = useSavedSearchFilter({
@@ -75,6 +88,9 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
         break
       case SearchCriteria.additionalGeneIDs:
         handleAdditionalGeneIDsPress(value)
+        break
+      case SearchCriteria.artistSeriesIDs:
+        handleArtistSeriesPress(value)
         break
 
       // These are all string values
@@ -202,9 +218,12 @@ export const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
 }
 
 const savedSearchSuggestedFiltersFetchQuery = graphql`
-  query SavedSearchSuggestedFiltersFetchQuery($attributes: PreviewSavedSearchAttributes!) {
+  query SavedSearchSuggestedFiltersFetchQuery(
+    $attributes: PreviewSavedSearchAttributes!
+    $source: AlertSource
+  ) {
     previewSavedSearch(attributes: $attributes) @optionalField {
-      suggestedFilters {
+      suggestedFilters(source: $source) {
         displayValue
         field
         name
