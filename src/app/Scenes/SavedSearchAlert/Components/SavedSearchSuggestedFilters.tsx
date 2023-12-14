@@ -16,19 +16,24 @@ import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/Sa
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { isValueSelected, useSavedSearchFilter } from "app/Scenes/SavedSearchAlert/helpers"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const SUPPORTED_SEARCH_CRITERIA = [
   SearchCriteria.additionalGeneIDs,
-  SearchCriteria.artistSeriesIDs,
   SearchCriteria.attributionClass,
   SearchCriteria.priceRange,
 ]
 
 export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
   const tracking = useTracking()
+  const isArtistSeriesSuggestionEnabled = useFeatureFlag("AREnableArtistSeriesSuggestions")
+
+  if (isArtistSeriesSuggestionEnabled) {
+    SUPPORTED_SEARCH_CRITERIA.push(SearchCriteria.artistSeriesIDs)
+  }
 
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
@@ -41,12 +46,13 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
     savedSearchSuggestedFiltersFetchQuery,
     {
       attributes: { artistIDs: attributes.artistIDs },
-      source: currentArtworkID
-        ? {
-            type: "ARTWORK",
-            id: currentArtworkID,
-          }
-        : undefined,
+      source:
+        isArtistSeriesSuggestionEnabled && currentArtworkID
+          ? {
+              type: "ARTWORK",
+              id: currentArtworkID,
+            }
+          : undefined,
     }
   )
 
@@ -90,7 +96,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
         handleAdditionalGeneIDsPress(value)
         break
       case SearchCriteria.artistSeriesIDs:
-        handleArtistSeriesPress(value)
+        isArtistSeriesSuggestionEnabled && handleArtistSeriesPress(value)
         break
 
       // These are all string values
