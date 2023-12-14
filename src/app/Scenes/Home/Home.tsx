@@ -341,7 +341,7 @@ const Home = memo((props: HomeProps) => {
           return (
             <AuctionResultsRail
               title={item.title}
-              contextModule={item.contextModule!}
+              contextModule={item.contextModule as ContextModule}
               auctionResults={item.data}
             />
           )
@@ -575,7 +575,7 @@ export const HomeFragmentContainer = memo(
         featured: viewingRooms(featured: true) @optionalField {
           ...Home_featured
         }
-        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) @optionalField {
+        articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
           ...Home_articlesConnection
         }
         newWorksForYou: viewer {
@@ -802,7 +802,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC) @optionalField {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
               ...Home_articlesConnection
             }
           }
