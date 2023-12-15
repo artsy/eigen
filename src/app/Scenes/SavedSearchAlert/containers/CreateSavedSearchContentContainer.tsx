@@ -86,7 +86,7 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
     <Box flex={1}>
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       <SavedSearchAlertForm
-        initialValues={{ name: "", email: userAllowsEmails, push: enablePushNotifications }}
+        initialValues={{ name: "", email: true, push: enablePushNotifications }}
         contentContainerStyle={{ paddingTop: 0 }}
         isLoading={loading || refetching}
         onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
