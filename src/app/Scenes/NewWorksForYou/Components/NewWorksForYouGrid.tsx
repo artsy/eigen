@@ -61,6 +61,9 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
                 <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
               )}
               hasMore={false}
+              contentContainerStyle={{
+                paddingBottom: 120,
+              }}
             />
           </Flex>
         </Animated.ScrollView>

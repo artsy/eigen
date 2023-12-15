@@ -44,6 +44,9 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
             <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
           </Flex>
         )}
+        contentContainerStyle={{
+          paddingBottom: 120,
+        }}
         ItemSeparatorComponent={() => <Flex mt={4} />}
         renderItem={({ item }) => {
           return (
@@ -65,7 +68,6 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
             />
           )
         }}
-        ListFooterComponent={<Text>Footer component</Text>}
         {...scrollProps}
       />
 

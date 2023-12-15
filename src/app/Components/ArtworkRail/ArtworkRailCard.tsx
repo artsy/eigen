@@ -159,7 +159,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           return imageDimensions.width
         }
       case "fullWidth":
-        return imageDimensions.width
+        return Dimensions.get("window").width
 
       default:
         assertNever(size)
@@ -376,7 +376,6 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 }) => {
   const color = useColor()
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
-  const { height: screenHeight } = useScreenDimensions()
 
   if (!containerWidth) {
     return null
@@ -403,12 +402,14 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     {
       width: isRecentlySoldArtwork
         ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+        : size === "fullWidth"
+        ? Dimensions.get("screen").width
         : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
     }
   )
 
-  const aspectRatio = imageDimensions.width / imageDimensions.height
+  const aspectRatio = image?.aspectRatio || imageDimensions.width / imageDimensions.height
 
   const getImageHeight = () => {
     let adjustedHeight = 0
@@ -423,17 +424,17 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       return adjustedHeight
     }
 
-    const MINIMUM_IMAGE_HEIGHT = screenHeight * 0.2
-    const MAXIMUM_IMAGE_HEIGHT = screenHeight * 0.7
+    const MINIMUM_ASPECT_RATIO = 0.2
+    const MAXIMUM_ASPECT_RATIO = 0.7
 
     // Make sure that the image height is not too little or not too big
     // See https://artsy.slack.com/archives/C05EQL4R5N0/p1701167802957189?thread_ts=1701164551.999919&cid=C05EQL4R5N0
-    if (height / aspectRatio < MINIMUM_IMAGE_HEIGHT) {
-      return MINIMUM_IMAGE_HEIGHT
-    } else if (height / aspectRatio > MAXIMUM_IMAGE_HEIGHT) {
-      return MAXIMUM_IMAGE_HEIGHT
+    if (aspectRatio < MINIMUM_ASPECT_RATIO) {
+      return Dimensions.get("screen").width / MINIMUM_ASPECT_RATIO
+    } else if (aspectRatio > MAXIMUM_ASPECT_RATIO) {
+      return Dimensions.get("screen").width / aspectRatio
     } else {
-      return height / aspectRatio
+      return Dimensions.get("screen").width / aspectRatio
     }
   }
 
@@ -441,7 +442,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     <Flex>
       <Flex width={containerWidth}>
         <OpaqueImageView
-          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
+          // style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
           height={getImageHeight()}
           width={containerWidth}
