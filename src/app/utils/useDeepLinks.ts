@@ -58,8 +58,8 @@ export function useDeepLinks() {
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn) {
       // and we track the deep link
-
       navigate(deepLinkUrl)
+      return
     }
 
     // Otherwise, we save the deep link url
