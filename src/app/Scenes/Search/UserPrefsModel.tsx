@@ -31,7 +31,6 @@ export interface UserPrefsModel {
   priceRange: string
   artworkViewOption: ViewOption
   artistViewOption: ViewOption
-  newWorksForYouViewOption: ViewOption
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
   setPriceRange: Action<this, string>
@@ -39,7 +38,6 @@ export interface UserPrefsModel {
   didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
   setArtworkViewOption: Action<this, ViewOption>
   setArtistViewOption: Action<this, ViewOption>
-  setNewWorksForYouViewOption: Action<this, ViewOption>
 }
 
 export const getUserPrefsModel = (): UserPrefsModel => ({
@@ -48,7 +46,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   artworkViewOption: DEFAULT_VIEW_OPTION,
   artistViewOption: DEFAULT_VIEW_OPTION,
   priceRange: DEFAULT_PRICE_RANGE,
-  newWorksForYouViewOption: "list",
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
@@ -96,9 +93,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   }),
   setArtistViewOption: action((state, viewOption) => {
     state.artworkViewOption = viewOption
-  }),
-  setNewWorksForYouViewOption: action((state, viewOption) => {
-    state.newWorksForYouViewOption = viewOption
   }),
 })
 

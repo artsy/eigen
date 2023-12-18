@@ -225,12 +225,6 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
-  AREnableNewWorksForYouScreenFeed: {
-    description: "Enable new works for you screen feed",
-    readyForRelease: false,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewWorksForYouScreenFeed",
-  },
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
     readyForRelease: false,
