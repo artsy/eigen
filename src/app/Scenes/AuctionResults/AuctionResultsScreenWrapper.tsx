@@ -57,7 +57,6 @@ export const AuctionResultsScreenContent: React.FC<Props> = ({
     })
     setRefreshing(false)
   }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
