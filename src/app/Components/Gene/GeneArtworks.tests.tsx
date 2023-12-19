@@ -1,66 +1,34 @@
-import { Tabs } from "@artsy/palette-mobile"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
-
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 describe("GeneArtworks", () => {
-  const geneID = "gene-id"
-  const environment = getMockRelayEnvironment()
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<GeneArtworksTestsQuery>
-        environment={environment}
-        query={graphql`
-          query GeneArtworksTestsQuery($geneID: String!, $input: FilterArtworksInput)
-          @relay_test_operation {
-            gene(id: $geneID) {
-              ...GeneArtworks_gene @arguments(input: $input)
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (props?.gene) {
-            return (
-              <Tabs.TabsWithHeader title="test">
-                <GeneArtworksPaginationContainer gene={props.gene} />
-              </Tabs.TabsWithHeader>
-            )
-          }
-
-          return null
-        }}
-        variables={{
-          geneID,
-          input: {
-            medium: "*",
-            priceRange: "*-*",
-          },
-        }}
-      />
-    )
-  }
-
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+  const { renderWithRelay } = setupTestWrapper<GeneArtworksTestsQuery>({
+    Component: (props) => (
+      <ArtworkFiltersStoreProvider>
+        <GeneArtworksPaginationContainer gene={props.gene!} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query GeneArtworksTestsQuery($input: FilterArtworksInput) @relay_test_operation {
+        gene(id: "design") {
+          ...GeneArtworks_gene @arguments(input: $input)
+        }
+      }
+    `,
   })
 
   it("renders filter header", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    renderWithRelay({})
 
-    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
+    expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
   it("renders artworks grid", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -70,57 +38,51 @@ describe("GeneArtworks", () => {
       },
     })
 
-    // Find by artwork title
-    expect(getByText("title-1")).toBeTruthy()
+    expect(screen.getByText(/mock-value-for-field-"title"/)).toBeOnTheScreen()
+    expect(screen.getByText("Showing 10 works")).toBeOnTheScreen()
   })
 
   it("renders empty artworks grid view", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
-      FilterArtworksConnection() {
-        return {
-          counts: {
-            total: 10,
-          },
-        }
-      },
-    })
-
-    // Change sort filter
-    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
-    fireEvent.press(getByText("Sort & Filter"))
-    fireEvent.press(getByText("Sort By"))
-    fireEvent.press(getByText("Recently Added"))
-    fireEvent.press(getByText("Show Results"))
-
-    resolveMostRecentRelayOperation(environment, {
+    renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
             total: 0,
           },
+          edges: [],
         }
       },
     })
 
-    expect(getByText(/No results found/)).toBeTruthy()
+    expect(
+      screen.getByText("There aren’t any works available in the category at this time.")
+    ).toBeOnTheScreen()
   })
 
   it("renders empty message when artworks is empty", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
-      Gene() {
+    renderWithRelay({
+      FilterArtworksConnection() {
         return {
-          artworks: {
-            counts: {
-              total: 0,
-            },
-          },
+          edges: [],
         }
       },
     })
-    const emptyMessage = "There aren’t any works available in the category at this time."
 
-    expect(getByText(emptyMessage)).toBeTruthy()
+    expect(
+      screen.getByText("There aren’t any works available in the category at this time.")
+    ).toBeTruthy()
+  })
+
+  it("opens the filter modal when pressing sort & filter", async () => {
+    renderWithRelay({})
+
+    expect(screen.queryByText("Show Results")).not.toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Sort & Filter"))
+
+    expect(screen.getByText("Show Results")).toBeOnTheScreen()
+    expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
+    expect(screen.getByText("Rarity")).toBeOnTheScreen()
+    expect(screen.getByText("Artists")).toBeOnTheScreen()
+    expect(screen.getByText("Sort By")).toBeOnTheScreen()
   })
 })

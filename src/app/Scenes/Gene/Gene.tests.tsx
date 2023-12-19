@@ -1,11 +1,11 @@
 import { TouchableHighlightColor } from "@artsy/palette-mobile"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
-import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
+import { GeneArtworksContainer } from "app/Components/Gene/GeneArtworks"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { Gene } from "./Gene"
@@ -49,16 +49,16 @@ describe("Gene", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
   })
 
   it("returns all tabs", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
-    expect(tree.root.findAllByType(GeneArtworks)).toHaveLength(1)
-    expect(tree.root.findAllByType(About)).toHaveLength(1)
+    expect(screen.UNSAFE_queryAllByType(GeneArtworksContainer)).toHaveLength(1)
+    expect(screen.UNSAFE_queryAllByType(About)).toHaveLength(1)
   })
 
   it("renders filter modal", async () => {

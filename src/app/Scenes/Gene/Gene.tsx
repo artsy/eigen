@@ -11,6 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
@@ -67,7 +68,9 @@ export const Gene: React.FC<GeneProps> = (props) => {
       >
         <Tabs.Tab name="Works" label="Works">
           <Tabs.Lazy>
-            <GeneArtworksPaginationContainer gene={gene} />
+            <ArtworkFiltersStoreProvider>
+              <GeneArtworksPaginationContainer gene={gene} />
+            </ArtworkFiltersStoreProvider>
           </Tabs.Lazy>
         </Tabs.Tab>
         <Tabs.Tab name="About" label="About">

@@ -1,59 +1,34 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 
 describe("TagArtworks", () => {
-  const tagID = "tag-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<TagArtworksTestsQuery>
-        environment={environment}
-        query={graphql`
-          query TagArtworksTestsQuery($tagID: String!, $input: FilterArtworksInput)
-          @relay_test_operation {
-            tag(id: $tagID) {
-              ...TagArtworks_tag @arguments(input: $input)
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (!props?.tag) {
-            return null
-          }
-          return <TagArtworksPaginationContainer tag={props.tag} />
-        }}
-        variables={{
-          tagID,
-        }}
-      />
-    )
-  }
-
-  it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+  const { renderWithRelay } = setupTestWrapper<TagArtworksTestsQuery>({
+    Component: (props) => (
+      <ArtworkFiltersStoreProvider>
+        <TagArtworksPaginationContainer tag={props.tag!} />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query TagArtworksTestsQuery($input: FilterArtworksInput) @relay_test_operation {
+        tag(id: "cat") {
+          ...TagArtworks_tag @arguments(input: $input)
+        }
+      }
+    `,
   })
 
   it("renders filter header", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    renderWithRelay({})
 
-    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
+    expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
   it("renders artworks grid", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -63,57 +38,51 @@ describe("TagArtworks", () => {
       },
     })
 
-    // Find by artwork title
-    expect(getByText("title-1")).toBeTruthy()
+    expect(screen.getByText(/mock-value-for-field-"title"/)).toBeOnTheScreen()
+    expect(screen.getByText("Showing 10 works")).toBeOnTheScreen()
   })
 
   it("renders empty artworks grid view", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
-      FilterArtworksConnection() {
-        return {
-          counts: {
-            total: 10,
-          },
-        }
-      },
-    })
-
-    // Change sort filter
-    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
-    fireEvent.press(getByText("Sort & Filter"))
-    fireEvent.press(getByText("Sort By"))
-    fireEvent.press(getByText("Recently Added"))
-    fireEvent.press(getByText("Show Results"))
-
-    resolveMostRecentRelayOperation(environment, {
+    renderWithRelay({
       FilterArtworksConnection() {
         return {
           counts: {
             total: 0,
           },
+          edges: [],
         }
       },
     })
 
-    expect(getByText(/No results found/)).toBeTruthy()
+    expect(
+      screen.getByText("There aren’t any works available in the tag at this time.")
+    ).toBeOnTheScreen()
   })
 
   it("renders empty message when artworks is empty", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
-      Tag() {
+    renderWithRelay({
+      FilterArtworksConnection() {
         return {
-          artworks: {
-            counts: {
-              total: 0,
-            },
-          },
+          edges: [],
         }
       },
     })
-    const emptyMessage = "There aren’t any works available in the tag at this time."
 
-    expect(getByText(emptyMessage)).toBeTruthy()
+    expect(
+      screen.getByText("There aren’t any works available in the tag at this time.")
+    ).toBeTruthy()
+  })
+
+  it("opens the filter modal when pressing sort & filter", async () => {
+    renderWithRelay({})
+
+    expect(screen.queryByText("Show Results")).not.toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Sort & Filter"))
+
+    expect(screen.getByText("Show Results")).toBeOnTheScreen()
+    expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
+    expect(screen.getByText("Rarity")).toBeOnTheScreen()
+    expect(screen.getByText("Artists")).toBeOnTheScreen()
+    expect(screen.getByText("Sort By")).toBeOnTheScreen()
   })
 })
