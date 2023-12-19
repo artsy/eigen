@@ -15,7 +15,7 @@ const chalk = require("chalk")
 const desiredVersions = {
   xcode: "15.0",
   androidStudio: "2022.3",
-  ruby: "2.7.4",
+  ruby: "3.1.4",
   bundler: "2.4.3",
 }
 
