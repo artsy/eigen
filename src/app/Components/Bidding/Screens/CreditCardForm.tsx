@@ -119,8 +119,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                 )}
                 <Text variant="sm" mt="6" color="black60" textAlign="center">
                   Registration is free.
-                  {"\n"}A credit card is required to bid. Artsy will never charge this card without
-                  your permission, and you are not required to use this card to pay if you win.
+                  {"\n"}A valid credit card is required in order to bid. Please enter your credit
+                  card information below. The name on your Artsy account must match the name on the
+                  card.
                 </Text>
               </Box>
             </View>
