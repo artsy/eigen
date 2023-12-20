@@ -553,9 +553,7 @@ export const modules = defineModules({
   MyProfileSettings: reactModule(MyProfileSettings),
   MySellingProfile: reactModule(View),
   NewMap: reactModule(NewMapScreen, { fullBleed: true }),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
-    hidesBottomTabs: true,
-  }),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
     hidesBackButton: true,
   }),
