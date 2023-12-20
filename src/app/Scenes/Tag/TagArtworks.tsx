@@ -15,6 +15,7 @@ import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptio
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { PAGE_SIZE } from "app/Components/constants"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
@@ -33,8 +34,7 @@ interface TagArtworksProps {
   relay: RelayPaginationProp
 }
 
-const TagArtworks: React.FC<TagArtworksProps> = (props) => {
-  const { tag, relay } = props
+const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const tracking = useTracking()
   const space = useSpace()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -76,7 +76,7 @@ const TagArtworks: React.FC<TagArtworksProps> = (props) => {
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      relay.loadMore(PAGE_SIZE)
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -149,7 +149,6 @@ const TagArtworks: React.FC<TagArtworksProps> = (props) => {
         }
       />
       <ArtworkFilterNavigator
-        {...props}
         id={tag?.internalID}
         slug={tag?.slug}
         visible={isFilterArtworksModalVisible}

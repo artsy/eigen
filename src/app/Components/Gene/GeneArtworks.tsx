@@ -15,6 +15,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
+import { PAGE_SIZE } from "app/Components/constants"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -32,8 +33,7 @@ interface GeneArtworksContainerProps {
   relay: RelayPaginationProp
 }
 
-export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
-  const { gene, relay } = props
+export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const space = useSpace()
   const tracking = useTracking()
@@ -70,7 +70,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (prop
 
   const loadMore = useCallback(() => {
     if (relay.hasMore() && !relay.isLoading()) {
-      relay.loadMore(10)
+      relay.loadMore(PAGE_SIZE)
     }
   }, [relay.hasMore(), relay.isLoading()])
 
@@ -143,7 +143,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (prop
         }
       />
       <ArtworkFilterNavigator
-        {...props}
         id={gene.internalID}
         slug={gene.slug}
         visible={isFilterArtworksModalVisible}
