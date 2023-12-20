@@ -8,7 +8,9 @@ import {
   Tabs,
 } from "@artsy/palette-mobile"
 import { TagQuery, TagQuery$data } from "__generated__/TagQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { TagArtworksPaginationContainer } from "app/Scenes/Tag/TagArtworks"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -16,7 +18,6 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 
 import { graphql, QueryRenderer } from "react-relay"
 import About from "./About"
-import { TagArtworksPaginationContainer } from "./TagArtworks"
 
 interface TagProps {
   tagID?: string
@@ -41,7 +42,9 @@ export const Tag: React.FC<TagProps> = (props) => {
     >
       <Tabs.TabsWithHeader title={tag?.name ?? ""} headerProps={{ onBack: goBack }}>
         <Tabs.Tab name="Artworks" label="Artworks">
-          <TagArtworksPaginationContainer tag={tag} />
+          <ArtworkFiltersStoreProvider>
+            <TagArtworksPaginationContainer tag={tag} />
+          </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
         {!!tag?.description ? (
           <Tabs.Tab name="About" label="About">

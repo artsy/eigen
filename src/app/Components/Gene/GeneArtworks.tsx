@@ -1,15 +1,30 @@
-import { Box, Text, SimpleMessage, Tabs } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import {
+  Box,
+  Text,
+  SimpleMessage,
+  Tabs,
+  Flex,
+  useSpace,
+  useScreenDimensions,
+  Spinner,
+} from "@artsy/palette-mobile"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
-import { TabsFlatList } from "app/Components/TabsFlatlist"
-
+import { PAGE_SIZE } from "app/Components/constants"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { extractNodes } from "app/utils/extractNodes"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -18,8 +33,15 @@ interface GeneArtworksContainerProps {
   relay: RelayPaginationProp
 }
 
-export const GeneArtworks: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
+export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const space = useSpace()
   const tracking = useTracking()
+  const { width } = useScreenDimensions()
+  const artworks = extractNodes(gene.artworks)
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
 
@@ -32,45 +54,6 @@ export const GeneArtworks: React.FC<GeneArtworksContainerProps> = ({ gene, relay
   const trackClear = () => {
     tracking.trackEvent(tracks.clearFilters(gene.id, gene.slug))
   }
-
-  if (initialArtworksTotal.current === 0) {
-    return (
-      <Box mt={1}>
-        <SimpleMessage>
-          There aren’t any works available in the category at this time.
-        </SimpleMessage>
-      </Box>
-    )
-  }
-
-  if (artworksTotal === 0) {
-    return (
-      <Box pt={1}>
-        <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
-      </Box>
-    )
-  }
-
-  return (
-    <>
-      <Box mt={1}>
-        <Text variant="sm-display" color="black60" mb={2}>
-          Showing {artworksTotal} works
-        </Text>
-        <InfiniteScrollArtworksGrid
-          connection={gene.artworks}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-        />
-      </Box>
-    </>
-  )
-}
-
-const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
-  const { gene } = props
-  const tracking = useTracking()
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
@@ -85,24 +68,89 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
     handleCloseFilterArtworksModal()
   }
 
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(PAGE_SIZE)
+    }
+  }, [relay.hasMore(), relay.isLoading()])
+
   return (
-    <ArtworkFiltersStoreProvider>
-      <TabsFlatList keyboardShouldPersistTaps="handled" disableScrollViewPanResponder>
-        <Tabs.SubTabBar>
-          <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
-        </Tabs.SubTabBar>
-        <GeneArtworks {...props} />
-        <ArtworkFilterNavigator
-          {...props}
-          id={gene.internalID}
-          slug={gene.slug}
-          visible={isFilterArtworksModalVisible}
-          exitModal={handleCloseFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-          mode={FilterModalMode.Gene}
-        />
-      </TabsFlatList>
-    </ArtworkFiltersStoreProvider>
+    <>
+      <Tabs.Masonry
+        data={artworks}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          initialArtworksTotal ? (
+            <Box mt={1}>
+              <SimpleMessage>
+                There aren’t any works available in the category at this time.
+              </SimpleMessage>
+            </Box>
+          ) : (
+            <Box pt={1}>
+              <FilteredArtworkGridZeroState id={gene.id} slug={gene.slug} trackClear={trackClear} />
+            </Box>
+          )
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
+
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                contextScreenOwnerType={OwnerType.gene}
+                contextScreenOwnerId={gene.internalID}
+                contextScreenOwnerSlug={gene.slug}
+                artwork={item}
+                height={imgHeight}
+                navigateToPageableRoute={navigateToPageableRoute}
+              />
+            </Flex>
+          )
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        ListFooterComponent={
+          shouldDisplaySpinner ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <>
+            <Tabs.SubTabBar>
+              <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
+            </Tabs.SubTabBar>
+            <Flex pt={1}>
+              <Text variant="xs" color="black60">
+                Showing {artworksTotal} works
+              </Text>
+            </Flex>
+          </>
+        }
+      />
+      <ArtworkFilterNavigator
+        id={gene.internalID}
+        slug={gene.slug}
+        visible={isFilterArtworksModalVisible}
+        exitModal={handleCloseFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
+        mode={FilterModalMode.Gene}
+      />
+    </>
   )
 }
 
@@ -153,9 +201,13 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,

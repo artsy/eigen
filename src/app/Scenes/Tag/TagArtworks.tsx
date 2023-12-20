@@ -1,31 +1,49 @@
-import { Spacer, Box, Text, SimpleMessage, Tabs } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import {
+  Box,
+  Text,
+  SimpleMessage,
+  Tabs,
+  useScreenDimensions,
+  Flex,
+  Spinner,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { TabsFlatList } from "app/Components/TabsFlatlist"
+import { PAGE_SIZE } from "app/Components/constants"
 import { TagArtworksFilterHeader } from "app/Scenes/Tag/TagArtworksFilterHeader"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
+import { extractNodes } from "app/utils/extractNodes"
+import {
+  ESTIMATED_MASONRY_ITEM_SIZE,
+  NUM_COLUMNS_MASONRY,
+  ON_END_REACHED_THRESHOLD_MASONRY,
+} from "app/utils/masonryHelpers"
 import { Schema } from "app/utils/track"
-import React, { useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface TagArtworksContainerProps {
+interface TagArtworksProps {
   tag?: TagArtworks_tag$data | null
   relay: RelayPaginationProp
 }
 
-interface TagArtworksProps extends TagArtworksContainerProps {
-  openFilterModal: () => void
-}
-
-export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilterModal }) => {
+const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
   const tracking = useTracking()
+  const space = useSpace()
+  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const { width } = useScreenDimensions()
   const artworksTotal = tag?.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
+  const artworks = extractNodes(tag?.artworks) ?? []
+  const shouldDisplaySpinner = !!artworks.length && !!relay.isLoading() && !!relay.hasMore()
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const trackClear = () => {
     if (tag?.id && tag?.slug) {
@@ -38,45 +56,6 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
     aggregations: tag?.artworks?.aggregations,
     componentPath: "Tag/TagArtworks",
   })
-
-  if (initialArtworksTotal.current === 0) {
-    return (
-      <Box pt={2}>
-        <SimpleMessage>There aren’t any works available in the tag at this time.</SimpleMessage>
-      </Box>
-    )
-  }
-
-  if (artworksTotal === 0) {
-    return (
-      <Box pt={2}>
-        <FilteredArtworkGridZeroState id={tag?.id} slug={tag?.slug} trackClear={trackClear} />
-      </Box>
-    )
-  }
-
-  return (
-    <>
-      <Tabs.SubTabBar>
-        <TagArtworksFilterHeader openFilterArtworksModal={openFilterModal} />
-      </Tabs.SubTabBar>
-      <Spacer y={1} />
-      <Text variant="sm-display" color="black60" mb={2}>
-        Showing {artworksTotal} works
-      </Text>
-      <InfiniteScrollArtworksGridContainer
-        connection={tag?.artworks}
-        hasMore={relay.hasMore}
-        loadMore={relay.loadMore}
-      />
-    </>
-  )
-}
-
-const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
-  const { tag } = props
-  const tracking = useTracking()
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
@@ -95,26 +74,94 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
     }
   }
 
+  const loadMore = useCallback(() => {
+    if (relay.hasMore() && !relay.isLoading()) {
+      relay.loadMore(PAGE_SIZE)
+    }
+  }, [relay.hasMore(), relay.isLoading()])
+
   return (
-    <ArtworkFiltersStoreProvider>
-      <TabsFlatList keyboardShouldPersistTaps="handled">
-        <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
-        <ArtworkFilterNavigator
-          {...props}
-          id={tag?.internalID}
-          slug={tag?.slug}
-          visible={isFilterArtworksModalVisible}
-          exitModal={handleCloseFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-          mode={FilterModalMode.Tag}
-        />
-      </TabsFlatList>
-    </ArtworkFiltersStoreProvider>
+    <>
+      <Tabs.Masonry
+        data={artworks}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          initialArtworksTotal ? (
+            <Box mt={1}>
+              <SimpleMessage>
+                There aren’t any works available in the tag at this time.
+              </SimpleMessage>
+            </Box>
+          ) : (
+            <Box pt={1}>
+              <FilteredArtworkGridZeroState id={tag?.id} slug={tag?.slug} trackClear={trackClear} />
+            </Box>
+          )
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, columnIndex }) => {
+          const imgAspectRatio = item.image?.aspectRatio ?? 1
+          const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+          const imgHeight = imgWidth / imgAspectRatio
+
+          return (
+            <Flex
+              pl={columnIndex === 0 ? 0 : 1}
+              pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+              mt={2}
+            >
+              <ArtworkGridItem
+                contextScreenOwnerType={OwnerType.tag}
+                contextScreenOwnerId={tag?.internalID}
+                contextScreenOwnerSlug={tag?.slug}
+                artwork={item}
+                height={imgHeight}
+                navigateToPageableRoute={navigateToPageableRoute}
+              />
+            </Flex>
+          )
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        ListFooterComponent={
+          shouldDisplaySpinner ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        // need to pass zIndex: 1 here in order for the SubTabBar to
+        // be visible above list content
+        ListHeaderComponentStyle={{ zIndex: 1 }}
+        ListHeaderComponent={
+          <>
+            <Tabs.SubTabBar>
+              <TagArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
+            </Tabs.SubTabBar>
+            <Flex pt={1}>
+              <Text variant="xs" color="black60">
+                Showing {artworksTotal} works
+              </Text>
+            </Flex>
+          </>
+        }
+      />
+      <ArtworkFilterNavigator
+        id={tag?.internalID}
+        slug={tag?.slug}
+        visible={isFilterArtworksModalVisible}
+        exitModal={handleCloseFilterArtworksModal}
+        closeModal={closeFilterArtworksModal}
+        mode={FilterModalMode.Tag}
+      />
+    </>
   )
 }
 
 export const TagArtworksPaginationContainer = createPaginationContainer(
-  TagArtworksContainer,
+  TagArtworks,
   {
     tag: graphql`
       fragment TagArtworks_tag on Tag
@@ -159,9 +206,13 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
           edges {
             node {
               id
+              slug
+              image(includeAll: false) {
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
