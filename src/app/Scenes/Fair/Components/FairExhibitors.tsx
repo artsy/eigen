@@ -3,8 +3,8 @@ import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.grap
 import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import React, { useState } from "react"
-import { FlatList } from "react-native"
+import React, { useCallback } from "react"
+import { FlatList } from "react-native-gesture-handler"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
@@ -14,24 +14,20 @@ interface FairExhibitorsProps {
 }
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
-  const [isLoading, setIsLoading] = useState(false)
-
   const shows = extractNodes(fair?.exhibitors)
+  const shouldDisplaySpinner = !!shows.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const loadMoreExhibitors = () => {
+  const loadMoreExhibitors = useCallback(() => {
     if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
-    setIsLoading(true)
     relay.loadMore(FAIR2_EXHIBITORS_PAGE_SIZE, (err) => {
-      setIsLoading(false)
-
       if (err) {
         console.error(err)
       }
     })
-  }
+  }, [relay.hasMore(), relay.isLoading()])
 
   return (
     <FlatList
@@ -51,7 +47,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
       keyExtractor={(item) => String(item?.id)}
       onEndReached={loadMoreExhibitors}
       ListFooterComponent={
-        isLoading ? (
+        shouldDisplaySpinner ? (
           <Box p={2}>
             <Flex flex={1} flexDirection="row" justifyContent="center">
               <Spinner />
