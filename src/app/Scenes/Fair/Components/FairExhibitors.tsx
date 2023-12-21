@@ -4,7 +4,7 @@ import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useCallback } from "react"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
