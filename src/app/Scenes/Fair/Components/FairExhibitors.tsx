@@ -74,14 +74,6 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
               counts {
                 artworks
               }
-              partner {
-                ... on Partner {
-                  id
-                }
-                ... on ExternalPartner {
-                  id
-                }
-              }
               ...FairExhibitorRail_show
             }
           }
