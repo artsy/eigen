@@ -15,6 +15,7 @@ interface FairExhibitorsProps {
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const shows = extractNodes(fair?.exhibitors)
+  const showsWithArtworks = shows.filter((show) => show?.counts?.artworks ?? 0 > 0)
   const shouldDisplaySpinner = !!shows.length && !!relay.isLoading() && !!relay.hasMore()
 
   const loadMoreExhibitors = useCallback(() => {
@@ -41,7 +42,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
 
   return (
     <FlatList
-      data={shows}
+      data={showsWithArtworks}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
