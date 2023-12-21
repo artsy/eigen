@@ -21,10 +21,6 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
   const partnerName = show?.partner?.name ?? ""
   const viewAllUrl = show?.href
 
-  if (count === 0) {
-    return null
-  }
-
   return (
     <>
       <Flex px={2}>

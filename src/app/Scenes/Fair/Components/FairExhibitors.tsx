@@ -3,7 +3,7 @@ import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.grap
 import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import React, { useState } from "react"
+import React, { useCallback } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
@@ -14,44 +14,40 @@ interface FairExhibitorsProps {
 }
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
-  const [isLoading, setIsLoading] = useState(false)
-
   const shows = extractNodes(fair?.exhibitors)
+  const showsWithArtworks = shows.filter((show) => show?.counts?.artworks ?? 0 > 0)
+  const shouldDisplaySpinner = !!shows.length && !!relay.isLoading() && !!relay.hasMore()
 
-  const loadMoreExhibitors = () => {
+  const loadMoreExhibitors = useCallback(() => {
     if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
-    setIsLoading(true)
     relay.loadMore(FAIR2_EXHIBITORS_PAGE_SIZE, (err) => {
-      setIsLoading(false)
-
       if (err) {
         console.error(err)
       }
     })
-  }
+  }, [relay.hasMore(), relay.isLoading()])
+
+  const renderItem = useCallback(({ item: show }) => {
+    return (
+      <Box key={show.id} mb={4}>
+        <FairExhibitorRailFragmentContainer show={show} />
+      </Box>
+    )
+  }, [])
+
+  const keyExtractor = (item: any) => String(item?.id)
 
   return (
     <FlatList
-      data={shows}
-      renderItem={({ item: show }) => {
-        if ((show?.counts?.artworks ?? 0) === 0 || !show?.partner) {
-          // Skip rendering of booths without artworks
-          return null
-        }
-
-        return (
-          <Box key={show.id} mb={4}>
-            <FairExhibitorRailFragmentContainer key={show.id} show={show} />
-          </Box>
-        )
-      }}
-      keyExtractor={(item) => String(item?.id)}
+      data={showsWithArtworks}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
       ListFooterComponent={
-        isLoading ? (
+        shouldDisplaySpinner ? (
           <Box p={2}>
             <Flex flex={1} flexDirection="row" justifyContent="center">
               <Spinner />
@@ -78,14 +74,6 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
               id
               counts {
                 artworks
-              }
-              partner {
-                ... on Partner {
-                  id
-                }
-                ... on ExternalPartner {
-                  id
-                }
               }
               ...FairExhibitorRail_show
             }
