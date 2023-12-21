@@ -30,11 +30,6 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   }, [relay.hasMore(), relay.isLoading()])
 
   const renderItem = useCallback(({ item: show }) => {
-    if ((show?.counts?.artworks ?? 0) === 0 || !show?.partner) {
-      // Skip rendering of booths without artworks
-      return null
-    }
-
     return (
       <Box key={show.id} mb={4}>
         <FairExhibitorRailFragmentContainer show={show} />
