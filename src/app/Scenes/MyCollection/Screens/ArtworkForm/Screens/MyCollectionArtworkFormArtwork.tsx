@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtworkAutosuggest"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
@@ -14,7 +13,6 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { omit, pickBy } from "lodash"
 import React, { useEffect, useState } from "react"
-import { ScrollView } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -82,13 +80,19 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     GlobalStore.actions.myCollection.artwork.updateFormValues({
       title: artworkTitle,
     })
-    trackEvent(
-      tracks.tappedOnSkip(
-        formik.values.artistSearchResult?.internalID!,
-        formik.values.artistSearchResult?.slug!,
-        "Skip choosing artwork"
+
+    if (
+      !!formik.values.artistSearchResult?.internalID &&
+      !!formik.values.artistSearchResult?.slug
+    ) {
+      trackEvent(
+        tracks.tappedOnSkip(
+          formik.values.artistSearchResult.internalID,
+          formik.values.artistSearchResult.slug,
+          "Skip choosing artwork"
+        )
       )
-    )
+    }
 
     requestAnimationFrame(() => {
       GlobalStore.actions.myCollection.artwork.updateFormValues({
@@ -115,15 +119,13 @@ export const MyCollectionArtworkFormArtwork: React.FC<
       >
         Select an Artwork
       </FancyModalHeader>
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <ScreenMargin>
-          {!!formik.values.artistSearchResult && (
-            <ArtistSearchResult result={formik.values.artistSearchResult} />
-          )}
-          <Spacer y={2} />
-          <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
-        </ScreenMargin>
-      </ScrollView>
+      <Flex flex={1} px={2}>
+        {!!formik.values.artistSearchResult && (
+          <ArtistSearchResult result={formik.values.artistSearchResult} />
+        )}
+        <Spacer y={2} />
+        <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
+      </Flex>
       <LoadingModal isVisible={loading} />
     </>
   )
