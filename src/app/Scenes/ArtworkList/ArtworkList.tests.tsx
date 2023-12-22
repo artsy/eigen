@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkList } from "app/Scenes/ArtworkList/ArtworkList"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -14,10 +15,7 @@ describe("ArtworkList", () => {
   })
 
   it("renders ArtworkList", async () => {
-    const { getByText } = renderWithHookWrappersTL(
-      <ArtworkList listID="some-id" />,
-      mockEnvironment
-    )
+    renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => me,
@@ -25,15 +23,12 @@ describe("ArtworkList", () => {
 
     await flushPromiseQueue()
 
-    expect(getByText("Saved Artworks")).toBeTruthy()
-    expect(getByText("2 Artworks")).toBeTruthy()
+    expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
+    expect(screen.getByText("2 Artworks")).toBeOnTheScreen()
   })
 
   it("displays the artworks", async () => {
-    const { findByText } = renderWithHookWrappersTL(
-      <ArtworkList listID="some-id" />,
-      mockEnvironment
-    )
+    renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => me,
@@ -41,16 +36,13 @@ describe("ArtworkList", () => {
 
     await flushPromiseQueue()
 
-    expect(findByText("Artwork Title 1")).toBeTruthy()
-    expect(findByText("Artwork Title 2")).toBeTruthy()
+    expect(screen.getByText("Artwork Title 1")).toBeOnTheScreen()
+    expect(screen.getByText("Artwork Title 2")).toBeOnTheScreen()
   })
 
   describe("Contextual menu button", () => {
     it("should NOT be displayed for default artwork list", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(
-        <ArtworkList listID="some-id" />,
-        mockEnvironment
-      )
+      renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Me: () => me,
@@ -58,15 +50,12 @@ describe("ArtworkList", () => {
 
       await flushPromiseQueue()
 
-      expect(queryByLabelText(CONTEXTUAL_MENU_LABEL)).toBeNull()
+      expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
     })
 
     describe("custom artwork list", () => {
       it("should be displayed", async () => {
-        const { getByLabelText } = renderWithHookWrappersTL(
-          <ArtworkList listID="some-id" />,
-          mockEnvironment
-        )
+        renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
 
         resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
@@ -77,14 +66,11 @@ describe("ArtworkList", () => {
 
         await flushPromiseQueue()
 
-        expect(getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeTruthy()
+        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
       })
 
       it("should be displayed for empty state", async () => {
-        const { getByLabelText } = renderWithHookWrappersTL(
-          <ArtworkList listID="some-id" />,
-          mockEnvironment
-        )
+        renderWithHookWrappersTL(<ArtworkList listID="some-id" />, mockEnvironment)
 
         resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
@@ -101,7 +87,7 @@ describe("ArtworkList", () => {
 
         await flushPromiseQueue()
 
-        expect(getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeTruthy()
+        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
       })
     })
   })

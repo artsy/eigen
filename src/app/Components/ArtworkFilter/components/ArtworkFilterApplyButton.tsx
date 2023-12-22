@@ -7,7 +7,9 @@ import {
   Separator,
   SpacingUnit,
   SpacingUnitsTheme,
+  Flex,
 } from "@artsy/palette-mobile"
+import { ProgressiveOnboardingAlertFinish } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFinish"
 import { useState } from "react"
 import { Pressable } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -20,6 +22,7 @@ export interface ArtworkFilterApplyButtonProps {
   onPress: () => void
   shouldShowCreateAlertButton?: boolean
   pb?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
+  progressiveOnboardingEnabled?: boolean
 }
 
 interface Button {
@@ -64,6 +67,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
     onCreateAlertPress,
     onPress,
     pb = 4,
+    progressiveOnboardingEnabled,
   } = props
   const color = useColor()
 
@@ -95,7 +99,22 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
             flexDirection="row"
             alignItems="center"
           >
-            {!!shouldShowCreateAlertButton && (
+            {!!shouldShowCreateAlertButton && !!progressiveOnboardingEnabled && (
+              <>
+                <Flex flex={1} flexDirection="row" height={50} justifyContent="center">
+                  <ProgressiveOnboardingAlertFinish>
+                    <InnerButton
+                      label="Create Alert"
+                      icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
+                      onPress={onCreateAlertPress}
+                    />
+                  </ProgressiveOnboardingAlertFinish>
+                </Flex>
+
+                <Box width="1" height={20} backgroundColor="white100" mx={1} />
+              </>
+            )}
+            {!!shouldShowCreateAlertButton && !progressiveOnboardingEnabled && (
               <>
                 <InnerButton
                   label="Create Alert"

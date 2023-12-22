@@ -7,7 +7,9 @@ export const useSetActivePopover = (isDisplayable: boolean) => {
   const {
     sessionState: { activePopover },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
-  const { setActivePopover } = GlobalStore.actions.progressiveOnboarding
+  const { setActivePopover, setIsReady } = GlobalStore.actions.progressiveOnboarding
+  // add a ref here to only allow it once
+  // or play around with isReady state
 
   useEffect(() => {
     if (!isDisplayable || activePopover || !popoverId) {
@@ -18,5 +20,13 @@ export const useSetActivePopover = (isDisplayable: boolean) => {
     }
   }, [activePopover, isDisplayable, popoverId])
 
-  return { isActive: !!isDisplayable && activePopover === popoverId }
+  const clearActivePopover = () => {
+    setActivePopover(undefined)
+    setIsReady(true)
+  }
+
+  return {
+    isActive: !!isDisplayable && activePopover === popoverId,
+    clearActivePopover,
+  }
 }

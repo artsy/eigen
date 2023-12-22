@@ -109,11 +109,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   const savedSearchEntity: SavedSearchEntity = {
-    artists: [{ id: id!, name: name! }],
+    artists: [{ id: id as string, name: name as string }],
     owner: {
       type: OwnerType.artist,
-      id: id!,
-      slug: slug!,
+      id: id as string,
+      slug: slug as string,
     },
   }
 
@@ -299,7 +299,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const handleCreateAlertPress = () => {
     setIsCreateAlertModalVisible(true)
-    tracking.trackEvent(tracks.tappedCreateAlert(id!, name!))
+    tracking.trackEvent(tracks.tappedCreateAlert(id as string, name as string))
   }
 
   const setSelectedMetric = ArtworksFiltersStore.useStoreActions((state) => state.setSizeMetric)
@@ -395,6 +395,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             onPress={handleApplyPress}
             onCreateAlertPress={handleCreateAlertPress}
             shouldShowCreateAlertButton={shouldShowCreateAlertButton}
+            progressiveOnboardingEnabled={mode === ArtworkFilterMode.ArtistArtworks}
           />
 
           <CreateSavedSearchModal

@@ -6,6 +6,7 @@ import {
   Separator,
   TouchableHighlightColor,
 } from "@artsy/palette-mobile"
+import { ProgressiveOnboardingAlertFilters } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFilters"
 
 interface FilterHeaderProps {
   children?: React.ReactNode
@@ -36,24 +37,26 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
         alignItems="center"
       >
         {childrenPosition === "left" && children}
-        <TouchableHighlightColor
-          haptic
-          onPress={onFilterPress}
-          testID="sort-and-filter-button"
-          render={({ color }) => (
-            <Flex flexDirection="row" alignItems="center">
-              <FilterIcon fill={color} width="20px" height="20px" />
-              <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
-                {title ?? "Sort & Filter"}
-              </Text>
-              {selectedFiltersCount > 0 && (
-                <Text variant="xs" color="blue100">
-                  {` ${bullet} ${selectedFiltersCount}`}
+        <ProgressiveOnboardingAlertFilters>
+          <TouchableHighlightColor
+            haptic
+            onPress={onFilterPress}
+            testID="sort-and-filter-button"
+            render={({ color }) => (
+              <Flex flexDirection="row" alignItems="center">
+                <FilterIcon fill={color} width="20px" height="20px" />
+                <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
+                  {title ?? "Sort & Filter"}
                 </Text>
-              )}
-            </Flex>
-          )}
-        />
+                {selectedFiltersCount > 0 && (
+                  <Text variant="xs" color="blue100">
+                    {` ${bullet} ${selectedFiltersCount}`}
+                  </Text>
+                )}
+              </Flex>
+            )}
+          />
+        </ProgressiveOnboardingAlertFilters>
         {childrenPosition === "right" && children}
       </Flex>
       {!!showSeparator && <Separator />}
