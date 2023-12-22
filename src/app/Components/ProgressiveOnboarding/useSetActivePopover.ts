@@ -21,11 +21,6 @@ export const useSetActivePopover = (isDisplayable: boolean) => {
   }, [activePopover, isDisplayable, popoverId])
 
   const clearActivePopover = () => {
-    console.log("cb::clearActivePopover", {
-      isDisplayable,
-      activePopover,
-      popoverId,
-    })
     setActivePopover(undefined)
     setIsReady(true)
   }
