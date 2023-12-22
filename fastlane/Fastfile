@@ -210,7 +210,8 @@ lane :ship_beta_android do |options|
   # should be able to get rid of once resolved there
   gradle(
     task: "clean",
-    project_dir: "android/"
+    project_dir: "android/",
+    flags: "--no-daemon --max-workers 2"
   )
   sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
 
