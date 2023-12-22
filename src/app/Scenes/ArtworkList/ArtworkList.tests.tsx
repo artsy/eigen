@@ -23,8 +23,8 @@ describe("ArtworkList", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText("Saved Artworks")).toBeTruthy()
-    expect(screen.getByText("2 Artworks")).toBeTruthy()
+    expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
+    expect(screen.getByText("2 Artworks")).toBeOnTheScreen()
   })
 
   it("displays the artworks", async () => {
@@ -50,7 +50,7 @@ describe("ArtworkList", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).toBeNull()
+      expect(screen.queryByLabelText(CONTEXTUAL_MENU_LABEL)).not.toBeOnTheScreen()
     })
 
     describe("custom artwork list", () => {
@@ -66,7 +66,7 @@ describe("ArtworkList", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeTruthy()
+        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
       })
 
       it("should be displayed for empty state", async () => {
@@ -87,7 +87,7 @@ describe("ArtworkList", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeTruthy()
+        expect(screen.getByLabelText(CONTEXTUAL_MENU_LABEL)).toBeOnTheScreen()
       })
     })
   })

@@ -24,16 +24,12 @@ export const ProgressiveOnboardingFindSavedArtwork: React.FC<
     isReady && !isDismissed("find-saved-artwork").status && !!profileTabProps?.savedArtwork
   const { isActive } = useSetActivePopover(isDisplayable)
 
-  if (tab !== "profile") {
+  if (tab !== "profile" || !isActive) {
     return <>{children}</>
   }
 
   const handleDismiss = () => {
     dismiss("find-saved-artwork")
-  }
-
-  if (!isActive) {
-    ;<>{children}</>
   }
 
   return (
