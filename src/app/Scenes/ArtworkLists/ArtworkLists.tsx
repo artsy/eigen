@@ -4,8 +4,11 @@ import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLis
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
+import { SavesTabHeader } from "app/Scenes/ArtworkLists/SavesTabHeader"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { compact } from "lodash"
 import { Suspense, useState } from "react"
 import { RefreshControl } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -40,10 +43,12 @@ export const ArtworkLists = () => {
     ArtworkLists_collectionsConnection$key
   >(artworkListsFragment, queryData)
 
-  const savedArtworksArtworkList = data.me?.savedArtworksArtworkList!
+  const savedArtworksArtworkList = data.me?.savedArtworksArtworkList
   const customArtworkLists = extractNodes(data.me?.customArtworkLists)
 
   const artworksList = [savedArtworksArtworkList, ...customArtworkLists]
+
+  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -66,18 +71,24 @@ export const ArtworkLists = () => {
     )
   }
 
-  const artworkSections = artworksList.map((artworkList) => {
-    const isDefaultArtworkList = artworkList.internalID === savedArtworksArtworkList.internalID
-    return {
-      key: artworkList.internalID,
-      content: (
-        <ArtworkListItem
-          artworkList={artworkList}
-          imagesLayout={isDefaultArtworkList ? "grid" : "stacked"}
-        />
-      ),
-    }
-  })
+  const artworkSections = compact(
+    artworksList.map((artworkList) => {
+      if (!artworkList) {
+        return null
+      }
+
+      const isDefaultArtworkList = artworkList?.internalID === savedArtworksArtworkList?.internalID
+      return {
+        key: artworkList?.internalID,
+        content: (
+          <ArtworkListItem
+            artworkList={artworkList}
+            imagesLayout={isDefaultArtworkList ? "grid" : "stacked"}
+          />
+        ),
+      }
+    })
+  )
 
   return (
     <Tabs.FlatList
@@ -89,6 +100,7 @@ export const ArtworkLists = () => {
       keyExtractor={(item) => item.key}
       onEndReached={handleLoadMore}
       ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
+      ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
     />
   )
