@@ -17,11 +17,11 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const isDisplayable =
+    isPartnerOfferEnabled &&
     isReady &&
     !isDismissed("signal-interest").status &&
     isFocused &&
-    isInView &&
-    isPartnerOfferEnabled
+    isInView
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
