@@ -1,5 +1,6 @@
 import { AddIcon, Box, Button, LinkText, Text } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
 
 const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/"
@@ -16,17 +17,19 @@ export const SavesTabHeader = () => {
 
   return (
     <Box>
-      <Text variant="xs" color="black60">
-        Curate your own lists of the works you love and{" "}
-        <LinkText
-          variant="xs"
-          color="black60"
-          onPress={() => navigate(PARTNER_OFFER_HELP_ARTICLE_URL)}
-        >
-          signal your interest to galleries
-        </LinkText>
-        .
-      </Text>
+      <ProgressiveOnboardingSignalInterest>
+        <Text variant="xs" color="black60">
+          Curate your own lists of the works you love and{" "}
+          <LinkText
+            variant="xs"
+            color="black60"
+            onPress={() => navigate(PARTNER_OFFER_HELP_ARTICLE_URL)}
+          >
+            signal your interest to galleries
+          </LinkText>
+          .
+        </Text>
+      </ProgressiveOnboardingSignalInterest>
 
       <Button
         haptic
