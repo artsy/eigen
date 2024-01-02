@@ -1,4 +1,4 @@
-import { act } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -38,41 +38,46 @@ describe(CareerHighlightBottomSheet, () => {
   }
 
   it("renders nothing if there is no data", () => {
-    const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-    expect(queryByTestId("BottomSheetFlatlist")).toBe(null)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    expect(screen.queryByTestId("BottomSheetFlatlist")).toBe(null)
   })
 
   it("renders BottomSheet if there is data and selectedXAxisHighlight", async () => {
-    const { queryByTestId } = renderWithHookWrappersTL(
+    renderWithHookWrappersTL(
       <TestRenderer contextProps={{ selectedXAxisHighlight: 2015 }} />,
       mockEnvironment
     )
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: bottomSheetDataMock })
-    })
+
+    mockEnvironment.mock.resolveMostRecentOperation({ data: bottomSheetDataMock })
 
     await flushPromiseQueue()
 
-    expect(queryByTestId("BottomSheetFlatlist")).not.toBe(null)
+    expect(screen.getByTestId("BottomSheetFlatlist")).toBeOnTheScreen()
   })
 })
 
 describe(makeCareerHighlightMap, () => {
-  it("does not include years before this year minus 8 years", () => {
-    const eventDigest = bottomSheetDataMock.analyticsArtistSparklines.edges[0].node.eventDigest
-    const result = makeCareerHighlightMap(eventDigest)
-    const minimumYear = new Date().getFullYear() - 8
-    const inValidYears = Object.keys(result).filter((y) => parseInt(y, 10) < minimumYear)
-    const validYears = Object.keys(result).filter((y) => parseInt(y, 10) >= minimumYear)
-    expect(inValidYears.length).toEqual(0)
-    expect(validYears.length).toBeGreaterThanOrEqual(1)
+  it("returns an empty object if there is no data", () => {
+    expect(makeCareerHighlightMap("")).toEqual({})
   })
 
-  it("creates the right map from eventDigest", () => {
-    const eventDigest = bottomSheetDataMock.analyticsArtistSparklines.edges[0].node.eventDigest
-    const result = makeCareerHighlightMap(eventDigest)
-    const expected = { 2015: { Review: ["The Guardian", "Art in America"] } }
-    expect(result).toEqual(expected)
+  it("Prepares the eventDigest and creates a map of each year to the highlight kind", () => {
+    const result = makeCareerHighlightMap(
+      "2016 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America"
+    )
+
+    expect(result).toEqual({
+      2016: { "Group Show": ["MOCA Los Angeles"] },
+    })
+  })
+
+  it("Returns an empty object if the year is less than 2014", () => {
+    const result = makeCareerHighlightMap(
+      "2013 Group Show @ MOCA Los Angeles; 2012 Reviewed Solo Show @ The Guardian; 2011 Reviewed Solo Show @ Art in America"
+    )
+
+    expect(result).toEqual({})
   })
 })
 
@@ -82,17 +87,17 @@ const bottomSheetDataMock = {
       {
         node: {
           eventDigest:
-            "2011 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
+            "2018 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
           sparkles: "0",
-          year: "year_2014",
+          year: "year_2017",
         },
       },
       {
         node: {
           eventDigest:
-            "2011 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
+            "2018 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America; ",
           sparkles: "10",
-          year: "year_2015",
+          year: "year_2018",
         },
       },
     ],
