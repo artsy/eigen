@@ -23,7 +23,7 @@ interface NewWorksForYouProps {
 }
 
 export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) => {
-  const { data } = usePaginationFragment(oldNewWorksForYouGridFragment, viewer)
+  const { data } = usePaginationFragment(newWorksForYouGridFragment, viewer)
 
   const artworks = extractNodes(data.artworks)
 
@@ -73,7 +73,7 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
   )
 }
 
-export const oldNewWorksForYouGridFragment = graphql`
+export const newWorksForYouGridFragment = graphql`
   fragment NewWorksForYouGrid_viewer on Viewer
   @refetchable(queryName: "NewWorksForYouGrid_viewerRefetch")
   @argumentDefinitions(
@@ -124,7 +124,7 @@ export const NewWorksForYouGridQR: React.FC<NewWorksForYouScreenProps> = withSus
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy
     if (!data.viewer) {
-      return <Text>Something went wrong</Text>
+      return <Text>Something went wrong.</Text>
     }
 
     return <NewWorksForYouGrid viewer={data.viewer} />

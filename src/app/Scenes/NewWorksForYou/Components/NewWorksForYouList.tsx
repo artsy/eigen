@@ -129,7 +129,7 @@ export const NewWorksForYouListQR: React.FC<NewWorksForYouScreenProps> = withSus
     // This won't happen because the query would fail thanks to the @principalField
     // Adding it here to make TS happy
     if (!data.viewer) {
-      return <Text>Something went wrong</Text>
+      return <Text>Something went wrong.</Text>
     }
 
     return <NewWorksForYouList viewer={data.viewer} />

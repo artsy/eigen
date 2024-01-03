@@ -394,19 +394,33 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
+  const getContainerDimensions = () => {
+    if (isRecentlySoldArtwork) {
+      return {
+        width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    }
+
+    if (size === "fullWidth") {
+      return {
+        width: Dimensions.get("screen").width,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    }
+
+    return {
+      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    }
+  }
+
   const imageDimensions = sizeToFit(
     {
       width: width ?? 0,
       height: height ?? 0,
     },
-    {
-      width: isRecentlySoldArtwork
-        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-        : size === "fullWidth"
-        ? Dimensions.get("screen").width
-        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-    }
+    getContainerDimensions()
   )
 
   const aspectRatio = image?.aspectRatio || imageDimensions.width / imageDimensions.height
@@ -441,13 +455,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   return (
     <Flex>
       <Flex width={containerWidth}>
-        <OpaqueImageView
-          // style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
-          imageURL={src}
-          height={getImageHeight()}
-          width={containerWidth}
-        />
+        <OpaqueImageView imageURL={src} height={getImageHeight()} width={containerWidth} />
       </Flex>
+
       {!!urgencyTag && (
         <Flex
           backgroundColor={color("white100")}
