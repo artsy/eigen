@@ -1,6 +1,6 @@
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, Screen, Touchable } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { useFragment, graphql } from "react-relay"
 
@@ -20,16 +20,19 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   }
 
   return (
-    <PageWithSimpleHeader
-      title="Alerts"
-      titleWeight="regular"
-      right={
-        <Touchable>
-          <Text onPress={handleEditPress}>Edit Alert</Text>
-        </Touchable>
-      }
-      noSeparator
-    >
+    <Screen>
+      <Screen.Header
+        onBack={goBack}
+        title="Alerts"
+        rightElements={
+          <Touchable>
+            <Text variant="sm" onPress={handleEditPress}>
+              Edit Alert
+            </Text>
+          </Touchable>
+        }
+      />
+
       <Flex m={2}>
         <Text variant="lg-display" mb={2}>
           {message}
@@ -37,7 +40,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
 
         <Text>Alert ID: {item?.alert?.internalID}</Text>
       </Flex>
-    </PageWithSimpleHeader>
+    </Screen>
   )
 }
 

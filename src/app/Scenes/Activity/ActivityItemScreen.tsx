@@ -1,17 +1,8 @@
-import {
-  Box,
-  Flex,
-  Join,
-  Screen,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Text } from "@artsy/palette-mobile"
 import { ActivityItemScreenQuery } from "__generated__/ActivityItemScreenQuery.graphql"
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
 import { FollowNotification } from "app/Scenes/Activity/components/FollowNotification"
+import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -69,15 +60,19 @@ const ActivityItemQuery = graphql`
 const Placeholder: React.FC = () => {
   return (
     <Screen>
-      <Skeleton>
-        <Flex m={2}>
-          <SkeletonText variant="lg-display" mb={2}>
-            Title
-          </SkeletonText>
+      <Screen.Header onBack={goBack} />
 
-          <SkeletonBox width="100%" height={400} />
-        </Flex>
-      </Skeleton>
+      <Screen.Body fullwidth>
+        <Skeleton>
+          <Flex m={2}>
+            <SkeletonText variant="lg-display" mb={2}>
+              Title
+            </SkeletonText>
+
+            <SkeletonBox width="100%" height={400} />
+          </Flex>
+        </Skeleton>
+      </Screen.Body>
     </Screen>
   )
 }

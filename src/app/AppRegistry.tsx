@@ -341,6 +341,8 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   ActivityItem: reactModule(ActivityItemScreenQueryRenderer, {
+    fullBleed: true,
+    hidesBackButton: true,
     hidesBottomTabs: true,
   }),
   About: reactModule(About),

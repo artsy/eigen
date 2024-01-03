@@ -1,6 +1,6 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, Screen } from "@artsy/palette-mobile"
 import { FollowNotification_notification$key } from "__generated__/FollowNotification_notification.graphql"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { useFragment, graphql } from "react-relay"
 
@@ -12,7 +12,9 @@ export const FollowNotification: FC<FollowNotificationProps> = ({ notification }
   const { message, item } = notificationData
 
   return (
-    <PageWithSimpleHeader title="Follows" titleWeight="regular" noSeparator>
+    <Screen>
+      <Screen.Header onBack={goBack} title="Follows" />
+
       <Flex m={2}>
         <Text variant="lg-display" mb={2}>
           {message}
@@ -20,7 +22,7 @@ export const FollowNotification: FC<FollowNotificationProps> = ({ notification }
 
         <Text>Artist: {item?.artists?.[0]?.name}</Text>
       </Flex>
-    </PageWithSimpleHeader>
+    </Screen>
   )
 }
 
