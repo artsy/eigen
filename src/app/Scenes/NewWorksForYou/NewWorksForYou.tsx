@@ -54,8 +54,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
   const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
 
-  console.log({ experiment })
-
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
