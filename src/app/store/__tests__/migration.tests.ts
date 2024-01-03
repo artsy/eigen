@@ -930,4 +930,22 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       ],
     })
   })
+
+  describe("App version Versions.AddNewWorksForYouViewOptionState", () => {
+    const migrationToTest = Versions.AddNewWorksForYouViewOptionState
+
+    it("adds newWorksForYouViewOption to the UserPrefs model as list", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.userPrefs.newWorksForYouViewOption).toEqual("list")
+    })
+  })
 })
