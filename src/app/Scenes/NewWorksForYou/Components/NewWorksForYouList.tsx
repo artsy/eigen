@@ -4,10 +4,14 @@ import { NewWorksForYouListQuery } from "__generated__/NewWorksForYouListQuery.g
 import { NewWorksForYouList_viewer$key } from "__generated__/NewWorksForYouList_viewer.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { NewWorksForYouHeaderComponent } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouHeader"
-import { NewWorksForYouScreenProps } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import {
+  NewWorksForYouPlaceholder,
+  NewWorksForYouScreenProps,
+} from "app/Scenes/NewWorksForYou/NewWorksForYou"
 
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { Animated, Dimensions } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -115,20 +119,20 @@ export const newWorksForYouListQuery = graphql`
   }
 `
 
-export const NewWorksForYouListQR: React.FC<NewWorksForYouScreenProps> = ({
-  version,
-  maxWorksPerArtist,
-}) => {
-  const data = useLazyLoadQuery<NewWorksForYouListQuery>(newWorksForYouListQuery, {
-    version,
-    maxWorksPerArtist,
-  })
+export const NewWorksForYouListQR: React.FC<NewWorksForYouScreenProps> = withSuspense(
+  ({ version, maxWorksPerArtist }) => {
+    const data = useLazyLoadQuery<NewWorksForYouListQuery>(newWorksForYouListQuery, {
+      version,
+      maxWorksPerArtist,
+    })
 
-  // This won't happen because the query would fail thanks to the @principalField
-  // Adding it here to make TS happy
-  if (!data.viewer) {
-    return <Text>Something went wrong</Text>
-  }
+    // This won't happen because the query would fail thanks to the @principalField
+    // Adding it here to make TS happy
+    if (!data.viewer) {
+      return <Text>Something went wrong</Text>
+    }
 
-  return <NewWorksForYouList viewer={data.viewer} />
-}
+    return <NewWorksForYouList viewer={data.viewer} />
+  },
+  () => <NewWorksForYouPlaceholder defaultViewOption="list" />
+)

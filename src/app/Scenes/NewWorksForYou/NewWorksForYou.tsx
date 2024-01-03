@@ -1,14 +1,25 @@
-import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import {
+  BackButton,
+  Flex,
+  FullWidthIcon,
+  GridIcon,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { NewWorksForYouGridQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouGrid"
 import { NewWorksForYouListQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouList"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { times } from "lodash"
-import { MotiView } from "moti"
-import { Suspense } from "react"
+import { MotiPressable } from "moti/interactions"
+import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
 export const SCREEN_TITLE = "New Works for You"
@@ -26,25 +37,7 @@ interface NewWorksForYouQueryRendererProps {
   maxWorksPerArtist?: number
   version?: string
 }
-
-export const NewNewWorksForYouQR: React.FC<NewWorksForYouScreenProps> = ({
-  version,
-  maxWorksPerArtist,
-}) => {
-  const newWorksForYouViewOption = GlobalStore.useAppState(
-    (state) => state.userPrefs.newWorksForYouViewOption
-  )
-
-  if (newWorksForYouViewOption === "list") {
-    return <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-  }
-
-  if (newWorksForYouViewOption === "grid") {
-    return <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-  }
-
-  return null
-}
+const ICON_SIZE = 26
 
 export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
   utm_medium,
@@ -53,12 +46,19 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 }) => {
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
   const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
+  const space = useSpace()
 
   const isReferredFromEmail = utm_medium === "email"
 
   // Use the version specified in the URL or no version if the screen is opened from the email.
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
+
+  const newWorksForYouViewOption = GlobalStore.useAppState(
+    (state) => state.userPrefs.newWorksForYouViewOption
+  )
+
+  const setNewWorksForYouViewOption = GlobalStore.actions.userPrefs.setNewWorksForYouViewOption
 
   if (
     // The feed is not optimised for tablets yet.
@@ -71,20 +71,51 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     experiment.payload !== "gridOnly"
   ) {
     return (
-      <MotiView
-        from={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ type: "timing", duration: 300 }}
-      >
-        <NewNewWorksForYouQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-      </MotiView>
+      <Flex>
+        {newWorksForYouViewOption === "grid" ? (
+          <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+        ) : (
+          <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+        )}
+
+        <Flex
+          position="absolute"
+          justifyContent="space-between"
+          flexDirection="row"
+          width="100%"
+          alignItems="center"
+          px={2}
+          pt="15px"
+        >
+          <BackButton onPress={goBack} />
+
+          {!!enableNewWorksForYouFeed && !isTablet() && (
+            <MotiPressable
+              onPress={() => {
+                setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+              }}
+            >
+              {newWorksForYouViewOption === "grid" ? (
+                <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
+              ) : (
+                <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
+              )}
+            </MotiPressable>
+          )}
+        </Flex>
+      </Flex>
     )
   }
 
   return (
-    <Suspense fallback={<NewWorksForYouPlaceholder defaultViewOption="grid" />}>
+    <Flex>
       <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-    </Suspense>
+      <BackButton
+        onPress={goBack}
+        style={{ position: "absolute", left: space(2), top: space(2) }}
+      />
+    </Flex>
   )
 }
 

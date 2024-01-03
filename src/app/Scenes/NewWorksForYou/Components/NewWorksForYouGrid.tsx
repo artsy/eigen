@@ -29,8 +29,8 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
 
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+      <Flex flexDirection="row" pt={0.5}>
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }} textAlign="center">
           New Works For You
         </Text>
       </Flex>
@@ -44,6 +44,9 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
       <SafeAreaView edges={["top"]} style={{ minHeight: Dimensions.get("screen").height }}>
         <Animated.ScrollView
           style={{ minHeight: Dimensions.get("screen").height }}
+          contentContainerStyle={{
+            paddingBottom: 120,
+          }}
           {...scrollProps}
         >
           <Flex style={{ minHeight: Dimensions.get("screen").height }}>
@@ -61,9 +64,6 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
                 <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
               )}
               hasMore={false}
-              contentContainerStyle={{
-                paddingBottom: 120,
-              }}
             />
           </Flex>
         </Animated.ScrollView>
@@ -129,5 +129,5 @@ export const NewWorksForYouGridQR: React.FC<NewWorksForYouScreenProps> = withSus
 
     return <NewWorksForYouGrid viewer={data.viewer} />
   },
-  NewWorksForYouPlaceholder
+  () => <NewWorksForYouPlaceholder defaultViewOption="grid" />
 )
