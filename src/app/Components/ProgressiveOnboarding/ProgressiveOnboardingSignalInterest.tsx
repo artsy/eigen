@@ -39,7 +39,7 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
         placement="top"
         title={
           <Text variant="xs" color="white100">
-            Learn more about saves and{"\n"}how to manage your preferences.
+            Learn more about saves and how to{"\n"}manage your preferences.
           </Text>
         }
       >
