@@ -4,7 +4,7 @@ import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLis
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
-import { SavesTabHeader } from "app/Scenes/ArtworkLists/SavesTabHeader"
+import { SavesTabHeader, SavesTabHeaderPlaceholder } from "app/Scenes/ArtworkLists/SavesTabHeader"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -127,8 +127,11 @@ const LoadingIndicator = () => {
 export const ArtworkListsPlaceHolder = () => {
   const screen = useScreenDimensions()
   const space = useSpace()
+  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+
   return (
     <Tabs.ScrollView scrollEnabled={false} style={{ paddingTop: space(2) }}>
+      {!!isPartnerOfferEnabled && <SavesTabHeaderPlaceholder />}
       <GenericGridPlaceholder width={screen.width - space(4)} />
     </Tabs.ScrollView>
   )

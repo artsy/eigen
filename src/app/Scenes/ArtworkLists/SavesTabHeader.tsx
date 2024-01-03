@@ -1,4 +1,13 @@
-import { AddIcon, Box, Button, LinkText, Text } from "@artsy/palette-mobile"
+import {
+  AddIcon,
+  Box,
+  Button,
+  LinkText,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Text,
+} from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
@@ -43,5 +52,20 @@ export const SavesTabHeader = () => {
         Create New List
       </Button>
     </Box>
+  )
+}
+
+export const SavesTabHeaderPlaceholder = () => {
+  return (
+    <Skeleton>
+      <SkeletonText variant="xs">
+        Curate your own lists of the works you love and signal
+      </SkeletonText>
+      <SkeletonText variant="xs" mt={0.5}>
+        your interest to galleries
+      </SkeletonText>
+
+      <SkeletonBox my={2} height={30} width="45%" />
+    </Skeleton>
   )
 }
