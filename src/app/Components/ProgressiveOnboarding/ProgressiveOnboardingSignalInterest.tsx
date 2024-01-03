@@ -32,7 +32,7 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   if (isDisplayable && isActive) {
     return (
       <Popover
-        visible={isActive}
+        visible
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
