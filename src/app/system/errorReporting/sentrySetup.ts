@@ -59,6 +59,9 @@ export function setupSentry(props: SetupSentryProps = {}) {
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
+    // TODO: this number is meant for debugging purposes only, and should
+    // be adjusted before release to something like 0.1 or 0.2 max
+    tracesSampleRate: 1.0,
     ...props,
   })
 }
