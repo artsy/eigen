@@ -18,6 +18,7 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         internalID: notificationID,
       })
 
+      // TODO: Implement error handling
       if (!data.me?.notification) {
         return null
       }
