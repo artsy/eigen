@@ -1,4 +1,3 @@
-import { toTitleCase } from "@artsy/to-title-case"
 import {
   aggregationForFilter,
   Aggregations,
@@ -25,6 +24,7 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { inferSeriesName } from "app/Scenes/SavedSearchAlert/helpers"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
@@ -33,6 +33,7 @@ import { SavedSearchPill } from "./SavedSearchAlertModel"
 interface ExtractFromCriteriaOptions {
   attributes: SearchCriteriaAttributes
   aggregations: Aggregations
+  entity: SavedSearchEntity
   unit: Metric
   convertUnit?: boolean // default true
 }
@@ -143,10 +144,13 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
   })
 }
 
-export const extractPillFromArtistSeriesIDs = (values: string[]): SavedSearchPill[] => {
+export const extractPillFromArtistSeriesIDs = (
+  values: string[],
+  artistNames: string[]
+): SavedSearchPill[] => {
   return values.map((value) => {
     return {
-      label: toTitleCase(value.replaceAll("-", " ")),
+      label: inferSeriesName(value, artistNames),
       value,
       paramName: SearchCriteria.artistSeriesIDs,
     }
@@ -242,7 +246,8 @@ export const extractPillsFromCriteria = (
     }
 
     if (paramName === SearchCriteria.artistSeriesIDs) {
-      return extractPillFromArtistSeriesIDs(paramValue)
+      const artistNames = options.entity.artists.map((a) => a.name)
+      return extractPillFromArtistSeriesIDs(paramValue, artistNames)
     }
 
     if (paramName === SearchCriteria.priceRange) {
@@ -290,6 +295,7 @@ export const extractPills = (options: ExtractPillsOptions) => {
   const pillsFromCriteria = extractPillsFromCriteria({
     attributes,
     aggregations,
+    entity,
     unit,
     convertUnit: !!options.convertUnit,
   })
