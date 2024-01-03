@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
@@ -42,7 +42,7 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
-      const { getByText, getByTestId } = renderWithHookWrappersTL(
+      renderWithHookWrappersTL(
         <MyCollectionArtworkFormScreen artwork={mockArtwork as any} mode="edit" />,
         mockEnvironment
       )
@@ -51,13 +51,13 @@ describe("MyCollectionArtworkForm", () => {
 
       await flushPromiseQueue()
 
-      expect(getByTestId("TitleInput").props.value).toBe("Morons")
-      expect(getByTestId("DateInput").props.value).toBe("2007")
-      expect(getByTestId("MaterialsInput").props.value).toBe("Screen print")
-      expect(getByTestId("WidthInput").props.value).toBe("30")
-      expect(getByTestId("HeightInput").props.value).toBe("20")
-      expect(getByTestId("DepthInput").props.value).toBe("40")
-      expect(getByText("1 photo added")).toBeTruthy()
+      expect(screen.getByTestId("TitleInput").props.value).toBe("Morons")
+      expect(screen.getByTestId("DateInput").props.value).toBe("2007")
+      expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
+      expect(screen.getByTestId("WidthInput").props.value).toBe("30")
+      expect(screen.getByTestId("HeightInput").props.value).toBe("20")
+      expect(screen.getByTestId("DepthInput").props.value).toBe("40")
+      expect(screen.getByText("1 photo added")).toBeTruthy()
     })
   })
 
@@ -85,7 +85,7 @@ describe("MyCollectionArtworkForm", () => {
         getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
+        renderWithHookWrappersTL(
           <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
@@ -101,9 +101,9 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
-        expect(getByText("Select an Artist")).toBeTruthy()
+        expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -113,22 +113,22 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
+        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
         // Select Artwork Screen
 
-        expect(getByText("Select an Artwork")).toBeTruthy()
+        expect(screen.getByText("Select an Artwork")).toBeTruthy()
 
-        fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
+        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtworkSearchResult,
           })
         )
-        fireEvent.press(getByTestId("artworkGridItem-Morons"))
+        fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
@@ -138,20 +138,20 @@ describe("MyCollectionArtworkForm", () => {
 
         // Edit Details Screen
 
-        expect(getByText("Add Details")).toBeTruthy()
+        expect(screen.getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("TitleInput").props.value).toBe("Morons")
-        expect(getByTestId("DateInput").props.value).toBe("2007")
-        expect(getByTestId("MaterialsInput").props.value).toBe("Screen print")
-        expect(getByTestId("WidthInput").props.value).toBe(30)
-        expect(getByTestId("HeightInput").props.value).toBe(20)
-        expect(getByTestId("DepthInput").props.value).toBe(40)
-        expect(getByTestId("NotesInput").props.value).toBe(undefined)
-        expect(getByText("1 photo added")).toBeTruthy()
+        expect(screen.getByTestId("TitleInput").props.value).toBe("Morons")
+        expect(screen.getByTestId("DateInput").props.value).toBe("2007")
+        expect(screen.getByTestId("MaterialsInput").props.value).toBe("Screen print")
+        expect(screen.getByTestId("WidthInput").props.value).toBe(30)
+        expect(screen.getByTestId("HeightInput").props.value).toBe(20)
+        expect(screen.getByTestId("DepthInput").props.value).toBe(40)
+        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
+        expect(screen.getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
 
-        fireEvent.press(getByTestId("CompleteButton"))
+        fireEvent.press(screen.getByTestId("CompleteButton"))
 
         await flushPromiseQueue()
 
@@ -159,7 +159,7 @@ describe("MyCollectionArtworkForm", () => {
 
         // debugger
 
-        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
+        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[1]
         expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
           .toMatchInlineSnapshot(`
           {
@@ -167,7 +167,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const updatePreferencesOperation = mockOperations[1]
+        const updatePreferencesOperation = mockOperations[2]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -177,7 +177,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const createArtworkOperation = mockOperations[2]
+        const createArtworkOperation = mockOperations[3]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -214,7 +214,7 @@ describe("MyCollectionArtworkForm", () => {
 
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
+        renderWithHookWrappersTL(
           <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
@@ -230,9 +230,9 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
-        expect(getByText("Select an Artist")).toBeTruthy()
+        expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -243,15 +243,15 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
+        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
         // Select Artwork Screen
 
-        expect(getByText("Select an Artwork")).toBeTruthy()
+        expect(screen.getByText("Select an Artwork")).toBeTruthy()
 
-        fireEvent.changeText(getByPlaceholderText("Search artworks"), "Test Artwork Title")
+        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "Test Artwork Title")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -262,27 +262,27 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button"))
+        fireEvent.press(screen.getByTestId("my-collection-artwork-form-artwork-skip-button"))
 
         await flushPromiseQueue()
 
         // Edit Details Screen
 
-        expect(getByText("Add Details")).toBeTruthy()
+        expect(screen.getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(getByTestId("DateInput").props.value).toBe(undefined)
-        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
-        expect(getByTestId("WidthInput").props.value).toBe(undefined)
-        expect(getByTestId("HeightInput").props.value).toBe(undefined)
-        expect(getByTestId("DepthInput").props.value).toBe(undefined)
-        expect(getByTestId("NotesInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
+        expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
 
     describe("when skipping the artist selection", () => {
       it("initializes the artist name input field", async () => {
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
+        renderWithHookWrappersTL(
           <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
           mockEnvironment
         )
@@ -298,9 +298,9 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
-        expect(getByText("Select an Artist")).toBeTruthy()
+        expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "foo bar")
+        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "foo bar")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -309,33 +309,33 @@ describe("MyCollectionArtworkForm", () => {
           })
         )
 
-        fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button"))
+        fireEvent.press(screen.getByTestId("my-collection-artwork-form-artist-skip-button"))
 
         await flushPromiseQueue()
 
         // Add Artist Screen
 
-        fireEvent.changeText(getByPlaceholderText("Artist Name"), "My Artist")
-        fireEvent.changeText(getByPlaceholderText("Nationality"), "bar foo")
+        fireEvent.changeText(screen.getByPlaceholderText("Artist Name"), "My Artist")
+        fireEvent.changeText(screen.getByPlaceholderText("Nationality"), "bar foo")
 
         await flushPromiseQueue()
 
-        fireEvent.press(getByTestId("submit-add-artist-button"))
+        fireEvent.press(screen.getByTestId("submit-add-artist-button"))
 
         await flushPromiseQueue()
 
         // Edit Details Screen
 
-        expect(getByText("Add Details")).toBeTruthy()
+        expect(screen.getByText("Add Details")).toBeTruthy()
 
-        expect(getByText("My Artist")).toBeTruthy()
-        expect(getByTestId("TitleInput").props.value).toBe("")
-        expect(getByTestId("DateInput").props.value).toBe(undefined)
-        expect(getByTestId("MaterialsInput").props.value).toBe(undefined)
-        expect(getByTestId("WidthInput").props.value).toBe(undefined)
-        expect(getByTestId("HeightInput").props.value).toBe(undefined)
-        expect(getByTestId("DepthInput").props.value).toBe(undefined)
-        expect(getByTestId("NotesInput").props.value).toBe(undefined)
+        expect(screen.getByText("My Artist")).toBeTruthy()
+        expect(screen.getByTestId("TitleInput").props.value).toBe("")
+        expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("HeightInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("DepthInput").props.value).toBe(undefined)
+        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
       })
     })
   })
@@ -520,83 +520,83 @@ describe("MyCollectionArtworkForm", () => {
         })
       })
     })
-  })
 
-  describe("loading screens", () => {
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
+    describe("loading screens", () => {
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
 
-    it("displays saving artwork loading modal", async () => {
-      const assetCredentials = {
-        signature: "some-signature",
-        credentials: "some-credentials",
-        policyEncoded: "some-policy-encoded",
-        policyDocument: {
-          expiration: "some-expiration",
-          conditions: {
-            acl: "some-acl",
-            bucket: "some-bucket",
-            geminiKey: "some-gemini-key",
-            successActionStatus: "some-success-action-status",
+      it("displays saving artwork loading modal", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
           },
-        },
-      }
-      getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
-      uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
-      const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-        <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
-        mockEnvironment
-      )
+        renderWithHookWrappersTL(
+          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
+          mockEnvironment
+        )
 
-      act(() =>
-        mockEnvironment.mock.resolveMostRecentOperation({
-          errors: [],
-          data: mockCollectedArtistsResult,
-        })
-      )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockCollectedArtistsResult,
+          })
+        )
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      // Select Artist Screen
+        // Select Artist Screen
 
-      fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-      act(() =>
-        mockEnvironment.mock.resolveMostRecentOperation({
-          errors: [],
-          data: mockArtistSearchResult,
-        })
-      )
-      await flushPromiseQueue()
+        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
+        await flushPromiseQueue()
 
-      fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
+        fireEvent.press(screen.getByTestId("autosuggest-search-result-Banksy"))
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      // Select Artwork Screen
+        // Select Artwork Screen
 
-      fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
-      act(() =>
-        mockEnvironment.mock.resolveMostRecentOperation({
-          errors: [],
-          data: mockArtworkSearchResult,
-        })
-      )
-      fireEvent.press(getByTestId("artworkGridItem-Morons"))
+        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+        fireEvent.press(screen.getByTestId("artworkGridItem-Morons"))
 
-      act(() =>
-        mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
-      )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      // Complete Form
-      fireEvent.press(getByTestId("CompleteButton"))
+        // Complete Form
+        fireEvent.press(screen.getByTestId("CompleteButton"))
 
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      expect(getByTestId("saving-artwork-modal")).toBeDefined()
+        expect(screen.getByTestId("saving-artwork-modal")).toBeDefined()
+      })
     })
   })
 })
