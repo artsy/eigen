@@ -1,5 +1,7 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
+  SavedSearchEntity,
   SavedSearchEntityArtist,
   SearchCriteria,
   SearchCriteriaAttributes,
@@ -88,7 +90,7 @@ describe("extractPillsFromCriteria", () => {
       colors: ["unknown-color"],
     }
 
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     const pills = [
       {
@@ -141,7 +143,7 @@ describe("extractPillsFromCriteria", () => {
       offerable: true,
       atAuction: true,
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     const pills = [
       {
@@ -165,7 +167,7 @@ describe("extractPillsFromCriteria", () => {
     }
 
     // with unit inches
-    const inResult = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const inResult = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(inResult).toEqual([
       {
@@ -181,7 +183,7 @@ describe("extractPillsFromCriteria", () => {
     ])
 
     // with unit centimeters
-    const cmResult = extractPillsFromCriteria({ attributes, aggregations, unit: "cm" })
+    const cmResult = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "cm" })
 
     expect(cmResult).toEqual([
       {
@@ -201,7 +203,7 @@ describe("extractPillsFromCriteria", () => {
     const attributes: SearchCriteriaAttributes = {
       majorPeriods: ["2020", "2010"],
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -221,7 +223,7 @@ describe("extractPillsFromCriteria", () => {
     const attributes: SearchCriteriaAttributes = {
       colors: ["pink", "orange"],
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -241,7 +243,7 @@ describe("extractPillsFromCriteria", () => {
     const attributes: SearchCriteriaAttributes = {
       attributionClass: ["unique"],
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -256,7 +258,7 @@ describe("extractPillsFromCriteria", () => {
     const attributes: SearchCriteriaAttributes = {
       additionalGeneIDs: ["painting", "work-on-paper"],
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -276,7 +278,7 @@ describe("extractPillsFromCriteria", () => {
     const attributes: SearchCriteriaAttributes = {
       priceRange: "1000-1500",
     }
-    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, entity, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -333,6 +335,11 @@ const firstArtist: SavedSearchEntityArtist = {
 const secondArtist: SavedSearchEntityArtist = {
   id: "secondArtistId",
   name: "secondArtistName",
+}
+
+const entity: SavedSearchEntity = {
+  artists: [firstArtist],
+  owner: { type: OwnerType.artist, slug: "first-artist", id: firstArtist.id },
 }
 
 const aggregations: Aggregations = [

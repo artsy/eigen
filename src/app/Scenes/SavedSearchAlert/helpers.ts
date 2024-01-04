@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { cmToIn, inToCm, parseRange } from "app/Components/ArtworkFilter/Filters/helpers"
 import {
   SearchCriteria,
@@ -246,4 +247,42 @@ export const localizeHeightAndWidthAttributes = ({
   }
 
   return localizedAttributes
+}
+
+export const inferSeriesName = (seriesValue: string, artistNames: string[]) => {
+  let label = seriesValue.replaceAll("-", " ")
+  artistNames.forEach((artistName) => {
+    artistName = artistName
+      .replace(/[-'()@àáâãäéíóöúüćōș’\.]/g, (m): string => {
+        return (
+          {
+            "-": " ",
+            "'": "",
+            "(": "",
+            ")": "",
+            ".": "",
+            "’": "",
+            "@": " at ",
+            à: "a",
+            á: "a",
+            â: "a",
+            ã: "a",
+            ä: "a",
+            é: "e",
+            í: "i",
+            ó: "o",
+            ö: "o",
+            ú: "u",
+            ü: "u",
+            ć: "c",
+            ō: "o",
+            ș: "s",
+          }[m] || ""
+        )
+      })
+      .trim()
+    label = label.replace(new RegExp(`${artistName}`, "i"), "")
+  })
+  label = toTitleCase(label.replace(/\s\s+/, " ").trim())
+  return label
 }
