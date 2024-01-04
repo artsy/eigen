@@ -45,6 +45,13 @@ import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
 
+// Move to a shared file if used elsewhere
+interface RouteParams {
+  props?: {
+    [key: string]: any
+  }
+}
+
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
@@ -239,7 +246,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
   // to make sure the filters are applied correctly
   const route = useRoute()
-  const routeParams = (route?.params as any)?.props || {}
+  const routeParams = (route?.params as RouteParams)?.props || {}
   const filters: FilterArray = [
     ...(predefinedFilters || []),
     ...getFilterParamsFromRouteParams(routeParams),
