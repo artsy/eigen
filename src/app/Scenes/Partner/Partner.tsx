@@ -179,7 +179,7 @@ export const PartnerSkeleton: React.FC = () => {
       <Screen.Body fullwidth>
         <Skeleton>
           <Flex px={2} flexDirection="column">
-            <SkeletonText variant="xl">Gagosian Gal</SkeletonText>
+            <SkeletonText variant="xl">Gallery Name</SkeletonText>
 
             <Spacer y={1} />
 
