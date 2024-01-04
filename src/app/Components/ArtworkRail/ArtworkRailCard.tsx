@@ -1,4 +1,12 @@
-import { Flex, HeartFillIcon, HeartIcon, Text, useColor, Touchable } from "@artsy/palette-mobile"
+import {
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Text,
+  useColor,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import {
   ArtworkRailCard_artwork$data,
   ArtworkRailCard_artwork$key,
@@ -18,7 +26,7 @@ import {
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { useMemo, useState } from "react"
-import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
+import { Dimensions, GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
@@ -31,11 +39,12 @@ export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
   extraLarge: 400,
+  fullWidth: Dimensions.get("window").height,
 }
 
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
-export type ArtworkCardSize = "small" | "large" | "extraLarge"
+export type ArtworkCardSize = "small" | "large" | "extraLarge" | "fullWidth"
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
@@ -46,6 +55,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   lotLabel?: string | null
   lowEstimateDisplay?: string
   highEstimateDisplay?: string
+  metaContainerStyles?: {}
   performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
@@ -62,6 +72,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   lotLabel,
   lowEstimateDisplay,
   highEstimateDisplay,
+  metaContainerStyles,
   performanceDisplay,
   onPress,
   priceRealizedDisplay,
@@ -76,6 +87,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const fontScale = PixelRatio.getFontScale()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const artwork = useFragment(artworkFragment, restProps.artwork)
+  const { width: screenWidth } = useScreenDimensions()
 
   const { artistNames, date, image, partner, title, sale, saleArtwork } = artwork
 
@@ -106,18 +118,24 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   const containerWidth = useMemo(() => {
-    const imageDimensions = sizeToFit(
-      {
-        width: image?.resized?.width ?? 0,
-        height: image?.resized?.height ?? 0,
-      },
-      {
-        width: isRecentlySoldArtwork
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-      }
-    )
+    const imageDimensions =
+      size !== "fullWidth"
+        ? sizeToFit(
+            {
+              width: image?.resized?.width ?? 0,
+              height: image?.resized?.height ?? 0,
+            },
+            {
+              width: isRecentlySoldArtwork
+                ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+                : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+              height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+            }
+          )
+        : {
+            width: screenWidth,
+            height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+          }
 
     switch (size) {
       case "small":
@@ -140,6 +158,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         } else {
           return imageDimensions.width
         }
+      case "fullWidth":
+        return Dimensions.get("window").width
 
       default:
         assertNever(size)
@@ -220,6 +240,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               // to accommodate the estimate and realized price
               style={{
                 height: fontScale * getTextHeightByArtworkSize(size),
+                ...metaContainerStyles,
               }}
               backgroundColor={backgroundColor}
               flexDirection="row"
@@ -356,6 +377,10 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   const color = useColor()
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
 
+  if (!containerWidth) {
+    return null
+  }
+
   const { width, height, src } = image?.resized || {}
 
   if (!src) {
@@ -369,33 +394,70 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
+  const getContainerDimensions = () => {
+    if (isRecentlySoldArtwork) {
+      return {
+        width: EXTRALARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    }
+
+    if (size === "fullWidth") {
+      return {
+        width: Dimensions.get("screen").width,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    }
+
+    return {
+      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    }
+  }
+
   const imageDimensions = sizeToFit(
     {
       width: width ?? 0,
       height: height ?? 0,
     },
-    {
-      width: isRecentlySoldArtwork
-        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
-      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-    }
+    getContainerDimensions()
   )
+
+  const aspectRatio = image?.aspectRatio || imageDimensions.width / imageDimensions.height
+
+  const getImageHeight = () => {
+    let adjustedHeight = 0
+
+    if (imageDimensions.height) {
+      adjustedHeight = imageDimensions.height + imageHeightExtra
+    } else {
+      adjustedHeight = ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
+    }
+
+    if (size !== "fullWidth" || !height) {
+      return adjustedHeight
+    }
+
+    const MINIMUM_ASPECT_RATIO = 0.2
+    const MAXIMUM_ASPECT_RATIO = 0.7
+
+    // Make sure that the image height is not too little or not too big
+    // See https://artsy.slack.com/archives/C05EQL4R5N0/p1701167802957189?thread_ts=1701164551.999919&cid=C05EQL4R5N0
+    if (aspectRatio < MINIMUM_ASPECT_RATIO) {
+      return Dimensions.get("screen").width / MINIMUM_ASPECT_RATIO
+    } else if (aspectRatio > MAXIMUM_ASPECT_RATIO) {
+      return Dimensions.get("screen").width / aspectRatio
+    } else {
+      return Dimensions.get("screen").width / aspectRatio
+    }
+  }
 
   return (
     <Flex>
       <Flex width={containerWidth}>
-        <OpaqueImageView
-          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
-          imageURL={src}
-          height={
-            imageDimensions.height
-              ? imageDimensions.height + imageHeightExtra
-              : ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
-          }
-          width={containerWidth!}
-        />
+        <OpaqueImageView imageURL={src} height={getImageHeight()} width={containerWidth} />
       </Flex>
+
       {!!urgencyTag && (
         <Flex
           backgroundColor={color("white100")}

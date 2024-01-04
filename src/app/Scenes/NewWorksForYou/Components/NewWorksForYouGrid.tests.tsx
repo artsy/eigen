@@ -1,31 +1,24 @@
 import { screen } from "@testing-library/react-native"
-import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
+import { NewWorksForYouGridTestsQuery } from "__generated__/NewWorksForYouGridTestsQuery.graphql"
+import { NewWorksForYouGrid } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouGrid"
+import { DEFAULT_RECS_MODEL_VERSION } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { DEFAULT_RECS_MODEL_VERSION, NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
-describe("NewWorksForYou", () => {
+describe("NewWorksForYouGrid", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<NewWorksForYouTestsQuery>
+    <QueryRenderer<NewWorksForYouGridTestsQuery>
       query={graphql`
-        query NewWorksForYouTestsQuery(
-          $version: String
-          $includeBackfill: Boolean!
-          $maxWorksPerArtist: Int
-        ) {
+        query NewWorksForYouGridTestsQuery($version: String, $maxWorksPerArtist: Int) {
           viewer {
-            ...NewWorksForYou_viewer
-              @arguments(
-                includeBackfill: $includeBackfill
-                version: $version
-                maxWorksPerArtist: $maxWorksPerArtist
-              )
+            ...NewWorksForYouGrid_viewer
+              @arguments(version: $version, maxWorksPerArtist: $maxWorksPerArtist)
           }
         }
       `}
@@ -34,11 +27,10 @@ describe("NewWorksForYou", () => {
           return
         }
 
-        return <NewWorksForYouFragmentContainer viewer={props.viewer} />
+        return <NewWorksForYouGrid viewer={props.viewer} />
       }}
       variables={{
         version: DEFAULT_RECS_MODEL_VERSION,
-        includeBackfill: true,
         maxWorksPerArtist: 3,
       }}
       environment={mockEnvironment}
@@ -49,7 +41,7 @@ describe("NewWorksForYou", () => {
     mockEnvironment = getMockRelayEnvironment()
   })
 
-  it("renders NewWorksForYou", async () => {
+  it("renders the grid items properly", async () => {
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
