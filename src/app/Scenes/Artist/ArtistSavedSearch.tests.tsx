@@ -9,6 +9,7 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
+const mockUseIsFocusedMock = jest.fn()
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
@@ -16,6 +17,7 @@ jest.mock("@react-navigation/native", () => {
     useRoute: () => {
       return {}
     },
+    useIsFocused: () => mockUseIsFocusedMock(),
   }
 })
 
