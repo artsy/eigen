@@ -2,6 +2,14 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { logRelay } from "app/utils/loggers"
 import { Middleware } from "react-relay-network-modern/node8"
 
+type ExtendedError = {
+  message?: string
+  locations?: [{ column: number; line: number }]
+  stack?: string[]
+  path?: any
+  extensions?: any
+}
+
 export function simpleLoggerMiddleware(): Middleware {
   return (next) => async (req: any) => {
     const startTime = Date.now()
@@ -31,7 +39,15 @@ export function simpleLoggerMiddleware(): Middleware {
     }
     addBreadcrumb({
       category: "relay",
-      data: { errors: response.errors },
+      data: {
+        errors: response.errors?.map((error: ExtendedError) => ({
+          ...error,
+          locations: JSON.stringify(error?.locations),
+          message: JSON.stringify(error?.message),
+          path: JSON.stringify(error?.path),
+          extensions: JSON.stringify(error?.extensions),
+        })),
+      },
       message: `${response.errors?.length ? "Unsuccessfully" : "Successfully"} fetched ${
         req.operation.name
       } with vars ${JSON.stringify(req.variables)} in ${duration}`,

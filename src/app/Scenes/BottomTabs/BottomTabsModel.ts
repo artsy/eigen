@@ -1,4 +1,4 @@
-import { captureMessage } from "@sentry/react-native"
+import { captureException, captureMessage } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -95,7 +95,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         )
         console.log(e)
       } else {
-        captureMessage(`fetchCurrentUnreadConversationCount failed: ${JSON.stringify(e)}`)
+        captureMessage(`fetchCurrentUnreadConversationCount failed:`)
+        captureException(JSON.stringify(e))
       }
     }
   }),
@@ -133,7 +134,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         )
         console.log(e)
       } else {
-        captureMessage(`fetchNotificationsInfo failed: ${JSON.stringify(e)}`)
+        captureMessage(`fetchNotificationsInfo failed: `)
+        captureException(e)
       }
     }
   }),
