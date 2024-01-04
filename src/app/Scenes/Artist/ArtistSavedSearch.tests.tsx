@@ -9,6 +9,16 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useRoute: () => {
+      return {}
+    },
+  }
+})
+
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 
 describe("Saved search banner on artist screen", () => {
