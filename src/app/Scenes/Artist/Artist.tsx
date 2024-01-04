@@ -9,6 +9,7 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
+import { useRoute } from "@react-navigation/native"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -23,6 +24,7 @@ import {
   FilterArray,
   filterArtworksParams,
   getFilterArrayFromQueryParams,
+  getFilterParamsFromRouteParams,
   prepareFilterArtworksParamsForInput,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -42,6 +44,13 @@ import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
+
+// Move to a shared file if used elsewhere
+interface RouteParams {
+  props?: {
+    [key: string]: any
+  }
+}
 
 interface ArtistProps {
   artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
@@ -233,6 +242,16 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     sizes,
   } = props
 
+  // exctact filter params from the query string. This is needed when
+  // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
+  // to make sure the filters are applied correctly
+  const route = useRoute()
+  const routeParams = (route?.params as RouteParams)?.props || {}
+  const filters: FilterArray = [
+    ...(predefinedFilters || []),
+    ...getFilterParamsFromRouteParams(routeParams),
+  ]
+
   return (
     <SearchCriteriaQueryRenderer
       searchCriteriaId={searchCriteriaID ?? search_criteria_id}
@@ -241,7 +260,8 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
         renderPlaceholder: () => <ArtistSkeleton />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
-          const predefinedFilterParams = filterArtworksParams(predefinedFilters ?? [], "artwork")
+          const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
+
           let initialArtworksInput = {
             ...defaultArtistVariables().input,
             ...predefinedFilterParams,
@@ -293,7 +313,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
-                      predefinedFilters={predefinedFilters}
+                      predefinedFilters={filters}
                       auctionResultsInitialFilters={getFilterArrayFromQueryParams({
                         categories: categories ?? [],
                         sizes: sizes ?? [],

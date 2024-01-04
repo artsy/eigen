@@ -77,6 +77,37 @@ export type FilterParams = {
   [Name in FilterParamName]: string | number | boolean | undefined | string[]
 }
 
+export const QueryParamsToFilterValueMapping: Record<string, FilterParamName> = {
+  additional_gene_ids: FilterParamName.additionalGeneIDs,
+  artist_ids: FilterParamName.artistIDs,
+  artist_nationalities: FilterParamName.artistNationalities,
+  artist_series_ids: FilterParamName.artistSeriesIDs,
+  include_artworks_by_followed_artists: FilterParamName.artistsIFollow,
+  attribution_class: FilterParamName.attributionClass,
+  colors: FilterParamName.colors,
+  earliest_created_year: FilterParamName.earliestCreatedYear,
+  estimate_range: FilterParamName.estimateRange,
+  height: FilterParamName.height,
+  keyword: FilterParamName.keyword,
+  latest_created_year: FilterParamName.latestCreatedYear,
+  location_cities: FilterParamName.locationCities,
+  materials_terms: FilterParamName.materialsTerms,
+  medium: FilterParamName.medium,
+  organizations: FilterParamName.organizations,
+  partner_ids: FilterParamName.partnerIDs,
+  price_range: FilterParamName.priceRange,
+  show_only_submitted_artworks: FilterParamName.showOnlySubmittedArtworks,
+  sizes: FilterParamName.sizes,
+  sort: FilterParamName.sort,
+  state: FilterParamName.state,
+  major_periods: FilterParamName.timePeriod,
+  at_auction: FilterParamName.waysToBuyBid,
+  inquireable_only: FilterParamName.waysToBuyContactGallery,
+  offerable: FilterParamName.waysToBuyMakeOffer,
+  acquireable: FilterParamName.waysToBuyPurchase,
+  width: FilterParamName.width,
+}
+
 export enum ViewAsValues {
   Grid = "grid",
   List = "list",
@@ -583,4 +614,28 @@ export const getFilterArrayFromQueryParams = (queryParams: {
       }
     })
   )
+}
+
+export const allowedFilterParams = (routeParams: {
+  [key: string]: string | number | boolean | string[]
+}) => {
+  return pick(routeParams, Object.keys(QueryParamsToFilterValueMapping))
+}
+
+export const getFilterParamsFromRouteParams = (routeParams: {
+  [key: string]: string | number | boolean | string[]
+}) => {
+  return Object.entries(allowedFilterParams(routeParams)).map(([key, value]) => {
+    const paramName = QueryParamsToFilterValueMapping[key]
+    let paramValue = value
+    if (paramValue === "true" || paramValue === "false") {
+      paramValue = paramValue === "true" ? true : false
+    }
+
+    return {
+      displayText: FilterDisplayName[paramName as keyof typeof FilterDisplayName],
+      paramName: paramName,
+      paramValue: paramValue,
+    }
+  })
 }

@@ -47,12 +47,12 @@ export const ORDERED_ARTWORK_SORTS: FilterData[] = [
   {
     displayText: "Price (High to Low)",
     paramName: FilterParamName.sort,
-    paramValue: "sold,-has_price,-prices",
+    paramValue: "-has_price,-prices",
   },
   {
     displayText: "Price (Low to High)",
     paramName: FilterParamName.sort,
-    paramValue: "sold,-has_price,prices",
+    paramValue: "-has_price,prices",
   },
   {
     displayText: "Recently Updated",

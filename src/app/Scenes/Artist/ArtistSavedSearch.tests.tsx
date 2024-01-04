@@ -9,6 +9,18 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-tracking")
 
+const mockUseIsFocusedMock = jest.fn()
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useRoute: () => {
+      return {}
+    },
+    useIsFocused: () => mockUseIsFocusedMock(),
+  }
+})
+
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 
 describe("Saved search banner on artist screen", () => {

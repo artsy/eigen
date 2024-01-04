@@ -102,7 +102,7 @@ export const ListItem = ({
   selectedOption: FilterData
   withExtraPadding?: boolean
 }) => {
-  const selected = item.displayText === selectedOption.displayText
+  const selected = item.paramValue === selectedOption.paramValue
 
   return (
     <TouchableRow accessibilityState={{ selected }} onPress={() => onSelect(item)}>
