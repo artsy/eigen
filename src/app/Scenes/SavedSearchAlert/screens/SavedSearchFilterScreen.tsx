@@ -14,6 +14,7 @@ import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchFilterArtistSeriesQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterArtistSeries"
 import { SavedSearchFilterColor } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColor"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
@@ -30,6 +31,9 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const { bottom } = useScreenDimensions().safeAreaInsets
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
+  const enableAlertsFiltersArtistSeriesFiltering = useFeatureFlag(
+    "AREnableAlertsFiltersArtistSeriesFiltering"
+  )
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -51,8 +55,8 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
           <SavedSearchFilterAdditionalGeneIDs />
           <SavedSearchFilterRarity />
           <SavedSearchFilterPriceRangeQR />
+          {!!enableAlertsFiltersArtistSeriesFiltering && <SavedSearchFilterArtistSeriesQR />}
           {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
-
           <SavedSearchFilterWaysToBuy />
           <SavedSearchFilterColor />
         </Join>
