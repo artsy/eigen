@@ -227,7 +227,7 @@ export const features: { [key: string]: FeatureDescriptor } = {
   },
   AREnableNewWorksForYouScreenFeed: {
     description: "Enable new works for you screen feed",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewWorksForYouScreenFeed",
   },
