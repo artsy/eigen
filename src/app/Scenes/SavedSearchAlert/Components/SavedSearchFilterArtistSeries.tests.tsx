@@ -11,7 +11,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 const black100Hex = "#000000"
 
 describe("SavedSearchFilterArtistSeriesQR", () => {
-  it("renders artist series options", async () => {
+  it("renders options when artist series present", async () => {
     const { renderWithRelay } = setupTestWrapper({
       Component: () => (
         <SavedSearchStoreProvider runtimeModel={initialData}>
@@ -42,6 +42,28 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
     expect(screen.getByText("Artist Series")).toBeOnTheScreen()
     expect(screen.getByText("Series 1")).toBeOnTheScreen()
     expect(screen.getByText("Series 2")).toBeOnTheScreen()
+  })
+
+  it("renders nothing when artist series are not present", async () => {
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <SavedSearchStoreProvider runtimeModel={initialData}>
+          <SavedSearchFilterArtistSeriesQR />
+        </SavedSearchStoreProvider>
+      ),
+    })
+    renderWithRelay({
+      FilterArtworksConnection: () => ({
+        aggregations: [
+          {
+            slice: "ARTIST_SERIES",
+            counts: [],
+          },
+        ],
+      }),
+    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    expect(screen.queryByText("Artist Series")).not.toBeOnTheScreen()
   })
 
   it("updates artist series selections", async () => {

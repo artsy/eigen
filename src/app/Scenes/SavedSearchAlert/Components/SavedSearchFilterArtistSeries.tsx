@@ -34,6 +34,8 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
 
   const options = compact(artistSeries?.counts ?? [])
 
+  if (!options.length) return null
+
   const displayedOptions = showAll ? options : options.slice(0, MAX_OPTIONS)
 
   return (
