@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { KNOWN_ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
@@ -17,6 +17,7 @@ export const SavedSearchFilterRarity = () => {
 
   return (
     <Flex px={2}>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight="bold">
         Rarity
       </Text>

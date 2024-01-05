@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
 import {
@@ -23,9 +23,11 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
 
   return (
     <Flex px={2}>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight="bold">
         Medium
       </Text>
+
       <Spacer y={1} />
       <AnimateHeight>
         <Flex flexDirection="row" flexWrap="wrap">

@@ -1,14 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  Button,
-  Flex,
-  Join,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -50,17 +41,14 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         Filters
       </FancyModalHeader>
       <ScrollView>
-        <Join separator={<Separator my={2} borderColor="black10" />}>
-          <SavedSearchFilterAppliedFilters />
-          <SavedSearchFilterAdditionalGeneIDs />
-          <SavedSearchFilterRarity />
-          <SavedSearchFilterPriceRangeQR />
-          {!!enableAlertsFiltersArtistSeriesFiltering && <SavedSearchFilterArtistSeriesQR />}
-          {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
-          <SavedSearchFilterWaysToBuy />
-          <SavedSearchFilterColor />
-        </Join>
-
+        <SavedSearchFilterAppliedFilters />
+        <SavedSearchFilterAdditionalGeneIDs />
+        <SavedSearchFilterRarity />
+        <SavedSearchFilterPriceRangeQR />
+        {!!enableAlertsFiltersArtistSeriesFiltering && <SavedSearchFilterArtistSeriesQR />}
+        {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
+        <SavedSearchFilterWaysToBuy />
+        <SavedSearchFilterColor />
         <Spacer y={2} />
       </ScrollView>
 

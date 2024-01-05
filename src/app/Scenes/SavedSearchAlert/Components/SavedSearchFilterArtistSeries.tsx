@@ -1,4 +1,12 @@
-import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { SavedSearchFilterArtistSeriesQuery } from "__generated__/SavedSearchFilterArtistSeriesQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
@@ -40,6 +48,7 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
 
   return (
     <Flex px={2}>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight="bold">
         Artist Series
       </Text>

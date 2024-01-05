@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { WAYS_TO_BUY_OPTIONS } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { SavedSearchFilterPill } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPill"
@@ -16,6 +16,7 @@ export const SavedSearchFilterWaysToBuy = () => {
 
   return (
     <Flex px={2}>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight="bold">
         Ways to Buy
       </Text>
