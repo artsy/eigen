@@ -84,7 +84,7 @@ export const ReadMore = React.memo(
         ) => {
           state.withinText = true
           const openUrl = (url: string) => {
-            if (node.target.startsWith("mailto:")) {
+            if (node?.target?.startsWith("mailto:")) {
               sendEmailWithMailTo(url)
             } else if (presentLinksModally) {
               navigate(url, { modal: true })

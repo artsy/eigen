@@ -47,7 +47,7 @@ export function defaultRules({
       react: (node, output, state) => {
         state.withinText = true
         const openUrl = (url: string) => {
-          if (node.target.startsWith("mailto:")) {
+          if (node?.target?.startsWith("mailto:")) {
             sendEmailWithMailTo(url)
           } else if (modal) {
             navigate(url, { modal: true })
