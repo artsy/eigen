@@ -278,6 +278,9 @@ type Alert {
 
   # A type-specific ID.
   internalID: ID!
+
+  # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
+  labels: [SearchCriteriaLabel]!
   materialsTerms: [String]
   priceRange: String
   summary: JSON
