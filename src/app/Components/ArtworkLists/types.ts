@@ -36,6 +36,7 @@ export interface ArtworkListEntity {
 }
 
 export type ArtworkListState = {
+  selectArtworkListsViewVisible: boolean
   createNewArtworkListViewVisible: boolean
   artwork: ArtworkEntity | null
   artworkListID: string | null

@@ -18,9 +18,11 @@ export interface ArtworkListsProviderProps {
   artworkListId?: string
   // Needs for tests
   artwork?: ArtworkEntity
+  selectArtworkListsViewVisible?: boolean
 }
 
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
+  selectArtworkListsViewVisible: false,
   createNewArtworkListViewVisible: false,
   artwork: null,
   artworkListID: null,
@@ -49,10 +51,12 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   children,
   artworkListId,
   artwork,
+  selectArtworkListsViewVisible,
 }) => {
   const [state, dispatch] = useReducer(reducer, {
     ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
     artwork: artwork ?? null,
+    selectArtworkListsViewVisible: selectArtworkListsViewVisible ?? false,
   })
 
   const toast = useArtworkListToast(state.toastBottomPadding)
@@ -136,8 +140,8 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
         state.removingArtworkLists
       )
 
-      if (isArtworkListAdded || isArtworkListRemoved) {
-        dispatchArtworkSavedStateChanged(state.artwork!.internalID)
+      if ((isArtworkListAdded || isArtworkListRemoved) && !!state.artwork) {
+        dispatchArtworkSavedStateChanged(state.artwork.internalID)
       }
 
       toast.changesSaved()
@@ -187,12 +191,12 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
       <BottomSheetModalProvider>
         {children}
 
-        {!!state.artwork && (
-          <>
+        <>
+          {!!state.artwork && !!state.selectArtworkListsViewVisible && (
             <SelectArtworkListsForArtworkView />
-            {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
-          </>
-        )}
+          )}
+          {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+        </>
       </BottomSheetModalProvider>
     </ArtworkListsContext.Provider>
   )
@@ -216,6 +220,7 @@ const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkLis
         ...state,
         artwork: action.payload.artwork,
         artworkListID: action.payload.artworkListID,
+        selectArtworkListsViewVisible: true,
       }
     case "SET_RECENTLY_ADDED_ARTWORK_LIST":
       return {

@@ -1,372 +1,313 @@
-import { fireEvent } from "@testing-library/react-native"
-import {
-  ArtworkListsProvider,
-  ArtworkListsProviderProps,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { ArtworkListsContextTestQuery } from "__generated__/ArtworkListsContextTestQuery.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
-jest.mock("@gorhom/bottom-sheet", () => {
-  const RN = require("react-native")
-
-  return {
-    ...jest.requireActual("@gorhom/bottom-sheet/mock"),
-    BottomSheetFlatList: RN.FlatList,
-  }
-})
+jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"))
 
 describe("ArtworkListsProvider", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = (props: Partial<ArtworkListsProviderProps> = {}) => {
-    return <ArtworkListsProvider artwork={artworkEntity} {...props} />
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtworkListsContextTestQuery>({
+    Component: (props: any) => (
+      <ArtworkListsProvider
+        artwork={props?.artwork ?? artworkEntity}
+        selectArtworkListsViewVisible={props?.selectArtworkListsViewVisible ?? true}
+        {...props}
+      />
+    ),
+    query: graphql`
+      query ArtworkListsContextTestQuery @relay_test_operation {
+        ...ArtworkLists_collectionsConnection
+      }
+    `,
   })
 
   describe("Select lists for artwork", () => {
     it("should not be displayed by default", () => {
-      const { queryByText } = renderWithHookWrappersTL(
-        <TestRenderer artwork={undefined} />,
-        mockEnvironment
-      )
+      renderWithRelay({}, { artwork: null })
 
-      expect(queryByText("Select where you’d like to save this artwork:")).toBeNull()
+      expect(
+        screen.queryByText("Select where you’d like to save this artwork:")
+      ).not.toBeOnTheScreen()
     })
 
     it("should be displayed when artwork is set", () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithRelay()
 
-      expect(getByText("Select where you’d like to save this artwork:")).toBeTruthy()
+      expect(screen.getByText("Select where you’d like to save this artwork:")).toBeOnTheScreen()
     })
 
     // TODO: Fix this test, it's failing because footerComponent (in SelectArtworkListsForArtworkView) is not being rendered
     it.skip("should display `Done` button", () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithRelay()
 
-      expect(getByText("Done")).toBeTruthy()
+      expect(screen.getByText("Done")).toBeOnTheScreen()
     })
 
     it("should display artwork lists", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      const { mockResolveLastOperation } = renderWithRelay()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          savedArtworksArtworkList,
-          customArtworkLists,
-        }),
-      })
+      await waitFor(() =>
+        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+      )
 
-      await flushPromiseQueue()
-
-      expect(getByText("Saved Artworks")).toBeTruthy()
-      expect(getByText("Custom Artwork List 1")).toBeTruthy()
-      expect(getByText("Custom Artwork List 2")).toBeTruthy()
+      expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
+      expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
+      expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
     })
 
     it("should navigate to the create new artwork list flow when button is pressed", () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithRelay()
 
-      fireEvent.press(getByText("Create New List"))
+      fireEvent.press(screen.getByText("Create New List"))
 
-      expect(getByText("Create a new list")).toBeTruthy()
+      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
     })
 
     describe("Selected/unselected artwork lists state", () => {
       it("all artwork lists should be unselected", async () => {
-        const { queryAllByA11yState } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+        const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList,
-            customArtworkLists,
-          }),
-        })
+        await waitFor(() =>
+          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+        )
 
-        await flushPromiseQueue()
-
-        const selected = queryAllByA11yState({ selected: true })
+        const selected = screen.queryAllByA11yState({ selected: true })
         expect(selected).toHaveLength(0)
       })
 
       it("recently selected artwork lists should be preselected by default", async () => {
-        const { queryAllByA11yState } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+        const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList: {
-              ...savedArtworksArtworkList,
-              isSavedArtwork: true,
-            },
-            customArtworkLists: {
-              edges: [
-                {
-                  node: {
-                    ...customArtworkListOne,
-                    isSavedArtwork: true,
-                  },
-                },
-                {
-                  node: customArtworkListTwo,
-                },
-              ],
-            },
-          }),
-        })
+        await waitFor(() =>
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
+              customArtworkLists: {
+                edges: [
+                  { node: { ...customArtworkListOne, isSavedArtwork: true } },
+                  { node: customArtworkListTwo },
+                ],
+              },
+            }),
+          })
+        )
 
-        await flushPromiseQueue()
-
-        const selected = queryAllByA11yState({ selected: true })
+        const selected = screen.queryAllByA11yState({ selected: true })
         expect(selected).toHaveLength(2)
       })
 
       it("add selected state when artwork list is pressed", async () => {
-        const { queryAllByA11yState, getByText } = renderWithHookWrappersTL(
-          <TestRenderer />,
-          mockEnvironment
+        const { mockResolveLastOperation } = renderWithRelay()
+
+        await waitFor(() =>
+          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList,
-            customArtworkLists,
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const selectedBefore = queryAllByA11yState({ selected: true })
+        const selectedBefore = screen.queryAllByA11yState({ selected: true })
         expect(selectedBefore).toHaveLength(0)
 
-        fireEvent.press(getByText("Custom Artwork List 2"))
+        fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedAfter = queryAllByA11yState({ selected: true })
+        const selectedAfter = screen.queryAllByA11yState({ selected: true })
         expect(selectedAfter).toHaveLength(1)
       })
 
       it("unselect recently selected artwork lists", async () => {
-        const { queryAllByA11yState, getByText } = renderWithHookWrappersTL(
-          <TestRenderer />,
-          mockEnvironment
+        const { mockResolveLastOperation } = renderWithRelay()
+
+        await waitFor(() =>
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
+              customArtworkLists,
+            }),
+          })
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList: {
-              ...savedArtworksArtworkList,
-              isSavedArtwork: true,
-            },
-            customArtworkLists,
-          }),
-        })
-
-        await flushPromiseQueue()
-
         // Select some custom artwork list
-        fireEvent.press(getByText("Custom Artwork List 2"))
+        fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedBefore = queryAllByA11yState({ selected: true })
+        const selectedBefore = screen.queryAllByA11yState({ selected: true })
         expect(selectedBefore).toHaveLength(2)
 
         // Unselect all
-        fireEvent.press(getByText("Saved Artworks"))
-        fireEvent.press(getByText("Custom Artwork List 2"))
+        fireEvent.press(screen.getByText("Saved Artworks"))
+        fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedAfter = queryAllByA11yState({ selected: true })
+        const selectedAfter = screen.queryAllByA11yState({ selected: true })
         expect(selectedAfter).toHaveLength(0)
       })
     })
 
     describe("Artworks count", () => {
       it("should render `x Artwork` when one artwork was saved", async () => {
-        const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+        const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList: {
-              ...savedArtworksArtworkList,
-              artworksCount: 1,
-            },
-            customArtworkLists: { edges: [] },
-          }),
-        })
+        await waitFor(() =>
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: { ...savedArtworksArtworkList, artworksCount: 1 },
+              customArtworkLists: { edges: [] },
+            }),
+          })
+        )
 
-        expect(queryByText("1 Artwork")).toBeNull()
+        expect(screen.getByText("1 Artwork")).toBeOnTheScreen()
       })
 
       it("should render `x Artworks` when multiple artwork were saved", async () => {
-        const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+        const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList,
-            customArtworkLists: { edges: [] },
-          }),
-        })
+        await waitFor(() =>
+          mockResolveLastOperation({
+            Me: () => ({ savedArtworksArtworkList, customArtworkLists: { edges: [] } }),
+          })
+        )
 
-        expect(queryByText("5 Artworks")).toBeNull()
+        expect(screen.getByText("5 Artworks")).toBeOnTheScreen()
       })
     })
 
     describe("Selected artwork lists counter", () => {
       describe("without selected artwork lists by default", () => {
         it("default state", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList,
-              customArtworkLists,
-              artworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+            })
+          )
 
-          await flushPromiseQueue()
-
-          expect(getByText("0 lists selected")).toBeTruthy()
+          expect(screen.getByText("0 lists selected")).toBeOnTheScreen()
         })
 
         it("selected one artwork list", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList,
-              customArtworkLists,
-              artworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
 
-          fireEvent.press(getByText("Saved Artworks"))
-
-          expect(getByText("1 list selected")).toBeTruthy()
+          expect(screen.getByText("1 list selected")).toBeOnTheScreen()
         })
 
         it("selected multiple artwork lists", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList,
-              customArtworkLists,
-              artworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
 
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-
-          expect(getByText("2 lists selected")).toBeTruthy()
+          expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
         })
 
         it("selected multiple artwork lists (select and unselect action)", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList,
-              customArtworkLists,
-              artworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
+          expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
 
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-          expect(getByText("2 lists selected")).toBeTruthy()
-
-          fireEvent.press(getByText("Saved Artworks"))
-          expect(getByText("1 list selected")).toBeTruthy()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          expect(screen.getByText("1 list selected")).toBeOnTheScreen()
         })
       })
 
       describe("with selected artwork lists by default", () => {
         it("default state", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-              customArtworkLists: preselectedCustomArtworkLists,
-              artworkLists: preselectedArtworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({
+                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+                customArtworkLists: preselectedCustomArtworkLists,
+                artworkLists: preselectedArtworkLists,
+              }),
+            })
+          )
 
-          await flushPromiseQueue()
-
-          expect(getByText("3 lists selected")).toBeTruthy()
+          expect(screen.getByText("3 lists selected")).toBeOnTheScreen()
         })
 
         it("unselect preselected artwork lists", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-              customArtworkLists: preselectedCustomArtworkLists,
-              artworkLists: preselectedArtworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({
+                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+                customArtworkLists: preselectedCustomArtworkLists,
+                artworkLists: preselectedArtworkLists,
+              }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
 
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-
-          expect(getByText("1 list selected")).toBeTruthy()
+          expect(screen.getByText("1 list selected")).toBeOnTheScreen()
         })
 
         it("unselect preselected and select again the same artwork lists", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-              customArtworkLists: preselectedCustomArtworkLists,
-              artworkLists: preselectedArtworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({
+                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+                customArtworkLists: preselectedCustomArtworkLists,
+                artworkLists: preselectedArtworkLists,
+              }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
+          expect(screen.getByText("1 list selected")).toBeOnTheScreen()
 
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-          expect(getByText("1 list selected")).toBeTruthy()
-
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-          expect(getByText("3 lists selected")).toBeTruthy()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
+          expect(screen.getByText("3 lists selected")).toBeOnTheScreen()
         })
 
         it("unselect preselected and select other artwork lists", async () => {
-          const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+          const { mockResolveLastOperation } = renderWithRelay()
 
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Me: () => ({
-              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-              customArtworkLists: preselectedCustomArtworkLists,
-              artworkLists: preselectedArtworkLists,
-            }),
-          })
+          await waitFor(() =>
+            mockResolveLastOperation({
+              Me: () => ({
+                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+                customArtworkLists: preselectedCustomArtworkLists,
+                artworkLists: preselectedArtworkLists,
+              }),
+            })
+          )
 
-          await flushPromiseQueue()
+          fireEvent.press(screen.getByText("Saved Artworks"))
+          fireEvent.press(screen.getByText("Custom Artwork List 1"))
+          expect(screen.getByText("1 list selected")).toBeOnTheScreen()
 
-          fireEvent.press(getByText("Saved Artworks"))
-          fireEvent.press(getByText("Custom Artwork List 1"))
-          expect(getByText("1 list selected")).toBeTruthy()
-
-          fireEvent.press(getByText("Custom Artwork List 3"))
-          expect(getByText("2 lists selected")).toBeTruthy()
+          fireEvent.press(screen.getByText("Custom Artwork List 3"))
+          expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
         })
       })
     })
@@ -374,18 +315,13 @@ describe("ArtworkListsProvider", () => {
     // TODO: Fix this test, it's failing because footerComponent (in SelectArtworkListsForArtworkView) is not being rendered
     describe.skip("Done button", () => {
       it("enabled by default", async () => {
-        const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+        const { mockResolveLastOperation } = renderWithRelay()
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            savedArtworksArtworkList,
-            customArtworkLists,
-          }),
-        })
+        await waitFor(() =>
+          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+        )
 
-        await flushPromiseQueue()
-
-        expect(getByText("Done")).toBeEnabled()
+        expect(screen.getByText("Done")).toBeEnabled()
       })
     })
   })
