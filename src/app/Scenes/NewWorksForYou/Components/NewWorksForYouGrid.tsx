@@ -11,11 +11,8 @@ import {
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { Animated, Dimensions } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
@@ -38,38 +35,34 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
   })
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
-    >
-      <SafeAreaView edges={["top"]} style={{ minHeight: Dimensions.get("screen").height }}>
-        <Animated.ScrollView
-          style={{ minHeight: Dimensions.get("screen").height }}
-          contentContainerStyle={{
-            paddingBottom: 120,
-          }}
-          {...scrollProps}
-        >
-          <Flex style={{ minHeight: Dimensions.get("screen").height }}>
-            <MasonryInfiniteScrollArtworkGrid
-              nestedScrollEnabled={true}
-              artworks={artworks}
-              disableAutoLayout
-              pageSize={PAGE_SIZE}
-              contextScreenOwnerType={OwnerType.newWorksForYou}
-              contextScreen={OwnerType.newWorksForYou}
-              ListEmptyComponent={
-                <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-              }
-              ListHeaderComponent={() => (
-                <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
-              )}
-              hasMore={false}
-            />
-          </Flex>
-        </Animated.ScrollView>
-        {headerElement}
-      </SafeAreaView>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <Flex style={{ height: "100%" }}>
+      <Animated.ScrollView
+        style={{ minHeight: Dimensions.get("screen").height }}
+        contentContainerStyle={{
+          paddingBottom: 120,
+        }}
+        {...scrollProps}
+      >
+        <Flex style={{ minHeight: Dimensions.get("screen").height }}>
+          <MasonryInfiniteScrollArtworkGrid
+            nestedScrollEnabled={true}
+            artworks={artworks}
+            disableAutoLayout
+            pageSize={PAGE_SIZE}
+            contextScreenOwnerType={OwnerType.newWorksForYou}
+            contextScreen={OwnerType.newWorksForYou}
+            ListEmptyComponent={
+              <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+            }
+            ListHeaderComponent={() => (
+              <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
+            )}
+            hasMore={false}
+          />
+        </Flex>
+      </Animated.ScrollView>
+      {headerElement}
+    </Flex>
   )
 }
 

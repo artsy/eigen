@@ -13,8 +13,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
-import { Animated, Dimensions } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { Animated } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 type NewWorksForYouListProps = {
@@ -38,7 +37,7 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
     ),
   })
   return (
-    <SafeAreaView edges={["top"]} style={{ height: Dimensions.get("screen").height }}>
+    <Flex style={{ height: "100%" }}>
       <AnimatedFlashlist
         estimatedItemSize={400}
         data={artworks}
@@ -76,7 +75,7 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
       />
 
       {headerElement}
-    </SafeAreaView>
+    </Flex>
   )
 }
 

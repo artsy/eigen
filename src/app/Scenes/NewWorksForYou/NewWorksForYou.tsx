@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   BackButton,
   Flex,
@@ -17,6 +18,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { MotiPressable } from "moti/interactions"
 import { LayoutAnimation } from "react-native"
@@ -71,40 +74,44 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     experiment.payload !== "gridOnly"
   ) {
     return (
-      <Flex>
-        {newWorksForYouViewOption === "grid" ? (
-          <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-        ) : (
-          <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-        )}
-
-        <Flex
-          position="absolute"
-          justifyContent="space-between"
-          flexDirection="row"
-          width="100%"
-          alignItems="center"
-          px={2}
-          pt="15px"
-        >
-          <BackButton onPress={goBack} />
-
-          {!!enableNewWorksForYouFeed && !isTablet() && (
-            <MotiPressable
-              onPress={() => {
-                setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")
-                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-              }}
-            >
-              {newWorksForYouViewOption === "grid" ? (
-                <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
-              ) : (
-                <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
-              )}
-            </MotiPressable>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+      >
+        <Flex>
+          {newWorksForYouViewOption === "grid" ? (
+            <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+          ) : (
+            <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
           )}
+
+          <Flex
+            position="absolute"
+            justifyContent="space-between"
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+            px={2}
+            pt="15px"
+          >
+            <BackButton onPress={goBack} />
+
+            {!!enableNewWorksForYouFeed && !isTablet() && (
+              <MotiPressable
+                onPress={() => {
+                  setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")
+                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+                }}
+              >
+                {newWorksForYouViewOption === "grid" ? (
+                  <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
+                ) : (
+                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
+                )}
+              </MotiPressable>
+            )}
+          </Flex>
         </Flex>
-      </Flex>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   }
 

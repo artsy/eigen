@@ -5,7 +5,7 @@ export const NewWorksForYouHeaderComponent: React.FC<{
   artworksCount: number
 }> = ({ artworksCount }) => {
   return (
-    <Flex mb={1}>
+    <Flex mb={1} mt={6}>
       <Text variant="lg-display">New Works For You</Text>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="xs" mt={1}>
