@@ -125,7 +125,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
   const newWorksForYouViewOption = GlobalStore.useAppState(
     (state) => state.userPrefs.newWorksForYouViewOption
   )
-
+  const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
   const viewOption = defaultViewOption ?? newWorksForYouViewOption
 
   return (
@@ -142,7 +142,7 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
         </Flex>
       </Flex>
       <Spacer y={2} />
-      {viewOption === "grid" ? (
+      {viewOption === "grid" || !enableNewWorksForYouFeed ? (
         <PlaceholderGrid />
       ) : (
         <Flex width="100%" px={2}>
