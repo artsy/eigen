@@ -65,17 +65,19 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
           )
         })}
 
-        <TouchableOpacity
-          onPress={() => {
-            setShowAll(!showAll)
-          }}
-        >
-          <Flex height={50} justifyContent="center" px={1}>
-            <Text variant="xs" color="blue100">
-              Show {showAll ? "less" : "more"}
-            </Text>
-          </Flex>
-        </TouchableOpacity>
+        {options.length > MAX_OPTIONS && (
+          <TouchableOpacity
+            onPress={() => {
+              setShowAll(!showAll)
+            }}
+          >
+            <Flex height={50} justifyContent="center" px={1}>
+              <Text variant="xs" color="blue100">
+                Show {showAll ? "less" : "more"}
+              </Text>
+            </Flex>
+          </TouchableOpacity>
+        )}
       </Flex>
     </Flex>
   )

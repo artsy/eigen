@@ -152,6 +152,33 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
     fireEvent(screen.getByText("Show less"), "onPress")
     expect(screen.queryByText("Series 8")).not.toBeOnTheScreen()
   })
+
+  it("does not truncate when not necessary", async () => {
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <SavedSearchStoreProvider runtimeModel={initialData}>
+          <SavedSearchFilterArtistSeriesQR />
+        </SavedSearchStoreProvider>
+      ),
+    })
+    renderWithRelay({
+      FilterArtworksConnection: () => ({
+        aggregations: [
+          {
+            slice: "ARTIST_SERIES",
+            counts: [
+              { name: "Series 1", value: "series-1" },
+              { name: "Series 2", value: "series-2" },
+              { name: "Series 3", value: "series-3" },
+            ],
+          },
+        ],
+      }),
+    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
+    expect(screen.getByText("Artist Series")).toBeOnTheScreen()
+    expect(screen.queryByText("Show more")).not.toBeOnTheScreen()
+  })
 })
 
 const initialData: SavedSearchModel = {
