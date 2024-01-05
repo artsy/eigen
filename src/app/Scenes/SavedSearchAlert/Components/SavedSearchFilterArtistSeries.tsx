@@ -32,16 +32,7 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
   // If the user has selected any values, show all the options on initial render
   const [showAll, setShowAll] = useState(!!selectedAttributes?.length)
 
-  const options = compact(
-    (artistSeries?.counts ?? []).map((count) => {
-      if (!count) return null
-
-      return {
-        name: count.name,
-        value: count.value,
-      }
-    })
-  )
+  const options = compact(artistSeries?.counts ?? [])
 
   const displayedOptions = showAll ? options : options.slice(0, MAX_OPTIONS)
 
