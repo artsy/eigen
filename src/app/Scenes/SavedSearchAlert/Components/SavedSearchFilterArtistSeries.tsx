@@ -14,6 +14,7 @@ import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
+const MAX_OPTIONS = 7
 interface SavedSearchFilterArtistSeriesProps {
   artist: SavedSearchFilterArtistSeriesQuery["response"]["artist"]
 }
@@ -42,7 +43,7 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
     })
   )
 
-  const displayedOptions = showAll ? options : options.slice(0, 7)
+  const displayedOptions = showAll ? options : options.slice(0, MAX_OPTIONS)
 
   return (
     <Flex px={2}>
