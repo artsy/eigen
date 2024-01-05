@@ -62,6 +62,11 @@ export function setupSentry(props: SetupSentryProps = {}) {
     // TODO: this number is meant for debugging purposes only, and should
     // be adjusted before release to something like 0.1 or 0.2 max
     tracesSampleRate: 1.0,
+    integrations: [new Sentry.ReactNativeTracing()],
+    // TODO: this is a temporary setting to enable performance tracking
+    // we can use it to hide the performance tracking behind a ff in case
+    // something goes wrong
+    enableAutoPerformanceTracing: true,
     ...props,
   })
 }
