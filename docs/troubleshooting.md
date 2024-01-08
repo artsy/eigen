@@ -179,3 +179,14 @@ threshold.
 In order to update existing screenshots, run `./scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using `cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
+
+### Podfile.lock diffs
+
+Many devs have reported that their `Podfile.lock` differred from the one in `main` and lots of the deps have a different checksum. This could happen for many reasons that were specified in details in this [article on our blog](https://artsy.github.io/blog/2016/05/03/podspec-checksums/).
+
+If you encounter the same error, we suggest running the above commands for the packages where the checksum is different
+
+```bash
+cd ios
+bundle exec pod update [package]
+```
