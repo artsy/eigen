@@ -48,32 +48,6 @@ describe("EditSavedSearchAlert", () => {
     ])
   })
 
-  it("should navigate go back if the update mutation is successful", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        SearchCriteria: () => searchCriteria,
-      })
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        FilterArtworksConnection: () => filterArtworks,
-        Viewer: () => viewerMocked,
-      })
-
-      resolveMostRecentRelayOperation(mockEnvironment)
-    })
-
-    fireEvent.press(screen.getByTestId("save-alert-button"))
-
-    await waitFor(() => {
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        PreviewSavedSearch: () => ({ displayName: "Banana" }),
-      })
-    })
-
-    expect(goBack).toHaveBeenCalled()
-  })
-
   it("should pass updated criteria to update mutation when pills are removed", async () => {
     renderWithWrappers(<TestRenderer />)
 
@@ -275,6 +249,80 @@ describe("EditSavedSearchAlert", () => {
         }
       )
     })
+
+    describe("Save Button", () => {
+      it("is disabled when the screen mounts", async () => {
+        renderWithWrappers(<TestRenderer />)
+
+        await waitFor(() => {
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            SearchCriteria: () => searchCriteria,
+          })
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            FilterArtworksConnection: () => filterArtworks,
+            Viewer: () => viewerMocked,
+          })
+
+          resolveMostRecentRelayOperation(mockEnvironment)
+        })
+
+        const saveButton = screen.getByText("Save Alert")
+        fireEvent.press(saveButton, "onPress")
+
+        expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError()
+      })
+
+      it("is enabled when the user taps on a suggested filter", async () => {
+        renderWithWrappers(<TestRenderer />)
+
+        await waitFor(() => {
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            SearchCriteria: () => searchCriteria,
+          })
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            FilterArtworksConnection: () => filterArtworks,
+            Viewer: () => viewerMocked,
+          })
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            PreviewSavedSearch: () => ({
+              suggestedFilters: mockSuggestedFilters,
+            }),
+          })
+        })
+
+        fireEvent.press(screen.getByText("Painting"), "onPress")
+
+        await flushPromiseQueue()
+
+        const saveButton = screen.getByText("Save Alert")
+
+        fireEvent.press(saveButton, "onPress")
+
+        await flushPromiseQueue()
+
+        expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
+          "getSavedSearchIdByCriteriaQuery"
+        )
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => ({
+            internalID: null,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(mockEnvironment.mock.getMostRecentOperation().fragment.node.name).toBe(
+          "updateSavedSearchAlertMutation"
+        )
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          SearchCriteria: () => searchCriteria,
+        })
+
+        await flushPromiseQueue()
+
+        expect(goBack).toHaveBeenCalled()
+      })
+    })
   })
 })
 
@@ -329,3 +377,12 @@ const filterArtworks = {
 const viewerMocked = {
   notificationPreferences: [],
 }
+
+const mockSuggestedFilters = [
+  {
+    displayValue: "Painting",
+    field: "additionalGeneIDs",
+    name: "Medium",
+    value: "painting",
+  },
+]

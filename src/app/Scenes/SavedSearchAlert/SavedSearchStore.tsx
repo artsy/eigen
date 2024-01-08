@@ -67,6 +67,7 @@ export const savedSearchModel: SavedSearchModel = {
       state.attributes[payload.key] = payload.value === "*-*" ? null : payload.value
     } else {
       state.attributes[payload.key] = payload.value as unknown as null | undefined
+      state.dirty = true
     }
   }),
 
@@ -91,6 +92,7 @@ export const savedSearchModel: SavedSearchModel = {
 
   setAttributeAction: action((state, payload) => {
     state.attributes[payload.key] = payload.value
+    state.dirty = true
   }),
 
   setUnitAction: action((state, payload) => {

@@ -82,13 +82,6 @@ export const Form: React.FC<FormProps> = ({
     isSaveAlertButtonDisabled = true
   }
 
-  // If the saved search alert doesn't have a name, a user can click the save button without any changes.
-  // This situation is possible if a user created an alert in Saved Search V1,
-  // since we didn't have the opportunity to specify custom name for the alert
-  if (isEditMode && !dirty && values.name.length === 0) {
-    isSaveAlertButtonDisabled = false
-  }
-
   // Enable "Save Alert" button if the user has removed the filters or changed data
   if (hasChangedFilters || dirty) {
     isSaveAlertButtonDisabled = false
