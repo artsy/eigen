@@ -1,4 +1,13 @@
-import { Box, Flex, Spinner, Text, quoteLeft, quoteRight, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Spacer,
+  Spinner,
+  Text,
+  quoteLeft,
+  quoteRight,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
@@ -70,7 +79,9 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
           <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
-        ) : null
+        ) : (
+          <Spacer y={6} />
+        )
       }
       ListEmptyComponent={
         <Box pt={4}>
@@ -98,6 +109,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
             mt={2}
           >
             <ArtworkGridItem
+              hideSaveIcon
               itemIndex={index}
               contextScreenQuery={keyword}
               artwork={item}
