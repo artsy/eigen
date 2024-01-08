@@ -249,6 +249,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
   },
+  AREnableAlertsFiltersArtistSeriesFiltering: {
+    description: 'Enable artist series selection on "More Filters" screen',
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
+  },
 }
 
 export interface DevToggleDescriptor {

@@ -1,4 +1,12 @@
-import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Separator,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { SavedSearchFilterPriceRangeQuery } from "__generated__/SavedSearchFilterPriceRangeQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PriceRangeContainer } from "app/Components/PriceRange/PriceRangeContainer"
@@ -55,6 +63,7 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 
   return (
     <Flex>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight="bold" px={2}>
         Price Range
       </Text>

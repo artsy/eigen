@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import {
   COLORS_INDEXED_BY_VALUE,
   COLOR_OPTIONS,
@@ -36,6 +36,7 @@ export const SavedSearchFilterColor = () => {
 
   return (
     <Flex>
+      <Separator my={2} borderColor="black10" />
       <Text px={2} variant="sm" fontWeight="bold">
         Color
       </Text>

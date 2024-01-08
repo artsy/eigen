@@ -1,4 +1,4 @@
-import { Flex, RadioButton, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, RadioButton, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { CustomSizeInputs } from "app/Components/ArtworkFilter/Filters/CustomSizeInputs"
 import {
   UNIT_METRICS,
@@ -85,6 +85,7 @@ export const SavedSearchFilterSize = () => {
 
   return (
     <Flex px={2}>
+      <Separator my={2} borderColor="black10" />
       <Text variant="sm" fontWeight={500}>
         Size
       </Text>

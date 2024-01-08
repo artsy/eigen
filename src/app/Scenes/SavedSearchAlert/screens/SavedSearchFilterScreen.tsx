@@ -1,19 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  Button,
-  Flex,
-  Join,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
+import { SavedSearchFilterArtistSeriesQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterArtistSeries"
 import { SavedSearchFilterColor } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterColor"
 import { SavedSearchFilterPriceRangeQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterPriceRange"
 import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterRarity"
@@ -30,6 +22,9 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const { bottom } = useScreenDimensions().safeAreaInsets
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
+  const enableAlertsFiltersArtistSeriesFiltering = useFeatureFlag(
+    "AREnableAlertsFiltersArtistSeriesFiltering"
+  )
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -46,17 +41,14 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         Filters
       </FancyModalHeader>
       <ScrollView>
-        <Join separator={<Separator my={2} borderColor="black10" />}>
-          <SavedSearchFilterAppliedFilters />
-          <SavedSearchFilterAdditionalGeneIDs />
-          <SavedSearchFilterRarity />
-          <SavedSearchFilterPriceRangeQR />
-          {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
-
-          <SavedSearchFilterWaysToBuy />
-          <SavedSearchFilterColor />
-        </Join>
-
+        <SavedSearchFilterAppliedFilters />
+        <SavedSearchFilterAdditionalGeneIDs />
+        <SavedSearchFilterRarity />
+        <SavedSearchFilterPriceRangeQR />
+        {!!enableAlertsFiltersArtistSeriesFiltering && <SavedSearchFilterArtistSeriesQR />}
+        {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
+        <SavedSearchFilterWaysToBuy />
+        <SavedSearchFilterColor />
         <Spacer y={2} />
       </ScrollView>
 
