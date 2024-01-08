@@ -19,12 +19,12 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
   }
 
   return (
-    <Box>
-      <TouchableHighlightColor
-        haptic
-        onPress={handlePress}
-        render={({ color }) => (
-          <ProgressiveOnboardingSaveAlert>
+    <Flex>
+      <ProgressiveOnboardingSaveAlert>
+        <TouchableHighlightColor
+          haptic
+          onPress={handlePress}
+          render={({ color }) => (
             <Flex flexDirection="row" alignItems="center">
               <Box backgroundColor="white">
                 <BellIcon fill={color} width="16px" height="16px" />
@@ -33,10 +33,10 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
                 Create Alert
               </Text>
             </Flex>
-          </ProgressiveOnboardingSaveAlert>
-        )}
-      />
-    </Box>
+          )}
+        />
+      </ProgressiveOnboardingSaveAlert>
+    </Flex>
   )
 }
 
