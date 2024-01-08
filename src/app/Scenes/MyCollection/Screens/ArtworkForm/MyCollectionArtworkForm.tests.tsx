@@ -159,7 +159,7 @@ describe("MyCollectionArtworkForm", () => {
 
         // debugger
 
-        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[1]
+        const myCollectionArtworkFormDeleteArtworkModalQuery = mockOperations[0]
         expect(myCollectionArtworkFormDeleteArtworkModalQuery.request.variables)
           .toMatchInlineSnapshot(`
           {
@@ -167,7 +167,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const updatePreferencesOperation = mockOperations[2]
+        const updatePreferencesOperation = mockOperations[1]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
@@ -177,7 +177,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        const createArtworkOperation = mockOperations[3]
+        const createArtworkOperation = mockOperations[2]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
