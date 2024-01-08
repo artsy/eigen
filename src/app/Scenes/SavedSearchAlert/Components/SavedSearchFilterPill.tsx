@@ -11,7 +11,7 @@ export const SavedSearchFilterPill: React.FC<PillProps> = (props) => {
         props.onPress?.()
       }
     },
-    200,
+    __TEST__ ? 0 : 200,
     [selected]
   )
 

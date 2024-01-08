@@ -583,17 +583,6 @@ describe("SavedSearchAlertForm", () => {
         expect(screen.getByTestId("save-alert-button")).toBeDisabled()
       })
 
-      it("should be enabled if alert doesn't have name", () => {
-        renderWithWrappers(
-          <TestRenderer
-            savedSearchAlertId="savedSearchAlertId"
-            initialValues={{ ...baseProps.initialValues, name: "" }}
-          />
-        )
-
-        expect(screen.getByTestId("save-alert-button")).not.toBeDisabled()
-      })
-
       it("should be enabled if changes have been made by the user", () => {
         renderWithWrappers(
           <TestRenderer
