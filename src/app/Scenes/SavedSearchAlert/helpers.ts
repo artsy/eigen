@@ -116,7 +116,7 @@ export const showWarningMessageForDuplicateAlert = ({
 }) => {
   Alert.alert(
     "Duplicate Alert",
-    "You already have a saved alert with these filters. Do you want to replace it?",
+    "You already have an alert with these filters. Do you want to replace it?",
     [
       {
         onPress: onReplacePress,
