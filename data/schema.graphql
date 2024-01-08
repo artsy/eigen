@@ -267,24 +267,45 @@ type Agreement {
 }
 
 type Alert {
+  acquireable: Boolean
+  additionalGeneIDs: [String]
   additionalGeneNames: [String]
+  artistIDs: [String]
   artists: [Artist!]!
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
+  artistSeriesIDs: [String]
+  atAuction: Boolean
   attributionClass: [String]
+  colors: [String]
+  dimensionRange: String
   formattedPriceRange: String
+  forSale: Boolean
   hasRecentlyEnabledUserSearchCriteria: Boolean
+  height: String
+  href: String
 
   # A globally unique ID.
   id: ID!
+  inquireableOnly: Boolean
 
   # A type-specific ID.
   internalID: ID!
+  keyword: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel]!
+  locationCities: [String]
+  majorPeriods: [String]
   materialsTerms: [String]
+  offerable: Boolean
+  partnerIDs: [String]
+  priceArray: [Int]
   priceRange: String
+  settings: AlertSettings
+  sizes: [String]
   summary: JSON
   totalUserSearchCriteriaCount: Int
+  width: String
 }
 
 # A connection to a list of items.
@@ -317,6 +338,19 @@ type AlertNotificationItem {
 
 type AlertsCounts {
   totalUserSearchCriteriaCount: Int
+}
+
+type AlertSettings {
+  details: String
+  email: Boolean
+  frequency: AlertSettingsFrequency
+  name: String
+  push: Boolean
+}
+
+enum AlertSettingsFrequency {
+  DAILY
+  INSTANT
 }
 
 input AlertSource {
@@ -11604,6 +11638,8 @@ type MatchEdge {
 
 type Me implements Node {
   addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
+  alert(id: String!): Alert
+  alertsConnection(after: String, before: String, first: Int, last: Int): AlertConnection!
 
   # A connection of artist recommendations for the current user.
   artistRecommendations(
