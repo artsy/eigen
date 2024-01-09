@@ -45,7 +45,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   const sections = notifications.map((notification) => ({
     key: notification.internalID,
-    content: <ActivityItem item={notification} />,
+    content: <ActivityItem notification={notification} />,
   }))
 
   const handleLoadMore = () => {
@@ -136,7 +136,7 @@ const notificationsConnectionFragment = graphql`
           artworks: artworksConnection {
             totalCount
           }
-          ...ActivityItem_item
+          ...ActivityItem_notification
         }
       }
     }
