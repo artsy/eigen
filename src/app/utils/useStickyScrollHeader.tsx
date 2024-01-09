@@ -11,11 +11,13 @@ export const useStickyScrollHeader = ({
   headerText,
   fadeInStart = DEFAULT_FADE_IN_START,
   fadeInEnd,
+  top,
 }: {
   header?: JSX.Element
   headerText?: string
   fadeInStart?: number
   fadeInEnd?: number
+  top?: number
 }) => {
   const scrollAnim = new Animated.Value(0)
   const snapAnim = new Animated.Value(0)
@@ -52,7 +54,7 @@ export const useStickyScrollHeader = ({
         }
         style={{
           position: "absolute",
-          top: 0,
+          top: top ?? 0,
           width: "100%",
           opacity: Animated.add(scrollAnim, snapAnim).interpolate({
             inputRange: [fadeInStart, calculatedFadeInEnd],

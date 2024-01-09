@@ -51,7 +51,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-      <Flex py={2} flexDirection="row" alignItems="center">
+      <Flex py={2} flexDirection="row" alignItems="center" px={2}>
         <Flex flex={1}>
           <Flex flexDirection="row">
             <ActivityItemTypeLabel notificationType={item.notificationType} />

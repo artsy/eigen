@@ -255,6 +255,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
   },
+  ARShowPartnerOffersInActivity: {
+    description: "Show partner offers in activity screen",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowPartnerOffersInActivity",
+  },
 }
 
 export interface DevToggleDescriptor {
