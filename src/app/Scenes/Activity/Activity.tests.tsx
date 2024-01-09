@@ -39,8 +39,8 @@ describe("Activity", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.queryByText("Notification One")).toBeTruthy()
-    expect(screen.queryByText("Notification Two")).toBeTruthy()
+    expect(screen.getByText("Notification One")).toBeTruthy()
+    expect(screen.getByText("Notification Two")).toBeTruthy()
   })
 
   it("renders tabs", async () => {
@@ -75,8 +75,8 @@ describe("Activity", () => {
     })
     await flushPromiseQueue()
 
-    expect(screen.queryByText("Notification One")).toBeTruthy()
-    expect(screen.queryByText("Notification Two")).toBeTruthy()
+    expect(screen.getByText("Notification One")).toBeTruthy()
+    expect(screen.getByText("Notification Two")).toBeTruthy()
   })
 
   it("should hide artworks based notifications that don't have artworks", async () => {
@@ -100,15 +100,15 @@ describe("Activity", () => {
     })
     await flushPromiseQueue()
 
-    expect(screen.queryByText("Notification One")).toBeTruthy()
-    expect(screen.queryByText("Notification Two")).toBeTruthy()
+    expect(screen.getByText("Notification One")).toBeTruthy()
+    expect(screen.getByText("Notification Two")).toBeTruthy()
     expect(screen.queryByText("Notification Three")).toBeNull()
   })
 
   it("should track event when the tab is tapped", () => {
-    const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+    renderWithHookWrappersTL(<Activity />, mockEnvironment)
 
-    fireEvent.press(getByText("Alerts"))
+    fireEvent.press(screen.getByText("Alerts"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
