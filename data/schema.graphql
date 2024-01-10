@@ -278,6 +278,9 @@ type Alert {
   attributionClass: [String]
   colors: [String]
   dimensionRange: String
+
+  # A suggestion for a name that describes a set of saved search criteria in a conventional format
+  displayName: String!
   formattedPriceRange: String
   forSale: Boolean
   hasRecentlyEnabledUserSearchCriteria: Boolean
