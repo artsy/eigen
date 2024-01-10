@@ -113,7 +113,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
   }
 
-  const savedToDefaultArtworkList = (artwork: ArtworkEntity) => {
+  const openSelectArtworkListsForArtworkView = (artwork: ArtworkEntity) => {
     dispatch({
       type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
       payload: {
@@ -150,7 +150,9 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.SavedToDefaultArtworkList) {
-      savedToDefaultArtworkList(result.artwork)
+      toast.savedToDefaultArtworkList({
+        onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork),
+      })
       return
     }
 
