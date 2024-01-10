@@ -77,8 +77,8 @@ describe("ArtworkActions", () => {
       Artwork: () => artworkActionsArtwork,
     })
 
-    expect(screen.queryByText("View in Room")).toBeTruthy()
-    expect(screen.queryByText("Share")).toBeTruthy()
+    expect(screen.getByText("View in Room")).toBeOnTheScreen()
+    expect(screen.getByText("Share")).toBeOnTheScreen()
   })
 
   it("does not show the View in Room option if the artwork is not hangable", () => {
@@ -90,8 +90,8 @@ describe("ArtworkActions", () => {
       Artwork: () => artworkActionsArtworkNotHangable,
     })
 
-    expect(screen.queryByText("Share")).toBeTruthy()
-    expect(screen.queryByText("View in Room")).toBeFalsy()
+    expect(screen.getByText("Share")).toBeOnTheScreen()
+    expect(screen.queryByText("View in Room")).not.toBeOnTheScreen()
   })
 
   it("should display 'Save' button", () => {
@@ -99,27 +99,24 @@ describe("ArtworkActions", () => {
       Artwork: () => artworkActionsArtwork,
     })
 
-    expect(screen.queryByText("Save")).toBeTruthy()
-    expect(screen.queryByText("Saved")).toBeFalsy()
+    expect(screen.getByText("Save")).toBeOnTheScreen()
+    expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
   })
 
   it("should display 'Watch lot' button if work is in an open auction", () => {
     const artworkActionsArtworkInAuction = {
       ...artworkActionsArtwork,
-      sale: {
-        isAuction: true,
-        isClosed: false,
-      },
+      sale: { isAuction: true, isClosed: false },
     }
 
     renderWithRelay({
       Artwork: () => artworkActionsArtworkInAuction,
     })
 
-    expect(screen.queryByText("Save")).toBeFalsy()
-    expect(screen.queryByText("Saved")).toBeFalsy()
-    expect(screen.queryByText("Watch lot")).toBeTruthy()
-    expect(screen.queryByLabelText("watch lot icon")).toBeTruthy()
+    expect(screen.queryByText("Save")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Saved")).not.toBeOnTheScreen()
+    expect(screen.getByText("Watch lot")).toBeOnTheScreen()
+    expect(screen.getByLabelText("watch lot icon")).toBeOnTheScreen()
   })
 
   describe("without AR enabled", () => {
@@ -130,7 +127,7 @@ describe("ArtworkActions", () => {
         Artwork: () => artworkActionsArtwork,
       })
 
-      expect(screen.queryByText("Share")).toBeTruthy()
+      expect(screen.getByText("Share")).toBeOnTheScreen()
     })
   })
 
@@ -143,12 +140,12 @@ describe("ArtworkActions", () => {
         }),
       })
 
-      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+      expect(screen.getByLabelText("Save artwork")).toBeOnTheScreen()
 
       fireEvent.press(screen.getByLabelText("Save artwork"))
 
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "SelectArtworkListsForArtworkQuery"
+        "useSaveArtworkMutation"
       )
     })
   })
