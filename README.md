@@ -4,7 +4,7 @@
 
 - **State:** Production
 - **[Point People][point_people]:** [Brian Beckerle][brian_github_profile], [Mounir Dhahri][mounir_github_profile], [George Kartalis][george_github_profile]
-- **CI :** [![Build Status][circle_ci]
+- **CI :** [CircleCi][circle_ci]
 
 ### Intro
 
@@ -70,8 +70,7 @@ our [job postings][footer_jobs]!
 [brian_github_profile]: https://github.com/brainbicycle
 [mounir_github_profile]: https://github.com/MounirDhahri
 [george_github_profile]: https://github.com/gkartalis
-
-[circle_ci]: https://circleci.com/gh/artsy/eigen.svg?style=shield)](https://circleci.com/gh/artsy/eigen
+[circle_ci]: https://circleci.com/gh/artsy/eigen
 [overview]: https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell
 [team_culture]: https://www.objc.io/issues/22-scale/artsy
 [artsy_github]: https://github.com/artsy
@@ -87,6 +86,6 @@ our [job postings][footer_jobs]!
 [getting_started]: docs/getting_started.md
 [best_practices]: docs/best_practices.md
 [docs_readme]: docs#readme
-[deploying_a_betea]: docs/deploy_to_beta.md
+[deploying_a_beta]: docs/deploy_to_beta.md
 [deploying_to_the_app_store]: docs/deploy_to_app_store.md
 [thanks]: /docs/thanks.md
