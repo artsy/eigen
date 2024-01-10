@@ -16,6 +16,7 @@ export interface ToastDetails {
 
   placement: ToastPlacement
   message: string
+  description?: string | null
 
   /* Display CTA for toasts with top or bottom placement */
   cta?: string
@@ -30,5 +31,12 @@ export interface ToastDetails {
 
 export type ToastOptions = Pick<
   ToastDetails,
-  "onPress" | "Icon" | "backgroundColor" | "duration" | "cta" | "imageURL" | "bottomPadding"
+  | "description"
+  | "onPress"
+  | "Icon"
+  | "backgroundColor"
+  | "duration"
+  | "cta"
+  | "imageURL"
+  | "bottomPadding"
 >

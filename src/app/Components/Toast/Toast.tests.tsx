@@ -1,17 +1,20 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
-import { ToastComponent, TOAST_DURATION_MAP } from "./ToastComponent"
+import { TOAST_DURATION_MAP } from "./ToastComponent"
 import { useToast } from "./toastHook"
-import { ToastOptions } from "./types"
+import { ToastOptions, ToastPlacement } from "./types"
 
-const TestRenderer: React.FC<{ toastOptions?: ToastOptions }> = ({ toastOptions }) => {
+const TestRenderer: React.FC<{ toastOptions?: ToastOptions; placement?: ToastPlacement }> = ({
+  toastOptions,
+  placement = "middle",
+}) => {
   const toast = useToast()
 
   return (
     <Touchable
-      onPress={() => toast.show("Consider yourself toasted!", "middle", { ...toastOptions })}
+      onPress={() => toast.show("Consider yourself toasted!", placement, { ...toastOptions })}
     >
       <Text>Some button text</Text>
     </Touchable>
@@ -29,45 +32,55 @@ describe("Toast", () => {
   })
 
   it("renders a toast when show toast is called", async () => {
-    const { UNSAFE_queryAllByType, UNSAFE_getByType } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).toHaveLength(0)
+    expect(screen.queryByText("Consider yourself toasted!")).not.toBeOnTheScreen()
 
-    const button = UNSAFE_getByType(Touchable)
+    const button = screen.getByText("Some button text")
     fireEvent.press(button)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).toHaveLength(1)
+    expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
+  })
+
+  it("renders a toast with the description when provided", async () => {
+    renderWithWrappers(
+      <TestRenderer placement="bottom" toastOptions={{ description: "TOASTED!" }} />
+    )
+    expect(screen.queryByText("Consider yourself toasted!")).not.toBeOnTheScreen()
+
+    const button = screen.getByText("Some button text")
+    fireEvent.press(button)
+
+    expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
+    expect(screen.getByText("TOASTED!")).toBeOnTheScreen()
   })
 
   it("Does not clear Toast before duration is reached", () => {
     const duration = "short"
-    const { UNSAFE_queryAllByType, UNSAFE_getByType } = renderWithWrappers(
-      <TestRenderer toastOptions={{ duration }} />
-    )
+    renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
 
-    const button = UNSAFE_getByType(Touchable)
+    const button = screen.getByText("Some button text")
     fireEvent.press(button)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).toHaveLength(1)
+    expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
     jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] - 1000)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).not.toHaveLength(0)
+    // expects the toast to still be on the screen
+    expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
   })
 
-  fit("Clears Toast when the duration is reached", () => {
+  it("Clears Toast when the duration is reached", () => {
     const duration = "short"
-    const { UNSAFE_queryAllByType, UNSAFE_getByType } = renderWithWrappers(
-      <TestRenderer toastOptions={{ duration }} />
-    )
+    renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
 
-    const button = UNSAFE_getByType(Touchable)
+    const button = screen.getByText("Some button text")
     fireEvent.press(button)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).toHaveLength(1)
+    expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
 
     const ANIMATION_DURATION = 500
     jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] + ANIMATION_DURATION)
 
-    expect(UNSAFE_queryAllByType(ToastComponent)).toHaveLength(0)
+    expect(screen.queryByText("Consider yourself toasted!")).not.toBeOnTheScreen()
   })
 })
