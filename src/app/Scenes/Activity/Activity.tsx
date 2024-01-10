@@ -78,12 +78,16 @@ export const Activity = () => {
                     useModal: true,
                   },
                   (buttonIndex) => {
-                    if (buttonIndex === 0) {
-                      markAllNotificationsAsRead()
-                    } else if (buttonIndex === 1) {
-                      navigate("settings/alerts")
-                    } else if (buttonIndex === 2) {
-                      navigate("favorites")
+                    switch (buttonIndex) {
+                      case 0:
+                        markAllNotificationsAsRead()
+                        break
+                      case 1:
+                        navigate("settings/alerts")
+                        break
+                      case 2:
+                        navigate("favorites")
+                        break
                     }
                   }
                 )
