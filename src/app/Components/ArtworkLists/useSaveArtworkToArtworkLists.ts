@@ -21,7 +21,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const artworkEntity: ArtworkEntity = {
     id: artwork.id,
     internalID: artwork.internalID,
-    title: artwork.title!,
+    title: artwork.title || "",
     year: artwork.date,
     artistNames: artwork.artistNames,
     imageURL: artwork.preview?.url ?? null,

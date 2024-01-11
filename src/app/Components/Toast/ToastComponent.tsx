@@ -27,6 +27,7 @@ export const ToastComponent = ({
   positionIndex,
   placement,
   message,
+  description,
   onPress,
   Icon,
   backgroundColor = "black100",
@@ -101,25 +102,35 @@ export const ToastComponent = ({
   }
 
   const innerTopBottom = (
-    <Flex flex={1} flexDirection="row" alignItems="center" mx={1}>
-      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
+    <Flex flex={1} justifyContent="center" m={1}>
+      <Flex flexDirection="row" alignItems="flex-start">
+        {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
 
-      {!!imageURL && (
-        <Box borderWidth={1} borderColor="white100" mr={1}>
-          <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
-        </Box>
-      )}
+        {!!imageURL && (
+          <Box borderWidth={1} borderColor="white100" mr={1}>
+            <OpaqueImageView imageURL={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
+          </Box>
+        )}
 
-      <Flex flex={1}>
-        <Text variant="sm-display" color="white100">
-          {message}
-        </Text>
+        <Flex flex={1}>
+          <Text variant="sm-display" color="white100">
+            {message}
+          </Text>
+        </Flex>
+
+        {!!cta && (
+          <Text variant="xs" color="white100" ml={1} underline>
+            {cta}
+          </Text>
+        )}
       </Flex>
 
-      {!!cta && (
-        <Text variant="sm-display" color="white100" ml={1} underline>
-          {cta}
-        </Text>
+      {!!description && (
+        <Flex flex={1} mt={0.5}>
+          <Text variant="xs" color="white100">
+            {description}
+          </Text>
+        </Flex>
       )}
     </Flex>
   )
@@ -129,7 +140,7 @@ export const ToastComponent = ({
       position="absolute"
       left="1"
       right="1"
-      height={EDGE_TOAST_HEIGHT}
+      minHeight={EDGE_TOAST_HEIGHT}
       bottom={
         placement === "bottom"
           ? bottomSafeAreaInset +
@@ -152,11 +163,7 @@ export const ToastComponent = ({
       zIndex={999}
     >
       {onPress !== undefined ? (
-        <Touchable
-          style={{ flex: 1 }}
-          onPress={() => onPress({ id, showActionSheetWithOptions })}
-          underlayColor={color("black60")}
-        >
+        <Touchable style={{ flex: 1 }} onPress={() => onPress({ id, showActionSheetWithOptions })}>
           {innerTopBottom}
         </Touchable>
       ) : (

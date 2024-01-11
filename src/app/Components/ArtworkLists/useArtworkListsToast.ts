@@ -2,6 +2,7 @@ import { ArtworkEntity, ArtworkListEntity } from "app/Components/ArtworkLists/ty
 import { useToast } from "app/Components/Toast/toastHook"
 import { ToastOptions, ToastPlacement } from "app/Components/Toast/types"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "bottom"
 
@@ -9,7 +10,7 @@ interface Options {
   artwork: ArtworkEntity
 }
 
-type SavedToDefaultArtworkListOptions = Options & {
+type SavedToDefaultArtworkListOptions = {
   onToastPress: () => void
 }
 
@@ -23,6 +24,7 @@ type SingleArtworkListOptions = Options & {
 
 export const useArtworkListToast = (bottomPadding?: number | null) => {
   const toast = useToast()
+  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const showToast = (message: string, options?: Omit<ToastOptions, "bottomPadding">) => {
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
@@ -36,6 +38,10 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     showToast("Artwork saved", {
       cta: "Add to a List",
       onPress: onToastPress,
+      backgroundColor: "green100",
+      description: isPartnerOfferEnabled
+        ? "You can view all your saved artworks in this list."
+        : null,
     })
   }
 
@@ -44,7 +50,9 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
   }
 
   const changesSaved = () => {
-    showToast("Changes saved")
+    showToast("Changes saved", {
+      backgroundColor: "green100",
+    })
   }
 
   const addedToSingleArtworkList = (options: SingleArtworkListOptions) => {
@@ -56,6 +64,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
       onPress: () => {
         navigate(`/artwork-list/${artworkList.internalID}`)
       },
+      backgroundColor: "green100",
     })
   }
 
@@ -68,6 +77,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
       onPress: () => {
         navigate("/artwork-lists")
       },
+      backgroundColor: "green100",
     })
   }
 
