@@ -3,40 +3,40 @@
 ### Meta
 
 - **State:** Production
-- **[Point People](https://www.notion.so/artsy/17c4b550458a4cb8bcbf1b68060d63e6?v=3604e2682d024b64bde705abb2facebd):** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [George Kartalis](https://github.com/gkartalis)
-- **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen.svg?style=shield)](https://circleci.com/gh/artsy/eigen)
+- **[Point People][point_people]:** [Brian Beckerle][brian_github_profile], [Mounir Dhahri][mounir_github_profile], [George Kartalis][george_github_profile]
+- **CI :** [CircleCi][circle_ci]
 
 ### Intro
 
 Don't know what Artsy is?
-Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
+Check out [this overview][overview] or read our objc.io on [team culture][team_culture].
 
-[Artsy](https://github.com/artsy) is an Open Source project. Feel free to check the [Artsy readme](https://github.com/artsy/README) for an overview as well as [Practices](https://github.com/artsy/README/tree/main/practices) and [Playbooks](https://github.com/artsy/README/tree/main/playbooks).
+[Artsy][artsy_github] is an Open Source project. Feel free to check the [Artsy readme][artsy_readme] for an overview as well as [Practices][artsy_practices] and [Playbooks][artsy_playbooks].
 
 Eigen is Artsy's mobile app repository.
 
-Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/categories/mobile/) blog posts, or [eigen's](http://artsy.github.io/blog/categories/eigen/) specifically.
+Want to know more about Eigen? Read the [mobile][artsy_blog_mobile_posts] blog posts, or [eigen's][artsy_blog_eigen_posts] specifically.
 
-Other mobile projects are [Energy](https://github.com/artsy/energy), with the retired [Eidolon](https://github.com/artsy/eidolon), [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
+Other mobile projects are [Energy][energy], with the retired [Eidolon][eidolon], [Emission][emission] and [Emergence][emergence].
 
 ### Getting Started
 
-- Get set up [here](docs/getting_started.md).
+- Get set up [here][getting_started].
 
-- Read about our [best practices](docs/best_practices.md).
+- Read about our [best practices][best_practices].
 
-- Further documentation can be found in the [documentation folder](docs#readme).
+- Further documentation can be found in the [documentation folder][docs_readme].
 
 ### Deployment
 
 For how we deploy, check out the dedicated documentation:
 
-- [Deploying a beta](docs/deploy_to_beta.md)
-- [Deploying to the App Store](docs/deploy_to_app_store.md)
+- [Deploying a beta][deploying_a_beta]
+- [Deploying to the App Store][deploying_to_the_app_store]
 
 ### Thanks
 
-Thanks to all [our contributors](/docs/thanks.md).
+Thanks to all [our contributors][thanks].
 
 ## License
 
@@ -66,3 +66,26 @@ our [job postings][footer_jobs]!
 [footer_twitter]: https://twitter.com/ArtsyOpenSource
 [footer_api]: https://developers.artsy.net/
 [footer_jobs]: https://www.artsy.net/jobs
+[point_people]: https://www.notion.so/artsy/17c4b550458a4cb8bcbf1b68060d63e6?v=3604e2682d024b64bde705abb2facebd
+[brian_github_profile]: https://github.com/brainbicycle
+[mounir_github_profile]: https://github.com/MounirDhahri
+[george_github_profile]: https://github.com/gkartalis
+[circle_ci]: https://circleci.com/gh/artsy/eigen
+[overview]: https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell
+[team_culture]: https://www.objc.io/issues/22-scale/artsy
+[artsy_github]: https://github.com/artsy
+[artsy_readme]: https://github.com/artsy/README
+[artsy_practices]: https://github.com/artsy/README/tree/main/practices
+[artsy_playbooks]: https://github.com/artsy/README/tree/main/playbooks
+[artsy_blog_mobile_posts]: http://artsy.github.io/blog/categories/mobile/
+[artsy_blog_eigen_posts]: http://artsy.github.io/blog/categories/eigen/
+[energy]: https://github.com/artsy/energy
+[eidolon]: https://github.com/artsy/eidolon
+[emergence]: https://github.com/artsy/emergence
+[emission]: https://github.com/artsy/emission
+[getting_started]: docs/getting_started.md
+[best_practices]: docs/best_practices.md
+[docs_readme]: docs#readme
+[deploying_a_beta]: docs/deploy_to_beta.md
+[deploying_to_the_app_store]: docs/deploy_to_app_store.md
+[thanks]: /docs/thanks.md
