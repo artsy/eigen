@@ -17,11 +17,13 @@ import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { MotiPressable } from "moti/interactions"
+import { useEffect } from "react"
 import { LayoutAnimation } from "react-native"
 import { isTablet } from "react-native-device-info"
 
@@ -48,6 +50,8 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   version: versionProp,
 }) => {
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
+  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
+
   const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
   const space = useSpace()
 
@@ -63,16 +67,19 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 
   const setNewWorksForYouViewOption = GlobalStore.actions.userPrefs.setNewWorksForYouViewOption
 
-  if (
-    // The feed is not optimised for tablets yet.
+  useEffect(() => {
+    experiment.trackExperiment({
+      context_owner_type: OwnerType.newWorksForYou,
+    })
+  }, [])
+
+  const showFeed =
     !isTablet() &&
-    // Release only when ready for release!
     enableNewWorksForYouFeed &&
-    // Release only when the experiment is enabled.
     experiment.enabled &&
-    // Show only if the experiment payload is "gridAndList".
-    experiment.payload !== "gridOnly"
-  ) {
+    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
+
+  if (showFeed) {
     return (
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}

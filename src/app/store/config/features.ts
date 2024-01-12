@@ -322,6 +322,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTEnableNewImageLabel: {
     description: "Show a label on new OpaqueImageView",
   },
+  DTForceShowNewWorksForYouScreenFeed: {
+    description: "Force show new works for you feed",
+  },
 }
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
