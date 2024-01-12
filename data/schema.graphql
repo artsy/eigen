@@ -2461,6 +2461,15 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): Partner
+  partnerOffersConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    sort: PartnerOfferSorts
+  ): PartnerOfferConnection
   pickupAvailable: Boolean
   price: String
   priceCurrency: String
@@ -14261,6 +14270,17 @@ type PartnerOffer {
   userIds: [String]
 }
 
+# A connection to a list of items.
+type PartnerOfferConnection {
+  # A list of edges.
+  edges: [PartnerOfferEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
 type PartnerOfferCreatedNotificationItem {
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
   expiresAt(
@@ -14271,6 +14291,22 @@ type PartnerOfferCreatedNotificationItem {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+}
+
+# An edge in a connection.
+type PartnerOfferEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerOffer
+}
+
+enum PartnerOfferSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  END_AT_ASC
+  END_AT_DESC
 }
 
 enum PartnersAggregation {
