@@ -36,7 +36,10 @@ describe(PartnerOfferContainer, () => {
         expect(mockCommit).toHaveBeenCalledWith(
           expect.objectContaining({ variables: { input: { partnerOfferId: "1234" } } })
         )
-        expect(navigate).toHaveBeenCalledWith("/artwork/1234", { replaceActiveScreen: true })
+        expect(navigate).toHaveBeenCalledWith("/artwork/1234", {
+          replaceActiveScreen: true,
+          passProps: { artworkOfferExpired: true },
+        })
       })
 
       it("navigates to the artwork when the error is not_acquireable", async () => {
@@ -50,7 +53,10 @@ describe(PartnerOfferContainer, () => {
         expect(mockCommit).toHaveBeenCalledWith(
           expect.objectContaining({ variables: { input: { partnerOfferId: "1234" } } })
         )
-        expect(navigate).toHaveBeenCalledWith("/artwork/1234", { replaceActiveScreen: true })
+        expect(navigate).toHaveBeenCalledWith("/artwork/1234", {
+          replaceActiveScreen: true,
+          passProps: { artworkOfferUnavailable: true },
+        })
       })
     })
 
