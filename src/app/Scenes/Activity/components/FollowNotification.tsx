@@ -11,8 +11,8 @@ import {
 import { FollowNotificationFollowArtistMutation } from "__generated__/FollowNotificationFollowArtistMutation.graphql"
 import { FollowNotification_notification$key } from "__generated__/FollowNotification_notification.graphql"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
+import { getNotificationtitle } from "app/Scenes/Activity/utils/getNotificationTitle"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { pluralize } from "app/utils/pluralize"
 import { FC } from "react"
 import { ScrollView } from "react-native"
 import { useFragment, graphql, useMutation } from "react-relay"
@@ -32,10 +32,7 @@ export const FollowNotification: FC<FollowNotificationProps> = ({ notification }
   const artist = item?.artists?.[0]
 
   // TODO: Consider moving the title to Metaphysics
-  const title = `${notificationData.artworksConnection?.totalCount} New ${pluralize(
-    "Work",
-    artworksConnection?.totalCount || 0
-  )} by ${artist?.name}`
+  const title = getNotificationtitle(artworksConnection?.totalCount || 0, artist?.name)
 
   const handleFollowArtist = () => {
     if (!artist) {
