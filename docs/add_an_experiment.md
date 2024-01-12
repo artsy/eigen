@@ -64,6 +64,14 @@ You can access the variant value in a functional react component using `useExper
   )
 ```
 
+### Tracking an experiment
+
+In order to track an experiment, you can use the `trackExperiment` helper that comes from `useExperimentVariant` hook,
+
+```diff
++ const { trackExperiment } = useExperimentVariant("our-new-experiment")
+```
+
 ## Removing/Killing an Experiment
 
 Once an experiment is done, usually we have a winner variant. In order to roll out that variant for everyone targeted by it, we will need to set it as a default strategy before "killing" it.

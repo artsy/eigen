@@ -1,10 +1,7 @@
 import { ActionType, ContextModule, ExperimentViewed, OwnerType } from "@artsy/cohesion"
 import { postEventToProviders } from "app/utils/track/providers"
 
-interface TrackVariantArgs {
-  experimentName: string
-  variantName: string
-  payload?: string
+export interface ContextProps {
   context_module?: ContextModule
   context_owner_screen: OwnerType
   context_owner_id?: string
@@ -12,18 +9,14 @@ interface TrackVariantArgs {
   context_owner_type: OwnerType
 }
 
-export function reportExperimentVariant({
-  experimentName,
-  enabled,
-  variantName,
-  payload,
-  ...rest
-}: TrackVariantArgs & { enabled: boolean; storeContext?: boolean }) {
-  if (!enabled) {
-    return
-  }
+interface TrackVariantArgs extends ContextProps {
+  experimentName: string
+  variantName: string
+  payload?: string
+}
 
-  postEventToProviders(tracks.experimentVariant({ experimentName, variantName, payload, ...rest }))
+export function reportExperimentVariant(props: TrackVariantArgs) {
+  postEventToProviders(tracks.experimentVariant(props))
 }
 
 const tracks = {
