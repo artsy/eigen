@@ -1,3 +1,4 @@
+import { ContextProps, reportExperimentVariant } from "app/utils/experiments/reporter"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { useContext, useEffect, useState } from "react"
@@ -20,6 +21,7 @@ export function useExperimentVariant(name: string): {
   enabled: boolean
   variant: string
   payload?: string
+  trackExperiment: (contextProps?: ContextProps) => void
 } {
   const client = getUnleashClient()
   const [enabled, setEnabled] = useState(client.isEnabled(name))
@@ -31,10 +33,24 @@ export function useExperimentVariant(name: string): {
     setVariant(client.getVariant(name))
   }, [lastUpdate])
 
+  const trackExperiment = (contextProps?: ContextProps) => {
+    if (!enabled) {
+      return
+    }
+
+    reportExperimentVariant({
+      experimentName: name,
+      variantName: variant?.name ?? "default-variant",
+      payload: variant?.payload?.value,
+      ...(contextProps as ContextProps),
+    })
+  }
+
   return {
     enabled: enabled ?? false,
     variant: variant?.name ?? "default-variant",
     payload: variant?.payload?.value,
+    trackExperiment,
   }
 }
 

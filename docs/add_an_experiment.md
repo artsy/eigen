@@ -31,7 +31,7 @@ or if we want a variant we can use something like
 
 _The `fallback*` values are values we would like to fall back to in case something goes wrong with the client sdk_
 
-Don't forget to add some tracking on this, using `maybeReportExperimentFlag`. Look for other examples in the code.
+Don't forget to add some tracking on this, using `reportExperimentVariant`. Look for other examples in the code.
 
 ## Using an experiment
 
@@ -62,6 +62,14 @@ You can access the variant value in a functional react component using `useExper
 +    {ourNewExperiment.enabled && ourNewExperiment.variant === "varB" && <BComponent custom={ourNewExperiment.payload} />}
     <>
   )
+```
+
+### Tracking an experiment
+
+In order to track an experiment, you can use the `trackExperiment` helper that comes from `useExperimentVariant` hook,
+
+```diff
++ const { trackExperiment } = useExperimentVariant("our-new-experiment")
 ```
 
 ## Removing/Killing an Experiment
