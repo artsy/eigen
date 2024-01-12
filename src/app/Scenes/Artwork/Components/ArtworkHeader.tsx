@@ -1,6 +1,10 @@
 import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import {
+  ExpiredOfferMessage,
+  UnavailableOfferMessage,
+} from "app/Scenes/Artwork/Components/ArtworkMessages"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Schema } from "app/utils/track"
@@ -19,6 +23,8 @@ import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork$data
   refetchArtwork: () => void
+  artworkOfferUnavailable?: boolean
+  artworkOfferExpired?: boolean
 }
 
 export enum VisibilityLevels {
@@ -30,7 +36,7 @@ export enum VisibilityLevels {
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const { artwork, refetchArtwork } = props
+  const { artwork, refetchArtwork, artworkOfferExpired, artworkOfferUnavailable } = props
   const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const debugInstagramShot = useDevToggle("DTShowInstagramShot")
@@ -47,9 +53,19 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   return (
     <>
       <Box>
-        {artwork.visibilityLevel === VisibilityLevels.UNLISTED && (
-          <Flex my={2} mx={-2}>
+        {!!(artwork.visibilityLevel === VisibilityLevels.UNLISTED) && (
+          <Flex mb={2} mx={-2}>
             <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
+          </Flex>
+        )}
+        {!!artworkOfferUnavailable && (
+          <Flex mb={1}>
+            <UnavailableOfferMessage />
+          </Flex>
+        )}
+        {!!artworkOfferExpired && (
+          <Flex mb={1}>
+            <ExpiredOfferMessage />
           </Flex>
         )}
         <Spacer y={2} />
@@ -79,8 +95,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
                 artists: artwork.artists,
                 internalID: artwork.internalID,
                 currentImageIndex,
-                title: artwork.title!,
-                href: artwork.href!,
+                title: artwork.title || "",
+                href: artwork.href || "",
                 images: imageFigures,
               })
             }}
@@ -95,11 +111,9 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       {debugInstagramShot && showInstagramShot && currentImageUrl ? (
         <Modal visible={showInstagramShot} onRequestClose={() => setShowInstagramShot(false)}>
           <InstagramStoryViewShot
-            // @ts-ignore
-            shotRef={undefined}
             href={currentImageUrl}
-            artist={artwork.artists![0]?.name!}
-            title={artwork.title!}
+            artist={artwork.artists?.[0]?.name || ""}
+            title={artwork.title || ""}
           />
           <Flex position="absolute" top={100} left={0}>
             <Button title="close instagram shot" onPress={() => setShowInstagramShot(false)} />

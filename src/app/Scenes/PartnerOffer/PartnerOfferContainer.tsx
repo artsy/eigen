@@ -14,15 +14,19 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
       const artworkId = JSON.parse(artwork?.toString() ?? "{}")?.artwork_id
 
       if (errorCode === "expired_partner_offer") {
-        // TODO: add params to show expired banner (EMI-1606)
-        navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
+        navigate(`/artwork/${artworkId}`, {
+          replaceActiveScreen: true,
+          passProps: { artworkOfferExpired: true },
+        })
 
         return
       }
 
       if (errorCode === "not_acquireable") {
-        // TODO: add params to show unavailable/sold banner (EMI-1606)
-        navigate(`/artwork/${artworkId}`, { replaceActiveScreen: true })
+        navigate(`/artwork/${artworkId}`, {
+          replaceActiveScreen: true,
+          passProps: { artworkOfferUnavailable: true },
+        })
 
         return
       }

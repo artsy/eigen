@@ -59,7 +59,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         visible={showCreateArtworkAlertModal}
       />
 
-      <Flex flexDirection="column">
+      <Flex flexDirection="column" mb={2}>
         <Text variant="lg">
           Bidding for {formattedArtistNames}{" "}
           <Text variant="lg" italic>

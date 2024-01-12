@@ -69,10 +69,21 @@ interface ArtworkProps {
   onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
   tracking?: TrackingProp
+  artworkOfferUnavailable?: boolean
+  artworkOfferExpired?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = (props) => {
-  const { artworkAboveTheFold, artworkBelowTheFold, isVisible, me, onLoad, relay } = props
+  const {
+    artworkAboveTheFold,
+    artworkBelowTheFold,
+    isVisible,
+    me,
+    onLoad,
+    relay,
+    artworkOfferUnavailable,
+    artworkOfferExpired,
+  } = props
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
@@ -238,7 +249,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
           element: <ArtworkAuctionCreateAlertHeader artwork={artworkAboveTheFold} />,
           excludeSeparator: true,
           excludeVerticalMargin: true,
-          mt: 2,
         })
       }
 
@@ -247,6 +257,8 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         element: (
           <ArtworkHeader
             artwork={artworkAboveTheFold}
+            artworkOfferUnavailable={artworkOfferUnavailable}
+            artworkOfferExpired={artworkOfferExpired}
             refetchArtwork={() =>
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }

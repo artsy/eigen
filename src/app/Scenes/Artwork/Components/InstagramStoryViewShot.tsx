@@ -19,7 +19,7 @@ const InstagramStoryBackgroundDimensions = {
 const BottomLabelHeight = 350 // in pixels, before we scale it
 
 export interface InstagramStoryViewShotProps {
-  shotRef: RefObject<ViewShot>
+  shotRef?: RefObject<ViewShot>
   href: string
   artist: string
   title?: string
