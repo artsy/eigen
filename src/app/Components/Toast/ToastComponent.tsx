@@ -67,7 +67,7 @@ export const ToastComponent = ({
     const moduleName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params // @ts-expect-error
       ?.moduleName as keyof typeof modules
 
-    const isBottomTabHidden = modules[moduleName].options.hidesBottomTabs
+    const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
 
     // We currently handle custom bottom padding only for when the bottom tab bar is hidden
     // We can change this later if we need to handle custom bottom padding for when the bottom tab bar is visible
