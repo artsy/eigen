@@ -1,6 +1,5 @@
 import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { modules } from "app/AppRegistry"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -64,6 +63,13 @@ export const ToastComponent = ({
   }, toastDuration)
 
   const toastBottomPadding = useMemo(() => {
+    // This is needed to avoid importing modules during tests
+    if (__TEST__) {
+      return TABBAR_HEIGHT
+    }
+
+    const { modules } = require("app/AppRegistry")
+
     const moduleName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params // @ts-expect-error
       ?.moduleName as keyof typeof modules
 
