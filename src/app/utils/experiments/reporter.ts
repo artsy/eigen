@@ -3,7 +3,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 
 export interface ContextProps {
   context_module?: ContextModule
-  context_owner_screen: OwnerType
+  context_owner_screen?: OwnerType
   context_owner_id?: string
   context_owner_slug?: string
   context_owner_type: OwnerType
