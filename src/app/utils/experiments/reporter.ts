@@ -11,26 +11,17 @@ interface TrackVariantArgs {
   context_owner_slug?: string
   context_owner_type: OwnerType
 }
-const reportedExperimentVariants: Record<string, string> = {}
-export function maybeReportExperimentVariant({
+
+export function reportExperimentVariant({
   experimentName,
   enabled,
   variantName,
   payload,
-  // include context when storing the experiment variants
-  storeContext = false,
   ...rest
 }: TrackVariantArgs & { enabled: boolean; storeContext?: boolean }) {
-  let combinedValue = ""
-  if (!storeContext) {
-    combinedValue = `${enabled}-${variantName}-${payload}`
-  } else {
-    combinedValue = `${enabled}-${variantName}-${payload}-${rest.context_owner_screen}`
-  }
-  if (reportedExperimentVariants[experimentName] === combinedValue) {
+  if (!enabled) {
     return
   }
-  reportedExperimentVariants[experimentName] = `${combinedValue}`
 
   postEventToProviders(tracks.experimentVariant({ experimentName, variantName, payload, ...rest }))
 }
