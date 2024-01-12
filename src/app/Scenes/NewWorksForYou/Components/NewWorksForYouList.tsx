@@ -1,5 +1,4 @@
 import { Flex, Text, useSpace } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
 import { NewWorksForYouListQuery } from "__generated__/NewWorksForYouListQuery.graphql"
 import { NewWorksForYouList_viewer$key } from "__generated__/NewWorksForYouList_viewer.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
@@ -38,8 +37,7 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
   })
   return (
     <Flex style={{ height: "100%" }}>
-      <AnimatedFlashlist
-        estimatedItemSize={400}
+      <Animated.FlatList
         data={artworks}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
@@ -78,8 +76,6 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
     </Flex>
   )
 }
-
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList) as unknown as typeof FlashList
 
 const newWorksForYouListFragment = graphql`
   fragment NewWorksForYouList_viewer on Viewer
