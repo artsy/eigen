@@ -73,21 +73,13 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     })
   }, [])
 
-  const showFeed = () => {
-    if (
-      // The feed is not available for tablets now
-      !isTablet() &&
-      enableNewWorksForYouFeed &&
-      experiment.enabled &&
-      (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
-    ) {
-      return true
-    }
+  const showFeed =
+    !isTablet() &&
+    enableNewWorksForYouFeed &&
+    experiment.enabled &&
+    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
 
-    return false
-  }
-
-  if (showFeed()) {
+  if (showFeed) {
     return (
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
