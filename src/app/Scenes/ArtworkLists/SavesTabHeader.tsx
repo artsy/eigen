@@ -12,7 +12,7 @@ import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkLists
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
 
-const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/"
+const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/article/Offers-on-saved-works"
 
 export const SavesTabHeader = () => {
   const { dispatch } = useArtworkListsContext()
