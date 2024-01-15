@@ -50,16 +50,6 @@ When we upgrade our deps to a version of react-native that includes removal of d
 
 When updating to rn-0.69.10 we had to patch this due to deprecation of PropTypes. For this reason we also installed `deprecated-react-native-prop-types` to avoid errors and we patched the `react-native` package to use the deprecated PropTypes coming from the `deprecated-react-native-prop-types` package.
 
-### react-native boost.podspec patch
-
-#### When can we remove this:
-
-When react-native points to the right `boost.podspec` file.
-
-#### Explanation/Context:
-
-JFrog has been having issues lately and it's been causing those instances. More details here: https://github.com/facebook/react-native/issues/42180
-
 ## deprecated-react-native-prop-types dependency
 
 #### When can we remove this:
