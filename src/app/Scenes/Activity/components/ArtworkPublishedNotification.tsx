@@ -8,8 +8,8 @@ import {
   ArrowRightIcon,
   Touchable,
 } from "@artsy/palette-mobile"
-import { FollowNotificationFollowArtistMutation } from "__generated__/FollowNotificationFollowArtistMutation.graphql"
-import { FollowNotification_notification$key } from "__generated__/FollowNotification_notification.graphql"
+import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
+import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { getNotificationtitle } from "app/Scenes/Activity/utils/getNotificationTitle"
 import { goBack, navigate } from "app/system/navigation/navigate"
@@ -17,17 +17,19 @@ import { FC } from "react"
 import { ScrollView } from "react-native"
 import { useFragment, graphql, useMutation } from "react-relay"
 
-interface FollowNotificationProps {
-  notification: FollowNotification_notification$key
+interface ArtworkPublishedNotificationProps {
+  notification: ArtworkPublishedNotification_notification$key
 }
 
-export const FollowNotification: FC<FollowNotificationProps> = ({ notification }) => {
+export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps> = ({
+  notification,
+}) => {
   const [followOrUnfollowArtist] =
-    useMutation<FollowNotificationFollowArtistMutation>(FollowArtistMutation)
+    useMutation<ArtworkPublishedNotificationFollowArtistMutation>(FollowArtistMutation)
 
-  const notificationData = useFragment(followNotificationFragment, notification)
+  const notificationData = useFragment(ArtworkPublishedNotificationFragment, notification)
 
-  const { artworksConnection, item, targetHref } = notificationData
+  const { artworksConnection, item } = notificationData
 
   const artist = item?.artists?.[0]
 
@@ -63,7 +65,7 @@ export const FollowNotification: FC<FollowNotificationProps> = ({ notification }
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
-    navigate(targetHref)
+    navigate(`/artist/${artist?.slug}/works-for-sale`)
   }
 
   if (!artist) {
@@ -113,8 +115,8 @@ export const FollowNotification: FC<FollowNotificationProps> = ({ notification }
   )
 }
 
-export const followNotificationFragment = graphql`
-  fragment FollowNotification_notification on Notification {
+export const ArtworkPublishedNotificationFragment = graphql`
+  fragment ArtworkPublishedNotification_notification on Notification {
     artworksConnection(first: 10) {
       ...NotificationArtworkList_artworksConnection
       totalCount
@@ -129,12 +131,11 @@ export const followNotificationFragment = graphql`
         }
       }
     }
-    targetHref
   }
 `
 
 const FollowArtistMutation = graphql`
-  mutation FollowNotificationFollowArtistMutation($input: FollowArtistInput!) {
+  mutation ArtworkPublishedNotificationFollowArtistMutation($input: FollowArtistInput!) {
     followArtist(input: $input) {
       artist {
         id

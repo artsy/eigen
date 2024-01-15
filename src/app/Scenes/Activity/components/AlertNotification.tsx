@@ -23,7 +23,7 @@ interface AlertNotificationProps {
 export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) => {
   const notificationData = useFragment(alertNotificationFragment, notification)
 
-  const { artworksConnection, item, targetHref } = notificationData
+  const { artworksConnection, item } = notificationData
 
   const alert = item?.alert
   const artist = item?.alert?.artists?.[0]
@@ -49,7 +49,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
-    navigate(targetHref)
+    navigate(`/artist/${artist?.slug}/works-for-sale`)
   }
 
   return (
@@ -57,19 +57,31 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
       <Screen.Header onBack={goBack} title="Alerts" />
 
       <ScrollView>
-        <Flex mx={2} mt={2} mb={4}>
+        <Flex mx={2} mt={2} mb={2}>
           <Text variant="lg-display" mb={2}>
             {title}
           </Text>
 
-          <Spacer y={2} />
+          <Spacer y={1} />
 
-          {alert.labels.map((label) => (
-            <Pill testID="alert-label-pill" m={0.5} key={`filter-label-${label?.displayValue}`}>
-              {label?.displayValue}
-            </Pill>
-          ))}
+          <Flex flexDirection="row" flexWrap="wrap">
+            {alert.labels.map((label) => (
+              <Pill
+                testID="alert-label-pill"
+                variant="filter"
+                mr={1}
+                mb={1}
+                key={`filter-label-${label?.displayValue}`}
+                disabled
+                borderColor="black30"
+              >
+                {label?.displayValue}
+              </Pill>
+            ))}
+          </Flex>
         </Flex>
+
+        <Spacer y={1} />
 
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
@@ -111,6 +123,7 @@ export const alertNotificationFragment = graphql`
           internalID
           artists {
             name
+            slug
           }
           labels {
             displayValue
@@ -118,6 +131,5 @@ export const alertNotificationFragment = graphql`
         }
       }
     }
-    targetHref
   }
 `

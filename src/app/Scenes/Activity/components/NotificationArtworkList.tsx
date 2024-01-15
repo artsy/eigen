@@ -21,7 +21,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
 
   return (
     <Flex minHeight={400}>
-      <AnimatedFlashlist
+      <AnimatedFlashList
         estimatedItemSize={800}
         data={artworks}
         keyExtractor={(item) => item.internalID}
@@ -52,7 +52,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
   )
 }
 
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList) as unknown as typeof FlashList
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList) as unknown as typeof FlashList
 
 export const notificationArtworkListFragment = graphql`
   fragment NotificationArtworkList_artworksConnection on ArtworkConnection {

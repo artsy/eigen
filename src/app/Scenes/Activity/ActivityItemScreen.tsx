@@ -10,7 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ActivityItemScreenQuery } from "__generated__/ActivityItemScreenQuery.graphql"
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
-import { FollowNotification } from "app/Scenes/Activity/components/FollowNotification"
+import { ArtworkPublishedNotification } from "app/Scenes/Activity/components/ArtworkPublishedNotification"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -40,7 +40,7 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         case "AlertNotificationItem":
           return <AlertNotification notification={data.me?.notification} />
         case "ArtworkPublishedNotificationItem":
-          return <FollowNotification notification={data.me?.notification} />
+          return <ArtworkPublishedNotification notification={data.me?.notification} />
         default:
           // TODO: Add fallback for other notification types
           return (
@@ -63,7 +63,7 @@ const ActivityItemQuery = graphql`
         }
 
         ...AlertNotification_notification
-        ...FollowNotification_notification
+        ...ArtworkPublishedNotification_notification
       }
     }
   }
