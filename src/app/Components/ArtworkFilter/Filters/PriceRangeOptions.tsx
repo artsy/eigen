@@ -46,6 +46,12 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const handleClear = () => {
     setFilterPriceRange(DEFAULT_PRICE_RANGE)
+    // unset the price range filter in the store
+    selectFiltersAction({
+      displayText: filterHeaderText,
+      paramValue: DEFAULT_PRICE_RANGE,
+      paramName: PARAM_NAME,
+    })
   }
 
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_RANGE
