@@ -123,7 +123,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/", "Home"),
     addRoute("/about", "About"),
     addRoute("/notifications", "Activity"),
-    addRoute("/notifications/:notificationID", "ActivityItem"),
+    addRoute("/notification/:notificationID", "ActivityItem"),
     addRoute("/art-quiz", "ArtQuiz"),
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),

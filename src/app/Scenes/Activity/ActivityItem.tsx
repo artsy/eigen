@@ -39,7 +39,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
     }
 
     if (enableNavigateToASingleNotification) {
-      navigate(`/notifications/${item.internalID}`)
+      navigate(`/notification/${item.internalID}`)
     } else {
       navigateToActivityItem(item.targetHref)
     }
