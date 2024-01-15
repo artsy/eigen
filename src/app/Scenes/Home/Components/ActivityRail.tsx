@@ -39,13 +39,13 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
   const handleHeaderPress = () => {
     trackEvent(HomeAnalytics.activityHeaderTapEvent())
 
-    navigate("/activity")
+    navigate("/notifications")
   }
 
   const handleMorePress = () => {
     trackEvent(HomeAnalytics.activityViewAllTapEvent())
 
-    navigate("/activity")
+    navigate("/notifications")
   }
 
   return (

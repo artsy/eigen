@@ -14,7 +14,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenN
   const { space } = useTheme()
 
   const navigateToActivityPanel = () => {
-    navigate("/activity")
+    navigate("/notifications")
     tracking.trackEvent(tracks.clickedNotificationsBell())
   }
 
