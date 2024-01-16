@@ -1,11 +1,22 @@
-import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Text } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import {
+  Flex,
+  Screen,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { ActivityItemScreenQuery } from "__generated__/ActivityItemScreenQuery.graphql"
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
-import { FollowNotification } from "app/Scenes/Activity/components/FollowNotification"
+import { ArtworkPublishedNotification } from "app/Scenes/Activity/components/ArtworkPublishedNotification"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { FC } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { screen } from "app/utils/track/helpers"
 
 interface ActivityItemScreenQueryRendererProps {
   notificationID: string
@@ -29,7 +40,7 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         case "AlertNotificationItem":
           return <AlertNotification notification={data.me?.notification} />
         case "ArtworkPublishedNotificationItem":
-          return <FollowNotification notification={data.me?.notification} />
+          return <ArtworkPublishedNotification notification={data.me?.notification} />
         default:
           // TODO: Add fallback for other notification types
           return (
@@ -52,7 +63,7 @@ const ActivityItemQuery = graphql`
         }
 
         ...AlertNotification_notification
-        ...FollowNotification_notification
+        ...ArtworkPublishedNotification_notification
       }
     }
   }
@@ -60,20 +71,31 @@ const ActivityItemQuery = graphql`
 
 const Placeholder: React.FC = () => {
   return (
-    <Screen>
-      <Screen.Header onBack={goBack} />
+    <ProvideScreenTrackingWithCohesionSchema
+      // TODO: Update screen owner type
+      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+    >
+      <Screen>
+        <Screen.Header onBack={goBack} />
 
-      <Screen.Body fullwidth>
-        <Skeleton>
-          <Flex m={2}>
-            <SkeletonText variant="lg-display" mb={2}>
-              Title
-            </SkeletonText>
+        <Screen.Body fullwidth>
+          <Skeleton>
+            <Flex m={2}>
+              <SkeletonText variant="lg-display" mb={2}>
+                3 New Works by Jonas Lund
+              </SkeletonText>
+
+              <Spacer y={2} />
+
+              <SkeletonText variant="lg-display" mb={2}>
+                Description
+              </SkeletonText>
+            </Flex>
 
             <SkeletonBox width="100%" height={400} />
-          </Flex>
-        </Skeleton>
-      </Screen.Body>
-    </Screen>
+          </Skeleton>
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
