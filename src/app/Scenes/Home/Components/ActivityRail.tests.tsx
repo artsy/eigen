@@ -40,7 +40,7 @@ describe("ActivityRail", () => {
 
     fireEvent.press(screen.getByText("Latest Activity Rail"))
 
-    expect(navigate).toHaveBeenCalledWith("/activity")
+    expect(navigate).toHaveBeenCalledWith("/notifications")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedActivityGroup",
@@ -66,7 +66,7 @@ describe("ActivityRail", () => {
 
     fireEvent.press(screen.getByText("See All"))
 
-    expect(navigate).toHaveBeenCalledWith("/activity")
+    expect(navigate).toHaveBeenCalledWith("/notifications")
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedActivityGroup",
