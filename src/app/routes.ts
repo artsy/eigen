@@ -122,8 +122,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     addRoute("/", "Home"),
     addRoute("/about", "About"),
-    addRoute("/activity", "Activity"),
-    addRoute("/activity/:notificationID", "ActivityItem"),
+    addRoute("/notifications", "Activity"),
+    addRoute("/notification/:notificationID", "ActivityItem"),
     addRoute("/art-quiz", "ArtQuiz"),
     addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),

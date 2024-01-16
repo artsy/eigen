@@ -34,7 +34,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     markAsRead(item)
 
     if (enableNavigateToASingleNotification) {
-      navigate(`/activity/${item.internalID}`)
+      navigate(`/notification/${item.internalID}`)
     } else {
       navigateToActivityItem(item.targetHref)
     }
