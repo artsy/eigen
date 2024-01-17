@@ -227,6 +227,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     addRoute("/my-profile/push-notifications", "MyProfilePushNotifications"),
     addRoute("/my-profile/settings", "MyProfileSettings"),
+    addRoute("/news", "News"),
     addRoute("/new-for-you", "NewWorksForYou"),
     addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),
     addRoute("/orders", "OrderHistory"),

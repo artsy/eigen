@@ -111,12 +111,18 @@ export const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-export const ArticlesPlaceholder = () => {
+interface ArticlesPlaceholderProps {
+  title?: string
+}
+
+export const ArticlesPlaceholder: React.FC<ArticlesPlaceholderProps> = ({
+  title = "Artsy Editorial",
+}) => {
   const numColumns = useNumColumns()
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title="Artsy Editorial" />
+      <Screen.AnimatedHeader title={title} />
       <Screen.Body fullwidth>
         <ProvidePlaceholderContext>
           <Flex
@@ -128,7 +134,7 @@ export const ArticlesPlaceholder = () => {
             <FlatList
               numColumns={numColumns}
               key={`${numColumns}`}
-              ListHeaderComponent={() => <ArticlesHeader title="Artsy Editorial" />}
+              ListHeaderComponent={() => <ArticlesHeader title={title} />}
               data={times(6)}
               keyExtractor={(item) => `${item}-${numColumns}`}
               renderItem={({ item }) => {

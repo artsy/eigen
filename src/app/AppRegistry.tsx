@@ -13,6 +13,7 @@ import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
+import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
@@ -582,6 +583,14 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
   }),
+  News: reactModule(
+    NewsScreen,
+    {
+      fullBleed: true,
+      hidesBackButton: true,
+    },
+    [NewsScreenQuery]
+  ),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
   Partner: reactModule(PartnerQueryRenderer, {
