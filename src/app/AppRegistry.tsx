@@ -86,7 +86,6 @@ import {
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map/MapContainer"
-import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -554,7 +553,6 @@ export const modules = defineModules({
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   MySellingProfile: reactModule(View),
-  NewMap: reactModule(NewMapScreen, { fullBleed: true }),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
     hidesBottomTabs: true,
     hidesBackButton: true,
