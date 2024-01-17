@@ -1,5 +1,6 @@
-import { Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
+import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface NewsArticle {
@@ -23,9 +24,15 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
 
   const articles = viewer.articles.map((article, index) => (
     <Flex key={index}>
-      <Text>{article.title}</Text>
-      {index !== viewer.articles.length - 1 && <Spacer y={1} />}
-      {index !== viewer.articles.length - 1 && <Separator />}
+      <Touchable
+        onPress={() => {
+          navigate(article.href)
+        }}
+      >
+        <Text>{article.title}</Text>
+        {index !== viewer.articles.length - 1 && <Spacer y={1} />}
+        {index !== viewer.articles.length - 1 && <Separator />}
+      </Touchable>
     </Flex>
   ))
 
@@ -36,7 +43,13 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
         <Text variant="lg-display">{date}</Text>
       </Flex>
       {articles}
-      <Text variant="sm-display">More in News</Text>
+      <Touchable
+        onPress={() => {
+          navigate("/news")
+        }}
+      >
+        <Text variant="sm-display">More in News</Text>
+      </Touchable>
     </Stack>
   )
 }
