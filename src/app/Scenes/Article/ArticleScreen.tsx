@@ -39,7 +39,7 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
     return null
   }
 
-  const NATIVE_LAYOUTS = ["STANDARD", "FEATURE"]
+  const NATIVE_LAYOUTS = ["STANDARD", "FEATURE", "NEWS"]
 
   const redirectToWebview = !NATIVE_LAYOUTS.includes(data.article.layout)
 
