@@ -1,5 +1,6 @@
 import { Stopwatch, Flex, Text } from "@artsy/palette-mobile"
 import { ActivityItem_item$data } from "__generated__/ActivityItem_item.graphql"
+import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { Time, getTimer } from "app/utils/getTimer"
 import { useEffect, useRef, useState } from "react"
 
@@ -20,8 +21,7 @@ export const ExpiresInTimer: React.FC<{ expiresAt: string }> = ({ expiresAt }) =
     }, INTERVAL)
 
     return () => {
-      // @ts-expect-error PLEASE_FIX_ME_STRICT_NULL_CHECK_MIGRATION
-      clearInterval(intervalId.current)
+      if (intervalId.current) clearInterval(intervalId.current)
     }
   }, [])
 
@@ -35,35 +35,6 @@ export const ExpiresInTimer: React.FC<{ expiresAt: string }> = ({ expiresAt }) =
         </Text>
       </Flex>
     )
-  }
-
-  const formattedTimeLeft = (time: {
-    days: string
-    hours: string
-    minutes: string
-    seconds: string
-  }) => {
-    const parsedDays = parseInt(time.days, 10)
-    const parsedHours = parseInt(time.hours, 10)
-    const parsedMinutes = parseInt(time.minutes, 10)
-    const parsedSeconds = parseInt(time.seconds, 10)
-
-    let textColor = "blue100"
-    let copy
-
-    if (parsedDays >= 1) {
-      copy = `${parsedDays} days`
-    } else if (parsedDays < 1 && parsedHours >= 1) {
-      copy = `${parsedHours} hours`
-    } else if (parsedHours < 1 && parsedMinutes >= 1) {
-      copy = `${parsedMinutes} minutes`
-      textColor = "red100"
-    } else if (parsedMinutes < 1) {
-      copy = `${parsedSeconds} seconds`
-      textColor = "red100"
-    }
-
-    return { timerCopy: copy, textColor }
   }
 
   const { timerCopy, textColor } = formattedTimeLeft(time)
