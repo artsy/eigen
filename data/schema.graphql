@@ -10938,6 +10938,9 @@ type IdentityVerificationScanReference {
 
 type Image {
   aspectRatio: Float!
+
+  # Blurhash code for the image
+  blurhash: String
   caption: String
   cropped(
     height: Int!
