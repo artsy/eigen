@@ -197,7 +197,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),
-    addRoute("/map", "NewMap"),
     addRoute("/my-account", "MyAccount"),
     addRoute("/my-account", "MyAccount"),
     addRoute("/my-account/delete-account", "MyAccountDeleteAccount"),
