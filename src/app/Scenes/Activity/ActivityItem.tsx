@@ -3,6 +3,10 @@ import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schem
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import {
+  ExpiresInTimer,
+  shouldDisplayExpiresInTimer,
+} from "app/Scenes/Activity/components/ExpiresInTimer"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { navigate } from "app/system/navigation/navigate"
@@ -61,7 +65,13 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             {item.title}
           </Text>
 
-          <Text variant="sm-display">{item.message}</Text>
+          {item.notificationType !== "PARTNER_OFFER_CREATED" && (
+            <Text variant="sm-display">{item.message}</Text>
+          )}
+
+          {shouldDisplayExpiresInTimer(item) && (
+            <ExpiresInTimer expiresAt={item?.item?.expiresAt ?? ""} />
+          )}
 
           <Spacer y={1} />
 
@@ -115,6 +125,13 @@ const activityItemFragment = graphql`
     isUnread
     notificationType
     objectsCount
+
+    item {
+      ... on PartnerOfferCreatedNotificationItem {
+        expiresAt
+      }
+    }
+
     artworksConnection(first: 4) {
       edges {
         node {
