@@ -1,4 +1,4 @@
-import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -24,17 +24,19 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
   const articles = viewer.articles.map((article, index) => (
     <Flex key={index}>
       <Text>{article.title}</Text>
-      {/* Render other article details */}
+      {index !== viewer.articles.length - 1 && <Spacer y={1} />}
+      {index !== viewer.articles.length - 1 && <Separator />}
     </Flex>
   ))
 
   return (
-    <Stack spacing={4} m={2} p={2} border="1px solid" borderColor="black30">
+    <Stack spacing={2} m={2} p={2} border="1px solid" borderColor="black30">
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">News</Text>
         <Text variant="lg-display">{date}</Text>
       </Flex>
       {articles}
+      <Text variant="sm-display">More in News</Text>
     </Stack>
   )
 }
