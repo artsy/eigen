@@ -1,6 +1,7 @@
 import { Screen } from "@artsy/palette-mobile"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
+import ArticlesNews from "app/Scenes/Articles/News/ArticlesNews"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
@@ -37,6 +38,7 @@ export const Articles: React.FC = () => {
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Artsy Editorial" />
       <Screen.Body fullwidth>
+        <ArticlesNews viewer={queryData.viewer as any} />
         <ArticlesList
           articles={articles as any}
           isLoading={() => isLoadingNext}
@@ -59,6 +61,9 @@ export const ArticlesScreen: React.FC = () => (
 
 export const ArticlesScreenQuery = graphql`
   query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $featured: Boolean) {
+    viewer {
+      ...ArticlesNews_viewer
+    }
     ...Articles_articlesConnection
       @arguments(count: $count, after: $after, sort: $sort, featured: $featured)
   }
