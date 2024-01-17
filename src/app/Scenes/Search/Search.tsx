@@ -1,13 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Button } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
@@ -36,6 +38,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 
 export const Search: React.FC = () => {
   const searchPillsRef = useRef<ScrollView>(null)
+  const enableNewGuide = useFeatureFlag("AREnableMapShowFairs")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchQuery)
@@ -43,7 +46,7 @@ export const Search: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
+  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet() && !enableNewGuide
   const {
     data: queryData,
     refetch,
@@ -162,7 +165,11 @@ export const Search: React.FC = () => {
               <CuratedCollections collections={queryData} mb={4} />
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
-
+              <HorizontalPadding>
+                {!!enableNewGuide && (
+                  <Button onPress={() => navigate("/nearMe")}>Shows Fairs</Button>
+                )}
+              </HorizontalPadding>
               <Spacer y={4} />
             </Scrollable>
           )}

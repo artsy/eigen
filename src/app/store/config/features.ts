@@ -237,6 +237,11 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffer",
   },
+  AREnableMapShowFairs: {
+    description: "Enable shows fairs near you map",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
   AREnableArtistSeriesSuggestions: {
     description: "Enable artist series suggestions",
     readyForRelease: true,

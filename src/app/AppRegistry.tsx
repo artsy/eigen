@@ -22,6 +22,7 @@ import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/Ad
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { NearMeScreen } from "app/Scenes/NearMe/NearMe"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
@@ -553,6 +554,7 @@ export const modules = defineModules({
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   MySellingProfile: reactModule(View),
+  NearMe: reactModule(NearMeScreen, { fullBleed: true, hidesBackButton: true }),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
     hidesBottomTabs: true,
     hidesBackButton: true,
