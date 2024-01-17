@@ -1,4 +1,4 @@
-import { Flex, Separator, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { Flex, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -16,7 +16,6 @@ export interface ArticleNewsProps {
 }
 
 export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
-  const color = useColor()
   const date = new Date().toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
