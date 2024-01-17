@@ -13,13 +13,13 @@ interface NearMeProps {
   location: Location | null
 }
 
-export const NearMe: React.FC<NearMeProps> = ({ location }) => {
+export const NearMe: React.FC<NearMeProps> = () => {
   const [isMapViewEnabled, setIsMapViewEnabled] = useState(false)
 
-  const queryParams = {
-    near: location && `${location?.lat},${location?.lng}`,
-    // slug: "new-york-ny-usa",
-  }
+  // const queryParams = {
+  //   near: location && `${location?.lat},${location?.lng}`,
+  //   // slug: "new-york-ny-usa",
+  // }
 
   const queryData = useLazyLoadQuery<NearMeQuery>(NearMeScreenQuery, {})
 
