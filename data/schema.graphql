@@ -14283,6 +14283,9 @@ type PartnerOfferConnection {
 
 type PartnerOfferCreatedNotificationItem {
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+
+  # Whether or not the offer is still available
+  available: Boolean
   expiresAt(
     format: String
 
