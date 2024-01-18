@@ -562,6 +562,8 @@ PODS:
     - React
   - react-native-blob-util (0.19.2):
     - React-Core
+  - react-native-blurhash (1.1.11):
+    - React-Core
   - react-native-config (1.4.11):
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
@@ -945,6 +947,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-appboy-sdk (from `../node_modules/react-native-appboy-sdk`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-context-menu-view (from `../node_modules/react-native-context-menu-view`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
@@ -1161,6 +1164,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-appboy-sdk"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-blurhash:
+    :path: "../node_modules/react-native-blurhash"
   react-native-config:
     :path: "../node_modules/react-native-config"
   react-native-context-menu-view:
@@ -1385,6 +1390,7 @@ SPEC CHECKSUMS:
   React-logger: dc3a2b174d79c2da635059212747d8d929b54e06
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-blob-util: c74e4ce87c76d244761c68623df78bf0d1638271
+  react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
   react-native-context-menu-view: 4cd5ecaabd2cbb420018b3242ca1eef5efa0a629
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da

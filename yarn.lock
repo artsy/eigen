@@ -17,10 +17,8 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@13.1.9":
+"@artsy/palette-mobile@file:.yalc/@artsy/palette-mobile":
   version "13.1.9"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-13.1.9.tgz#2ed3f8b7dcbf3d56fc8fe4f7f79036dc66cd3bf1"
-  integrity sha512-zrCoFVvmdq8kWalNUBVcy1/rL7K/3eXRThj+6/VSKy9lPVLokByZsa+bAWrADwvpFSLS4aIqjI8tmG0A8Z2NKA==
   dependencies:
     "@artsy/palette-tokens" "^5.0.0"
     "@shopify/flash-list" "^1.5.0"
@@ -30,6 +28,7 @@
     lodash "^4.17.21"
     moti "^0.25.3"
     react-nanny "^2.15.0"
+    react-native-blurhash "^1.1.11"
     react-native-collapsible-tab-view "6.2.1"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "^6.2.0"
@@ -11609,6 +11608,11 @@ react-native-blob-util@0.19.2:
   dependencies:
     base-64 "0.1.0"
     glob "^7.2.3"
+
+react-native-blurhash@1.1.11, react-native-blurhash@^1.1.11:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-1.1.11.tgz#cef102cc0239eb30c184235caf3fcb0b1f3ce33d"
+  integrity sha512-lYFf0C6vBz+wr5p81ABlzT9vSWmg4qTrtYGObBzhPOFIM8T0BHXbz0cCIE/gWgKFohLEWrwXFQ78GgHLlw7Jig==
 
 react-native-bootsplash@3.2.0:
   version "3.2.0"
