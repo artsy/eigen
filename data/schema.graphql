@@ -2430,6 +2430,14 @@ type Artwork implements Node & Searchable & Sellable {
   isShareable: Boolean
   isSold: Boolean
   isUnique: Boolean
+  lastSavedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
   listPrice: ListPrice
@@ -2834,6 +2842,7 @@ enum ArtworkSorts {
   DELETED_AT_ASC
   DELETED_AT_DESC
   ICONICITY_DESC
+  LAST_SAVED_AT_DESC
   MERCHANDISABILITY_DESC
   PARTNER_UPDATED_AT_DESC
   PUBLISHED_AT_ASC
@@ -13687,6 +13696,9 @@ type Partner implements Node {
 
     # Return artworks that are missing priority metadata
     missingPriorityMetadata: Boolean
+
+    # Only return artworks that are partner-offerable
+    partnerOfferable: Boolean
 
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
