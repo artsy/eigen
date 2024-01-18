@@ -2,7 +2,7 @@ import { Screen, Text } from "@artsy/palette-mobile"
 import { NearMeQuery$data } from "__generated__/NearMeQuery.graphql"
 import { NearMe_showsConnection$key } from "__generated__/NearMe_showsConnection.graphql"
 import { ShowsConnectionFragment } from "app/Scenes/NearMe/NearMe"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { TouchableOpacity } from "react-native"
 import MapView, { Callout, Marker } from "react-native-maps"
@@ -11,7 +11,7 @@ import { useFragment } from "react-relay"
 interface NearMeMapProps {
   isMapViewEnabled: boolean
   setIsMapViewEnabled: (isMapViewEnabled: boolean) => void
-  cityQueryData: NearMeQuery$data["city"]
+  cityQueryData: NearMeQuery$data
 }
 
 export const NearMeMap: React.FC<NearMeMapProps> = ({
@@ -21,7 +21,7 @@ export const NearMeMap: React.FC<NearMeMapProps> = ({
 }) => {
   const data = useFragment<NearMe_showsConnection$key>(ShowsConnectionFragment, cityQueryData)
 
-  const shows = extractNodes(data?.showsConnection)
+  const shows = extractNodes(data?.city?.showsConnection)
   const hasShows = shows.length > 0
 
   return (
@@ -39,14 +39,14 @@ export const NearMeMap: React.FC<NearMeMapProps> = ({
             </TouchableOpacity>
           )
         }
-        onBack={goBack}
+        onBack={() => setIsMapViewEnabled(false)}
       />
       <Screen.Body fullwidth>
         <MapView
           style={{ flex: 1 }}
           initialRegion={{
-            latitude: 52.52, // Berlin latitude
-            longitude: 13.405, // Berlin longitude
+            latitude: data.city?.coordinates?.lat ?? 52.52, // Berlin latitude
+            longitude: data.city?.coordinates?.lng ?? 13.405, // Berlin longitude
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
@@ -55,6 +55,7 @@ export const NearMeMap: React.FC<NearMeMapProps> = ({
           {!!hasShows &&
             shows.map((show) => (
               <Marker
+                pinColor="blue"
                 key={show?.id}
                 coordinate={{
                   latitude: show?.location?.coordinates?.lat ?? 0,
