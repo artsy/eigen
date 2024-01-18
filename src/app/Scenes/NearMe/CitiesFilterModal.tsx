@@ -16,8 +16,6 @@ export const CitiesFilterModal: React.FC<CitiesFilterModalProps> = ({
 }) => {
   const data = useFragment<CitiesFilterModalFragment$key>(citiesFilterModalFragment, queryData)
 
-  console.warn({ data })
-
   return (
     <Modal>
       <Screen>
