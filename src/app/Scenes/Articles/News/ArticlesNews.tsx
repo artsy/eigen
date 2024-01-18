@@ -18,6 +18,7 @@ export interface ArticleNewsProps {
   }
 }
 
+// TODO: Rename this component to something like NewsCard, relay blew up earlier when I tried
 export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
   const date = new Date().toLocaleDateString("en-US", {
     month: "short",
