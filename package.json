@@ -154,6 +154,7 @@
     "react-native": "0.72.10",
     "react-native-appboy-sdk": "1.35.1",
     "react-native-blob-util": "0.19.2",
+    "react-native-blurhash": "1.1.11",
     "react-native-bootsplash": "3.2.0",
     "react-native-code-push": "8.1.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.12-artsy",
