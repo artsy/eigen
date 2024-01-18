@@ -45,7 +45,7 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
   ))
 
   return (
-    <Stack spacing={2} m={2} p={2} border="1px solid" borderColor="black30">
+    <Stack spacing={2} m={2} p={2} border="1px solid" borderColor="black30" style={{ flex: 0 }}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">News</Text>
         <Text variant="lg-display">{date}</Text>
@@ -55,6 +55,7 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
         onPress={() => {
           navigate("/news")
         }}
+        style={{ flexDirection: "row", justifyContent: "flex-end" }}
       >
         <Text variant="sm-display">More in News</Text>
       </Touchable>
