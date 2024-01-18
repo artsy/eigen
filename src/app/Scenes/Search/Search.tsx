@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Button } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
-import { navigate } from "app/system/navigation/navigate"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -165,11 +164,6 @@ export const Search: React.FC = () => {
               <CuratedCollections collections={queryData} mb={4} />
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
-              <HorizontalPadding>
-                {!!enableNewGuide && (
-                  <Button onPress={() => navigate("/nearMe")}>Shows Fairs</Button>
-                )}
-              </HorizontalPadding>
               <Spacer y={4} />
             </Scrollable>
           )}

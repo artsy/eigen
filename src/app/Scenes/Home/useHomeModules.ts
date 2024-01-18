@@ -15,6 +15,7 @@ export const useHomeModules = (props: HomeProps) => {
   const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
   const enableDoMoreOnArtsyRail = useFeatureFlag("AREnableDoMoreOnArtsyRail")
   const enableMeetYourNewAdvisoryRail = useFeatureFlag("AREnableMeetYourNewAdvisorRail")
+  const enableNearMeSection = useFeatureFlag("AREnableMapShowFairs")
 
   return useMemo(() => {
     const allModules: Array<HomeModule> = [
@@ -39,6 +40,14 @@ export const useHomeModules = (props: HomeProps) => {
         key: "newWorksForYouRail",
         title: "New Works for You",
         type: "newWorksForYou",
+      },
+      {
+        data: true,
+        isEmpty: false,
+        hidden: !enableNearMeSection,
+        key: "nearMeRail",
+        title: "Near Me",
+        type: "nearMe",
       },
       {
         data: props.heroUnits,
@@ -255,5 +264,6 @@ export const useHomeModules = (props: HomeProps) => {
     enableDoMoreOnArtsyRail,
     enableMeetYourNewAdvisoryRail,
     enableLatestActivityRail,
+    enableNearMeSection,
   ])
 }

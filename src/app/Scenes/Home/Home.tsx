@@ -49,6 +49,7 @@ import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRai
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
 import { RailScrollRef } from "app/Scenes/Home/Components/types"
+import { NearMeHomeRailModule } from "app/Scenes/NearMe/NearMeHomeRailModule"
 import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
@@ -307,6 +308,8 @@ const Home = memo((props: HomeProps) => {
               cardSize={enableNewSaleArtworkTileRailCard ? "large" : "small"}
             />
           )
+        case "nearMe":
+          return <NearMeHomeRailModule />
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
