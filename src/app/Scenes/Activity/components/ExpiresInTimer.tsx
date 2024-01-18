@@ -2,11 +2,22 @@ import { Stopwatch, Flex, Text } from "@artsy/palette-mobile"
 import { ActivityItem_item$data } from "__generated__/ActivityItem_item.graphql"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { Time, getTimer } from "app/utils/getTimer"
-import { useEffect, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 
 const INTERVAL = 1000
 
-export const ExpiresInTimer: React.FC<{ expiresAt: string }> = ({ expiresAt }) => {
+interface ExpiresInTimerProps {
+  item: ActivityItem_item$data
+}
+
+const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
+  return <Stopwatch fill={fill} height={15} width={15} mr="2px" ml="-2px" />
+}
+
+export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
+  const expiresAt = item?.item?.expiresAt ?? ""
+  const available = item?.item?.available ?? false
+
   const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const [time, setTime] = useState<Time>(getTimer(expiresAt)["time"])
@@ -25,10 +36,22 @@ export const ExpiresInTimer: React.FC<{ expiresAt: string }> = ({ expiresAt }) =
     }
   }, [])
 
+  if (!available) {
+    return (
+      <Flex flexDirection="row" alignItems="center">
+        <WatchIcon />
+
+        <Text variant="xs" color="red100">
+          No longer available
+        </Text>
+      </Flex>
+    )
+  }
+
   if (hasEnded) {
     return (
       <Flex flexDirection="row" alignItems="center">
-        <Stopwatch fill="red100" height={15} width={15} mr="2px" ml="-2px" />
+        <WatchIcon />
 
         <Text variant="xs" color="red100">
           Expired

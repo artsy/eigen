@@ -69,9 +69,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             <Text variant="sm-display">{item.message}</Text>
           )}
 
-          {shouldDisplayExpiresInTimer(item) && (
-            <ExpiresInTimer expiresAt={item?.item?.expiresAt ?? ""} />
-          )}
+          {shouldDisplayExpiresInTimer(item) && <ExpiresInTimer item={item} />}
 
           <Spacer y={1} />
 
@@ -128,6 +126,7 @@ const activityItemFragment = graphql`
 
     item {
       ... on PartnerOfferCreatedNotificationItem {
+        available
         expiresAt
       }
     }
