@@ -1,4 +1,4 @@
-import { Flex, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, Separator, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -7,6 +7,9 @@ interface NewsArticle {
   internalID: string
   title: string
   href: string
+  thumbnailImage: {
+    url: string
+  }
 }
 
 export interface ArticleNewsProps {
@@ -28,7 +31,13 @@ export const ArticlesNews: React.FC<ArticleNewsProps> = ({ viewer }) => {
           navigate(article.href)
         }}
       >
-        <Text>{article.title}</Text>
+        <Flex flexDirection="row" alignItems="center">
+          <Image src={article.thumbnailImage.url} aspectRatio={1.0} width={60} />
+          <Spacer x={1} />
+          <Text variant="sm-display" numberOfLines={3} style={{ width: "75%" }}>
+            {article.title}
+          </Text>
+        </Flex>
         {index !== viewer.articles.length - 1 && <Spacer y={1} />}
         {index !== viewer.articles.length - 1 && <Separator />}
       </Touchable>
@@ -59,6 +68,9 @@ const ArticlesNewsFragment = graphql`
       internalID
       title
       href
+      thumbnailImage {
+        url
+      }
     }
   }
 `
