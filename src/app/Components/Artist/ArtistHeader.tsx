@@ -116,6 +116,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
             width={width}
             height={height}
             style={{ alignSelf: "center" }}
+            blurhash={artistData.coverArtwork.image.blurhash || undefined}
           />
           <Spacer y={2} />
         </Flex>
@@ -189,6 +190,7 @@ const artistFragment = graphql`
     coverArtwork {
       title
       image {
+        blurhash
         url(version: "larger")
       }
     }
