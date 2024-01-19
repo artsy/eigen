@@ -4,6 +4,7 @@ import {
   Flex,
   HeartFillIcon,
   HeartIcon,
+  Image,
   Skeleton,
   SkeletonBox,
   SkeletonText,
@@ -20,7 +21,6 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import { OpaqueImageView as NewOpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -237,12 +237,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
           testID={`artworkGridItem-${artwork.title}`}
         >
           <View ref={itemRef}>
-            {!!artwork.image && (
+            {!!artwork.image?.url && (
               <View>
-                <NewOpaqueImageView
-                  aspectRatio={artwork.image?.aspectRatio ?? 1}
-                  imageURL={artwork.image?.url}
+                <Image
+                  src={artwork.image.url}
+                  aspectRatio={artwork.image.aspectRatio ?? 1}
                   height={height}
+                  width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                  blurhash={artwork.image.blurhash ?? undefined}
                 />
                 {Boolean(
                   !hideUrgencyTags &&
@@ -533,6 +535,7 @@ export default createFragmentContainer(Artwork, {
         name
       }
       image(includeAll: $includeAllImages) {
+        blurhash
         url(version: "large")
         aspectRatio
         resized(width: $width) {
