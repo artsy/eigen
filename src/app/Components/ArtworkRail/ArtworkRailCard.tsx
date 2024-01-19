@@ -6,6 +6,7 @@ import {
   useColor,
   Touchable,
   useScreenDimensions,
+  Image,
 } from "@artsy/palette-mobile"
 import {
   ArtworkRailCard_artwork$data,
@@ -16,7 +17,6 @@ import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Compone
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
@@ -456,7 +456,12 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   return (
     <Flex>
       <Flex width={containerWidth}>
-        <OpaqueImageView imageURL={src} height={getImageHeight()} width={containerWidth} />
+        <Image
+          src={src}
+          width={containerWidth}
+          height={getImageHeight()}
+          blurhash={image?.blurhash || undefined}
+        />
       </Flex>
 
       {!!urgencyTag && (
@@ -525,6 +530,7 @@ const artworkFragment = graphql`
     isHangable
     date
     image {
+      blurhash
       url(version: "large")
       resized(width: $width) {
         src

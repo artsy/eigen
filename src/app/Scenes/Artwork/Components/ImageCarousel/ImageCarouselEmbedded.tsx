@@ -213,6 +213,7 @@ const EmbeddedItem: React.FC<{
   return (
     <ImageWithLoadingState
       imageURL={(item as ImageCarouselImage).resized?.src || item.url}
+      blurhash={(item as ImageCarouselImage).blurhash || undefined}
       width={styles.width}
       height={styles.height}
       onPress={goFullScreen}

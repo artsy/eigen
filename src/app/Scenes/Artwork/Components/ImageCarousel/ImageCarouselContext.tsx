@@ -16,7 +16,7 @@ export type ImageCarouselMedia = ImageCarouselImage | ImageCarouselVideo
 
 export type ImageDescriptor = Pick<
   ImageCarouselImage,
-  "deepZoom" | "height" | "width" | "url" | "largeImageURL" | "internalID" | "resized"
+  "blurhash" | "deepZoom" | "height" | "width" | "url" | "largeImageURL" | "internalID" | "resized"
 >
 
 export type ImageCarouselAction =
