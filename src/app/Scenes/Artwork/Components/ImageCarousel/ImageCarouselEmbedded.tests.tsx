@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
@@ -7,6 +7,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
     {
       internalID: "123",
+      blurhash: "H4$#",
       height: 5,
       width: 5,
       url: "a",
@@ -20,6 +21,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
     },
     {
       internalID: "1234",
+      blurhash: "H4$#$",
       height: 5,
       width: 5,
       url: "b",
@@ -56,24 +58,24 @@ describe("ImageCarouselEmbedded", () => {
   }
 
   it("should render all passed images", () => {
-    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
-    expect(getAllByLabelText("Image with Loading State")).toHaveLength(2)
+    expect(screen.getAllByLabelText("Image with Loading State")).toHaveLength(2)
   })
 
   it("responds to onImagePressed prop", () => {
-    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
-    fireEvent.press(getAllByLabelText("Image with Loading State")[0])
+    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(onImagePressedMock).toHaveBeenCalled()
   })
 
   it("does something when you tap an image with deepZoom", () => {
-    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
     expect(context.fullScreenState.current).toBe("none")
 
-    fireEvent.press(getAllByLabelText("Image with Loading State")[0])
+    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(context.fullScreenState.current).not.toBe("none")
   })
 
@@ -82,6 +84,7 @@ describe("ImageCarouselEmbedded", () => {
       images: [
         {
           internalID: "123",
+          blurhash: "H4$#",
           deepZoom: null,
           height: 302,
           url: "https://example.com/image.jpg",
@@ -94,11 +97,11 @@ describe("ImageCarouselEmbedded", () => {
       ],
     }
 
-    const { getAllByLabelText } = renderWithWrappers(<TestWrapper contextInit={contextInit} />)
+    renderWithWrappers(<TestWrapper contextInit={contextInit} />)
 
     expect(context.fullScreenState.current).toBe("none")
 
-    fireEvent.press(getAllByLabelText("Image with Loading State")[0])
+    fireEvent.press(screen.getAllByLabelText("Image with Loading State")[0])
     expect(context.fullScreenState.current).toBe("none")
   })
 })
