@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   ImageCarouselContext,
   useNewImageCarouselContext,
@@ -11,6 +12,7 @@ describe("ImageCarouselFullScreen", () => {
       images: [
         {
           internalID: "123",
+          blurhash: "H4$#",
           height: 5,
           width: 5,
           url: "a",
@@ -22,6 +24,7 @@ describe("ImageCarouselFullScreen", () => {
         },
         {
           internalID: "1234",
+          blurhash: "H4$#$",
           height: 5,
           width: 5,
           url: "b",
@@ -41,8 +44,9 @@ describe("ImageCarouselFullScreen", () => {
   }
 
   it("render only the current zoomable image as a perf optimisation", () => {
-    const { getAllByLabelText } = renderWithWrappers(<Mock />)
-    expect(getAllByLabelText("Full Screen Image")).toHaveLength(1)
-    expect(getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)
+    renderWithWrappers(<Mock />)
+
+    expect(screen.getAllByLabelText("Full Screen Image")).toHaveLength(1)
+    expect(screen.getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)
   })
 })
