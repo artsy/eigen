@@ -94,6 +94,7 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       ... on Image {
         __typename
         internalID
+        blurhash
         url
         largeImageURL: url(version: "larger")
         resized(width: 590, height: 590, version: ["normalized", "larger", "large"]) {
