@@ -111,7 +111,7 @@
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5",
     "react-spring": "Try removing this! We have reanimated now.",
-"deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
+    "deprecated-react-native-prop-types": "Needed for patching react-native and react-native-credit-card-input due to rn removing the proptypes from their repo",
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
@@ -147,7 +147,7 @@
     "@storybook/react-native": "6.0.1-beta.5",
     "@styled-system/theme-get": "5.1.2",
     "autosuggest-highlight": "3.1.1",
-"deprecated-react-native-prop-types": "4.1.0",
+    "deprecated-react-native-prop-types": "4.1.0",
     "easy-peasy": "6.0.0",
     "events": "3.3.0",
     "formik": "2.2.9",
