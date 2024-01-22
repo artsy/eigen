@@ -21,11 +21,11 @@ interface ActivityListProps {
 }
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
-  const enableNavigateToASingleNotification = unsafe_getFeatureFlag(
-    "AREnableSingleActivityPanelScreen"
+  const enableNewActivityPanelManagement = unsafe_getFeatureFlag(
+    "AREnableNewActivityPanelManagement"
   )
 
-  const headerMeasurements = enableNavigateToASingleNotification
+  const headerMeasurements = enableNewActivityPanelManagement
     ? {
         height: { value: 0 },
         top: { value: 0 },
@@ -92,7 +92,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       headerOffset = -headerMeasurements.height.value
     }
 
-    const ScrollViewComponent = enableNavigateToASingleNotification
+    const ScrollViewComponent = enableNewActivityPanelManagement
       ? Screen.ScrollView
       : Tabs.ScrollView
     return (
@@ -106,7 +106,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     )
   }
 
-  const FlatlistComponent = enableNavigateToASingleNotification ? Screen.FlatList : Tabs.FlatList
+  const FlatlistComponent = enableNewActivityPanelManagement ? Screen.FlatList : Tabs.FlatList
 
   return (
     <FlatlistComponent

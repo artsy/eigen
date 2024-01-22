@@ -15,6 +15,10 @@ const entityByType: Record<NotificationType, { title: string; message: string }>
     title: `Hunting for a particular artwork?`,
     message: `Create alerts on an artist or artwork page and get notifications here when there’s a match.`,
   },
+  offers: {
+    title: `Your offers will appear here`,
+    message: `When you receive an offer on an artwork, it will appear here.`,
+  },
 }
 
 export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) => {

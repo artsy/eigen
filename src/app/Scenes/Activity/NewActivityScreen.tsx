@@ -1,9 +1,10 @@
 import { Screen } from "@artsy/palette-mobile"
 import { ActivityContainer } from "app/Scenes/Activity/ActivityContainer"
+import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 import { NewActivityHeader } from "app/Scenes/Activity/components/NewActivityHeader"
 import { goBack } from "app/system/navigation/navigate"
-import { Action, action, createContextStore } from "easy-peasy"
 
+// TODO: Remove New from the name once we remove the old Activity screen
 export const NewActivityContent: React.FC = () => {
   const type = ActivityScreenStore.useStoreState((state) => state.type)
 
@@ -25,16 +26,3 @@ export const NewActivityScreen: React.FC = () => {
     </ActivityScreenStore.Provider>
   )
 }
-
-export type ActivityType = "all" | "alerts"
-export interface ActivityScreenStoreModel {
-  type: ActivityType
-  setType: Action<this, ActivityType>
-}
-
-export const ActivityScreenStore = createContextStore<ActivityScreenStoreModel>({
-  type: "all",
-  setType: action((state, payload) => {
-    state.type = payload
-  }),
-})

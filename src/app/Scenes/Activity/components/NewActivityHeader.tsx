@@ -1,5 +1,5 @@
 import { Flex, Pill } from "@artsy/palette-mobile"
-import { ActivityScreenStore } from "app/Scenes/Activity/NewActivityScreen"
+import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
 
 export const NewActivityHeader: React.FC = () => {
   const type = ActivityScreenStore.useStoreState((state) => state.type)
@@ -14,10 +14,18 @@ export const NewActivityHeader: React.FC = () => {
         <Pill
           variant="default"
           mr={0.5}
-          selected={type === "alerts"}
+          selected={type === "offers"}
           onPress={() => setType("alerts")}
         >
           Alerts
+        </Pill>
+        <Pill
+          variant="default"
+          mr={0.5}
+          selected={type === "alerts"}
+          onPress={() => setType("offers")}
+        >
+          Offers
         </Pill>
       </Flex>
     </Flex>

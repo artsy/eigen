@@ -15,6 +15,7 @@ import { useTracking } from "react-tracking"
 
 export const Activity = () => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   const tracking = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
@@ -24,7 +25,7 @@ export const Activity = () => {
     tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
   }
 
-  if (enableNavigateToASingleNotification) {
+  if (enableNewActivityPanelManagement) {
     return (
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({ context_screen_owner_type: OwnerType.activities })}

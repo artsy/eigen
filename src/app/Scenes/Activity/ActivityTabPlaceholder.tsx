@@ -24,10 +24,11 @@ const ActivityItemPlaceholder = () => {
 }
 
 export const ActivityTabPlaceholder = () => {
-  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
+
   return (
     <Flex flex={1}>
-      {!enableNavigateToASingleNotification && (
+      {!enableNewActivityPanelManagement && (
         <Animated.View
           style={{
             height: NAVBAR_HEIGHT * 2,
