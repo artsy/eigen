@@ -21,9 +21,11 @@ interface ActivityListProps {
 }
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
-  const showPartnerOffersInActivity = unsafe_getFeatureFlag("ARShowPartnerOffersInActivity")
+  const enableNavigateToASingleNotification = unsafe_getFeatureFlag(
+    "AREnableSingleActivityPanelScreen"
+  )
 
-  const headerMeasurements = showPartnerOffersInActivity
+  const headerMeasurements = enableNavigateToASingleNotification
     ? {
         height: { value: 0 },
         top: { value: 0 },
@@ -90,7 +92,9 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       headerOffset = -headerMeasurements.height.value
     }
 
-    const ScrollViewComponent = showPartnerOffersInActivity ? Screen.ScrollView : Tabs.ScrollView
+    const ScrollViewComponent = enableNavigateToASingleNotification
+      ? Screen.ScrollView
+      : Tabs.ScrollView
     return (
       <ScrollViewComponent
         refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
@@ -102,7 +106,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     )
   }
 
-  const FlatlistComponent = showPartnerOffersInActivity ? Screen.FlatList : Tabs.FlatList
+  const FlatlistComponent = enableNavigateToASingleNotification ? Screen.FlatList : Tabs.FlatList
 
   return (
     <FlatlistComponent

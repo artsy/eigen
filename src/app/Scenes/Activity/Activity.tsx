@@ -19,13 +19,12 @@ export const Activity = () => {
   const tracking = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
   const { markAllNotificationsAsRead } = useMarkAllNotificationsAsRead()
-  const showPartnerOffersInActivity = useFeatureFlag("ARShowPartnerOffersInActivity")
 
   const handleTabPress: OnTabChangeCallback = (data) => {
     tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
   }
 
-  if (showPartnerOffersInActivity) {
+  if (enableNavigateToASingleNotification) {
     return (
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({ context_screen_owner_type: OwnerType.activities })}

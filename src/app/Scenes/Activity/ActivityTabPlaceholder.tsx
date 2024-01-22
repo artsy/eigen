@@ -24,10 +24,10 @@ const ActivityItemPlaceholder = () => {
 }
 
 export const ActivityTabPlaceholder = () => {
-  const showPartnerOffersInActivity = useFeatureFlag("ARShowPartnerOffersInActivity")
+  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   return (
     <Flex flex={1}>
-      {!showPartnerOffersInActivity && (
+      {!enableNavigateToASingleNotification && (
         <Animated.View
           style={{
             height: NAVBAR_HEIGHT * 2,
