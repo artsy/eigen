@@ -29,7 +29,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
         top: { value: 0 },
       }
     : // Although this breaks the rule of hooks, it's safe to do it here
-      // Because the feature flag is only updates on app start thanks to unsafe_getFeatureFlag
+      // Because the feature flag is only updates on screen mount thanks to unsafe_getFeatureFlag
       // The above check will be removed once the feature flag is removed
       // It seems reasonable here to do this to avoid duplicating code and messing up valuable
       // Git history
