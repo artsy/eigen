@@ -516,7 +516,7 @@ export const HomeFragmentContainer = memo(
           ...ActivityRail_notificationsConnection @arguments(count: 10)
           notificationsConnection(
             first: 10
-            notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED]
+            notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED, PARTNER_OFFER_CREATED]
           ) {
             edges {
               node {
