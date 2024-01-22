@@ -14,7 +14,7 @@ export const NewActivityHeader: React.FC = () => {
         <Pill
           variant="default"
           mr={0.5}
-          selected={type === "offers"}
+          selected={type === "alerts"}
           onPress={() => setType("alerts")}
         >
           Alerts
@@ -22,7 +22,7 @@ export const NewActivityHeader: React.FC = () => {
         <Pill
           variant="default"
           mr={0.5}
-          selected={type === "alerts"}
+          selected={type === "offers"}
           onPress={() => setType("offers")}
         >
           Offers
