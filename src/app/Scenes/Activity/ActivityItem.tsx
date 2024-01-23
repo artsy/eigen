@@ -69,7 +69,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             <Text variant="sm-display">{item.message}</Text>
           )}
 
-          {shouldDisplayExpiresInTimer(item) && <ExpiresInTimer item={item} />}
+          {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
+            <ExpiresInTimer item={item.item} />
+          )}
 
           <Spacer y={1} />
 
