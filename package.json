@@ -234,7 +234,7 @@
     "@sentry/cli": "2.21.2",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/react-native": "12.3.2",
+    "@testing-library/react-native": "12.4.3",
     "@tsconfig/react-native": "^3.0.0",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.1.1",
