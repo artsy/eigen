@@ -5,6 +5,10 @@ import {
 } from "__generated__/ActivityRailItem_item.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
+import {
+  ExpiresInTimer,
+  shouldDisplayExpiresInTimer,
+} from "app/Scenes/Activity/components/ExpiresInTimer"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { navigate } from "app/system/navigation/navigate"
@@ -67,7 +71,14 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
             {item.title}
           </Text>
-          <Text variant="sm-display">{item.message}</Text>
+
+          {item.notificationType !== "PARTNER_OFFER_CREATED" && (
+            <Text variant="sm-display">{item.message}</Text>
+          )}
+
+          {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
+            <ExpiresInTimer item={item.item} />
+          )}
         </Flex>
       </Flex>
     </TouchableOpacity>
@@ -85,6 +96,12 @@ const ActivityRailItemFragment = graphql`
     isUnread
     notificationType
     objectsCount
+    item {
+      ... on PartnerOfferCreatedNotificationItem {
+        available
+        expiresAt
+      }
+    }
     artworksConnection(first: 1) {
       edges {
         node {
