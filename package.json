@@ -115,7 +115,7 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "Needed for compiling android with hermes enabled"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.163.0",
+    "@artsy/cohesion": "4.165.0",
     "@artsy/palette-mobile": "13.0.30",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "4.0.1",
