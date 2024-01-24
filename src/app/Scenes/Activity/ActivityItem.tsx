@@ -57,9 +57,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
         <Flex flexDirection="row" alignItems="center">
-          <Flex flex={1}>
+          <Flex flex={1} mr={2}>
             <Flex flexDirection="column" py={2}>
-              <Flex py={1} flexDirection="row" alignItems="center">
+              <Flex flexDirection="row" alignItems="center">
                 {artworks.map((artwork) => {
                   return (
                     <Flex
