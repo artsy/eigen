@@ -7,7 +7,7 @@ import { FC, useEffect, useRef, useState } from "react"
 const INTERVAL = 1000
 
 interface ExpiresInTimerProps {
-  item: ActivityItem_notification$data
+  item: ActivityItem_notification$data["item"]
 }
 
 const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
