@@ -39,9 +39,11 @@ export type FeatureDescriptor = (
 ) &
   FeatureDescriptorCommonTypes
 
+export type FeatureReadyForRelease = FeatureDescriptorReadyForRelease & FeatureDescriptorCommonTypes
+
 export type FeatureName = keyof typeof features
 
-export const features: { [key: string]: FeatureDescriptor } = {
+export const features = {
   ARDarkModeSupport: {
     readyForRelease: false,
     showInDevMenu: true,

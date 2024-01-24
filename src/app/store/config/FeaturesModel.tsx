@@ -1,6 +1,12 @@
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Action, action, Computed, computed } from "easy-peasy"
-import { DevToggleName, devToggles, FeatureName, features } from "./features"
+import {
+  DevToggleName,
+  devToggles,
+  FeatureName,
+  FeatureReadyForRelease,
+  features,
+} from "./features"
 
 export type FeatureMap = { [k in FeatureName]: boolean }
 export type DevToggleMap = { [k in DevToggleName]: boolean }
@@ -41,9 +47,11 @@ export const getFeaturesModel = (): FeaturesModel => ({
         result[key] = state.localOverrides[key as FeatureName]
       } else if (feature.readyForRelease) {
         // If the feature is ready for release, the echo flag takes precedence
-        const echoFlag = echo.state.features.find((f) => f.name === feature.echoFlagKey)
+        const echoFlag = echo.state.features.find(
+          (f) => f.name === (feature as FeatureReadyForRelease).echoFlagKey
+        )
 
-        if (feature.echoFlagKey && !echoFlag && __DEV__) {
+        if ((feature as FeatureReadyForRelease).echoFlagKey && !echoFlag && __DEV__) {
           console.error("No echo flag found for feature", key)
         }
         result[key] = echoFlag?.value ?? true

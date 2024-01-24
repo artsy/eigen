@@ -1,15 +1,19 @@
 import { env } from "process"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { intersection } from "lodash"
-import { devToggles, features } from "./features"
+import { FeatureReadyForRelease, devToggles, features } from "./features"
 
 Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {
     if (val.readyForRelease) {
       it(`uses an echo flag named ${key}`, () => {
-        if (!echoLaunchJson().features.some((flag) => flag.name === val.echoFlagKey)) {
+        if (
+          !echoLaunchJson().features.some(
+            (flag) => flag.name === (val as FeatureReadyForRelease).echoFlagKey
+          )
+        ) {
           throw new Error(
-            `No echo flag found for key ${val.echoFlagKey}. ` +
+            `No echo flag found for key ${(val as FeatureReadyForRelease).echoFlagKey}. ` +
               (env.CI === "true"
                 ? "Make sure you added it to the echo repo"
                 : "Make sure you added it to the echo repo and updated your local copy of echo with ./scripts/setup/update-echo")

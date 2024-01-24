@@ -53,6 +53,9 @@ import Keychain from "react-native-keychain"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const configurableFeatureFlagKeys = Object.entries(features)
+  // Typescript struggles to infer the type on union types
+  // We can remove this once we support ts satisifies type guard
+  // @ts-expect-error
   .filter(([_, { showInDevMenu }]) => showInDevMenu)
   .map(([k]) => k as FeatureName)
 
