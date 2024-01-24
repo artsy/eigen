@@ -4,6 +4,7 @@ import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graph
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
 import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
@@ -21,6 +22,7 @@ interface ActivityListProps {
 }
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableSingleActivityPanelScreen") // true // useFeatureFlag("AREnableNewActivityPanelManagement")
   const headerMeasurements = useHeaderMeasurements()
   const [refreshing, setRefreshing] = useState(false)
 
@@ -104,7 +106,15 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       }}
       data={sections}
       keyExtractor={(item) => `${type}-${item.key}`}
-      ItemSeparatorComponent={() => <Separator />}
+      ItemSeparatorComponent={() =>
+        enableNewActivityPanelManagement ? (
+          <Flex mx={-2}>
+            <Separator borderColor="black10" />
+          </Flex>
+        ) : (
+          <Separator />
+        )
+      }
       onEndReached={handleLoadMore}
       renderItem={({ item }) => <>{item.content}</>}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
