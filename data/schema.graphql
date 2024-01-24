@@ -13703,9 +13703,6 @@ type Partner implements Node {
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
 
-    # Return artworks that were saved by collectors at least one time.
-    savedAtLeastOnce: Boolean
-
     # Only allowed for authorized admin/partner requests. When false fetch :all
     # properties on an artwork, when true or not present fetch artwork :short properties
     shallow: Boolean
