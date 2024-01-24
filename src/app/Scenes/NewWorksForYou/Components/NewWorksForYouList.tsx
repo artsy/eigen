@@ -1,8 +1,7 @@
-import { Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Text, useSpace } from "@artsy/palette-mobile"
 import { NewWorksForYouListQuery } from "__generated__/NewWorksForYouListQuery.graphql"
 import { NewWorksForYouList_viewer$key } from "__generated__/NewWorksForYouList_viewer.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { NewWorksForYouHeaderComponent } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouHeader"
 import {
   NewWorksForYouPlaceholder,
   NewWorksForYouScreenProps,
@@ -11,8 +10,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
-import { Animated } from "react-native"
+import { pluralize } from "jest-matcher-utils"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 type NewWorksForYouListProps = {
@@ -26,24 +24,15 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
 
   const artworks = extractNodes(data.artworks)
 
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          New Works For You
-        </Text>
-      </Flex>
-    ),
-  })
   return (
     <Flex style={{ height: "100%" }}>
-      <Animated.FlatList
+      <Screen.FlatList
         data={artworks}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
-          <Flex px={2}>
-            <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
-          </Flex>
+          <Text variant="xs" p={2}>
+            {pluralize("Artwork", artworks.length)}
+          </Text>
         )}
         contentContainerStyle={{
           paddingBottom: 120,
@@ -69,10 +58,7 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
             />
           )
         }}
-        {...scrollProps}
       />
-
-      {headerElement}
     </Flex>
   )
 }

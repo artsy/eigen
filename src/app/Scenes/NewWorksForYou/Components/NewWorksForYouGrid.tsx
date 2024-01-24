@@ -1,9 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, SimpleMessage, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { NewWorksForYouGridQuery } from "__generated__/NewWorksForYouGridQuery.graphql"
 import { NewWorksForYouGrid_viewer$key } from "__generated__/NewWorksForYouGrid_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { NewWorksForYouHeaderComponent } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouHeader"
 import {
   NewWorksForYouPlaceholder,
   NewWorksForYouScreenProps,
@@ -11,8 +10,7 @@ import {
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
-import { Animated, Dimensions } from "react-native"
+import { pluralize } from "jest-matcher-utils"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
@@ -21,47 +19,31 @@ interface NewWorksForYouProps {
 
 export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   const { data } = usePaginationFragment(newWorksForYouGridFragment, viewer)
+  const { scrollHandler } = Screen.useListenForScreenScroll()
 
   const artworks = extractNodes(data.artworks)
 
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flexDirection="row" pt={0.5}>
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }} textAlign="center">
-          New Works For You
-        </Text>
-      </Flex>
-    ),
-  })
-
   return (
     <Flex style={{ height: "100%" }}>
-      <Animated.ScrollView
-        style={{ minHeight: Dimensions.get("screen").height }}
-        contentContainerStyle={{
-          paddingBottom: 120,
-        }}
-        {...scrollProps}
-      >
-        <Flex style={{ minHeight: Dimensions.get("screen").height }}>
-          <MasonryInfiniteScrollArtworkGrid
-            nestedScrollEnabled={true}
-            artworks={artworks}
-            disableAutoLayout
-            pageSize={PAGE_SIZE}
-            contextScreenOwnerType={OwnerType.newWorksForYou}
-            contextScreen={OwnerType.newWorksForYou}
-            ListEmptyComponent={
-              <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-            }
-            ListHeaderComponent={() => (
-              <NewWorksForYouHeaderComponent artworksCount={artworks.length} />
-            )}
-            hasMore={false}
-          />
-        </Flex>
-      </Animated.ScrollView>
-      {headerElement}
+      <MasonryInfiniteScrollArtworkGrid
+        animated
+        artworks={artworks}
+        disableAutoLayout
+        pageSize={PAGE_SIZE}
+        contextScreenOwnerType={OwnerType.newWorksForYou}
+        contextScreen={OwnerType.newWorksForYou}
+        ListEmptyComponent={
+          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+        }
+        ListHeaderComponent={() => (
+          <Text variant="xs" pt={2}>
+            {pluralize("Artwork", artworks.length)}
+          </Text>
+        )}
+        hasMore={false}
+        onScroll={scrollHandler}
+        style={{ paddingBottom: 120 }}
+      />
     </Flex>
   )
 }

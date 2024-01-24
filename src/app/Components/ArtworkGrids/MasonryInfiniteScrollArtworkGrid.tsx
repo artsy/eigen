@@ -13,6 +13,7 @@ import {
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
 import { useCallback } from "react"
+import Animated from "react-native-reanimated"
 
 type MasonryFlashListOmittedProps = Omit<
   MasonryFlashListProps<MasonryArtworkItem[]>,
@@ -20,15 +21,16 @@ type MasonryFlashListOmittedProps = Omit<
 >
 
 interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedProps {
+  animated?: boolean
   artworks: MasonryArtworkItem[]
-  pageSize?: number
-  contextScreenOwnerType?: ScreenOwnerType
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
-  loadMore?: (pageSize: number) => void
+  contextScreenOwnerType?: ScreenOwnerType
   hasMore?: boolean
   isLoading?: boolean
+  loadMore?: (pageSize: number) => void
+  pageSize?: number
 }
 
 /**
@@ -38,18 +40,20 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
  *
  */
 export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArtworkGridProps> = ({
+  animated = false,
   artworks,
-  pageSize = PAGE_SIZE,
-  contextScreenOwnerType,
   contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
-  refreshControl,
+  contextScreenOwnerType,
+  hasMore,
+  isLoading,
   ListEmptyComponent,
   ListHeaderComponent,
-  hasMore,
   loadMore,
-  isLoading,
+  pageSize = PAGE_SIZE,
+  refreshControl,
+  ...rest
 }) => {
   const space = useSpace()
   const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
@@ -75,8 +79,10 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     />
   )
 
+  const FlashlistComponent = animated ? AnimatedFlashList : MasonryFlashList
+
   return (
-    <MasonryFlashList
+    <FlashlistComponent
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: space(6) }}
       data={artworks}
@@ -92,6 +98,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       ListFooterComponent={
         <MasonryListFooterComponent shouldDisplaySpinner={shouldDisplaySpinner} />
       }
+      onScroll={rest.onScroll}
     />
   )
 }
+
+const AnimatedFlashList = Animated.createAnimatedComponent(
+  MasonryFlashList
+) as unknown as typeof MasonryFlashList

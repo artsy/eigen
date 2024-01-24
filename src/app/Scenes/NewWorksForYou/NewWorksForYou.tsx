@@ -1,14 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
-  BackButton,
   Flex,
   FullWidthIcon,
   GridIcon,
+  Screen,
   Skeleton,
   SkeletonBox,
   SkeletonText,
   Spacer,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { NewWorksForYouGridQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouGrid"
@@ -53,7 +52,6 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
 
   const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
-  const space = useSpace()
 
   const isReferredFromEmail = utm_medium === "email"
 
@@ -73,41 +71,28 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
     })
   }, [])
 
-  const showFeed =
+  const showToggleViewOptionIcon =
     !isTablet() &&
     enableNewWorksForYouFeed &&
     experiment.enabled &&
     (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
 
-  if (showFeed) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
-      >
-        <Flex>
-          {newWorksForYouViewOption === "grid" ? (
-            <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-          ) : (
-            <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-          )}
-
-          <Flex
-            position="absolute"
-            justifyContent="space-between"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-            px={2}
-            pt="15px"
-          >
-            <BackButton onPress={goBack} />
-
-            {!!enableNewWorksForYouFeed && !isTablet() && (
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+    >
+      <Screen>
+        <Screen.AnimatedHeader
+          onBack={goBack}
+          title="New Works For You"
+          rightElements={
+            showToggleViewOptionIcon ? (
               <MotiPressable
                 onPress={() => {
                   setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
                 }}
+                style={{ top: 5 }}
               >
                 {newWorksForYouViewOption === "grid" ? (
                   <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
@@ -115,21 +100,19 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
                   <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
                 )}
               </MotiPressable>
-            )}
-          </Flex>
-        </Flex>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
-  return (
-    <Flex>
-      <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-      <BackButton
-        onPress={goBack}
-        style={{ position: "absolute", left: space(2), top: space(2) }}
-      />
-    </Flex>
+            ) : undefined
+          }
+        />
+        <Screen.StickySubHeader title="New Works For You" />
+        <Screen.Body fullwidth>
+          {newWorksForYouViewOption === "list" && showToggleViewOptionIcon ? (
+            <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+          ) : (
+            <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
+          )}
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
@@ -144,10 +127,8 @@ export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOptio
 
   return (
     <Skeleton>
-      <Spacer y={4} />
       <Flex flexDirection="row">
         <Flex my={2} px={2}>
-          <SkeletonText variant="lg-display">New Works For You</SkeletonText>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="xs" mt={1}>
               XX Artworks
