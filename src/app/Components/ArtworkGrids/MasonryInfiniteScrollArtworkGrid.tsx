@@ -79,7 +79,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     />
   )
 
-  const FlashlistComponent = animated ? AnimatedFlashList : MasonryFlashList
+  const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
 
   return (
     <FlashlistComponent
@@ -103,6 +103,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   )
 }
 
-const AnimatedFlashList = Animated.createAnimatedComponent(
+const AnimatedMasonryFlashList = Animated.createAnimatedComponent(
   MasonryFlashList
 ) as unknown as typeof MasonryFlashList
