@@ -1,9 +1,10 @@
 import { Box, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { ToastDetails, ToastDuration } from "./types"
@@ -61,7 +62,27 @@ export const ToastComponent = ({
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
 
-  const toastBottomPadding = bottomPadding ?? TABBAR_HEIGHT
+  const toastBottomPadding = useMemo(() => {
+    // This is needed to avoid importing modules during tests
+    if (__TEST__) {
+      return TABBAR_HEIGHT
+    }
+
+    const { modules } = require("app/AppRegistry")
+
+    const moduleName = __unsafe_mainModalStackRef.current?.getCurrentRoute()?.params // @ts-expect-error
+      ?.moduleName as keyof typeof modules
+
+    const isBottomTabHidden = modules[moduleName]?.options?.hidesBottomTabs
+
+    // We currently handle custom bottom padding only for when the bottom tab bar is hidden
+    // We can change this later if we need to handle custom bottom padding for when the bottom tab bar is visible
+    if (isBottomTabHidden) {
+      return bottomPadding || 0
+    }
+
+    return TABBAR_HEIGHT
+  }, [])
 
   if (placement === "middle") {
     const innerMiddle = (

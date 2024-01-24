@@ -1,5 +1,5 @@
 import { Stopwatch, Flex, Text } from "@artsy/palette-mobile"
-import { ActivityItem_item$data } from "__generated__/ActivityItem_item.graphql"
+import { ActivityItem_notification$data } from "__generated__/ActivityItem_notification.graphql"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { Time, getTimer } from "app/utils/getTimer"
 import { FC, useEffect, useRef, useState } from "react"
@@ -7,7 +7,7 @@ import { FC, useEffect, useRef, useState } from "react"
 const INTERVAL = 1000
 
 interface ExpiresInTimerProps {
-  item: ActivityItem_item$data
+  item: ActivityItem_notification$data["item"]
 }
 
 const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
@@ -15,8 +15,8 @@ const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
 }
 
 export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
-  const expiresAt = item?.item?.expiresAt ?? ""
-  const available = item?.item?.available ?? false
+  const expiresAt = item?.expiresAt ?? ""
+  const available = item?.available ?? false
 
   const intervalId = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -73,6 +73,9 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
   )
 }
 
-export const shouldDisplayExpiresInTimer = (item: ActivityItem_item$data) => {
-  return item.notificationType === "PARTNER_OFFER_CREATED" && item?.item?.expiresAt
+export const shouldDisplayExpiresInTimer = (
+  notificationType: string,
+  item: ActivityItem_notification$data["item"]
+) => {
+  return notificationType === "PARTNER_OFFER_CREATED" && item?.expiresAt
 }

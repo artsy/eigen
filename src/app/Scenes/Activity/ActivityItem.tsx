@@ -1,7 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
+import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
   ExpiresInTimer,
@@ -19,7 +19,7 @@ import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityItemProps {
-  item: ActivityItem_item$key
+  notification: ActivityItem_notification$key
 }
 
 const UNREAD_INDICATOR_SIZE = 8
@@ -31,7 +31,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
   const markAsRead = useMarkNotificationAsRead()
   const tracking = useTracking()
-  const item = useFragment(activityItemFragment, props.item)
+  const item = useFragment(activityItemFragment, props.notification)
   const artworks = extractNodes(item.artworksConnection)
   const artworksCount = item.objectsCount
   const remainingArtworksCount = artworksCount - 4
@@ -56,7 +56,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   if (enableNewActivityPanelManagement) {
     return (
       <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-        <Flex flexDirection="row" alignItems="center">
+        <Flex flexDirection="row" alignItems="center" px={2}>
           <Flex flex={1} mr={2}>
             <Flex flexDirection="column" py={2}>
               <Flex flexDirection="row" alignItems="center">
@@ -108,7 +108,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   }
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
-      <Flex py={2} flexDirection="row" alignItems="center">
+      <Flex py={2} flexDirection="row" alignItems="center" px={2}>
         <Flex flex={1}>
           <Flex flexDirection="row">
             <ActivityItemTypeLabel notificationType={item.notificationType} />
@@ -126,7 +126,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             <Text variant="sm-display">{item.message}</Text>
           )}
 
-          {shouldDisplayExpiresInTimer(item) && <ExpiresInTimer item={item} />}
+          {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
+            <ExpiresInTimer item={item.item} />
+          )}
 
           <Spacer y={1} />
 
@@ -170,7 +172,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 }
 
 const activityItemFragment = graphql`
-  fragment ActivityItem_item on Notification {
+  fragment ActivityItem_notification on Notification {
     internalID
     id
     title

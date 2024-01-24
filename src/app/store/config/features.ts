@@ -255,6 +255,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
   },
+  AREnableNewActivityPanelManagement: {
+    description: "Enable new activity panel management",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableNewActivityPanelManagement",
+  },
 }
 
 export interface DevToggleDescriptor {

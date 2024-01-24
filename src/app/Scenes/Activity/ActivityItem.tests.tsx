@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -28,7 +29,7 @@ describe("ActivityItem", () => {
           notificationsConnection(first: 1) {
             edges {
               node {
-                ...ActivityItem_item
+                ...ActivityItem_notification
               }
             }
           }
@@ -38,7 +39,7 @@ describe("ActivityItem", () => {
     )
     const items = extractNodes(data.notificationsConnection)
 
-    return <ActivityItem item={items[0]} />
+    return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
   }
 
   const { renderWithRelay } = setupTestWrapper({
