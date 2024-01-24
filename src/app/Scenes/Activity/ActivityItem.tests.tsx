@@ -1,5 +1,6 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -28,7 +29,7 @@ describe("ActivityItem", () => {
           notificationsConnection(first: 1) {
             edges {
               node {
-                ...ActivityItem_item
+                ...ActivityItem_notification
               }
             }
           }
@@ -38,52 +39,52 @@ describe("ActivityItem", () => {
     )
     const items = extractNodes(data.notificationsConnection)
 
-    return <ActivityItem item={items[0]} />
+    return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
   }
 
   it("should the basic info", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    expect(getByText("Notification Title")).toBeTruthy()
-    expect(getByText("Notification Message")).toBeTruthy()
+    expect(screen.getByText("Notification Title")).toBeTruthy()
+    expect(screen.getByText("Notification Message")).toBeTruthy()
   })
 
   it("should render the formatted publication date", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    expect(getByText("2 days ago")).toBeTruthy()
+    expect(screen.getByText("2 days ago")).toBeTruthy()
   })
 
   it("should render artwork images", async () => {
-    const { getAllByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    expect(getAllByLabelText("Activity Artwork Image")).toHaveLength(4)
+    expect(screen.getAllByLabelText("Activity Artwork Image")).toHaveLength(4)
   })
 
   it("should track event when an item is tapped", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText("Notification Title"))
+    fireEvent.press(screen.getByText("Notification Title"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -96,14 +97,14 @@ describe("ActivityItem", () => {
   })
 
   it("should pass predefined props when", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText("Notification Title"))
+    fireEvent.press(screen.getByText("Notification Title"))
 
     await flushPromiseQueue()
 
@@ -123,7 +124,7 @@ describe("ActivityItem", () => {
   })
 
   it("should pass search criteria id prop", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => ({
@@ -133,7 +134,7 @@ describe("ActivityItem", () => {
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText("Notification Title"))
+    fireEvent.press(screen.getByText("Notification Title"))
 
     await flushPromiseQueue()
 
@@ -153,14 +154,14 @@ describe("ActivityItem", () => {
   })
 
   it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Notification: () => notification,
     })
     await flushPromiseQueue()
 
-    fireEvent.press(getByText("Notification Title"))
+    fireEvent.press(screen.getByText("Notification Title"))
 
     await flushPromiseQueue()
 
@@ -171,19 +172,19 @@ describe("ActivityItem", () => {
 
   describe("Unread notification indicator", () => {
     it("should NOT be rendered by default", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => notification,
       })
       await flushPromiseQueue()
 
-      const indicator = queryByLabelText("Unread notification indicator")
+      const indicator = screen.queryByLabelText("Unread notification indicator")
       expect(indicator).toBeNull()
     })
 
     it("should be rendered when notification is unread", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -193,15 +194,12 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      const indicator = getByLabelText("Unread notification indicator")
+      const indicator = screen.getByLabelText("Unread notification indicator")
       expect(indicator).toBeTruthy()
     })
 
     it("should be removed after the activity item is pressed", async () => {
-      const { getByText, queryByLabelText } = renderWithHookWrappersTL(
-        <TestRenderer />,
-        mockEnvironment
-      )
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -211,32 +209,32 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      expect(queryByLabelText("Unread notification indicator")).toBeTruthy()
-      fireEvent.press(getByText("Notification Title"))
+      expect(screen.getByLabelText("Unread notification indicator")).toBeTruthy()
+      fireEvent.press(screen.getByText("Notification Title"))
 
       // resolving the mark as read mutation
       resolveMostRecentRelayOperation(mockEnvironment)
       await flushPromiseQueue()
 
-      expect(queryByLabelText("Unread notification indicator")).toBeFalsy()
+      expect(screen.queryByLabelText("Unread notification indicator")).toBeFalsy()
     })
   })
 
   describe("Notification type", () => {
     it("should NOT be rendered by default", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => notification,
       })
       await flushPromiseQueue()
 
-      const label = queryByLabelText(/Notification type: .+/i)
+      const label = screen.queryByLabelText(/Notification type: .+/i)
       expect(label).toBeNull()
     })
 
     it("should render 'Alert'", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -246,14 +244,14 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      const label = getByLabelText("Notification type: Alert")
+      const label = screen.getByLabelText("Notification type: Alert")
       expect(label).toBeTruthy()
     })
   })
 
   describe("remaining artworks count", () => {
     it("should NOT be rendered if there are less or equal to 4", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -263,11 +261,11 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
+      expect(screen.queryByLabelText("Remaining artworks count")).toBeFalsy()
     })
 
     it("should NOT be rendered if notification is not artwork-based", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -278,14 +276,11 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
+      expect(screen.queryByLabelText("Remaining artworks count")).toBeFalsy()
     })
 
     it("should be rendered if there are more than 4", async () => {
-      const { getByText, getByLabelText } = renderWithHookWrappersTL(
-        <TestRenderer />,
-        mockEnvironment
-      )
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Notification: () => ({
@@ -295,8 +290,8 @@ describe("ActivityItem", () => {
       })
       await flushPromiseQueue()
 
-      expect(getByLabelText("Remaining artworks count")).toBeTruthy()
-      expect(getByText("+ 1")).toBeTruthy()
+      expect(screen.getByLabelText("Remaining artworks count")).toBeTruthy()
+      expect(screen.getByText("+ 1")).toBeTruthy()
     })
   })
 })

@@ -1,4 +1,5 @@
 import { Spacer, Flex, Box, Separator, NAVBAR_HEIGHT } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Fragment } from "react"
@@ -23,13 +24,17 @@ const ActivityItemPlaceholder = () => {
 }
 
 export const ActivityTabPlaceholder = () => {
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
+
   return (
     <Flex flex={1}>
-      <Animated.View
-        style={{
-          height: NAVBAR_HEIGHT * 2,
-        }}
-      />
+      {!enableNewActivityPanelManagement && (
+        <Animated.View
+          style={{
+            height: NAVBAR_HEIGHT * 2,
+          }}
+        />
+      )}
 
       {/* Subheader */}
       <Flex

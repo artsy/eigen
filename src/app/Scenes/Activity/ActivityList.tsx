@@ -1,8 +1,8 @@
-import { Flex, Spinner, Separator, Tabs } from "@artsy/palette-mobile"
+import { Flex, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
-import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
@@ -21,13 +21,28 @@ interface ActivityListProps {
 }
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
-  const headerMeasurements = useHeaderMeasurements()
+  const enableNewActivityPanelManagement = unsafe_getFeatureFlag(
+    "AREnableNewActivityPanelManagement"
+  )
+
+  const headerMeasurements = enableNewActivityPanelManagement
+    ? {
+        height: { value: 0 },
+        top: { value: 0 },
+      }
+    : // Although this breaks the rule of hooks, it's safe to do it here
+      // Because the feature flag is only updates on screen mount thanks to unsafe_getFeatureFlag
+      // The above check will be removed once the feature flag is removed
+      // It seems reasonable here to do this to avoid duplicating code and messing up valuable
+      // Git history
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useHeaderMeasurements()
   const [refreshing, setRefreshing] = useState(false)
 
-  const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
-    ActivityQuery,
-    ActivityList_viewer$key
-  >(notificationsConnectionFragment, viewer)
+  const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment(
+    notificationsConnectionFragment,
+    viewer
+  )
 
   const meData = useFragment(meFragment, me)
 
@@ -45,7 +60,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   const sections = notifications.map((notification) => ({
     key: notification.internalID,
-    content: <ActivityItem item={notification} />,
+    content: <ActivityItem notification={notification} />,
   }))
 
   const handleLoadMore = () => {
@@ -77,22 +92,27 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       headerOffset = -headerMeasurements.height.value
     }
 
+    const ScrollViewComponent = enableNewActivityPanelManagement
+      ? Screen.ScrollView
+      : Tabs.ScrollView
     return (
-      <Tabs.ScrollView
+      <ScrollViewComponent
         refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       >
         <Flex flex={1} justifyContent="center" top={headerOffset}>
           <ActivityEmptyView type={type} />
         </Flex>
-      </Tabs.ScrollView>
+      </ScrollViewComponent>
     )
   }
 
+  const FlatlistComponent = enableNewActivityPanelManagement ? Screen.FlatList : Tabs.FlatList
+
   return (
-    <Tabs.FlatList
+    <FlatlistComponent
       ListHeaderComponent={() => {
         return (
-          <Flex py={1} mx={-2}>
+          <Flex py={1}>
             <ActivityMarkAllAsReadSection
               hasUnreadNotifications={hasUnreadNotifications}
               px={2}
@@ -107,6 +127,10 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       ItemSeparatorComponent={() => <Separator />}
       onEndReached={handleLoadMore}
       renderItem={({ item }) => <>{item.content}</>}
+      contentContainerStyle={{
+        // This is required because Tabs.Flatlist has a marginHorizontal of 20
+        marginHorizontal: 0,
+      }}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       ListFooterComponent={
         isLoadingNext ? (
@@ -136,7 +160,7 @@ const notificationsConnectionFragment = graphql`
           artworks: artworksConnection {
             totalCount
           }
-          ...ActivityItem_item
+          ...ActivityItem_notification
         }
       }
     }
