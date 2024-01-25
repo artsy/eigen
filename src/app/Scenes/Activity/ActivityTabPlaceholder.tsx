@@ -23,6 +23,23 @@ const ActivityItemPlaceholder = () => {
   )
 }
 
+const NewActivityItemPlaceholder = () => {
+  return (
+    <Box my={2}>
+      <Flex flexDirection="row">
+        <PlaceholderBox width={55} height={55} marginRight={10} />
+        <PlaceholderBox width={55} height={55} marginRight={10} />
+        <PlaceholderBox width={55} height={55} />
+      </Flex>
+      <Spacer y={1} />
+      <PlaceholderBox width={130} height={15} />
+      <Spacer y={0.5} />
+      <PlaceholderBox width={100} height={15} />
+      <Spacer y={1} />
+    </Box>
+  )
+}
+
 export const ActivityTabPlaceholder = () => {
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
@@ -53,7 +70,11 @@ export const ActivityTabPlaceholder = () => {
       <Box mx={2}>
         {times(3).map((index) => (
           <Fragment key={`placeholder-item-${index}`}>
-            <ActivityItemPlaceholder />
+            {enableNewActivityPanelManagement ? (
+              <NewActivityItemPlaceholder />
+            ) : (
+              <ActivityItemPlaceholder />
+            )}
             <Separator />
           </Fragment>
         ))}

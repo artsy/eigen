@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => {
-  const enableNewActivityPanelManagement = useFeatureFlag("AREnableSingleActivityPanelScreen") // true // useFeatureFlag("AREnableNewActivityPanelManagement")
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   if (!shouldDisplayNotificationTypeLabel(notificationType) && !enableNewActivityPanelManagement) {
     return null

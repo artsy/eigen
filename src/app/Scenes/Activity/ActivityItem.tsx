@@ -1,6 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
@@ -24,10 +24,11 @@ interface ActivityItemProps {
 
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
+const BADGE_BORDER_RADIUS = 3
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
-  const enableNewActivityPanelManagement = useFeatureFlag("AREnableSingleActivityPanelScreen") // true // useFeatureFlag("AREnableNewActivityPanelManagement")
+  const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   const markAsRead = useMarkNotificationAsRead()
   const tracking = useTracking()
@@ -35,9 +36,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const artworks = extractNodes(item.artworksConnection)
   const artworksCount = item.objectsCount
   const remainingArtworksCount = artworksCount - 4
-  const plural = artworksCount > 1
   const shouldDisplayCounts =
     isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
+  const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
 
   const handlePress = () => {
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
@@ -59,37 +60,62 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
         <Flex flexDirection="row" alignItems="center" px={2}>
           <Flex flex={1} mr={2}>
             <Flex flexDirection="column" py={2}>
-              <Flex flexDirection="row" alignItems="center">
-                {artworks.map((artwork) => {
-                  return (
-                    <Flex
-                      key={`${item.internalID}-${artwork.internalID}`}
-                      mr={1}
-                      accessibilityLabel="Activity Artwork Image"
+              <Flex flexDirection={isPartnerOffer ? "row" : "column"}>
+                <Flex flexDirection="row" alignItems="center">
+                  {artworks.map((artwork) => {
+                    return (
+                      <Flex
+                        key={`${item.internalID}-${artwork.internalID}`}
+                        mr={1}
+                        accessibilityLabel="Activity Artwork Image"
+                      >
+                        <OpaqueImageView
+                          imageURL={artwork.image?.preview?.src}
+                          width={ARTWORK_IMAGE_SIZE}
+                          height={ARTWORK_IMAGE_SIZE}
+                        />
+                      </Flex>
+                    )
+                  })}
+                  {!!shouldDisplayCounts && (
+                    <Text
+                      variant="xs"
+                      color="black60"
+                      accessibilityLabel="Remaining artworks count"
                     >
-                      <OpaqueImageView
-                        imageURL={artwork.image?.preview?.src}
-                        width={ARTWORK_IMAGE_SIZE}
-                        height={ARTWORK_IMAGE_SIZE}
-                      />
-                    </Flex>
-                  )
-                })}
-                {!!shouldDisplayCounts && (
-                  <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
-                    + {remainingArtworksCount}
+                      + {remainingArtworksCount}
+                    </Text>
+                  )}
+                </Flex>
+
+                <Flex flex={1}>
+                  {!!isPartnerOffer && (
+                    <Box
+                      display="block"
+                      width="50%"
+                      backgroundColor="blue10"
+                      borderRadius={BADGE_BORDER_RADIUS}
+                    >
+                      <Text variant="xs" textAlign="center" color="blue100" maxWidth>
+                        Limited Time Offer
+                      </Text>
+                    </Box>
+                  )}
+
+                  <Text variant="sm-display" fontWeight="bold">
+                    {item.headline}
                   </Text>
-                )}
-              </Flex>
 
-              <Text variant="sm-display" fontWeight="bold">
-                {artworksCount} new work{plural ? "s" : ""} by {item.title}
-              </Text>
-
-              <Flex flexDirection="row">
-                <ActivityItemTypeLabel notificationType={item.notificationType} />
-
-                <Text variant="xs">{item.publishedAt}</Text>
+                  <Flex flexDirection="row">
+                    <ActivityItemTypeLabel notificationType={item.notificationType} />
+                    <Text variant="xs" mr={0.5}>
+                      {item.publishedAt}
+                    </Text>
+                    {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
+                      <ExpiresInTimer item={item.item} />
+                    )}
+                  </Flex>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
@@ -122,9 +148,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             {item.title}
           </Text>
 
-          {item.notificationType !== "PARTNER_OFFER_CREATED" && (
-            <Text variant="sm-display">{item.message}</Text>
-          )}
+          {!isPartnerOffer && <Text variant="sm-display">{item.message}</Text>}
 
           {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
             <ExpiresInTimer item={item.item} />
@@ -176,6 +200,7 @@ const activityItemFragment = graphql`
     internalID
     id
     title
+    headline
     message
     publishedAt(format: "RELATIVE")
     targetHref
