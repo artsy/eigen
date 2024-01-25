@@ -62,7 +62,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           <Flex flex={1} mr={2}>
             <Flex flexDirection="column" py={2}>
               <Flex flexDirection={isPartnerOffer ? "row" : "column"}>
-                <Flex flexDirection="row" alignItems="center">
+                <Flex flexDirection="row">
                   {artworks.map((artwork) => {
                     return (
                       <Flex
