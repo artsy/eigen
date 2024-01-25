@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, Spacer, useColor } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
@@ -6,7 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Alert, ScrollView } from "react-native"
-// import { useTracking } from "react-tracking"
+import { useTracking } from "react-tracking"
 
 interface MyProfileSettingsProps {
   onSuccess?: () => void
@@ -16,7 +17,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
 
   const color = useColor()
-  // const tracking = useTracking()
+  const tracking = useTracking()
   const separatorColor = color("black5")
 
   return (
@@ -47,7 +48,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <MenuItem
           title="Recently Viewed"
           onPress={() => {
-            // tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
+            tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
             navigate("recently-viewed")
           }}
         />
@@ -104,12 +105,11 @@ export function confirmLogout() {
   ])
 }
 
-// const tracks = {
-//   trackMenuTap: (href: string) => ({
-//     action_name: "menuTapped",
-//     action_type: "tap",
-//     payload: href,
-//     context_module: ContextModule.,
-//     context_screen_owner_type: OwnerType,
-//   }),
-// }
+const tracks = {
+  trackMenuTap: (href: string) => ({
+    action_type: ActionType.tappeMenuItem,
+    payload: href,
+    context_module: ContextModule.account,
+    context_screen_owner_type: OwnerType.settings,
+  }),
+}
