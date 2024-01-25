@@ -76,6 +76,12 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contextScreen={contextScreen}
       contextScreenOwnerId={contextScreenOwnerId}
       contextScreenOwnerSlug={contextScreenOwnerSlug}
+      numColumns={rest.numColumns}
+      artworkMetaStyle={{
+        // Since the grid is full width,
+        // we need to add padding to the artwork meta to make sure its readable
+        paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
+      }}
     />
   )
 
@@ -84,12 +90,16 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   return (
     <FlashlistComponent
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: space(6) }}
+      contentContainerStyle={{
+        // No paddings are needed for single column grids
+        paddingHorizontal: rest.numColumns === 1 ? 0 : space(2),
+        paddingBottom: space(6),
+      }}
       data={artworks}
       keyExtractor={(item) => item.id}
       onEndReached={onEndReached}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-      numColumns={NUM_COLUMNS_MASONRY}
+      numColumns={rest.numColumns ?? NUM_COLUMNS_MASONRY}
       estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       ListHeaderComponent={shouldDisplayHeader ? ListHeaderComponent : null}
       ListEmptyComponent={ListEmptyComponent}

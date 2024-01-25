@@ -3,6 +3,7 @@ import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
+import { ViewProps } from "react-native"
 import { FragmentRefs } from "relay-runtime"
 
 interface Artwork {
@@ -26,6 +27,8 @@ interface MasonryArtworkGridItemProps {
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   navigateToPageableRoute: ReturnType<typeof useNavigateToPageableRoute>["navigateToPageableRoute"]
+  numColumns?: number
+  artworkMetaStyle?: ViewProps["style"]
 }
 
 export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
@@ -37,21 +40,20 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
   contextScreenOwnerSlug,
   contextScreen,
   navigateToPageableRoute,
+  numColumns = NUM_COLUMNS_MASONRY,
+  artworkMetaStyle = {},
   ...rest
 }) => {
   const space = useSpace()
   const { width } = useScreenDimensions()
 
   const imgAspectRatio = item.image?.aspectRatio ?? 1
-  const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+  // No paddings are needed for single column grids
+  const imgWidth = numColumns === 1 ? width : width / numColumns - space(2) - space(1)
   const imgHeight = imgWidth / imgAspectRatio
 
   return (
-    <Flex
-      pl={columnIndex === 0 ? 0 : 1}
-      pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-      mt={2}
-    >
+    <Flex pl={columnIndex === 0 ? 0 : 1} pr={numColumns - (columnIndex + 1) === 0 ? 0 : 1} mt={2}>
       <ArtworkGridItem
         {...rest}
         itemIndex={index}
@@ -62,6 +64,7 @@ export const MasonryArtworkGridItem: React.FC<MasonryArtworkGridItemProps> = ({
         artwork={item}
         height={imgHeight}
         navigateToPageableRoute={navigateToPageableRoute}
+        artworkMetaStyle={artworkMetaStyle}
       />
     </Flex>
   )

@@ -25,10 +25,8 @@ import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/S
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
-import {
-  RecentlyViewedScreen,
-  RecentlyViewedScreenQuery,
-} from "app/Scenes/RecentlyViewed/RecentlyViewed"
+import { RecentlyViewedScreenQuery } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
+import { RecentlyViewedScreen } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { StorybookUIRoot } from "app/storybook/StorybookUI"
@@ -599,7 +597,14 @@ export const modules = defineModules({
     RequestForPriceEstimateConfirmationScreen,
     { hidesBackButton: true }
   ),
-  RecentlyViewed: reactModule(RecentlyViewedScreen, {}, [RecentlyViewedScreenQuery]),
+  RecentlyViewed: reactModule(
+    RecentlyViewedScreen,
+    {
+      hidesBackButton: true,
+      fullBleed: true,
+    },
+    [RecentlyViewedScreenQuery]
+  ),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
     SellWithArtsyHomeScreenQuery,
   ]),
