@@ -948,4 +948,26 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.userPrefs.newWorksForYouViewOption).toEqual("list")
     })
   })
+
+  describe("App version Versions.RenameDefaultViewOption", () => {
+    const migrationToTest = Versions.RenameDefaultViewOption
+
+    it("renames newWorksForYouViewOption to defaultViewOption", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.userPrefs.newWorksForYouViewOption).toEqual("list")
+      expect(previousState.userPrefs.defaultViewOption).toEqual(undefined)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.userPrefs.newWorksForYouViewOption).toEqual(undefined)
+      expect(migratedState.userPrefs.defaultViewOption).toEqual("list")
+    })
+  })
 })

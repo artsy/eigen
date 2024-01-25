@@ -7,9 +7,9 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { RecentlyViewedPlaceholder } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedPlaceholder"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import { Suspense } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface RecentlyViewedArtworksProps {
@@ -86,10 +86,9 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const RecentlyViewedArtworksQR: React.FC<RecentlyViewedArtworksProps> = (props) => {
-  return (
-    <Suspense fallback={<RecentlyViewedPlaceholder viewOption={props.viewOption} />}>
-      <RecentlyViewedArtworks {...props} />
-    </Suspense>
-  )
-}
+export const RecentlyViewedArtworksQR: React.FC<RecentlyViewedArtworksProps> = withSuspense(
+  (props) => {
+    return <RecentlyViewedArtworks {...props} />
+  },
+  RecentlyViewedPlaceholder
+)
