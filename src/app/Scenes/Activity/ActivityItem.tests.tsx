@@ -16,6 +16,26 @@ const targetUrl = "/artist/banksy/works-for-sale?sort=-published_at"
 const alertTargetUrl =
   "/artist/banksy/works-for-sale?search_criteria_id=searchCriteriaId&sort=-published_at"
 
+const TestRenderer = () => {
+  const data = useLazyLoadQuery<ActivityItem_Test_Query>(
+    graphql`
+      query ActivityItem_Test_Query {
+        notificationsConnection(first: 1) {
+          edges {
+            node {
+              ...ActivityItem_notification
+            }
+          }
+        }
+      }
+    `,
+    {}
+  )
+  const items = extractNodes(data.notificationsConnection)
+
+  return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
+}
+
 describe("ActivityItem with feature flag disabled", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
@@ -23,26 +43,6 @@ describe("ActivityItem with feature flag disabled", () => {
     mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: false })
   })
-
-  const TestRenderer = () => {
-    const data = useLazyLoadQuery<ActivityItem_Test_Query>(
-      graphql`
-        query ActivityItem_Test_Query {
-          notificationsConnection(first: 1) {
-            edges {
-              node {
-                ...ActivityItem_notification
-              }
-            }
-          }
-        }
-      `,
-      {}
-    )
-    const items = extractNodes(data.notificationsConnection)
-
-    return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
-  }
 
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
@@ -289,26 +289,6 @@ describe("ActivityItem with feature flag enabled", () => {
     mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewActivityPanelManagement: true })
   })
-
-  const TestRenderer = () => {
-    const data = useLazyLoadQuery<ActivityItem_Test_Query>(
-      graphql`
-        query ActivityItem_Test_Query {
-          notificationsConnection(first: 1) {
-            edges {
-              node {
-                ...ActivityItem_notification
-              }
-            }
-          }
-        }
-      `,
-      {}
-    )
-    const items = extractNodes(data.notificationsConnection)
-
-    return <ActivityItem notification={items[0] as unknown as ActivityItem_notification$key} />
-  }
 
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
