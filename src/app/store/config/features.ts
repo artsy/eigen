@@ -261,6 +261,12 @@ export const features: { [key: string]: FeatureDescriptor } = {
     showInDevMenu: true,
     echoFlagKey: "AREnableNewActivityPanelManagement",
   },
+  AREnableArtworksFeedView: {
+    description: "Enable artworks feed view",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworksFeedView",
+  },
 }
 
 export interface DevToggleDescriptor {
