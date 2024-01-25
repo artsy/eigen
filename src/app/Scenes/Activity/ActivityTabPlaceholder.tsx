@@ -75,7 +75,9 @@ export const ActivityTabPlaceholder = () => {
             ) : (
               <ActivityItemPlaceholder />
             )}
-            <Separator />
+            <Flex mx={-2}>
+              <Separator borderColor="black10" />
+            </Flex>
           </Fragment>
         ))}
       </Box>
