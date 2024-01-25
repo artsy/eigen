@@ -6,7 +6,7 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 describe("RecentlyViewed", () => {
   it("renders RecentlyViewed", async () => {
     const { renderWithRelay } = setupTestWrapper({
-      Component: () => <RecentlyViewedArtworksQR viewOption="grid" />,
+      Component: () => <RecentlyViewedArtworksQR />,
     })
 
     renderWithRelay({

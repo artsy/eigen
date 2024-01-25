@@ -1,13 +1,15 @@
 import { Flex, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
-import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
+import { GlobalStore } from "app/store/GlobalStore"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { times } from "lodash"
 
-export const RecentlyViewedPlaceholder: React.FC<{ viewOption: ViewOption }> = ({ viewOption }) => {
+export const RecentlyViewedPlaceholder: React.FC = () => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+
   return (
     <Skeleton>
       <Flex my={2}>
-        {viewOption === "grid" ? (
+        {defaultViewOption === "grid" ? (
           <PlaceholderGrid />
         ) : (
           <Flex width="100%">

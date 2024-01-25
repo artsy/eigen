@@ -5,18 +5,16 @@ import { RecentlyViewedArtworks_artworksConnection$key } from "__generated__/Rec
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { RecentlyViewedPlaceholder } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedPlaceholder"
-import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
+import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-interface RecentlyViewedArtworksProps {
-  viewOption: ViewOption
-}
+export const RecentlyViewedArtworks: React.FC = () => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
-export const RecentlyViewedArtworks: React.FC<RecentlyViewedArtworksProps> = ({ viewOption }) => {
   const queryData = useLazyLoadQuery<RecentlyViewedArtworksQuery>(
     RecentlyViewedScreenQuery,
     recentlyViewedArtworksQueryVariables
@@ -31,7 +29,7 @@ export const RecentlyViewedArtworks: React.FC<RecentlyViewedArtworksProps> = ({ 
   const artworks = extractNodes(data?.recentlyViewedArtworksConnection)
   const RefreshControl = useRefreshControl(refetch)
 
-  const numOfColumns = viewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
+  const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
     <MasonryInfiniteScrollArtworkGrid
@@ -86,9 +84,6 @@ const artworkConnectionFragment = graphql`
   }
 `
 
-export const RecentlyViewedArtworksQR: React.FC<RecentlyViewedArtworksProps> = withSuspense(
-  (props) => {
-    return <RecentlyViewedArtworks {...props} />
-  },
-  RecentlyViewedPlaceholder
-)
+export const RecentlyViewedArtworksQR: React.FC = withSuspense(() => {
+  return <RecentlyViewedArtworks />
+}, RecentlyViewedPlaceholder)

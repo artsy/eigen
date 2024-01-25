@@ -1,13 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
 import { FullWidthIcon, GridIcon, Screen } from "@artsy/palette-mobile"
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
-import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiPressable } from "moti/interactions"
-import { useState } from "react"
 import { isTablet } from "react-native-device-info"
 
 const SCREEN_TITLE = "Recently Viewed"
@@ -15,7 +14,8 @@ const ICON_SIZE = 26
 
 export const RecentlyViewedScreen: React.FC = () => {
   const enableArtworksFeedView = useFeatureFlag("AREnableArtworksFeedView")
-  const [viewOption, setViewOption] = useState<ViewOption>("list")
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
   const showToggleViewOptionIcon = !isTablet() && enableArtworksFeedView
 
@@ -31,11 +31,11 @@ export const RecentlyViewedScreen: React.FC = () => {
             showToggleViewOptionIcon ? (
               <MotiPressable
                 onPress={() => {
-                  setViewOption(viewOption === "list" ? "grid" : "list")
+                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
                 }}
                 style={{ top: 5 }}
               >
-                {viewOption === "grid" ? (
+                {defaultViewOption === "grid" ? (
                   <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
                 ) : (
                   <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
@@ -46,7 +46,7 @@ export const RecentlyViewedScreen: React.FC = () => {
         />
         <Screen.StickySubHeader title={SCREEN_TITLE} />
         <Screen.Body fullwidth>
-          <RecentlyViewedArtworksQR viewOption={viewOption} />
+          <RecentlyViewedArtworksQR />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
