@@ -556,6 +556,7 @@ export const modules = defineModules({
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {
     hidesBottomTabs: true,
     hidesBackButton: true,
+    fullBleed: true,
   }),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
     hidesBackButton: true,
