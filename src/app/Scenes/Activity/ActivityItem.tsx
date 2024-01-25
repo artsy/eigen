@@ -1,6 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
 import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
@@ -8,6 +8,7 @@ import {
   shouldDisplayExpiresInTimer,
 } from "app/Scenes/Activity/components/ExpiresInTimer"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
+import { getNotificationTypeBadge } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -88,18 +89,17 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                   )}
                 </Flex>
 
-                <Flex flex={1}>
+                <Flex flex={1} justifyContent="center">
                   {!!isPartnerOffer && (
-                    <Box
-                      display="block"
-                      width="50%"
-                      backgroundColor="blue10"
+                    <Flex
                       borderRadius={BADGE_BORDER_RADIUS}
+                      backgroundColor="blue10"
+                      alignSelf="flex-start"
                     >
-                      <Text variant="xs" textAlign="center" color="blue100" maxWidth>
-                        Limited Time Offer
+                      <Text variant="xs" color="blue100" px={0.5}>
+                        {getNotificationTypeBadge(item.notificationType)}
                       </Text>
-                    </Box>
+                    </Flex>
                   )}
 
                   <Text variant="sm-display" fontWeight="bold">
