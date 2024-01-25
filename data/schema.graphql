@@ -3983,6 +3983,7 @@ type CollectorProfileType {
   email: String
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+  firstNameLastInitial: String
   icon: Image
 
   # A globally unique ID.
@@ -3990,6 +3991,7 @@ type CollectorProfileType {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
+  inquiryRequestsCount: Int
   institutionalAffiliations: String
   intents: [String]
 
@@ -4056,6 +4058,13 @@ type CollectorProfileTypeEdge {
 
   # The item at the end of the edge
   node: CollectorProfileType
+}
+
+type CollectorResume {
+  collectorProfile: CollectorProfileType!
+
+  # The Collector follows the Gallery profile
+  isCollectorFollowingPartner: Boolean!
 }
 
 # Represents either an action or a potential failure
@@ -7182,6 +7191,9 @@ type Conversation implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # The collector profile of the user who initiated the conversation. Do not use this field for Partners
+  collectorResume: CollectorResume
   createdAt(
     format: String
 
@@ -7212,7 +7224,7 @@ type Conversation implements Node {
   fromLastViewedMessageID: String
 
   # The collector profile of the user who initiated the conversation
-  fromProfile: CollectorProfileType
+  fromProfile: CollectorProfileType @deprecated(reason: "Use `collectorResume` instead")
 
   # The user who initiated the conversation
   fromUser: User
@@ -10950,6 +10962,7 @@ type Image {
 
   # Blurhash code for the image
   blurhash: String
+  blurhashDataURI(width: Int = 64): String
   caption: String
   cropped(
     height: Int!
@@ -11046,6 +11059,7 @@ type InquirerCollectorProfile {
   email: String
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+  firstNameLastInitial: String
 
   # The Collector follows the Gallery profile
   hasPartnerFollow: Boolean
@@ -11056,6 +11070,7 @@ type InquirerCollectorProfile {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
+  inquiryRequestsCount: Int
   institutionalAffiliations: String
   intents: [String]
 
@@ -13326,6 +13341,7 @@ type Notification implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String @deprecated(reason: "Please use `publishedAt` instead")
+  headline: String!
 
   # A globally unique ID.
   id: ID!
@@ -13696,6 +13712,7 @@ type Partner implements Node {
 
     # Return artworks that are missing priority metadata
     missingPriorityMetadata: Boolean
+    page: Int
 
     # Only return artworks that are partner-offerable
     partnerOfferable: Boolean
@@ -18280,6 +18297,7 @@ type UpdateCollectorProfilePayload {
   email: String
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
+  firstNameLastInitial: String
   icon: Image
 
   # A globally unique ID.
@@ -18287,6 +18305,7 @@ type UpdateCollectorProfilePayload {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
+  inquiryRequestsCount: Int
   institutionalAffiliations: String
   intents: [String]
 
