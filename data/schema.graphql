@@ -3991,7 +3991,7 @@ type CollectorProfileType {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
-  inquiryRequestsCount: Int
+  inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
 
@@ -11070,7 +11070,7 @@ type InquirerCollectorProfile {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
-  inquiryRequestsCount: Int
+  inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
 
@@ -18305,7 +18305,7 @@ type UpdateCollectorProfilePayload {
   identityVerified: Boolean
     @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
-  inquiryRequestsCount: Int
+  inquiryRequestsCount: Int!
   institutionalAffiliations: String
   intents: [String]
 
