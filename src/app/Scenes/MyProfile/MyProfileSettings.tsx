@@ -1,4 +1,5 @@
-import { Spacer, Flex, useColor, Separator, Button } from "@artsy/palette-mobile"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Button, Flex, Separator, Spacer, useColor } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
@@ -6,6 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Alert, ScrollView } from "react-native"
+import { useTracking } from "react-tracking"
 
 interface MyProfileSettingsProps {
   onSuccess?: () => void
@@ -15,6 +17,7 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
 
   const color = useColor()
+  const tracking = useTracking()
   const separatorColor = color("black5")
 
   return (
@@ -41,6 +44,14 @@ export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess 
         <MenuItem title="Follows" onPress={() => navigate("favorites")} />
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Order History" onPress={() => navigate("/orders")} />
+        <Separator my={1} borderColor={separatorColor} />
+        <MenuItem
+          title="Recently Viewed"
+          onPress={() => {
+            tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
+            navigate("recently-viewed")
+          }}
+        />
         <Separator my={1} borderColor={separatorColor} />
         <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
         <Separator my={1} borderColor={separatorColor} />
@@ -92,4 +103,13 @@ export function confirmLogout() {
       onPress: () => GlobalStore.actions.auth.signOut(),
     },
   ])
+}
+
+const tracks = {
+  trackMenuTap: (href: string) => ({
+    action_type: ActionType.tappeMenuItem,
+    payload: href,
+    context_module: ContextModule.account,
+    context_screen_owner_type: OwnerType.settings,
+  }),
 }
