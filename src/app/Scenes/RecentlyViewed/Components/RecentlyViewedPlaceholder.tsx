@@ -8,7 +8,7 @@ export const RecentlyViewedPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex my={2}>
+      <Flex my={2} testID="RecentlyViewedScreenPlaceholder">
         {defaultViewOption === "grid" ? (
           <PlaceholderGrid />
         ) : (

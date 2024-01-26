@@ -1,6 +1,5 @@
-import { screen } from "@testing-library/react-native"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("RecentlyViewed", () => {
@@ -13,12 +12,12 @@ describe("RecentlyViewed", () => {
       Query: () => mockResponse,
     })
 
-    await flushPromiseQueue()
+    await waitForElementToBeRemoved(() => screen.queryByTestId("RecentlyViewedScreenPlaceholder"))
 
-    expect(screen.getByText("Sunflower Seeds Exhibition")).toBeTruthy()
+    expect(screen.getByText("Sunflower Seeds Exhibition")).toBeOnTheScreen()
     expect(
       screen.getByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
-    ).toBeTruthy()
+    ).toBeOnTheScreen()
   })
 })
 
