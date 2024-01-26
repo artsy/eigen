@@ -27,6 +27,8 @@ describe("ClearAllButton", () => {
       </SavedSearchStoreProvider>
     )
 
+    expect(screen.getByLabelText("Clear All Button")).toBeEnabled()
+
     fireEvent(screen.getByText("Clear All"), "onPress")
 
     expect(Alert.alert).toHaveBeenCalled()

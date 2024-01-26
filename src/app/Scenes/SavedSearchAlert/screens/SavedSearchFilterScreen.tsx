@@ -90,9 +90,10 @@ export const ClearAllButton = () => {
 
   return (
     <Touchable
+      aria-label="Clear All Button"
+      aria-disabled={disabled}
       haptic={disabled ? undefined : "impactMedium"}
       disabled={disabled}
-      accessibilityState={{ disabled }}
       onPress={() => {
         Alert.alert("Clear Filters", "Are you sure you want to clear all filters?", [
           {
