@@ -21,6 +21,7 @@ import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphq
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_news$data } from "__generated__/Home_news.graphql"
 import { Home_notificationsConnection$data } from "__generated__/Home_notificationsConnection.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -30,6 +31,7 @@ import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/Art
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
+import ArticlesNews from "app/Scenes/Articles/News/ArticlesNews"
 import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ActivityRail } from "app/Scenes/Home/Components/ActivityRail"
 import { ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE } from "app/Scenes/Home/Components/ActivityRailItem"
@@ -108,6 +110,7 @@ export interface HomeModule extends ArtworkActionTrackingProps {
 }
 
 export interface HomeProps extends ViewProps {
+  news: Home_news$data | null | undefined
   articlesConnection: Home_articlesConnection$data | null | undefined
   featured: Home_featured$data | null | undefined
   homePageAbove: Home_homePageAbove$data | null | undefined
@@ -307,6 +310,8 @@ const Home = memo((props: HomeProps) => {
               cardSize={enableNewSaleArtworkTileRailCard ? "large" : "small"}
             />
           )
+        case "news":
+          return <ArticlesNews viewer={item.data} />
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
@@ -532,6 +537,11 @@ export const HomeFragmentContainer = memo(
           ...ArticlesRail_articlesConnection
         }
       `,
+      news: graphql`
+        fragment Home_news on Viewer {
+          ...ArticlesNews_viewer
+        }
+      `,
       featured: graphql`
         fragment Home_featured on ViewingRoomConnection {
           ...ViewingRoomsListFeatured_featured
@@ -577,6 +587,9 @@ export const HomeFragmentContainer = memo(
         }
         articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
           ...Home_articlesConnection
+        }
+        news: viewer @optionalField {
+          ...Home_news
         }
         newWorksForYou: viewer {
           ...Home_newWorksForYou
@@ -802,6 +815,9 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
             }
+            news: viewer @optionalField {
+              ...Home_news
+            }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, featured: true) @optionalField {
               ...Home_articlesConnection
             }
@@ -817,6 +833,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
 
           return (
             <HomeFragmentContainer
+              news={below?.news ?? null}
               articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
               featured={below ? below.featured : null}
