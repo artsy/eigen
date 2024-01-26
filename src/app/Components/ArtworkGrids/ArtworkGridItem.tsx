@@ -34,7 +34,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View } from "react-native"
+import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -42,9 +42,10 @@ import { LotProgressBar } from "./LotProgressBar"
 const SAVE_ICON_SIZE = 22
 
 export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
-  artwork: ArtworkGridItem_artwork$data
   /** styles for each field: allows for customization of each field */
   artistNamesTextStyle?: TextProps
+  artwork: ArtworkGridItem_artwork$data
+  artworkMetaStyle?: ViewProps["style"]
   disableArtworksListPrompt?: boolean
   /** Hide sale info */
   height?: number
@@ -74,6 +75,7 @@ export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkAction
 export const Artwork: React.FC<ArtworkProps> = ({
   artistNamesTextStyle,
   artwork,
+  artworkMetaStyle,
   contextModule,
   contextScreen,
   contextScreenOwnerId,
@@ -273,7 +275,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </DurationProvider>
               </Box>
             )}
-            <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+            <Flex
+              flexDirection="row"
+              justifyContent="space-between"
+              mt={1}
+              style={artworkMetaStyle}
+            >
               <Flex flex={1}>
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <>

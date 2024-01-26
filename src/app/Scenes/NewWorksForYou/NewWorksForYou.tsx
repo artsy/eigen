@@ -59,11 +59,9 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   const version =
     isReferredFromEmail && versionProp ? versionProp?.toUpperCase() : DEFAULT_RECS_MODEL_VERSION
 
-  const newWorksForYouViewOption = GlobalStore.useAppState(
-    (state) => state.userPrefs.newWorksForYouViewOption
-  )
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
 
-  const setNewWorksForYouViewOption = GlobalStore.actions.userPrefs.setNewWorksForYouViewOption
+  const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
   useEffect(() => {
     experiment.trackExperiment({
@@ -89,12 +87,12 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
             showToggleViewOptionIcon ? (
               <MotiPressable
                 onPress={() => {
-                  setNewWorksForYouViewOption(newWorksForYouViewOption === "list" ? "grid" : "list")
+                  setDefaultViewOption(defaultViewOption === "list" ? "grid" : "list")
                   LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
                 }}
                 style={{ top: 5 }}
               >
-                {newWorksForYouViewOption === "grid" ? (
+                {defaultViewOption === "grid" ? (
                   <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
                 ) : (
                   <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
@@ -105,7 +103,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
         />
         <Screen.StickySubHeader title="New Works For You" />
         <Screen.Body fullwidth>
-          {newWorksForYouViewOption === "list" && showToggleViewOptionIcon ? (
+          {defaultViewOption === "list" && showToggleViewOptionIcon ? (
             <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
           ) : (
             <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
@@ -119,11 +117,9 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
   defaultViewOption,
 }) => {
-  const newWorksForYouViewOption = GlobalStore.useAppState(
-    (state) => state.userPrefs.newWorksForYouViewOption
-  )
+  const storeViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const viewOption = defaultViewOption ?? newWorksForYouViewOption
+  const viewOption = defaultViewOption ?? storeViewOption
 
   return (
     <Skeleton>

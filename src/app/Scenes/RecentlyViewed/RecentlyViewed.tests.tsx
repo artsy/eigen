@@ -1,52 +1,23 @@
-import { RecentlyViewedTestsQuery } from "__generated__/RecentlyViewedTestsQuery.graphql"
-import { RecentlyViewed } from "app/Scenes/RecentlyViewed/RecentlyViewed"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Suspense } from "react"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("RecentlyViewed", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  it("renders RecentlyViewed", async () => {
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => <RecentlyViewedArtworksQR />,
+    })
 
-  const TestRenderer = () => (
-    <QueryRenderer<RecentlyViewedTestsQuery>
-      query={graphql`
-        query RecentlyViewedTestsQuery {
-          me {
-            ...RecentlyViewed_artworksConnection @arguments(count: 10)
-          }
-        }
-      `}
-      render={() => {
-        return (
-          <Suspense fallback={null}>
-            <RecentlyViewed />
-          </Suspense>
-        )
-      }}
-      variables={{}}
-      environment={mockEnvironment}
-    />
-  )
+    renderWithRelay({
+      Query: () => mockResponse,
+    })
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("RecentlyViewedScreenPlaceholder"))
 
-  it("renders RecentlyViewed", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => mockResponse,
-      })
-    )
-
-    expect(tree.findByText("Recently Viewed")).toBeTruthy()
-    expect(tree.findByText("Sunflower Seeds Exhibition")).toBeTruthy()
+    expect(screen.getByText("Sunflower Seeds Exhibition")).toBeOnTheScreen()
     expect(
-      tree.findByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
-    ).toBeTruthy()
+      screen.getByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
+    ).toBeOnTheScreen()
   })
 })
 
