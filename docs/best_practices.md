@@ -9,20 +9,25 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 
 ## Contents
 
-- [Examples and Hacks](#examples-and-hacks)
-- [History](#history)
-- [File Structure Organization](#file-structure-organization)
-- [When committing code](#When-committing-code)
-- [Frontend](#frontend)
-  - [Storybook](#storybook)
-  - [Styling](#styling)
-- [TypeScript](#TypeScript)
-- [Fetching Data](#fetching-data)
-- [Testing](#testing)
-- [Navigation](#Navigation)
-- [Analytics and tracking](#analytics-and-tracking)
-- [Formik](#formik)
-- [Miscellaneous](#miscellaneous)
+- [:world_map: Our Best Practices](#world_map-our-best-practices)
+  - [Contents](#contents)
+    - [Examples \& Hacks](#examples--hacks)
+    - [History](#history)
+    - [File Structure Organization](#file-structure-organization)
+      - [index.ts files](#indexts-files)
+      - [When committing code](#when-committing-code)
+    - [Frontend](#frontend)
+      - [Storybook](#storybook)
+      - [Styling](#styling)
+    - [TypeScript](#typescript)
+    - [Fetching data](#fetching-data)
+    - [Testing](#testing)
+    - [Navigation](#navigation)
+      - [iOS Navigation](#ios-navigation)
+    - [Analytics and tracking](#analytics-and-tracking)
+    - [Formik](#formik)
+    - [Miscellaneous](#miscellaneous)
+      - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
 
 ### Examples & Hacks
 
@@ -158,7 +163,7 @@ We use `react-navigation` for navigating between screens.
 
 For adding a screen that corresponds to a page on artsy.net add a new route and use the `navigate(<route-name>)` function. Navigation will then be handled for you. And that's how it's done: (add links to code here).
 
-See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md).
+See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md) and to [create a new screen](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_screen.md).
 
 #### iOS Navigation
 
