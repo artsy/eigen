@@ -95,6 +95,7 @@ describe("ArtworkPublishedNotification", () => {
 })
 
 const notification = {
+  headline: "1 New Work by Tracey Emin",
   item: {
     __typename: "ArtworkPublishedNotificationItem",
     artists: [
