@@ -95,6 +95,7 @@ describe("AlertNotification", () => {
 })
 
 const notification = {
+  headline: "2 New Works by Banksy",
   item: {
     __typename: "AlertNotificationItem",
     alert: {

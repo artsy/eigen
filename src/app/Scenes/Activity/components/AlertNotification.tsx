@@ -10,7 +10,6 @@ import {
 } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { getNotificationtitle } from "app/Scenes/Activity/utils/getNotificationTitle"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView } from "react-native"
@@ -23,22 +22,18 @@ interface AlertNotificationProps {
 export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) => {
   const notificationData = useFragment(alertNotificationFragment, notification)
 
-  const { artworksConnection, item } = notificationData
+  const { artworksConnection, headline, item } = notificationData
 
   const alert = item?.alert
   const artist = item?.alert?.artists?.[0]
 
-  // TODO: Better error handling
-  if (!alert) {
-    return <Text>Alert not found!</Text>
+  if (!alert || !artist) {
+    return (
+      <Text variant="lg" m={4}>
+        Sorry, something went wrong.
+      </Text>
+    )
   }
-
-  if (!artist) {
-    return <Text>Artist not found!</Text>
-  }
-
-  // TODO: Consider moving the title to Metaphysics
-  const title = getNotificationtitle(artworksConnection?.totalCount || 0, artist?.name)
 
   const handleEditAlertPress = () => {
     // TODO: Add tracking
@@ -59,7 +54,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
       <ScrollView>
         <Flex mx={2} mt={2} mb={2}>
           <Text variant="lg-display" mb={2}>
-            {title}
+            {headline}
           </Text>
 
           <Spacer y={1} />
@@ -116,7 +111,7 @@ export const alertNotificationFragment = graphql`
       ...NotificationArtworkList_artworksConnection
       totalCount
     }
-
+    headline
     item {
       ... on AlertNotificationItem {
         alert {
