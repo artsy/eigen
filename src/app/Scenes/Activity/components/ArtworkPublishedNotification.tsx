@@ -11,7 +11,6 @@ import {
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
 import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { getNotificationtitle } from "app/Scenes/Activity/utils/getNotificationTitle"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView } from "react-native"
@@ -29,12 +28,9 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
   const notificationData = useFragment(ArtworkPublishedNotificationFragment, notification)
 
-  const { artworksConnection, item } = notificationData
+  const { artworksConnection, headline, item } = notificationData
 
   const artist = item?.artists?.[0]
-
-  // TODO: Consider moving the title to Metaphysics
-  const title = getNotificationtitle(artworksConnection?.totalCount || 0, artist?.name)
 
   const handleFollowArtist = () => {
     if (!artist) {
@@ -69,8 +65,11 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
   }
 
   if (!artist) {
-    // TODO: Handle error
-    return <Text>Artist not found!</Text>
+    return (
+      <Text variant="lg" m={4}>
+        Sorry, something went wrong.
+      </Text>
+    )
   }
 
   return (
@@ -80,7 +79,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
       <ScrollView>
         <Flex mx={2} mt={2} mb={4}>
           <Text variant="lg-display" mb={2}>
-            {title}
+            {headline}
           </Text>
 
           <Spacer y={2} />
@@ -121,6 +120,7 @@ export const ArtworkPublishedNotificationFragment = graphql`
       ...NotificationArtworkList_artworksConnection
       totalCount
     }
+    headline
     item {
       ... on ArtworkPublishedNotificationItem {
         artists {
