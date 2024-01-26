@@ -9,11 +9,17 @@ When adding a new screen to Eigen, make sure to use `Screen` components coming f
 ![screen-with-animated-header](./screenshots/screen-with-header.gif)
 
 ```typescript
-<Screen>
-  <Screen.AnimatedHeader onBack={goBack} title="Activity" />
-  <Screen.StickySubHeader title="Activity" />
-  <Screen.Body fullWidth>{children}</Screen.Body>
-</Screen>
+const App = () => {
+  import { Screen } from "@artsy/palette-mobile"
+
+  return (
+    <Screen>
+      <Screen.AnimatedHeader onBack={goBack} title="Activity" />
+      <Screen.StickySubHeader title="Activity" />
+      <Screen.Body fullWidth>{children}</Screen.Body>
+    </Screen>
+  )
+}
 ```
 
 Note: `Screen.StickySubHeader` Supports children components as well.
@@ -24,11 +30,17 @@ Note: `Screen.StickySubHeader` Supports children components as well.
 ![screen-with-animated-header-and-sticky-header](./screenshots/screen-with-animated-header-and-sticky-header.gif)
 
 ```typescript
-<Screen>
-  <Screen.AnimatedHeader onBack={goBack} title="Activity" />
-  <Screen.StickySubHeader title="Activity" />
-  <Screen.Body fullWidth>{children}</Screen.Body>
-</Screen>
+import { Screen } from "@artsy/palette-mobile"
+
+const App = () => {
+  return (
+    <Screen>
+      <Screen.AnimatedHeader onBack={goBack} title="Activity" />
+      <Screen.StickySubHeader title="Activity" />
+      <Screen.Body fullWidth>{children}</Screen.Body>
+    </Screen>
+  )
+}
 ```
 
 </details>
@@ -38,10 +50,16 @@ Note: `Screen.StickySubHeader` Supports children components as well.
 ![screen-with-header](./screenshots/screen-with-header.gif)
 
 ```typescript
-<Screen>
-  <Screen.Header onBack={goBack} title="Activity" />
-  <Screen.Body fullWidth>{children}</Screen.Body>
-</Screen>
+import { Screen } from "@artsy/palette-mobile"
+
+const App = () => {
+  return (
+    <Screen>
+      <Screen.Header onBack={goBack} title="Activity" />
+      <Screen.Body fullWidth>{children}</Screen.Body>
+    </Screen>
+  )
+}
 ```
 
 ## Gotchas!
@@ -53,6 +71,8 @@ The `Screen` component from `palette-mobile` exports multiple scroll handlers th
 Example:
 
 ```typescript
+import { Screen } from "@artsy/palette-mobile"
+
 const App = () => {
   return (
     <Screen>
@@ -69,6 +89,8 @@ const App = () => {
 - **Using a VirtualizedList from Screen**
 
 ```typescript
+import { Screen } from '@artsy/palette-mobile'
+
 const ComponentWithScrollView = () => {
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
@@ -84,6 +106,9 @@ const ComponentWithScrollView = () => {
 - **Using Your Own VirtualizedList**
 
 ```typescript
+import { Screen } from '@artsy/palette-mobile'
+import Animated from "react-native-reanimated"
+
 const ComponentWithScrollView = () => {
   const { scrollHandler } = Screen.useListenForScreenScroll()
   return (
