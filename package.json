@@ -231,7 +231,7 @@
     "@omakase/cli": "0.0.10",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.11",
-    "@sentry/cli": "2.21.2",
+    "@sentry/cli": "2.26.0",
     "@testing-library/jest-native": "5.4.3",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "12.4.3",
