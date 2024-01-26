@@ -1,58 +1,31 @@
-import { NewWorksFromGalleriesYouFollowTestsQuery } from "__generated__/NewWorksFromGalleriesYouFollowTestsQuery.graphql"
-import { NewWorksFromGalleriesYouFollow } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Suspense } from "react"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { NewWorksFromGalleriesYouFollowQR } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("NewWorksFromGalleriesYouFollow", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  it("renders properly", async () => {
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => <NewWorksFromGalleriesYouFollowQR />,
+    })
 
-  const TestRenderer = () => (
-    <QueryRenderer<NewWorksFromGalleriesYouFollowTestsQuery>
-      query={graphql`
-        query NewWorksFromGalleriesYouFollowTestsQuery {
-          me {
-            ...NewWorksFromGalleriesYouFollow_artworksConnection @arguments(count: 10)
-          }
-        }
-      `}
-      render={() => {
-        return (
-          <Suspense fallback={null}>
-            <NewWorksFromGalleriesYouFollow />
-          </Suspense>
-        )
-      }}
-      variables={{}}
-      environment={mockEnvironment}
-    />
-  )
+    renderWithRelay({
+      Query: () => mockResponse,
+    })
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
-  it("renders NewWorksFromGalleriesYouFollow", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => mockResponse,
-      })
+    await waitForElementToBeRemoved(() =>
+      screen.queryByTestId("NewWorksFromGalleriesYouFollowPlaceholder")
     )
 
-    expect(tree.findByText("New Works from Galleries You Follow")).toBeTruthy()
-    expect(tree.findByText("Sunflower Seeds Exhibition")).toBeTruthy()
+    expect(screen.getByText("Sunflower Seeds Exhibition")).toBeOnTheScreen()
     expect(
-      tree.findByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
-    ).toBeTruthy()
+      screen.getByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
+    ).toBeOnTheScreen()
   })
 })
 
 const mockResponse = {
   me: {
-    newWorksFromGalleriesYouFollowArtworksConnection: {
+    newWorksFromGalleriesYouFollowConnection: {
       edges: [
         {
           node: {

@@ -560,7 +560,10 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
-  NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
+  NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen, {
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
   Partner: reactModule(PartnerQueryRenderer, {
