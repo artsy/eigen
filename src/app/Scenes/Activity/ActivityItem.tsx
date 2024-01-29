@@ -25,6 +25,7 @@ interface ActivityItemProps {
 
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
+const NEW_ARTWORK_IMAGE_SIZE = 60
 const BADGE_BORDER_RADIUS = 3
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
@@ -72,8 +73,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                       >
                         <OpaqueImageView
                           imageURL={artwork.image?.preview?.src}
-                          width={ARTWORK_IMAGE_SIZE}
-                          height={ARTWORK_IMAGE_SIZE}
+                          width={NEW_ARTWORK_IMAGE_SIZE}
+                          height={NEW_ARTWORK_IMAGE_SIZE}
                         />
                       </Flex>
                     )
@@ -102,7 +103,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                     </Flex>
                   )}
 
-                  <Text variant="sm-display" fontWeight="bold">
+                  <Text variant="sm-display" mt={1}>
                     {item.headline}
                   </Text>
 
