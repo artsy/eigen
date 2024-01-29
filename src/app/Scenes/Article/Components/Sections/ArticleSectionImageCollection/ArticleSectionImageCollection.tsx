@@ -32,6 +32,7 @@ export const ArticleSectionImageCollection: React.FC<ArticleSectionImageCollecti
   return (
     <>
       <FlatList
+        testID="ArticleSectionImageCollection"
         data={data.figures}
         scrollEnabled={data?.figures?.length > 1}
         ItemSeparatorComponent={() => <Spacer x={0.5} />}

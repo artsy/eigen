@@ -25,7 +25,7 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
         </>
       )}
 
-      <Flex mx={2}>
+      <Flex mx={2} testID="ArticleHeroSection">
         <Text variant="xs" color="black100">
           {data.vertical}
         </Text>

@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -25,14 +25,14 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
   }
 
   it("should render all artist options", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Artists You Follow")).toBeTruthy()
-    expect(getByText("All Artists")).toBeTruthy()
-    expect(getByText(/Artist A/)).toBeTruthy()
-    expect(getByText(/Artist B/)).toBeTruthy()
-    expect(getByText(/Artist C/)).toBeTruthy()
-    expect(getByText(/Artist D/)).toBeTruthy()
+    expect(screen.getByText("Artists You Follow")).toBeTruthy()
+    expect(screen.getByText("All Artists")).toBeTruthy()
+    expect(screen.getByText(/Artist A/)).toBeTruthy()
+    expect(screen.getByText(/Artist B/)).toBeTruthy()
+    expect(screen.getByText(/Artist C/)).toBeTruthy()
+    expect(screen.getByText(/Artist D/)).toBeTruthy()
   })
 
   it("should render artist options sorted by name", () => {
@@ -40,10 +40,10 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
     const options = getAllByA11yState({ checked: false })
 
     expect(options[0]).toHaveTextContent("Artists You Follow")
-    expect(options[1]).toHaveTextContent("Artist A")
-    expect(options[2]).toHaveTextContent("Artist B")
-    expect(options[3]).toHaveTextContent("Artist C")
-    expect(options[4]).toHaveTextContent("Artist D")
+    expect(options[1]).toHaveTextContent("Artist A (10)")
+    expect(options[2]).toHaveTextContent("Artist B (20)")
+    expect(options[3]).toHaveTextContent("Artist C (40)")
+    expect(options[4]).toHaveTextContent("Artist D (30)")
   })
 
   it("should render the followed artists count", () => {
@@ -55,37 +55,37 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
       },
     }
 
-    const { getByText } = renderWithWrappers(<TestRenderer initialData={injectedState} />)
+    renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-    expect(getByText("Artists You Follow (2)")).toBeTruthy()
+    expect(screen.getByText("Artists You Follow (2)")).toBeTruthy()
   })
 
   describe("Selecting", () => {
     it("when the single option is selected", () => {
-      const { getAllByA11yState, getByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
+      const prevSelectedOptions = screen.getAllByA11yState({ checked: true })
       expect(prevSelectedOptions).toHaveLength(1)
       expect(prevSelectedOptions[0]).toHaveTextContent("All Artists")
 
-      fireEvent.press(getByText(/Artist B/))
+      fireEvent.press(screen.getByText(/Artist B/))
 
-      const selectedOptions = getAllByA11yState({ checked: true })
+      const selectedOptions = screen.getAllByA11yState({ checked: true })
       expect(selectedOptions).toHaveLength(1)
       expect(selectedOptions[0]).toHaveTextContent(/Artist B/)
     })
 
     it("when multiple options are selected", () => {
-      const { getByText, getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
+      const prevSelectedOptions = screen.getAllByA11yState({ checked: true })
       expect(prevSelectedOptions).toHaveLength(1)
       expect(prevSelectedOptions[0]).toHaveTextContent("All Artists")
 
-      fireEvent.press(getByText(/Artist A/))
-      fireEvent.press(getByText(/Artist B/))
+      fireEvent.press(screen.getByText(/Artist A/))
+      fireEvent.press(screen.getByText(/Artist B/))
 
-      const selectedOptions = getAllByA11yState({ checked: true })
+      const selectedOptions = screen.getAllByA11yState({ checked: true })
 
       expect(selectedOptions).toHaveLength(2)
       expect(selectedOptions[0]).toHaveTextContent(/Artist A/)
@@ -106,17 +106,15 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
         ],
       }
 
-      const { getAllByA11yState, getByText } = renderWithWrappers(
-        <TestRenderer initialData={injectedState} />
-      )
+      renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
+      const prevSelectedOptions = screen.getAllByA11yState({ checked: true })
       expect(prevSelectedOptions).toHaveLength(1)
-      expect(prevSelectedOptions[0]).toHaveTextContent("Artist B")
+      expect(prevSelectedOptions[0]).toHaveTextContent("Artist B (20)")
 
-      fireEvent.press(getByText(/Artist B/))
+      fireEvent.press(screen.getByText(/Artist B/))
 
-      const selectedOptions = getAllByA11yState({ checked: true })
+      const selectedOptions = screen.getAllByA11yState({ checked: true })
       expect(selectedOptions).toHaveLength(1)
       expect(selectedOptions[0]).toHaveTextContent("All Artists")
     })
@@ -133,20 +131,18 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
         ],
       }
 
-      const { getAllByA11yState, getByText } = renderWithWrappers(
-        <TestRenderer initialData={injectedState} />
-      )
+      renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
+      const prevSelectedOptions = screen.getAllByA11yState({ checked: true })
       expect(prevSelectedOptions).toHaveLength(2)
-      expect(prevSelectedOptions[0]).toHaveTextContent("Artist A")
-      expect(prevSelectedOptions[1]).toHaveTextContent("Artist B")
+      expect(prevSelectedOptions[0]).toHaveTextContent("Artist A (10)")
+      expect(prevSelectedOptions[1]).toHaveTextContent("Artist B (20)")
 
-      fireEvent.press(getByText(/Artist B/))
+      fireEvent.press(screen.getByText(/Artist B/))
 
-      const selectedOptions = getAllByA11yState({ checked: true })
+      const selectedOptions = screen.getAllByA11yState({ checked: true })
       expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0]).toHaveTextContent("Artist A")
+      expect(selectedOptions[0]).toHaveTextContent("Artist A (10)")
     })
   })
 })
