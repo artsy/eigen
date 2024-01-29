@@ -3,10 +3,13 @@ import { FullWidthIcon, GridIcon, Screen } from "@artsy/palette-mobile"
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiPressable } from "moti/interactions"
+import { useEffect } from "react"
 import { isTablet } from "react-native-device-info"
 
 const SCREEN_TITLE = "Recently Viewed"
@@ -14,10 +17,24 @@ const ICON_SIZE = 26
 
 export const RecentlyViewedScreen: React.FC = () => {
   const enableArtworksFeedView = useFeatureFlag("AREnableArtworksFeedView")
+  const forceShowNewWorksForYouFeed = useDevToggle("DTForceShowNewWorksForYouScreenFeed")
+
+  const experiment = useExperimentVariant("onyx_new_works_for_you_feed")
+
   const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
   const setDefaultViewOption = GlobalStore.actions.userPrefs.setDefaultViewOption
 
-  const showToggleViewOptionIcon = !isTablet() && enableArtworksFeedView
+  useEffect(() => {
+    experiment.trackExperiment({
+      context_owner_type: OwnerType.recentlyViewed,
+    })
+  }, [])
+
+  const showToggleViewOptionIcon =
+    !isTablet() &&
+    enableArtworksFeedView &&
+    experiment.enabled &&
+    (experiment.variant === "experiment" || forceShowNewWorksForYouFeed)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
