@@ -25,13 +25,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
-import {
-  DevToggleName,
-  FeatureDescriptor,
-  FeatureName,
-  devToggles,
-  features,
-} from "app/store/config/features"
+import { DevToggleName, FeatureName, devToggles, features } from "app/store/config/features"
 import { Versions } from "app/store/migration"
 import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
@@ -58,7 +52,7 @@ import FastImage from "react-native-fast-image"
 import Keychain from "react-native-keychain"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-const configurableFeatureFlagKeys = Object.entries(features as { [key: string]: FeatureDescriptor })
+const configurableFeatureFlagKeys = Object.entries(features)
   .filter(([_, { showInDevMenu }]) => showInDevMenu)
   .map(([k]) => k as FeatureName)
 
@@ -171,11 +165,10 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
             </Flex>
             <Flex mx={-2}>
               {configurableFeatureFlagKeys
-                .filter(
-                  (flagKey) =>
-                    features[flagKey].description
-                      ?.toLowerCase()
-                      .includes(featureFlagQuery.toLowerCase())
+                .filter((flagKey) =>
+                  features[flagKey].description
+                    ?.toLowerCase()
+                    .includes(featureFlagQuery.toLowerCase())
                 )
                 .map((flagKey) => {
                   return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
@@ -200,11 +193,10 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
 
             <Flex mx={-2}>
               {configurableDevToggleKeys
-                .filter(
-                  (flagKey) =>
-                    devToggles[flagKey].description
-                      ?.toLowerCase()
-                      .includes(devToolQuery.toLowerCase())
+                .filter((flagKey) =>
+                  devToggles[flagKey].description
+                    ?.toLowerCase()
+                    .includes(devToolQuery.toLowerCase())
                 )
                 .map((devToggleKey) => {
                   return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />

@@ -41,7 +41,7 @@ export type FeatureDescriptor = (
 
 export type FeatureName = keyof typeof features
 
-export const features = {
+export const features: { [key: string]: FeatureDescriptor } = {
   ARDarkModeSupport: {
     readyForRelease: false,
     showInDevMenu: true,
@@ -267,7 +267,7 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFeedView",
   },
-} satisfies { [key: string]: FeatureDescriptor }
+}
 
 export interface DevToggleDescriptor {
   /**
