@@ -41,6 +41,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const shouldDisplayCounts =
     isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
+  const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
 
   const handlePress = () => {
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
@@ -69,6 +70,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                       <Flex
                         key={`${item.internalID}-${artwork.internalID}`}
                         mr={1}
+                        mb={1}
                         accessibilityLabel="Activity Artwork Image"
                       >
                         <OpaqueImageView
@@ -79,6 +81,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                       </Flex>
                     )
                   })}
+
                   {!!shouldDisplayCounts && (
                     <Text
                       variant="xs"
@@ -103,9 +106,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                     </Flex>
                   )}
 
-                  <Text variant="sm-display" mt={1}>
-                    {item.headline}
-                  </Text>
+                  <Text variant="sm-display">{item.headline}</Text>
+
+                  {!!isEditorial && <Text variant="xs">An artist you follow is featured</Text>}
 
                   <Flex flexDirection="row">
                     <ActivityItemTypeLabel notificationType={item.notificationType} />
