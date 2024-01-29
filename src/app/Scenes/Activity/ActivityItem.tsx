@@ -1,8 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -73,8 +72,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                         mb={1}
                         accessibilityLabel="Activity Artwork Image"
                       >
-                        <OpaqueImageView
-                          imageURL={artwork.image?.preview?.src}
+                        <Image
+                          src={artwork.image?.preview?.src ?? ""}
                           width={NEW_ARTWORK_IMAGE_SIZE}
                           height={NEW_ARTWORK_IMAGE_SIZE}
                         />
@@ -168,8 +167,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                   mr={1}
                   accessibilityLabel="Activity Artwork Image"
                 >
-                  <OpaqueImageView
-                    imageURL={artwork.image?.preview?.src}
+                  <Image
+                    src={artwork.image?.preview?.src ?? ""}
                     width={ARTWORK_IMAGE_SIZE}
                     height={ARTWORK_IMAGE_SIZE}
                   />
