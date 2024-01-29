@@ -32,7 +32,9 @@ export const updateChangelogSectionTemplate = (filePath: string) => {
   }
 
   fileContents = fileContents.replace(regex, generateChangelogSectionTemplate())
-  fileContents = prettier.format(fileContents, { parser: "markdown" })
+  prettier
+    .format(fileContents, { parser: "markdown" })
+    .then((formatted) => (fileContents = formatted))
 
   fs.writeFileSync(filePath, fileContents, "utf8")
 }
