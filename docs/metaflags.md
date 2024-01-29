@@ -15,12 +15,6 @@ In `metaflags.example.json` we should always have the values of the flags that t
 
 ## Available metaflags
 
-### Storybook
-
-One example, and the first usage of the metaflags, is the `startStorybook` metaflag.
-When running the app using `yarn start`, the app starts normally. When running the app using `STORYBOOK=1 yarn start`, the app starts with the storybook ui directly.
-By adding the `STORYBOOK=1` part in the command, the value in `metaflags.json` will turn to `true` (this happens with some scripts, look at `prestart` in `package.json`, but this is an implementation detail. Others flags might not need this.) Once the flag is turned to `true`, reading it in the app is easy, just a `require("metaflags")` call and here we go. For the storybook flag, this is happening on `index.ios.js` and `index.android.js` files.
-
 ### Hide loggers
 
 You can turn off various loggers by setting the according values to false on `metaflags.json`
