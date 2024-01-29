@@ -124,7 +124,15 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       }}
       data={sections}
       keyExtractor={(item) => `${type}-${item.key}`}
-      ItemSeparatorComponent={() => <Separator />}
+      ItemSeparatorComponent={() =>
+        enableNewActivityPanelManagement ? (
+          <Flex mx={-2}>
+            <Separator borderColor="black10" />
+          </Flex>
+        ) : (
+          <Separator />
+        )
+      }
       onEndReached={handleLoadMore}
       renderItem={({ item }) => <>{item.content}</>}
       contentContainerStyle={{
