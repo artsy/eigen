@@ -168,7 +168,7 @@ const Home = memo((props: HomeProps) => {
   const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
   const enableNewSaleArtworkTileRailCard = useFeatureFlag("AREnableNewAuctionsRailCard")
   const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-  // Needed to support percentage rollout of the experiment
+  // Needed to support percentage rollout of this experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
   )
