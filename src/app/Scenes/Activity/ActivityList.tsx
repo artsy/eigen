@@ -64,9 +64,14 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   }))
 
   const handleLoadMore = () => {
-    if (!hasNext || isLoadingNext) {
+    console.warn(hasNext, notifications.length)
+    if ((!hasNext || isLoadingNext) && notifications.length < 10) {
+      console.warn("lol 2")
+
       return
     }
+
+    console.warn("lol")
 
     loadNext(10)
   }
@@ -133,7 +138,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
           <Separator />
         )
       }
-      onEndReached={handleLoadMore}
+      // onEndReached={handleLoadMore}
       renderItem={({ item }) => <>{item.content}</>}
       contentContainerStyle={{
         // This is required because Tabs.Flatlist has a marginHorizontal of 20

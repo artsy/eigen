@@ -108,10 +108,6 @@ export const ArticleFeaturedArtistNotification: React.FC<
 
 export const ArticleFeaturedArtistNotificationFragment = graphql`
   fragment ArticleFeaturedArtistNotification_notification on Notification {
-    artworksConnection(first: 10) {
-      ...NotificationArtworkList_artworksConnection
-      totalCount
-    }
     item {
       ... on ArticleFeaturedArtistNotificationItem {
         article {
