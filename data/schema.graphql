@@ -13649,14 +13649,19 @@ type PageInfo {
 
 # An artwork with partial data. useful for rendering an error state
 type PartialArtwork {
-  artists: [Artist]
+  # Returns the associated Fair/Sale/Show
+  context: ArtworkContext
+  contextGrids(
+    # Whether to include the `RelatedArtworksGrid` module. Defaults to `true`; preferred behavior is to opt out with `false`.
+    includeRelatedArtworks: Boolean! = true
+  ): [ArtworkContextGrid]
 
   # A globally unique ID.
   id: ID!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  layers: [ArtworkLayer]
+  layer(id: String): ArtworkLayer
 
   # A slug ID.
   slug: ID!
