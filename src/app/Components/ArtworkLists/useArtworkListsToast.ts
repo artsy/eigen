@@ -40,7 +40,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
       onPress: onToastPress,
       backgroundColor: "green100",
       description: isPartnerOfferEnabled
-        ? "You can view all your saved artworks in this list."
+        ? "Saving an artwork signals interest to galleries."
         : null,
     })
   }
