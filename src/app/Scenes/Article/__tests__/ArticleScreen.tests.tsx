@@ -24,9 +24,9 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.queryByText("Article Title")).toBeOnTheScreen()
+    expect(screen.getByText("Article Title")).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(Screen.AnimatedHeader)).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(ArticleBody)).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(ArticleRelatedArticlesRail)).toBeOnTheScreen()
@@ -42,9 +42,9 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.queryByText("Article Title")).toBeOnTheScreen()
+    expect(screen.getByText("Article Title")).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(Screen.FloatingHeader)).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(ArticleBody)).toBeOnTheScreen()
     expect(screen.UNSAFE_getByType(ArticleRelatedArticlesRail)).toBeOnTheScreen()
@@ -61,7 +61,7 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
     expect(screen.UNSAFE_getByType(ArticleWebViewScreen)).toBeOnTheScreen()
   })

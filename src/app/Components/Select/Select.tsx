@@ -119,6 +119,7 @@ export const Select = <ValueType,>({
         />
       )}
       <SelectModal
+        testID="select-modal"
         visible={showingModal}
         title={title}
         enableSearch={enableSearch}
@@ -219,6 +220,7 @@ const SelectModal: React.FC<{
   onSelectValue(value: unknown, index: number): any
   renderItemLabel?(value: SelectOption<unknown>): JSX.Element
   onModalFinishedClosing?(): void
+  testID?: string
 }> = ({
   options,
   value,
@@ -229,6 +231,7 @@ const SelectModal: React.FC<{
   onDismiss,
   onSelectValue,
   renderItemLabel,
+  testID,
   onModalFinishedClosing,
 }) => {
   const color = useColor()
@@ -313,6 +316,7 @@ const SelectModal: React.FC<{
 
   return (
     <FancyModal
+      testID={testID}
       visible={visible}
       onBackgroundPressed={onDismiss}
       maxHeight={maxHeight}

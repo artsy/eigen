@@ -1,5 +1,4 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CategoryPicker } from "./CategoryPicker"
@@ -18,7 +17,7 @@ describe("CategoryPicker", () => {
     const SelectInput = screen.getByText("Painting")
     fireEvent.press(SelectInput)
 
-    const modal = screen.UNSAFE_getByType(FancyModal)
+    const modal = screen.getByTestId("select-modal")
 
     // wait for modal to be visible
     await waitFor(() => expect(modal).toHaveProp("visible", true))
