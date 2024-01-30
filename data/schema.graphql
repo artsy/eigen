@@ -13650,7 +13650,16 @@ type PageInfo {
 # An artwork with partial data. useful for rendering an error state
 type PartialArtwork {
   artists: [Artist]
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
   layers: [ArtworkLayer]
+
+  # A slug ID.
+  slug: ID!
 }
 
 type Partner implements Node {
