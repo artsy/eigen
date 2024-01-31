@@ -4075,7 +4075,7 @@ type CollectorResume {
   # The Collector follows the Gallery profile
   isCollectorFollowingPartner: Boolean!
 
-  # The Collector's id
+  # Collector's ID used to stitch buyerActivity with the Exchange schema
   userId: String!
 }
 
