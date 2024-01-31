@@ -7936,6 +7936,7 @@ type createPartnerOfferMutationPayload {
 union createPartnerOfferResponseOrError = createPartnerOfferFailure | createPartnerOfferSuccess
 
 type createPartnerOfferSuccess {
+  partner: Partner
   partnerOffer: PartnerOffer
 }
 
