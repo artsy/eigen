@@ -160,12 +160,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAuctionHeaderAlertCTA",
   },
-  ARUsePrincipalFieldErrorHandlerMiddleware: {
-    description: "Use new error middleware but for every query",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARUsePrincipalFieldErrorHandlerMiddleware",
-  },
   ARShowCreateAlertInArtistArtworksListFooter: {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,
