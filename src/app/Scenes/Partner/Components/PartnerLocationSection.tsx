@@ -8,8 +8,8 @@ interface PartnerLocationSectionProps {
   partner: PartnerLocationSection_partner$data
 }
 
-const createLocationsString = (partner: PartnerLocationSection_partner$data) => {
-  const locationsCount = partner.locations?.totalCount
+export const createLocationsString = (partner: PartnerLocationSection_partner$data) => {
+  const locationsCount = partner.locations?.totalCount ?? 0
 
   let lastUniqCity
   const uniqCities = (partner.cities || []).slice(0)
@@ -21,7 +21,7 @@ const createLocationsString = (partner: PartnerLocationSection_partner$data) => 
   const joinedCities = uniqCities.join(", ")
 
   const locationCountText = `${partner.name} has ${locationsCount} ${
-    cityLength < 2 ? "location" : "locations"
+    locationsCount < 2 ? "location" : "locations"
   } in`
 
   return { locationText: locationCountText, cityText: joinedCities, lastCity: lastUniqCity }

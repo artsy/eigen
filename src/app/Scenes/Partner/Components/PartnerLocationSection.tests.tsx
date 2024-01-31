@@ -1,7 +1,9 @@
+import { screen } from "@testing-library/react-native"
 import { PartnerLocationSectionTestQuery } from "__generated__/PartnerLocationSectionTestQuery.graphql"
+import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { PartnerLocationSectionContainer } from "./PartnerLocationSection"
+import { PartnerLocationSectionContainer, createLocationsString } from "./PartnerLocationSection"
 
 describe("PartnerLoationSection", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerLocationSectionTestQuery>({
@@ -16,7 +18,7 @@ describe("PartnerLoationSection", () => {
   })
 
   it("renders the locations text correctly", async () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => ({
         name: "Gagosian",
         locations: {
@@ -26,16 +28,76 @@ describe("PartnerLoationSection", () => {
       }),
     })
 
-    expect(queryByText(/Gagosian has 14 locations in/)).toBeTruthy()
+    expect(screen.getByText(/Gagosian has 14 locations in/)).toBeTruthy()
     expect(
-      queryByText(
+      screen.getByText(
         /New York, Beverly Hills, San Francisco, London, Paris, Le Bourget, Geneva, Basel, Rome, Athens/
       )
     ).toBeTruthy()
-    expect(queryByText(/and/)).toBeTruthy()
-    expect(queryByText(/Central, Hong Kong/)).toBeTruthy()
+    expect(screen.getByText(/and/)).toBeTruthy()
+    expect(screen.getByText(/Central, Hong Kong/)).toBeTruthy()
 
-    expect(queryByText("See all location details")).toBeTruthy()
+    expect(screen.getByText("See all location details")).toBeTruthy()
+  })
+})
+
+describe("createLocationsString", () => {
+  it("should return correct location string for single location", () => {
+    const partner: PartnerLocationSection_partner$data = {
+      name: "Test Partner",
+      slug: "test-partner",
+      locations: {
+        totalCount: 1,
+      },
+      cities: ["New York"],
+      " $fragmentType": "PartnerLocationSection_partner",
+    }
+
+    const result = createLocationsString(partner)
+
+    expect(result).toEqual({
+      locationText: "Test Partner has 1 location in",
+      cityText: "New York",
+    })
+  })
+
+  it("should return correct location string for multiple locations", () => {
+    const partner: PartnerLocationSection_partner$data = {
+      name: "Test Partner",
+      slug: "test-partner",
+      locations: {
+        totalCount: 3,
+      },
+      cities: ["New York", "Los Angeles", "Chicago"],
+      " $fragmentType": "PartnerLocationSection_partner",
+    }
+
+    const result = createLocationsString(partner)
+
+    expect(result).toEqual({
+      locationText: "Test Partner has 3 locations in",
+      cityText: "New York, Los Angeles",
+      lastCity: "Chicago",
+    })
+  })
+
+  it("should return correct location string for multiple locations with one city", () => {
+    const partner: PartnerLocationSection_partner$data = {
+      name: "Test Partner",
+      slug: "test-partner",
+      locations: {
+        totalCount: 3,
+      },
+      cities: ["New York"],
+      " $fragmentType": "PartnerLocationSection_partner",
+    }
+
+    const result = createLocationsString(partner)
+
+    expect(result).toEqual({
+      locationText: "Test Partner has 3 locations in",
+      cityText: "New York",
+    })
   })
 })
 
