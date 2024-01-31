@@ -107,7 +107,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
                   <Text variant="sm-display">{item.headline}</Text>
 
-                  {!!isEditorial && <Text variant="xs">An artist you follow is featured</Text>}
+                  {!!isEditorial && <Text variant="xs">{item.message}</Text>}
 
                   <Flex flexDirection="row">
                     <ActivityItemTypeLabel notificationType={item.notificationType} />

@@ -1,4 +1,4 @@
-import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleFeaturedArtistNotificationFollowArtistMutation } from "__generated__/ArticleFeaturedArtistNotificationFollowArtistMutation.graphql"
 import { ArticleFeaturedArtistNotification_notification$key } from "__generated__/ArticleFeaturedArtistNotification_notification.graphql"
@@ -19,7 +19,7 @@ export const ArticleFeaturedArtistNotification: React.FC<
   const [followOrUnfollowArtist] =
     useMutation<ArticleFeaturedArtistNotificationFollowArtistMutation>(FollowArtistMutation)
 
-  const { item } = notificationData
+  const { message, item } = notificationData
 
   const article = item?.article
   const artists = extractNodes(item?.artistsConnection)
@@ -33,10 +33,6 @@ export const ArticleFeaturedArtistNotification: React.FC<
   }
 
   const handleFollowArtist = () => {
-    if (!artists.length) {
-      return
-    }
-
     followOrUnfollowArtist({
       variables: {
         input: { artistID: artists[0].slug, unfollow: artists[0].isFollowed },
@@ -57,7 +53,7 @@ export const ArticleFeaturedArtistNotification: React.FC<
       <Screen.Header onBack={goBack} title="Editorial" />
       <ScrollView>
         <Flex mx={2} mt={2} mb={4}>
-          <Text variant="lg-display">An artist you follow is featured</Text>
+          <Text variant="lg-display">{message}</Text>
 
           {!!artists && (
             <>
@@ -100,6 +96,18 @@ export const ArticleFeaturedArtistNotification: React.FC<
           )}
 
           <ArticleCard article={article as ArticleCard_article$data} isFluid />
+          <Button
+            mt={2}
+            block
+            onPress={() => {
+              if (article.href) {
+                navigate(article.href)
+              }
+            }}
+            accessibilityLabel="Read Article"
+          >
+            Read Article
+          </Button>
         </Flex>
       </ScrollView>
     </Screen>
@@ -108,6 +116,7 @@ export const ArticleFeaturedArtistNotification: React.FC<
 
 export const ArticleFeaturedArtistNotificationFragment = graphql`
   fragment ArticleFeaturedArtistNotification_notification on Notification {
+    message
     item {
       ... on ArticleFeaturedArtistNotificationItem {
         article {

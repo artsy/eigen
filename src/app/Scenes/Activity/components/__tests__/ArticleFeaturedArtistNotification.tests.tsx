@@ -71,8 +71,8 @@ describe("ArticleFeaturedArtistNotification", () => {
     })
   })
 
-  describe("Editorial secion", () => {
-    it("opens editorial page", async () => {
+  describe("Article secion", () => {
+    it("opens article from Article card", async () => {
       renderWithRelay({
         Me: () => ({
           notification,
@@ -91,10 +91,27 @@ describe("ArticleFeaturedArtistNotification", () => {
         "/article/artsy-editorial-10-artists-discover-foundations"
       )
     })
+
+    it("opens article by pressing the Read Article CTA", async () => {
+      renderWithRelay({ Me: () => ({ notification }) })
+
+      await flushPromiseQueue()
+
+      const readArticleCTA = screen.getByText("Read Article")
+
+      fireEvent.press(readArticleCTA)
+
+      await flushPromiseQueue()
+
+      expect(navigate).toHaveBeenCalledWith(
+        "/article/artsy-editorial-10-artists-discover-foundations"
+      )
+    })
   })
 })
 
 const notification = {
+  message: "An artist you follow is featured",
   item: {
     __typename: "ArticleFeaturedArtistNotificationItem",
     article: {
