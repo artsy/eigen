@@ -1,11 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { MoreIcon, Tabs, Touchable } from "@artsy/palette-mobile"
-import { useActionSheet } from "@expo/react-native-action-sheet"
+import { Tabs } from "@artsy/palette-mobile"
 import { ActivityContainer } from "app/Scenes/Activity/ActivityContainer"
 import { NewActivityScreen } from "app/Scenes/Activity/NewActivityScreen"
-import { useMarkAllNotificationsAsRead } from "app/Scenes/Activity/hooks/useMarkAllNotificationsAsRead"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -14,12 +12,9 @@ import { OnTabChangeCallback } from "react-native-collapsible-tab-view"
 import { useTracking } from "react-tracking"
 
 export const Activity = () => {
-  const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   const tracking = useTracking()
-  const { showActionSheetWithOptions } = useActionSheet()
-  const { markAllNotificationsAsRead } = useMarkAllNotificationsAsRead()
 
   const handleTabPress: OnTabChangeCallback = (data) => {
     tracking.trackEvent(tracks.clickedActivityPanelTab(data.tabName))
@@ -44,34 +39,6 @@ export const Activity = () => {
         onTabChange={handleTabPress}
         headerProps={{
           onBack: goBack,
-          rightElements: enableNavigateToASingleNotification && (
-            <Touchable
-              onPress={() => {
-                showActionSheetWithOptions(
-                  {
-                    options: ["Mark all as read", "Edit Alerts", "Edit Follows", "Cancel"],
-                    cancelButtonIndex: 3,
-                    useModal: true,
-                  },
-                  (buttonIndex) => {
-                    switch (buttonIndex) {
-                      case 0:
-                        markAllNotificationsAsRead()
-                        break
-                      case 1:
-                        navigate("settings/alerts")
-                        break
-                      case 2:
-                        navigate("favorites")
-                        break
-                    }
-                  }
-                )
-              }}
-            >
-              <MoreIcon fill="black100" accessibilityLabel="Notifications menu" />
-            </Touchable>
-          ),
         }}
       >
         <Tabs.Tab name="All" label="All">
