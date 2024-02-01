@@ -9047,6 +9047,7 @@ type EditionSet implements Sellable {
   isSold: Boolean
   listPrice: ListPrice
   price: String
+  priceListed: Money
   saleMessage: String
 
   # size bucket assigned to an artwork based on its dimensions
