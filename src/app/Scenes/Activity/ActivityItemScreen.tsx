@@ -17,6 +17,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { FC } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { screen } from "app/utils/track/helpers"
+import { ArticleFeaturedArtistNotification } from "app/Scenes/Activity/components/ArticleFeaturedArtistNotification"
 
 interface ActivityItemScreenQueryRendererProps {
   notificationID: string
@@ -41,13 +42,18 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
           return <AlertNotification notification={data.me?.notification} />
         case "ArtworkPublishedNotificationItem":
           return <ArtworkPublishedNotification notification={data.me?.notification} />
+        case "ArticleFeaturedArtistNotificationItem":
+          return <ArticleFeaturedArtistNotification notification={data.me?.notification} />
         default:
           // TODO: Add fallback for other notification types
           return (
-            <Text>
-              The notification screen for the type "{notificationType}" has not been implemented
-              yet.
-            </Text>
+            <Screen>
+              <Screen.Header onBack={goBack} title="Title" />
+              <Text>
+                The notification screen for the type "{notificationType}" has not been implemented
+                yet.
+              </Text>
+            </Screen>
           )
       }
     },
@@ -64,6 +70,7 @@ const ActivityItemQuery = graphql`
 
         ...AlertNotification_notification
         ...ArtworkPublishedNotification_notification
+        ...ArticleFeaturedArtistNotification_notification
       }
     }
   }

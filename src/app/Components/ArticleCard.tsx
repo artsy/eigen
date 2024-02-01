@@ -36,7 +36,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   return (
     <Flex width={isFluid ? "100%" : WIDTH}>
-      <TouchableWithoutFeedback onPress={onTap}>
+      <TouchableWithoutFeedback onPress={onTap} testID="article-card">
         <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (

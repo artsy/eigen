@@ -1,8 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -41,6 +40,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const shouldDisplayCounts =
     isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
   const isPartnerOffer = item.notificationType === "PARTNER_OFFER_CREATED"
+  const isEditorial = item.notificationType === "ARTICLE_FEATURED_ARTIST"
 
   const handlePress = () => {
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
@@ -69,16 +69,18 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                       <Flex
                         key={`${item.internalID}-${artwork.internalID}`}
                         mr={1}
+                        mb={1}
                         accessibilityLabel="Activity Artwork Image"
                       >
-                        <OpaqueImageView
-                          imageURL={artwork.image?.preview?.src}
+                        <Image
+                          src={artwork.image?.preview?.src ?? ""}
                           width={NEW_ARTWORK_IMAGE_SIZE}
                           height={NEW_ARTWORK_IMAGE_SIZE}
                         />
                       </Flex>
                     )
                   })}
+
                   {!!shouldDisplayCounts && (
                     <Text
                       variant="xs"
@@ -103,9 +105,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                     </Flex>
                   )}
 
-                  <Text variant="sm-display" mt={1}>
-                    {item.headline}
-                  </Text>
+                  <Text variant="sm-display">{item.headline}</Text>
+
+                  {!!isEditorial && <Text variant="xs">{item.message}</Text>}
 
                   <Flex flexDirection="row">
                     <ActivityItemTypeLabel notificationType={item.notificationType} />
@@ -165,8 +167,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                   mr={1}
                   accessibilityLabel="Activity Artwork Image"
                 >
-                  <OpaqueImageView
-                    imageURL={artwork.image?.preview?.src}
+                  <Image
+                    src={artwork.image?.preview?.src ?? ""}
                     width={ARTWORK_IMAGE_SIZE}
                     height={ARTWORK_IMAGE_SIZE}
                   />
