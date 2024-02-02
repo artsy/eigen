@@ -227,7 +227,7 @@ export const features = {
   },
   AREnablePartnerOffer: {
     description: "Enable partner offer content in the app",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffer",
   },
