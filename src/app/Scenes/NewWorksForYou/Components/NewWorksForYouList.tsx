@@ -10,6 +10,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { pluralize } from "app/utils/pluralize"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 type NewWorksForYouListProps = {
@@ -23,8 +24,6 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
 
   const artworks = extractNodes(data.artworks)
 
-  const pl = artworks.length > 0
-
   return (
     <Flex style={{ height: "100%" }}>
       <Screen.FlatList
@@ -32,7 +31,7 @@ export const NewWorksForYouList: React.FC<NewWorksForYouListProps> = ({ viewer }
         keyExtractor={(item) => item.id}
         ListHeaderComponent={() => (
           <Text variant="xs" p={2}>
-            {artworks.length} {pl ? "artworks" : "artwork"}
+            {artworks.length} {pluralize("Artwork", artworks.length)}
           </Text>
         )}
         contentContainerStyle={{

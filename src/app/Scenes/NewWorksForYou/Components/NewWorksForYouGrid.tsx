@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { pluralize } from "app/utils/pluralize"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
@@ -21,7 +22,6 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
   const artworks = extractNodes(data.artworks)
-  const pl = artworks.length > 0
 
   return (
     <Flex style={{ height: "100%" }}>
@@ -37,7 +37,7 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
         }
         ListHeaderComponent={() => (
           <Text variant="xs" pt={2}>
-            {artworks.length} {pl ? "artworks" : "artwork"}
+            {artworks.length} {pluralize("Artwork", artworks.length)}
           </Text>
         )}
         hasMore={false}
