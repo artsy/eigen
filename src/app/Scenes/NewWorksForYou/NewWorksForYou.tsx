@@ -10,8 +10,7 @@ import {
   Spacer,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
-import { NewWorksForYouGridQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouGrid"
-import { NewWorksForYouListQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouList"
+import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -103,11 +102,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
         />
         <Screen.StickySubHeader title="New Works For You" />
         <Screen.Body fullwidth>
-          {defaultViewOption === "list" && showToggleViewOptionIcon ? (
-            <NewWorksForYouGridQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-          ) : (
-            <NewWorksForYouListQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
-          )}
+          <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
         </Screen.Body>
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>

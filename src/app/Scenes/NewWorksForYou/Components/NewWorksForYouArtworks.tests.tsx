@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
-import { NewWorksForYouGridTestsQuery } from "__generated__/NewWorksForYouGridTestsQuery.graphql"
-import { NewWorksForYouGrid } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouGrid"
+import { NewWorksForYouArtworksTestsQuery } from "__generated__/NewWorksForYouArtworksTestsQuery.graphql"
+import { NewWorksForYouArtworks } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
 import { DEFAULT_RECS_MODEL_VERSION } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -13,11 +13,11 @@ describe("NewWorksForYouGrid", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<NewWorksForYouGridTestsQuery>
+    <QueryRenderer<NewWorksForYouArtworksTestsQuery>
       query={graphql`
-        query NewWorksForYouGridTestsQuery($version: String, $maxWorksPerArtist: Int) {
+        query NewWorksForYouArtworksTestsQuery($version: String, $maxWorksPerArtist: Int) {
           viewer {
-            ...NewWorksForYouGrid_viewer
+            ...NewWorksForYouArtworks_viewer
               @arguments(version: $version, maxWorksPerArtist: $maxWorksPerArtist)
           }
         }
@@ -27,7 +27,7 @@ describe("NewWorksForYouGrid", () => {
           return
         }
 
-        return <NewWorksForYouGrid viewer={props.viewer} />
+        return <NewWorksForYouArtworks viewer={props.viewer} />
       }}
       variables={{
         version: DEFAULT_RECS_MODEL_VERSION,
