@@ -1,33 +1,39 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
-import { NewWorksForYouGridQuery } from "__generated__/NewWorksForYouGridQuery.graphql"
-import { NewWorksForYouGrid_viewer$key } from "__generated__/NewWorksForYouGrid_viewer.graphql"
+import { NewWorksForYouArtworksQuery } from "__generated__/NewWorksForYouArtworksQuery.graphql"
+import { NewWorksForYouArtworks_viewer$key } from "__generated__/NewWorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import {
   NewWorksForYouPlaceholder,
   NewWorksForYouScreenProps,
   PAGE_SIZE,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { pluralize } from "app/utils/pluralize"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface NewWorksForYouProps {
-  viewer: NewWorksForYouGrid_viewer$key
+  viewer: NewWorksForYouArtworks_viewer$key
 }
 
-export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) => {
-  const { data } = usePaginationFragment(newWorksForYouGridFragment, viewer)
+export const NewWorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) => {
+  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+
+  const { data } = usePaginationFragment(newWorksForYouArtworksFragment, viewer)
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
   const artworks = extractNodes(data.artworks)
+  const numColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
   return (
     <Flex style={{ height: "100%" }}>
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
+        numColumns={numColumns}
         disableAutoLayout
         pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.newWorksForYou}
@@ -36,7 +42,7 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
           <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
         }
         ListHeaderComponent={() => (
-          <Text variant="xs" pt={2}>
+          <Text variant="xs" pt={2} px={2}>
             {artworks.length} {pluralize("Artwork", artworks.length)}
           </Text>
         )}
@@ -48,9 +54,9 @@ export const NewWorksForYouGrid: React.FC<NewWorksForYouProps> = ({ viewer }) =>
   )
 }
 
-export const newWorksForYouGridFragment = graphql`
-  fragment NewWorksForYouGrid_viewer on Viewer
-  @refetchable(queryName: "NewWorksForYouGrid_viewerRefetch")
+export const newWorksForYouArtworksFragment = graphql`
+  fragment NewWorksForYouArtworks_viewer on Viewer
+  @refetchable(queryName: "NewWorksForYouArtworks_viewerRefetch")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 100 }
     cursor: { type: "String" }
@@ -80,18 +86,18 @@ export const newWorksForYouGridFragment = graphql`
   }
 `
 
-export const newWorksForYouGridQuery = graphql`
-  query NewWorksForYouGridQuery($version: String, $maxWorksPerArtist: Int) {
+export const newWorksForYouArtworksQuery = graphql`
+  query NewWorksForYouArtworksQuery($version: String, $maxWorksPerArtist: Int) {
     viewer @principalField {
-      ...NewWorksForYouGrid_viewer
+      ...NewWorksForYouArtworks_viewer
         @arguments(version: $version, maxWorksPerArtist: $maxWorksPerArtist)
     }
   }
 `
 
-export const NewWorksForYouGridQR: React.FC<NewWorksForYouScreenProps> = withSuspense(
+export const NewWorksForYouArtworksQR: React.FC<NewWorksForYouScreenProps> = withSuspense(
   ({ version, maxWorksPerArtist }) => {
-    const data = useLazyLoadQuery<NewWorksForYouGridQuery>(newWorksForYouGridQuery, {
+    const data = useLazyLoadQuery<NewWorksForYouArtworksQuery>(newWorksForYouArtworksQuery, {
       version,
       maxWorksPerArtist,
     })
@@ -102,7 +108,7 @@ export const NewWorksForYouGridQR: React.FC<NewWorksForYouScreenProps> = withSus
       return <Text>Something went wrong.</Text>
     }
 
-    return <NewWorksForYouGrid viewer={data.viewer} />
+    return <NewWorksForYouArtworks viewer={data.viewer} />
   },
   () => <NewWorksForYouPlaceholder defaultViewOption="grid" />
 )
