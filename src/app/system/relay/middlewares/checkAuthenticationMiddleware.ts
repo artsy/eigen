@@ -1,6 +1,6 @@
 import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Alert } from "react-native"
-import { Middleware } from "react-relay-network-modern/node8"
+import { Middleware } from "react-relay-network-modern"
 
 // This middleware is responsible of signing the user out if their session expired
 export const checkAuthenticationMiddleware = (): Middleware => {

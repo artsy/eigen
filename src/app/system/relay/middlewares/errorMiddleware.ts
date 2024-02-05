@@ -1,5 +1,5 @@
 import { principalFieldErrorHandlerMiddleware } from "app/system/relay/middlewares/principalFieldErrorHandlerMiddleware"
-import { MiddlewareNextFn } from "react-relay-network-modern/node8"
+import { MiddlewareNextFn } from "react-relay-network-modern"
 import { GraphQLRequest } from "./types"
 
 export const errorMiddleware = () => (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {

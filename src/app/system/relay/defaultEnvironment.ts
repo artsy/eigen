@@ -3,7 +3,7 @@ import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
   uploadMiddleware,
-} from "react-relay-network-modern/node8"
+} from "react-relay-network-modern"
 import { Environment, RecordSource, Store } from "relay-runtime"
 import { MockEnvironment } from "relay-test-utils"
 

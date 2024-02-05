@@ -3,7 +3,7 @@ import {
   MiddlewareNextFn,
   RelayNetworkLayerRequest,
   RelayNetworkLayerResponse,
-} from "react-relay-network-modern/node8"
+} from "react-relay-network-modern"
 import { rateLimitMiddleware } from "./rateLimitMiddleware"
 
 // Workaround for read-only property warning

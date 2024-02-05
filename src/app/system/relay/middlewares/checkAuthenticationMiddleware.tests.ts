@@ -3,7 +3,7 @@ import {
   GraphQLResponseErrors,
   MiddlewareNextFn,
   RelayNetworkLayerResponse,
-} from "react-relay-network-modern/node8"
+} from "react-relay-network-modern"
 import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
 import { GraphQLRequest } from "./types"
 

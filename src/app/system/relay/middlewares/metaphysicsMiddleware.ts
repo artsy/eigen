@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { logQueryPath } from "app/utils/loggers"
 import { omit } from "lodash"
-import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
+import { Middleware, urlMiddleware } from "react-relay-network-modern"
 
 /**
  * This takes the extra extension metadata that staging and dev metaphysics

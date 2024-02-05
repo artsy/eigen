@@ -1,6 +1,6 @@
 import { addBreadcrumb } from "@sentry/react-native"
 import { logRelay } from "app/utils/loggers"
-import { Middleware } from "react-relay-network-modern/node8"
+import { Middleware } from "react-relay-network-modern"
 
 type ExtendedError = {
   message?: string

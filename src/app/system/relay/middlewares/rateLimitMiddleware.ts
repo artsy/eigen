@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { logOperation } from "app/utils/loggers"
-import { Middleware } from "react-relay-network-modern/node8"
+import { Middleware } from "react-relay-network-modern"
 
 interface RateLimitMiddlewareOpts {
   limit: number

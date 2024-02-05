@@ -1,4 +1,4 @@
-import { RelayNetworkLayerRequest } from "react-relay-network-modern/node8"
+import { RelayNetworkLayerRequest } from "react-relay-network-modern"
 import { CacheConfig as RelayCacheConfig, RequestParameters } from "relay-runtime"
 
 type Mutable<T> = { -readonly [P in keyof T]: T[P] } // Remove readonly

@@ -320,7 +320,7 @@
     "react-native-flipper": "0.207.0",
     "react-native-flipper-performance-plugin": "0.4.0",
     "react-native-flipper-relay-devtools": "1.0.3",
-    "react-relay-network-modern": "6.2.1",
+    "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "18.1.0",
     "recursive-readdir-sync": "1.0.6",
     "redux-flipper": "2.0.2",

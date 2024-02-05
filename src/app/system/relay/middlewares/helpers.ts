@@ -8,7 +8,7 @@ import {
   formatGraphQLErrors,
   GraphQLResponseErrors,
   RelayNetworkLayerResponse,
-} from "react-relay-network-modern/node8"
+} from "react-relay-network-modern"
 
 export const isErrorStatus = (status: number | undefined) => {
   return (status ?? 200) >= 400
