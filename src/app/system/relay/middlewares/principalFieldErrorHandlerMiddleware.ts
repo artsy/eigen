@@ -1,7 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { isErrorStatus, throwError, trackError } from "app/system/relay/middlewares/helpers"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
-import { RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
+import { RelayNetworkLayerResponse } from "react-relay-network-modern"
 import { GraphQLSingularResponse } from "relay-runtime"
 
 export const principalFieldErrorHandlerMiddleware = async (

@@ -1,5 +1,5 @@
 import { RelayCache as cache } from "app/system/relay/RelayCache"
-import { MiddlewareNextFn } from "react-relay-network-modern/node8"
+import { MiddlewareNextFn } from "react-relay-network-modern"
 import { GraphQLRequest } from "./types"
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
