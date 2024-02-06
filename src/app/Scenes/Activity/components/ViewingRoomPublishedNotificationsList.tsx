@@ -27,6 +27,7 @@ export const ViewingRoomPublishedNotificationsList: FC<ViewingRoomPublishedNotif
           <ViewingRoomsListItem key={viewingRoom.internalID} item={viewingRoom} />
           <Button
             mt={2}
+            mb={4}
             block
             onPress={() => {
               if (viewingRoom.slug) {
