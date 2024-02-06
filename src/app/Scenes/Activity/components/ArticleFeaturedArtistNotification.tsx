@@ -3,6 +3,7 @@ import { ArticleCard_article$data } from "__generated__/ArticleCard_article.grap
 import { ArticleFeaturedArtistNotificationFollowArtistMutation } from "__generated__/ArticleFeaturedArtistNotificationFollowArtistMutation.graphql"
 import { ArticleFeaturedArtistNotification_notification$key } from "__generated__/ArticleFeaturedArtistNotification_notification.graphql"
 import { ArticleCard } from "app/Components/ArticleCard"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ScrollView, TouchableOpacity } from "react-native"
@@ -24,12 +25,8 @@ export const ArticleFeaturedArtistNotification: React.FC<
   const article = item?.article
   const artists = extractNodes(item?.artistsConnection)
 
-  if (!article || !artists || !artists.length) {
-    return (
-      <Text variant="lg" m={4}>
-        Sorry, something went wrong.
-      </Text>
-    )
+  if (!article || !artists) {
+    return <ActivityErrorScreen headerTitle="Editorial" />
   }
 
   const handleFollowArtist = () => {

@@ -66,44 +66,46 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
         Please try again
       </Text>
       {!!isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
-      <Touchable
-        onPress={debounce(() => {
-          if (!isAnimating) {
-            playAnimation()
-          }
-          onRetry?.()
-        })}
-        underlayColor={color("black5")}
-        haptic
-        style={{
-          height: 40,
-          width: 40,
-          borderRadius: 20,
-          borderColor: color("black10"),
-          borderWidth: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Animated.View
+      {!!onRetry && (
+        <Touchable
+          onPress={debounce(() => {
+            if (!isAnimating) {
+              playAnimation()
+            }
+            onRetry?.()
+          })}
+          underlayColor={color("black5")}
+          haptic
           style={{
             height: 40,
             width: 40,
+            borderRadius: 20,
+            borderColor: color("black10"),
+            borderWidth: 1,
             justifyContent: "center",
             alignItems: "center",
-            transform: [
-              {
-                rotate: spinAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ["0deg", "360deg"],
-                }),
-              },
-            ],
           }}
         >
-          <ReloadIcon height={25} width={25} />
-        </Animated.View>
-      </Touchable>
+          <Animated.View
+            style={{
+              height: 40,
+              width: 40,
+              justifyContent: "center",
+              alignItems: "center",
+              transform: [
+                {
+                  rotate: spinAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["0deg", "360deg"],
+                  }),
+                },
+              ],
+            }}
+          >
+            <ReloadIcon height={25} width={25} />
+          </Animated.View>
+        </Touchable>
+      )}
       {!!showErrorMessage && (
         <Flex m={2}>
           <Text>Error: {error?.message}</Text>

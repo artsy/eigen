@@ -9,6 +9,7 @@ import {
   Pill,
 } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
@@ -28,11 +29,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   const artist = item?.alert?.artists?.[0]
 
   if (!alert || !artist) {
-    return (
-      <Text variant="lg" m={4}>
-        Sorry, something went wrong.
-      </Text>
-    )
+    return <ActivityErrorScreen headerTitle="Alerts" />
   }
 
   const handleEditAlertPress = () => {
