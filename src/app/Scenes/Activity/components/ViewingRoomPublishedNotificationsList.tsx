@@ -23,7 +23,7 @@ export const ViewingRoomPublishedNotificationsList: FC<ViewingRoomPublishedNotif
   return (
     <Flex flexDirection="column" alignItems="center">
       {viewingRooms.map((viewingRoom) => (
-        <>
+        <Flex key={viewingRoom.internalID}>
           <ViewingRoomsListItem key={viewingRoom.internalID} item={viewingRoom} />
           <Button
             mt={2}
@@ -38,7 +38,7 @@ export const ViewingRoomPublishedNotificationsList: FC<ViewingRoomPublishedNotif
           >
             View Works
           </Button>
-        </>
+        </Flex>
       ))}
     </Flex>
   )
