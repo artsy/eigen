@@ -7,6 +7,9 @@ describe("isArtworksBasedNotification", () => {
 
     const result2 = isArtworksBasedNotification("ARTWORK_PUBLISHED")
     expect(result2).toEqual(true)
+
+    const result3 = isArtworksBasedNotification("PARTNER_OFFER_CREATED")
+    expect(result3).toEqual(true)
   })
 
   it("returns false for all other notification types", () => {
