@@ -1,6 +1,6 @@
 import { Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomPublishedNotification_notification$key } from "__generated__/ViewingRoomPublishedNotification_notification.graphql"
-import { NotificationViewingRoomsList } from "app/Scenes/Activity/components/ViewingRoomPublishedNotificationsList"
+import { ViewingRoomPublishedNotificationsList } from "app/Scenes/Activity/components/ViewingRoomPublishedNotificationsList"
 import { goBack } from "app/system/navigation/navigate"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
 import { ScrollView } from "react-native"
@@ -53,7 +53,9 @@ export const ViewingRoomPublishedNotification: React.FC<ViewingRoomPublishedNoti
             mr={1}
           />
           <Spacer y={4} />
-          <NotificationViewingRoomsList viewingRoomsConnection={item?.viewingRoomsConnection} />
+          <ViewingRoomPublishedNotificationsList
+            viewingRoomsConnection={item?.viewingRoomsConnection}
+          />
         </Flex>
       </ScrollView>
     </Screen>
