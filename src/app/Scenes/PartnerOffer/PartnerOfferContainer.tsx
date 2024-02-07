@@ -29,6 +29,8 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
         })
 
         return
+      } else {
+        goBack()
       }
     } else if (orderOrError?.order) {
       // we need to go back to the home screen before navigating to the orders screen

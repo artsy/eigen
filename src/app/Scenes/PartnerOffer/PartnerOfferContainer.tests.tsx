@@ -58,6 +58,20 @@ describe(PartnerOfferContainer, () => {
           passProps: { artworkOfferUnavailable: true },
         })
       })
+
+      it("navigates to the home screen when the mutation gives different error", async () => {
+        renderContainer()
+
+        mockCommit.mock.calls[0][0].onCompleted(mockResponses.otherError)
+
+        expect(screen.getByTestId("partner-offer-container-loading-screen")).toBeDefined()
+
+        await waitFor(() => expect(mockCommit).toHaveBeenCalledOnce())
+        expect(mockCommit).toHaveBeenCalledWith(
+          expect.objectContaining({ variables: { input: { partnerOfferId: "1234" } } })
+        )
+        expect(goBack).toHaveBeenCalledOnce()
+      })
     })
 
     describe("and returns an an order", () => {
@@ -111,6 +125,16 @@ const mockResponses = {
       orderOrError: {
         error: {
           code: "not_acquireable",
+          data: JSON.stringify({ artwork_id: "1234" }),
+        },
+      },
+    },
+  },
+  otherError: {
+    commerceCreatePartnerOfferOrder: {
+      orderOrError: {
+        error: {
+          code: "some_other_error",
           data: JSON.stringify({ artwork_id: "1234" }),
         },
       },
