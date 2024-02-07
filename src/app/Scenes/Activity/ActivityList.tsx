@@ -6,7 +6,6 @@ import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
-import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
@@ -25,18 +24,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     "AREnableNewActivityPanelManagement"
   )
 
-  const headerMeasurements = enableNewActivityPanelManagement
-    ? {
-        height: { value: 0 },
-        top: { value: 0 },
-      }
-    : // Although this breaks the rule of hooks, it's safe to do it here
-      // Because the feature flag is only updates on screen mount thanks to unsafe_getFeatureFlag
-      // The above check will be removed once the feature flag is removed
-      // It seems reasonable here to do this to avoid duplicating code and messing up valuable
-      // Git history
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useHeaderMeasurements()
   const [refreshing, setRefreshing] = useState(false)
 
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment(
@@ -57,11 +44,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
     return true
   })
-
-  const sections = notifications.map((notification) => ({
-    key: notification.internalID,
-    content: <ActivityItem notification={notification} />,
-  }))
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -84,28 +66,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     )
   }
 
-  if (notifications.length === 0) {
-    // In order to center content, we need to offset the stickytabs header height
-
-    let headerOffset = 0
-    if (typeof headerMeasurements.height.value === "number") {
-      headerOffset = -headerMeasurements.height.value
-    }
-
-    const ScrollViewComponent = enableNewActivityPanelManagement
-      ? Screen.ScrollView
-      : Tabs.ScrollView
-    return (
-      <ScrollViewComponent
-        refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
-      >
-        <Flex flex={1} justifyContent="center" top={headerOffset}>
-          <ActivityEmptyView type={type} />
-        </Flex>
-      </ScrollViewComponent>
-    )
-  }
-
   const FlatlistComponent = enableNewActivityPanelManagement ? Screen.FlatList : Tabs.FlatList
 
   return (
@@ -122,8 +82,8 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
           </Flex>
         )
       }}
-      data={sections}
-      keyExtractor={(item) => `${type}-${item.key}`}
+      data={notifications}
+      keyExtractor={(item) => `${type}-${item.internalID}`}
       ItemSeparatorComponent={() =>
         enableNewActivityPanelManagement ? (
           <Flex mx={-2}>
@@ -134,7 +94,12 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
         )
       }
       onEndReached={handleLoadMore}
-      renderItem={({ item }) => <>{item.content}</>}
+      renderItem={({ item }) => <ActivityItem notification={item} />}
+      ListEmptyComponent={
+        <Flex flex={1} justifyContent="center">
+          <ActivityEmptyView type={type} />
+        </Flex>
+      }
       contentContainerStyle={{
         // This is required because Tabs.Flatlist has a marginHorizontal of 20
         marginHorizontal: 0,

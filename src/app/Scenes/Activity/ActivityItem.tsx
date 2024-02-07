@@ -92,7 +92,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                   )}
                 </Flex>
 
-                <Flex flex={1} justifyContent="center">
+                <Flex justifyContent="center">
                   {!!isPartnerOffer && (
                     <Flex
                       borderRadius={BADGE_BORDER_RADIUS}

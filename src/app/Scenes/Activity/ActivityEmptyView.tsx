@@ -27,7 +27,11 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) =>
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
   return (
-    <Flex accessibilityLabel="Activities are empty" pt={enableNewActivityPanelManagement ? 2 : 0}>
+    <Flex
+      mx={2}
+      accessibilityLabel="Activities are empty"
+      pt={enableNewActivityPanelManagement ? 2 : 0}
+    >
       <Text textAlign="center">{entity.title}</Text>
       <Spacer y={2} />
       <Text variant="xs" color="black60" textAlign="center">
