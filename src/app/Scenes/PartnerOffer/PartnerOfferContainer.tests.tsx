@@ -71,6 +71,7 @@ describe(PartnerOfferContainer, () => {
           expect.objectContaining({ variables: { input: { partnerOfferId: "1234" } } })
         )
         expect(goBack).toHaveBeenCalledOnce()
+        expect(screen.getByText("An error occurred.")).toBeOnTheScreen()
       })
     })
 
