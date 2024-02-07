@@ -1,6 +1,7 @@
 import { Flex } from "@artsy/palette-mobile"
 import { usePartnerOfferCheckoutMutation$data } from "__generated__/usePartnerOfferCheckoutMutation.graphql"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
+import { Toast } from "app/Components/Toast/Toast"
 import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useEffect } from "react"
@@ -29,6 +30,9 @@ export const PartnerOfferContainer: React.FC<{ partnerOfferID: string }> = ({ pa
         })
 
         return
+      } else {
+        Toast.show("An error occurred.", "bottom")
+        goBack()
       }
     } else if (orderOrError?.order) {
       // we need to go back to the home screen before navigating to the orders screen
