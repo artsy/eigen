@@ -215,7 +215,7 @@ export const features = {
   },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnablePartnerOffersNotificationSwitch",
   },
