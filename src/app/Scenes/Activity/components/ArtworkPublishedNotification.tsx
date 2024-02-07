@@ -10,6 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
 import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
@@ -32,11 +33,11 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
   const artist = item?.artists?.[0]
 
-  const handleFollowArtist = () => {
-    if (!artist) {
-      return
-    }
+  if (!artist || !artworksConnection) {
+    return <ActivityErrorScreen headerTitle="Follows" />
+  }
 
+  const handleFollowArtist = () => {
     followOrUnfollowArtist({
       variables: {
         input: { artistID: artist?.slug, unfollow: artist?.isFollowed },
