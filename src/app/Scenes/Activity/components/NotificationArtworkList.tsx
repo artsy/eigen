@@ -10,14 +10,18 @@ import { useFragment, graphql } from "react-relay"
 
 interface NotificationArtworkListProps {
   artworksConnection?: NotificationArtworkList_artworksConnection$key | null
+  showOnlyFirstArtwork?: boolean
 }
 
 export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props) => {
+  const { artworksConnection, showOnlyFirstArtwork } = props
   const space = useSpace()
 
-  const artworksConnection = useFragment(notificationArtworkListFragment, props.artworksConnection)
+  const artworksConnectionData = useFragment(notificationArtworkListFragment, artworksConnection)
 
-  const artworks = extractNodes(artworksConnection)
+  const artworks = !!showOnlyFirstArtwork
+    ? extractNodes(artworksConnectionData).splice(0)
+    : extractNodes(artworksConnectionData)
 
   return (
     <Flex minHeight={400}>

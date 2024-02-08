@@ -19,6 +19,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { screen } from "app/utils/track/helpers"
 import { ArticleFeaturedArtistNotification } from "app/Scenes/Activity/components/ArticleFeaturedArtistNotification"
 import { ViewingRoomPublishedNotification } from "app/Scenes/Activity/components/ViewingRoomPublishedNotification"
+import { PartnerOfferCreatedNotification } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 
 interface ActivityItemScreenQueryRendererProps {
   notificationID: string
@@ -47,6 +48,8 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
           return <ArticleFeaturedArtistNotification notification={data.me?.notification} />
         case "ViewingRoomPublishedNotificationItem":
           return <ViewingRoomPublishedNotification notification={data.me?.notification} />
+        case "PartnerOfferCreatedNotificationItem":
+          return <PartnerOfferCreatedNotification notification={data.me.notification} />
         default:
           // TODO: Add fallback for other notification types
           return (
@@ -75,6 +78,7 @@ const ActivityItemQuery = graphql`
         ...ArtworkPublishedNotification_notification
         ...ArticleFeaturedArtistNotification_notification
         ...ViewingRoomPublishedNotification_notification
+        ...PartnerOfferCreatedNotification_notification
       }
     }
   }
