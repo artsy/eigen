@@ -256,7 +256,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/show/:showID", "Show"),
     addRoute("/show/:showID/info", "ShowMoreInfo"),
     addRoute("/similar-to-recently-viewed", "SimilarToRecentlyViewed"),
-    addRoute("/storybook", "Storybook"),
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/unlisted-artworks-faq", "UnlistedArtworksFAQScreen"),
     addRoute("/user/conversations/:conversationID", "Conversation"),
