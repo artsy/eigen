@@ -2376,7 +2376,7 @@ type Artwork implements Node & Searchable & Sellable {
   # Private text field for partner use
   inventoryId: String
 
-  # Whether a work can be purchased through e-commerce
+  # Whether a work can be purchased through Buy Now
   isAcquireable: Boolean
 
   # Is this artwork part of an auction that is currently running?
@@ -2420,6 +2420,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPriceEstimateRequestable: Boolean
   isPriceHidden: Boolean
   isPriceRange: Boolean
+
+  # Whether a work can be purchased
+  isPurchasable: Boolean
   isSaved: Boolean
 
   # Checks if artwork is saved to user's lists
