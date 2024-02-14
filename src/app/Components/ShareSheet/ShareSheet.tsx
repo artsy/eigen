@@ -74,7 +74,6 @@ export const ShareSheet = () => {
         )
       }
 
-      // run the share after the analytics and hideShareSheet interactions are done
       await Share.shareSingle({
         appId: Config.ARTSY_FACEBOOK_APP_ID,
         social: Share.Social.INSTAGRAM_STORIES,
