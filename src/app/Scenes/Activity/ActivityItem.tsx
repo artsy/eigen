@@ -105,7 +105,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                     <Text variant="xs" mr={0.5}>
                       {item.publishedAt}
                     </Text>
-                    {!!isPartnerOffer && <ExpiresInTimer item={item.item} />}
                     {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
                       <ExpiresInTimer item={item.item} />
                     )}

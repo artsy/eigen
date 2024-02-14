@@ -1,8 +1,12 @@
-import { Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { ExpiresInTimer } from "app/Scenes/Activity/components/ExpiresInTimer"
+import { Button, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  ExpiresInTimer,
+  shouldDisplayExpiresInTimer,
+} from "app/Scenes/Activity/components/ExpiresInTimer"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { getTimer } from "app/utils/getTimer"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -15,13 +19,18 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 }) => {
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
-  const { headline, item, notificationType, artworksConnection } = notificationData
-
-  console.warn(artworksConnection?.totalCount)
+  const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
 
   const handleManageSaves = () => {
-    navigate("/setting/alerts")
+    navigate("/artwork-lists")
   }
+
+  const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
+  const noLongerAvailable = !item.partnerOffer.isAvailable
+
+  let buttonText = "Continue To Purchase"
+  if (hasEnded) buttonText = "View Work"
+  if (noLongerAvailable) buttonText = "Create Alert"
 
   // TODO: 'Manage Saves' string is too long for the right header element
 
@@ -34,7 +43,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           <Touchable haptic="impactLight" onPress={handleManageSaves}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Manage Saves
+                Saves
               </Text>
             </Flex>
           </Touchable>
@@ -55,11 +64,21 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
             <Spacer y={1} />
 
-            <ExpiresInTimer item={item} />
+            {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
 
             <Spacer y={2} />
           </Flex>
           <NotificationArtworkList artworksConnection={artworksConnection} showOnlyFirstArtwork />
+
+          <Flex mx={2} mt={2}>
+            <Button
+              block
+              variant={noLongerAvailable ? "outline" : "fillDark"}
+              onPress={() => navigate(targetHref)}
+            >
+              {buttonText}
+            </Button>
+          </Flex>
         </Flex>
       </ScrollView>
     </Screen>
@@ -70,10 +89,12 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
   fragment PartnerOfferCreatedNotification_notification on Notification {
     headline
     notificationType
+    targetHref
     item {
       ... on PartnerOfferCreatedNotificationItem {
+        expiresAt
+        available
         partnerOffer {
-          endAt
           isAvailable
           priceListedMessage
           priceWithDiscountMessage
