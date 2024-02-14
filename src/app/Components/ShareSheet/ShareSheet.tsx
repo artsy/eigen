@@ -31,7 +31,7 @@ import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramS
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
-import { InteractionManager, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import Config from "react-native-config"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
@@ -40,12 +40,14 @@ import { useTracking } from "react-tracking"
 export const ShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useShareSheet()
   const isArtwork = data?.type === "artwork"
-  const showInstagramStoriesItem =
-    useCanOpenURL("instagram://user?username=instagram") && data?.type !== "sale"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const { height: screenHeight } = useScreenDimensions()
   const toast = useToast()
   const shotRef = useRef<ViewShot>(null)
+  const showInstagramStoriesItem =
+    useCanOpenURL("instagram://user?username=instagram") &&
+    data?.type !== "sale" &&
+    !!shotRef.current
   const { trackEvent } = useTracking()
   const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
 
@@ -56,34 +58,34 @@ export const ShareSheet = () => {
   const { currentImageUrl } = getShareImages(data)
 
   const shareOnInstagramStory = async () => {
+    // if the ref is not available, we can't take a screenshot but
+    // we don't render the shareOnInstagramStory button if we don't have that
     if (!shotRef.current) {
       return
     }
 
-    const base64Data = await getBase64Data(shotRef.current)
+    try {
+      const base64Data = await getBase64Data(shotRef.current)
 
-    // first hide the share sheet
-    hideShareSheet()
-
-    if (isArtwork) {
-      // track if the user shares the artwork
-      trackEvent(
-        share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
-      )
-    }
-
-    // run the share after the analytics and hideShareSheet interactions are done
-    InteractionManager.runAfterInteractions(async () => {
-      try {
-        await Share.shareSingle({
-          appId: Config.ARTSY_FACEBOOK_APP_ID,
-          social: Share.Social.INSTAGRAM_STORIES,
-          backgroundImage: base64Data,
-        })
-      } catch (err) {
-        captureMessage("Error sharing to Instagram Stories")
+      if (isArtwork) {
+        // track if the user shares the artwork
+        trackEvent(
+          share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
+        )
       }
-    })
+
+      // run the share after the analytics and hideShareSheet interactions are done
+      await Share.shareSingle({
+        appId: Config.ARTSY_FACEBOOK_APP_ID,
+        social: Share.Social.INSTAGRAM_STORIES,
+        backgroundImage: base64Data,
+      })
+    } catch (error) {
+      captureMessage("Error sharing to Instagram Stories")
+      console.log(error)
+    } finally {
+      hideShareSheet()
+    }
   }
 
   const shareOnWhatsApp = async () => {
