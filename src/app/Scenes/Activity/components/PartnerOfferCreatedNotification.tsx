@@ -28,7 +28,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
   const noLongerAvailable = !item.partnerOffer.isAvailable
 
-  let buttonText = "Continue To Purchase"
+  let buttonText = "Continue to Purchase"
   if (hasEnded) buttonText = "View Work"
   if (noLongerAvailable) buttonText = "Create Alert"
 
@@ -68,7 +68,8 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
             <Spacer y={2} />
           </Flex>
-          <NotificationArtworkList artworksConnection={artworksConnection} showOnlyFirstArtwork />
+
+          <NotificationArtworkList artworksConnection={artworksConnection} />
 
           <Flex mx={2} mt={2}>
             <Button
@@ -103,7 +104,6 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
     }
     artworksConnection(first: 10) {
       ...NotificationArtworkList_artworksConnection
-      totalCount
     }
   }
 `
