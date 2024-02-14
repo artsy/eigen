@@ -278,6 +278,9 @@ export interface DevToggleDescriptor {
 export type DevToggleName = keyof typeof devToggles
 
 export const devToggles: { [key: string]: DevToggleDescriptor } = {
+  DTShowPlayground: {
+    description: "Show Playground",
+  },
   DTShowQuickAccessInfo: {
     description: "Quick Access Info",
   },
