@@ -15,6 +15,7 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
+import { captureMessage } from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -30,7 +31,7 @@ import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramS
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
-import { ScrollView } from "react-native"
+import { InteractionManager, ScrollView } from "react-native"
 import Config from "react-native-config"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
@@ -55,18 +56,34 @@ export const ShareSheet = () => {
   const { currentImageUrl } = getShareImages(data)
 
   const shareOnInstagramStory = async () => {
-    const base64Data = await getBase64Data(shotRef.current!)
+    if (!shotRef.current) {
+      return
+    }
 
-    await Share.shareSingle({
-      appId: Config.ARTSY_FACEBOOK_APP_ID,
-      social: Share.Social.INSTAGRAM_STORIES,
-      backgroundImage: base64Data,
-    })
-    isArtwork &&
-      trackEvent(
-        share(tracks.customShare(CustomService.instagram_stories, data!.internalID, data?.slug))
-      )
+    const base64Data = await getBase64Data(shotRef.current)
+
+    // first hide the share sheet
     hideShareSheet()
+
+    if (isArtwork) {
+      // track if the user shares the artwork
+      trackEvent(
+        share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
+      )
+    }
+
+    // run the share after the analytics and hideShareSheet interactions are done
+    InteractionManager.runAfterInteractions(async () => {
+      try {
+        await Share.shareSingle({
+          appId: Config.ARTSY_FACEBOOK_APP_ID,
+          social: Share.Social.INSTAGRAM_STORIES,
+          backgroundImage: base64Data,
+        })
+      } catch (err) {
+        captureMessage("Error sharing to Instagram Stories")
+      }
+    })
   }
 
   const shareOnWhatsApp = async () => {
@@ -112,7 +129,7 @@ export const ShareSheet = () => {
       })
 
       if (isArtwork) {
-        trackEvent(share(tracks.iosShare(res.message, data!.internalID, data.slug)))
+        trackEvent(share(tracks.iosShare(res.message, data?.internalID, data.slug)))
       }
     } catch (err) {
       // User dismissed without sharing
@@ -136,7 +153,7 @@ export const ShareSheet = () => {
           <InstagramStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}
-            artist={data.artists![0]?.name!}
+            artist={data.artists?.[0]?.name ?? ""}
             title={data?.title}
           />
         )}
