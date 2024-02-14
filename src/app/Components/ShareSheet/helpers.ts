@@ -20,7 +20,7 @@ export const getShareMessage = (artistNames: string[], title?: string) => {
 }
 
 export const getBase64Data = async (viewShot: ViewShot) => {
-  const base64RawData = await viewShot.capture!()
+  const base64RawData = await viewShot.capture?.()
   const base64Data = `data:image/png;base64,${base64RawData}`
 
   return base64Data
