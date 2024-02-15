@@ -70,8 +70,8 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   return (
     <FlatlistComponent
-      ListHeaderComponent={() => {
-        return (
+      ListHeaderComponent={
+        enableNewActivityPanelManagement ? null : (
           <Flex py={1}>
             <ActivityMarkAllAsReadSection
               hasUnreadNotifications={hasUnreadNotifications}
@@ -81,7 +81,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
             <Separator />
           </Flex>
         )
-      }}
+      }
       data={notifications}
       keyExtractor={(item) => `${type}-${item.internalID}`}
       ItemSeparatorComponent={() =>
