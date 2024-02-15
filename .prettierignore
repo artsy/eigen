@@ -3,4 +3,3 @@ data/complete.queryMap.json
 data/PreHeatedGraphQLCache/*.json
 node_modules
 package.json
-src/storybook/storybook.requires.js

@@ -11,7 +11,7 @@ interface ExpiresInTimerProps {
 }
 
 const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
-  return <Stopwatch fill={fill} height={15} width={15} mr="2px" ml="-2px" />
+  return <Stopwatch fill={fill} height={15} width={15} mr="2px" />
 }
 
 export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
@@ -64,7 +64,7 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
 
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Stopwatch fill={textColor} height={15} width={15} mr="2px" />
+      <WatchIcon fill={textColor} />
 
       <Text variant="xs" color={textColor}>
         Expires in {timerCopy}

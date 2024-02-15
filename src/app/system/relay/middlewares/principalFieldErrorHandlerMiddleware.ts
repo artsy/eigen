@@ -1,4 +1,3 @@
-import { captureMessage } from "@sentry/react-native"
 import { isErrorStatus, throwError, trackError } from "app/system/relay/middlewares/helpers"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { RelayNetworkLayerResponse } from "react-relay-network-modern"
@@ -17,10 +16,9 @@ export const principalFieldErrorHandlerMiddleware = async (
     resJson.extensions?.principalField?.httpStatusCode
   )
 
-  // query did not have a principal field, but experienced an error, we report it to sentry and volley
+  // query did not have a principal field, but experienced an error, we report it to volley
   if (!requestHasPrincipalField && !!res?.errors?.length) {
     trackError(req.operation.name, req.operation.operationKind, "default")
-    captureMessage(`${req.operation.operationKind} failed: ${req.operation.name}`)
   }
 
   if (principalFieldWasInvolvedInError) {

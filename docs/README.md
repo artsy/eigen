@@ -26,7 +26,6 @@
 - [Developing features using local @artsy/palette-mobile](developing_local_palette.md)
 
 - [Images handling](images.md)
-- [Storybook](storybook.md)
 - [Converting an image to webp](convert_image.md)
 
 - [Metaflags](metaflags.md)

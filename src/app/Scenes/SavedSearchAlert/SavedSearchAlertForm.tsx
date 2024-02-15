@@ -82,9 +82,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
-  const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] = useState(
-    !userAllowsEmails
-  )
+  const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] =
+    useState(!userAllowsEmails)
   const navigation =
     useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 

@@ -2376,7 +2376,7 @@ type Artwork implements Node & Searchable & Sellable {
   # Private text field for partner use
   inventoryId: String
 
-  # Whether a work can be purchased through e-commerce
+  # Whether a work can be purchased through Buy Now
   isAcquireable: Boolean
 
   # Is this artwork part of an auction that is currently running?
@@ -2420,6 +2420,9 @@ type Artwork implements Node & Searchable & Sellable {
   isPriceEstimateRequestable: Boolean
   isPriceHidden: Boolean
   isPriceRange: Boolean
+
+  # Whether a work can be purchased
+  isPurchasable: Boolean
   isSaved: Boolean
 
   # Checks if artwork is saved to user's lists
@@ -3974,6 +3977,7 @@ type CollectorProfileType {
     timezone: String
   ): String
   bio: String
+  collectedArtworksCount: Int!
   collectorLevel: Int
 
   # List of artists the Collector is interested in.
@@ -3992,6 +3996,7 @@ type CollectorProfileType {
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   firstNameLastInitial: String
+  followedArtistsCount: Int!
   icon: Image
 
   # A globally unique ID.
@@ -4044,7 +4049,9 @@ type CollectorProfileType {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  savedArtworksCount: Int!
   selfReportedPurchases: String
+  totalBidsCount: Int!
   userInterests: [UserInterest]!
 }
 
@@ -11061,6 +11068,7 @@ type InquirerCollectorProfile {
     timezone: String
   ): String
   bio: String
+  collectedArtworksCount: Int!
   collectorLevel: Int
 
   # List of artists the Collector is interested in.
@@ -11079,6 +11087,7 @@ type InquirerCollectorProfile {
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   firstNameLastInitial: String
+  followedArtistsCount: Int!
 
   # The Collector follows the Gallery profile
   hasPartnerFollow: Boolean
@@ -11134,7 +11143,9 @@ type InquirerCollectorProfile {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  savedArtworksCount: Int!
   selfReportedPurchases: String
+  totalBidsCount: Int!
   userInterests: [UserInterest]!
 }
 
@@ -18338,6 +18349,7 @@ type UpdateCollectorProfilePayload {
   ): String
   bio: String
   clientMutationId: String
+  collectedArtworksCount: Int!
   collectorLevel: Int
 
   # List of artists the Collector is interested in.
@@ -18356,6 +18368,7 @@ type UpdateCollectorProfilePayload {
   emailConfirmed: Boolean
     @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
   firstNameLastInitial: String
+  followedArtistsCount: Int!
   icon: Image
 
   # A globally unique ID.
@@ -18408,7 +18421,9 @@ type UpdateCollectorProfilePayload {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  savedArtworksCount: Int!
   selfReportedPurchases: String
+  totalBidsCount: Int!
   userInterests: [UserInterest]!
 }
 

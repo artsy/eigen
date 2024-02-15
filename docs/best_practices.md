@@ -17,7 +17,6 @@ _Please note: Links should point to specific commits, and not a branch (in case 
       - [index.ts files](#indexts-files)
       - [When committing code](#when-committing-code)
     - [Frontend](#frontend)
-      - [Storybook](#storybook)
       - [Styling](#styling)
     - [TypeScript](#typescript)
     - [Fetching data](#fetching-data)
@@ -110,10 +109,6 @@ We try to avoid the use of `index.ts` files to prevent noise in the file structu
 - Do not use "Squash and merge" on a new version deployment PR
 
 ### Frontend
-
-#### Storybook
-
-When developing new components you are strongly encouraged to add them to [Storybook](./storybook.md).
 
 #### Styling
 

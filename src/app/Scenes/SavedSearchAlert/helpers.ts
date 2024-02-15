@@ -243,7 +243,7 @@ export const localizeHeightAndWidthAttributes = ({
     const range = parseRange(localizedAttributes[SearchCriteria.height])
     const localizedMinHeight = convert(range.min, true, roundDigits)
     const localizedMaxHeight = convert(range.max, true, roundDigits)
-    localizedAttributes[SearchCriteria.width] = `${localizedMinHeight}-${localizedMaxHeight}`
+    localizedAttributes[SearchCriteria.height] = `${localizedMinHeight}-${localizedMaxHeight}`
   }
 
   return localizedAttributes

@@ -1,4 +1,4 @@
-const list = ["app", "palette", "shared", "storybook", "__generated__"]
+const list = ["app", "palette", "shared", "__generated__"]
 
 // babel module resolver just needs `*`
 const babelModuleResolverAlias = list.reduce((acc, name) => {
