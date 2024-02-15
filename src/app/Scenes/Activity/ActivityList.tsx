@@ -106,11 +106,14 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       }}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       ListFooterComponent={
-        isLoadingNext ? (
-          <Flex my={2} alignItems="center" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : null
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          my={2}
+          style={{ opacity: isLoadingNext && hasNext ? 1 : 0 }}
+        >
+          <Spinner />
+        </Flex>
       }
     />
   )
