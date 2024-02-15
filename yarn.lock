@@ -11830,10 +11830,10 @@ react-native-shake@5.5.2:
   resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.5.2.tgz#1e73cfb3dcefc9980f604d08a87cdc6ba3f3a479"
   integrity sha512-GWQc/2h33u3ma2bBUEFG4sEQXfSmu2azEF1bUaqu+d0TeAT3vvmxpw3u6k7Z9XiZk4uRJ+NCVifx4JTHF5n67g==
 
-react-native-share@8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-8.2.1.tgz#f9933852de3ddd0f474ab63448e06c22cfecc9d4"
-  integrity sha512-dUIgrcdg4nOHrbKN1w+hs17RZ+51NeXd62CEezPAd4tEyj2Ki1qeAxWnJe8ZPRwvB5/6ml7YUR/2PJApxGHCAQ==
+react-native-share@10.0.2:
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-10.0.2.tgz#ba517d20a3bf20385eeeea32d9be9b41395f4dc7"
+  integrity sha512-EZs4MtsyauAI1zP8xXT1hIFB/pXOZJNDCKcgCpEfTZFXgCUzz8MDVbI1ocP2hA59XHRSkqAQdbJ0BFTpjxOBlg==
 
 react-native-svg@14.1.0:
   version "14.1.0"

@@ -33,7 +33,7 @@ import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
 import Config from "react-native-config"
-import Share from "react-native-share"
+import Share, { Social } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
 
@@ -76,7 +76,7 @@ export const ShareSheet = () => {
 
       await Share.shareSingle({
         appId: Config.ARTSY_FACEBOOK_APP_ID,
-        social: Share.Social.INSTAGRAM_STORIES,
+        social: Social.InstagramStories,
         backgroundImage: base64Data,
       })
     } catch (error) {
@@ -91,7 +91,7 @@ export const ShareSheet = () => {
     const details = shareContent(data)
 
     await Share.shareSingle({
-      social: Share.Social.WHATSAPP,
+      social: Social.Whatsapp,
       message: details.message ?? "",
       url: details.url,
     })
