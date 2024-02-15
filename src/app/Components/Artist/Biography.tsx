@@ -32,7 +32,7 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
         html={`${expanded ? text : truncatedText}${
           text.length > MAX_CHARS && !expanded ? "... " : " "
         }`}
-        variant="sm-display"
+        variant="sm"
       />
 
       {!!canExpand && (
