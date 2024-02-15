@@ -1,7 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { Biography_artist$key } from "__generated__/Biography_artist.graphql"
+import { HTML } from "app/Components/HTML"
 import { SectionTitle } from "app/Components/SectionTitle"
-import React, { useState } from "react"
+import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 const MAX_CHARS = 250
@@ -27,24 +28,25 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   return (
     <Flex maxWidth={MAX_WIDTH} px={2}>
       <SectionTitle title="Biography" />
-      <Text>
-        <Text>{`${expanded ? text : truncatedText}${
+      <HTML
+        html={`${expanded ? text : truncatedText}${
           text.length > MAX_CHARS && !expanded ? "... " : " "
-        }`}</Text>
+        }`}
+        variant="sm-display"
+      />
 
-        {!!canExpand && (
-          <Text underline onPress={() => setExpanded((e) => !e)}>
-            {expanded ? "Read Less" : "Read More"}
-          </Text>
-        )}
-      </Text>
+      {!!canExpand && (
+        <Text underline onPress={() => setExpanded((e) => !e)} mt={-1}>
+          {expanded ? "Read Less" : "Read More"}
+        </Text>
+      )}
     </Flex>
   )
 }
 
 const query = graphql`
   fragment Biography_artist on Artist {
-    biographyBlurb(format: PLAIN, partnerBio: false) {
+    biographyBlurb(format: HTML, partnerBio: false) {
       text
     }
   }
