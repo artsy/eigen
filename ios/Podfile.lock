@@ -820,7 +820,7 @@ PODS:
     - React-Core
     - React-hermes
     - Sentry/HybridSDK (= 8.15.2)
-  - RNShare (8.2.1):
+  - RNShare (10.0.2):
     - React-Core
   - RNSVG (14.1.0):
     - React-Core
@@ -1438,7 +1438,7 @@ SPEC CHECKSUMS:
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
   RNSentry: ee1a9a80996414205d84ce9180c31bd855fd4641
-  RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
+  RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
