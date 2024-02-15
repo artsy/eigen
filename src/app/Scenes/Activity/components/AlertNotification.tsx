@@ -13,7 +13,7 @@ import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErro
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 import { useFragment, graphql } from "react-relay"
 
 interface AlertNotificationProps {
@@ -41,12 +41,25 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
-    navigate(`/artist/${artist?.slug}/works-for-sale`)
+    navigate(`/artist/${artist?.slug}/works-for-sale`) // here
   }
 
+  console.warn(item.alert?.internalID)
   return (
     <Screen>
-      <Screen.Header onBack={goBack} title="Alerts" />
+      <Screen.Header
+        onBack={goBack}
+        title="Alerts"
+        rightElements={
+          <TouchableOpacity onPress={handleEditAlertPress} testID="edit-alert-header-link">
+            <Flex width={100} height="100%" justifyContent="center">
+              <Text textAlign="right" variant="xs">
+                Edit Alert
+              </Text>
+            </Flex>
+          </TouchableOpacity>
+        }
+      />
 
       <ScrollView>
         <Flex mx={2} mt={2} mb={2}>
@@ -80,7 +93,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
         <Spacer y={4} />
 
         <Flex mx={2} mt={1} mb={2}>
-          <Button block variant="outline" onPress={handleEditAlertPress}>
+          <Button block variant="outline" onPress={handleEditAlertPress} testID="edit-alert-CTA">
             Edit Alert
           </Button>
 
