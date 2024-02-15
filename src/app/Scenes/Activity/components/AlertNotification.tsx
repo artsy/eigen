@@ -44,7 +44,6 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
     navigate(`/artist/${artist?.slug}/works-for-sale`) // here
   }
 
-  console.warn(item.alert?.internalID)
   return (
     <Screen>
       <Screen.Header
@@ -63,11 +62,9 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
 
       <ScrollView>
         <Flex mx={2} mt={2} mb={2}>
-          <Text variant="lg-display" mb={2}>
-            {headline}
-          </Text>
+          <Text variant="lg-display">{headline}</Text>
 
-          <Spacer y={1} />
+          <Spacer y={2} />
 
           <Flex flexDirection="row" flexWrap="wrap">
             {alert.labels.map((label) => (

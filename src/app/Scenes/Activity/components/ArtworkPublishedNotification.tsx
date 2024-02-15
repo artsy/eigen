@@ -79,9 +79,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
       <ScrollView>
         <Flex mx={2} mt={2} mb={4}>
-          <Text variant="lg-display" mb={2}>
-            {headline}
-          </Text>
+          <Text variant="lg-display">{headline}</Text>
 
           <Spacer y={2} />
 

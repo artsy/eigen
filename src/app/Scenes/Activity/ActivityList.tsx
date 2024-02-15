@@ -87,7 +87,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       ItemSeparatorComponent={() =>
         enableNewActivityPanelManagement ? (
           <Flex mx={-2}>
-            <Separator borderColor="black10" />
+            <Separator borderColor="black5" />
           </Flex>
         ) : (
           <Separator />
