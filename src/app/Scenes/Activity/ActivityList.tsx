@@ -2,6 +2,10 @@ import { Flex, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 
+import {
+  shouldDisplayNotification,
+  Notification,
+} from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
@@ -11,7 +15,6 @@ import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
 import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 import { NotificationType } from "./types"
-import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null | undefined
@@ -36,14 +39,9 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   const hasUnreadNotifications = (meData?.unreadNotificationsCount ?? 0) > 0
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter((notification) => {
-    if (isArtworksBasedNotification(notification.notificationType)) {
-      const artworksCount = notification.artworks?.totalCount ?? 0
-      return artworksCount > 0
-    }
-
-    return true
-  })
+  const notifications = notificationsNodes.filter((notification) =>
+    shouldDisplayNotification(notification as Notification)
+  )
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -132,6 +130,19 @@ const notificationsConnectionFragment = graphql`
           notificationType
           artworks: artworksConnection {
             totalCount
+          }
+          item {
+            ... on ViewingRoomPublishedNotificationItem {
+              viewingRoomsConnection(first: 1) {
+                totalCount
+              }
+            }
+
+            ... on ArticleFeaturedArtistNotificationItem {
+              article {
+                internalID
+              }
+            }
           }
           ...ActivityItem_notification
         }

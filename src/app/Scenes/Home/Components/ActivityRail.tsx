@@ -1,7 +1,10 @@
 import { Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { ActivityRail_notificationsConnection$key } from "__generated__/ActivityRail_notificationsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
+import {
+  shouldDisplayNotification,
+  Notification,
+} from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { ActivityRailItem } from "app/Scenes/Home/Components/ActivityRailItem"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { matchRoute } from "app/routes"
@@ -23,14 +26,9 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, notifications
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter((notification) => {
-    if (isArtworksBasedNotification(notification.notificationType)) {
-      const artworksCount = notification.artworks?.totalCount ?? 0
-      return artworksCount > 0
-    }
-
-    return true
-  })
+  const notifications = notificationsNodes.filter((notification) =>
+    shouldDisplayNotification(notification as Notification)
+  )
 
   if (notifications.length === 0) {
     return null
@@ -93,6 +91,19 @@ const notificationsConnectionFragment = graphql`
           notificationType
           artworks: artworksConnection {
             totalCount
+          }
+          item {
+            ... on ViewingRoomPublishedNotificationItem {
+              viewingRoomsConnection(first: 1) {
+                totalCount
+              }
+            }
+
+            ... on ArticleFeaturedArtistNotificationItem {
+              article {
+                internalID
+              }
+            }
           }
           ...ActivityRailItem_item
         }

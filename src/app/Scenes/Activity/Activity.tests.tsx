@@ -127,6 +127,11 @@ const notifications = {
       node: {
         title: "Notification One",
         notificationType: "VIEWING_ROOM_PUBLISHED",
+        item: {
+          viewingRoomsConnection: {
+            totalCount: 1,
+          },
+        },
       },
     },
     {
