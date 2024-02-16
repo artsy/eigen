@@ -23,7 +23,9 @@ describe("ActivityRail", () => {
   it("renders", () => {
     renderWithRelay({
       Viewer: () => ({
-        notificationsConnection: { edges: [{ node: { internalID: "id-1" } }] },
+        notificationsConnection: {
+          edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
+        },
       }),
     })
 
@@ -34,7 +36,9 @@ describe("ActivityRail", () => {
   it("handles header tap", () => {
     renderWithRelay({
       Viewer: () => ({
-        notificationsConnection: { edges: [{ node: { internalID: "id-1" } }] },
+        notificationsConnection: {
+          edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
+        },
       }),
     })
 
@@ -60,7 +64,9 @@ describe("ActivityRail", () => {
   it("handles See All tap", () => {
     renderWithRelay({
       Viewer: () => ({
-        notificationsConnection: { edges: [{ node: { internalID: "id-1" } }] },
+        notificationsConnection: {
+          edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
+        },
       }),
     })
 
@@ -86,7 +92,9 @@ describe("ActivityRail", () => {
   it("handles item tap", () => {
     renderWithRelay({
       Viewer: () => ({
-        notificationsConnection: { edges: [{ node: { internalID: "id-1" } }] },
+        notificationsConnection: {
+          edges: [{ node: { internalID: "id-1", notificationType: "ARTWORK_ALERT" } }],
+        },
       }),
     })
 

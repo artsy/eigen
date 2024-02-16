@@ -92,7 +92,6 @@ const notificationsConnectionFragment = graphql`
           artworks: artworksConnection {
             totalCount
           }
-          ...ActivityRailItem_item
           item {
             ... on ViewingRoomPublishedNotificationItem {
               viewingRoomsConnection(first: 1) {
@@ -106,6 +105,7 @@ const notificationsConnectionFragment = graphql`
               }
             }
           }
+          ...ActivityRailItem_item
         }
       }
     }
