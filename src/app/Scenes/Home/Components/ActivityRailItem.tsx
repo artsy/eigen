@@ -90,10 +90,6 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
 
 const getPreviewImage = (item: ActivityRailItem_item$data) => {
   switch (item.notificationType) {
-    case "ARTWORK_ALERT":
-    case "ARTWORK_PUBLISHED":
-    case "PARTNER_OFFER_CREATED":
-      return extractNodes(item?.artworksConnection)?.[0]?.image?.preview?.src
     case "VIEWING_ROOM_PUBLISHED":
       return extractNodes(item?.item?.viewingRoomsConnection)?.[0]?.image?.imageURLs?.normalized
     case "ARTICLE_FEATURED_ARTIST":
@@ -101,7 +97,7 @@ const getPreviewImage = (item: ActivityRailItem_item$data) => {
     case "PARTNER_SHOW_OPENED":
       return extractNodes(item?.item?.showsConnection)?.[0]?.coverImage?.preview?.src
     default:
-      return null
+      return extractNodes(item?.artworksConnection)?.[0]?.image?.preview?.src
   }
 }
 
