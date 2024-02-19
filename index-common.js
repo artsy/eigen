@@ -1,10 +1,7 @@
 global.__TEST__ = false
-global.__STORYBOOK__ = false
 
 // for more info about metaflags, look [here](/docs/metaflags.md)
-let metaflags = {
-  startStorybook: false,
-}
+let metaflags = {}
 
 if (__DEV__) {
   const {
@@ -22,14 +19,9 @@ if (__DEV__) {
 
 require("./src/app/system/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 import "react-native-url-polyfill/auto"
+const { AppRegistry } = require("react-native")
 
-if (metaflags.startStorybook) {
-  global.__STORYBOOK__ = true
-  require("./src/app/storybook")
-} else {
-  const appName = require("./app.json").appName
-  require("react-native-gesture-handler")
-  const { AppRegistry } = require("react-native")
-  const { App } = require("./src/app/App")
-  AppRegistry.registerComponent(appName, () => App)
-}
+const appName = require("./app.json").appName
+require("react-native-gesture-handler")
+const { App } = require("./src/app/App")
+AppRegistry.registerComponent(appName, () => App)

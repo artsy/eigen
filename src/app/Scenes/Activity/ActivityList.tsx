@@ -2,6 +2,10 @@ import { Flex, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 
+import {
+  shouldDisplayNotification,
+  Notification,
+} from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
@@ -11,13 +15,14 @@ import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
 import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 import { NotificationType } from "./types"
-import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null | undefined
   me: ActivityList_me$key | null | undefined
   type: NotificationType
 }
+
+const INITIAL_LOADING_SIZE = 10
 
 export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
   const enableNewActivityPanelManagement = unsafe_getFeatureFlag(
@@ -30,20 +35,18 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     notificationsConnectionFragment,
     viewer
   )
-
   const meData = useFragment(meFragment, me)
 
   const hasUnreadNotifications = (meData?.unreadNotificationsCount ?? 0) > 0
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter((notification) => {
-    if (isArtworksBasedNotification(notification.notificationType)) {
-      const artworksCount = notification.artworks?.totalCount ?? 0
-      return artworksCount > 0
-    }
+  const notifications = notificationsNodes.filter((notification) =>
+    shouldDisplayNotification(notification as Notification)
+  )
 
-    return true
-  })
+  // This is needed because `totalCount` and therefor `relay.hasMore()` doesn't work reliably
+  // TODO: Remove this once we have a reliable `totalCount`
+  const isLoading = isLoadingNext && notifications.length >= INITIAL_LOADING_SIZE
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -70,8 +73,8 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   return (
     <FlatlistComponent
-      ListHeaderComponent={() => {
-        return (
+      ListHeaderComponent={
+        enableNewActivityPanelManagement ? null : (
           <Flex py={1}>
             <ActivityMarkAllAsReadSection
               hasUnreadNotifications={hasUnreadNotifications}
@@ -81,13 +84,13 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
             <Separator />
           </Flex>
         )
-      }}
+      }
       data={notifications}
       keyExtractor={(item) => `${type}-${item.internalID}`}
       ItemSeparatorComponent={() =>
         enableNewActivityPanelManagement ? (
           <Flex mx={-2}>
-            <Separator borderColor="black10" />
+            <Separator borderColor="black5" />
           </Flex>
         ) : (
           <Separator />
@@ -106,11 +109,14 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       }}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       ListFooterComponent={
-        isLoadingNext ? (
-          <Flex my={2} alignItems="center" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : null
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          my={2}
+          style={{ opacity: isLoading && hasNext ? 1 : 0 }}
+        >
+          <Spinner />
+        </Flex>
       }
     />
   )
@@ -132,6 +138,19 @@ const notificationsConnectionFragment = graphql`
           notificationType
           artworks: artworksConnection {
             totalCount
+          }
+          item {
+            ... on ViewingRoomPublishedNotificationItem {
+              viewingRoomsConnection(first: 1) {
+                totalCount
+              }
+            }
+
+            ... on ArticleFeaturedArtistNotificationItem {
+              article {
+                internalID
+              }
+            }
           }
           ...ActivityItem_notification
         }

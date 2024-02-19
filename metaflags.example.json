@@ -1,5 +1,4 @@
 {
-  "startStorybook": false,
   "logAction": true,
   "logDatadog": true,
   "logEventTracked": true,

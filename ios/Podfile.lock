@@ -621,8 +621,6 @@ PODS:
   - react-native-shake (5.5.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-slider (4.2.4):
-    - React-Core
   - react-native-view-shot (3.4.0):
     - React-Core
   - react-native-webview (13.6.2):
@@ -961,7 +959,6 @@ DEPENDENCIES:
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-shake (from `../node_modules/react-native-shake`)
-  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -1192,8 +1189,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-shake:
     :path: "../node_modules/react-native-shake"
-  react-native-slider:
-    :path: "../node_modules/@react-native-community/slider"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
   react-native-webview:
@@ -1404,7 +1399,6 @@ SPEC CHECKSUMS:
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 8036ba95a1953c9b10821bdc33f5814c5d0bcef6
-  react-native-slider: cecabb58ecffad671d2ad3ccc58c7f4d2d029e95
   react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
   react-native-webview: 8fc09f66a1a5b16bbe37c3878fda27d5982bb776
   React-NativeModulesApple: c3e696ff867e4bc212266cbdf7e862e48a0166fd

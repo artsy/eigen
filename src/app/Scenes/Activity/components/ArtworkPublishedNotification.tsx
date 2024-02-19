@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   Text,
   Screen,
@@ -53,12 +52,6 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
     })
   }
 
-  const handleEditFollowsPress = () => {
-    // TODO: Add tracking
-
-    navigate("/favorites")
-  }
-
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
@@ -79,9 +72,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
       <ScrollView>
         <Flex mx={2} mt={2} mb={4}>
-          <Text variant="lg-display" mb={2}>
-            {headline}
-          </Text>
+          <Text variant="lg-display">{headline}</Text>
 
           <Spacer y={2} />
 
@@ -92,22 +83,14 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
         <Spacer y={4} />
 
-        <Flex mx={2} mt={1} mb={2}>
-          <Button block variant="outline" onPress={handleEditFollowsPress}>
-            Edit Follows
-          </Button>
-
-          <Spacer y={4} />
-
-          <Touchable onPress={handleViewAllWorksPress}>
-            <Flex flexDirection="row">
-              <Text fontWeight="bold">View all works by {artist.name}</Text>
-              <Flex alignSelf="center">
-                <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
-              </Flex>
+        <Touchable onPress={handleViewAllWorksPress}>
+          <Flex mx={2} flexDirection="row">
+            <Text fontWeight="bold">View all works by {artist.name}</Text>
+            <Flex alignSelf="center">
+              <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
             </Flex>
-          </Touchable>
-        </Flex>
+          </Flex>
+        </Touchable>
 
         <Spacer y={4} />
       </ScrollView>

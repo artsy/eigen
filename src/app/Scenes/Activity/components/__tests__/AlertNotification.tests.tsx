@@ -49,11 +49,11 @@ describe("AlertNotification", () => {
     expect(screen.getByText("Alerts")).toBeTruthy()
     expect(screen.getByText("2 New Works by Banksy")).toBeTruthy()
     expect(screen.getByText("Street Art")).toBeTruthy()
-    expect(screen.getByText("Edit Alert")).toBeTruthy()
+    expect(screen.getAllByText("Edit Alert")).toHaveLength(2)
     expect(screen.getByText("View all works by Banksy")).toBeTruthy()
   })
 
-  describe("Edit Alert Button", () => {
+  describe("Edit Alert Button in the header", () => {
     it("links to the edit alert screen", async () => {
       renderWithRelay({
         Me: () => ({
@@ -63,7 +63,27 @@ describe("AlertNotification", () => {
 
       await flushPromiseQueue()
 
-      const editAlertButton = screen.getByText("Edit Alert")
+      const editAlertButton = screen.getByTestId("edit-alert-header-link")
+
+      fireEvent.press(editAlertButton)
+
+      await flushPromiseQueue()
+
+      expect(navigate).toHaveBeenCalledWith("/settings/alerts/internal-alert-id/edit")
+    })
+  })
+
+  describe("Edit Alert CTA", () => {
+    it("links to the edit alert screen", async () => {
+      renderWithRelay({
+        Me: () => ({
+          notification,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      const editAlertButton = screen.getByTestId("edit-alert-CTA")
 
       fireEvent.press(editAlertButton)
 

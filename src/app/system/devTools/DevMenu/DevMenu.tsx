@@ -120,12 +120,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
           title="Open RN Dev Menu"
           onPress={() => NativeModules?.DevMenu?.show()}
         />
-        <DevMenuButtonItem
-          title="Go to Storybook"
-          onPress={() => {
-            navigate("/storybook")
-          }}
-        />
         <Flex mx={2} mt={2}>
           <Expandable label="Navigate to" expanded={false}>
             <Spacer y={1} />

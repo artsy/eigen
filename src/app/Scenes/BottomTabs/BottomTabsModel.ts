@@ -134,7 +134,6 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         )
         console.log(e)
       } else {
-        captureMessage(`fetchNotificationsInfo failed: `)
         captureException(e)
       }
     }
