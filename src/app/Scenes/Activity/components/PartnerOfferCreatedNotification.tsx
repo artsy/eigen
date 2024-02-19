@@ -79,7 +79,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
             <Button
               block
               variant={noLongerAvailable ? "outline" : "fillDark"}
-              onPress={() => navigate(targetHref)}
+              onPress={() => (noLongerAvailable ? "TODO: create alert" : navigate(targetHref))}
             >
               {buttonText}
             </Button>
