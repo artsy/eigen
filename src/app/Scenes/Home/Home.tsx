@@ -514,10 +514,7 @@ export const HomeFragmentContainer = memo(
       notificationsConnection: graphql`
         fragment Home_notificationsConnection on Viewer {
           ...ActivityRail_notificationsConnection @arguments(count: 10)
-          notificationsConnection(
-            first: 10
-            notificationTypes: [ARTWORK_ALERT, ARTWORK_PUBLISHED, PARTNER_OFFER_CREATED]
-          ) {
+          notificationsConnection(first: 10) {
             edges {
               node {
                 internalID
