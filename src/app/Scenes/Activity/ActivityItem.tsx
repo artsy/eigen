@@ -105,7 +105,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                     </Flex>
                   )}
 
-                  <Text variant="sm-display">{item.headline}</Text>
+                  <Text variant="sm-display" fontWeight="bold">
+                    {item.headline}
+                  </Text>
 
                   {!!isEditorial && <Text variant="xs">{item.message}</Text>}
 
