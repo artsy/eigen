@@ -32,8 +32,6 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   if (hasEnded) buttonText = "View Work"
   if (noLongerAvailable) buttonText = "Create Alert"
 
-  // TODO: 'Manage Saves' string is too long for the right header element
-
   return (
     <Screen>
       <Screen.Header
@@ -41,9 +39,9 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
         title="Offers"
         rightElements={
           <Touchable haptic="impactLight" onPress={handleManageSaves}>
-            <Flex height="100%" justifyContent="center">
+            <Flex width={100} height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Saves
+                Manage Saves
               </Text>
             </Flex>
           </Touchable>
@@ -54,22 +52,28 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           <Flex mx={2}>
             <PartnerOfferBadge notificationType={notificationType} />
 
-            <Spacer y={1} />
+            <Spacer y={0.5} />
 
             <Text variant="lg-display">{headline}</Text>
 
-            <Spacer y={1} />
+            <Spacer y={0.5} />
 
             <Text variant="sm-display">Review the offer on your saved artwork</Text>
 
-            <Spacer y={1} />
+            <Spacer y={0.5} />
 
             {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
 
             <Spacer y={2} />
           </Flex>
 
-          <NotificationArtworkList artworksConnection={artworksConnection} />
+          <NotificationArtworkList
+            artworksConnection={artworksConnection}
+            priceOfferMessage={{
+              priceListedMessage: item.partnerOffer.priceListedMessage,
+              priceWithDiscountMessage: item.partnerOffer.priceWithDiscountMessage,
+            }}
+          />
 
           <Flex mx={2} mt={2}>
             <Button
@@ -96,6 +100,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
         expiresAt
         available
         partnerOffer {
+          endAt
           isAvailable
           priceListedMessage
           priceWithDiscountMessage

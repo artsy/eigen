@@ -45,6 +45,7 @@ export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 export type ArtworkCardSize = "small" | "large" | "extraLarge" | "fullWidth"
+export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 
 export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   artwork: ArtworkRailCard_artwork$key
@@ -62,6 +63,7 @@ export interface ArtworkRailCardProps extends ArtworkActionTrackingProps {
   showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
+  priceOfferMessage?: PriceOfferMessage
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -79,6 +81,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   showSaveIcon = false,
   size,
   testID,
+  priceOfferMessage,
   ...restProps
 }) => {
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
@@ -290,6 +293,25 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     {partner?.name}
                   </Text>
                 )}
+
+                {!!priceOfferMessage && (
+                  <Flex flexDirection="row">
+                    <Text
+                      lineHeight="20px"
+                      variant="xs"
+                      color={primaryTextColor}
+                      numberOfLines={1}
+                      fontWeight={500}
+                    >
+                      {priceOfferMessage.priceWithDiscountMessage}
+                    </Text>
+                    <Text color="black60" variant="xs">
+                      {" "}
+                      (List price: {priceOfferMessage.priceListedMessage})
+                    </Text>
+                  </Flex>
+                )}
+
                 {!!isRecentlySoldArtwork && (size === "large" || size === "extraLarge") && (
                   <RecentlySoldCardSection
                     priceRealizedDisplay={priceRealizedDisplay}
@@ -300,7 +322,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   />
                 )}
 
-                {!!saleMessage && !isRecentlySoldArtwork && (
+                {!!saleMessage && !isRecentlySoldArtwork && !priceOfferMessage && (
                   <Text
                     lineHeight="20px"
                     variant="xs"

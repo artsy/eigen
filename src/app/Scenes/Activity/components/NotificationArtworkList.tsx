@@ -1,7 +1,7 @@
 import { Flex, Spacer, useSpace } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import { NotificationArtworkList_artworksConnection$key } from "__generated__/NotificationArtworkList_artworksConnection.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkRailCard, PriceOfferMessage } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { FC } from "react"
@@ -10,10 +10,11 @@ import { useFragment, graphql } from "react-relay"
 
 interface NotificationArtworkListProps {
   artworksConnection?: NotificationArtworkList_artworksConnection$key | null
+  priceOfferMessage?: PriceOfferMessage
 }
 
 export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props) => {
-  const { artworksConnection } = props
+  const { artworksConnection, priceOfferMessage } = props
   const space = useSpace()
 
   const artworksConnectionData = useFragment(notificationArtworkListFragment, artworksConnection)
@@ -45,6 +46,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
               metaContainerStyles={{
                 paddingHorizontal: space(2),
               }}
+              priceOfferMessage={priceOfferMessage}
             />
           )
         }}
