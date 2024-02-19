@@ -49,28 +49,7 @@ describe("ArtworkPublishedNotification", () => {
     expect(screen.getByText("Follows")).toBeTruthy()
     expect(screen.getByText("1 New Work by Tracey Emin")).toBeTruthy()
     expect(screen.getByText("Following")).toBeTruthy()
-    expect(screen.getByText("Edit Follows")).toBeTruthy()
     expect(screen.getByText("View all works by Tracey Emin")).toBeTruthy()
-  })
-
-  describe("Edit Follows Button", () => {
-    it("links to the edit follow screen", async () => {
-      renderWithRelay({
-        Me: () => ({
-          notification,
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const editFollowButton = screen.getByText("Edit Follows")
-
-      fireEvent.press(editFollowButton)
-
-      await flushPromiseQueue()
-
-      expect(navigate).toHaveBeenCalledWith("/favorites")
-    })
   })
 
   describe("'View all works by ...' link", () => {

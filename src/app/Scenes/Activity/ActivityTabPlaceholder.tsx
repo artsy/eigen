@@ -43,15 +43,32 @@ const NewActivityItemPlaceholder = () => {
 export const ActivityTabPlaceholder = () => {
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
+  if (enableNewActivityPanelManagement) {
+    return (
+      <Flex flex={1}>
+        <Separator borderColor="black10" />
+
+        <Box mx={2}>
+          {times(3).map((index) => (
+            <Fragment key={`placeholder-item-${index}`}>
+              <NewActivityItemPlaceholder />
+
+              <Flex mx={-2}>
+                <Separator borderColor="black5" />
+              </Flex>
+            </Fragment>
+          ))}
+        </Box>
+      </Flex>
+    )
+  }
   return (
     <Flex flex={1}>
-      {!enableNewActivityPanelManagement && (
-        <Animated.View
-          style={{
-            height: NAVBAR_HEIGHT * 2,
-          }}
-        />
-      )}
+      <Animated.View
+        style={{
+          height: NAVBAR_HEIGHT * 2,
+        }}
+      />
 
       {/* Subheader */}
       <Flex
@@ -70,11 +87,7 @@ export const ActivityTabPlaceholder = () => {
       <Box mx={2}>
         {times(3).map((index) => (
           <Fragment key={`placeholder-item-${index}`}>
-            {enableNewActivityPanelManagement ? (
-              <NewActivityItemPlaceholder />
-            ) : (
-              <ActivityItemPlaceholder />
-            )}
+            <ActivityItemPlaceholder />
             <Flex mx={-2}>
               <Separator borderColor="black10" />
             </Flex>
