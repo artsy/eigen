@@ -41,7 +41,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
-    navigate(`/artist/${artist?.slug}/works-for-sale`) // here
+    navigate(`/artist/${artist?.slug}/works-for-sale`)
   }
 
   return (
