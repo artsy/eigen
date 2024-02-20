@@ -11509,6 +11509,7 @@ union MarkAllNotificationsAsReadResponseOrError =
   | MarkAllNotificationsAsReadSuccess
 
 type MarkAllNotificationsAsReadSuccess {
+  me: Me!
   success: Boolean
 }
 
@@ -11725,6 +11726,7 @@ union MarkNotificationAsReadResponseOrError =
   | MarkNotificationAsReadSuccess
 
 type MarkNotificationAsReadSuccess {
+  me: Me!
   success: Boolean
 }
 
@@ -11749,6 +11751,7 @@ union MarkNotificationsAsSeenResponseOrError =
   | MarkNotificationsAsSeenSuccess
 
 type MarkNotificationsAsSeenSuccess {
+  me: Me!
   success: Boolean
 }
 
