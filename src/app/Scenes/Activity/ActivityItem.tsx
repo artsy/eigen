@@ -97,7 +97,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                     )}
                   </Flex>
 
-                  <Flex justifyContent="center" backgroundColor="pink">
+                  <Flex justifyContent="center">
                     {!!isPartnerOffer && (
                       <PartnerOfferBadge notificationType={item.notificationType} />
                     )}
