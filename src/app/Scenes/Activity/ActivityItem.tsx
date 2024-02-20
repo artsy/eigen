@@ -71,7 +71,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                         <Flex
                           key={`${item.internalID}-${artwork.internalID}`}
                           mr={1}
-                          mb={1}
+                          mb={isPartnerOffer ? 0 : 1}
                           accessibilityLabel="Activity Artwork Image"
                           height={NEW_ARTWORK_IMAGE_SIZE}
                           width={NEW_ARTWORK_IMAGE_SIZE}
@@ -97,7 +97,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                     )}
                   </Flex>
 
-                  <Flex justifyContent="center">
+                  <Flex justifyContent="center" backgroundColor="pink">
                     {!!isPartnerOffer && (
                       <PartnerOfferBadge notificationType={item.notificationType} />
                     )}
