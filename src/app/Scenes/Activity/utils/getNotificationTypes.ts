@@ -9,6 +9,8 @@ export const getNotificationTypes = (
       return ["ARTWORK_ALERT"]
     case "offers":
       return ["PARTNER_OFFER_CREATED"]
+    case "follows":
+      return ["ARTWORK_PUBLISHED"]
     default:
       return []
   }
