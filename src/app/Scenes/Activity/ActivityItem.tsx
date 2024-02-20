@@ -6,8 +6,8 @@ import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
 } from "app/Scenes/Activity/components/ExpiresInTimer"
+import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
-import { getNotificationTypeBadge } from "app/Scenes/Activity/utils/getNotificationTypeLabel"
 import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -25,7 +25,6 @@ interface ActivityItemProps {
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 const NEW_ARTWORK_IMAGE_SIZE = 60
-const BADGE_BORDER_RADIUS = 3
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const enableNavigateToASingleNotification = useFeatureFlag("AREnableSingleActivityPanelScreen")
@@ -94,15 +93,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
                 <Flex justifyContent="center">
                   {!!isPartnerOffer && (
-                    <Flex
-                      borderRadius={BADGE_BORDER_RADIUS}
-                      backgroundColor="blue10"
-                      alignSelf="flex-start"
-                    >
-                      <Text variant="xs" color="blue100" px={0.5}>
-                        {getNotificationTypeBadge(item.notificationType)}
-                      </Text>
-                    </Flex>
+                    <PartnerOfferBadge notificationType={item.notificationType} />
                   )}
 
                   <Text variant="sm-display" fontWeight="bold">
