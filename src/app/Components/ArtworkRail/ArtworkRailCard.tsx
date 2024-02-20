@@ -195,6 +195,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork && (size === "large" || size === "extraLarge")
 
+  const displayPriceOfferMessage =
+    !!priceOfferMessage &&
+    !!priceOfferMessage.priceListedMessage &&
+    !!priceOfferMessage.priceWithDiscountMessage
+
   return (
     <AnalyticsContextProvider
       contextScreenOwnerId={contextScreenOwnerId}
@@ -294,14 +299,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   </Text>
                 )}
 
-                {!!priceOfferMessage && (
+                {!!displayPriceOfferMessage && (
                   <Flex flexDirection="row">
                     <Text
                       lineHeight="20px"
                       variant="xs"
                       color={primaryTextColor}
                       numberOfLines={1}
-                      fontWeight={500}
+                      fontWeight="bold"
                     >
                       {priceOfferMessage.priceWithDiscountMessage}
                     </Text>
@@ -322,13 +327,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   />
                 )}
 
-                {!!saleMessage && !isRecentlySoldArtwork && !priceOfferMessage && (
+                {!!saleMessage && !isRecentlySoldArtwork && !displayPriceOfferMessage && (
                   <Text
                     lineHeight="20px"
                     variant="xs"
                     color={primaryTextColor}
                     numberOfLines={1}
-                    fontWeight={500}
+                    fontWeight="bold"
                   >
                     {saleMessage}
                   </Text>

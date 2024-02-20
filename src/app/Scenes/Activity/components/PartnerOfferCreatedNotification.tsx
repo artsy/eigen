@@ -7,7 +7,6 @@ import { NotificationArtworkList } from "app/Scenes/Activity/components/Notifica
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getTimer } from "app/utils/getTimer"
-import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerOfferCreatedNotificationProps {
@@ -47,7 +46,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           </Touchable>
         }
       />
-      <ScrollView>
+      <Screen.Body fullwidth scroll>
         <Flex mt={2} mb={4}>
           <Flex mx={2}>
             <PartnerOfferBadge notificationType={notificationType} />
@@ -85,7 +84,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
             </Button>
           </Flex>
         </Flex>
-      </ScrollView>
+      </Screen.Body>
     </Screen>
   )
 }
