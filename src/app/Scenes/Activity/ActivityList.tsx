@@ -1,4 +1,4 @@
-import { Flex, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
+import { Flex, LazyFlatlist, Screen, Separator, Spinner, Tabs } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 
@@ -71,54 +71,70 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   const FlatlistComponent = enableNewActivityPanelManagement ? Screen.FlatList : Tabs.FlatList
 
+  type NotificationT = (typeof notifications)[0]
+
+  const keyExtractor = (item: NotificationT) => {
+    return `${type}-${item.internalID}`
+  }
+
   return (
-    <FlatlistComponent
-      ListHeaderComponent={
-        enableNewActivityPanelManagement ? null : (
-          <Flex py={1}>
-            <ActivityMarkAllAsReadSection
-              hasUnreadNotifications={hasUnreadNotifications}
-              px={2}
-              mb={1}
-            />
-            <Separator />
-          </Flex>
+    <LazyFlatlist<NotificationT> keyExtractor={keyExtractor}>
+      {(props) => {
+        return (
+          <FlatlistComponent
+            ListHeaderComponent={
+              enableNewActivityPanelManagement ? null : (
+                <Flex py={1}>
+                  <ActivityMarkAllAsReadSection
+                    hasUnreadNotifications={hasUnreadNotifications}
+                    px={2}
+                    mb={1}
+                  />
+                  <Separator />
+                </Flex>
+              )
+            }
+            data={notifications}
+            onViewableItemsChanged={props.onViewableItemsChanged}
+            viewabilityConfig={props.viewabilityConfig}
+            keyExtractor={keyExtractor}
+            ItemSeparatorComponent={() =>
+              enableNewActivityPanelManagement ? (
+                <Flex mx={-2}>
+                  <Separator borderColor="black5" />
+                </Flex>
+              ) : (
+                <Separator />
+              )
+            }
+            onEndReached={handleLoadMore}
+            renderItem={({ item }) => {
+              return <ActivityItem notification={item} isVisible={props.hasSeenItem(item)} />
+            }}
+            ListEmptyComponent={
+              <Flex flex={1} justifyContent="center">
+                <ActivityEmptyView type={type} />
+              </Flex>
+            }
+            contentContainerStyle={{
+              // This is required because Tabs.Flatlist has a marginHorizontal of 20
+              marginHorizontal: 0,
+            }}
+            refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+            ListFooterComponent={
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                my={2}
+                style={{ opacity: isLoading && hasNext ? 1 : 0 }}
+              >
+                <Spinner />
+              </Flex>
+            }
+          />
         )
-      }
-      data={notifications}
-      keyExtractor={(item) => `${type}-${item.internalID}`}
-      ItemSeparatorComponent={() =>
-        enableNewActivityPanelManagement ? (
-          <Flex mx={-2}>
-            <Separator borderColor="black5" />
-          </Flex>
-        ) : (
-          <Separator />
-        )
-      }
-      onEndReached={handleLoadMore}
-      renderItem={({ item }) => <ActivityItem notification={item} />}
-      ListEmptyComponent={
-        <Flex flex={1} justifyContent="center">
-          <ActivityEmptyView type={type} />
-        </Flex>
-      }
-      contentContainerStyle={{
-        // This is required because Tabs.Flatlist has a marginHorizontal of 20
-        marginHorizontal: 0,
       }}
-      refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
-      ListFooterComponent={
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          my={2}
-          style={{ opacity: isLoading && hasNext ? 1 : 0 }}
-        >
-          <Spinner />
-        </Flex>
-      }
-    />
+    </LazyFlatlist>
   )
 }
 
