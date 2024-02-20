@@ -40,6 +40,7 @@ export const Activity = () => {
         headerProps={{
           onBack: goBack,
         }}
+        headerHeight={40}
       >
         <Tabs.Tab name="All" label="All">
           <Tabs.Lazy>
