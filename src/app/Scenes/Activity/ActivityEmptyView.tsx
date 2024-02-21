@@ -12,6 +12,11 @@ const entityByType: Record<NotificationType, { title: string; message: string }>
     message:
       "Keep track of the art and events you love, and get recommendations based on who you follow.",
   },
+  follows: {
+    title: "Follow artists and galleries to stay up to date",
+    message:
+      "Keep track of the art and events you love, and get recommendations based on who you follow.",
+  },
   alerts: {
     title: `Hunting for a particular artwork?`,
     message: `Create alerts on an artist or artwork page and get notifications here when there’s a match.`,

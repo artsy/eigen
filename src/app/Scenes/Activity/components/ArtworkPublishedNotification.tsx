@@ -89,11 +89,17 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
         <Flex mx={2} mt={1} mb={2}>
-          <Button block variant="outline" onPress={handleEditFollowsButton} testID="edit-alert-CTA">
+          <Button
+            block
+            variant="outline"
+            onPress={handleEditFollowsButton}
+            testID="edit-alert-CTA"
+            mb={1}
+          >
             Edit Follows
           </Button>
 
-          <Spacer y={4} />
+          <Spacer y={2} />
 
           <Touchable onPress={handleViewAllWorksPress}>
             <Flex mx={2} flexDirection="row">

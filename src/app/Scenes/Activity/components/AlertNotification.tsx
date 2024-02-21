@@ -88,11 +88,17 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
         <Flex mx={2} mt={1} mb={2}>
-          <Button block variant="outline" onPress={handleEditAlertPress} testID="edit-alert-CTA">
+          <Button
+            block
+            variant="outline"
+            onPress={handleEditAlertPress}
+            testID="edit-alert-CTA"
+            mb={1}
+          >
             Edit Alert
           </Button>
 
-          <Spacer y={4} />
+          <Spacer y={2} />
 
           <Touchable onPress={handleViewAllWorksPress}>
             <Flex flexDirection="row">
