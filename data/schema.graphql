@@ -280,7 +280,13 @@ type Alert {
   dimensionRange: String
 
   # A suggestion for a name that describes a set of saved search criteria in a conventional format
-  displayName: String!
+  displayName(
+    # An array of fields to exclude from the display name.
+    except: [SearchCriteriaFields]
+
+    # An array of fields to include in the display name.
+    only: [SearchCriteriaFields]
+  ): String!
   formattedPriceRange: String
   forSale: Boolean
   hasRecentlyEnabledUserSearchCriteria: Boolean
@@ -296,7 +302,13 @@ type Alert {
   keyword: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
-  labels: [SearchCriteriaLabel]!
+  labels(
+    # An array of fields to exclude from labels array.
+    except: [SearchCriteriaFields]
+
+    # An array of fields to include in labels array.
+    only: [SearchCriteriaFields]
+  ): [SearchCriteriaLabel]!
   locationCities: [String]
   majorPeriods: [String]
   materialsTerms: [String]
@@ -17178,6 +17190,26 @@ type SearchCriteriaEdge {
 
   # The item at the end of the edge.
   node: SearchCriteria
+}
+
+enum SearchCriteriaFields {
+  acquireable
+  additionalGeneIDs
+  artistIDs
+  artistSeriesIDs
+  atAuction
+  attributionClass
+  colors
+  height
+  inquireableOnly
+  locationCities
+  majorPeriods
+  materialsTerms
+  offerable
+  partnerIDs
+  priceRange
+  sizes
+  width
 }
 
 # Human-friendly representation of a single SearchCriteria filter
