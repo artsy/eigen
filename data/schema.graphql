@@ -308,7 +308,7 @@ type Alert {
 
     # An array of fields to include in labels array.
     only: [SearchCriteriaFields]
-  ): [SearchCriteriaLabel]!
+  ): [SearchCriteriaLabel!]!
   locationCities: [String]
   majorPeriods: [String]
   materialsTerms: [String]
@@ -316,7 +316,7 @@ type Alert {
   partnerIDs: [String]
   priceArray: [Int]
   priceRange: String
-  settings: AlertSettings
+  settings: AlertSettings!
   sizes: [String]
   summary: JSON
   totalUserSearchCriteriaCount: Int
@@ -351,16 +351,21 @@ type AlertNotificationItem {
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 }
 
+enum AlertsConnectionSortEnum {
+  ENABLED_AT_DESC
+  NAME_ASC
+}
+
 type AlertsCounts {
   totalUserSearchCriteriaCount: Int
 }
 
 type AlertSettings {
   details: String
-  email: Boolean
+  email: Boolean!
   frequency: AlertSettingsFrequency
   name: String
-  push: Boolean
+  push: Boolean!
 }
 
 enum AlertSettingsFrequency {
@@ -11803,7 +11808,13 @@ type MatchEdge {
 type Me implements Node {
   addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
   alert(id: String!): Alert
-  alertsConnection(after: String, before: String, first: Int, last: Int): AlertConnection!
+  alertsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: AlertsConnectionSortEnum
+  ): AlertConnection!
 
   # A connection of artist recommendations for the current user.
   artistRecommendations(
