@@ -61,7 +61,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
       />
 
       <ScrollView>
-        <Flex mx={2} mt={2} mb={2}>
+        <Flex mx={2} mt={2}>
           <Text variant="lg-display">{headline}</Text>
 
           <Spacer y={2} />
@@ -83,11 +83,9 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
           </Flex>
         </Flex>
 
-        <Spacer y={1} />
+        <Spacer y={0.5} />
 
         <NotificationArtworkList artworksConnection={artworksConnection} />
-
-        <Spacer y={4} />
 
         <Flex mx={2} mt={1} mb={2}>
           <Button block variant="outline" onPress={handleEditAlertPress} testID="edit-alert-CTA">

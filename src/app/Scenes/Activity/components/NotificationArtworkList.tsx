@@ -21,7 +21,7 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
   const artworks = extractNodes(artworksConnectionData)
 
   return (
-    <Flex minHeight={300}>
+    <Flex minHeight={400}>
       <MasonryInfiniteScrollArtworkGrid
         animated
         artworks={artworks}
