@@ -25,7 +25,7 @@ const galleriesLink = (
 
 const entityByType: Record<
   NotificationType,
-  { title: string; message: string; geStartedMessage?: any; links?: any }
+  { title: string; message: string; geStartedMessage?: any; links?: any } | null
 > = {
   all: {
     title: "Stay up to date with the artists and artworks you love",
@@ -57,24 +57,18 @@ const entityByType: Record<
     geStartedMessage: "Get started with:",
     links: artistLink,
   },
-  offers: {
-    title: "Your offers will appear here",
-    message: "When you receive an offer on an artwork, it will appear here.",
-    geStartedMessage: "Get started with:",
-    links: (
-      <>
-        {artistLink}
-        {galleriesLink}
-      </>
-    ),
-  },
+  // we do not display the offers pill when the user has no offers
+  // will not reach the empty state of this filter
+  offers: null,
 }
 
 export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) => {
   const entity = entityByType[type]
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
-  if (enableNewActivityPanelManagement) {
+  if (!entity) return <></>
+
+  if (enableNewActivityPanelManagement && type !== "offers") {
     return (
       <Flex mx={4} accessibilityLabel="Activities are empty" pt={4}>
         <Text textAlign="start" variant="sm-display">
