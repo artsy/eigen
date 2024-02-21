@@ -93,7 +93,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
             block
             variant="outline"
             onPress={handleEditFollowsButton}
-            testID="edit-alert-CTA"
+            testID="edit-follows-CTA"
             mb={1}
           >
             Edit Follows
