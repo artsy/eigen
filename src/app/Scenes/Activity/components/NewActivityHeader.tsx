@@ -17,16 +17,6 @@ export const NewActivityHeader: React.FC = () => {
         <Pill variant="default" selected={type === "all"} mr={0.5} onPress={() => setType("all")}>
           All
         </Pill>
-        {!!displayOffersFilter && (
-          <Pill
-            variant="default"
-            mr={0.5}
-            selected={type === "offers"}
-            onPress={() => setType("offers")}
-          >
-            Offers
-          </Pill>
-        )}
         <Pill
           variant="default"
           mr={0.5}
@@ -41,8 +31,18 @@ export const NewActivityHeader: React.FC = () => {
           selected={type === "follows"}
           onPress={() => setType("follows")}
         >
-          Following
+          Follows
         </Pill>
+        {!!displayOffersFilter && (
+          <Pill
+            variant="default"
+            mr={0.5}
+            selected={type === "offers"}
+            onPress={() => setType("offers")}
+          >
+            Offers
+          </Pill>
+        )}
       </Flex>
     </Flex>
   )
