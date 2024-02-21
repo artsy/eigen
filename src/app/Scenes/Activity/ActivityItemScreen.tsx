@@ -100,9 +100,10 @@ const Placeholder: React.FC = () => {
                 3 New Works by Jonas Lund
               </SkeletonText>
 
-              <Spacer y={2} />
+              <Spacer y={1} />
+              <Spacer y={0.5} />
 
-              <SkeletonText variant="lg-display" mb={2}>
+              <SkeletonText variant="lg-display" mb={1}>
                 Description
               </SkeletonText>
             </Flex>

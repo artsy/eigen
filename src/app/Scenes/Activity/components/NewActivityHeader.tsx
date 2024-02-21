@@ -17,6 +17,16 @@ export const NewActivityHeader: React.FC = () => {
         <Pill variant="default" selected={type === "all"} mr={0.5} onPress={() => setType("all")}>
           All
         </Pill>
+        {!!displayOffersFilter && (
+          <Pill
+            variant="default"
+            mr={0.5}
+            selected={type === "offers"}
+            onPress={() => setType("offers")}
+          >
+            Offers
+          </Pill>
+        )}
         <Pill
           variant="default"
           mr={0.5}
@@ -25,34 +35,34 @@ export const NewActivityHeader: React.FC = () => {
         >
           Alerts
         </Pill>
-        {!!displayOffersFilter && <Pill
+        <Pill
           variant="default"
           mr={0.5}
-          selected={type === "offers"}
-          onPress={() => setType("offers")}
+          selected={type === "follows"}
+          onPress={() => setType("follows")}
         >
-          Offers
-        </Pill>}
+          Following
+        </Pill>
       </Flex>
     </Flex>
   )
 }
 
 const query = graphql`
-query NewActivityHeaderQuery {
-  viewer {
-    partnerOfferNotifications: notificationsConnection(
-      first: 1
-      notificationTypes: [PARTNER_OFFER_CREATED]
-    ) {
-      # Total count does not work and returns a value even when there are no notifications
-      # TODO: Use totalCount once the issue is fixed
-      edges {
-        node {
-          id
+  query NewActivityHeaderQuery {
+    viewer {
+      partnerOfferNotifications: notificationsConnection(
+        first: 1
+        notificationTypes: [PARTNER_OFFER_CREATED]
+      ) {
+        # Total count does not work and returns a value even when there are no notifications
+        # TODO: Use totalCount once the issue is fixed
+        edges {
+          node {
+            id
+          }
         }
       }
     }
   }
-}
 `

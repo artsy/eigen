@@ -52,6 +52,26 @@ describe("ArtworkPublishedNotification", () => {
     expect(screen.getByText("View all works by Tracey Emin")).toBeTruthy()
   })
 
+  describe("Edit Follows CTA", () => {
+    it("links to the edit follows screen", async () => {
+      renderWithRelay({
+        Me: () => ({
+          notification,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      const editAlertButton = screen.getByTestId("edit-follows-CTA")
+
+      fireEvent.press(editAlertButton)
+
+      await flushPromiseQueue()
+
+      expect(navigate).toHaveBeenCalledWith("/favorites")
+    })
+  })
+
   describe("'View all works by ...' link", () => {
     it("links to follows target href", async () => {
       renderWithRelay({
