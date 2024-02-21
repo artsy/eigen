@@ -1,6 +1,7 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
+import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PAGE_SIZE } from "app/Components/constants"
 import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
@@ -31,6 +32,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
   pageSize?: number
+  priceOfferMessage?: PriceOfferMessage
 }
 
 /**
@@ -52,6 +54,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   ListHeaderComponent,
   loadMore,
   pageSize = PAGE_SIZE,
+  priceOfferMessage,
   refreshControl,
   ...rest
 }) => {
@@ -82,6 +85,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // we need to add padding to the artwork meta to make sure its readable
         paddingHorizontal: rest.numColumns !== 1 ? 0 : space(2),
       }}
+      priceOfferMessage={priceOfferMessage}
     />
   )
 

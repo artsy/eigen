@@ -41,6 +41,7 @@ import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 const SAVE_ICON_SIZE = 22
 
+export type PriceOfferMessage = { priceListedMessage: string; priceWithDiscountMessage: string }
 export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkActionTrackingProps {
   /** styles for each field: allows for customization of each field */
   artistNamesTextStyle?: TextProps
@@ -61,6 +62,7 @@ export interface ArtworkProps extends Partial<PageableRouteProps>, ArtworkAction
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   partnerNameTextStyle?: TextProps
+  priceOfferMessage?: PriceOfferMessage
   saleInfoTextStyle?: TextProps
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
@@ -93,6 +95,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   navigateToPageableRoute,
   onPress,
   partnerNameTextStyle,
+  priceOfferMessage,
   saleInfoTextStyle,
   showLotLabel = false,
   titleTextStyle,
@@ -214,6 +217,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
+
+  const displayPriceOfferMessage =
+    !!priceOfferMessage &&
+    !!priceOfferMessage.priceListedMessage &&
+    !!priceOfferMessage.priceWithDiscountMessage
 
   return (
     <>
@@ -337,7 +345,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     {artwork.partner.name}
                   </Text>
                 )}
-                {!!saleInfo && !hideSaleInfo && (
+                {!!displayPriceOfferMessage && (
+                  <Flex flexDirection="row">
+                    <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
+                      {priceOfferMessage.priceWithDiscountMessage}
+                    </Text>
+                    <Text color="black60" variant="xs">
+                      {" "}
+                      (List price: {priceOfferMessage.priceListedMessage})
+                    </Text>
+                  </Flex>
+                )}
+                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
                   <Text
                     lineHeight="18px"
                     variant="xs"
