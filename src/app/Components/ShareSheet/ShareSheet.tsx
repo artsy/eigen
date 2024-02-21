@@ -73,17 +73,20 @@ export const ShareSheet = () => {
           share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
         )
       }
-
-      await Share.shareSingle({
-        appId: Config.ARTSY_FACEBOOK_APP_ID,
-        social: Social.InstagramStories,
-        backgroundImage: base64Data,
-      })
+      setTimeout(async () => {
+        await Share.shareSingle({
+          appId: Config.ARTSY_FACEBOOK_APP_ID,
+          social: Social.InstagramStories,
+          backgroundImage: base64Data,
+        })
+      }, 200)
     } catch (error) {
       captureMessage("Error sharing to Instagram Stories")
       console.log(error)
     } finally {
-      hideShareSheet()
+      setTimeout(async () => {
+        hideShareSheet()
+      }, 200)
     }
   }
 
