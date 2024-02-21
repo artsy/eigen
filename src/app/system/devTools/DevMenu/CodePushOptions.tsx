@@ -9,7 +9,8 @@ import {
 } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
 import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { TouchableOpacity } from "react-native"
 import CodePush from "react-native-code-push"
 import DeviceInfo from "react-native-device-info"
 
@@ -73,31 +74,32 @@ export const CodePushOptions = () => {
             <Spacer y={2} />
           </>
         )}
+
         {Object.keys(codePushDeploymentKeys).map((deployment) => {
           return (
-            <Fragment key={deployment}>
-              <Flex flexDirection="row">
-                <RadioButton
-                  selected={deployment == selectedDeployment}
-                  onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
-                />
+            <TouchableOpacity
+              key={deployment}
+              onPress={() => setSelectedDeployment(deployment as CodePushDeployment)}
+            >
+              <Flex flexDirection="row" alignItems="center">
+                <RadioButton selected={deployment == selectedDeployment} />
                 <Text>{deployment}</Text>
               </Flex>
-            </Fragment>
+            </TouchableOpacity>
           )
         })}
 
-        <Spacer y={2} />
-
         {loadProgress > 0 && (
-          <>
+          <Flex mt={2}>
             <Text>{loadStatus}</Text>
             <ProgressBar progress={loadProgress} />
-          </>
+          </Flex>
         )}
 
         {!!errorMessage && (
-          <Message title="Something went wrong" text={errorMessage} variant="error" />
+          <Flex mt={2}>
+            <Message title="Something went wrong" text={errorMessage} variant="error" />
+          </Flex>
         )}
 
         <Spacer y={2} />
