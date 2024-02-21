@@ -74,7 +74,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   type NotificationT = (typeof notifications)[0]
 
   const keyExtractor = (item: NotificationT) => {
-    return `${type}-${item.internalID}`
+    return `${item.internalID}`
   }
 
   return (
