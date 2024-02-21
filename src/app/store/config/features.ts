@@ -261,7 +261,7 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFeedView",
   },
-} satisfies { [key: string]: FeatureDescriptor }
+}
 
 export interface DevToggleDescriptor {
   /**

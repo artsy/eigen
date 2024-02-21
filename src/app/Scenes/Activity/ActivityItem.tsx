@@ -58,13 +58,15 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
       }
     }
 
+    const showAsRow = enableNewActivityPanelManagement && isPartnerOffer
+
     if (enableNewActivityPanelManagement) {
       return (
         <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
           <Flex flexDirection="row" alignItems="center" px={2}>
             <Flex flex={1} mr={2}>
               <Flex flexDirection="column" py={2}>
-                <Flex flexDirection={isPartnerOffer ? "row" : "column"}>
+                <Flex flexDirection={showAsRow ? "row" : "column"}>
                   <Flex flexDirection="row" alignItems="center">
                     {artworks.map((artwork) => {
                       return (
@@ -97,7 +99,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                     )}
                   </Flex>
 
-                  <Flex justifyContent="center">
+                  <Flex>
                     {!!isPartnerOffer && (
                       <PartnerOfferBadge notificationType={item.notificationType} />
                     )}
