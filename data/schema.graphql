@@ -2268,17 +2268,15 @@ type ArtistTargetSupplyMicrofunnel {
 }
 
 enum ArtistTargetSupplyPriority {
-  P1
-  P2
+  FALSE
+  TRUE
 }
 
 enum ArtistTargetSupplyType {
-  BLUE_CHIP
-  CRITICALLY_ACCLAIMED
-  NEW_AND_NOTEWORTHY
-  STREET_AND_URBAN
-  TRENDING_EMERGING
-  ULTRA_HIGH_DEMAND
+  AUCTION_MARKET
+  CURATED_EMERGING
+  HIGH_HQDLS
+  HIGHEST_HQDLS
 }
 
 type Artwork implements Node & Searchable & Sellable {
