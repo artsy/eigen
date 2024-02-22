@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { MarketingCollectionRail_home$key } from "__generated__/MarketingCollectionRail_home.graphql"
 import { MarketingCollectionRail_marketingCollection$key } from "__generated__/MarketingCollectionRail_marketingCollection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
@@ -10,7 +10,7 @@ import {
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
 import { memo } from "react"
-import { Image, TouchableOpacity } from "react-native"
+import { TouchableOpacity, useWindowDimensions } from "react-native"
 import { useFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -34,6 +34,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
     )
     const home = useFragment(homeFragment, restProps.home)
     const artworks = extractNodes(marketingCollection.artworksConnection)
+    const { width } = useWindowDimensions()
 
     const heroUnit = home?.heroUnits?.find((item) => item?.slug === marketingCollectionSlug)
 
@@ -50,7 +51,11 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
         )
       }
 
-      navigate(artwork.href!)
+      if (artwork.href) {
+        navigate(artwork.href)
+      } else {
+        console.warn("Artwork href is missing for ", artwork.slug)
+      }
     }
 
     const handleMorePress = () => {
@@ -78,9 +83,10 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
         <TouchableOpacity onPress={handleHeaderPress} activeOpacity={0.7}>
           {!!heroUnit?.backgroundImageURL && (
             <Image
-              style={{ width: "100%", height: 80 }}
+              width={width}
+              height={80}
               resizeMode="cover"
-              source={{ uri: heroUnit?.backgroundImageURL }}
+              src={heroUnit?.backgroundImageURL}
             />
           )}
           <Flex mx={2} mt={2}>

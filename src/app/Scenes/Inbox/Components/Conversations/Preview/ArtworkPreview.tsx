@@ -65,7 +65,11 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
       <Container>
         {!!artworkImage && (
           <ImageContainer>
-            <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+            <OpaqueImageView
+              aspectRatio={artworkImage.aspectRatio}
+              imageURL={artworkImage.url}
+              blurhash={artworkImage.blurhash}
+            />
           </ImageContainer>
         )}
         <TextContainer>
@@ -92,6 +96,7 @@ const ArtworkPreviewFragment = graphql`
     artistNames
     date
     image {
+      blurhash
       url
       aspectRatio
     }
