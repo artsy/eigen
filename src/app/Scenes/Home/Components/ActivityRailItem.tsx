@@ -1,9 +1,8 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import {
   ActivityRailItem_item$data,
   ActivityRailItem_item$key,
 } from "__generated__/ActivityRailItem_item.graphql"
-import { OpaqueImageView } from "app/Components/OpaqueImageView2"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import {
   ExpiresInTimer,
@@ -30,7 +29,6 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const markAsRead = useMarkNotificationAsRead()
 
   const item = useFragment(ActivityRailItemFragment, props.item)
-  const artworks = extractNodes(item.artworksConnection)
 
   const handlePress = () => {
     props.onPress?.(item)
@@ -44,20 +42,25 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
     }
   }
 
-  const imageURL = artworks[0]?.image?.preview?.src
+  const imageURL = getPreviewImage(item)
 
   return (
     <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex flexDirection="row">
-        {!!imageURL ? (
-          <Flex mr={1} accessibilityLabel="Activity Artwork Image">
-            <OpaqueImageView
-              imageURL={imageURL}
+        <Flex
+          mr={1}
+          accessibilityLabel="Activity Artwork Image"
+          width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+          height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
+        >
+          {!!imageURL && (
+            <Image
+              src={imageURL}
               width={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
               height={ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE}
             />
-          </Flex>
-        ) : null}
+          )}
+        </Flex>
 
         <Flex maxWidth={MAX_WIDTH} overflow="hidden">
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
@@ -85,6 +88,19 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   )
 }
 
+const getPreviewImage = (item: ActivityRailItem_item$data) => {
+  switch (item.notificationType) {
+    case "VIEWING_ROOM_PUBLISHED":
+      return extractNodes(item?.item?.viewingRoomsConnection)?.[0]?.image?.imageURLs?.normalized
+    case "ARTICLE_FEATURED_ARTIST":
+      return item?.item?.article?.thumbnailImage?.preview?.src
+    case "PARTNER_SHOW_OPENED":
+      return extractNodes(item?.item?.showsConnection)?.[0]?.coverImage?.preview?.src
+    default:
+      return extractNodes(item?.artworksConnection)?.[0]?.image?.preview?.src
+  }
+}
+
 const ActivityRailItemFragment = graphql`
   fragment ActivityRailItem_item on Notification {
     internalID
@@ -96,12 +112,6 @@ const ActivityRailItemFragment = graphql`
     isUnread
     notificationType
     objectsCount
-    item {
-      ... on PartnerOfferCreatedNotificationItem {
-        available
-        expiresAt
-      }
-    }
     artworksConnection(first: 1) {
       edges {
         node {
@@ -109,8 +119,49 @@ const ActivityRailItemFragment = graphql`
           title
           image {
             aspectRatio
-            preview: cropped(width: 116, height: 116, version: "normalized") {
+            preview: cropped(width: 55, height: 55, version: "normalized") {
               src
+            }
+          }
+        }
+      }
+    }
+    item {
+      ... on PartnerOfferCreatedNotificationItem {
+        available
+        expiresAt
+      }
+      ... on ViewingRoomPublishedNotificationItem {
+        viewingRoomsConnection(first: 1) {
+          edges {
+            node {
+              image {
+                imageURLs {
+                  normalized
+                }
+              }
+            }
+          }
+        }
+      }
+      ... on ArticleFeaturedArtistNotificationItem {
+        article {
+          thumbnailImage {
+            preview: cropped(width: 55, height: 55, version: "normalized") {
+              src
+            }
+          }
+        }
+      }
+      ... on ShowOpenedNotificationItem {
+        showsConnection(first: 1) {
+          edges {
+            node {
+              coverImage {
+                preview: cropped(width: 55, height: 55, version: "normalized") {
+                  src
+                }
+              }
             }
           }
         }
