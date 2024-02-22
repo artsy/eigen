@@ -40,7 +40,8 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index }) => {
       <View style={[styles?.container]}>
         <OpaqueImageView
           imageURL={imageURL}
-          style={[styles?.image, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
+          blurhash={image?.blurhash}
+          style={[styles?.image as any, { overflow: "hidden", borderRadius: 2, flex: 0 }]}
         />
         {/* this wrapper required to make numberOfLines work when parent is a row */}
         <View style={{ flex: 1 }}>
@@ -59,6 +60,7 @@ const query = graphql`
     is_fair_booth: isFairBooth
     coverImage {
       url(version: "large")
+      blurhash
     }
     ...Metadata_show
   }

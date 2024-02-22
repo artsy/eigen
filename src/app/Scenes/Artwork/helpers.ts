@@ -38,7 +38,7 @@ export const getImageDimensionsByImage = (
   }
 }
 
-export const useImagePlaceholderDimensions = (artworkID?: string) => {
+export const useImagePlaceholder = (artworkID?: string) => {
   const space = useSpace()
   const screenDimensions = useScreenDimensions()
 
@@ -54,5 +54,5 @@ export const useImagePlaceholderDimensions = (artworkID?: string) => {
     ? getImageDimensionsByImage(screenDimensions, image)
     : getDefaultImageDimensions(screenDimensions, space(1))
 
-  return { width, height }
+  return { width, height, blurhash: image?.blurhash as string | null | undefined }
 }
