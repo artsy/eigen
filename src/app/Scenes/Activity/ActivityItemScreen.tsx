@@ -1,25 +1,26 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  Flex,
-  Screen,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { ActivityItemScreenQuery } from "__generated__/ActivityItemScreenQuery.graphql"
 import { AlertNotification } from "app/Scenes/Activity/components/AlertNotification"
 import { ArtworkPublishedNotification } from "app/Scenes/Activity/components/ArtworkPublishedNotification"
-import { goBack } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { screen } from "app/utils/track/helpers"
 import { ArticleFeaturedArtistNotification } from "app/Scenes/Activity/components/ArticleFeaturedArtistNotification"
 import { ViewingRoomPublishedNotification } from "app/Scenes/Activity/components/ViewingRoomPublishedNotification"
 import { PartnerOfferCreatedNotification } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
+
+export const SUPPORTED_NOTIFICATION_TYPES = [
+  "ARTWORK_ALERT",
+  "ARTWORK_PUBLISHED",
+  "ARTICLE_FEATURED_ARTIST",
+  "PARTNER_OFFER_CREATED",
+  "VIEWING_ROOM_PUBLISHED",
+]
 
 interface ActivityItemScreenQueryRendererProps {
   notificationID: string
@@ -32,35 +33,34 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
         internalID: notificationID,
       })
 
-      // TODO: Implement error handling
-      if (!data.me?.notification) {
-        return null
+      const notification = data.me?.notification
+
+      if (!notification) {
+        return <ActivityErrorScreen headerTitle="Activity" />
       }
 
-      const notificationType = data.me?.notification?.item?.__typename
+      const notificationType = notification?.item?.__typename
+
+      // Redirect user to the notifications targetHref if the notification type is not supported
+      useEffect(() => {
+        if (!SUPPORTED_NOTIFICATION_TYPES.includes(notification?.notificationType as string)) {
+          navigate(notification?.targetHref as string)
+        }
+      }, [notification])
 
       switch (notificationType) {
         case "AlertNotificationItem":
-          return <AlertNotification notification={data.me?.notification} />
+          return <AlertNotification notification={notification} />
         case "ArtworkPublishedNotificationItem":
-          return <ArtworkPublishedNotification notification={data.me?.notification} />
+          return <ArtworkPublishedNotification notification={notification} />
         case "ArticleFeaturedArtistNotificationItem":
-          return <ArticleFeaturedArtistNotification notification={data.me?.notification} />
+          return <ArticleFeaturedArtistNotification notification={notification} />
         case "ViewingRoomPublishedNotificationItem":
-          return <ViewingRoomPublishedNotification notification={data.me?.notification} />
+          return <ViewingRoomPublishedNotification notification={notification} />
         case "PartnerOfferCreatedNotificationItem":
           return <PartnerOfferCreatedNotification notification={data.me.notification} />
         default:
-          // TODO: Add fallback for other notification types
-          return (
-            <Screen>
-              <Screen.Header onBack={goBack} title="Title" />
-              <Text>
-                The notification screen for the type "{notificationType}" has not been implemented
-                yet.
-              </Text>
-            </Screen>
-          )
+          return null
       }
     },
     () => <Placeholder />
@@ -73,6 +73,8 @@ const ActivityItemQuery = graphql`
         item {
           __typename
         }
+        notificationType
+        targetHref
 
         ...AlertNotification_notification
         ...ArtworkPublishedNotification_notification
