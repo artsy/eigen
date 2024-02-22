@@ -43,6 +43,7 @@ export class PartnerShowRailItem extends React.Component<Props> {
         <Flex my="15px" mr={2} width={windowWidth - 100}>
           <ImageView
             imageURL={imageURL}
+            blurhash={coverImage?.blurhash}
             style={{ alignItems: "center", justifyContent: "center" }}
           />
           <Spacer y={1} />
@@ -70,6 +71,7 @@ export const PartnerShowRailItemContainer = createFragmentContainer(PartnerShowR
       endAt
       coverImage {
         url
+        blurhash
       }
       images {
         url
