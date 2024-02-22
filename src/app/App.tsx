@@ -56,6 +56,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
+// @ts-ignore
 const Main = () => {
   useRageShakeDevMenu()
   useEffect(() => {
