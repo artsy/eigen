@@ -53,9 +53,9 @@ export const RecentlyViewedScreen: React.FC = () => {
                 style={{ top: 5 }}
               >
                 {defaultViewOption === "grid" ? (
-                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
-                ) : (
                   <FullWidthIcon height={ICON_SIZE} width={ICON_SIZE} />
+                ) : (
+                  <GridIcon height={ICON_SIZE} width={ICON_SIZE} />
                 )}
               </MotiPressable>
             ) : undefined
