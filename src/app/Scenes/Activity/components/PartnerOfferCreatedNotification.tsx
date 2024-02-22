@@ -1,4 +1,4 @@
-import { Button, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -6,7 +6,6 @@ import {
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { getTimer } from "app/utils/getTimer"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerOfferCreatedNotificationProps {
@@ -23,13 +22,6 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   const handleManageSaves = () => {
     navigate("/artwork-lists")
   }
-
-  const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
-  const noLongerAvailable = !item.partnerOffer.isAvailable
-
-  let buttonText = "Continue to Purchase"
-  if (hasEnded) buttonText = "View Work"
-  if (noLongerAvailable) buttonText = "Create Alert"
 
   return (
     <Screen>
@@ -72,17 +64,13 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               priceListedMessage: item.partnerOffer.priceListedMessage,
               priceWithDiscountMessage: item.partnerOffer.priceWithDiscountMessage,
             }}
+            partnerOffer={{
+              endAt: item.partnerOffer.endAt,
+              isAvailable: item.partnerOffer.isAvailable,
+              targetHref: targetHref,
+            }}
+            showArtworkCommercialButtons
           />
-
-          <Flex mx={2} mt={2}>
-            <Button
-              block
-              variant={noLongerAvailable ? "outline" : "fillDark"}
-              onPress={() => (noLongerAvailable ? "TODO: create alert" : navigate(targetHref))}
-            >
-              {buttonText}
-            </Button>
-          </Flex>
         </Flex>
       </Screen.Body>
     </Screen>

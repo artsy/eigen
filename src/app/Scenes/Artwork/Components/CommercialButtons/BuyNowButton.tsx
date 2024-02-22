@@ -16,6 +16,7 @@ export interface BuyNowButtonProps {
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
   renderSaleMessage?: boolean
+  buttonText?: string
 }
 
 export const BuyNowButton = ({
@@ -23,6 +24,7 @@ export const BuyNowButton = ({
   variant,
   editionSetID,
   renderSaleMessage,
+  buttonText,
 }: BuyNowButtonProps) => {
   const env = useRelayEnvironment()
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
@@ -127,7 +129,11 @@ export const BuyNowButton = ({
       width={100}
       haptic
     >
-      {renderSaleMessage && saleMessage ? `Purchase ${saleMessage}` : "Purchase"}
+      {!!buttonText
+        ? buttonText
+        : renderSaleMessage && saleMessage
+          ? `Purchase ${saleMessage}`
+          : "Purchase"}
     </Button>
   )
 }
