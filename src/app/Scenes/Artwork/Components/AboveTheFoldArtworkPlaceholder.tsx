@@ -1,9 +1,8 @@
-import { Spacer, Flex, useSpace, Join } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, useSpace } from "@artsy/palette-mobile"
 import { useImagePlaceholder } from "app/Scenes/Artwork/helpers"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import { useMemo } from "react"
-import { Blurhash } from "react-native-blurhash"
 
 interface AboveTheFoldPlaceholderProps {
   artworkID?: string
@@ -54,7 +53,7 @@ const ArtworkDetailsPlaceholder = () => {
 }
 
 export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
-  const { width, height, blurhash } = useImagePlaceholder(artworkID)
+  const { width, height } = useImagePlaceholder(artworkID)
 
   return (
     <Flex flex={1}>
@@ -71,13 +70,7 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
 
       {/* Artwork thumbnail */}
       <Flex mx="auto" pt={2}>
-        {blurhash ? (
-          <Flex backgroundColor="black10" height={height} width={width}>
-            <Blurhash blurhash={blurhash} style={{ flex: 1 }} />
-          </Flex>
-        ) : (
-          <PlaceholderBox width={width} height={height} />
-        )}
+        <PlaceholderBox width={width} height={height} />
       </Flex>
 
       <Spacer y={1} />
