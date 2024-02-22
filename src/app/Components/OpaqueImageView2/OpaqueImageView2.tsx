@@ -1,14 +1,18 @@
-import { useColor, Text } from "@artsy/palette-mobile"
+import { Image, Text, useColor } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isNumber, isString } from "lodash"
-import React, { useCallback, useRef, useState, useEffect } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
 interface Props {
   /** The URL from where to fetch the image. */
   imageURL?: string | null
+
+  /** BlurHash code */
+  blurhash?: string | null | undefined
 
   /**
    * By default we fetch a resized version of the image from gemini
@@ -60,6 +64,8 @@ interface Props {
   highPriority?: boolean
 
   style?: ImageStyle[] | ImageStyle
+
+  testID?: string
 }
 
 const useComponentSize = () => {
@@ -81,6 +87,8 @@ const useComponentSize = () => {
  * Use `Image` from palette instead.
  */
 export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
+  const usePaletteImage = useFeatureFlag("ARUsePaletteImage")
+
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
   const imageScaleValue = useRef(new Animated.Value(0)).current
@@ -97,22 +105,30 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     }
     const width = props.width ?? style.width
     if (isNumber(width)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [width, width / aspectRatio!]
     }
     if (isString(width)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [layoutWidth, layoutWidth / aspectRatio!]
     }
     const height = props.height ?? style.height
     if (isNumber(height)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [height * aspectRatio!, height]
     }
     if (isString(height)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [layoutHeight * aspectRatio!, layoutHeight]
     }
     return [layoutWidth, layoutHeight]
   }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
 
   useEffect(() => {
+    if (usePaletteImage) {
+      return
+    }
+
     const [fWidth, fHeight] = getActualDimensions()
     setFIHeight(fHeight)
     setFIWidth(fWidth)
@@ -161,6 +177,21 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     }
 
     return
+  }
+
+  if (usePaletteImage && props.imageURL) {
+    return (
+      <Image
+        src={props.imageURL}
+        geminiResizeMode={aspectRatio ? "fit" : "fill"}
+        performResize={props.useRawURL}
+        height={props.height}
+        width={props.width}
+        blurhash={props.blurhash}
+        aspectRatio={aspectRatio}
+        testID={props.testID}
+      />
+    )
   }
 
   // If no imageURL is given at all, simply set the placeholder background color as a view backgroundColor style so

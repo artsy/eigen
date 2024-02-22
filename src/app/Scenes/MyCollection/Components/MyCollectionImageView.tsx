@@ -12,6 +12,7 @@ export interface MyCollectionImageViewProps {
   useRawURL?: boolean
   internalID?: string | null
   versions?: string[]
+  blurhash?: string | null | undefined
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -20,6 +21,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageHeight,
   aspectRatio,
   useRawURL,
+  blurhash,
 }) => {
   const color = useColor()
 
@@ -47,6 +49,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         width={imageWidth}
         aspectRatio={aspectRatio}
         useRawURL={useRawURL}
+        blurhash={blurhash}
       />
     </Flex>
   )

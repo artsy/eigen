@@ -261,6 +261,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFeedView",
   },
+  ARUsePaletteImage: {
+    description: "Use Palette Image",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARUsePaletteImage",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

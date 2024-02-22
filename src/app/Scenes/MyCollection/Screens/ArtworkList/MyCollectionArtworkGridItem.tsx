@@ -75,6 +75,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
           useRawURL={!!localImage}
+          blurhash={image?.blurhash}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
@@ -120,11 +121,13 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
           isDefault
           internalID
           versions
+          blurhash
         }
         image(includeAll: $includeAllImages) {
           internalID
           aspectRatio
           versions
+          blurhash
         }
         artistNames
         medium
