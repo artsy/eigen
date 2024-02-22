@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   Text,
   Screen,
@@ -53,12 +52,6 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
     })
   }
 
-  const handleEditFollowsButton = () => {
-    // TODO: Add tracking
-
-    navigate("/favorites")
-  }
-
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
@@ -89,18 +82,6 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
         <NotificationArtworkList artworksConnection={artworksConnection} />
 
         <Flex mx={2} mt={1} mb={2}>
-          <Button
-            block
-            variant="outline"
-            onPress={handleEditFollowsButton}
-            testID="edit-follows-CTA"
-            mb={1}
-          >
-            Edit Follows
-          </Button>
-
-          <Spacer y={2} />
-
           <Touchable onPress={handleViewAllWorksPress}>
             <Flex mx={2} flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
