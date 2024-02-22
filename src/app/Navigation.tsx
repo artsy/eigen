@@ -1,33 +1,64 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Text, View } from "react-native"
 
 // Define the type for your root stack navigation, if needed
 export type RootStackParamList = {
-  NavStackTest: undefined // Add other routes as necessary
+  Login: undefined
+  LoggedInComponentTest: undefined
 }
 
 // Create a stack navigator
-const Stack = createNativeStackNavigator<RootStackParamList>()
+export const StackNav = createNativeStackNavigator<RootStackParamList>()
 
-const NavStackTest = () => {
+const LoggedInComponentTest = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>NavStack Test</Text>
+      <Text>Logged In</Text>
     </View>
   )
 }
 
+const LoginScreen = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Logged Out - Here is where we should show login</Text>
+    </View>
+  )
+}
+
+const AuthRouter: React.FC<{
+  isLoggedIn: boolean
+}> = ({ isLoggedIn }) => {
+  if (!isLoggedIn) {
+    return (
+      <StackNav.Group>
+        <StackNav.Screen name="Login" component={LoginScreen} />
+      </StackNav.Group>
+    )
+  }
+  return null
+}
+
 const Main2 = () => {
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <StackNav.Navigator
         screenOptions={{
           headerShown: false,
         }}
       >
-        <Stack.Screen name="NavStackTest" component={NavStackTest} />
-      </Stack.Navigator>
+        {AuthRouter({ isLoggedIn })}
+        {!!isLoggedIn && onboardingState === "complete" && (
+          <>
+            <StackNav.Screen name="LoggedInComponentTest" component={LoggedInComponentTest} />
+          </>
+        )}
+      </StackNav.Navigator>
     </NavigationContainer>
   )
 }
