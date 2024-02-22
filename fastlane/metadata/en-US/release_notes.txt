@@ -1,3 +1,6 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes, including:
+
+- Access to recently viewed artworks from the user menu.
+- Improved artwork list performance.
 
 Have feedback? Email us at support@artsy.net
