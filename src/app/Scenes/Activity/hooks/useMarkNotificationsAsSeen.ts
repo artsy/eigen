@@ -55,6 +55,10 @@ const MarkNotificationsAsSeenMutation = graphql`
     markNotificationsAsSeen(input: $input) {
       responseOrError {
         ... on MarkNotificationsAsSeenSuccess {
+          me {
+            unseenNotificationsCount
+          }
+
           success
         }
         ... on MarkNotificationsAsSeenFailure {

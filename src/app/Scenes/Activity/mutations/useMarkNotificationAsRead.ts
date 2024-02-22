@@ -3,24 +3,26 @@ import { useMarkNotificationAsReadMutation } from "__generated__/useMarkNotifica
 import { graphql, useMutation } from "react-relay"
 
 export const useMarkNotificationAsRead = () => {
-  const [commitMutation] = useMutation<useMarkNotificationAsReadMutation>(
-    graphql`
-      mutation useMarkNotificationAsReadMutation($input: MarkNotificationAsReadInput!) {
-        markNotificationAsRead(input: $input) {
-          responseOrError {
-            ... on MarkNotificationAsReadSuccess {
-              success
+  const [commitMutation] = useMutation<useMarkNotificationAsReadMutation>(graphql`
+    mutation useMarkNotificationAsReadMutation($input: MarkNotificationAsReadInput!) {
+      markNotificationAsRead(input: $input) {
+        responseOrError {
+          ... on MarkNotificationAsReadSuccess {
+            me {
+              unreadNotificationsCount
             }
-            ... on MarkNotificationAsReadFailure {
-              mutationError {
-                message
-              }
+
+            success
+          }
+          ... on MarkNotificationAsReadFailure {
+            mutationError {
+              message
             }
           }
         }
       }
-    `
-  )
+    }
+  `)
 
   return (item: { id: string; internalID: string; isUnread: boolean }) => {
     if (!item.isUnread) {
