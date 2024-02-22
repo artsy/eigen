@@ -15,17 +15,12 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { captureMessage } from "@sentry/react-native"
+import { captureException, captureMessage } from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
-import {
-  getBase64Data,
-  getImageBase64,
-  getShareImages,
-  shareContent,
-} from "app/Components/ShareSheet/helpers"
+import { getImageBase64, getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -47,7 +42,8 @@ export const ShareSheet = () => {
   const showInstagramStoriesItem =
     useCanOpenURL("instagram://user?username=instagram") &&
     data?.type !== "sale" &&
-    !!shotRef.current
+    !!shotRef.current?.capture
+
   const { trackEvent } = useTracking()
   const webURL = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL)
 
@@ -58,35 +54,58 @@ export const ShareSheet = () => {
   const { currentImageUrl } = getShareImages(data)
 
   const shareOnInstagramStory = async () => {
-    // if the ref is not available, we can't take a screenshot but
-    // we don't render the shareOnInstagramStory button if we don't have that
-    if (!shotRef.current) {
-      return
-    }
-
     try {
-      const base64Data = await getBase64Data(shotRef.current)
+      console.log("Starting share on Instagram story...")
 
+      // Step 1: Call the shotRefCurrentCapture function if available
+      let base64Data
+      if (shotRef?.current?.capture && typeof shotRef.current.capture === "function") {
+        console.log("Capturing screenshot...")
+        base64Data = await shotRef.current.capture()
+      }
+
+      // Step 2: Create the base64Data to be shared, throw error if invalid
+      if (!base64Data) {
+        const error = new Error("Failed to capture screenshot, base64Data is invalid")
+        console.error(error)
+        captureMessage(
+          "Failed to capture screenshot, base64Data is invalid base64Data: " + base64Data
+        )
+        throw error
+      }
+
+      // Step 3: If isArtwork, track event share
       if (isArtwork) {
-        // track if the user shares the artwork
+        console.log("Tracking share event...")
         trackEvent(
           share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
         )
       }
-      setTimeout(async () => {
-        await Share.shareSingle({
-          appId: Config.ARTSY_FACEBOOK_APP_ID,
-          social: Social.InstagramStories,
-          backgroundImage: base64Data,
+
+      // Step 4: Share single from share library
+      console.log("Sharing on Instagram story...")
+      Share.shareSingle({
+        appId: Config.ARTSY_FACEBOOK_APP_ID,
+        social: Social.InstagramStories,
+        backgroundImage: `data:image/png;base64,${base64Data}`,
+      })
+        .then(() => {
+          captureMessage("Opened Instagram story successfully with base64Data:")
+          console.log("Opened Instagram story successfully")
         })
-      }, 200)
+        .catch((error) => {
+          captureMessage("Opened Instagram story failure: " + error)
+          console.error("Failed to open Instagram story:", error)
+        })
+        .finally(() => {
+          console.log("Hiding share sheet...")
+          hideShareSheet()
+        })
+
+      console.log("Share on Instagram story completed successfully")
     } catch (error) {
-      captureMessage("Error sharing to Instagram Stories")
-      console.log(error)
-    } finally {
-      setTimeout(async () => {
-        hideShareSheet()
-      }, 200)
+      console.error("Failed to share on Instagram story:", error)
+      captureException(error)
     }
   }
 
