@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/await-async-queries */
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import {
   FeaturedCollectionsRail,
@@ -54,6 +55,7 @@ describe("Featured Collections Rail", () => {
   )
 
   const getWrapper = () => {
+    // eslint-disable-next-line testing-library/render-result-naming-convention
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -167,6 +169,7 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
                     id: "",
                     image: {
                       url: "https://featured-collection-one/medium.jpg",
+                      blurhash: null,
                     },
                   },
                 },
@@ -187,6 +190,7 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
                     id: "",
                     image: {
                       url: "https://featured-collection-two/medium.jpg",
+                      blurhash: null,
                     },
                   },
                 },
@@ -207,6 +211,7 @@ const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse
                     id: "",
                     image: {
                       url: "https://featured-collection-three /medium.jpg",
+                      blurhash: null,
                     },
                   },
                 },

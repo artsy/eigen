@@ -68,6 +68,7 @@ export class ShowPreview extends React.Component<Props> {
               <ImageContainer>
                 <OpaqueImageView
                   imageURL={show.coverImage?.url}
+                  blurhash={show.coverImage?.blurhash}
                   style={{ flex: 1 }}
                   aspectRatio={show.coverImage?.aspectRatio}
                 />
@@ -97,6 +98,7 @@ export default createFragmentContainer(ShowPreview, {
       coverImage {
         url
         aspectRatio
+        blurhash
       }
       fair {
         name

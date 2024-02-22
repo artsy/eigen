@@ -85,8 +85,7 @@ class ActiveBid extends React.Component<Props, State> {
       status = "live_auction"
     } else {
       const leadingBidder = bid.is_leading_bidder
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const reserveNotMet = bid.most_recent_bid.sale_artwork.reserve_status === "reserve_not_met"
+      const reserveNotMet = bid?.most_recent_bid?.sale_artwork?.reserve_status === "reserve_not_met"
 
       if (leadingBidder) {
         status = reserveNotMet ? "reserve" : "winning"
@@ -113,47 +112,41 @@ class ActiveBid extends React.Component<Props, State> {
     // push user into live auction if it's open; otherwise go to artwork
     const href =
       this.state.status === "live_auction"
-        ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bid.sale.href
-        : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bid.most_recent_bid.sale_artwork.artwork.href
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    navigate(href)
+        ? bid?.sale?.href
+        : bid?.most_recent_bid?.sale_artwork?.artwork?.href
+
+    if (href) {
+      navigate(href)
+    } else {
+      console.warn("ActiveBid: no href found")
+    }
   }
 
   render() {
     const bid = this.props.bid.most_recent_bid
-    const imageURL =
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bid.sale_artwork.artwork &&
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bid.sale_artwork.artwork.image &&
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bid.sale_artwork.artwork.image.url
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const lotNumber = bid.sale_artwork.lot_label
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artistName = bid.sale_artwork.artwork.artist_names
+    const imageURL = bid?.sale_artwork?.artwork?.image?.url
+    const blurhash = bid?.sale_artwork?.artwork?.image?.blurhash
+
+    const lotNumber = bid?.sale_artwork?.lot_label || ""
+    const artistName = bid?.sale_artwork?.artwork?.artist_names || ""
 
     const headline = `Lot ${lotNumber} · ${artistName} `
 
     const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const bidderPositions = bid.sale_artwork.counts.bidder_positions
+    const bidderPositions = bid?.sale_artwork?.counts?.bidder_positions || null
     const bidderPositionsLabel = bidderPositions + " " + (bidderPositions === 1 ? "Bid" : "Bids")
 
     const subtitle = isInOpenLiveAuction
       ? "Live bidding now open"
-      : `${
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bid.sale_artwork.highest_bid.display
-        } (${bidderPositionsLabel})`
+      : `${bid?.sale_artwork?.highest_bid?.display || ""} (${
+          bidderPositions ? bidderPositionsLabel : ""
+        })`
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Container>
           <Content>
-            <ImageView imageURL={imageURL} />
+            <ImageView imageURL={imageURL} blurhash={blurhash} />
             <MetadataContainer>
               <StatusLabel status={this.state.status}>{this.statusLabel}</StatusLabel>
               <BodyText>{headline}</BodyText>
@@ -182,6 +175,7 @@ export default createFragmentContainer(ActiveBid, {
             href
             image {
               url
+              blurhash
             }
             artist_names: artistNames
           }

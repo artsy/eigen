@@ -19,6 +19,7 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
             width={width}
             src={data.hero.image.url}
             aspectRatio={data.hero.image.aspectRatio}
+            blurhash={data.hero.image.blurhash}
           />
 
           <Spacer y={2} />
@@ -59,6 +60,7 @@ const ArticleHeroFragment = graphql`
       ... on ArticleFeatureSection {
         image {
           aspectRatio
+          blurhash
           url(version: ["main", "normalized", "larger", "large"])
         }
       }
