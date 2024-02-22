@@ -70,7 +70,7 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
       </Flex>
 
       {/* Artwork thumbnail */}
-      <Flex mx="auto">
+      <Flex mx="auto" pt={2}>
         {blurhash ? (
           <Flex backgroundColor="black10" height={height} width={width}>
             <Blurhash blurhash={blurhash} style={{ flex: 1 }} />
