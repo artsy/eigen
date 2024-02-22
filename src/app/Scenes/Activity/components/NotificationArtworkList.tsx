@@ -27,8 +27,8 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = (props)
         artworks={artworks}
         numColumns={1}
         disableAutoLayout
-        contextScreenOwnerType={OwnerType.newWorksForYou}
-        contextScreen={OwnerType.newWorksForYou}
+        contextScreenOwnerType={OwnerType.activity}
+        contextScreen={OwnerType.activity}
         hasMore={false}
         onScroll={scrollHandler}
         priceOfferMessage={priceOfferMessage}
