@@ -274,6 +274,68 @@ type Alert {
   artists: [Artist!]!
   artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection!
   artistSeriesIDs: [String]
+
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+    saleID: ID
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sort: String
+    tagID: String
+    width: String
+  ): FilterArtworksConnection
   atAuction: Boolean
   attributionClass: [String]
   colors: [String]
