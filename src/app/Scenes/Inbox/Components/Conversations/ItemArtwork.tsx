@@ -24,6 +24,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
                 imageURL={artwork.image?.thumbnailUrl}
                 width={100}
                 height={100}
+                blurhash={artwork.image?.blurhash}
               />
             </Box>
 
@@ -59,6 +60,7 @@ export const ItemArtworkFragmentContainer = createFragmentContainer(ItemArtwork,
       href
       image {
         thumbnailUrl: url(version: "small")
+        blurhash
       }
       title
       artistNames
