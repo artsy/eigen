@@ -31,6 +31,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
         accessibilityRole="togglebutton"
         accessibilityLabel={label}
         accessibilityState={{ expanded }}
+        hitSlop={{ top: 10, bottom: 10 }}
       >
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Text variant="sm">{label}</Text>
