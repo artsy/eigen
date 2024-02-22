@@ -92,6 +92,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   width={220}
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
+                  blurhash={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.blurhash}
                 />
                 <Text variant="sm" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}
@@ -143,6 +144,7 @@ export const FeaturedCollectionsRailContainer = createFragmentContainer(Featured
             node {
               image {
                 url
+                blurhash
               }
             }
           }

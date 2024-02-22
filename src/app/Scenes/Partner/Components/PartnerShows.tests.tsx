@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { cloneDeep } from "lodash"
@@ -22,20 +23,20 @@ describe("PartnerShows", () => {
   })
 
   it("renders the shows correctly", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => PartnerShowsFixture,
     })
 
     // Current and upcoming shows
-    expect(getByText("Richard Serra: Triptychs and Diptychs")).toBeTruthy()
-    expect(getByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
-    expect(getByText("Albert Oehlen: New Paintings")).toBeTruthy()
+    expect(screen.getByText("Richard Serra: Triptychs and Diptychs")).toBeTruthy()
+    expect(screen.getByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
+    expect(screen.getByText("Albert Oehlen: New Paintings")).toBeTruthy()
 
     // Past shows
-    expect(getByText("Zao Wou-Ki")).toBeTruthy()
-    expect(getByText("Domestic Horror")).toBeTruthy()
-    expect(getByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
-    expect(getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
+    expect(screen.getByText("Zao Wou-Ki")).toBeTruthy()
+    expect(screen.getByText("Domestic Horror")).toBeTruthy()
+    expect(screen.getByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
+    expect(screen.getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 
   it("doesn't show non-displayable", () => {
@@ -45,20 +46,20 @@ describe("PartnerShows", () => {
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
 
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => fixture,
     })
 
     // Current and upcoming shows
-    expect(queryByText("Richard Serra: Triptychs and Diptychs")).toBeFalsy()
-    expect(queryByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
-    expect(queryByText("Albert Oehlen: New Paintings")).toBeTruthy()
+    expect(screen.queryByText("Richard Serra: Triptychs and Diptychs")).toBeFalsy()
+    expect(screen.getByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
+    expect(screen.getByText("Albert Oehlen: New Paintings")).toBeTruthy()
 
     // Past shows
-    expect(queryByText("Zao Wou-Ki")).toBeFalsy()
-    expect(queryByText("Domestic Horror")).toBeTruthy()
-    expect(queryByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
-    expect(queryByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
+    expect(screen.queryByText("Zao Wou-Ki")).toBeFalsy()
+    expect(screen.getByText("Domestic Horror")).toBeTruthy()
+    expect(screen.getByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
+    expect(screen.getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 })
 
@@ -111,6 +112,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           ],
           coverImage: {
             url: "https://d32dm0rphc51dk.cloudfront.net/5pyq3gwxGzK6Owea_DIxmw/larger.jpg",
+            blurhash: null,
           },
         },
       },
@@ -133,6 +135,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           ],
           coverImage: {
             url: "https://d32dm0rphc51dk.cloudfront.net/5pyq3gwxGzK6Owea_DIxmw/larger.jpg",
+            blurhash: null,
           },
         },
       },
