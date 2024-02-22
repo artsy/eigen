@@ -87,8 +87,7 @@ const ActivityItemQuery = graphql`
 const Placeholder: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
-      // TODO: Update screen owner type
-      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+      info={screen({ context_screen_owner_type: OwnerType.activity })}
     >
       <Screen>
         <Screen.Header onBack={goBack} />
