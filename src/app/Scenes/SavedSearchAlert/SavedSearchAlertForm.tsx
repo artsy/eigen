@@ -59,7 +59,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     onDeleteComplete,
     ...other
   } = props
-  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
 
   const isUpdateForm = !!savedSearchAlertId
@@ -159,7 +158,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         await submitHandler(userAlertSettings, clearedAttributes)
 
         // If the user set a price range, we would like to save it in the store to prompt it the next time
-        if (enableAlertsFilters && selectedRriceRange) {
+        if (selectedRriceRange) {
           GlobalStore.actions.recentPriceRanges.addNewPriceRange(selectedRriceRange)
         }
       } catch (error) {

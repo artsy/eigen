@@ -59,16 +59,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 }) => {
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
-  const { showFilterArtworksModal, openFilterArtworksModal, closeFilterArtworksModal } =
-    useShowArtworksFilterModal({ artist })
+  const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
+    artist,
+  })
   const tracking = useTracking()
   const space = useSpace()
   const { width } = useScreenDimensions()
   const showCreateAlertAtEndOfList = useFeatureFlag("ARShowCreateAlertInArtistArtworksListFooter")
-  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
 
-  const gridRef = useRef<MasonryFlashListRef<typeof artworks[0]>>(null)
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -157,11 +157,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
           )
 
-          if (enableAlertsFilters) {
-            setIsCreateAlertModalVisible(true)
-          } else {
-            openFilterArtworksModal("createAlert")
-          }
+          setIsCreateAlertModalVisible(true)
         }}
       >
         Create Alert
@@ -201,17 +197,15 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           shouldShowCreateAlertButton
         />
 
-        {!!enableAlertsFilters && (
-          <CreateSavedSearchModal
-            aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
-            attributes={attributes}
-            closeModal={() => setIsCreateAlertModalVisible(false)}
-            entity={savedSearchEntity}
-            onComplete={handleCompleteSavedSearch}
-            visible={isCreateAlertModalVisible}
-            sizeMetric={sizeMetric}
-          />
-        )}
+        <CreateSavedSearchModal
+          aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+          attributes={attributes}
+          closeModal={() => setIsCreateAlertModalVisible(false)}
+          entity={savedSearchEntity}
+          onComplete={handleCompleteSavedSearch}
+          visible={isCreateAlertModalVisible}
+          sizeMetric={sizeMetric}
+        />
       </Tabs.ScrollView>
     )
   }
@@ -316,16 +310,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
-      {!!enableAlertsFilters && (
-        <CreateSavedSearchModal
-          aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
-          attributes={attributes}
-          closeModal={() => setIsCreateAlertModalVisible(false)}
-          entity={savedSearchEntity}
-          onComplete={handleCompleteSavedSearch}
-          visible={isCreateAlertModalVisible}
-        />
-      )}
+      <CreateSavedSearchModal
+        aggregations={(artist.aggregations?.aggregations as Aggregations) || []}
+        attributes={attributes}
+        closeModal={() => setIsCreateAlertModalVisible(false)}
+        entity={savedSearchEntity}
+        onComplete={handleCompleteSavedSearch}
+        visible={isCreateAlertModalVisible}
+      />
     </>
   )
 }
