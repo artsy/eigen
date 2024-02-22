@@ -211,10 +211,10 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
     if (gridWidth) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
-      const sectionMargins = sectionMargin! * (sectionCount! - 1)
+      const sectionMargins = sectionMargin * (sectionCount - 1)
       const artworkPadding = shouldAddPadding ? 40 : 0
 
-      return (gridWidth - sectionMargins - artworkPadding) / sectionCount!
+      return (gridWidth - sectionMargins - artworkPadding) / sectionCount
     }
     return 0
   }
@@ -229,7 +229,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
     setLocalIsLoading(true)
 
-    loadMore(pageSize!, (error) => {
+    loadMore(pageSize, (error) => {
       setLocalIsLoading(false)
       if (error) {
         // FIXME: Handle error
@@ -477,6 +477,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
             id
             image(includeAll: false) {
               aspectRatio
+              blurhash
             }
             ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
             ...MyCollectionArtworkGridItem_artwork
@@ -508,6 +509,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             id
             image(includeAll: true) {
               aspectRatio
+              blurhash
             }
             artistNames
             medium

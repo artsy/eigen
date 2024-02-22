@@ -1,9 +1,8 @@
-import { ArtsyLogoBlackIcon, Flex, Text } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Image, Text } from "@artsy/palette-mobile"
 import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
 import React, { RefObject } from "react"
-import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
 
 /**
@@ -47,7 +46,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
         options={{ format: "png", result: "base64" }}
         style={{ backgroundColor: "white" }}
       >
-        <Image source={{ uri: href }} style={{ width, height }} resizeMode="contain" />
+        <Image src={href} style={{ width, height }} resizeMode="contain" />
 
         <Flex
           mt={`${40 * scale}px`}
