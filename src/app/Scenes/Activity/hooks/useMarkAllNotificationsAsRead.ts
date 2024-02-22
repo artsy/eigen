@@ -74,6 +74,10 @@ const MarkAllAsReadMutation = graphql`
     markAllNotificationsAsRead(input: {}) {
       responseOrError {
         ... on MarkAllNotificationsAsReadSuccess {
+          me {
+            unreadNotificationsCount
+          }
+
           success
         }
         ... on MarkAllNotificationsAsReadFailure {
