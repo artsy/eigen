@@ -52,12 +52,6 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
     })
   }
 
-  const handleEditFollowsButton = () => {
-    // TODO: Add tracking
-
-    navigate("/favorites")
-  }
-
   const handleViewAllWorksPress = () => {
     // TODO: Add tracking
 
