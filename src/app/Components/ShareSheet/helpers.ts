@@ -3,7 +3,6 @@ import { ShareSheetItem } from "app/Components/ShareSheet/types"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { take } from "lodash"
 import ReactNativeBlobUtil from "react-native-blob-util"
-import ViewShot from "react-native-view-shot"
 
 export const getShareURL = (href: string) => {
   return `${unsafe__getEnvironment().webURL}${href}`
@@ -17,13 +16,6 @@ export const getShareMessage = (artistNames: string[], title?: string) => {
   }
 
   return `${names} on Artsy`
-}
-
-export const getBase64Data = async (viewShot: ViewShot) => {
-  const base64RawData = await viewShot.capture?.()
-  const base64Data = `data:image/png;base64,${base64RawData}`
-
-  return base64Data
 }
 
 export const shareContent = (shareSheetItem: ShareSheetItem) => {
