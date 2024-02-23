@@ -13,8 +13,8 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Contents](#contents)
   - [Examples \& Hacks](#examples--hacks)
   - [History](#history)
-  - [File Structure Organization](#file-structure-organization)
-    - [index.ts files](#indexts-files)
+    - [File Structure Organization](#file-structure-organization)
+      - [index.ts files](#indexts-files)
     - [When committing code](#when-committing-code)
   - [Frontend](#frontend)
     - [Styling](#styling)
@@ -26,8 +26,8 @@ _Please note: Links should point to specific commits, and not a branch (in case 
   - [Analytics and tracking](#analytics-and-tracking)
   - [VirtualizedList best practices](#virtualizedlist-best-practices)
     - [Never nest ScrollViews.](#never-nest-scrollviews)
-    - [Always default to `Flashlist`.](#always-default-to-flashlist)
-    - [Use `memo` for the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo](#use-memo-for-the-rescue-see-httpsreactnativedevdocsoptimizing-flatlist-configurationuse-memo)
+    - [Always default to `FlashList`.](#always-default-to-flashlist)
+    - [Use `memo` to the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo](#use-memo-to-the-rescue-see-httpsreactnativedevdocsoptimizing-flatlist-configurationuse-memo)
     - [Use `windowSize` with caution](#use-windowsize-with-caution)
     - [Use `LazyFlatlist` in order to define your own lazy loading logic.](#use-lazyflatlist-in-order-to-define-your-own-lazy-loading-logic)
     - [Does your component contain animations?](#does-your-component-contain-animations)
@@ -186,15 +186,38 @@ Smoothly rendering lists and animations is crucial for a positive user experienc
 
 If you feel like there is no other way, it's probably a better idea to talk to the designer to adjust the approach they're suggested instead. Our `Screen` wrappers from `palette-mobile` expose performant `ScrollView` based components such as `Flatlist` and `Flashlist` that can be used and would save you the nesting.
 
-### Always default to `Flashlist`.
+### Always default to `FlashList`.
 
-Think of `Flashlist` as `Flatlist` on steroids. It's fast, performant and easy to use.
+Think of `FlashList` as `Flatlist` on steroids. It's fast, performant and easy to use.
 
-> **What if you followed all the above steps and you still had performance issues:?**
+<details>
+<summary>
+Code snippet
+</summary>
 
-Below are some tips to improve the performance further, don't follow them UNLESS you need to, premature optimisation will haunt you and can lead to issues that are not trivial to debug (plus it's arguably not the best use of your time)
+```typescript
+import { FlashList } from "@shopify/flash-list"
 
-### Use `memo` for the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo
+const App = () => {
+  return (
+   <FlashList
+    renderItem={renderItem}
+    estimatedItemSize={ESTIMATED_ITEM_SIZE}
+    keyExtractor={keyExtractor}
+  >
+  )
+}
+```
+
+</details>
+```
+```
+
+> **What if you followed all the above steps and still have performance issues?**
+
+Below are some tips to improve the performance further; don't follow them UNLESS you need to, as premature optimization will haunt you and can lead to issues that are non-trivial to debug (plus it's arguably not the best use of your time).
+
+### Use `memo` to the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo
 
 ### Use `windowSize` with caution
 
@@ -206,6 +229,8 @@ Below are some tips to improve the performance further, don't follow them UNLESS
 Example of a PR implementing it: https://github.com/artsy/eigen/pull/9832
 
 ```typescript
+import { LazyFlatlist } from "@artsy/palette-mobile"
+
 const App () => {
   return (
     <LazyFlatlist<NotificationT> keyExtractor={keyExtractor}>
@@ -231,17 +256,19 @@ const App () => {
 ### Does your component contain animations?
 
 <details>
-<summary>If yes, consider moving all the animations to the native thread, how?</summary>
+<summary>If yes, consider moving all the animations to the native thread. How?</summary>
 
-Example of a component implementing a fade in animation with Moti.
+Example of a potentially problematic component implementing a fade in animation with Moti.
 
 ```typescript
+import { MotiView } from "moti"
+
 const Image = () => {
-  const [loadinåg, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // 👈 executes on the JS thread
   return (
    <Flex>
     <FastImage ... onLoadEnd=(() => setLoading(false)) />
-    <MotiView style={{opacity: loading ? 0:1}} />
+    <MotiView animate={{opacity: loading ? 0:1}} />
    <Flex>
   )
 }
@@ -252,8 +279,10 @@ The above code runs the animation on the native thread thanks to Moti, However, 
 The solution here would be to follow [RN threading models](https://reactnative.dev/architecture/threading-model) UI animations best practices and moving everything to the native thread like so.
 
 ```typescript
+import Animated from "react-native-reanimated"
+
 const Image = () => {
-  const loading = useSharedValue(true)
+  const loading = useSharedValue(true) // 👈 executes on the JS thread
 
    const onLoadEnd = () => {
      "worklet"
