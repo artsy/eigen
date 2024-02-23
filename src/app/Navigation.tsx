@@ -1,24 +1,17 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { MainTabs } from "app/apps/MainTabs"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Text, View } from "react-native"
 
 // Define the type for your root stack navigation, if needed
 export type RootStackParamList = {
   Login: undefined
-  LoggedInComponentTest: undefined
+  MainTabs: undefined
 }
 
 // Create a stack navigator
 export const StackNav = createNativeStackNavigator<RootStackParamList>()
-
-const LoggedInComponentTest = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Logged In</Text>
-    </View>
-  )
-}
 
 const LoginScreen = () => {
   return (
@@ -55,7 +48,7 @@ const Main2 = () => {
         {AuthRouter({ isLoggedIn })}
         {!!isLoggedIn && onboardingState === "complete" && (
           <>
-            <StackNav.Screen name="LoggedInComponentTest" component={LoggedInComponentTest} />
+            <StackNav.Screen name="MainTabs" component={MainTabs} />
           </>
         )}
       </StackNav.Navigator>
