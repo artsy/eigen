@@ -180,7 +180,7 @@ export const features = {
   },
   AREnableSingleActivityPanelScreen: {
     description: "Enable Single Activity Panel screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableSingleActivityPanelScreen",
   },
@@ -252,7 +252,7 @@ export const features = {
   },
   AREnableNewActivityPanelManagement: {
     description: "Enable new activity panel management",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableNewActivityPanelManagement",
   },
