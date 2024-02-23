@@ -13,6 +13,7 @@ export interface PartnerOffer {
   isAvailable: boolean
   targetHref: string
 }
+
 interface NotificationArtworkListProps {
   artworksConnection?: NotificationArtworkList_artworksConnection$key | null
   priceOfferMessage?: PriceOfferMessage
