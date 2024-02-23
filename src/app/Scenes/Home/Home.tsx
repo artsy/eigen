@@ -44,7 +44,6 @@ import { GalleriesForYouBanner } from "app/Scenes/Home/Components/GalleriesForYo
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
-import { MeetYourNewAdvisorRail } from "app/Scenes/Home/Components/MeetYourNewAdvisorRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { ShowsRailContainer } from "app/Scenes/Home/Components/ShowsRail"
@@ -236,8 +235,6 @@ const Home = memo((props: HomeProps) => {
               onboardingModule={item.data}
             />
           )
-        case "meetYourNewAdvisor":
-          return <MeetYourNewAdvisorRail title={item.title} />
         case "heroUnits":
           return <HeroUnitsRail heroUnits={item.data} />
         case "articles":
@@ -458,7 +455,6 @@ export const HomeFragmentContainer = memo(
             showMyCollectionCard
             showSWACard
           }
-
           onboardingModule @optionalField {
             ...HomeFeedOnboardingRail_onboardingModule
           }
