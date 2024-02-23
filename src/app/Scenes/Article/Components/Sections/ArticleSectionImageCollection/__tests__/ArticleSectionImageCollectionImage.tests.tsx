@@ -1,9 +1,9 @@
-import { Image } from "@artsy/palette-mobile"
 import { screen, waitFor } from "@testing-library/react-native"
 import { ArticleSectionImageCollectionImageTestQuery } from "__generated__/ArticleSectionImageCollectionImageTestQuery.graphql"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
+import { Image } from "react-native"
 import { useLazyLoadQuery, graphql } from "react-relay"
 
 // React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
