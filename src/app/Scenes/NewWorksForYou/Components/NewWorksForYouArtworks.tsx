@@ -78,6 +78,7 @@ export const newWorksForYouArtworksFragment = graphql`
           href
           image(includeAll: false) {
             aspectRatio
+            blurhash
           }
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
