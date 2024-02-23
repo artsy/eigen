@@ -119,6 +119,10 @@ export const BuyNowButton = ({
     console.log("BuyNowButton.tsx", error)
   }
 
+  let saleMessageText = "Purchase"
+  if (buttonText) saleMessageText = buttonText
+  else if (renderSaleMessage && saleMessage) saleMessageText = `Purchase ${saleMessage}`
+
   return (
     <Button
       onPress={() => handleCreateOrder()}
@@ -129,11 +133,7 @@ export const BuyNowButton = ({
       width={100}
       haptic
     >
-      {!!buttonText
-        ? buttonText
-        : renderSaleMessage && saleMessage
-          ? `Purchase ${saleMessage}`
-          : "Purchase"}
+      {saleMessageText}
     </Button>
   )
 }

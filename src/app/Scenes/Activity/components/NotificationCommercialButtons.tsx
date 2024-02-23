@@ -28,6 +28,7 @@ export const CommercialButtonsQueryRenderer: React.FC<{
           artwork(id: $artworkID) {
             internalID
             ...NotificationCommercialButtons_artwork
+            ...CreateArtworkAlertModal_artwork
           }
         }
       `}

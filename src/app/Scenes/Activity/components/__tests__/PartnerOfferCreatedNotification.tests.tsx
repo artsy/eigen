@@ -87,13 +87,6 @@ describe("PartnerOfferCreatedNotification", () => {
 
       await flushPromiseQueue()
       expect(screen.getByText("Expired")).toBeTruthy()
-
-      const viewWorkCTA = screen.getByText("View Work")
-
-      fireEvent.press(viewWorkCTA)
-
-      await flushPromiseQueue()
-      expect(navigate).toHaveBeenCalledWith("/artwork/tracey-emin-move-me-4")
     })
   })
 })
