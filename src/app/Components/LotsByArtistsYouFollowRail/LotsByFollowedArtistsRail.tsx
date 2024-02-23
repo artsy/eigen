@@ -88,9 +88,9 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({
           return (
             <SaleArtworkTileRailCardContainer
               onPress={() => {
-                navigateToPageableRoute(artwork.href!)
+                navigateToPageableRoute(artwork.href || "")
               }}
-              saleArtwork={artwork.saleArtwork!}
+              saleArtwork={artwork.saleArtwork}
               useSquareAspectRatio
               useCustomSaleMessage
               contextScreenOwnerType={OwnerType.sale}
