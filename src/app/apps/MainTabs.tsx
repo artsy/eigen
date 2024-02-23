@@ -1,5 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { SearchTab } from "app/apps/Search/SearchTab"
 
 // Define the type for your bottom tabs navigation
 export type BottomTabParamList = {
@@ -19,12 +20,6 @@ const Tab = createBottomTabNavigator<BottomTabParamList>()
 const HomeTab = () => (
   <Flex style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <Text>Home</Text>
-  </Flex>
-)
-
-const SearchTab = () => (
-  <Flex style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Search</Text>
   </Flex>
 )
 
