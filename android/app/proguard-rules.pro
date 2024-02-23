@@ -12,3 +12,6 @@
 # needed for hermes
 -keep class com.facebook.hermes.unicode.** { *; }
 -keep class com.facebook.jni.** { *; }
+-keep class com.swmansion.reanimated.** { *; }
+
+-keep class net.artsy.app.BuildConfig { *; }
