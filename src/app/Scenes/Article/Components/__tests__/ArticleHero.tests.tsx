@@ -4,6 +4,14 @@ import { ArticleHero } from "app/Scenes/Article/Components/ArticleHero"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
+// Until it gets fixed
+// See https://github.com/facebook/react/issues/17301
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
+
 describe("ArticleHero", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: ArticleHero,

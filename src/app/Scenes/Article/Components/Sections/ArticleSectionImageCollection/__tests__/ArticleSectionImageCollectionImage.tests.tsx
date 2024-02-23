@@ -1,10 +1,15 @@
-import { Image } from "@artsy/palette-mobile"
 import { screen, waitFor } from "@testing-library/react-native"
 import { ArticleSectionImageCollectionImageTestQuery } from "__generated__/ArticleSectionImageCollectionImageTestQuery.graphql"
 import { ArticleSectionImageCollectionImage } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionImage"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
+import { Image } from "react-native"
 import { useLazyLoadQuery, graphql } from "react-relay"
+
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
 
 describe("ArticleSectionImageCollectionImage", () => {
   const Article = () => {
