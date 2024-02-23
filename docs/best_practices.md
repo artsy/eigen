@@ -24,6 +24,14 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Navigation](#navigation)
       - [iOS Navigation](#ios-navigation)
     - [Analytics and tracking](#analytics-and-tracking)
+    - [VirtualizedList best practices](#virtualizedlist-best-practices)
+      - [Never nest ScrollViews. If you feel like there is no other way, it's probably a better idea to talk to the designer to adjust the approach they're suggested instead. Our `Screen` wrappers from `palette-mobile` expose performant `ScrollView` based components such as `Flatlist` and `Flashlist` that can be used and would save you the nesting.](#never-nest-scrollviews-if-you-feel-like-there-is-no-other-way-its-probably-a-better-idea-to-talk-to-the-designer-to-adjust-the-approach-theyre-suggested-instead-our-screen-wrappers-from-palette-mobile-expose-performant-scrollview-based-components-such-as-flatlist-and-flashlist-that-can-be-used-and-would-save-you-the-nesting)
+      - [Always default to `Flashlist`. Think of it as `Flatlist` on steroids.](#always-default-to-flashlist-think-of-it-as-flatlist-on-steroids)
+      - [Use `memo` for the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo](#use-memo-for-the-rescue-see-httpsreactnativedevdocsoptimizing-flatlist-configurationuse-memo)
+      - [Use `windowSize` with caution](#use-windowsize-with-caution)
+      - [Use `LazyFlatlist` in order to define your own lazy loading logic.](#use-lazyflatlist-in-order-to-define-your-own-lazy-loading-logic)
+      - [Does your component contain animations?](#does-your-component-contain-animations)
+      - [More granular control on when updates happen can do magic sometimes! `requestAnimationFrame`, `queueMicroTask` and `InteractionManager.runAfterInteractions` can come to the rescue here!](#more-granular-control-on-when-updates-happen-can-do-magic-sometimes-requestanimationframe-queuemicrotask-and-interactionmanagerrunafterinteractions-can-come-to-the-rescue-here)
     - [Formik](#formik)
     - [Miscellaneous](#miscellaneous)
       - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
@@ -169,6 +177,102 @@ For the most part you don't have to worry about this.
 ### Analytics and tracking
 
 In React-native, we use react-tracking as a wrapper for the tracking events we send to Segment. You can read more about the implementation [here](./analytics_and_tracking.md).
+
+### VirtualizedList best practices
+
+Smoothly rendering lists and animations is crucial for a positive user experience. However, performance issues can arise, causing lag, stuttering, and decreased responsiveness. Below are few tips to achieve that in Eigen:
+
+#### Never nest ScrollViews. If you feel like there is no other way, it's probably a better idea to talk to the designer to adjust the approach they're suggested instead. Our `Screen` wrappers from `palette-mobile` expose performant `ScrollView` based components such as `Flatlist` and `Flashlist` that can be used and would save you the nesting.
+
+#### Always default to `Flashlist`. Think of it as `Flatlist` on steroids.
+
+> **What if you followed all the above steps and you still had performance issues:?**
+
+Below are some tips to improve the performance further, don't follow them UNLESS you need to, premature optimisation will haunt you and can lead to issues that are not trivial to debug (plus it's arguably not the best use of your time)
+
+#### Use `memo` for the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo
+
+#### Use `windowSize` with caution
+
+#### Use `LazyFlatlist` in order to define your own lazy loading logic.
+
+<details>
+<summary>Code snippet</summary>
+
+Example of a PR implementing it: https://github.com/artsy/eigen/pull/9832
+
+```typescript
+const App () => {
+  return (
+    <LazyFlatlist<NotificationT> keyExtractor={keyExtractor}>
+      {(props) => {
+        return (
+          <FlatlistComponent
+            ...
+            renderItem={({ item }) => {
+              return <ActivityItem notification={item} isVisible={props.hasSeenItem(item)} />
+            }}
+            onViewableItemsChanged={props.onViewableItemsChanged}
+            viewabilityConfig={props.viewabilityConfig}
+          />
+        )
+      }}
+    </LazyFlatlist>
+  )
+}
+```
+
+</details>
+
+#### Does your component contain animations?
+
+<details>
+<summary>If yes, consider moving all the animations to the native thread, how?</summary>
+
+Example of a component implementing a fade in animation with Moti.
+
+```typescript
+const Image = () => {
+  const [loadinåg, setLoading] = useState(true)
+  return (
+   <Flex>
+    <FastImage ... onLoadEnd=(() => setLoading(false)) />
+    <MotiView style={{opacity: loading ? 0:1}} />
+   <Flex>
+  )
+}
+```
+
+The above code runs the animation on the native thread thanks to Moti, However, it will only happens after loading is set to false , which happens on the js side! This is fine when not much is happening on the js thread, but when the JS thread is busy dealing with items complex logic, scrolling and calculating scroll position etc... it can lead to a bottleneck on the JS side leading and potentially breaking the scroll experience.
+
+The solution here would be to follow [RN threading models](https://reactnative.dev/architecture/threading-model) UI animations best practices and moving everything to the native thread like so.
+
+```typescript
+const Image = () => {
+  const loading = useSharedValue(true)
+
+   const onLoadEnd = () => {
+     "worklet"
+     loading.value = false
+   }
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(loading.value ? 1 : 0, { duration: 200, easing: Easing.sin }),
+    }
+
+  return (
+   <Flex>
+    <FastImage ... onLoadEnd=(onLoadEnd) />
+    <Animated.View style={animatedStyles} />
+   <Flex>
+  )
+}
+```
+
+</details>
+
+#### More granular control on when updates happen can do magic sometimes! `requestAnimationFrame`, `queueMicroTask` and `InteractionManager.runAfterInteractions` can come to the rescue here!
 
 ### Formik
 
