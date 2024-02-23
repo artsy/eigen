@@ -1,4 +1,4 @@
-import { MoreIcon, Screen, Touchable } from "@artsy/palette-mobile"
+import { MoreIcon, Screen, Separator, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ActivityContainer } from "app/Scenes/Activity/ActivityContainer"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
@@ -46,7 +46,10 @@ export const NewActivityContent: React.FC = () => {
           </Touchable>
         }
       />
-      <Screen.StickySubHeader title="Activity">
+      <Screen.StickySubHeader
+        title="Activity"
+        separatorComponent={<Separator borderColor="black5" />}
+      >
         <NewActivityHeader />
       </Screen.StickySubHeader>
       <ActivityContainer type={type} />
