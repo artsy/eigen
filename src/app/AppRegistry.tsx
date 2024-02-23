@@ -335,6 +335,7 @@ export const modules = defineModules({
   Activity: reactModule(Activity, {
     fullBleed: true,
     hidesBackButton: true,
+    hidesBottomTabs: true,
   }),
   ActivityItem: reactModule(ActivityItemScreenQueryRenderer, {
     fullBleed: true,
