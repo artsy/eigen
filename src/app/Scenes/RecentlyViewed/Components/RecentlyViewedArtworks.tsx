@@ -76,6 +76,7 @@ const artworkConnectionFragment = graphql`
           slug
           image(includeAll: false) {
             aspectRatio
+            blurhash
           }
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
         }
