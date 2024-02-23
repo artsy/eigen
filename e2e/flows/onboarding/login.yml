@@ -29,4 +29,4 @@ appId: ${MAESTRO_APP_ID}
     commands:
       - tapOn:
           id: "Home Grabber"
-- assertVisible: "Find and edit all your Saves here"
+- assertVisible: "Activity"
