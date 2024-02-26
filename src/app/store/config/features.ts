@@ -192,8 +192,9 @@ export const features = {
   },
   AREnableAlertsFiltersSizeFiltering: {
     description: "Enable size filtering in alerts filters screen",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableAlertsFiltersSizeFiltering",
   },
   AREnableAlertDetailsInput: {
     description: "Enable 'details' text input for alerts",
