@@ -83,7 +83,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
 
         <Flex mx={2} mt={1} mb={2}>
           <Touchable onPress={handleViewAllWorksPress}>
-            <Flex mx={2} flexDirection="row">
+            <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
                 <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />

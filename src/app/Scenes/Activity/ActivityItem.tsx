@@ -112,11 +112,16 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
 
                     <Flex flexDirection="row">
                       <ActivityItemTypeLabel notificationType={item.notificationType} />
-                      <Text variant="xs" mr={0.5}>
-                        {item.publishedAt}
-                      </Text>
+                      {!isPartnerOffer && (
+                        <Text variant="xs" mr={0.5}>
+                          {" "}
+                          • {item.publishedAt}
+                        </Text>
+                      )}
                       {shouldDisplayExpiresInTimer(item.notificationType, item.item) && (
-                        <ExpiresInTimer item={item.item} />
+                        <Flex ml={0.5}>
+                          <ExpiresInTimer item={item.item} />
+                        </Flex>
                       )}
                     </Flex>
                   </Flex>

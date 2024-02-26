@@ -66,9 +66,12 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
           <Flex flexDirection="row" style={{ marginTop: -4 }}>
             <ActivityItemTypeLabel notificationType={item.notificationType} />
 
-            <Text variant="xs" color="black60">
-              {item.publishedAt}
-            </Text>
+            {item.notificationType !== "PARTNER_OFFER_CREATED" && (
+              <Text variant="xs" color="black60">
+                {" "}
+                • {item.publishedAt}
+              </Text>
+            )}
           </Flex>
 
           <Text variant="sm-display" fontWeight="bold" ellipsizeMode="tail" numberOfLines={1}>
