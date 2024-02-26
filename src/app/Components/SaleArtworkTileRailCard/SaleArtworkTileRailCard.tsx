@@ -48,6 +48,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     useFeatureFlag("AREnableNewAuctionsRailCard") && cardSize === "large"
   const color = useColor()
   const tracking = useTracking()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const artwork = saleArtwork?.artwork
 
@@ -91,7 +92,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       imageURL={artwork.image.imageURL}
       width={imageWidth}
       height={IMAGE_CONTAINER_WIDTH}
-      blurhash={artwork.image.blurhash}
+      blurhash={showBlurhash ? artwork.image.blurhash : undefined}
       style={{
         borderRadius: 2,
         overflow: "hidden",

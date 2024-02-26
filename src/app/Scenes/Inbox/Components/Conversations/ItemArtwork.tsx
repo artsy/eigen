@@ -2,6 +2,7 @@ import { Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
 import { ItemArtwork_artwork$data } from "__generated__/ItemArtwork_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ItemArtworkProps {
@@ -9,6 +10,8 @@ interface ItemArtworkProps {
 }
 
 export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+
   return (
     <>
       <Flex flexDirection="column" p={2}>
@@ -24,7 +27,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
                 imageURL={artwork.image?.thumbnailUrl}
                 width={100}
                 height={100}
-                blurhash={artwork.image?.blurhash}
+                blurhash={showBlurhash ? artwork.image?.blurhash : undefined}
               />
             </Box>
 

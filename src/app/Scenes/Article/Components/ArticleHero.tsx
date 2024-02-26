@@ -1,5 +1,6 @@
 import { Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleHero_article$key } from "__generated__/ArticleHero_article.graphql"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { DateTime } from "luxon"
 import { useFragment, graphql } from "react-relay"
 
@@ -10,6 +11,7 @@ interface ArticleHeroProps {
 export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
   const { width } = useScreenDimensions()
   const data = useFragment(ArticleHeroFragment, article)
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   return (
     <>
@@ -19,7 +21,7 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
             width={width}
             src={data.hero.image.url}
             aspectRatio={data.hero.image.aspectRatio}
-            blurhash={data.hero.image.blurhash}
+            blurhash={showBlurhash ? data.hero.image.blurhash : undefined}
           />
 
           <Spacer y={2} />

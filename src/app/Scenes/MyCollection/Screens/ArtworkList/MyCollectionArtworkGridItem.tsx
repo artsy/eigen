@@ -8,6 +8,7 @@ import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyColl
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,6 +23,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const localImage = useLocalImage(displayImage)
 
@@ -75,7 +77,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
           useRawURL={!!localImage}
-          blurhash={image?.blurhash}
+          blurhash={showBlurhash ? image?.blurhash : undefined}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
