@@ -79,7 +79,7 @@ export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = m
     }
 
     return (
-      <Flex py={2} backgroundColor="black100">
+      <Flex pb={2} backgroundColor="black100">
         <TouchableOpacity onPress={handleHeaderPress} activeOpacity={0.7}>
           {!!heroUnit?.backgroundImageURL && (
             <Image
