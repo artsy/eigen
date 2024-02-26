@@ -11611,6 +11611,11 @@ react-native-blob-util@0.19.2:
     base-64 "0.1.0"
     glob "^7.2.3"
 
+react-native-blurhash@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-2.0.0.tgz#6c287836e107d3f89c77b2889c501af1f44af0db"
+  integrity sha512-sG63TByvMTRzZQ2oLPfBhGPBzKmnZiaF0A4CEIyRPjKVEKj++S6TT9J5PaXB8GkRNKHKLMo26bGVxLNYMaLmvA==
+
 react-native-blurhash@^1.1.11:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-1.1.11.tgz#cef102cc0239eb30c184235caf3fcb0b1f3ce33d"
