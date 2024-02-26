@@ -6,6 +6,14 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
 import { useLazyLoadQuery, graphql } from "react-relay"
 
+// React-test-renderer has issues with memo components, so we need to mock the palette-mobile Image component
+// Until it gets fixed
+// See https://github.com/facebook/react/issues/17301
+jest.mock("@artsy/palette-mobile", () => ({
+  ...jest.requireActual("@artsy/palette-mobile"),
+  Image: require("react-native").Image,
+}))
+
 describe("ArticleSectionImageCollectionImage", () => {
   const Article = () => {
     const data = useLazyLoadQuery<ArticleSectionImageCollectionImageTestQuery>(
