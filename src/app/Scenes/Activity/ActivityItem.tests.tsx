@@ -313,7 +313,7 @@ describe("ActivityItem with feature flag enabled", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getByText("2 days ago")).toBeTruthy()
+    expect(screen.queryByText("2 days ago")).toBeFalsy()
   })
 
   it("should render artwork images", async () => {

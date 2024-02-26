@@ -31,7 +31,7 @@ export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => 
         fontWeight="bold"
         accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
       >
-        {notificationTypeLabel} •{" "}
+        {notificationTypeLabel}
       </Text>
     )
   }
@@ -42,7 +42,7 @@ export const ActivityItemTypeLabel: React.FC<Props> = ({ notificationType }) => 
       accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
       color={notificationTypeColor}
     >
-      {notificationTypeLabel} •{" "}
+      {notificationTypeLabel}
     </Text>
   )
 }
