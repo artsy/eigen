@@ -22,9 +22,6 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const { bottom } = useScreenDimensions().safeAreaInsets
   const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
-  const enableAlertsFiltersArtistSeriesFiltering = useFeatureFlag(
-    "AREnableAlertsFiltersArtistSeriesFiltering"
-  )
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -45,7 +42,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <SavedSearchFilterAdditionalGeneIDs />
         <SavedSearchFilterRarity />
         <SavedSearchFilterPriceRangeQR />
-        {!!enableAlertsFiltersArtistSeriesFiltering && <SavedSearchFilterArtistSeriesQR />}
+        <SavedSearchFilterArtistSeriesQR />
         {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
         <SavedSearchFilterWaysToBuy />
         <SavedSearchFilterColor />

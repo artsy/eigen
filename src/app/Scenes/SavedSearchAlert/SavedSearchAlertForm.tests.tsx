@@ -5,7 +5,6 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
@@ -26,10 +25,6 @@ describe("SavedSearchAlertForm", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableAlertDetailsInput: true,
-    })
-
     mockEnvironment = getMockRelayEnvironment()
   })
 

@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  ArrowRightIcon,
   Box,
   Button,
   Flex,
@@ -8,23 +7,18 @@ import {
   Pill,
   Spacer,
   Text,
-  Touchable,
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { Input } from "app/Components/Input"
-import { MenuItem } from "app/Components/MenuItem"
 import { SavedSearchSuggestedFiltersQueryRenderer } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
 import {
-  CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormValues,
   SavedSearchPill,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useFormikContext } from "formik"
 import { MotiView } from "moti"
 import { Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
@@ -60,19 +54,12 @@ export const Form: React.FC<FormProps> = ({
   onToggleEmailNotification,
   onRemovePill,
 }) => {
-  const enableAlertsFilters = useFeatureFlag("AREnableAlertsFilters")
-  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
-  const enableDetailsInput = useFeatureFlag("AREnableAlertDetailsInput")
-  const enableAlertsSuggestedFilters = useFeatureFlag("AREnableAlertsSuggestedFilters")
-
   const tracking = useTracking()
   const { space } = useTheme()
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  const navigation =
-    useNavigation<NavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">>()
 
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
@@ -155,63 +142,24 @@ export const Form: React.FC<FormProps> = ({
             </Flex>
           </Box>
 
-          {!!enableAlertsFilters && !enableAlertsSuggestedFilters ? (
-            <MenuItem
-              title="Add Filters"
-              description={
-                enableAlertsFiltersSizeFiltering
-                  ? "Including Price Range, Rarity, Medium, Size, Color"
-                  : "Including Price Range, Rarity, Medium, Color"
-              }
-              onPress={() => {
-                navigation.navigate("SavedSearchFilterScreen")
-              }}
-              px={0}
+          <SavedSearchSuggestedFiltersQueryRenderer />
+
+          <Flex>
+            <Text>Tell us more about what you’re looking for</Text>
+
+            <Spacer y={1} />
+
+            <Input
+              placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
+              value={values.details}
+              onChangeText={handleChange("details")}
+              onBlur={handleBlur("details")}
+              error={errors.details}
+              multiline
+              maxLength={700}
+              testID="alert-input-details"
             />
-          ) : null}
-
-          {enableAlertsFilters && enableAlertsSuggestedFilters ? (
-            <SavedSearchSuggestedFiltersQueryRenderer />
-          ) : null}
-
-          {/* Price range is part of the new filters screen, no need to show it here anymore */}
-          {!enableAlertsFilters && (
-            <Flex>
-              <Touchable
-                accessibilityLabel="Set price range"
-                accessibilityRole="button"
-                onPress={() => navigation.navigate("AlertPriceRange")}
-              >
-                <Flex flexDirection="row" alignItems="center" py={1}>
-                  <Flex flex={1}>
-                    <Text variant="sm-display">Set price range you are interested in</Text>
-                  </Flex>
-                  <Flex alignSelf="center" mt={0.5}>
-                    <ArrowRightIcon />
-                  </Flex>
-                </Flex>
-              </Touchable>
-            </Flex>
-          )}
-
-          {!!enableDetailsInput && (
-            <Flex>
-              <Text>Tell us more about what you’re looking for</Text>
-
-              <Spacer y={1} />
-
-              <Input
-                placeholder="For example, a specific request such as ‘figurative painting’ or ‘David Hockney iPad drawings.’"
-                value={values.details}
-                onChangeText={handleChange("details")}
-                onBlur={handleBlur("details")}
-                error={errors.details}
-                multiline
-                maxLength={700}
-                testID="alert-input-details"
-              />
-            </Flex>
-          )}
+          </Flex>
 
           <Box>
             <SavedSearchAlertSwitch
