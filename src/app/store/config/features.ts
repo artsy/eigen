@@ -258,7 +258,7 @@ export const features = {
   },
   AREnableArtworksFeedView: {
     description: "Enable artworks feed view",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFeedView",
   },
