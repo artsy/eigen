@@ -48,6 +48,8 @@ export const useArtistHeaderImageDimensions = () => {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const space = useSpace()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
   const tracking = useTracking()
@@ -107,7 +109,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             width={width}
             height={height}
             style={{ alignSelf: "center" }}
-            blurhash={artistData.coverArtwork.image.blurhash || undefined}
+            blurhash={showBlurhash ? artistData.coverArtwork.image.blurhash : undefined}
           />
           <Spacer y={2} />
         </Flex>

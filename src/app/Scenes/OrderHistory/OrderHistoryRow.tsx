@@ -4,6 +4,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import moment from "moment"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,6 +16,7 @@ interface OrderHistoryRowProps {
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(order.displayState)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
@@ -30,7 +32,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             {!!artworkImageUrl ? (
               <Image
                 src={artworkImageUrl}
-                blurhash={artworkVersion.image.blurhash}
+                blurhash={showBlurhash ? artworkVersion.image.blurhash : undefined}
                 height={50}
                 width={50}
                 testID="image"

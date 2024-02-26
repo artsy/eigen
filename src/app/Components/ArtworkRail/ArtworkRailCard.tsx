@@ -19,6 +19,7 @@ import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidt
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -377,6 +378,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 }) => {
   const color = useColor()
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   if (!containerWidth) {
     return null
@@ -460,7 +462,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
           src={src}
           width={containerWidth}
           height={getImageHeight()}
-          blurhash={image?.blurhash || undefined}
+          blurhash={showBlurhash ? image?.blurhash : undefined}
         />
       </Flex>
 

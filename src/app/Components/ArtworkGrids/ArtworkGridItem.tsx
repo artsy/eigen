@@ -26,6 +26,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -105,6 +106,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   let filterParams: any = undefined
 
@@ -244,7 +246,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   aspectRatio={artwork.image.aspectRatio ?? 1}
                   height={height}
                   width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                  blurhash={artwork.image.blurhash ?? undefined}
+                  blurhash={showBlurhash ? artwork.image.blurhash : undefined}
                 />
                 {Boolean(
                   !hideUrgencyTags &&

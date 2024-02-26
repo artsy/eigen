@@ -263,10 +263,16 @@ export const features = {
     echoFlagKey: "AREnableArtworkListOfferability",
   },
   ARUsePaletteImage: {
-    description: "Use Palette Image",
+    description: "Use Palette Image Component",
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "ARUsePaletteImage",
+  },
+  ARShowBlurhashImagePlaceholder: {
+    description: "Show blurhash image placeholder (works only when using Palette Image Component)",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "ARShowBlurhashImagePlaceholder",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

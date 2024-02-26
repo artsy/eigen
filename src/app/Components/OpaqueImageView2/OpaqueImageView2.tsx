@@ -88,6 +88,7 @@ const useComponentSize = () => {
  */
 export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const usePaletteImage = useFeatureFlag("ARUsePaletteImage")
+  const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
@@ -180,7 +181,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
         performResize={props.useRawURL}
         height={fIHeight}
         width={fIWidth}
-        blurhash={props.blurhash}
+        blurhash={showBlurhash ? props.blurhash : null}
         aspectRatio={aspectRatio}
         testID={props.testID}
       />
