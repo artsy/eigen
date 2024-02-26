@@ -54,7 +54,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
       if (enableNavigateToASingleNotification) {
         navigate(`/notification/${item.internalID}`)
       } else {
-        navigateToActivityItem(item.targetHref)
+        navigateToActivityItem(item, enableNavigateToASingleNotification)
       }
     }
 
