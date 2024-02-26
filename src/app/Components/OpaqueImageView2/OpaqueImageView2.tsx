@@ -3,7 +3,7 @@ import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isNumber, isString } from "lodash"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
@@ -91,9 +91,10 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
 
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const isDebugModeEnabled = useDevToggle("DTEnableNewImageLabel")
+
   const imageScaleValue = useRef(new Animated.Value(0)).current
-  const [fIHeight, setFIHeight] = useState(0)
-  const [fIWidth, setFIWidth] = useState(0)
   const style = StyleSheet.flatten(props.style) ?? {}
 
   const getActualDimensions = useCallback(() => {
@@ -124,15 +125,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
     return [layoutWidth, layoutHeight]
   }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
 
-  useEffect(() => {
-    if (usePaletteImage) {
-      return
-    }
-
-    const [fWidth, fHeight] = getActualDimensions()
-    setFIHeight(fHeight)
-    setFIWidth(fWidth)
-  }, [getActualDimensions])
+  const [fIWidth, fIHeight] = getActualDimensions()
 
   if (__DEV__) {
     if (
@@ -185,8 +178,8 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
         src={props.imageURL}
         geminiResizeMode={aspectRatio ? "fit" : "fill"}
         performResize={props.useRawURL}
-        height={props.height}
-        width={props.width}
+        height={fIHeight}
+        width={fIWidth}
         blurhash={props.blurhash}
         aspectRatio={aspectRatio}
         testID={props.testID}
@@ -210,9 +203,6 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
       }).start()
     }
   }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const isDebugModeEnabled = useDevToggle("DTEnableNewImageLabel")
 
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
   const debugBorderStyles = isDebugModeEnabled
