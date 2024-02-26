@@ -279,7 +279,7 @@ The above code runs the animation on the native thread thanks to Moti, However, 
 The solution here would be to follow [RN threading models](https://reactnative.dev/architecture/threading-model) UI animations best practices and moving everything to the native thread like so.
 
 ```typescript
-import Animated from "react-native-reanimated"
+import { MotiView } from "moti"
 
 const Image = () => {
   const loading = useSharedValue(true) // 👈 executes on the JS thread
@@ -297,7 +297,7 @@ const Image = () => {
   return (
    <Flex>
     <FastImage ... onLoadEnd=(onLoadEnd) />
-    <Animated.View style={animatedStyles} />
+    <MotiView style={animatedStyles} />
    <Flex>
   )
 }
