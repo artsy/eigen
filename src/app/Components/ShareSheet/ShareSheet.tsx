@@ -55,12 +55,9 @@ export const ShareSheet = () => {
 
   const shareOnInstagramStory = async () => {
     try {
-      console.log("Starting share on Instagram story...")
-
       // Step 1: Call the shotRefCurrentCapture function if available
       let base64Data
       if (shotRef?.current?.capture && typeof shotRef.current.capture === "function") {
-        console.log("Capturing screenshot...")
         base64Data = await shotRef.current.capture()
       }
 
@@ -76,31 +73,25 @@ export const ShareSheet = () => {
 
       // Step 3: If isArtwork, track event share
       if (isArtwork) {
-        console.log("Tracking share event...")
         trackEvent(
           share(tracks.customShare(CustomService.instagram_stories, data?.internalID, data?.slug))
         )
       }
 
       // Step 4: Share single from share library
-      console.log("Sharing on Instagram story...")
-      Share.shareSingle({
-        appId: Config.ARTSY_FACEBOOK_APP_ID,
-        social: Social.InstagramStories,
-        backgroundImage: `data:image/png;base64,${base64Data}`,
-      })
-        .then(() => {
-          captureMessage("Opened Instagram story successfully with base64Data:")
-          console.log("Opened Instagram story successfully")
+
+      try {
+        await Share.shareSingle({
+          appId: Config.ARTSY_FACEBOOK_APP_ID,
+          social: Social.InstagramStories,
+          backgroundImage: `data:image/png;base64,${base64Data}`,
         })
-        .catch((error) => {
-          captureMessage("Opened Instagram story failure: " + error)
-          console.error("Failed to open Instagram story:", error)
-        })
-        .finally(() => {
-          console.log("Hiding share sheet...")
-          hideShareSheet()
-        })
+      } catch (error) {
+        console.error("Failed to open Instagram story:", error)
+        captureMessage("Opened Instagram story failure: " + error + " base64Data: " + base64Data)
+      } finally {
+        hideShareSheet()
+      }
 
       console.log("Share on Instagram story completed successfully")
     } catch (error) {
