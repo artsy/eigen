@@ -1,13 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spinner } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
+import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useRef, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ZeroState } from "./Components/ZeroState"
 import {
@@ -71,8 +72,11 @@ export const Sales: React.FC = () => {
   }
 
   return (
-    <PageWithSimpleHeader title="Auctions">
-      <ScrollView
+    <Screen>
+      <Screen.AnimatedHeader onBack={goBack} title="Auctions" />
+      <Screen.StickySubHeader title="Auctions" />
+
+      <Screen.ScrollView
         testID="Sales-Screen-ScrollView"
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
@@ -92,8 +96,8 @@ export const Sales: React.FC = () => {
             setSalesCountOnParent={(count: number) => setUpcomingSalesCount(count)}
           />
         </Stack>
-      </ScrollView>
-    </PageWithSimpleHeader>
+      </Screen.ScrollView>
+    </Screen>
   )
 }
 
