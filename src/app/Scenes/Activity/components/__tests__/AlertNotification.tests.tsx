@@ -49,7 +49,8 @@ describe("AlertNotification", () => {
     expect(screen.getByText("Alerts")).toBeTruthy()
     expect(screen.getByText("2 New Works by Banksy")).toBeTruthy()
     expect(screen.getByText("Street Art")).toBeTruthy()
-    expect(screen.getAllByText("Edit Alert")).toHaveLength(2)
+    expect(screen.getByText("Edit")).toBeTruthy()
+    expect(screen.getByText("Edit Alert")).toBeTruthy()
     expect(screen.getByText("View all works by Banksy")).toBeTruthy()
   })
 
