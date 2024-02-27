@@ -187,7 +187,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       )
 
       const result: SavedSearchAlertMutationResult = {
-        id: response.updateSavedSearch?.savedSearchOrErrors.internalID,
+        id: response.updateAlert?.responseOrError?.alert?.internalID,
       }
 
       onComplete?.(result)
@@ -206,10 +206,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       formik.setSubmitting(true)
       const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
       const result: SavedSearchAlertMutationResult = {
-        id: response.createSavedSearch?.savedSearchOrErrors.internalID,
+        id: response.createAlert?.responseOrError?.alert?.internalID,
+        searchCriteriaID: response.createAlert?.responseOrError?.alert?.searchCriteriaID,
       }
 
-      navigation.navigate("ConfirmationScreen", { searchCriteriaID: result.id })
+      navigation.navigate("ConfirmationScreen", {
+        alertID: result.id,
+        searchCriteriaID: result.searchCriteriaID,
+      })
       refreshSavedAlerts()
       onComplete?.(result)
     } catch (error) {

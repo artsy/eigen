@@ -6,7 +6,6 @@ import {
   Pill,
   Spacer,
   Text,
-  Touchable,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
@@ -15,10 +14,7 @@ import {
   ArtistHeader_artist$data,
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
-import { ArtistHeader_me$key } from "__generated__/ArtistHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { pluralize } from "app/utils/pluralize"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -32,7 +28,6 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
-  me: ArtistHeader_me$key | null | undefined
   onLayoutChange?: ViewProps["onLayout"]
 }
 
@@ -51,16 +46,14 @@ export const useArtistHeaderImageDimensions = () => {
   }
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   const space = useSpace()
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
-  const showArtistsAlertsSetFeatureFlag = useFeatureFlag("ARShowArtistsAlertsSet")
   const tracking = useTracking()
   const artistData = useFragment(artistFragment, artist)
-  const meData = useFragment(meFragment, me)
 
-  if (!artistData || !meData) {
+  if (!artistData) {
     return null
   }
 
@@ -85,8 +78,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
 
   const bylineRequired = artistData.nationality || artistData.birthday
 
-  const showAlertsSet =
-    !!showArtistsAlertsSetFeatureFlag && Number(meData.savedSearchesConnection?.totalCount) > 0
   const hasVerifiedRepresentatives = artistData.verifiedRepresentatives?.length > 0
 
   const handleOnLayout = ({ nativeEvent, ...rest }: LayoutChangeEvent) => {
@@ -162,22 +153,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, me, onLayoutChange }) =>
       )}
 
       <Spacer y={2} />
-
-      {!!showAlertsSet && !!meData.savedSearchesConnection?.totalCount && (
-        <Box mx={2} maxWidth={120}>
-          <Touchable
-            haptic
-            onPress={() => {
-              navigate(`/settings/alerts?artistID=${artistData.internalID}`)
-            }}
-          >
-            <Text variant="xs" color="blue100">
-              {meData.savedSearchesConnection.totalCount}{" "}
-              {pluralize("Alert", meData.savedSearchesConnection.totalCount as number)} Set
-            </Text>
-          </Touchable>
-        </Box>
-      )}
     </Flex>
   )
 }
@@ -206,14 +181,6 @@ const artistFragment = graphql`
           }
         }
       }
-    }
-  }
-`
-
-const meFragment = graphql`
-  fragment ArtistHeader_me on Me @argumentDefinitions(artistID: { type: "String!" }) {
-    savedSearchesConnection(first: 0, artistIDs: [$artistID]) {
-      totalCount
     }
   }
 `

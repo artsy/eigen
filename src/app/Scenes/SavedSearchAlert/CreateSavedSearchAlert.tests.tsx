@@ -149,14 +149,16 @@ describe("CreateSavedSearchAlert", () => {
 
     // Update alert
     await mockOperationByName("createSavedSearchAlertMutation", {
-      SearchCriteria: () => ({
+      Alert: () => ({
         internalID: "internalID",
+        searchCriteriaID: "searchCriteriaID",
       }),
     })
 
     await waitFor(() =>
       expect(onCompleteMock).toHaveBeenCalledWith({
         id: "internalID",
+        searchCriteriaID: "searchCriteriaID",
       })
     )
   })

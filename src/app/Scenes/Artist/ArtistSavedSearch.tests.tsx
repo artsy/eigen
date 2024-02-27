@@ -56,12 +56,12 @@ describe("Saved search banner on artist screen", () => {
     })
   }
 
-  const getTree = (searchCriteriaID?: string) =>
+  const getTree = (alertID?: string) =>
     renderWithHookWrappersTL(
       <ArtistQueryRenderer
         artistID="ignore"
         environment={environment}
-        searchCriteriaID={searchCriteriaID}
+        alertID={alertID}
         initialTab="Artworks"
       />
     )
@@ -70,9 +70,8 @@ describe("Saved search banner on artist screen", () => {
     getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    // mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
 
@@ -134,12 +133,5 @@ const MockArtistAboveTheFoldQuery: MockResolvers = {
   },
   ArtistInsight() {
     return { entities: ["test"] }
-  },
-  Me() {
-    return {
-      savedSearchesConnection: {
-        totalCount: 2,
-      },
-    }
   },
 }

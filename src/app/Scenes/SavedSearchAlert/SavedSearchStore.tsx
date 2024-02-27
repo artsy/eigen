@@ -14,7 +14,7 @@ export interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
   /** Artwork ID, if the current saved search alert is being set from an artwork */
   currentArtworkID?: string
-  currentSavedSearchID?: string
+  currentAlertID?: string
   dirty: boolean
   entity: SavedSearchEntity
   unit: Metric
@@ -36,14 +36,14 @@ export interface SavedSearchModel {
   >
   setAttributeAction: Action<this, { key: SearchCriteria; value: any }>
   setUnitAction: Action<this, Metric>
-  setCurrentSavedSearchID: Action<this, string>
+  setAlertID: Action<this, string>
 }
 
 export const savedSearchModel: SavedSearchModel = {
   attributes: {},
   aggregations: [],
   currentArtworkID: undefined,
-  currentSavedSearchID: undefined,
+  currentAlertID: undefined,
   dirty: false,
   entity: {
     artists: [],
@@ -99,8 +99,8 @@ export const savedSearchModel: SavedSearchModel = {
     state.unit = payload
   }),
 
-  setCurrentSavedSearchID: action((state, payload) => {
-    state.currentSavedSearchID = payload
+  setAlertID: action((state, payload) => {
+    state.currentAlertID = payload
   }),
 }
 

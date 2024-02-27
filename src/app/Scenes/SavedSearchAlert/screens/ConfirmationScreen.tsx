@@ -122,6 +122,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
 
 const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSuspense(
   ({ closeModal }) => {
+    // TODO: instead of using artworksConnection and passing attributes from the store, use `alert.artworksConnection` field instead.
     const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
     const currentArtworkID = SavedSearchStore.useStoreState((state) => state.currentArtworkID)
     const data = useLazyLoadQuery<ConfirmationScreenMatchingArtworksQuery>(matchingArtworksQuery, {

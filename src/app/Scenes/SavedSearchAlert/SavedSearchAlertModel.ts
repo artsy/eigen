@@ -14,6 +14,7 @@ export interface SavedSearchAlertFormValues {
 
 export interface SavedSearchAlertMutationResult {
   id?: string
+  searchCriteriaID?: string
 }
 
 // Navigation
@@ -70,6 +71,7 @@ export interface SavedSearchPill {
 }
 
 export interface ConfirmationScreenParams {
+  alertID?: string
   searchCriteriaID?: string
   closeModal?: () => void
 }

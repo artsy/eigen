@@ -59,7 +59,6 @@ interface ArtistProps {
   environment?: Environment
   fetchCriteriaError: Error | null
   initialTab?: string
-  me: ArtistAboveTheFoldQuery["response"]["me"]
   predefinedFilters?: FilterArray
   scrollToArtworksGrid: boolean
   searchCriteria: SearchCriteriaAttributes | null
@@ -72,7 +71,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     auctionResultsInitialFilters,
     fetchCriteriaError,
     initialTab = INITIAL_TAB,
-    me,
     predefinedFilters,
     scrollToArtworksGrid,
     searchCriteria,
@@ -116,7 +114,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     () => (
       <ArtistHeader
         artist={artistAboveTheFold}
-        me={me}
         onLayoutChange={({ nativeEvent }) => {
           if (headerHeight !== nativeEvent.layout.height) {
             setHeaderHeight(nativeEvent.layout.height)
@@ -196,7 +193,7 @@ interface ArtistQueryRendererProps {
   predefinedFilters?: FilterArray
   scrollToArtworksGrid?: boolean
   search_criteria_id?: string
-  searchCriteriaID?: string
+  alertID?: string
   sizes?: string[]
 }
 
@@ -217,9 +214,6 @@ export const ArtistScreenQuery = graphql`
         }
       }
     }
-    me {
-      ...ArtistHeader_me @arguments(artistID: $artistID)
-    }
   }
 `
 
@@ -238,7 +232,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     predefinedFilters,
     search_criteria_id,
     scrollToArtworksGrid = false,
-    searchCriteriaID,
+    alertID,
     sizes,
   } = props
 
@@ -254,7 +248,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
 
   return (
     <SearchCriteriaQueryRenderer
-      searchCriteriaId={searchCriteriaID ?? search_criteria_id}
+      alertId={alertID ?? search_criteria_id}
       environment={environment}
       render={{
         renderPlaceholder: () => <ArtistSkeleton />,
@@ -309,7 +303,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                     <Artist
                       artistAboveTheFold={above.artist}
                       artistBelowTheFold={below?.artist}
-                      me={above.me}
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}

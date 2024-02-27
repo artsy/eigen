@@ -7,7 +7,7 @@ import { graphql, QueryRenderer, Environment } from "react-relay"
 
 export interface SearchCriteriaQueryRendererProps {
   environment?: Environment
-  searchCriteriaId?: string
+  alertId?: string
   render: {
     renderPlaceholder: () => React.ReactElement
     renderComponent: (args: {
@@ -18,18 +18,18 @@ export interface SearchCriteriaQueryRendererProps {
 }
 
 export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererProps> = (props) => {
-  const { render, searchCriteriaId, environment = getRelayEnvironment() } = props
+  const { render, alertId, environment = getRelayEnvironment() } = props
   const { renderComponent, renderPlaceholder } = render
 
-  if (searchCriteriaId) {
+  if (alertId) {
     return (
       <QueryRenderer<SearchCriteriaQuery>
         environment={environment}
         query={graphql`
-          query SearchCriteriaQuery($searchCriteriaId: ID!) {
+          query SearchCriteriaQuery($alertId: String!) {
             me {
               email
-              savedSearch(id: $searchCriteriaId) {
+              alert(id: $alertId) {
                 acquireable
                 additionalGeneIDs
                 atAuction
@@ -55,15 +55,14 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
           if (isNull(error) && isNull(relayProps)) {
             return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
           }
-          const savedSearchCriteria =
-            (relayProps?.me?.savedSearch as SearchCriteriaAttributes) ?? null
+          const savedSearchCriteria = (relayProps?.me?.alert as SearchCriteriaAttributes) ?? null
 
           return renderComponent({
             fetchCriteriaError: error,
             savedSearchCriteria,
           })
         }}
-        variables={{ searchCriteriaId }}
+        variables={{ alertId }}
         cacheConfig={{ force: true }}
       />
     )
