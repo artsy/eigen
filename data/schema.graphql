@@ -4045,7 +4045,7 @@ type CollectorProfileArtists {
   name: String
 }
 
-type CollectorProfileType {
+type CollectorProfileType implements Node {
   artsyUserSince(
     format: String
 
