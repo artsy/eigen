@@ -142,6 +142,8 @@ type AddUserToSubmissionMutationPayload {
 }
 
 type Admin {
+  featureFlag(id: String): FeatureFlag
+
   # A list of feature flags
   featureFlags(
     # The sort order of the results
