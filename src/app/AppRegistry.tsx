@@ -403,7 +403,14 @@ export const modules = defineModules({
   ArtworkList: reactModule(ArtworkListScreen, { hidesBackButton: true }),
   ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
-  Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),
+  Auctions: reactModule(
+    SalesScreen,
+    {
+      hidesBackButton: true,
+      fullBleed: true,
+    },
+    [SalesScreenQuery]
+  ),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionResult: reactModule(AuctionResultQueryRenderer, { hidesBackButton: true }),
   AuctionResultsForArtistsYouFollow: reactModule(
