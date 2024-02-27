@@ -32,10 +32,14 @@ export const NewActivityContent: React.FC = () => {
                       markAllNotificationsAsRead()
                       break
                     case 1:
-                      navigate("settings/alerts")
+                      navigate("settings/alerts", {
+                        showInTabName: "profile",
+                      })
                       break
                     case 2:
-                      navigate("favorites")
+                      navigate("favorites", {
+                        showInTabName: "profile",
+                      })
                       break
                   }
                 }
