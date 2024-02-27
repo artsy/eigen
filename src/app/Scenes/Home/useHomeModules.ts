@@ -41,8 +41,8 @@ export const useHomeModules = (props: HomeProps) => {
         type: "newWorksForYou",
       },
       {
-        data: props.heroUnits,
-        isEmpty: isEmpty(props.heroUnits),
+        data: props.heroUnits?.heroUnitsConnection,
+        isEmpty: props.heroUnits?.heroUnitsConnection?.totalCount === 0,
         key: "heroUnitsRail",
         prefetchUrl: "",
         title: "",
