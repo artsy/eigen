@@ -616,7 +616,10 @@ export const modules = defineModules({
   Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
-  SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
+  SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen, {
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
   SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
   Tag: reactModule(TagQueryRenderer, { hidesBackButton: true, fullBleed: true }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
