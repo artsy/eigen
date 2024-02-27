@@ -46,7 +46,7 @@ export const ActivityTabPlaceholder = () => {
   if (enableNewActivityPanelManagement) {
     return (
       <Flex flex={1}>
-        <Separator borderColor="black10" />
+        <Separator borderColor="black5" />
 
         <Box mx={2}>
           {times(3).map((index) => (

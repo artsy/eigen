@@ -53,7 +53,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
           <TouchableOpacity onPress={handleEditAlertPress} testID="edit-alert-header-link">
             <Flex width={100} height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Edit Alert
+                Edit
               </Text>
             </Flex>
           </TouchableOpacity>
