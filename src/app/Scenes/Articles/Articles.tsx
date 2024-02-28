@@ -51,11 +51,13 @@ export const Articles: React.FC = () => {
   )
 }
 
-export const ArticlesScreen: React.FC = () => (
-  <Suspense fallback={<ArticlesPlaceholder />}>
-    <Articles />
-  </Suspense>
-)
+export const ArticlesScreen: React.FC = () => {
+  return (
+    <Suspense fallback={<ArticlesPlaceholder />}>
+      <Articles />
+    </Suspense>
+  )
+}
 
 export const ArticlesScreenQuery = graphql`
   query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $featured: Boolean) {
