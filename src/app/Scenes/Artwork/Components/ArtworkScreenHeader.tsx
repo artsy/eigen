@@ -43,7 +43,7 @@ export const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwor
         />
       </Flex>
 
-      <Flex flexDirection="row" alignItems="center">
+      <Flex position="absolute" right={space(2)}>
         <ArtworkScreenHeaderCreateAlert artworkRef={data} />
       </Flex>
     </Flex>
