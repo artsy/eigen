@@ -67,7 +67,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
       info={screen({ context_screen_owner_type: OwnerType.galleriesForYou })}
     >
       <Screen>
-        <Screen.AnimatedHeader title="Galeries For You" onBack={goBack} />
+        <Screen.AnimatedHeader title="Galleries For You" onBack={goBack} />
         <Screen.Body fullwidth>
           {!!visualizeLocation && (
             <Text ml={6} color="red">

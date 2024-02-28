@@ -18,7 +18,7 @@ const artistLink = (
 const galleriesLink = (
   <Touchable onPress={() => navigate("/galleries")}>
     <Text variant="xs" underline>
-      Galeries
+      Galleries
     </Text>
   </Touchable>
 )
