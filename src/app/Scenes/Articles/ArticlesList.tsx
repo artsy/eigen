@@ -21,7 +21,6 @@ interface ArticlesListProps {
   refreshing: boolean
   handleLoadMore: () => void
   handleRefresh: () => void
-  title: string
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -31,7 +30,6 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   refreshing,
   handleLoadMore,
   handleRefresh,
-  title,
 }) => {
   const numColumns = useNumColumns()
 
@@ -43,44 +41,42 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         context_screen_owner_type: OwnerType.articles,
       })}
     >
-      <Flex flexDirection="column" justifyContent="space-between" height="100%">
-        <Screen.FlatList
-          numColumns={numColumns}
-          key={`${numColumns}`}
-          ListHeaderComponent={() => <ArticlesHeader title={title} />}
-          data={articles}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={(item) => `${item.internalID}-${numColumns}`}
-          renderItem={({ item, index }) => {
-            return (
-              <ArticlesListItem index={index}>
-                <ArticleCardContainer
-                  article={item as any}
-                  isFluid
-                  onPress={() => {
-                    const tapEvent = tracks.tapArticlesListItem(item.internalID, item.slug || "")
-                    tracking.trackEvent(tapEvent)
-                  }}
-                />
-              </ArticlesListItem>
-            )
-          }}
-          ItemSeparatorComponent={() => <Spacer y={4} />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-          ListFooterComponent={() => (
-            <Flex
-              alignItems="center"
-              justifyContent="center"
-              p={4}
-              pb={6}
-              style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
-            >
-              <ActivityIndicator />
-            </Flex>
-          )}
-        />
-      </Flex>
+      <Screen.FlatList
+        numColumns={numColumns}
+        key={`${numColumns}`}
+        data={articles}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        keyExtractor={(item) => `${item.internalID}-${numColumns}`}
+        renderItem={({ item, index }) => {
+          return (
+            <ArticlesListItem index={index}>
+              <ArticleCardContainer
+                article={item as any}
+                isFluid
+                onPress={() => {
+                  const tapEvent = tracks.tapArticlesListItem(item.internalID, item.slug || "")
+                  tracking.trackEvent(tapEvent)
+                }}
+              />
+            </ArticlesListItem>
+          )
+        }}
+        ItemSeparatorComponent={() => <Spacer y={4} />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={1}
+        style={{ paddingTop: 20 }}
+        ListFooterComponent={() => (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p={4}
+            pb={6}
+            style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
+          >
+            <ActivityIndicator />
+          </Flex>
+        )}
+      />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

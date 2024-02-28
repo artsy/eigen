@@ -45,7 +45,6 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
     <ArticlesList
       articles={articles as any}
       isLoading={relay.isLoading}
-      title={artist.name + " articles"}
       hasMore={relay.hasMore}
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}

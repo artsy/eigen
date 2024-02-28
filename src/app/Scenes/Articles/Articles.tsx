@@ -36,12 +36,12 @@ export const Articles: React.FC = () => {
   return (
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Artsy Editorial" />
+      <Screen.StickySubHeader title="Artsy Editorial" />
       <Screen.Body fullwidth>
         <ArticlesList
           articles={articles as any}
           isLoading={() => isLoadingNext}
           hasMore={() => hasNext}
-          title="Artsy Editorial"
           refreshing={refreshing}
           handleLoadMore={handleLoadMore}
           handleRefresh={handleRefresh}
@@ -51,11 +51,13 @@ export const Articles: React.FC = () => {
   )
 }
 
-export const ArticlesScreen: React.FC = () => (
-  <Suspense fallback={<ArticlesPlaceholder />}>
-    <Articles />
-  </Suspense>
-)
+export const ArticlesScreen: React.FC = () => {
+  return (
+    <Suspense fallback={<ArticlesPlaceholder />}>
+      <Articles />
+    </Suspense>
+  )
+}
 
 export const ArticlesScreenQuery = graphql`
   query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $featured: Boolean) {
