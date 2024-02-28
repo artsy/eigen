@@ -1,14 +1,18 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
+import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
-import { LotsByArtistsYouFollow_me$key } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import {
+  LotsByArtistsYouFollow_me$data,
+  LotsByArtistsYouFollow_me$key,
+} from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
@@ -34,19 +38,51 @@ export const LotsByArtistsYouFollow: React.FC = () => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.lotsByArtistsYouFollow })}
     >
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <MasonryInfiniteScrollArtworkGrid
-          artworks={artworks}
-          ListEmptyComponent={
-            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          }
-          hasMore={hasNext}
-          loadMore={() => loadNext(PAGE_SIZE)}
-          isLoading={isLoadingNext}
-          refreshControl={RefreshControl}
-        />
-      </PageWithSimpleHeader>
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
+        <Screen.Body fullwidth>
+          <ArtworksGrid
+            artworks={artworks}
+            loadNext={loadNext}
+            hasNext={hasNext}
+            isLoadingNext={isLoadingNext}
+            RefreshControl={RefreshControl}
+          />
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
+
+const ArtworksGrid = ({
+  artworks,
+  loadNext,
+  hasNext,
+  isLoadingNext,
+  RefreshControl,
+}: {
+  artworks: ExtractNodeType<LotsByArtistsYouFollow_me$data["lotsByFollowedArtistsConnection"]>[]
+  loadNext: (pageSize: number) => void
+  hasNext: boolean
+  isLoadingNext: boolean
+  RefreshControl: JSX.Element
+}) => {
+  const { scrollHandler } = Screen.useListenForScreenScroll()
+
+  return (
+    <MasonryInfiniteScrollArtworkGrid
+      animated
+      artworks={artworks}
+      ListEmptyComponent={
+        <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+      }
+      hasMore={hasNext}
+      loadMore={() => loadNext(PAGE_SIZE)}
+      isLoading={isLoadingNext}
+      refreshControl={RefreshControl}
+      onScroll={scrollHandler}
+    />
   )
 }
 
@@ -93,10 +129,14 @@ export const LotsByArtistsYouFollowScreen: React.FC = () => {
 const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer y={2} />
-        <PlaceholderGrid />
-      </PageWithSimpleHeader>
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
+        <Screen.Body fullwidth>
+          <Spacer y={2} />
+          <PlaceholderGrid />
+        </Screen.Body>
+      </Screen>
     </ProvidePlaceholderContext>
   )
 }

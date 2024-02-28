@@ -493,9 +493,14 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowScreen, {}, [
-    LotsByArtistsYouFollowScreenQuery,
-  ]),
+  LotsByArtistsYouFollow: reactModule(
+    LotsByArtistsYouFollowScreen,
+    {
+      fullBleed: true,
+      hidesBackButton: true,
+    },
+    [LotsByArtistsYouFollowScreenQuery]
+  ),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
