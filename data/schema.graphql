@@ -9784,7 +9784,6 @@ type FeatureFlag {
     timezone: String
   ): String
   description: String
-  enabled: Boolean!
   environments: [FeatureFlagEnvironments]
 
   # A globally unique ID.
@@ -9802,7 +9801,7 @@ type FeatureFlag {
   project: String!
   stale: Boolean!
   type: String!
-  variants: [FeatureFlagVariantType!]!
+  variants: [FeatureFlagVariantType]
 }
 
 type FeatureFlagEnvironments {
@@ -9841,9 +9840,9 @@ input FeatureFlagVariantInputName {
 }
 
 type FeatureFlagVariantType {
-  name: String!
+  name: String
   stickiness: String
-  weight: Int!
+  weight: Int
   weightType: String
 }
 
