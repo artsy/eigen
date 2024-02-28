@@ -1,14 +1,18 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, SimpleMessage } from "@artsy/palette-mobile"
+import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { SimilarToRecentlyViewedQuery } from "__generated__/SimilarToRecentlyViewedQuery.graphql"
-import { SimilarToRecentlyViewed_artworksConnection$key } from "__generated__/SimilarToRecentlyViewed_artworksConnection.graphql"
+import {
+  SimilarToRecentlyViewed_artworksConnection$data,
+  SimilarToRecentlyViewed_artworksConnection$key,
+} from "__generated__/SimilarToRecentlyViewed_artworksConnection.graphql"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense } from "react"
@@ -34,21 +38,49 @@ export const SimilarToRecentlyViewed: React.FC = () => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.similarToRecentlyViewed })}
     >
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <MasonryInfiniteScrollArtworkGrid
-          artworks={artworks}
-          contextScreenOwnerType={OwnerType.similarToRecentlyViewed}
-          contextScreen={OwnerType.similarToRecentlyViewed}
-          ListEmptyComponent={
-            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          }
-          refreshControl={RefreshControl}
-          hasMore={hasNext}
-          loadMore={(pageSize) => loadNext(pageSize)}
-          isLoading={isLoadingNext}
-        />
-      </PageWithSimpleHeader>
+      <Screen>
+        <Screen.AnimatedHeader title={SCREEN_TITLE} onBack={goBack} />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
+
+        <Screen.Body fullwidth>
+          <ArtworksGrid
+            artworks={artworks}
+            RefreshControl={RefreshControl}
+            hasNext={hasNext}
+            isLoadingNext={isLoadingNext}
+            loadMore={(pageSize) => loadNext(pageSize)}
+          />
+        </Screen.Body>
+      </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
+
+const ArtworksGrid: React.FC<{
+  artworks: ExtractNodeType<
+    SimilarToRecentlyViewed_artworksConnection$data["similarToRecentlyViewedConnection"]
+  >[]
+  RefreshControl: JSX.Element
+  hasNext: boolean
+  isLoadingNext: boolean
+  loadMore: (pageSize: number) => void
+}> = ({ artworks, loadMore, RefreshControl, hasNext, isLoadingNext }) => {
+  const { scrollHandler } = Screen.useListenForScreenScroll()
+  return (
+    <MasonryInfiniteScrollArtworkGrid
+      animated
+      artworks={artworks}
+      contextScreenOwnerType={OwnerType.similarToRecentlyViewed}
+      contextScreen={OwnerType.similarToRecentlyViewed}
+      ListEmptyComponent={
+        <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+      }
+      refreshControl={RefreshControl}
+      hasMore={hasNext}
+      loadMore={loadMore}
+      isLoading={isLoadingNext}
+      onScroll={scrollHandler}
+    />
   )
 }
 
@@ -96,10 +128,14 @@ export const SimilarToRecentlyViewedScreen: React.FC = () => {
 const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
-      <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer y={2} />
-        <PlaceholderGrid />
-      </PageWithSimpleHeader>
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} title={SCREEN_TITLE} />
+        <Screen.StickySubHeader title={SCREEN_TITLE} />
+        <Screen.Body fullwidth>
+          <Spacer y={2} />
+          <PlaceholderGrid />
+        </Screen.Body>
+      </Screen>
     </ProvidePlaceholderContext>
   )
 }
