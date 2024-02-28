@@ -15,7 +15,7 @@ import {
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { captureException, captureMessage } from "@sentry/react-native"
+import Sentry, { captureException, captureMessage } from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -56,7 +56,7 @@ export const ShareSheet = () => {
   const shareOnInstagramStory = async () => {
     try {
       // Step 1: Call the shotRefCurrentCapture function if available
-      let base64Data
+      let base64Data: string | undefined
       if (shotRef?.current?.capture && typeof shotRef.current.capture === "function") {
         base64Data = await shotRef.current.capture()
       }
@@ -65,9 +65,11 @@ export const ShareSheet = () => {
       if (!base64Data) {
         const error = new Error("Failed to capture screenshot, base64Data is invalid")
         console.error(error)
-        captureMessage(
-          "Failed to capture screenshot, base64Data is invalid base64Data: " + base64Data
-        )
+        Sentry.withScope((scope) => {
+          scope.setExtra("base64Data", base64Data)
+
+          captureMessage("Failed to capture screenshot, base64Data is invalid base64Data")
+        })
         throw error
       }
 
@@ -88,7 +90,12 @@ export const ShareSheet = () => {
         })
       } catch (error) {
         console.error("Failed to open Instagram story:", error)
-        captureMessage("Opened Instagram story failure: " + error + " base64Data: " + base64Data)
+
+        Sentry.withScope((scope) => {
+          scope.setExtra("base64Data", base64Data)
+          scope.setExtra("error", error)
+          captureMessage("Opened Instagram story failure")
+        })
       } finally {
         hideShareSheet()
       }
