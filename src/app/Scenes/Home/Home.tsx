@@ -8,14 +8,12 @@ import {
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
-import {
-  HomeAboveTheFoldQuery,
-  HomeAboveTheFoldQuery$data,
-} from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
 import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
+import { Home_heroUnits$data } from "__generated__/Home_heroUnits.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
@@ -118,7 +116,7 @@ export interface HomeProps extends ViewProps {
   meBelow: Home_meBelow$data | null | undefined
   relay: RelayRefetchProp
   emergingPicks: Home_emergingPicks$data | null | undefined
-  heroUnits: HomeAboveTheFoldQuery$data["heroUnitsConnection"] | null | undefined
+  heroUnits: Home_heroUnits$data | null | undefined
 }
 
 const Home = memo((props: HomeProps) => {
@@ -536,8 +534,11 @@ export const HomeFragmentContainer = memo(
         }
       `,
       heroUnits: graphql`
-        fragment Home_heroUnits on HeroUnitConnection {
-          ...HeroUnitsRail_heroUnitsConnection
+        fragment Home_heroUnits on Viewer {
+          heroUnitsConnection(first: 10, private: false) {
+            totalCount
+            ...HeroUnitsRail_heroUnitsConnection
+          }
         }
       `,
       emergingPicks: graphql`
@@ -769,9 +770,8 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
             notificationsConnection: viewer @optionalField {
               ...Home_notificationsConnection
             }
-            heroUnitsConnection(first: 10, private: false) @optionalField {
+            viewer {
               ...Home_heroUnits
-              ...HeroUnitsRail_heroUnitsConnection
             }
           }
         `,
@@ -820,7 +820,7 @@ export const HomeQueryRenderer: React.FC<HomeQRProps> = ({ environment }) => {
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
-              heroUnits={above ? above.heroUnitsConnection : null}
+              heroUnits={above ? above.viewer : null}
             />
           )
         },
