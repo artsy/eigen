@@ -19,6 +19,7 @@ export const NewActivityContent: React.FC = () => {
         title="Activity"
         rightElements={
           <Touchable
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             onPress={() => {
               showActionSheetWithOptions(
                 {
