@@ -21,7 +21,6 @@ interface ArticlesListProps {
   refreshing: boolean
   handleLoadMore: () => void
   handleRefresh: () => void
-  title: string
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -31,7 +30,6 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   refreshing,
   handleLoadMore,
   handleRefresh,
-  title,
 }) => {
   const numColumns = useNumColumns()
 
@@ -47,7 +45,6 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         <Screen.FlatList
           numColumns={numColumns}
           key={`${numColumns}`}
-          ListHeaderComponent={() => <ArticlesHeader title={title} />}
           data={articles}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={(item) => `${item.internalID}-${numColumns}`}

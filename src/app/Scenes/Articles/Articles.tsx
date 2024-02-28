@@ -36,12 +36,12 @@ export const Articles: React.FC = () => {
   return (
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Artsy Editorial" />
+      <Screen.StickySubHeader title="Artsy Editorial" />
       <Screen.Body fullwidth>
         <ArticlesList
           articles={articles as any}
           isLoading={() => isLoadingNext}
           hasMore={() => hasNext}
-          title="Artsy Editorial"
           refreshing={refreshing}
           handleLoadMore={handleLoadMore}
           handleRefresh={handleRefresh}
