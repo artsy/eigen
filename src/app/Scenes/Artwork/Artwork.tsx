@@ -12,6 +12,7 @@ import { usePageableScreensContext } from "app/Components/PageableScreensView/Pa
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
+import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -637,7 +638,7 @@ export const ArtworkContainer = createRefetchContainer(
   },
   graphql`
     query ArtworkRefetchQuery($artworkID: String!) {
-      artwork(id: $artworkID) {
+      artworkResult(id: $artworkID) {
         ...Artwork_artworkAboveTheFold
         ...Artwork_artworkBelowTheFold
       }
@@ -647,7 +648,8 @@ export const ArtworkContainer = createRefetchContainer(
 
 export const ArtworkScreenQuery = graphql`
   query ArtworkAboveTheFoldQuery($artworkID: String!) {
-    artwork(id: $artworkID) @principalField {
+    artworkResult(id: $artworkID) @principalField {
+      __typename
       ...Artwork_artworkAboveTheFold
     }
     me {
@@ -671,7 +673,8 @@ export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
       below={{
         query: graphql`
           query ArtworkBelowTheFoldQuery($artworkID: String!) {
-            artwork(id: $artworkID) {
+            artworkResult(id: $artworkID) {
+              __typename
               ...Artwork_artworkBelowTheFold
             }
           }
@@ -681,14 +684,20 @@ export const ArtworkQueryRenderer: React.FC<ArtworkPageableScreenProps> = ({
       render={{
         renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
         renderComponent: ({ above, below }) => {
-          return (
-            <ArtworkContainer
-              {...others}
-              artworkAboveTheFold={above.artwork}
-              artworkBelowTheFold={below?.artwork ?? null}
-              me={above.me}
-            />
-          )
+          if (
+            // Make sure that the artwork exists
+            above.artworkResult?.__typename === "Artwork"
+          ) {
+            return (
+              <ArtworkContainer
+                {...others}
+                artworkAboveTheFold={above.artworkResult}
+                artworkBelowTheFold={below?.artworkResult ?? null}
+                me={above.me}
+              />
+            )
+          }
+          return <ArtworkErrorScreen />
         },
       }}
       fetchPolicy="store-and-network"
