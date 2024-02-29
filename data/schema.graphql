@@ -4007,6 +4007,7 @@ type Collection {
 
   # True if this collection represents artworks explicitly saved by the user, false otherwise.
   saves: Boolean!
+  shareableWithPartners: Boolean!
 }
 
 enum CollectionArtworkSorts {
@@ -7719,6 +7720,7 @@ type CreateCollectionFailure {
 input createCollectionInput {
   clientMutationId: String
   name: String!
+  shareableWithPartners: Boolean
 }
 
 type createCollectionPayload {
