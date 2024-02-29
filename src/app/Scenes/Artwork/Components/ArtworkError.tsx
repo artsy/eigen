@@ -31,9 +31,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
 
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         <Flex p={2}>
-          <Text variant="lg-display">
-            Sorry, the page you were looking for doesn't exist at this URL.
-          </Text>
+          <Text variant="lg-display">The artwork you were looking for isn't available.</Text>
         </Flex>
 
         <Spacer y={2} />

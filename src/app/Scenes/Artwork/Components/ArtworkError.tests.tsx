@@ -12,9 +12,7 @@ describe("ArtworkError", () => {
 
     await waitForElementToBeRemoved(() => screen.queryByTestId("placeholder"))
 
-    expect(
-      screen.getByText("Sorry, the page you were looking for doesn't exist at this URL.")
-    ).toBeTruthy()
+    expect(screen.getByText("The artwork you were looking for isn't available.")).toBeTruthy()
   })
 
   it("shows artwork recommendations if they're available", async () => {
