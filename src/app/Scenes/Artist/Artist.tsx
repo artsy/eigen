@@ -39,7 +39,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
@@ -231,7 +231,6 @@ export const defaultArtistVariables = () => ({
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const {
-    artistID,
     categories,
     environment,
     initialTab,
@@ -251,6 +250,8 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
     ...(predefinedFilters || []),
     ...getFilterParamsFromRouteParams(routeParams),
   ]
+  const { artistID } = routeParams || {}
+  console.warn("artistID", artistID)
 
   return (
     <SearchCriteriaQueryRenderer

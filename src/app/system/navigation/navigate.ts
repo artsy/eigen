@@ -1,14 +1,17 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { addBreadcrumb, captureMessage } from "@sentry/react-native"
 import { AppModule, ViewOptions, modules } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { NavigationRoutes } from "app/Navigation"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { matchRoute } from "app/routes"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
+import { useCallback } from "react"
 import { InteractionManager, Linking, Platform } from "react-native"
 import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
@@ -40,6 +43,20 @@ export interface NavigateOptions {
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
+
+export const useNavigate = () => {
+  const navigation = useNavigation<NavigationProp<NavigationRoutes>>()
+
+  const navigate = useCallback(
+    async (url: string, options = {}) => {
+      console.log("navigate", url, options)
+      navigation.navigate("Artist", { artistID: "andy-warhol" })
+    },
+    [navigation]
+  )
+
+  return navigate
+}
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
   let targetURL = url
