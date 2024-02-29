@@ -16,19 +16,19 @@ describe("formattedTimeLeft", () => {
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "59", seconds: "59" })).toEqual({
       timerCopy: "59 minutes",
-      textColor: "red100",
+      textColor: "orange100",
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "1", seconds: "59" })).toEqual({
       timerCopy: "1 minute",
-      textColor: "red100",
+      textColor: "orange100",
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "0", seconds: "59" })).toEqual({
       timerCopy: "59 seconds",
-      textColor: "red100",
+      textColor: "orange100",
     })
     expect(formattedTimeLeft({ days: "0", hours: "0", minutes: "0", seconds: "1" })).toEqual({
       timerCopy: "1 second",
-      textColor: "red100",
+      textColor: "orange100",
     })
   })
 })
