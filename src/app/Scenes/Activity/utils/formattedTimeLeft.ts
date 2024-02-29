@@ -25,10 +25,10 @@ export const formattedTimeLeft = (time: {
     copy = `${parsedHours} ${pluralize("hour", parsedHours)}`
   } else if (parsedHours < 1 && parsedMinutes >= 1) {
     copy = `${parsedMinutes} ${pluralize("minute", parsedMinutes)}`
-    textColor = "red100"
+    textColor = "orange100"
   } else if (parsedMinutes < 1) {
     copy = `${parsedSeconds} ${pluralize("second", parsedSeconds)}`
-    textColor = "red100"
+    textColor = "orange100"
   }
 
   return { timerCopy: copy, textColor }
