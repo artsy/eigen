@@ -41,7 +41,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
         <Join separator={<Spacer y={4} />}>
           {!!me.artistRecommendationsCount?.totalCount ? (
             <ArtworkRecommendationsRail
-              title="Artworks recommendations"
+              title="Artworks Recommendations"
               me={me}
               isRailVisible={false}
               scrollRef={null}
@@ -99,7 +99,7 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
     return <ArtworkError homePage={data.homePage} me={data.me} viewer={data.viewer} />
   },
   () => (
-    <Flex flex={1} alignItems="center" justifyContent="center">
+    <Flex flex={1} alignItems="center" justifyContent="center" testID="placeholder">
       <Spinner />
     </Flex>
   )
