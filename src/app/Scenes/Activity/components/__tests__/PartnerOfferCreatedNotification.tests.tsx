@@ -57,7 +57,9 @@ describe("PartnerOfferCreatedNotification", () => {
 
       expect(screen.getByText("Offers")).toBeTruthy()
       expect(screen.getByText("Limited Time Offer")).toBeTruthy()
-      expect(screen.getByText("Review the offer on your saved artwork")).toBeTruthy()
+      expect(
+        screen.getByText("This offer has expired. Please make a new offer or contact the gallery")
+      ).toBeTruthy()
     })
 
     it("navigates to the Saves", async () => {

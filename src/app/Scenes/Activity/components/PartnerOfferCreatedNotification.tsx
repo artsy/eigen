@@ -6,6 +6,7 @@ import {
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { getTimer } from "app/utils/getTimer"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerOfferCreatedNotificationProps {
@@ -18,6 +19,18 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
   const notificationData = useFragment(PartnerOfferCreatedNotificationFragment, notification)
 
   const { headline, item, notificationType, artworksConnection, targetHref } = notificationData
+
+  const { hasEnded } = getTimer(item.partnerOffer.endAt || "")
+  const noLongerAvailable = !item.partnerOffer.isAvailable
+
+  let subtitle = "Review the offer on your saved artwork"
+
+  if (noLongerAvailable) {
+    subtitle =
+      "Sorry, this artwork has sold or is no longer available. Please create an alert or contact orders@artsy.net to find similar artworks"
+  } else if (hasEnded) {
+    subtitle = "This offer has expired. Please make a new offer or contact the gallery"
+  }
 
   const handleManageSaves = () => {
     navigate("/artwork-lists")
@@ -49,7 +62,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
             <Spacer y={0.5} />
 
-            <Text variant="sm-display">Review the offer on your saved artwork</Text>
+            <Text variant="sm-display">{subtitle}</Text>
 
             <Spacer y={0.5} />
 
