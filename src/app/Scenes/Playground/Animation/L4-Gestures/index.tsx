@@ -2,6 +2,8 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated from "react-native-reanimated"
 
 export default function App() {
+  // Other available gestures include
+  // Tap, Pan, LongPress, Fling, Pinch, Rotation, ForceTouch
   const tap = Gesture.Pan()
     .onStart(() => {
       console.log("tap")
@@ -25,5 +27,3 @@ export default function App() {
     </GestureDetector>
   )
 }
-
-// Tap, Pan, LongPress, Fling, Pinch, Rotation, ForceTouch

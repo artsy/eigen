@@ -9,8 +9,6 @@ export default function App() {
     translateX.value += 20
   }
 
-  // useAnimatedProps
-
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: withSpring(translateX.value) }],
   }))

@@ -20,9 +20,10 @@ export const MenuItem: React.FC<{
   ellipsizeMode?: TextProps["ellipsizeMode"]
   icon?: React.ReactNode
   isBeta?: boolean
+  onPress?: () => void
+  noFeedback?: boolean
   px?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   py?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
-  onPress?: () => void
   rightView?: React.ReactNode
   style?: StyleProp<ViewStyle>
   text?: string
@@ -30,7 +31,6 @@ export const MenuItem: React.FC<{
   value?: React.ReactNode
 }> = ({
   allowDisabledVisualClue = false,
-  description,
   disabled = false,
   chevron = (
     <ChevronIcon
@@ -38,9 +38,11 @@ export const MenuItem: React.FC<{
       fill={disabled && allowDisabledVisualClue ? "black30" : "black60"}
     />
   ),
+  description,
   ellipsizeMode,
   icon,
   isBeta,
+  noFeedback = false,
   onPress,
   px,
   py,
@@ -53,7 +55,7 @@ export const MenuItem: React.FC<{
   const color = useColor()
 
   return (
-    <Touchable onPress={onPress} underlayColor="black5" disabled={disabled}>
+    <Touchable noFeedback={noFeedback} onPress={onPress} underlayColor="black5" disabled={disabled}>
       <Flex
         flexDirection="row"
         alignItems="center"

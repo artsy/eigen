@@ -1,4 +1,4 @@
-import { BellFillIcon, BellIcon, Flex, Separator, Text } from "@artsy/palette-mobile"
+import { BellFillIcon, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { ScrollView, View } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -10,27 +10,6 @@ import Animated, {
 } from "react-native-reanimated"
 
 export default function App() {
-  const translateX = useSharedValue(0)
-  const isIconVisible = useSharedValue(false)
-
-  const pan = Gesture.Pan()
-    .onChange((event) => {
-      translateX.value = !isIconVisible.value ? event.translationX : event.translationX - 50
-    })
-    .onEnd(() => {
-      if (translateX.value < -50) {
-        translateX.value = withSpring(-50)
-        isIconVisible.value = true
-      } else {
-        translateX.value = withSpring(0)
-        isIconVisible.value = false
-      }
-    })
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }))
-
   return (
     <ScrollView>
       <Flex px={2}>
@@ -64,22 +43,13 @@ export default function App() {
       <Separator />
       <Flex py={4}>
         <Flex py={4}>
-          <GestureDetector gesture={pan}>
-            <Animated.View>
-              <Flex position="absolute" right={20} top={20}>
-                <BellIcon height={24} width={24} />
-              </Flex>
-
-              <Animated.View style={animatedStyles}>
-                <MenuItem
-                  title="Yayoi Kusama"
-                  description="Ephemera or Merchandise or Print, Limited Edition"
-                  onPress={() => {}}
-                  style={{ backgroundColor: "white" }}
-                />
-              </Animated.View>
-            </Animated.View>
-          </GestureDetector>
+          <MenuItem
+            title="Yayoi Kusama"
+            description="Ephemera or Merchandise or Print, Limited Edition"
+            onPress={() => {}}
+            noFeedback
+            style={{ backgroundColor: "white" }}
+          />
         </Flex>
       </Flex>
     </ScrollView>
@@ -124,21 +94,24 @@ const Solution1 = () => {
   )
 }
 
-const THRESHOLD = -100
+const THRESHOLD = 50
 
 const Solution2 = () => {
   const dragX = useSharedValue(0)
+  const isIconVisible = useSharedValue(false)
 
   const tap = Gesture.Pan()
     .onStart(() => {})
     .onChange((event) => {
-      dragX.value = event.translationX + (dragX.value === THRESHOLD ? THRESHOLD : 0)
+      dragX.value = !isIconVisible.value ? event.translationX : event.translationX - THRESHOLD
     })
     .onFinalize(() => {
-      if (dragX.value < THRESHOLD) {
-        dragX.value = withTiming(-100)
+      if (dragX.value < -THRESHOLD) {
+        dragX.value = withSpring(-THRESHOLD)
+        isIconVisible.value = true
       } else {
-        dragX.value = withTiming(0)
+        dragX.value = withSpring(0)
+        isIconVisible.value = false
       }
     })
 
@@ -175,6 +148,7 @@ const Solution2 = () => {
             title="Yayoi Kusama"
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
+            noFeedback
             style={{ backgroundColor: "white" }}
           />
         </Animated.View>

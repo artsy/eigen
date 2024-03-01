@@ -1,8 +1,8 @@
-import App1 from "app/Scenes/Playground/L2-Shared-Values/App1"
-import App2 from "app/Scenes/Playground/L2-Shared-Values/App2"
-import App3 from "app/Scenes/Playground/L2-Shared-Values/App3"
-import App4 from "app/Scenes/Playground/L2-Shared-Values/App4"
-import App5 from "app/Scenes/Playground/L2-Shared-Values/App5"
+import App1 from "app/Scenes/Playground/Animation/L2-Shared-Values/App1"
+import App2 from "app/Scenes/Playground/Animation/L2-Shared-Values/App2"
+import App3 from "app/Scenes/Playground/Animation/L2-Shared-Values/App3"
+import App4 from "app/Scenes/Playground/Animation/L2-Shared-Values/App4"
+import App5 from "app/Scenes/Playground/Animation/L2-Shared-Values/App5"
 
 // eslint-disable-next-line prefer-const
 let LEVEL = 5
