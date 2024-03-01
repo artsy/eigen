@@ -130,7 +130,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [FBSDKApplicationDelegate.sharedInstance initializeSDK];
   #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
     FlipperClient *client = [FlipperClient sharedClient];
     [client addPlugin:[FlipperPerformancePlugin new]];
