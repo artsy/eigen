@@ -1,5 +1,6 @@
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
 #import <Appboy.h>
 #import "AppboyReactUtils.h"
@@ -129,6 +130,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FBSDKApplicationDelegate.sharedInstance initializeSDK];
   #if defined(FB_SONARKIT_ENABLED) && (!defined(CI_DISABLE_FLIPPER) || (CI_DISABLE_FLIPPER != 1))
     FlipperClient *client = [FlipperClient sharedClient];
     [client addPlugin:[FlipperPerformancePlugin new]];
@@ -138,8 +140,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupAnalytics:application withLaunchOptions:launchOptions];
 
-    FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
-    [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+        didFinishLaunchingWithOptions:launchOptions];
+
 
     BOOL ossUser = [[ReactNativeConfig envFor:@"OSS"] isEqualToString:@"true"];
     if ([FIRApp defaultApp] == nil && !ossUser) {
