@@ -24,10 +24,8 @@
 - [State Migrations](adding_state_migrations.md)
 - [Analytics and Tracking](analytics_and_tracking.md)
 - [Developing features using local @artsy/palette-mobile](developing_local_palette.md)
-
 - [Images handling](images.md)
 - [Converting an image to webp](convert_image.md)
-
 - [Metaflags](metaflags.md)
 - [Hide loggers](metaflags.md#hide-loggers)
 - [Visual Clues](add_a_visual_clue.md)
@@ -38,6 +36,7 @@
 - [Test on a real device: create a beta](deploy_to_beta.md)
 - [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 - [Pull Request template](pull_request_template.md)
+- [Introduction to animations in Eigen](intro_animations_in_eigen)
 
 ### Beta
 
