@@ -95,7 +95,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
               )
             }
             data={notifications}
-            scrollEnabled={notifications.length > 1}
             onViewableItemsChanged={props.onViewableItemsChanged}
             viewabilityConfig={props.viewabilityConfig}
             keyExtractor={keyExtractor}
