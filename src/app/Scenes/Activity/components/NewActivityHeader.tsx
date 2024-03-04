@@ -9,7 +9,7 @@ export const NewActivityHeader: React.FC = () => {
   const type = ActivityScreenStore.useStoreState((state) => state.type)
   const setType = ActivityScreenStore.useStoreActions((actions) => actions.setType)
 
-  const displayOffersFilter = !!data?.viewer?.partnerOfferNotifications?.edges?.length
+  const displayOffersFilter = !!data?.viewer?.partnerOfferNotifications?.totalCount
 
   return (
     <Flex px={2} pb={2}>
@@ -55,13 +55,7 @@ const query = graphql`
         first: 1
         notificationTypes: [PARTNER_OFFER_CREATED]
       ) {
-        # Total count does not work and returns a value even when there are no notifications
-        # TODO: Use totalCount once the issue is fixed
-        edges {
-          node {
-            id
-          }
-        }
+        totalCount
       }
     }
   }
