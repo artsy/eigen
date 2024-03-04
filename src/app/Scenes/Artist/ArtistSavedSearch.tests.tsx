@@ -71,15 +71,14 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    // mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
-    expect(screen.getByText("Sort By")).toBeOnTheScreen()
-    expect(screen.getByText("Rarity")).toBeOnTheScreen()
-    expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
+    expect(screen.getByText(/Sort By/)).toBeOnTheScreen()
+    expect(screen.getByText(/Rarity/)).toBeOnTheScreen()
+    expect(screen.getByText(/Ways to Buy/)).toBeOnTheScreen()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
@@ -99,7 +98,6 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     await flushPromiseQueue()
 
@@ -108,7 +106,7 @@ describe("Saved search banner on artist screen", () => {
 })
 
 const MockSearchCriteriaQuery: MockResolvers = {
-  SearchCriteria() {
+  Alert() {
     return {
       attributionClass: ["limited edition", "open edition"],
       acquireable: true,

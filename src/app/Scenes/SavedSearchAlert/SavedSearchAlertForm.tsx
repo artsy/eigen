@@ -119,7 +119,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         const submitHandler = isUpdateForm ? handleUpdateAlert : handleCreateAlert
-        let duplicateSavedSearchId: string | undefined
+        let duplicateAlertID: string | undefined
 
         /**
          * We perform the mutation only if
@@ -136,10 +136,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          * - this is update alert flow AND there were changes in filters
          */
         if (!isUpdateForm || (isUpdateForm && hasChangedFilters)) {
-          duplicateSavedSearchId = await getSavedSearchIdByCriteria(clearedAttributes)
+          // TODO: getAlertByCriteria
+          duplicateAlertID = await getSavedSearchIdByCriteria(clearedAttributes)
         }
 
-        if (duplicateSavedSearchId) {
+        if (duplicateAlertID) {
           showWarningMessageForDuplicateAlert({
             onReplacePress: () => {
               submitHandler(userAlertSettings, clearedAttributes)
@@ -148,7 +149,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
               goBack()
 
               requestAnimationFrame(() => {
-                navigate(`/settings/alerts/${duplicateSavedSearchId}/edit`)
+                navigate(`/settings/alerts/${duplicateAlertID}/edit`)
               })
             },
           })
