@@ -1,4 +1,4 @@
-import { ActionType, CreatedArtworkList } from "@artsy/cohesion"
+import { ActionType, CreatedArtworkList, OwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
@@ -11,6 +11,7 @@ import { ArtworkListEntity, ArtworkListMode } from "app/Components/ArtworkLists/
 import { useCreateNewArtworkList } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/useCreateNewArtworkList"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FormikHelpers } from "formik"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
@@ -21,6 +22,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateNewArtworkList()
+  const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
 
   const setRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
     dispatch({
@@ -51,7 +53,7 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       action: ActionType.createdArtworkList,
       context_owner_id: analytics.contextScreenOwnerId,
       context_owner_slug: analytics.contextScreenOwnerSlug,
-      context_owner_type: analytics.contextScreenOwnerType!,
+      context_owner_type: analytics.contextScreenOwnerType ?? OwnerType.saves,
       owner_id: artworkListId,
     }
 
@@ -66,6 +68,10 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
       variables: {
         input: {
           name: values.name,
+          // add shareableWithPartners to the input only if the feature flag is enabled
+          ...(AREnableArtworkListOfferability
+            ? { shareableWithPartners: values.shareableWithPartners }
+            : {}),
         },
       },
       onCompleted: (data) => {
