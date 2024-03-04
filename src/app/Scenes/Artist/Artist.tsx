@@ -35,7 +35,7 @@ import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
-import { goBack } from "app/system/navigation/navigate"
+import { useGoBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -82,6 +82,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
+  const goBack = useGoBack()
 
   useEffect(() => {
     if (!!fetchCriteriaError) {

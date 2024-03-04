@@ -50,7 +50,16 @@ export const useNavigate = () => {
   const navigate = useCallback(
     async (url: string, options = {}) => {
       console.log("navigate", url, options)
-      navigation.navigate("Artist", { artistID: "andy-warhol" })
+
+      // TODO: leaking old nav into new nav for time being, remove this when we have a new nav
+      const result = matchRoute(url)
+      if (result.type === "match") {
+        if (result.module === "Artist") {
+          navigation.navigate("Artist", result.params as { artistID: string })
+        } else if (result.module === "LocalDiscovery") {
+          navigation.navigate("LocalDiscovery")
+        }
+      }
     },
     [navigation]
   )
@@ -239,6 +248,16 @@ export function dismissModal(after?: () => void) {
 export function goBack(backProps?: GoBackProps) {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
   navigationEvents.emit("goBack", backProps)
+}
+
+export const useGoBack = () => {
+  const navigation = useNavigation()
+
+  const goBack = useCallback(() => {
+    navigation.goBack()
+  }, [navigation])
+
+  return goBack
 }
 
 export function popParentViewController() {

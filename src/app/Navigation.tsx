@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { useRegisterNativeModules } from "app/AppRegistry"
 import { MainTabs } from "app/apps/MainTabs"
 import { SearchRouter, SearchRoutes } from "app/apps/Search/searchRoutes"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -38,6 +39,7 @@ const AuthRouter: React.FC<{
 }
 
 const Main2 = () => {
+  useRegisterNativeModules()
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
 
