@@ -1,152 +1,168 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import {
   ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
   ArtworkListsContext,
 } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity, ArtworkListsContextState } from "app/Components/ArtworkLists/types"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { noop } from "lodash"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 
 describe("CreateNewArtworkListView", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const inputPlaceholder = "Name your list"
+  const helloWorldText = "Hello World"
 
-  const placeholder = "Name your list"
-  const text = "Hello World"
-
-  const TestRenderer = () => {
-    const value: ArtworkListsContextState = {
-      state: {
-        ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-        artwork: artworkEntity,
-      },
-      addingArtworkListIDs: [],
-      removingArtworkListIDs: [],
-      dispatch: noop,
-      reset: noop,
-      onSave: noop,
-    }
-
-    return (
-      <ArtworkListsContext.Provider value={value}>
-        <CreateNewArtworkListView />
-      </ArtworkListsContext.Provider>
-    )
+  const ContextValue: ArtworkListsContextState = {
+    state: {
+      ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+      artwork: artworkEntity,
+    },
+    addingArtworkListIDs: [],
+    removingArtworkListIDs: [],
+    dispatch: noop,
+    reset: noop,
+    onSave: noop,
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => {
+      return (
+        <ArtworkListsContext.Provider value={ContextValue}>
+          <CreateNewArtworkListView />
+        </ArtworkListsContext.Provider>
+      )
+    },
+    // added the query to make the component wrapped with a Relay environment
+    query: graphql`
+      query CreateNewArtworkListViewTestsQuery {
+        me {
+          internalID
+        }
+      }
+    `,
   })
 
   describe("Remaining characters label", () => {
     it("default state", () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      const text = "40 characters remaining"
-      expect(getByText(text)).toBeTruthy()
+      expect(screen.getByText("40 characters remaining")).toBeOnTheScreen()
     })
 
     it("when user entered 39 characters", () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
       const longText = "a".repeat(39)
-      fireEvent.changeText(getByPlaceholderText(placeholder), longText)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
 
-      const text = "1 character remaining"
-      expect(getByText(text)).toBeTruthy()
+      expect(screen.getByText("1 character remaining")).toBeOnTheScreen()
     })
 
     it("when user entered something", () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      fireEvent.changeText(getByPlaceholderText(placeholder), "abc")
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "abc")
 
-      const text = "37 characters remaining"
-      expect(getByText(text)).toBeTruthy()
+      expect(screen.getByText("37 characters remaining")).toBeOnTheScreen()
     })
 
     it("when user has reached the allowed limit", () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
       const longText = "a".repeat(100)
-      fireEvent.changeText(getByPlaceholderText(placeholder), longText)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
 
-      const text = "0 characters remaining"
-      expect(getByText(text)).toBeTruthy()
+      expect(screen.getByText("0 characters remaining")).toBeOnTheScreen()
     })
   })
 
   describe("Error state", () => {
     it("when artwork list name is empty", async () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      fireEvent.changeText(getByPlaceholderText(placeholder), text)
-      fireEvent.changeText(getByPlaceholderText(placeholder), "")
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
 
-      await waitFor(() => expect(getByText("Name is required")).toBeTruthy())
+      expect(await screen.findByText("Name is required"))
     })
 
     it("when mutation returned error", async () => {
       console.error = jest.fn() // Silences component logging.
 
       const errorMessage = "You already have a list with this name."
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(
-        <TestRenderer />,
-        mockEnvironment
-      )
 
-      fireEvent.changeText(getByPlaceholderText(placeholder), text)
-      fireEvent.press(getByText("Save"))
+      const { mockResolveLastOperation } = renderWithRelay()
 
-      await flushPromiseQueue()
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      fireEvent.press(screen.getByText("Save"))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Mutation: () => ({
-          createCollection: {
-            responseOrError: {
-              __typename: "CreateCollectionFailure",
-              mutationError: {
-                fieldErrors: [
-                  {
-                    name: "name",
-                    message: errorMessage,
-                  },
-                ],
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionFailure",
+                mutationError: {
+                  fieldErrors: [
+                    {
+                      name: "name",
+                      message: errorMessage,
+                    },
+                  ],
+                },
               },
             },
-          },
-        }),
+          }),
+        })
       })
 
-      await waitFor(() => expect(getByText(errorMessage)).toBeTruthy())
+      expect(screen.getByText(errorMessage)).toBeOnTheScreen()
     })
   })
 
   describe("Save button", () => {
     it("disabled by default", () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      expect(getByText("Save")).toBeDisabled()
+      expect(screen.getByText("Save")).toBeDisabled()
     })
 
     it("disabled when artwork list name is empty", () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      fireEvent.changeText(getByPlaceholderText(placeholder), text)
-      fireEvent.changeText(getByPlaceholderText(placeholder), "")
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
 
-      expect(getByText("Save")).toBeDisabled()
+      expect(screen.getByText("Save")).toBeDisabled()
     })
 
     it("enabled when artwork list name is entered", () => {
-      const { getByText, getByPlaceholderText } = renderWithHookWrappersTL(<TestRenderer />)
+      renderWithRelay()
 
-      fireEvent.changeText(getByPlaceholderText(placeholder), text)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
 
-      expect(getByText("Save")).toBeEnabled()
+      expect(screen.getByText("Save")).toBeEnabled()
+    })
+  })
+
+  describe("Textual content", () => {
+    it("default state", () => {
+      renderWithRelay()
+
+      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
+    })
+
+    it("default state with AREnableArtworkListOfferability ff on", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableArtworkListOfferability: true,
+      })
+
+      renderWithRelay()
+
+      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
+      expect(screen.getByText("Shared list")).toBeOnTheScreen()
     })
   })
 })
