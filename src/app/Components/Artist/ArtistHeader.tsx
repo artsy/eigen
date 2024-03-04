@@ -15,6 +15,7 @@ import {
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
