@@ -36,7 +36,7 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
           // not sure if we have any URLs in force that would trigger this, but better safe than sorry!
           goBack()
           navigate(response.url)
-        } else if (screen.module === "ModalWebView") {
+        } else if (screen.module === "ReactWebView") {
           // Test this with `artsy:///artsy-vanguard-2019` which force should redirect to /series/artsy-vanguard-2019
           setJSX(<ArtsyWebViewPage url={response.url} />)
         } else if (screen.module === "VanityURLEntity" && slug === (screen.params as any).slug) {
