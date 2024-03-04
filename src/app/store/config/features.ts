@@ -264,13 +264,13 @@ export const features = {
   },
   ARUsePaletteImageComponent: {
     description: "Use Palette Image Component",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
-    echoFlagKey: "ARUsePaletteImage",
+    echoFlagKey: "ARUsePaletteImageComponent",
   },
   ARShowBlurhashImagePlaceholder: {
     description: "Show blurhash image placeholder (works only when using Palette Image Component)",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "ARShowBlurhashImagePlaceholder",
   },
