@@ -1,4 +1,12 @@
-import { Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  DEFAULT_HIT_SLOP,
+  Flex,
+  Screen,
+  Spacer,
+  Text,
+  Touchable,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
 import {
   ExpiresInTimer,
   shouldDisplayExpiresInTimer,
@@ -41,13 +49,10 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
       <Screen.Header
         onBack={goBack}
         title="Offers"
+        titleProps={{ minWidth: useScreenDimensions().width }}
         rightElements={
-          <Touchable haptic="impactLight" onPress={handleManageSaves}>
-            <Flex width={100} height="100%" justifyContent="center">
-              <Text textAlign="right" variant="xs">
-                Manage Saves
-              </Text>
-            </Flex>
+          <Touchable haptic="impactLight" onPress={handleManageSaves} hitSlop={DEFAULT_HIT_SLOP}>
+            <Text variant="xs">Manage Saves</Text>
           </Touchable>
         }
       />

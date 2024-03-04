@@ -1,4 +1,4 @@
-import { MoreIcon, Screen, Separator, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, MoreIcon, Screen, Separator, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ActivityContainer } from "app/Scenes/Activity/ActivityContainer"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
@@ -19,7 +19,7 @@ export const NewActivityContent: React.FC = () => {
         title="Activity"
         rightElements={
           <Touchable
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            hitSlop={DEFAULT_HIT_SLOP}
             onPress={() => {
               showActionSheetWithOptions(
                 {
