@@ -71,12 +71,12 @@ export const getLocationDetails = async ({
 
   // TODO: Add dedicated error handling to the maps response
   const { address_components, geometry } = data.result as PlaceResult
-  const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
-  const statePlace = address_components.find(
-    (comp) => comp.types[0] === "administrative_area_level_1"
+  const cityPlace = address_components.find((comp) => comp.types.includes("locality"))
+  const statePlace = address_components.find((comp) =>
+    comp.types.includes("administrative_area_level_1")
   )
-  const countryPlace = address_components.find((comp) => comp.types[0] === "country")
-  const postalCodePlace = address_components.find((comp) => comp.types[0] === "postal_code")
+  const countryPlace = address_components.find((comp) => comp.types.includes("country"))
+  const postalCodePlace = address_components.find((comp) => comp.types.includes("postal_code"))
   const { lat, lng } = geometry.location
 
   const city = cityPlace && cityPlace.long_name
