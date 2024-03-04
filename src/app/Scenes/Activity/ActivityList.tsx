@@ -114,14 +114,23 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
             }}
             ListEmptyComponent={
               <Flex flex={1} justifyContent="center">
-                <ActivityEmptyView type={type} />
+                <ActivityEmptyView
+                  type={type}
+                  refreshControl={
+                    <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+                  }
+                />
               </Flex>
             }
             contentContainerStyle={{
               // This is required because Tabs.Flatlist has a marginHorizontal of 20
               marginHorizontal: 0,
             }}
-            refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+            refreshControl={
+              notifications.length > 1 ? (
+                <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+              ) : undefined
+            }
             ListFooterComponent={
               <Flex
                 alignItems="center"
