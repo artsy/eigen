@@ -1,5 +1,4 @@
-import { Flex, useColor, Text } from "@artsy/palette-mobile"
-import { Platform, Switch } from "react-native"
+import { Flex, Text, Switch } from "@artsy/palette-mobile"
 
 export interface SavedSearchAlertSwitchProps {
   onChange: (value: boolean) => void
@@ -13,32 +12,16 @@ export const SavedSearchAlertSwitch = ({
   active,
   label,
 }: SavedSearchAlertSwitchProps) => {
-  const color = useColor()
-  let thumbColor = color("white100")
-  let disabledTrackColor = color("black30")
-  let enabledTrackColor = color("blue100")
-
-  if (Platform.OS === "android") {
-    if (active) {
-      thumbColor = color("blue100")
-      enabledTrackColor = color("blue10")
-    } else {
-      thumbColor = color("black10")
-      disabledTrackColor = color("black30")
-    }
-  }
-
   return (
     <Flex flexDirection="row" alignItems="center">
       <Flex flex={1} mr={2}>
         <Text numberOfLines={1}>{label}</Text>
       </Flex>
+
       <Switch
         accessibilityRole="switch"
         accessibilityLabel={`${label} Toggler`}
         accessibilityState={{ selected: active }}
-        thumbColor={thumbColor}
-        trackColor={{ false: disabledTrackColor, true: enabledTrackColor }}
         onValueChange={onChange}
         value={active}
       />
