@@ -247,6 +247,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   height={height}
                   width={Number(height) * (artwork.image.aspectRatio ?? 1)}
                   blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+                  resizeMode="contain"
                 />
                 {Boolean(
                   !hideUrgencyTags &&
