@@ -34,7 +34,7 @@ describe("ArtworkError", () => {
 
     renderWithRelay({
       Me: () => ({
-        artistRecommendationsCount: {
+        artworkRecommendationsCount: {
           totalCount: 0,
         },
       }),
