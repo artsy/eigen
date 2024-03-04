@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Switch, Text } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
@@ -7,7 +7,7 @@ import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotif
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { debounce } from "lodash"
-import { Platform, Switch } from "react-native"
+import { Platform } from "react-native"
 import relay, { graphql } from "react-relay"
 import { MyProfilePushNotificationsQueryRenderer } from "./MyProfilePushNotifications"
 

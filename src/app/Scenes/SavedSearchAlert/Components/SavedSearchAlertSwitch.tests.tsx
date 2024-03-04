@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "./SavedSearchAlertSwitch"
 
@@ -16,9 +16,9 @@ describe("SavedSearchAlertSwitch", () => {
   })
 
   it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Label")).toBeTruthy()
+    expect(screen.getByText("Label")).toBeTruthy()
   })
 
   it("should render active state", () => {
@@ -28,9 +28,9 @@ describe("SavedSearchAlertSwitch", () => {
   })
 
   it('should call "onChange" handler when the toggle is pressed', () => {
-    const { getByLabelText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    fireEvent(getByLabelText("Label Toggler"), "valueChange", true)
+    fireEvent(screen.getByLabelText("Label Toggler"), "valueChange", true)
 
     expect(onChangeMock).toBeCalledWith(true)
   })
