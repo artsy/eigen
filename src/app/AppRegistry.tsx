@@ -18,6 +18,7 @@ import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -76,7 +77,6 @@ import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
-import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
   LotsByArtistsYouFollowScreen,
@@ -178,17 +178,6 @@ const Inquiry: React.FC<InquiryProps> = screenTrack<InquiryProps>((props) => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
   }
 })((props) => <InquiryQueryRenderer {...props} />)
-
-interface ConversationProps {
-  conversationID: string
-}
-const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>((props) => {
-  return {
-    context_screen: Schema.PageNames.ConversationPage,
-    context_screen_owner_id: props.conversationID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
-  }
-})(ConversationNavigator)
 
 interface PageWrapperProps {
   fullBleed?: boolean
@@ -455,7 +444,7 @@ export const modules = defineModules({
       gestureEnabled: false,
     },
   }),
-  Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
+  Conversation: reactModule(ConversationQueryRenderer, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
   DevMenu: reactModule(DevMenu, { fullBleed: true, hidesBottomTabs: true, hidesBackButton: true }),
