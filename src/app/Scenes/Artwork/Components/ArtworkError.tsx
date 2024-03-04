@@ -37,7 +37,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
         <Spacer y={2} />
 
         <Join separator={<Spacer y={4} />}>
-          {!!me.artistRecommendationsCount?.totalCount ? (
+          {!!me.artworkRecommendationsCount?.totalCount ? (
             <ArtworkRecommendationsRail
               title="Artworks Recommendations"
               me={me}
@@ -80,9 +80,13 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense(
     const worksForYouRecommendationsModel = useExperimentVariant(
       RECOMMENDATION_MODEL_EXPERIMENT_NAME
     )
-    const data = useLazyLoadQuery<ArtworkErrorQuery>(ArtworkErrorScreenQuery, {
-      version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
-    })
+    const data = useLazyLoadQuery<ArtworkErrorQuery>(
+      ArtworkErrorScreenQuery,
+      {
+        version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+      },
+      { fetchPolicy: "network-only" }
+    )
 
     if (!data.homePage || !data.me || !data.viewer) {
       return (
@@ -120,7 +124,7 @@ const ArtworkErrorScreenQuery = graphql`
       ...ArtworkErrorRecentlyViewed_homePage
     }
     me {
-      artistRecommendationsCount: artistRecommendations(first: 1) {
+      artworkRecommendationsCount: artworkRecommendations(first: 1) {
         totalCount
       }
       ...ArtworkRecommendationsRail_me
