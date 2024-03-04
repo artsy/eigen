@@ -11876,6 +11876,7 @@ type Me implements Node {
   alert(id: String!): Alert
   alertsConnection(
     after: String
+    attributes: PreviewSavedSearchAttributes
     before: String
     first: Int
     last: Int
