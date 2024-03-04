@@ -98,11 +98,9 @@ const ContextCard: React.FC<ContextCardProps> = ({
   const imageElement = hasMultipleImages ? (
     <SmallCard images={imageUrls} /> // 3-up image layout
   ) : (
-    <OpaqueImageView
-      style={{ width: "100%", borderRadius: 4, overflow: "hidden" }}
-      aspectRatio={1.5}
-      imageURL={imageUrls[0]}
-    />
+    <Flex width="100%" borderRadius={4} overflow="hidden">
+      <OpaqueImageView style={{ width: "100%" }} aspectRatio={1.5} imageURL={imageUrls[0]} />
+    </Flex>
   )
 
   return (

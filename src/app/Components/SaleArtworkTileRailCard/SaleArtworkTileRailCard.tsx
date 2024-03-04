@@ -88,19 +88,14 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     : (artwork?.image?.aspectRatio ?? 1) * CONTAINER_HEIGHT
 
   const imageDisplay = artwork?.image?.imageURL ? (
-    <OpaqueImageView
-      imageURL={artwork.image.imageURL}
-      width={imageWidth}
-      height={IMAGE_CONTAINER_WIDTH}
-      blurhash={showBlurhash ? artwork.image.blurhash : undefined}
-      style={{
-        borderRadius: 2,
-        overflow: "hidden",
-        justifyContent: "flex-end",
-        paddingHorizontal: 5,
-        paddingBottom: 5,
-      }}
-    />
+    <Flex px={0.5} pb={0.5} justifyContent="flex-end" overflow="hidden" borderRadius={2}>
+      <OpaqueImageView
+        imageURL={artwork.image.imageURL}
+        width={imageWidth}
+        height={IMAGE_CONTAINER_WIDTH}
+        blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+      />
+    </Flex>
   ) : (
     <Box
       bg={color("black30")}

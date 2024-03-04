@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
@@ -37,16 +37,21 @@ export const SaleListItem: React.FC<Props> = (props) => {
         }}
       >
         {!!image && !!image.url && (
-          <OpaqueImageView
-            style={{
-              width: containerWidth,
-              height: containerWidth,
-              borderRadius: 2,
-              overflow: "hidden",
-              marginBottom: 5,
-            }}
-            imageURL={image.url}
-          />
+          <Flex
+            height={containerWidth}
+            width={containerWidth}
+            borderRadius={2}
+            overflow="hidden"
+            mb={0.5}
+          >
+            <OpaqueImageView
+              style={{
+                width: containerWidth,
+                height: containerWidth,
+              }}
+              imageURL={image.url}
+            />
+          </Flex>
         )}
         <Text variant="sm" numberOfLines={2} weight="medium">
           {sale.name}
