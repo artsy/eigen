@@ -31,12 +31,14 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
         style={{ paddingVertical: 5 }}
       >
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px={2}>
-          <OpaqueImageView
-            imageURL={imageURL}
-            width={size}
+          <Flex
             height={size}
-            style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
-          />
+            width={size}
+            borderRadius={square_image ? 2 : size / 2}
+            overflow="hidden"
+          >
+            <OpaqueImageView imageURL={imageURL} width={size} height={size} />
+          </Flex>
           <Spacer x={2} />
           <Text variant="sm" weight="medium">
             {name}
