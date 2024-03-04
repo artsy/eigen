@@ -1,10 +1,12 @@
 import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ScrollView } from "react-native-gesture-handler"
 import { NotificationType } from "./types"
 
 interface ActivityEmptyViewProps {
   type: NotificationType
+  refreshControl?: React.ReactElement
 }
 
 const artistLink = (
@@ -62,7 +64,7 @@ const entityByType: Record<
   offers: null,
 }
 
-export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) => {
+export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type, refreshControl }) => {
   const entity = entityByType[type]
   const enableNewActivityPanelManagement = useFeatureFlag("AREnableNewActivityPanelManagement")
 
@@ -70,22 +72,22 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) =>
 
   if (enableNewActivityPanelManagement && type !== "offers") {
     return (
-      <Flex mx={4} accessibilityLabel="Activities are empty" pt={4}>
-        <Text textAlign="start" variant="sm-display">
-          {entity.title}
-        </Text>
-        <Spacer y={2} />
-        <Text variant="xs" color="black60" textAlign="start">
-          {entity.message}
-        </Text>
-        <Spacer y={2} />
-        <Flex flexDirection="row" gap={10}>
-          <Text variant="xs" color="black60" textAlign="start">
-            {entity.geStartedMessage}
+      <ScrollView contentContainerStyle={{ height: 500 }} refreshControl={refreshControl}>
+        <Flex mx={4} accessibilityLabel="Activities are empty" pt={4}>
+          <Text variant="sm-display">{entity.title}</Text>
+          <Spacer y={2} />
+          <Text variant="xs" color="black60">
+            {entity.message}
           </Text>
-          {entity.links}
+          <Spacer y={2} />
+          <Flex flexDirection="row" gap={10}>
+            <Text variant="xs" color="black60">
+              {entity.geStartedMessage}
+            </Text>
+            {entity.links}
+          </Flex>
         </Flex>
-      </Flex>
+      </ScrollView>
     )
   }
 
