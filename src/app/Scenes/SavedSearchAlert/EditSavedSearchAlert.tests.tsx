@@ -74,8 +74,8 @@ describe("EditSavedSearchAlert", () => {
     })
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Me: () => ({
-        savedSearch: null,
+      Alert: () => ({
+        internalID: null,
       }),
     })
 
@@ -302,8 +302,8 @@ describe("EditSavedSearchAlert", () => {
           "getAlertByCriteriaQuery"
         )
         resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            alertsConnection: [],
+          Alert: () => ({
+            internalID: null,
           }),
         })
 
