@@ -71,12 +71,12 @@ export const getLocationDetails = async ({
 
   // TODO: Add dedicated error handling to the maps response
   const { address_components, geometry } = data.result as PlaceResult
-  const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
-  const statePlace = address_components.find(
-    (comp) => comp.types[0] === "administrative_area_level_1"
+  const cityPlace = address_components.find((comp) => comp.types.includes("locality"))
+  const statePlace = address_components.find((comp) =>
+    comp.types.includes("administrative_area_level_1")
   )
-  const countryPlace = address_components.find((comp) => comp.types[0] === "country")
-  const postalCodePlace = address_components.find((comp) => comp.types[0] === "postal_code")
+  const countryPlace = address_components.find((comp) => comp.types.includes("country"))
+  const postalCodePlace = address_components.find((comp) => comp.types.includes("postal_code"))
   const { lat, lng } = geometry.location
 
   const city = cityPlace && cityPlace.long_name
@@ -102,7 +102,7 @@ export const getLocationDetails = async ({
 interface GeocoderAddressComponent {
   long_name: string
   short_name: string
-  types: string[]
+  types: PlaceType[]
 }
 
 interface PlaceResult {
@@ -114,3 +114,59 @@ interface PlaceResult {
     }
   }
 }
+
+/**
+ * A list of place types supported by the Google Maps Places API.
+ *
+ * This list is not exhaustive, but does cover all types that can be
+ * returned as address components in the response of a Place Details request,
+ * which is the usage we are interested in.
+ *
+ * @see https://developers.google.com/maps/documentation/places/web-service/supported_types
+ */
+type PlaceType =
+  | "administrative_area_level_1"
+  | "administrative_area_level_2"
+  | "administrative_area_level_3"
+  | "administrative_area_level_4"
+  | "administrative_area_level_5"
+  | "administrative_area_level_6"
+  | "administrative_area_level_7"
+  | "archipelago"
+  | "colloquial_area"
+  | "continent"
+  | "country"
+  | "establishment"
+  | "finance"
+  | "floor"
+  | "food"
+  | "general_contractor"
+  | "geocode"
+  | "health"
+  | "intersection"
+  | "landmark"
+  | "locality"
+  | "natural_feature"
+  | "neighborhood"
+  | "place_of_worship"
+  | "plus_code"
+  | "point_of_interest"
+  | "political"
+  | "post_box"
+  | "postal_code"
+  | "postal_code_prefix"
+  | "postal_code_suffix"
+  | "postal_town"
+  | "premise"
+  | "room"
+  | "route"
+  | "street_address"
+  | "street_number"
+  | "sublocality"
+  | "sublocality_level_1"
+  | "sublocality_level_2"
+  | "sublocality_level_3"
+  | "sublocality_level_4"
+  | "sublocality_level_5"
+  | "subpremise"
+  | "town_square"
