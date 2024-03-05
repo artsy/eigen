@@ -49,14 +49,15 @@ const Main2 = () => {
         screenOptions={{
           headerShown: false,
         }}
+        initialRouteName="MainTabs"
       >
         {AuthRouter({ isLoggedIn })}
-        {/* {SearchRouter()} */}
         {!!isLoggedIn && onboardingState === "complete" && (
           <>
             <StackNav.Screen name="MainTabs" component={MainTabs} />
           </>
         )}
+        {SearchRouter()}
       </StackNav.Navigator>
     </NavigationContainer>
   )
