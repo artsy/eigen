@@ -5,15 +5,15 @@ import { RecentlyViewedArtworks_artworksConnection$key } from "__generated__/Rec
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { RecentlyViewedPlaceholder } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedPlaceholder"
-import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
+import { useViewOptionNumColumns } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { useLayoutEffect, useRef, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const RecentlyViewedArtworks: React.FC = () => {
-  const defaultViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+  const numColumns = useViewOptionNumColumns("onyx_new_works_for_you_feed")
 
   const queryData = useLazyLoadQuery<RecentlyViewedArtworksQuery>(
     RecentlyViewedScreenQuery,
@@ -29,7 +29,29 @@ export const RecentlyViewedArtworks: React.FC = () => {
   const artworks = extractNodes(data?.recentlyViewedArtworksConnection)
   const RefreshControl = useRefreshControl(refetch)
 
-  const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
+  const [hasChangedLayout, setHasChangedLayout] = useState(false)
+
+  const firstUpdate = useRef(true)
+
+  // This is a hack to force the grid to re-render when the layout changes
+  // Flashlist makes a werid animation when changing between numColumns
+  // We avoid it by showing the placeholder for a second while it's happening
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false
+      return
+    }
+
+    setHasChangedLayout(true)
+  }, [numColumns])
+
+  if (hasChangedLayout) {
+    setTimeout(() => {
+      setHasChangedLayout(false)
+    }, 1000)
+
+    return <RecentlyViewedPlaceholder />
+  }
 
   return (
     <MasonryInfiniteScrollArtworkGrid
@@ -44,7 +66,7 @@ export const RecentlyViewedArtworks: React.FC = () => {
       hasMore={hasNext}
       loadMore={(pageSize) => loadNext(pageSize)}
       isLoading={isLoadingNext}
-      numColumns={numOfColumns}
+      numColumns={numColumns}
       onScroll={scrollHandler}
     />
   )

@@ -8,6 +8,7 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
+  Text,
 } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { NewWorksForYouArtworksQR } from "app/Scenes/NewWorksForYou/Components/NewWorksForYouArtworks"
@@ -17,6 +18,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { usePlaceholderView } from "app/utils/masonryHelpers/viewOptionHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
@@ -99,7 +101,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
             ) : undefined
           }
         />
-        <Screen.StickySubHeader title="New Works For You" />
+        {/* <Screen.StickySubHeader title="New Works For You" /> */}
         <Screen.Body fullwidth>
           <NewWorksForYouArtworksQR maxWorksPerArtist={maxWorksPerArtist} version={version} />
         </Screen.Body>
@@ -108,26 +110,26 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
   )
 }
 
-export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({
-  defaultViewOption,
-}) => {
-  const storeViewOption = GlobalStore.useAppState((state) => state.userPrefs.defaultViewOption)
+export const NewWorksForYouPlaceholder: React.FC<{ defaultViewOption?: ViewOption }> = ({}) => {
   const enableNewWorksForYouFeed = useFeatureFlag("AREnableNewWorksForYouScreenFeed")
-  const viewOption = defaultViewOption ?? storeViewOption
+
+  const placeholderView = usePlaceholderView("onyx_new_works_for_you_feed")
 
   return (
     <Skeleton>
       <Flex flexDirection="row">
-        <Flex my={2} px={2}>
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <SkeletonText variant="xs" mt={1}>
+        <Flex px={2}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text variant="lg-display">New Works for You</Text>
+
+            <SkeletonText variant="xs" mt={2}>
               XX Artworks
             </SkeletonText>
           </Flex>
         </Flex>
       </Flex>
       <Spacer y={2} />
-      {viewOption === "grid" || !enableNewWorksForYouFeed ? (
+      {!enableNewWorksForYouFeed || placeholderView === "grid" ? (
         <PlaceholderGrid />
       ) : (
         <Flex width="100%" px={2}>
